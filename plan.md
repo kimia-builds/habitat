@@ -56,7 +56,10 @@ _v1.0 — 2026-07-12. Plan agreed. Companion to spec.md v1.3._
       corrupt history.
 - [ ] **T1.3 Habit list UI (ugly on purpose).**
       Create, edit, archive habits; tap to complete today; the 6 symbols as
-      plain placeholders. Dark background, zero styling effort otherwise.
+      plain placeholders. Filter the list by symbols (multi-select, resets
+      each visit); re-order habits manually (order persists). Import warns
+      before overwriting existing data (storage's `hasData()`).
+      Dark background, zero styling effort otherwise.
       _Done when:_ we can run our real habits in it for a day.
 - [ ] **T1.4 Morning check-in.**
       On first visit after a missed scheduled day: "mark what you completed

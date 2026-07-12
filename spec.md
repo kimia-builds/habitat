@@ -45,7 +45,10 @@ dailies/habits/to-dos distinction. Each habit has:
 
 - Name, optional description
 - A schedule the user defines (e.g. every day, Mon/Wed/Fri, 3× per week,
-  or "whenever" for unscheduled ones)
+  N× per day for habits repeated within a day, or "whenever" for
+  unscheduled ones). For an N-per-day habit each completion counts on
+  its own and the day is fulfilled at N — fewer is neutral data, never
+  punished. *(N-per-day added 2026-07-12.)*
 - **One of exactly 6 abstract symbols** (each paired with its own
   colour). The symbol **is** the tag — no word labels, no naming, no
   renaming, ever. Meaning lives entirely in the user's head, never
@@ -157,6 +160,9 @@ reward.
 ## 5b. App structure (pages)
 
 - **Home screen:** the habit list, with the two meters fixed at top.
+  The list is manually re-orderable (the user's chosen order persists)
+  and can be filtered to show only habits with chosen symbols — a
+  temporary lens that resets on each visit. *(Added 2026-07-12.)*
 - **Map** (via expedition meter): the discovered planet so far.
 - **Bookcase** (via literacy meter): all reading material collected.
 - **Abode:** collected objects, freely arrangeable, removable.
@@ -202,6 +208,14 @@ reward.
 
 ## 10. Decisions log
 
+- 2026-07-12: schedule shapes are daily / specific weekdays / N-per-week /
+  N-per-day (N≥2; each completion counts, day fulfilled at N) / whenever.
+- 2026-07-12: habit list is manually re-orderable (order persists) and
+  filterable by symbols (multi-select; temporary, resets each visit).
+- 2026-07-12: backup import replaces all data (no merge) and the app
+  warns first if existing data would be overwritten.
+- 2026-07-12: habits can be archived (history kept) or permanently
+  deleted.
 - App name: **Habitat**. Planet name: **N-Z-D**.
 - Framing: ethical immigration, not exploration/settlement.
 - 10 friend categories on a sliding literacy scale (draft ladder in 5).

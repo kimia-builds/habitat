@@ -5,6 +5,8 @@ import {
   archiveHabit,
   archivedHabits,
   createHabit,
+  filterBySymbols,
+  moveHabit,
   removeHabit,
   unarchiveHabit,
   updateHabit,
@@ -63,11 +65,12 @@ describe('createHabit', () => {
     )
   })
 
-  it('accepts all four schedule shapes', () => {
+  it('accepts all five schedule shapes', () => {
     const shapes = [
       { type: 'daily' },
       { type: 'weekdays', days: [1, 3, 5] },
       { type: 'nPerWeek', n: 3 },
+      { type: 'nPerDay', n: 3 },
       { type: 'whenever' },
     ]
     for (const schedule of shapes) {
@@ -98,6 +101,12 @@ describe('createHabit', () => {
       createHabit({ ...fields, schedule: { type: 'nPerWeek', n: 8 } }),
     ).toThrow(/between 1 and 7/)
     expect(() => createHabit({ ...fields, schedule: null })).toThrow(/object/)
+    expect(() =>
+      createHabit({ ...fields, schedule: { type: 'nPerDay', n: 1 } }),
+    ).toThrow(/at least 2/)
+    expect(() =>
+      createHabit({ ...fields, schedule: { type: 'nPerDay', n: 2.5 } }),
+    ).toThrow(/at least 2/)
   })
 })
 
@@ -156,5 +165,53 @@ describe('archiving and the habit list', () => {
     const b = createHabit(fields, 1000, 'b')
     expect(removeHabit([a, b], 'a')).toEqual([b])
     expect(() => removeHabit([b], 'nope')).toThrow(/No habit/)
+  })
+})
+
+describe('re-ordering', () => {
+  const list = () =>
+    ['a', 'b', 'c', 'd'].map((id) => createHabit(fields, 1000, id))
+  const ids = (habits) => habits.map((h) => h.id)
+
+  it('moves a habit to a new position, in both directions', () => {
+    expect(ids(moveHabit(list(), 'd', 0))).toEqual(['d', 'a', 'b', 'c'])
+    expect(ids(moveHabit(list(), 'a', 2))).toEqual(['b', 'c', 'a', 'd'])
+    expect(ids(moveHabit(list(), 'b', 1))).toEqual(['a', 'b', 'c', 'd'])
+  })
+
+  it('leaves the original list untouched', () => {
+    const habits = list()
+    moveHabit(habits, 'a', 3)
+    expect(ids(habits)).toEqual(['a', 'b', 'c', 'd'])
+  })
+
+  it('rejects unknown ids and out-of-range positions', () => {
+    expect(() => moveHabit(list(), 'nope', 0)).toThrow(/No habit/)
+    expect(() => moveHabit(list(), 'a', -1)).toThrow(/between 0 and 3/)
+    expect(() => moveHabit(list(), 'a', 4)).toThrow(/between 0 and 3/)
+    expect(() => moveHabit(list(), 'a', 1.5)).toThrow(/between 0 and 3/)
+  })
+})
+
+describe('filtering by symbols', () => {
+  const habits = [1, 2, 3, 4].map((symbol) =>
+    createHabit({ ...fields, symbol }, 1000, `s${symbol}`),
+  )
+
+  it('shows only habits carrying one of the chosen symbols, keeping order', () => {
+    const shown = filterBySymbols(habits, [3, 1])
+    expect(shown.map((h) => h.id)).toEqual(['s1', 's3'])
+  })
+
+  it('an empty selection means show everything', () => {
+    expect(filterBySymbols(habits, [])).toEqual(habits)
+  })
+
+  it('a symbol nobody uses simply matches nothing', () => {
+    expect(filterBySymbols(habits, [6])).toEqual([])
+  })
+
+  it('rejects a non-list filter', () => {
+    expect(() => filterBySymbols(habits, 3)).toThrow(/list/)
   })
 })

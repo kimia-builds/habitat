@@ -54,6 +54,15 @@ export function validateSchedule(schedule) {
       throw new Error('An N-per-week schedule needs n between 1 and 7.')
     }
   }
+  if (schedule.type === 'nPerDay') {
+    // At least twice — "once per day" is what the daily schedule is for.
+    if (!isInteger(schedule.n) || schedule.n < 2) {
+      throw new Error(
+        'An N-per-day schedule needs a whole number of at least 2 ' +
+          '(for once a day, use a daily schedule).',
+      )
+    }
+  }
 }
 
 export function validateHabit(habit) {
@@ -151,6 +160,32 @@ export function removeHabit(habits, id) {
     throw new Error('No habit with this id exists.')
   }
   return habits.filter((h) => h.id !== id)
+}
+
+// Re-order: move one habit to a new position in the list. The array
+// order IS the user's chosen order — storage keeps it, the UI shows it.
+export function moveHabit(habits, id, toIndex) {
+  const fromIndex = habits.findIndex((h) => h.id === id)
+  if (fromIndex === -1) {
+    throw new Error('No habit with this id exists.')
+  }
+  if (!isInteger(toIndex) || toIndex < 0 || toIndex >= habits.length) {
+    throw new Error(`New position must be between 0 and ${habits.length - 1}.`)
+  }
+  const reordered = [...habits]
+  const [moved] = reordered.splice(fromIndex, 1)
+  reordered.splice(toIndex, 0, moved)
+  return reordered
+}
+
+// Show only habits carrying one of the chosen symbols — the "show me
+// just these tags" lens. An empty selection means no filter (show all).
+export function filterBySymbols(habits, symbols) {
+  if (!Array.isArray(symbols)) {
+    throw new Error('Symbol filter must be a list of symbol numbers.')
+  }
+  if (symbols.length === 0) return habits
+  return habits.filter((h) => symbols.includes(h.symbol))
 }
 
 export function activeHabits(habits) {
