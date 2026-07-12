@@ -32,7 +32,7 @@ _v1.0 — 2026-07-12. Plan agreed. Companion to spec.md v1.3._
 
 ## M0 — Foundations (1 session)
 
-- [ ] **T0.1 Repo + scaffold + first deploy.**
+- [x] **T0.1 Repo + scaffold + first deploy.** *(done 2026-07-12)*
       Create public GitHub repo `habitat`. Scaffold Vite + React + Vitest +
       ESLint/Prettier. Write CLAUDE.md (project rules for AI sessions) and
       a README (portfolio-facing). Set up GitHub Actions to auto-deploy to
