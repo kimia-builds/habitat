@@ -12,5 +12,7 @@ export default defineConfig({
   test: {
     // Tests simulate a browser (jsdom) so components can render in them.
     environment: 'jsdom',
+    // Repairs the test sandbox's localStorage (see the file's comments).
+    setupFiles: ['./src/test/setup.js'],
   },
 })

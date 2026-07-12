@@ -42,7 +42,7 @@ _v1.0 — 2026-07-12. Plan agreed. Companion to spec.md v1.3._
 
 ## M1 — Walking skeleton (4 sessions) → we start using it daily
 
-- [ ] **T1.1 Habit data layer.**
+- [x] **T1.1 Habit data layer.** *(done 2026-07-12)*
       Habit model (name, description, symbol 1–6, difficulty, schedule) +
       localStorage persistence + JSON export/import.
       _Done when:_ tests prove habits survive a page reload and a full
