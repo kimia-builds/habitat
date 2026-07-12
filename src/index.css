@@ -1,0 +1,38 @@
+/* Base look per spec.md §7: dark mode only, deep-space near-blacks,
+   white/pastel content. Neon is reserved for POP moments (none yet). */
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0b0e14;
+  color: #e8e6f0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+}
+
+.arrival {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrival h1 {
+  font-weight: 300;
+  font-size: 2.5rem;
+  letter-spacing: 0.5em;
+  /* nudge right so the trailing letter-space doesn't off-centre the word */
+  margin-right: -0.5em;
+  color: #cfd8e3;
+}
