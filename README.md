@@ -1,7 +1,7 @@
 # HABITAT 🪐
 
 **A personal habit tracker where showing up for your habits carries you
-through ethical immigration to the alien planet N-Z-D** — getting to know
+through your immigration to the alien planet N-Z-D** — getting to know
 the land, furnishing a home with found curiosities, learning the local
 language, and earning friendships in the community. Habit by habit, we
 build a habitat.
