@@ -3,6 +3,8 @@ import {
   countOn,
   recordCompletion,
   recordRetroCompletion,
+  removeCompletionsFor,
+  removeLatestOn,
   validateCompletion,
 } from './completions.js'
 
@@ -105,6 +107,46 @@ describe('validation and counting', () => {
     expect(() => validateCompletion({ ...good, habitId: 7 })).toThrow()
     expect(() => validateCompletion({ ...good, recordedAt: 'noon' })).toThrow()
     expect(() => validateCompletion({ ...good, dayKey: 'someday' })).toThrow()
+  })
+
+  it('removeLatestOn undoes the most recently entered mark, only that one', () => {
+    const completions = [
+      recordCompletion('water', CUTOFF, at(2026, 7, 13, 9, 0), 'a'),
+      recordCompletion('water', CUTOFF, at(2026, 7, 13, 14, 0), 'b'), // latest
+      recordCompletion('water', CUTOFF, at(2026, 7, 12, 20, 0), 'c'), // other day
+      recordCompletion('walk', CUTOFF, at(2026, 7, 13, 15, 0), 'd'), // other habit
+    ]
+    const after = removeLatestOn(completions, 'water', '2026-07-13')
+    expect(after.map((c) => c.id)).toEqual(['a', 'c', 'd'])
+    // The original list is untouched (pure function).
+    expect(completions).toHaveLength(4)
+  })
+
+  it('removeLatestOn undoes one mark at a time', () => {
+    const completions = [
+      recordCompletion('water', CUTOFF, at(2026, 7, 13, 9, 0), 'a'),
+      recordCompletion('water', CUTOFF, at(2026, 7, 13, 14, 0), 'b'),
+    ]
+    const once = removeLatestOn(completions, 'water', '2026-07-13')
+    expect(countOn(once, 'water', '2026-07-13')).toBe(1)
+    const twice = removeLatestOn(once, 'water', '2026-07-13')
+    expect(countOn(twice, 'water', '2026-07-13')).toBe(0)
+  })
+
+  it('removeLatestOn refuses when there is nothing to undo', () => {
+    expect(() => removeLatestOn([], 'water', '2026-07-13')).toThrow(
+      /nothing to undo/i,
+    )
+  })
+
+  it('removeCompletionsFor erases exactly one habit’s history', () => {
+    const completions = [
+      recordCompletion('water', CUTOFF, at(2026, 7, 13, 9, 0), 'a'),
+      recordCompletion('walk', CUTOFF, at(2026, 7, 13, 10, 0), 'b'),
+      recordCompletion('water', CUTOFF, at(2026, 7, 12, 9, 0), 'c'),
+    ]
+    const after = removeCompletionsFor(completions, 'water')
+    expect(after.map((c) => c.id)).toEqual(['b'])
   })
 
   it('countOn counts only the right habit on the right day', () => {

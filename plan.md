@@ -54,7 +54,7 @@ _v1.0 — 2026-07-12. Plan agreed. Companion to spec.md v1.3._
       _Done when:_ a thorough test suite passes, including: completion at
       1am → yesterday; completion at 9am → today; cutoff change doesn't
       corrupt history.
-- [ ] **T1.3 Habit list UI (ugly on purpose).**
+- [x] **T1.3 Habit list UI (ugly on purpose).** *(done 2026-07-13)*
       Create, edit, archive habits; tap to complete today; the 6 symbols as
       plain placeholders. Filter the list by symbols (multi-select, resets
       each visit); re-order habits manually (order persists). Import warns

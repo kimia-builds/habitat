@@ -80,3 +80,28 @@ export function countOn(completions, habitId, dayKey) {
   return completions.filter((c) => c.habitId === habitId && c.dayKey === dayKey)
     .length
 }
+
+// Undo one mark: remove the most recently ENTERED completion of this
+// habit on this day. The UI only ever offers this for the current day —
+// a mis-tap costs nothing (Kimia's decision 2026-07-13), while past
+// days stay frozen. Returns a new list; the original is untouched.
+export function removeLatestOn(completions, habitId, dayKey) {
+  let latest = -1
+  for (let i = 0; i < completions.length; i++) {
+    const c = completions[i]
+    if (c.habitId !== habitId || c.dayKey !== dayKey) continue
+    if (latest === -1 || c.recordedAt >= completions[latest].recordedAt) {
+      latest = i
+    }
+  }
+  if (latest === -1) {
+    throw new Error('Nothing to undo — this habit has no mark on this day.')
+  }
+  return completions.filter((_, i) => i !== latest)
+}
+
+// A permanently deleted habit takes its history with it (spec §10:
+// archiving keeps history, deleting is for good) — no orphaned records.
+export function removeCompletionsFor(completions, habitId) {
+  return completions.filter((c) => c.habitId !== habitId)
+}
