@@ -27,6 +27,12 @@ export const SCHEDULE_TYPES = [
   'whenever',
 ]
 
+// The Habitat day starts at 3am, not midnight, so a habit finished at
+// 1am counts for the evening before (spec §4.2). Configurable in
+// Settings (stored in storage's settings). Whole hours only, 0–23;
+// 0 means plain midnight-to-midnight days.
+export const DEFAULT_DAY_CUTOFF_HOUR = 3
+
 // Weekday numbers use the ISO convention: 1 = Monday … 7 = Sunday.
 // (Chosen over JavaScript's own 0=Sunday counting because ISO weeks are
 // what the schedule engine in T1.2 will reason about.)

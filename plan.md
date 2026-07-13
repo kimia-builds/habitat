@@ -47,7 +47,7 @@ _v1.0 — 2026-07-12. Plan agreed. Companion to spec.md v1.3._
       localStorage persistence + JSON export/import.
       _Done when:_ tests prove habits survive a page reload and a full
       export→wipe→import round trip.
-- [ ] **T1.2 Day & schedule engine.** ⚠️ riskiest logic in the app
+- [x] **T1.2 Day & schedule engine.** *(done 2026-07-13)* ⚠️ riskiest logic in the app
       Day cutoff (3am default, configurable), "which day does this
       completion belong to", schedule types (daily / specific weekdays /
       N-per-week / whenever), streak counting.

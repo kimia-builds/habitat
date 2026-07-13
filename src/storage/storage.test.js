@@ -111,3 +111,65 @@ describe('backup round trip (export → wipe → import)', () => {
     expect(loadData().habits.map((h) => h.id)).toEqual(['new'])
   })
 })
+
+describe('completions and settings in storage (added in T1.2)', () => {
+  const completion = (id, dayKey) => ({
+    id,
+    habitId: 'a',
+    recordedAt: 2000,
+    dayKey,
+  })
+
+  it('completions survive a save → reload round trip, day attribution intact', () => {
+    const data = {
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      completions: [
+        completion('c1', '2026-07-12'),
+        completion('c2', '2026-07-13'),
+      ],
+    }
+    saveData(data)
+    expect(loadData()).toEqual(data)
+    expect(loadData().completions[0].dayKey).toBe('2026-07-12')
+  })
+
+  it('the day-cutoff setting persists', () => {
+    expect(loadData().settings.dayCutoffHour).toBe(3) // the default
+    saveData({ ...emptyData(), settings: { dayCutoffHour: 5 } })
+    expect(loadData().settings.dayCutoffHour).toBe(5)
+  })
+
+  it('hasData is true when there are completions, even with no habits', () => {
+    saveData({ ...emptyData(), completions: [completion('c1', '2026-07-12')] })
+    expect(hasData()).toBe(true)
+  })
+
+  it('a T1.1-era backup (no completions/settings) still imports, gaining defaults', () => {
+    const oldBackup = JSON.stringify({
+      schemaVersion: 1,
+      habits: [habit('a', 'Read')],
+    })
+    const restored = importData(oldBackup)
+    expect(restored.habits).toHaveLength(1)
+    expect(restored.completions).toEqual([])
+    expect(restored.settings.dayCutoffHour).toBe(3)
+    expect(loadData()).toEqual(restored)
+  })
+
+  it('rejects backups with broken completions or settings, keeping data intact', () => {
+    const data = { ...emptyData(), habits: [habit('a', 'Read')] }
+    saveData(data)
+    expect(() =>
+      importData(
+        JSON.stringify({ ...emptyData(), completions: [{ nonsense: 1 }] }),
+      ),
+    ).toThrow()
+    expect(() =>
+      importData(
+        JSON.stringify({ ...emptyData(), settings: { dayCutoffHour: 99 } }),
+      ),
+    ).toThrow()
+    expect(loadData()).toEqual(data)
+  })
+})
