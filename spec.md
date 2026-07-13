@@ -191,8 +191,8 @@ reward.
 
 ## 8. Architecture (v1)
 
-- Static single-page web app: HTML/CSS/JavaScript (framework decided in
-  plan phase — likely React or plain JS, whichever keeps us simplest).
+- Static single-page web app built with **React + Vite**, tested with
+  **Vitest** (decided at T0.1, 2026-07-12).
 - No backend. All state in `localStorage`, with a manual "export/import
   data" button as backup insurance.
 - Deployed via GitHub Pages from the public repo.
