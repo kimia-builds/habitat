@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  countFor,
   countOn,
   recordCompletion,
   recordRetroCompletion,
@@ -107,6 +108,17 @@ describe('validation and counting', () => {
     expect(() => validateCompletion({ ...good, habitId: 7 })).toThrow()
     expect(() => validateCompletion({ ...good, recordedAt: 'noon' })).toThrow()
     expect(() => validateCompletion({ ...good, dayKey: 'someday' })).toThrow()
+  })
+
+  it('countFor counts a habit’s completions across all days', () => {
+    const completions = [
+      recordCompletion('water', CUTOFF, at(2026, 7, 13, 9, 0), 'a'),
+      recordCompletion('water', CUTOFF, at(2026, 7, 12, 9, 0), 'b'),
+      recordCompletion('walk', CUTOFF, at(2026, 7, 13, 9, 0), 'c'),
+    ]
+    expect(countFor(completions, 'water')).toBe(2)
+    expect(countFor(completions, 'walk')).toBe(1)
+    expect(countFor(completions, 'yoga')).toBe(0)
   })
 
   it('removeLatestOn undoes the most recently entered mark, only that one', () => {

@@ -81,6 +81,12 @@ export function countOn(completions, habitId, dayKey) {
     .length
 }
 
+// How many times this habit was ever done. A one-time habit is "done"
+// when this is non-zero; its single completion's dayKey says when.
+export function countFor(completions, habitId) {
+  return completions.filter((c) => c.habitId === habitId).length
+}
+
 // Undo one mark: remove the most recently ENTERED completion of this
 // habit on this day. The UI only ever offers this for the current day —
 // a mis-tap costs nothing (Kimia's decision 2026-07-13), while past

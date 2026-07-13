@@ -5,8 +5,8 @@
 import { countOn } from './completions.js'
 import { addDays, dayKeyFromTimestamp, isoWeekday, weekStart } from './days.js'
 
-// Is this habit expected on this particular day? N-per-week and
-// whenever habits have no particular due days, so the answer is no.
+// Is this habit expected on this particular day? N-per-week, whenever
+// and one-time habits have no particular due days, so the answer is no.
 export function isScheduledOn(habit, dayKey) {
   switch (habit.schedule.type) {
     case 'daily':
@@ -14,9 +14,17 @@ export function isScheduledOn(habit, dayKey) {
       return true
     case 'weekdays':
       return habit.schedule.days.includes(isoWeekday(dayKey))
-    default: // nPerWeek, whenever
+    default: // nPerWeek, whenever, oneTime
       return false
   }
+}
+
+// One-time habits are to-dos: a single completion finishes them for
+// good, so the app archives them the moment they're done. Undoing that
+// completion (same day only) un-archives them again (Kimia's decision
+// 2026-07-13).
+export function archivesWhenDone(habit) {
+  return habit.schedule.type === 'oneTime'
 }
 
 // How many completions make one day of this habit "fulfilled".
@@ -63,12 +71,13 @@ export function isWeekFulfilled(habit, completions, dayKey) {
 //   nPerWeek        : consecutive fulfilled weeks
 //   whenever        : no streak at all → null (no expectation, no
 //                     pressure — Kimia's decision 2026-07-13)
+//   oneTime         : no streak either → null (a to-do happens once)
 //
 // A day (or week) still in progress never counts AGAINST the streak;
 // it just doesn't count FOR it until it's fulfilled.
 export function currentStreak(habit, completions, now, cutoffHour) {
   const type = habit.schedule.type
-  if (type === 'whenever') return null
+  if (type === 'whenever' || type === 'oneTime') return null
 
   const today = dayKeyFromTimestamp(now, cutoffHour)
   // Days before the habit existed can neither extend nor break a streak;

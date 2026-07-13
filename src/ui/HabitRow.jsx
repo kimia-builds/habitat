@@ -17,6 +17,8 @@ function scheduleSummary(schedule) {
       return `${schedule.n}×/week`
     case 'nPerDay':
       return `${schedule.n}×/day`
+    case 'oneTime':
+      return 'one-time'
     default:
       return 'whenever'
   }

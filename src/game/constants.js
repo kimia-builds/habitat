@@ -11,7 +11,7 @@ export const SYMBOL_COUNT = 6
 // meter (exact amounts arrive in T2.1).
 export const DIFFICULTIES = ['easy', 'medium', 'difficult']
 
-// The five schedule shapes from spec §4.1:
+// The six schedule shapes from spec §4.1:
 //   daily     — every day
 //   weekdays  — specific days of the week, e.g. Mon/Wed/Fri
 //   nPerWeek  — any N days each week, e.g. 3× per week
@@ -19,12 +19,17 @@ export const DIFFICULTIES = ['easy', 'medium', 'difficult']
 //               N completions counts on its own, and the day is fulfilled
 //               at N (fewer is neutral data, never punished)
 //   whenever  — unscheduled; done when done
+//   oneTime   — a to-do, not a repeating habit (added 2026-07-13): done
+//               once, then auto-archived. Undo-able only on the day it
+//               was checked off; no streaks; listed under "tasks
+//               completed" in the weekly view (T2.3).
 export const SCHEDULE_TYPES = [
   'daily',
   'weekdays',
   'nPerWeek',
   'nPerDay',
   'whenever',
+  'oneTime',
 ]
 
 // The Habitat day starts at 3am, not midnight, so a habit finished at

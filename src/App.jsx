@@ -5,6 +5,7 @@
 
 import { useState } from 'react'
 import {
+  countFor,
   countOn,
   recordCompletion,
   removeCompletionsFor,
@@ -23,7 +24,11 @@ import {
   unarchiveHabit,
   updateHabit,
 } from './game/habits.js'
-import { isDayFulfilled, requiredPerDay } from './game/schedule.js'
+import {
+  archivesWhenDone,
+  isDayFulfilled,
+  requiredPerDay,
+} from './game/schedule.js'
 import {
   exportData,
   hasData,
@@ -86,7 +91,27 @@ function App() {
 
   function handleComplete(habit) {
     const completion = recordCompletion(habit.id, data.settings.dayCutoffHour)
-    save({ ...data, completions: [...data.completions, completion] })
+    const next = { ...data, completions: [...data.completions, completion] }
+    // A one-time to-do is finished for good: archive it in the same save.
+    if (archivesWhenDone(habit)) {
+      next.habits = data.habits.map((h) =>
+        h.id === habit.id ? archiveHabit(h) : h,
+      )
+    }
+    save(next)
+  }
+
+  // Undo an accidentally checked-off one-time to-do (today only): the
+  // mark is removed AND the task comes back out of the archive, open
+  // again — as if the tap never happened.
+  function handleUndoOneTime(habit) {
+    save({
+      ...data,
+      habits: data.habits.map((h) =>
+        h.id === habit.id ? unarchiveHabit(h) : h,
+      ),
+      completions: removeLatestOn(data.completions, habit.id, today),
+    })
   }
 
   function handleUndo(habit) {
@@ -193,17 +218,42 @@ function App() {
         <details className="archived">
           <summary>archived ({archived.length})</summary>
           <ul>
-            {archived.map((habit) => (
-              <li key={habit.id} className="archived-row">
-                <span>{habit.name}</span>
-                <button onClick={() => replaceHabit(unarchiveHabit(habit))}>
-                  unarchive
-                </button>
-                <button onClick={() => handleDelete(habit)}>
-                  delete forever
-                </button>
-              </li>
-            ))}
+            {archived.map((habit) => {
+              // A one-time to-do that landed here BY being checked off:
+              // undo-able today, otherwise it just reads as done. A
+              // one-time habit archived by hand (no mark) unarchives
+              // normally, like any other habit.
+              const doneForGood =
+                archivesWhenDone(habit) &&
+                countFor(data.completions, habit.id) > 0
+              return (
+                <li key={habit.id} className="archived-row">
+                  <span>{habit.name}</span>
+                  {doneForGood ? (
+                    countOn(data.completions, habit.id, today) > 0 ? (
+                      <button onClick={() => handleUndoOneTime(habit)}>
+                        undo
+                      </button>
+                    ) : (
+                      <span className="habit-meta">
+                        done{' '}
+                        {
+                          data.completions.find((c) => c.habitId === habit.id)
+                            .dayKey
+                        }
+                      </span>
+                    )
+                  ) : (
+                    <button onClick={() => replaceHabit(unarchiveHabit(habit))}>
+                      unarchive
+                    </button>
+                  )}
+                  <button onClick={() => handleDelete(habit)}>
+                    delete forever
+                  </button>
+                </li>
+              )
+            })}
           </ul>
         </details>
       )}

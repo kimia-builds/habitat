@@ -85,6 +85,8 @@ tracker. Everything after this is delight, informed by real use.
       _Done when:_ meters visibly move when we complete habits.
 - [ ] **T2.3 Field notes (weekly view).**
       Completions, patterns, streaks. Field-notes tone, not a dashboard.
+      One-time habits appear under their own **"tasks completed"**
+      heading, separate from repeating habits *(spec change 2026-07-13)*.
       _Done when:_ last week's real usage data renders correctly.
 
 ## M3 — Drops engine (3 sessions)

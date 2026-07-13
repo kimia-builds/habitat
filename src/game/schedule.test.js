@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { recordCompletion, recordRetroCompletion } from './completions.js'
 import { createHabit } from './habits.js'
 import {
+  archivesWhenDone,
   currentStreak,
   isDayFulfilled,
   isScheduledOn,
@@ -49,13 +50,37 @@ describe('isScheduledOn', () => {
     expect(isScheduledOn(monWedFri, '2026-07-19')).toBe(false) // Sunday
   })
 
-  it('N-per-week and whenever habits have no particular due days', () => {
+  it('N-per-week, whenever and one-time habits have no particular due days', () => {
     expect(
       isScheduledOn(makeHabit({ type: 'nPerWeek', n: 3 }), '2026-07-13'),
     ).toBe(false)
     expect(isScheduledOn(makeHabit({ type: 'whenever' }), '2026-07-13')).toBe(
       false,
     )
+    expect(isScheduledOn(makeHabit({ type: 'oneTime' }), '2026-07-13')).toBe(
+      false,
+    )
+  })
+})
+
+describe('one-time habits — to-dos (added 2026-07-13)', () => {
+  it('validates as a schedule shape and needs one completion per "day"', () => {
+    const todo = makeHabit({ type: 'oneTime' })
+    expect(requiredPerDay(todo)).toBe(1)
+  })
+
+  it('only one-time habits archive themselves when done', () => {
+    expect(archivesWhenDone(makeHabit({ type: 'oneTime' }))).toBe(true)
+    expect(archivesWhenDone(makeHabit({ type: 'daily' }))).toBe(false)
+    expect(archivesWhenDone(makeHabit({ type: 'whenever' }))).toBe(false)
+  })
+
+  it('has no streak — a to-do happens once', () => {
+    const todo = makeHabit({ type: 'oneTime' })
+    const completions = [done(2026, 7, 12, 9)]
+    expect(
+      currentStreak(todo, completions, at(2026, 7, 13, 9), CUTOFF),
+    ).toBeNull()
   })
 })
 

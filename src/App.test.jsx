@@ -189,6 +189,79 @@ describe('archive, unarchive, delete forever', () => {
   })
 })
 
+describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () => {
+  it('checking one off archives it instantly; undo brings it back open', () => {
+    render(<App />)
+    createHabitViaUI('renew passport', { scheduleType: 'oneTime' })
+    expect(screen.getByText('one-time · medium')).toBeDefined()
+
+    fireEvent.click(
+      row('renew passport').getByRole('button', { name: 'mark done' }),
+    )
+
+    // Gone from the daily list, sitting in archived with an undo button.
+    expect(screen.queryByText('one-time · medium')).toBeNull()
+    const archived = within(screen.getByText(/^archived/).closest('details'))
+    expect(archived.getByText('renew passport')).toBeDefined()
+
+    // Undo: un-archived AND un-done, as if the tap never happened.
+    fireEvent.click(archived.getByRole('button', { name: 'undo' }))
+    expect(row('renew passport').getByRole('button', { name: 'mark done' }))
+    expect(screen.queryByText(/^archived/)).toBeNull()
+  })
+
+  it('a one-time done on a PAST day is frozen: no undo, no unarchive', () => {
+    // Seed storage directly — the UI can't travel back in time.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 1,
+        habits: [
+          {
+            id: 'todo-1',
+            name: 'assemble shelf',
+            description: '',
+            symbol: 1,
+            difficulty: 'medium',
+            schedule: { type: 'oneTime' },
+            archived: true,
+            createdAt: 1,
+          },
+        ],
+        completions: [
+          {
+            id: 'c1',
+            habitId: 'todo-1',
+            recordedAt: 2,
+            dayKey: '2026-07-01',
+          },
+        ],
+        settings: { dayCutoffHour: 3 },
+      }),
+    )
+    render(<App />)
+
+    const archived = within(screen.getByText(/^archived/).closest('details'))
+    expect(archived.getByText('done 2026-07-01')).toBeDefined()
+    expect(archived.queryByRole('button', { name: 'undo' })).toBeNull()
+    expect(archived.queryByRole('button', { name: 'unarchive' })).toBeNull()
+    // Delete forever remains the only way out.
+    expect(archived.getByRole('button', { name: 'delete forever' }))
+  })
+
+  it('a one-time archived BY HAND (never done) unarchives normally', () => {
+    render(<App />)
+    createHabitViaUI('call the bank', { scheduleType: 'oneTime' })
+    fireEvent.click(
+      row('call the bank').getByRole('button', { name: 'archive' }),
+    )
+
+    const archived = within(screen.getByText(/^archived/).closest('details'))
+    fireEvent.click(archived.getByRole('button', { name: 'unarchive' }))
+    expect(row('call the bank').getByRole('button', { name: 'mark done' }))
+  })
+})
+
 describe('backup import (plan T1.3: warn before overwriting)', () => {
   const backupOf = (habits = []) =>
     new File(

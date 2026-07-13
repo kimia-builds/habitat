@@ -49,6 +49,15 @@ dailies/habits/to-dos distinction. Each habit has:
   unscheduled ones). For an N-per-day habit each completion counts on
   its own and the day is fulfilled at N — fewer is neutral data, never
   punished. *(N-per-day added 2026-07-12.)*
+- **One-time** *(added 2026-07-13)*: a schedule shape that makes the
+  habit a non-repeating **to-do**. It looks and behaves exactly like any
+  other habit in the habit list, but checking it off **auto-archives**
+  it immediately. Undo is possible on the day it was checked off (an
+  "undo" button in the archived section un-archives AND un-does it, as
+  if the tap never happened); after that day it is frozen as done, like
+  all history. In the weekly view, completed one-time habits appear
+  under their own heading, **"tasks completed"**, separate from the
+  repeating habits.
 - **One of exactly 6 abstract symbols** (each paired with its own
   colour). The symbol **is** the tag — no word labels, no naming, no
   renaming, ever. Meaning lives entirely in the user's head, never
@@ -210,6 +219,10 @@ reward.
 
 - 2026-07-12: schedule shapes are daily / specific weekdays / N-per-week /
   N-per-day (N≥2; each completion counts, day fulfilled at N) / whenever.
+- 2026-07-13: sixth schedule shape **one-time** — a non-repeating to-do.
+  Auto-archives the moment it's checked off; undo (un-archive + un-done)
+  available the same day only; no streaks; weekly view lists these under
+  a separate "tasks completed" heading.
 - 2026-07-12: habit list is manually re-orderable (order persists) and
   filterable by symbols (multi-select; temporary, resets each visit).
 - 2026-07-12: backup import replaces all data (no merge) and the app

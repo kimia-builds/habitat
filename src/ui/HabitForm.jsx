@@ -14,6 +14,7 @@ const SCHEDULE_LABELS = {
   nPerWeek: 'N days a week',
   nPerDay: 'N times a day',
   whenever: 'whenever',
+  oneTime: 'one-time (a to-do)',
 }
 
 // Turn the form's raw fields into the schedule object the engine expects.
