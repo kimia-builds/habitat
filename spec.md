@@ -95,6 +95,10 @@ dailies/habits/to-dos distinction. Each habit has:
   the market rotation (see Stream 3).
 - **Day cutoff: 3am by default**, configurable in settings. A habit
   completed at 1am counts for the evening before.
+- **A "visit" includes returning to an already-open tab** (2026-07-15):
+  the page re-checks the clock once a minute and the moment the tab
+  comes back into view, so a tab left open overnight flips to the new
+  day — and owes its check-in — without a refresh, like Habitica.
 
 ## 5. Rewards: three independent streams
 
@@ -317,6 +321,9 @@ region discovery expands what the Market can offer.
 - 2026-07-14: only an unresolved yesterday triggers the check-in —
   older editable days never nag on their own (optional means optional);
   they are offered inside the open check-in and via "edit past days".
+- 2026-07-15: day rollover needs no refresh — an open tab re-checks
+  the clock every minute and on returning to the tab, then behaves
+  exactly like a fresh visit (new day's list, check-in if owed).
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

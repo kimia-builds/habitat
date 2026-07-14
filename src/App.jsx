@@ -3,8 +3,9 @@
 // habits, days and completions is delegated to the game modules, and
 // all saving goes through the storage module.
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { editablePastDays, habitsOn, isCheckInDue } from './game/checkin.js'
+import { CLOCK_CHECK_MS } from './game/constants.js'
 import {
   countFor,
   countOn,
@@ -52,7 +53,25 @@ function App() {
   // What the form area is doing: null (closed), 'new', or a habit id.
   const [editing, setEditing] = useState(null)
 
-  const today = dayKeyFromTimestamp(Date.now(), data.settings.dayCutoffHour)
+  // The page's own clock (Kimia's requirement 2026-07-15): a tab left
+  // open must notice the new Habitat day by itself, like a fresh visit —
+  // no refresh needed. Re-checked once a minute, and immediately when
+  // the tab comes back into view (background tabs get throttled timers,
+  // so "the moment you look again" is the check that matters).
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const refresh = () => setNow(Date.now())
+    const timer = setInterval(refresh, CLOCK_CHECK_MS)
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', refresh)
+    return () => {
+      clearInterval(timer)
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', refresh)
+    }
+  }, [])
+
+  const today = dayKeyFromTimestamp(now, data.settings.dayCutoffHour)
   const active = activeHabits(data.habits)
   const visible = filterBySymbols(active, filter)
   const archived = archivedHabits(data.habits)
@@ -73,6 +92,25 @@ function App() {
       data.settings.dayCutoffHour,
     ),
   )
+
+  // When the day rolls over while the page is open, ask again — exactly
+  // as if this were a fresh visit. Keyed on the day, not the data, so
+  // marking habits mid-answer can never re-trigger or close the panel;
+  // this only ever opens it.
+  useEffect(() => {
+    if (
+      isCheckInDue(
+        data.habits,
+        data.completions,
+        data.checkedInThrough,
+        today,
+        data.settings.dayCutoffHour,
+      )
+    ) {
+      setCheckInOpen(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [today])
   const pastDaysEditable = editablePastDays(today).some(
     (day) =>
       habitsOn(data.habits, data.completions, day, data.settings.dayCutoffHour)

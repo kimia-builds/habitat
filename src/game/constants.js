@@ -38,6 +38,14 @@ export const SCHEDULE_TYPES = [
 // 0 means plain midnight-to-midnight days.
 export const DEFAULT_DAY_CUTOFF_HOUR = 3
 
+// How often an OPEN page re-checks the clock, so a tab left open
+// overnight notices the new Habitat day by itself — no refresh needed
+// (Kimia's requirement, 2026-07-15). Once a minute is far more than
+// enough for a boundary that moves once a day, and costs nothing.
+// (The page also re-checks immediately whenever the tab comes back
+// into view, since browsers throttle timers in background tabs.)
+export const CLOCK_CHECK_MS = 60 * 1000
+
 // Weekday numbers use the ISO convention: 1 = Monday … 7 = Sunday.
 // (Chosen over JavaScript's own 0=Sunday counting because ISO weeks are
 // what the schedule engine in T1.2 will reason about.)

@@ -4,6 +4,7 @@
 // and that destructive paths (delete, import) ask first.
 
 import {
+  act,
   cleanup,
   fireEvent,
   render,
@@ -370,6 +371,98 @@ describe('the morning check-in (T1.4)', () => {
       '2026-07-13',
       '2026-07-15',
     ])
+  })
+})
+
+describe('an open page notices the new day by itself (added 2026-07-15)', () => {
+  // Same seeded week as above: Mon 13 – Sun 19 July 2026, cutoff 3am.
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  function seed(overrides = {}) {
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 1,
+        habits: [
+          {
+            id: 'walk',
+            name: 'walk',
+            description: '',
+            symbol: 1,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            archived: false,
+            createdAt: new Date(2026, 6, 13, 9).getTime(),
+          },
+        ],
+        completions: [
+          // Yesterday (Wed 15) was done live, so no check-in at 11:30pm.
+          { id: 'c1', habitId: 'walk', recordedAt: 5, dayKey: '2026-07-15' },
+        ],
+        settings: { dayCutoffHour: 3 },
+        checkedInThrough: null,
+        ...overrides,
+      }),
+    )
+  }
+
+  it('the background tab flips to the new day and owes its check-in when looked at again', () => {
+    // 11:30pm Thursday: all quiet, the list is showing.
+    vi.setSystemTime(new Date(2026, 6, 16, 23, 30))
+    seed()
+    render(<App />)
+    expect(screen.queryByText('check-in')).toBeNull()
+
+    // The tab sits in the background until 4am — past the 3am cutoff,
+    // so a new Habitat day (Friday) has begun and Thursday went
+    // unmarked. Coming back to the tab re-checks the clock…
+    vi.setSystemTime(new Date(2026, 6, 17, 4, 0))
+    fireEvent(document, new Event('visibilitychange'))
+
+    // …and the page behaves exactly like a fresh visit: the check-in
+    // opens, asking about the real yesterday (Thursday the 16th).
+    expect(screen.getByText('check-in')).toBeDefined()
+    expect(screen.getByText(/yesterday, Thu 2026-07-16/)).toBeDefined()
+  })
+
+  it('even without focusing, the minute-tick notices the rollover', () => {
+    vi.setSystemTime(new Date(2026, 6, 16, 23, 30))
+    seed()
+    render(<App />)
+    expect(screen.queryByText('check-in')).toBeNull()
+
+    // Let the page's own clock tick past the 3am boundary (fake timers
+    // advance Date.now() and fire the interval together).
+    act(() => {
+      vi.advanceTimersByTime(4.5 * 60 * 60 * 1000) // 11:30pm → 4am
+    })
+    expect(screen.getByText('check-in')).toBeDefined()
+    expect(screen.getByText(/yesterday, Thu 2026-07-16/)).toBeDefined()
+  })
+
+  it('a quiet rollover (nothing missed) just moves the list to the new day', () => {
+    // Thursday was ALSO done live: at 4am there is nothing to ask —
+    // the list simply resets for Friday, undo button gone.
+    vi.setSystemTime(new Date(2026, 6, 16, 23, 30))
+    seed({
+      completions: [
+        { id: 'c1', habitId: 'walk', recordedAt: 5, dayKey: '2026-07-15' },
+        { id: 'c2', habitId: 'walk', recordedAt: 6, dayKey: '2026-07-16' },
+      ],
+    })
+    render(<App />)
+    expect(row('walk').getByRole('button', { name: '✓ done today' }))
+
+    act(() => {
+      vi.advanceTimersByTime(4.5 * 60 * 60 * 1000)
+    })
+    expect(screen.queryByText('check-in')).toBeNull()
+    expect(row('walk').getByRole('button', { name: 'mark done' }))
   })
 })
 
