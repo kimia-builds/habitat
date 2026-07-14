@@ -1,14 +1,15 @@
 # spec.md — HABITAT
 
-_v1.3 — 2026-07-12. Spec agreed; ready for planning (plan.md)._
+*v1.4 — 2026-07-14. Added third reward stream (fungi currency + market);
+expedition drops changed to flora; check-in gap handling defined.*
 
 ## 1. One-line pitch
 
 **Habitat**: a personal habit tracker where completing habits carries us
 through **ethical immigration to the alien planet N-Z-D** — getting to
-know the land, furnishing a local home with found curiosities, learning
-the local language, and earning friendships within the community. Habit
-by habit, we build a habitat.
+know the land, gathering its flora, trading glowing fungi at the local
+market for curiosities, learning the local language, and earning
+friendships within the community. Habit by habit, we build a habitat.
 
 **Framing note:** we are a newcomer, not a coloniser. We don't conquer,
 claim, or extract. We arrive, we learn, we integrate. The planet and its
@@ -44,20 +45,16 @@ There is exactly **one** task type: the customisable habit. No
 dailies/habits/to-dos distinction. Each habit has:
 
 - Name, optional description
-- A schedule the user defines (e.g. every day, Mon/Wed/Fri, 3× per week,
-  N× per day for habits repeated within a day, or "whenever" for
-  unscheduled ones). For an N-per-day habit each completion counts on
-  its own and the day is fulfilled at N — fewer is neutral data, never
-  punished. *(N-per-day added 2026-07-12.)*
-- **One-time** *(added 2026-07-13)*: a schedule shape that makes the
-  habit a non-repeating **to-do**. It looks and behaves exactly like any
-  other habit in the habit list, but checking it off **auto-archives**
-  it immediately. Undo is possible on the day it was checked off (an
-  "undo" button in the archived section un-archives AND un-does it, as
-  if the tap never happened); after that day it is frozen as done, like
-  all history. In the weekly view, completed one-time habits appear
-  under their own heading, **"tasks completed"**, separate from the
-  repeating habits.
+- A schedule the user defines. Shapes: **daily**, **specific weekdays**
+  (e.g. Mon/Wed/Fri), **N-per-week** (fulfilled by N *distinct* days
+  with at least one completion — three marks on one day advance the
+  week by one, not three), **N-per-day** (each completion counts; the
+  day is fulfilled at N; extras are recorded and kept), **whenever**
+  (unscheduled, no streak — no expectation, no pressure), and
+  **one-time** (a to-do: one completion finishes it for good and
+  auto-archives it; undoing that mark the same day un-archives it).
+  One-time is a *schedule shape* of the single unified habit type — it
+  does not reintroduce Habitica's habit/daily/to-do split.
 - **One of exactly 6 abstract symbols** (each paired with its own
   colour). The symbol **is** the tag — no word labels, no naming, no
   renaming, ever. Meaning lives entirely in the user's head, never
@@ -71,14 +68,24 @@ dailies/habits/to-dos distinction. Each habit has:
   it belongs to.
 - If a scheduled day/week passes with habits unresolved, the next visit
   opens with a **check-in**: "mark the habits you completed yesterday."
+  The check-in **always refers to the actual calendar yesterday**, no
+  matter how long we've been away.
+- **After a multi-day gap:** the check-in asks about yesterday, then
+  offers an **optional backfill** for the other missed days — fill them
+  in if memory is trustworthy, skip if not. Skipped gap days are
+  recorded as **no data**, which is explicitly distinct from "not done".
 - **Critical correctness requirement:** retroactive marks are recorded
-  against the day they were _done_, not the day they were _entered_. If
+  against the day they were *done*, not the day they were *entered*. If
   Monday morning we mark Sunday's habits, the data says Sunday. Habitica
   gets this wrong; we will not. This rule gets its own automated tests.
+- **Definition of a "cron":** a day counts as a cron (an active day)
+  once it has at least one habit marked against it — including marks
+  added retroactively via check-in/backfill. Crons are the clock for
+  the market rotation (see Stream 3).
 - **Day cutoff: 3am by default**, configurable in settings. A habit
   completed at 1am counts for the evening before.
 
-## 5. Rewards: two independent streams
+## 5. Rewards: three independent streams
 
 Reward pacing principle (learned from Habitica): **no front-loading, no
 retention hooks.** Habitica showers new users with rewards then tapers —
@@ -87,16 +94,21 @@ patient super-user who will show up every day. Rewards are steady, slow,
 and never come too early. The earn curve is designed for years, not
 weeks.
 
-### The two meters (permanent fixtures)
+### The three meters (permanent fixtures)
 
-Both meters sit **permanently at the top of the app** and grow
-**infinitely** — practically sized for ~5 years of steady daily play.
-Each is clickable, opening its own growing world:
+All three meters sit **permanently at the top of the app**. Each is
+clickable, opening its own growing world:
 
 - **Expedition meter** → opens the **Map**: the discovered planet,
-  populating region by region over time.
+  populating region by region over time. Grows infinitely (~5 years
+  practical sizing).
 - **Literacy meter** → opens the **Bookcase**: every magazine, novel,
-  and dictionary we've ever received, filling shelves over time.
+  and dictionary we've ever received, filling shelves over time. Grows
+  infinitely.
+- **Fungus meter** → opens the **Market**. This one is a **wallet, not
+  a progress bar**: it rises with fungus drops and falls with
+  purchases. The only meter that can go down — and only ever by our
+  own choice to spend.
 
 ### Stream 1 — Expedition: getting to know the planet
 
@@ -105,18 +117,17 @@ Each is clickable, opening its own growing world:
   randomness in the meter itself.
 - Meter progress = **planet discovery**: new regions of the planet
   gradually revealed on the Map as we get to know our new home.
-- Along the way we **come across objects** as drops. Collecting is
-  **optional**, and every object is **returnable to the world** at any
-  time (a Habitica lesson: non-returnable gear forced clutter). Returned
-  objects re-enter the world and may be encountered again someday —
+- Along the way we **come across flora** as drops — the plant life of
+  N-Z-D, discovered as we get to know the land. Collecting is
+  **optional**: flora can be gathered and grown, or left where they
+  are. Any gathered flora can be **composted** back to the world at any
+  time (a Habitica lesson: non-returnable rewards forced clutter).
+  Composted flora re-enter the world and may be encountered again —
   nothing is ever truly lost, so there's no pressure to hoard.
-- The objects are **whacky, not home-adjacent**: weird curiosities and
-  lights, rocks and flora, musical instruments, cushions, things with no
-  obvious purpose. Gravity is not guaranteed on this planet.
-- Collected objects live in the **Abode** — a dedicated page where we
-  arrange them freely, playing with the placement of each object and
-  removing (returning) any at will. Our space stays as sparse or as
-  full as we like.
+  **Composting yields nothing** (no fungi) — flora are discoveries, not
+  money.
+- Gathered flora live in the **Abode**, arrangeable like everything
+  else there.
 
 ### Stream 2 — Literacy & society: earning our place
 
@@ -153,28 +164,59 @@ Each is clickable, opening its own growing world:
   the owner.)
 - The emotional endgame: consistency → literacy → community.
 
+### Stream 3 — Fungi & the Market: taking part in the local economy
+
+- **Glowing local fungi** drop occasionally on habit completions — same
+  drop mechanic as flora and reading material; difficulty nudges the
+  odds. Fungi operate as **currency on N-Z-D**.
+- Fungi fill the **fungus meter** — a wallet balance, spent at the
+  **Market**.
+- The Market sells the **objects and curiosities**: weird trinkets and
+  lights, musical instruments, cushions, things with no obvious
+  purpose. Gravity is not guaranteed on this planet. Objects are
+  **purchased, never dropped**.
+- **The rotating stall:** the Market shows a small selection at a time,
+  rotating every **4 weeks of crons** — 28 *active days*, not calendar
+  days. Days with no habits marked don't advance the rotation clock.
+- **The stall's pool grows with the Map:** newly discovered regions add
+  their goods to the rotation pool, so the Market gets *more*
+  surprising over the years, never less. (Deliberate soft link:
+  expedition shapes what's *on offer*; it never earns fungi.)
+- **Nothing is ever missable:** every object eventually cycles back
+  into rotation. No limited-forever items, no FOMO.
+- **Symmetric prices, always:** buying an object costs its price;
+  returning it to the world refunds exactly that price. No penalty, no
+  spread, ever. Purchased objects live in the Abode alongside flora.
+
 ### How rewards arrive
 
-- Object and reading-material drops **arrive the same way** (one drop
-  mechanic); they differ in what happens next — objects are optional to
-  collect and returnable, reading material is always kept.
+- Flora, reading-material, and fungus drops **arrive the same way**
+  (one drop mechanic); they differ in what happens next — flora are
+  optional to gather and compostable, reading material is always kept,
+  fungi go straight to the wallet.
 - **Each reward type introduces itself differently the first time it
-  occurs** — first object, first magazine, first friend, etc. each get
-  their own distinct reveal moment.
+  occurs** — first flora, first magazine, first fungus, first friend,
+  etc. each get their own distinct reveal moment.
 
-The two streams never cross: expedition progress can't buy literacy, and
-reading material doesn't advance the map. Two independent rhythms of
-reward.
+The three streams stay independent in their **earning**: completions
+feed each separately, and no stream's rewards can be converted into
+another's (composting flora yields no fungi; fungi can't buy literacy
+or map progress). The one deliberate link is on the *spending* side:
+region discovery expands what the Market can offer.
 
 ## 5b. App structure (pages)
 
-- **Home screen:** the habit list, with the two meters fixed at top.
-  The list is manually re-orderable (the user's chosen order persists)
-  and can be filtered to show only habits with chosen symbols — a
-  temporary lens that resets on each visit. *(Added 2026-07-12.)*
+- **Home screen:** the habit list, with the three meters fixed at top.
+  The list is manually re-orderable (order persists) and filterable by
+  symbols (multi-select; a temporary lens that resets each visit).
+  Habits can be archived (history kept) or permanently deleted (with
+  confirmation).
 - **Map** (via expedition meter): the discovered planet so far.
 - **Bookcase** (via literacy meter): all reading material collected.
-- **Abode:** collected objects, freely arrangeable, removable.
+- **Market** (via fungus meter): the rotating stall; buy and return
+  objects.
+- **Abode:** gathered flora and purchased objects, freely arrangeable,
+  removable (compost / return).
 - **Guest Book:** friends made so far.
 - **Field notes:** the weekly view.
 - **Settings:** day cutoff, data export/import.
@@ -200,8 +242,8 @@ reward.
 
 ## 8. Architecture (v1)
 
-- Static single-page web app built with **React + Vite**, tested with
-  **Vitest** (decided at T0.1, 2026-07-12).
+- Static single-page web app: HTML/CSS/JavaScript (framework decided in
+  plan phase — likely React or plain JS, whichever keeps us simplest).
 - No backend. All state in `localStorage`, with a manual "export/import
   data" button as backup insurance.
 - Deployed via GitHub Pages from the public repo.
@@ -209,34 +251,56 @@ reward.
 ## 9. Testing strategy
 
 - Automated tests for all game logic — habit scheduling, meter maths,
-  drop rates, literacy milestones, data export, and **especially
-  check-in date attribution** (4.2). These run on every change and act
-  as the non-coder's safety net.
+  drop rates, literacy milestones, wallet arithmetic (buy/return
+  symmetry), cron counting and market rotation, data export, and
+  **especially check-in date attribution and backfill** (4.2). These
+  run on every change and act as the non-coder's safety net.
 - Manual playtesting checklist for UI after each feature.
 - CI on GitHub runs tests on every push.
 
 ## 10. Decisions log
 
-- 2026-07-12: schedule shapes are daily / specific weekdays / N-per-week /
-  N-per-day (N≥2; each completion counts, day fulfilled at N) / whenever.
-- 2026-07-13: sixth schedule shape **one-time** — a non-repeating to-do.
-  Auto-archives the moment it's checked off; undo (un-archive + un-done)
-  available the same day only; no streaks; weekly view lists these under
-  a separate "tasks completed" heading.
-- 2026-07-12: habit list is manually re-orderable (order persists) and
-  filterable by symbols (multi-select; temporary, resets each visit).
-- 2026-07-12: backup import replaces all data (no merge) and the app
-  warns first if existing data would be overwritten.
+- 2026-07-12: schedule shapes include N-per-day (N≥2; each completion
+  counts, day fulfilled at N; extras kept).
+- 2026-07-12: habit list manually re-orderable (persists) and
+  filterable by symbols (temporary, resets each visit).
+- 2026-07-12: backup import replaces all data (no merge); app warns
+  first if existing data would be overwritten.
 - 2026-07-12: habits can be archived (history kept) or permanently
   deleted.
+- 2026-07-13: one-time schedule shape (to-do): completing it archives
+  it; same-day undo un-archives it.
+- 2026-07-13: N-per-week fulfilled by N distinct fulfilled days, not N
+  raw completions.
+- 2026-07-13: "whenever" and one-time habits have no streak (null —
+  no expectation, no pressure).
+- 2026-07-14: third reward stream added (fungi currency + Market);
+  expedition drops changed to flora; check-in backfill defined (see
+  entries below).
 - App name: **Habitat**. Planet name: **N-Z-D**.
 - Framing: ethical immigration, not exploration/settlement.
 - 10 friend categories on a sliding literacy scale (draft ladder in 5).
 - One unified habit type; 6 abstract symbols, no word labels ever (the
   symbol is the tag); difficulty easy/medium/difficult.
+- Three reward streams, independent in earning: expedition (flora),
+  literacy (reading → friends), fungi (currency → objects).
 - Expedition meter fully predictable; reading drops rare and surprising;
-  the two reward streams are independent.
-- Objects optional to collect and always returnable — no forced clutter.
+  fungi drop occasionally on completions.
+- Expedition drops are **flora** (gather/grow or compost); composting
+  yields nothing. Objects are **purchased at the Market**, never
+  dropped.
+- Fungus meter is a wallet (rises with drops, falls with purchases);
+  clicking it opens the Market.
+- Market: rotating stall, rotation every 28 crons (active days, not
+  calendar days); pool grows with region discovery; everything cycles
+  back eventually — nothing is permanently missable.
+- Symmetric buy/return prices always — no penalty, no spread.
+- Flora and objects optional to collect and always returnable — no
+  forced clutter.
+- Check-in always asks about calendar yesterday; multi-day gaps get
+  optional backfill; unfilled gap days recorded as "no data" (distinct
+  from "not done").
+- A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.
 - Retroactive check-in marks attributed to the actual day of completion.

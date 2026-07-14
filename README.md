@@ -2,9 +2,9 @@
 
 **A personal habit tracker where showing up for your habits carries you
 through your immigration to the alien planet N-Z-D** — getting to know
-the land, furnishing a home with found curiosities, learning the local
-language, and earning friendships in the community. Habit by habit, we
-build a habitat.
+the land, gathering its flora, trading glowing fungi at the local market
+for curiosities, learning the local language, and earning friendships in
+the community. Habit by habit, we build a habitat.
 
 **Live:** https://kimia-builds.github.io/habitat
 
@@ -15,11 +15,13 @@ my own reward layer on top of the habit-tracking bones I know work.
 Habitat keeps habits, streaks, and progression, and replaces everything
 else with something quieter and stranger:
 
-- **Two independent reward streams.** An **expedition meter** (predictable,
-  advances with every completion) gradually reveals a map of the planet;
-  a **literacy meter** (fed by rare, surprising drops of reading material)
-  unlocks friendships with the locals — ten categories of being, from
-  wordless Drifters to the rarest friendship of all, the Poets.
+- **Three independent reward streams.** An **expedition meter** (predictable,
+  advances with every completion) gradually reveals a map of the planet,
+  with flora discovered along the way; a **literacy meter** (fed by rare,
+  surprising drops of reading material) unlocks friendships with the
+  locals — ten categories of being, from wordless Drifters to the rarest
+  friendship of all, the Poets; and a **fungus wallet** of glowing local
+  currency, spent (and always fully refundable) at a slowly rotating market.
 - **No punishment mechanics.** Missed habits are neutral data, never damage.
 - **No retention hooks.** Rewards are paced flat and patient — designed for
   one loyal daily user over ~5 years, not for onboarding dopamine.
@@ -51,5 +53,6 @@ npm run build  # production build
 
 ## Status
 
-🌱 Early days — currently at M0 (foundations). See [plan.md](plan.md) for
-progress.
+🌱 Early days — in M1 (walking skeleton): habits, the day/schedule
+engine, and a bare-bones list UI are built; the morning check-in is next.
+See [plan.md](plan.md) for progress.

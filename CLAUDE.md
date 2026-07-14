@@ -23,6 +23,12 @@ Kimia is a non-coder. Therefore:
   failing tests is not done.
 - Commit after each completed task with a clear message (what + why).
 - Update plan.md checkboxes when a task completes.
+- **End-of-session doc sync (added 2026-07-14 after checkbox drift):**
+  before the final commit of every session, verify that (a) plan.md
+  checkboxes match what is actually built, and (b) every product
+  decision made during the session is recorded in spec.md's decisions
+  log with a date. Docs that disagree with code are a bug — say so and
+  fix them in the same session.
 - If stuck on the same bug twice, stop and say so rather than thrashing.
 
 ## Product guardrails (from spec.md — never violate)
@@ -33,13 +39,27 @@ Kimia is a non-coder. Therefore:
   renaming, anywhere in the UI or data model.
 - Date attribution is sacred: a completion recorded during morning
   check-in belongs to the day it was DONE, not the day it was entered.
-  Day cutoff is 3am by default, configurable.
+  Day cutoff is 3am by default, configurable. Check-in always asks
+  about calendar yesterday; older gap days get optional backfill; days
+  left unfilled are stored as "no data", which is NOT the same as "not
+  done".
 - Reward pacing is flat and patient — no front-loading, no
   retention-hook mechanics, no early-days bonuses.
-- Objects are always optional to collect and always returnable;
-  returned objects re-enter the world. Reading material is never
-  discarded.
-- The two reward streams (expedition, literacy) stay independent.
+- Three reward streams, independent in earning: expedition → flora;
+  literacy (reading) → friendships; fungi → currency. No conversions
+  between streams (composting flora yields NO fungi). The single
+  allowed link: region discovery expands the Market's rotation pool.
+- Flora are optional to gather and always compostable; composted flora
+  re-enter the world. Reading material is never discarded. Fungi go
+  straight to the wallet.
+- Objects are PURCHASED at the Market, never dropped. Buy and return
+  prices are always identical — no penalty, no spread, ever. The
+  fungus meter is a wallet: it may only decrease via a purchase the
+  user chose.
+- Market rotation runs on crons (days with ≥1 habit marked, including
+  retroactive marks) — never calendar days. 28 crons per rotation.
+  Every object eventually cycles back — nothing is permanently
+  missable, no FOMO mechanics.
 - Framing: ethical immigration to N-Z-D. We are a guest, not a
   coloniser — no conquest/claiming/extraction language anywhere.
 

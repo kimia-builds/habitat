@@ -1,15 +1,18 @@
 # plan.md — HABITAT build plan
 
-_v1.0 — 2026-07-12. Plan agreed. Companion to spec.md v1.3._
+*v1.2 — 2026-07-14. Updated for spec v1.4 (third reward stream: fungi +
+Market; flora drops; check-in backfill). Checkboxes reconciled with the
+actual repo state: T1.2 and T1.3 were built on 2026-07-13 but never
+ticked. Next task: **T1.4**.*
 
 ## How to use this file
 
 - One task ≈ one 1–2 hour session. Do them in order unless noted.
 - Every session ends the same way: **tests pass → commit → deploy →
   tick the checkbox here**. Never leave a session with broken code.
-- At the start of each session, tell Claude Code: _"Read CLAUDE.md,
+- At the start of each session, tell Claude Code: *"Read CLAUDE.md,
   spec.md and plan.md. We're doing task X.Y. Ask me anything unclear
-  before writing code."_
+  before writing code."*
 - Tunable game numbers (meter amounts, drop rates, pacing) all live in
   **one file** (`src/game/constants.js`) so we can retune without
   touching logic.
@@ -20,7 +23,7 @@ _v1.0 — 2026-07-12. Plan agreed. Companion to spec.md v1.3._
 2. Small chunks — never ask for more than one task at a time.
 3. Context always — Claude reads CLAUDE.md + spec.md before coding.
 4. Human in the loop — Claude explains every change in plain language;
-   we don't accept code we don't understand the _behaviour_ of.
+   we don't accept code we don't understand the *behaviour* of.
 5. Tests are the safety net — game logic gets tests before/with code;
    the date-attribution rules get the strictest tests in the project.
 6. Commit constantly — each task = at least one commit, message says
@@ -33,40 +36,44 @@ _v1.0 — 2026-07-12. Plan agreed. Companion to spec.md v1.3._
 ## M0 — Foundations (1 session)
 
 - [x] **T0.1 Repo + scaffold + first deploy.** *(done 2026-07-12)*
-      Create public GitHub repo `habitat`. Scaffold Vite + React + Vitest +
-      ESLint/Prettier. Write CLAUDE.md (project rules for AI sessions) and
-      a README (portfolio-facing). Set up GitHub Actions to auto-deploy to
-      GitHub Pages on every push.
-      _Done when:_ a near-empty dark page saying **HABITAT** is live at our
-      public URL, and `npm test` runs (even with one dummy test).
+  Create public GitHub repo `habitat`. Scaffold Vite + React + Vitest +
+  ESLint/Prettier. Write CLAUDE.md (project rules for AI sessions) and
+  a README (portfolio-facing). Set up GitHub Actions to auto-deploy to
+  GitHub Pages on every push.
+  *Done when:* a near-empty dark page saying **HABITAT** is live at our
+  public URL, and `npm test` runs (even with one dummy test).
 
 ## M1 — Walking skeleton (4 sessions) → we start using it daily
 
 - [x] **T1.1 Habit data layer.** *(done 2026-07-12)*
-      Habit model (name, description, symbol 1–6, difficulty, schedule) +
-      localStorage persistence + JSON export/import.
-      _Done when:_ tests prove habits survive a page reload and a full
-      export→wipe→import round trip.
-- [x] **T1.2 Day & schedule engine.** *(done 2026-07-13)* ⚠️ riskiest logic in the app
-      Day cutoff (3am default, configurable), "which day does this
-      completion belong to", schedule types (daily / specific weekdays /
-      N-per-week / whenever), streak counting.
-      _Done when:_ a thorough test suite passes, including: completion at
-      1am → yesterday; completion at 9am → today; cutoff change doesn't
-      corrupt history.
+  Habit model (name, description, symbol 1–6, difficulty, schedule) +
+  localStorage persistence + JSON export/import.
+  *Done when:* tests prove habits survive a page reload and a full
+  export→wipe→import round trip.
+- [x] **T1.2 Day & schedule engine.** *(done 2026-07-13)* ⚠️ riskiest
+  logic in the app
+  Day cutoff (3am default, configurable), "which day does this
+  completion belong to", schedule types (daily / specific weekdays /
+  N-per-week / N-per-day / whenever / one-time), streak counting.
+  *Done when:* a thorough test suite passes, including: completion at
+  1am → yesterday; completion at 9am → today; cutoff change doesn't
+  corrupt history.
 - [x] **T1.3 Habit list UI (ugly on purpose).** *(done 2026-07-13)*
-      Create, edit, archive habits; tap to complete today; the 6 symbols as
-      plain placeholders. Filter the list by symbols (multi-select, resets
-      each visit); re-order habits manually (order persists). Import warns
-      before overwriting existing data (storage's `hasData()`).
-      Dark background, zero styling effort otherwise.
-      _Done when:_ we can run our real habits in it for a day.
+  Create, edit, archive habits; tap to complete today; the 6 symbols as
+  plain placeholders. Filter the list by symbols (multi-select, resets
+  each visit); re-order habits manually (order persists). Import warns
+  before overwriting existing data (storage's `hasData()`).
+  Dark background, zero styling effort otherwise.
+  *Done when:* we can run our real habits in it for a day.
 - [ ] **T1.4 Morning check-in.**
-      On first visit after a missed scheduled day: "mark what you completed
-      yesterday." Marks recorded against the day they were DONE, not
-      entered.
-      _Done when:_ tests prove Monday-morning marks land on Sunday, across
-      cutoff edge cases, multi-day gaps, and week boundaries.
+  On first visit after a missed scheduled day: "mark what you completed
+  yesterday" — always the actual calendar yesterday, regardless of gap
+  length — plus **optional backfill** for older missed days. Marks
+  recorded against the day they were DONE, not entered. Unfilled gap
+  days stored as "no data" (distinct from "not done").
+  *Done when:* tests prove Monday-morning marks land on Sunday; backfill
+  marks land on their true days; no-data vs not-done distinction holds
+  across cutoff edge cases, multi-day gaps, and week boundaries.
 
 **Milestone gate:** from here, Kimia uses Habitat daily as her real
 tracker. Everything after this is delight, informed by real use.
@@ -74,71 +81,88 @@ tracker. Everything after this is delight, informed by real use.
 ## M2 — Meters & field notes (3 sessions)
 
 - [ ] **T2.1 Meter engine.**
-      Expedition meter: fixed advance per completion by difficulty.
-      Literacy meter: fed by reading material (engine only, drops come in
-      M3). Both infinite-growth, sized for ~5 years (constants file).
-      _Done when:_ tests verify advance amounts, and 5-year pacing maths is
-      documented in the constants file.
+  Expedition meter: fixed advance per completion by difficulty.
+  Literacy meter: fed by reading material (engine only, drops come in
+  M3). Fungus meter: a wallet — credited by fungus drops, debited by
+  purchases, refunded symmetrically on returns (engine only). Growth
+  meters sized for ~5 years (constants file).
+  *Done when:* tests verify advance amounts, wallet arithmetic
+  (buy/return symmetry, never negative), and 5-year pacing maths is
+  documented in the constants file.
 - [ ] **T2.2 Meters UI.**
-      Both meters permanently at top; clickable (Map/Bookcase stubs for
-      now). First styling pass: white/pastel/basic text on dark.
-      _Done when:_ meters visibly move when we complete habits.
+  All three meters permanently at top; clickable (Map/Bookcase/Market
+  stubs for now). First styling pass: white/pastel/basic text on dark.
+  *Done when:* meters visibly move when we complete habits.
 - [ ] **T2.3 Field notes (weekly view).**
-      Completions, patterns, streaks. Field-notes tone, not a dashboard.
-      One-time habits appear under their own **"tasks completed"**
-      heading, separate from repeating habits *(spec change 2026-07-13)*.
-      _Done when:_ last week's real usage data renders correctly.
+  Completions, patterns, streaks. Field-notes tone, not a dashboard.
+  *Done when:* last week's real usage data renders correctly.
 
 ## M3 — Drops engine (3 sessions)
 
 - [ ] **T3.1 Drop engine.**
-      Object finds tied to expedition progress (steady); reading material
-      drops (rarer, surprising: magazines > novels > dictionaries);
-      difficulty shifts odds; no front-loading — flat pacing for a patient
-      daily user. All rates in constants file.
-      _Done when:_ simulation test over 5 simulated years shows sane totals
-      (e.g. no droughts of months, no floods).
+  Three drop types: flora finds tied to expedition progress (steady);
+  reading material (rarer, surprising: magazines > novels >
+  dictionaries); fungi (occasional, currency). Difficulty shifts odds;
+  no front-loading — flat pacing for a patient daily user. All rates in
+  constants file.
+  *Done when:* simulation test over 5 simulated years shows sane totals
+  for all three types (no droughts of months, no floods; fungus income
+  supports a reasonable purchase rhythm).
 - [ ] **T3.2 Drop arrival + first-occurrence reveals.**
-      One shared arrival mechanic; distinct first-time reveal per reward
-      type. Neon POP reserved for these moments.
-      _Done when:_ first object and first magazine reveals feel different
-      and special (manual playtest).
-- [ ] **T3.3 Collect / decline / return.**
-      Objects optional to collect, returnable anytime, returned objects
-      re-enter the pool. Reading material always kept.
-      _Done when:_ tests prove returned objects can reappear; nothing is
-      ever lost.
+  One shared arrival mechanic; distinct first-time reveal per reward
+  type (first flora, first magazine, first fungus...). Neon POP
+  reserved for these moments.
+  *Done when:* first flora and first magazine reveals feel different
+  and special (manual playtest).
+- [ ] **T3.3 Gather / decline / compost.**
+  Flora optional to gather, compostable anytime, composted flora
+  re-enter the pool (composting yields nothing). Reading material
+  always kept; fungi always banked.
+  *Done when:* tests prove composted flora can reappear and yield no
+  fungi; nothing is ever lost.
 
-## M4 — The world of N-Z-D (4 sessions)
+## M4 — The world of N-Z-D (5 sessions)
 
 - [ ] **T4.1 Map page** — planet revealed region by region with
-      expedition progress. SVG, dark + bioluminescent.
+  expedition progress. SVG, dark + bioluminescent.
 - [ ] **T4.2 Bookcase page** — shelves filling with every magazine,
-      novel, dictionary ever received.
-- [ ] **T4.3 Abode page** — collected objects placeable by drag,
-      movable, removable (returnable). Play, not inventory management.
+  novel, dictionary ever received.
+- [ ] **T4.3 Abode page** — gathered flora and purchased objects
+  placeable by drag, movable, removable (compost / return). Play, not
+  inventory management.
+- [ ] **T4.3b Market page** — the rotating stall. Small selection,
+  rotates every 28 crons (a cron = a day with ≥1 habit marked,
+  including retroactive marks — derivable from completion history, so
+  nothing earlier needs rebuilding; never calendar days); pool grows
+  as Map regions are discovered; everything eventually cycles back.
+  Buy (meter down by price) and return (meter up by exactly the same
+  price).
+  *Done when:* rotation tests pass (gap days don't advance the clock;
+  backfilled days count; no item permanently missable) and buy/return
+  round-trips are always fungus-neutral.
 - [ ] **T4.4 Guest Book + friendships.**
-      Literacy milestones open doors; friends arrive as surprise drops in
-      the following days (delay logic tested). 10 categories per spec.
-      _Done when:_ delay logic tests pass; Guest Book renders friends.
+  Literacy milestones open doors; friends arrive as surprise drops in
+  the following days (delay logic tested). 10 categories per spec.
+  *Done when:* delay logic tests pass; Guest Book renders friends.
 
 ## M5 — Design pass (3–4 sessions, collaborative)
 
 - [ ] **T5.1 The 6 abstract symbols** — designed together, no words.
 - [ ] **T5.2 Visual identity** — palette system (white/pastel/basic +
-      neon POP), typography, glow effects, animations.
-- [ ] **T5.3 Creature & object art** — SVG art for friends (10
-      categories), objects, planet regions. Several sessions of creative
-      iteration; Kimia art-directs.
+  neon POP), typography, glow effects, animations.
+- [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
+  categories), flora, fungi, market objects, planet regions. Several
+  sessions of creative iteration; Kimia art-directs.
 
 ## M6 — Hardening & content (ongoing)
 
-- [ ] **T6.1 Content pools** — write/name the actual objects, reading
-      material, and friends (collaborative, fun, ongoing).
+- [ ] **T6.1 Content pools** — write/name the actual flora, market
+  objects (with prices), reading material, and friends; assign objects
+  to regions (collaborative, fun, ongoing).
 - [ ] **T6.2 Pacing tune-up** — after ~1 month of real use, revisit all
-      constants against real data.
+  constants against real data.
 - [ ] **T6.3 Portfolio polish** — README with screenshots, repo
-      description, demo-friendly first-run experience.
+  description, demo-friendly first-run experience.
 - [ ] **T6.4 Backup habit** — periodic "export your data" nudge.
 
 ---
