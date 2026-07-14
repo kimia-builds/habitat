@@ -13,7 +13,13 @@
 // is created, and never recomputed — changing the day cutoff later
 // re-labels nothing; history stays frozen (Kimia's decision 2026-07-13).
 
-import { dayKeyFromTimestamp, isValidDayKey, validateDayKey } from './days.js'
+import {
+  addDays,
+  dayKeyFromTimestamp,
+  isValidDayKey,
+  validateDayKey,
+  weekStart,
+} from './days.js'
 
 export function validateCompletion(completion) {
   if (typeof completion !== 'object' || completion === null) {
@@ -52,9 +58,24 @@ export function recordCompletion(
   return completion
 }
 
+// The backfill window (Kimia's decision 2026-07-14, spec §4.2): may a
+// retroactive mark still target this day? Calendar yesterday: always —
+// that's the morning check-in, even when yesterday was last week
+// (Monday filling in Sunday). Any other past day: only while its week
+// (Mon–Sun) is still the current week. Once a week has passed, its
+// days are frozen history. Today and the future are never "retro".
+export function canRecordRetroOn(dayKey, todayKey) {
+  validateDayKey(dayKey)
+  validateDayKey(todayKey)
+  if (dayKey >= todayKey) return false
+  if (dayKey === addDays(todayKey, -1)) return true
+  return weekStart(dayKey) === weekStart(todayKey)
+}
+
 // A retroactive completion — the morning check-in (T1.4) saying "I did
-// this YESTERDAY". The caller names the day it was done; recordedAt
-// still tells the truth about when it was entered.
+// this YESTERDAY" (or on an earlier day of the current week). The
+// caller names the day it was done; recordedAt still tells the truth
+// about when it was entered.
 export function recordRetroCompletion(
   habitId,
   dayKey,
@@ -68,6 +89,13 @@ export function recordRetroCompletion(
     throw new Error(
       'A retroactive completion must be for a day before today — ' +
         'for today, record it normally.',
+    )
+  }
+  if (!canRecordRetroOn(dayKey, today)) {
+    throw new Error(
+      'This day can no longer be filled in — once a week has passed, ' +
+        'its days are frozen (only the current week and yesterday stay ' +
+        'editable).',
     )
   }
   const completion = { id, habitId, recordedAt: now, dayKey }

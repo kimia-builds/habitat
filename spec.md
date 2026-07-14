@@ -68,11 +68,14 @@ dailies/habits/to-dos distinction. Each habit has:
 
 - Every completion is logged with an accurate timestamp against the day
   it belongs to.
-- If a scheduled day/week passes with habits unresolved, the next visit
-  opens with a **check-in**: "mark the habits you completed yesterday."
-  The check-in **always refers to the actual calendar yesterday**, no
-  matter how long we've been away — and yesterday **must be answered**;
-  only older days are optional.
+- If **yesterday** ended with scheduled habits unresolved, the next
+  visit opens with a **check-in**: "mark the habits you completed
+  yesterday." The check-in **always refers to the actual calendar
+  yesterday**, no matter how long we've been away — and yesterday
+  **must be answered**; only older days are optional. Only an
+  unresolved yesterday triggers the check-in: older editable days never
+  nag (optional means optional), they're simply reachable from it —
+  or any time via "edit past days".
 - **The backfill window (2026-07-14, replaces the earlier "no data"
   idea):** a past day can be filled in or corrected only while its week
   is still the current one. Every day of the current Mon–Sun week stays
@@ -311,6 +314,9 @@ region discovery expands what the Market can offer.
   week stay editable until the week ends, then freeze. Calendar
   yesterday is always editable (Monday can fill in Sunday). The
   check-in about yesterday must be answered; older days are optional.
+- 2026-07-14: only an unresolved yesterday triggers the check-in —
+  older editable days never nag on their own (optional means optional);
+  they are offered inside the open check-in and via "edit past days".
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

@@ -283,7 +283,7 @@ describe('streaks — informational only, no punishment', () => {
     // Habit created Saturday July 11th; days before it can't count.
     const habit = makeHabit({ type: 'daily' }, at(2026, 7, 11, 12, 0))
     const completions = [
-      recordRetroCompletion('h1', '2026-07-10', CUTOFF, NOW, 'r0'), // pre-creation
+      done(2026, 7, 10, 14), // pre-creation
       done(2026, 7, 11, 14),
       done(2026, 7, 12, 9),
     ]

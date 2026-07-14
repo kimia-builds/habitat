@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  canRecordRetroOn,
   countFor,
   countOn,
   recordCompletion,
@@ -60,15 +61,41 @@ describe('retroactive completions — the check-in rule (spec §4.2)', () => {
     expect(c.recordedAt).toBe(mondayMorning) // entered Monday
   })
 
-  it('can reach further back than yesterday (multi-day gaps)', () => {
+  it('can reach further back than yesterday within the current week', () => {
+    // Sunday the 19th filling in Tuesday the 14th — same Mon–Sun week.
     const c = recordRetroCompletion(
       'h1',
-      '2026-07-09',
+      '2026-07-14',
       CUTOFF,
-      at(2026, 7, 13, 9, 0),
+      at(2026, 7, 19, 9, 0),
       'c1',
     )
-    expect(c.dayKey).toBe('2026-07-09')
+    expect(c.dayKey).toBe('2026-07-14')
+  })
+
+  it('refuses days from a finished week — frozen history (spec v1.5)', () => {
+    // Monday the 20th: Saturday the 18th was last week, and it is not
+    // yesterday — the window has closed on it.
+    expect(() =>
+      recordRetroCompletion('h1', '2026-07-18', CUTOFF, at(2026, 7, 20, 9, 0)),
+    ).toThrow(/frozen/)
+    // Reaching weeks further back is just as frozen.
+    expect(() =>
+      recordRetroCompletion('h1', '2026-07-06', CUTOFF, at(2026, 7, 20, 9, 0)),
+    ).toThrow(/frozen/)
+  })
+
+  it('yesterday is ALWAYS editable, even across the week boundary', () => {
+    // Monday the 20th filling in Sunday the 19th — last week, but it is
+    // yesterday, so the Monday-morning check-in may record it.
+    const c = recordRetroCompletion(
+      'h1',
+      '2026-07-19',
+      CUTOFF,
+      at(2026, 7, 20, 9, 0),
+      'c1',
+    )
+    expect(c.dayKey).toBe('2026-07-19')
   })
 
   it('refuses today and the future — today is recorded normally', () => {
@@ -96,6 +123,26 @@ describe('retroactive completions — the check-in rule (spec §4.2)', () => {
     expect(() =>
       recordRetroCompletion('h1', '2026-02-31', CUTOFF, at(2026, 7, 13, 9, 0)),
     ).toThrow(/not a real date/)
+  })
+})
+
+describe('the backfill window itself (canRecordRetroOn)', () => {
+  // The week in play: Mon 2026-07-13 … Sun 2026-07-19.
+  it('Sunday can still edit any earlier day of its own week', () => {
+    expect(canRecordRetroOn('2026-07-13', '2026-07-19')).toBe(true) // Mon
+    expect(canRecordRetroOn('2026-07-14', '2026-07-19')).toBe(true) // Tue
+    expect(canRecordRetroOn('2026-07-18', '2026-07-19')).toBe(true) // Sat
+  })
+
+  it('Monday cannot edit last week — except Sunday, which is yesterday', () => {
+    expect(canRecordRetroOn('2026-07-19', '2026-07-20')).toBe(true) // Sun = yesterday
+    expect(canRecordRetroOn('2026-07-18', '2026-07-20')).toBe(false) // Sat, frozen
+    expect(canRecordRetroOn('2026-07-13', '2026-07-20')).toBe(false) // Mon, frozen
+  })
+
+  it('never targets today or the future', () => {
+    expect(canRecordRetroOn('2026-07-15', '2026-07-15')).toBe(false)
+    expect(canRecordRetroOn('2026-07-16', '2026-07-15')).toBe(false)
   })
 })
 

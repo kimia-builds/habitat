@@ -66,7 +66,7 @@ drops) and checkboxes reconciled with the repo (T1.2, T1.3 built
   before overwriting existing data (storage's `hasData()`).
   Dark background, zero styling effort otherwise.
   *Done when:* we can run our real habits in it for a day.
-- [ ] **T1.4 Morning check-in.**
+- [x] **T1.4 Morning check-in.** *(done 2026-07-14)*
   On first visit after a missed scheduled day: "mark what you completed
   yesterday" — always the actual calendar yesterday, and it must be
   answered — plus **optional backfill** for other days in the window

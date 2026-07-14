@@ -262,6 +262,117 @@ describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () =
   })
 })
 
+describe('the morning check-in (T1.4)', () => {
+  // Frozen clock: Thursday 16 July 2026, 9am. The week runs Mon 13 –
+  // Sun 19, so yesterday is Wed 15 and Mon/Tue are optional backfill.
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 16, 9))
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  // A daily habit that existed all week, with nothing marked yet.
+  function seed(overrides = {}) {
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 1,
+        habits: [
+          {
+            id: 'walk',
+            name: 'walk',
+            description: '',
+            symbol: 1,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            archived: false,
+            createdAt: new Date(2026, 6, 13, 9).getTime(), // Mon the 13th
+          },
+        ],
+        completions: [],
+        settings: { dayCutoffHour: 3 },
+        checkedInThrough: null,
+        ...overrides,
+      }),
+    )
+  }
+
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+
+  it('opens on a missed yesterday; marks land on their true days; done saves', () => {
+    seed()
+    render(<App />)
+
+    // The check-in IS the screen — the list is waiting behind it.
+    expect(screen.getByText('check-in')).toBeDefined()
+    expect(screen.queryByRole('button', { name: '+ new habit' })).toBeNull()
+
+    // Yesterday (Wed the 15th) is the question; the frozen previous
+    // week is not offered at all.
+    expect(screen.getByText(/yesterday, Wed 2026-07-15/)).toBeDefined()
+    expect(screen.queryByText(/2026-07-12/)).toBeNull()
+
+    // Mark yesterday's walk (the first row is yesterday's; the
+    // optional days are listed after it)…
+    fireEvent.click(screen.getAllByRole('button', { name: 'mark done' })[0])
+
+    // …and backfill Tuesday from the optional section.
+    const tuesday = within(
+      screen.getByText('Tue 2026-07-14').closest('details'),
+    )
+    fireEvent.click(tuesday.getByRole('button', { name: 'mark done' }))
+
+    fireEvent.click(screen.getByRole('button', { name: 'done — save check-in' }))
+
+    // Back on the list, and the data says what really happened: the
+    // marks belong to the days they were DONE, entry day nowhere.
+    expect(screen.getByRole('button', { name: '+ new habit' })).toBeDefined()
+    expect(stored().completions.map((c) => c.dayKey).sort()).toEqual([
+      '2026-07-14',
+      '2026-07-15',
+    ])
+    expect(stored().checkedInThrough).toBe('2026-07-15')
+  })
+
+  it('leaving everything unmarked is a fine answer — saved as answered, nothing recorded', () => {
+    seed()
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'done — save check-in' }))
+    expect(stored().completions).toEqual([])
+    expect(stored().checkedInThrough).toBe('2026-07-15')
+    // A reload does not ask again.
+    cleanup()
+    render(<App />)
+    expect(screen.queryByText('check-in')).toBeNull()
+  })
+
+  it('stays quiet when yesterday was already done, but past days remain editable by hand', () => {
+    seed({
+      completions: [
+        { id: 'c1', habitId: 'walk', recordedAt: 5, dayKey: '2026-07-15' },
+      ],
+    })
+    render(<App />)
+
+    // No check-in — straight to the list.
+    expect(screen.queryByText('check-in')).toBeNull()
+
+    // But the week's earlier days can still be opened and edited.
+    fireEvent.click(screen.getByRole('button', { name: 'edit past days' }))
+    const monday = within(
+      screen.getByText('Mon 2026-07-13').closest('details'),
+    )
+    fireEvent.click(monday.getByRole('button', { name: 'mark done' }))
+    fireEvent.click(screen.getByRole('button', { name: 'done — save check-in' }))
+    expect(stored().completions.map((c) => c.dayKey).sort()).toEqual([
+      '2026-07-13',
+      '2026-07-15',
+    ])
+  })
+})
+
 describe('backup import (plan T1.3: warn before overwriting)', () => {
   const backupOf = (habits = []) =>
     new File(

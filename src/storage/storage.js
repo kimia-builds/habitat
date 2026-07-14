@@ -7,6 +7,8 @@
 //     habits:      [...],
 //     completions: [...],   // see game/completions.js — added in T1.2
 //     settings:    { dayCutoffHour: 3 },
+//     checkedInThrough: null,  // last day whose check-in was answered
+//                              // ('YYYY-MM-DD' or null) — added in T1.4
 //   }
 //
 // The schemaVersion lets a future Habitat recognise and upgrade old
@@ -14,7 +16,7 @@
 
 import { validateCompletion } from '../game/completions.js'
 import { DEFAULT_DAY_CUTOFF_HOUR } from '../game/constants.js'
-import { validateCutoffHour } from '../game/days.js'
+import { isValidDayKey, validateCutoffHour } from '../game/days.js'
 import { validateHabit } from '../game/habits.js'
 
 const STORAGE_KEY = 'habitat-data'
@@ -26,13 +28,15 @@ export function emptyData() {
     habits: [],
     completions: [],
     settings: { dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR },
+    checkedInThrough: null,
   }
 }
 
-// T1.1-era saves and backups predate completions and settings; filling
-// ONLY those gaps with defaults lets old data load cleanly. Nothing
-// present is ever touched, and schemaVersion/habits are deliberately
-// not defaulted — a file without them isn't a Habitat backup at all.
+// Older saves and backups predate completions, settings and (from
+// T1.4) checkedInThrough; filling ONLY those gaps with defaults lets
+// old data load cleanly. Nothing present is ever touched, and
+// schemaVersion/habits are deliberately not defaulted — a file
+// without them isn't a Habitat backup at all.
 function withDefaults(data) {
   if (typeof data !== 'object' || data === null) return data
   return {
@@ -42,6 +46,8 @@ function withDefaults(data) {
       data.settings === undefined
         ? { dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR }
         : data.settings,
+    checkedInThrough:
+      data.checkedInThrough === undefined ? null : data.checkedInThrough,
   }
 }
 
@@ -67,6 +73,12 @@ function validateData(data) {
     throw new Error('This backup has broken settings.')
   }
   validateCutoffHour(data.settings.dayCutoffHour)
+  if (
+    data.checkedInThrough !== null &&
+    !isValidDayKey(data.checkedInThrough)
+  ) {
+    throw new Error('This backup has a broken check-in marker.')
+  }
 }
 
 export function loadData() {

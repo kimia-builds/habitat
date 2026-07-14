@@ -4,14 +4,16 @@
 // all saving goes through the storage module.
 
 import { useState } from 'react'
+import { editablePastDays, habitsOn, isCheckInDue } from './game/checkin.js'
 import {
   countFor,
   countOn,
   recordCompletion,
+  recordRetroCompletion,
   removeCompletionsFor,
   removeLatestOn,
 } from './game/completions.js'
-import { dayKeyFromTimestamp } from './game/days.js'
+import { addDays, dayKeyFromTimestamp } from './game/days.js'
 import {
   activeHabits,
   addHabit,
@@ -37,6 +39,7 @@ import {
   saveData,
 } from './storage/storage.js'
 import BackupControls from './ui/BackupControls.jsx'
+import CheckInPanel from './ui/CheckInPanel.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import SymbolPicker from './ui/SymbolPicker.jsx'
@@ -53,6 +56,28 @@ function App() {
   const active = activeHabits(data.habits)
   const visible = filterBySymbols(active, filter)
   const archived = archivedHabits(data.habits)
+
+  // The check-in (T1.4). Decided once, on load: if yesterday (or an
+  // older still-editable day) was missed and never answered, the app
+  // opens with the check-in, and only its done button — which saves
+  // the answer — leads back to the list. It can also be opened by hand
+  // any time to edit the week's earlier days. Kept open by state, not
+  // recomputed, so marking a habit doesn't yank the panel away
+  // mid-answer.
+  const [checkInOpen, setCheckInOpen] = useState(() =>
+    isCheckInDue(
+      data.habits,
+      data.completions,
+      data.checkedInThrough,
+      today,
+      data.settings.dayCutoffHour,
+    ),
+  )
+  const pastDaysEditable = editablePastDays(today).some(
+    (day) =>
+      habitsOn(data.habits, data.completions, day, data.settings.dayCutoffHour)
+        .length > 0,
+  )
 
   // Every change goes through here: validate-and-persist, then render.
   function save(next) {
@@ -121,6 +146,44 @@ function App() {
     })
   }
 
+  // A check-in mark: recorded against the day it was DONE (the game
+  // module refuses days outside the backfill window). A one-time to-do
+  // marked here is finished for good, exactly as if tapped live.
+  function handleRetroMark(habit, dayKey) {
+    const completion = recordRetroCompletion(
+      habit.id,
+      dayKey,
+      data.settings.dayCutoffHour,
+    )
+    const next = { ...data, completions: [...data.completions, completion] }
+    if (archivesWhenDone(habit)) {
+      next.habits = data.habits.map((h) =>
+        h.id === habit.id ? archiveHabit(h) : h,
+      )
+    }
+    save(next)
+  }
+
+  function handleRetroUndo(habit, dayKey) {
+    const next = {
+      ...data,
+      completions: removeLatestOn(data.completions, habit.id, dayKey),
+    }
+    if (archivesWhenDone(habit)) {
+      next.habits = data.habits.map((h) =>
+        h.id === habit.id ? unarchiveHabit(h) : h,
+      )
+    }
+    save(next)
+  }
+
+  // The done button: remember that yesterday's check-in was answered —
+  // whatever was left unmarked is now, neutrally, "not done".
+  function handleCheckInDone() {
+    save({ ...data, checkedInThrough: addDays(today, -1) })
+    setCheckInOpen(false)
+  }
+
   // Move one step up (-1) or down (+1) past the neighbouring VISIBLE
   // habit. moveHabit works on the full list, so the target position is
   // the neighbour's position there — archived habits in between don't
@@ -170,6 +233,25 @@ function App() {
     return 'backup imported'
   }
 
+  // While the check-in is open it IS the app: the list waits behind it,
+  // and the done button (which saves the answer) is the only way back.
+  if (checkInOpen) {
+    return (
+      <main className="app">
+        <h1>HABITAT</h1>
+        <CheckInPanel
+          habits={data.habits}
+          completions={data.completions}
+          todayKey={today}
+          cutoffHour={data.settings.dayCutoffHour}
+          onMark={handleRetroMark}
+          onUnmark={handleRetroUndo}
+          onDone={handleCheckInDone}
+        />
+      </main>
+    )
+  }
+
   return (
     <main className="app">
       <h1>HABITAT</h1>
@@ -181,7 +263,14 @@ function App() {
       {editing === 'new' ? (
         <HabitForm onSave={handleCreate} onCancel={() => setEditing(null)} />
       ) : (
-        <button onClick={() => setEditing('new')}>+ new habit</button>
+        <>
+          <button onClick={() => setEditing('new')}>+ new habit</button>
+          {pastDaysEditable && (
+            <button onClick={() => setCheckInOpen(true)}>
+              edit past days
+            </button>
+          )}
+        </>
       )}
 
       <ul className="habit-list">

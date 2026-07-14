@@ -157,6 +157,23 @@ describe('completions and settings in storage (added in T1.2)', () => {
     expect(loadData()).toEqual(restored)
   })
 
+  it('the check-in marker persists and defaults to null (added in T1.4)', () => {
+    expect(loadData().checkedInThrough).toBe(null) // fresh browser
+    saveData({ ...emptyData(), checkedInThrough: '2026-07-13' })
+    expect(loadData().checkedInThrough).toBe('2026-07-13')
+
+    // Backups from before T1.4 have no marker; they gain the default.
+    const oldBackup = JSON.stringify({ schemaVersion: 1, habits: [] })
+    expect(importData(oldBackup).checkedInThrough).toBe(null)
+
+    // A broken marker is refused like any other corruption.
+    expect(() =>
+      importData(
+        JSON.stringify({ ...emptyData(), checkedInThrough: 'someday' }),
+      ),
+    ).toThrow(/check-in/)
+  })
+
   it('rejects backups with broken completions or settings, keeping data intact', () => {
     const data = { ...emptyData(), habits: [habit('a', 'Read')] }
     saveData(data)
