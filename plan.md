@@ -1,9 +1,10 @@
 # plan.md — HABITAT build plan
 
-*v1.2 — 2026-07-14. Updated for spec v1.4 (third reward stream: fungi +
-Market; flora drops; check-in backfill). Checkboxes reconciled with the
-actual repo state: T1.2 and T1.3 were built on 2026-07-13 but never
-ticked. Next task: **T1.4**.*
+*v1.3 — 2026-07-14. T1.4 rewritten for spec v1.5: backfill window
+(current Mon–Sun week only; yesterday always) replaces the "no data"
+state. Earlier today: updated for spec v1.4 (fungi + Market; flora
+drops) and checkboxes reconciled with the repo (T1.2, T1.3 built
+2026-07-13). Next task: **T1.4**.*
 
 ## How to use this file
 
@@ -67,13 +68,17 @@ ticked. Next task: **T1.4**.*
   *Done when:* we can run our real habits in it for a day.
 - [ ] **T1.4 Morning check-in.**
   On first visit after a missed scheduled day: "mark what you completed
-  yesterday" — always the actual calendar yesterday, regardless of gap
-  length — plus **optional backfill** for older missed days. Marks
-  recorded against the day they were DONE, not entered. Unfilled gap
-  days stored as "no data" (distinct from "not done").
+  yesterday" — always the actual calendar yesterday, and it must be
+  answered — plus **optional backfill** for other days in the window
+  (spec v1.5): days of the current Mon–Sun week stay editable until the
+  week ends, then freeze; yesterday is always editable even across the
+  week boundary. Marks recorded against the day they were DONE, not
+  entered. Unfilled days simply count as not done (neutral) — no
+  separate "no data" state.
   *Done when:* tests prove Monday-morning marks land on Sunday; backfill
-  marks land on their true days; no-data vs not-done distinction holds
-  across cutoff edge cases, multi-day gaps, and week boundaries.
+  marks land on their true days; the window is enforced (Sunday can
+  still edit Tuesday, Monday cannot edit Saturday) across cutoff edge
+  cases, multi-day gaps, and week boundaries.
 
 **Milestone gate:** from here, Kimia uses Habitat daily as her real
 tracker. Everything after this is delight, informed by real use.

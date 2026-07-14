@@ -1,7 +1,9 @@
 # spec.md — HABITAT
 
-*v1.4 — 2026-07-14. Added third reward stream (fungi currency + market);
-expedition drops changed to flora; check-in gap handling defined.*
+*v1.5 — 2026-07-14. Backfill window replaces the "no data" state: past
+days stay editable only while their Mon–Sun week is current (calendar
+yesterday always is); unfilled days simply count as not done. Same-day
+amendment to v1.4 (third reward stream: fungi + Market; flora drops).*
 
 ## 1. One-line pitch
 
@@ -69,11 +71,17 @@ dailies/habits/to-dos distinction. Each habit has:
 - If a scheduled day/week passes with habits unresolved, the next visit
   opens with a **check-in**: "mark the habits you completed yesterday."
   The check-in **always refers to the actual calendar yesterday**, no
-  matter how long we've been away.
-- **After a multi-day gap:** the check-in asks about yesterday, then
-  offers an **optional backfill** for the other missed days — fill them
-  in if memory is trustworthy, skip if not. Skipped gap days are
-  recorded as **no data**, which is explicitly distinct from "not done".
+  matter how long we've been away — and yesterday **must be answered**;
+  only older days are optional.
+- **The backfill window (2026-07-14, replaces the earlier "no data"
+  idea):** a past day can be filled in or corrected only while its week
+  is still the current one. Every day of the current Mon–Sun week stays
+  editable until the week ends; once a week has passed, its days are
+  frozen. The one exception is **calendar yesterday, which is always
+  editable** — so a Monday-morning check-in can still fill in Sunday,
+  and last week's numbers simply update. Days never filled in just
+  count as **not done**, which (as always) is neutral data, not a
+  punishment. There is no separate "no data" state.
 - **Critical correctness requirement:** retroactive marks are recorded
   against the day they were *done*, not the day they were *entered*. If
   Monday morning we mark Sunday's habits, the data says Sunday. Habitica
@@ -297,9 +305,12 @@ region discovery expands what the Market can offer.
 - Symmetric buy/return prices always — no penalty, no spread.
 - Flora and objects optional to collect and always returnable — no
   forced clutter.
-- Check-in always asks about calendar yesterday; multi-day gaps get
-  optional backfill; unfilled gap days recorded as "no data" (distinct
-  from "not done").
+- 2026-07-14 (supersedes the "no data" idea from earlier the same day):
+  there is no "no data" state — an unfilled day simply counts as not
+  done (neutral, as ever). Backfill window: days of the current Mon–Sun
+  week stay editable until the week ends, then freeze. Calendar
+  yesterday is always editable (Monday can fill in Sunday). The
+  check-in about yesterday must be answered; older days are optional.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

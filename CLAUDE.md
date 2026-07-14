@@ -40,9 +40,11 @@ Kimia is a non-coder. Therefore:
 - Date attribution is sacred: a completion recorded during morning
   check-in belongs to the day it was DONE, not the day it was entered.
   Day cutoff is 3am by default, configurable. Check-in always asks
-  about calendar yesterday; older gap days get optional backfill; days
-  left unfilled are stored as "no data", which is NOT the same as "not
-  done".
+  about calendar yesterday and must be answered; older days are
+  optional. Past days are editable only while their Mon–Sun week is
+  the current one (calendar yesterday always is, even on a Monday);
+  once a week ends, its days freeze. Unfilled days simply count as
+  not done — neutral data, no "no data" state, no punishment.
 - Reward pacing is flat and patient — no front-loading, no
   retention-hook mechanics, no early-days bonuses.
 - Three reward streams, independent in earning: expedition → flora;
