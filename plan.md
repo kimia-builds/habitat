@@ -1,10 +1,8 @@
 # plan.md — HABITAT build plan
 
-*v1.3 — 2026-07-14. T1.4 rewritten for spec v1.5: backfill window
-(current Mon–Sun week only; yesterday always) replaces the "no data"
-state. Earlier today: updated for spec v1.4 (fungi + Market; flora
-drops) and checkboxes reconciled with the repo (T1.2, T1.3 built
-2026-07-13). Next task: **T1.4**.*
+*v1.4 — 2026-07-15. T2.1 done (spec v1.6 meter decisions: 1:1:1
+difficulty, undo reverses, extras count, 6-monthly recalibration —
+T6.2 amended accordingly). Next task: **T2.2**.*
 
 ## How to use this file
 
@@ -85,8 +83,9 @@ tracker. Everything after this is delight, informed by real use.
 
 ## M2 — Meters & field notes (3 sessions)
 
-- [ ] **T2.1 Meter engine.**
-  Expedition meter: fixed advance per completion by difficulty.
+- [x] **T2.1 Meter engine.** *(done 2026-07-15)*
+  Expedition meter: fixed advance per completion — same step for every
+  difficulty (1:1:1, decision 2026-07-15; supersedes "by difficulty").
   Literacy meter: fed by reading material (engine only, drops come in
   M3). Fungus meter: a wallet — credited by fungus drops, debited by
   purchases, refunded symmetrically on returns (engine only). Growth
@@ -164,8 +163,12 @@ tracker. Everything after this is delight, informed by real use.
 - [ ] **T6.1 Content pools** — write/name the actual flora, market
   objects (with prices), reading material, and friends; assign objects
   to regions (collaborative, fun, ongoing).
-- [ ] **T6.2 Pacing tune-up** — after ~1 month of real use, revisit all
-  constants against real data.
+- [ ] **T6.2 Pacing tune-up (recurring)** — after ~1 month of real use,
+  then roughly **every 6 months** (Kimia's decision 2026-07-15): revisit
+  all pacing constants against real historical averages (starting with
+  the taps-per-day estimate behind the 5-year sizing). Safe by design —
+  meters are computed from history, so retuning never corrupts earned
+  progress.
 - [ ] **T6.3 Portfolio polish** — README with screenshots, repo
   description, demo-friendly first-run experience.
 - [ ] **T6.4 Backup habit** — periodic "export your data" nudge.

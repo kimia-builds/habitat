@@ -1,9 +1,10 @@
 # spec.md — HABITAT
 
-*v1.5 — 2026-07-14. Backfill window replaces the "no data" state: past
-days stay editable only while their Mon–Sun week is current (calendar
-yesterday always is); unfilled days simply count as not done. Same-day
-amendment to v1.4 (third reward stream: fungi + Market; flora drops).*
+*v1.6 — 2026-07-15. Meter maths decided (T2.1): difficulty no longer
+affects the expedition meter (1:1:1 — every completion is one step;
+difficulty kept on habits for future use, e.g. drop odds); undoing a
+completion reverses the meter; extras beyond an N-per-day target count;
+pacing constants recalibrated ~every 6 months from real history.*
 
 ## 1. One-line pitch
 
@@ -61,8 +62,10 @@ dailies/habits/to-dos distinction. Each habit has:
   colour). The symbol **is** the tag — no word labels, no naming, no
   renaming, ever. Meaning lives entirely in the user's head, never
   explicit categories like "diet".
-- Difficulty, set at creation: **easy / medium / difficult** — determines
-  how far a completion advances the expedition meter.
+- Difficulty, set at creation: **easy / medium / difficult**. (Amended
+  2026-07-15: difficulty does NOT affect the expedition meter — every
+  completion advances it the same one step. The field is kept for
+  future use, e.g. nudging drop odds in M3.)
 
 ### 4.2 Day boundaries & the morning check-in (cron)
 
@@ -128,8 +131,8 @@ clickable, opening its own growing world:
 ### Stream 1 — Expedition: getting to know the planet
 
 - **Expedition meter:** fully **predictable**. Each completion advances
-  it a set amount by difficulty (exact values in plan phase). No
-  randomness in the meter itself.
+  it a fixed amount — the same for every habit regardless of difficulty
+  (decision 2026-07-15). No randomness in the meter itself.
 - Meter progress = **planet discovery**: new regions of the planet
   gradually revealed on the Map as we get to know our new home.
 - Along the way we **come across flora** as drops — the plant life of
@@ -324,6 +327,20 @@ region discovery expands what the Market can offer.
 - 2026-07-15: day rollover needs no refresh — an open tab re-checks
   the clock every minute and on returning to the tab, then behaves
   exactly like a fresh visit (new day's list, check-in if owed).
+- 2026-07-15 (T2.1, supersedes "difficulty determines meter advance"):
+  difficulty does NOT affect the expedition meter — every completion is
+  exactly one step (1:1:1). Difficulty stays on habits for future use
+  (e.g. drop odds in M3).
+- 2026-07-15: undoing a completion reverses the expedition meter by the
+  same amount — meters are always computed from completion history,
+  never stored as a running number, so the meter exactly equals real
+  history at all times.
+- 2026-07-15: for N-per-day habits, completions beyond N also advance
+  the expedition meter — every tap counts.
+- 2026-07-15: pacing constants (e.g. the taps-per-day estimate behind
+  the 5-year sizing) get recalibrated roughly every 6 months against
+  real historical averages (plan T6.2). Safe because meters are derived
+  from history, so retuning never corrupts earned progress.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

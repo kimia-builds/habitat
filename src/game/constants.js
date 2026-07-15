@@ -51,3 +51,69 @@ export const CLOCK_CHECK_MS = 60 * 1000
 // what the schedule engine in T1.2 will reason about.)
 export const WEEKDAY_MIN = 1
 export const WEEKDAY_MAX = 7
+
+// ───────────────────────── T2.1: the three meters ─────────────────────────
+
+// EXPEDITION METER — fully predictable (spec §5 Stream 1).
+//
+// Every completion advances it by exactly this many steps, no matter
+// the habit's difficulty (Kimia's decision 2026-07-15: 1:1:1 — easy,
+// medium and difficult all count the same here; the difficulty field
+// stays on habits for later use, e.g. drop odds in M3). Extras beyond
+// an N-per-day target count too: every tap is one step.
+export const EXPEDITION_STEPS_PER_COMPLETION = 1
+
+// 5-year pacing maths (spec §5: the earn curve is designed for years):
+//
+//   Kimia's real pace is ~3.5 taps/day (her estimate, 2026-07-15)
+//   3.5 taps/day × 365 days ≈ 1,280 steps a year
+//   1,280 × 5 years          ≈ 6,400 steps in 5 years
+//
+// So the Map (T4.1) should spread its regions across roughly 6,400
+// steps for the planet to take ~5 years to know. RECALIBRATION
+// (Kimia's decision 2026-07-15): revisit TAPS_PER_DAY_ESTIMATE every
+// ~6 months against real completion history (plan T6.2). Safe to
+// retune: the meter is always computed fresh from history, so changing
+// a constant can never corrupt what's already been earned.
+export const TAPS_PER_DAY_ESTIMATE = 3.5
+export const EXPEDITION_FIVE_YEAR_STEPS = 6400
+
+// LITERACY METER — fed by reading-material drops (spec §5 Stream 2).
+//
+// Points per piece, by rarity: dictionaries are rare treasures,
+// magazines everyday reading. PROVISIONAL values — the real pacing
+// depends on drop rates, which are designed (with a 5-year simulation)
+// in T3.1; retune these there. The shape is what matters now.
+export const READING_TYPES = ['magazine', 'novel', 'dictionary']
+export const LITERACY_POINTS = {
+  magazine: 1,
+  novel: 4,
+  dictionary: 12,
+}
+
+// The 10 friendship milestones — one per friend category, lowest
+// literacy first (Drifters … Poets, spec §5). Reaching a threshold
+// opens that door; the friend then arrives later as a drop (T4.4).
+// PROVISIONAL thresholds, sketched for ~5 years assuming roughly a
+// magazine a week, a novel a month and a few dictionaries a year
+// (≈ 150 points/year ≈ 730 over 5 years — so Poets land near year 5).
+// T3.1's simulation is the referee; retune there. Gaps widen as they
+// climb because later friendships should be the long, patient ones.
+export const LITERACY_MILESTONES = [
+  10, // Drifters
+  30, // Nesters
+  65, // Mimics
+  115, // Signers
+  180, // Sprouts
+  260, // Chatters
+  355, // Neighbours
+  465, // Storytellers
+  590, // Scholars
+  730, // Poets
+]
+
+// FUNGUS METER — a wallet, not a progress bar (spec §5 Stream 3).
+// Fungi are whole mushrooms: every credit, price and refund is a
+// positive whole number, and the balance can never go below zero.
+// No pacing constants here yet — drop rates arrive in T3.1 and
+// object prices in M4/M6.
