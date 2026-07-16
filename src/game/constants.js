@@ -78,6 +78,17 @@ export const EXPEDITION_STEPS_PER_COMPLETION = 1
 export const TAPS_PER_DAY_ESTIMATE = 3.5
 export const EXPEDITION_FIVE_YEAR_STEPS = 6400
 
+// The expedition meter's ROLLING BAR (T2.2, Kimia's decision
+// 2026-07-16): a full 5-year bar would move ~0.016% per tap —
+// invisible. Instead the bar fills over a small segment, rolls over,
+// and starts again, with the running total shown beside it.
+//
+//   100 steps ÷ 3.5 taps/day ≈ 29 days — the bar refills about
+//   monthly, so every single tap visibly nudges it (1% each).
+//   6,400 five-year steps ÷ 100 = 64 segments, a number the Map
+//   (T4.1) can later line its regions up with.
+export const EXPEDITION_SEGMENT_STEPS = 100
+
 // LITERACY METER — fed by reading-material drops (spec §5 Stream 2).
 //
 // Points per piece, by rarity: dictionaries are rare treasures,

@@ -1,10 +1,10 @@
 # spec.md — HABITAT
 
-*v1.6 — 2026-07-15. Meter maths decided (T2.1): difficulty no longer
-affects the expedition meter (1:1:1 — every completion is one step;
-difficulty kept on habits for future use, e.g. drop odds); undoing a
-completion reverses the meter; extras beyond an N-per-day target count;
-pacing constants recalibrated ~every 6 months from real history.*
+*v1.7 — 2026-07-16. Meters UI decided (T2.2): the expedition meter
+shows a rolling bar (fills over a ~monthly segment, rolls over, total
+count beside it); meter clicks open placeholder pages until M4; the
+meters appear on the habit list and its pages but not above the
+morning check-in, which stays focused.*
 
 ## 1. One-line pitch
 
@@ -114,8 +114,10 @@ weeks.
 
 ### The three meters (permanent fixtures)
 
-All three meters sit **permanently at the top of the app**. Each is
-clickable, opening its own growing world:
+All three meters sit **permanently at the top of the app** (amended
+2026-07-16: on the habit list and the pages reached from it — the
+morning check-in stays meter-free and focused). Each is clickable,
+opening its own growing world:
 
 - **Expedition meter** → opens the **Map**: the discovered planet,
   populating region by region over time. Grows infinitely (~5 years
@@ -341,6 +343,19 @@ region discovery expands what the Market can offer.
   the 5-year sizing) get recalibrated roughly every 6 months against
   real historical averages (plan T6.2). Safe because meters are derived
   from history, so retuning never corrupts earned progress.
+- 2026-07-16 (T2.2): the expedition meter's bar is a ROLLING bar — a
+  full 5-year bar would move invisibly per tap, so the bar fills over
+  one segment (100 steps ≈ a month at the current pace, constant in
+  constants.js), rolls over to empty, and the running step total shows
+  beside it. The literacy bar shows progress from the last friendship
+  milestone toward the next; the fungus meter is a plain balance (a
+  wallet has no progress bar).
+- 2026-07-16 (T2.2): until the real pages arrive in M4, clicking a
+  meter opens a simple placeholder page (Map / Bookcase / Market) with
+  a back button — the navigation is real, the content is a promise.
+- 2026-07-16 (T2.2): meters show on the habit list and the pages
+  reached from it, NOT above the morning check-in — answering
+  yesterday stays distraction-free.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

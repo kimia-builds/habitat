@@ -11,6 +11,7 @@
 // user chose, and never below zero (spec §5 Stream 3).
 
 import {
+  EXPEDITION_SEGMENT_STEPS,
   EXPEDITION_STEPS_PER_COMPLETION,
   LITERACY_MILESTONES,
   LITERACY_POINTS,
@@ -24,6 +25,19 @@ import {
 // including extras beyond an N-per-day target — every tap counts.
 export function expeditionSteps(completions) {
   return completions.length * EXPEDITION_STEPS_PER_COMPLETION
+}
+
+// The rolling bar (T2.2, decision 2026-07-16): how far into the
+// CURRENT segment the meter is. The bar fills over one segment
+// (~a month at Kimia's pace), rolls over to empty, and starts again —
+// so every tap visibly moves it. Landing exactly on a segment
+// boundary shows a freshly emptied bar (the fill belongs to the NEXT
+// segment about to begin).
+export function expeditionSegment(steps) {
+  return {
+    into: steps % EXPEDITION_SEGMENT_STEPS,
+    size: EXPEDITION_SEGMENT_STEPS,
+  }
 }
 
 // ── Literacy ────────────────────────────────────────────────────────
@@ -60,6 +74,21 @@ export function literacyPoints(readingItems) {
 // Landing exactly ON a threshold reaches it.
 export function milestonesReached(points) {
   return LITERACY_MILESTONES.filter((threshold) => points >= threshold).length
+}
+
+// The literacy meter's bar (T2.2): progress from the last milestone
+// reached toward the next one. Once all 10 doors are open the ladder
+// is complete and the bar simply shows full (no eleventh door).
+export function literacySegment(points) {
+  const reached = milestonesReached(points)
+  if (reached === LITERACY_MILESTONES.length) {
+    return { into: 1, size: 1 }
+  }
+  const floor = reached === 0 ? 0 : LITERACY_MILESTONES[reached - 1]
+  return {
+    into: points - floor,
+    size: LITERACY_MILESTONES[reached] - floor,
+  }
 }
 
 // ── Fungus wallet ───────────────────────────────────────────────────

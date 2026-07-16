@@ -466,6 +466,105 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
   })
 })
 
+describe('the three meters (T2.2)', () => {
+  // The meters section at the top of the list.
+  const meters = () => within(screen.getByRole('region', { name: 'meters' }))
+  const expeditionBar = () =>
+    meters().getByRole('progressbar', { name: 'expedition progress' })
+
+  it('shows all three meters, empty on a fresh start', () => {
+    render(<App />)
+    expect(meters().getByText('0 steps')).toBeDefined()
+    expect(meters().getByText('0/10 doors')).toBeDefined()
+    expect(meters().getByText('in the wallet')).toBeDefined()
+    expect(expeditionBar().getAttribute('aria-valuenow')).toBe('0')
+  })
+
+  it('completing a habit visibly moves the expedition meter; undo moves it back', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+
+    fireEvent.click(row('walk').getByRole('button', { name: 'mark done' }))
+    expect(meters().getByText('1 step')).toBeDefined()
+    expect(expeditionBar().getAttribute('aria-valuenow')).toBe('1')
+
+    // Undo reverses the meter exactly (decision 2026-07-15).
+    fireEvent.click(row('walk').getByRole('button', { name: '✓ done today' }))
+    expect(meters().getByText('0 steps')).toBeDefined()
+    expect(expeditionBar().getAttribute('aria-valuenow')).toBe('0')
+  })
+
+  it('extras beyond an N-per-day target keep moving the meter — every tap counts', () => {
+    render(<App />)
+    createHabitViaUI('water', { scheduleType: 'nPerDay', n: 2 })
+    for (let i = 0; i < 3; i++) {
+      fireEvent.click(row('water').getByRole('button', { name: '+1' }))
+    }
+    expect(meters().getByText('3 steps')).toBeDefined()
+  })
+
+  it('each meter opens its placeholder page, and back returns to the list', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+
+    fireEvent.click(meters().getByRole('button', { name: /expedition/ }))
+    expect(screen.getByText('the Map')).toBeDefined()
+    expect(screen.queryByText('walk')).toBeNull() // the list waits behind
+    fireEvent.click(
+      screen.getByRole('button', { name: '← back to the habits' }),
+    )
+    expect(screen.getByText('walk')).toBeDefined()
+
+    fireEvent.click(meters().getByRole('button', { name: /literacy/ }))
+    expect(screen.getByText('the Bookcase')).toBeDefined()
+    fireEvent.click(
+      screen.getByRole('button', { name: '← back to the habits' }),
+    )
+
+    fireEvent.click(meters().getByRole('button', { name: /fungi/ }))
+    expect(screen.getByText('the Market')).toBeDefined()
+  })
+
+  it('retroactive check-in marks count toward the meter like live ones', () => {
+    // Frozen at Thursday 16 July 2026, 9am; a daily habit missed
+    // yesterday, so the check-in opens (no meters there — decision
+    // 2026-07-16) and its marks land on their true days.
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 16, 9))
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 1,
+        habits: [
+          {
+            id: 'walk',
+            name: 'walk',
+            description: '',
+            symbol: 1,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            archived: false,
+            createdAt: new Date(2026, 6, 13, 9).getTime(),
+          },
+        ],
+        completions: [],
+        settings: { dayCutoffHour: 3 },
+        checkedInThrough: null,
+      }),
+    )
+    render(<App />)
+
+    expect(screen.queryByRole('region', { name: 'meters' })).toBeNull()
+    fireEvent.click(screen.getAllByRole('button', { name: 'mark done' })[0])
+    fireEvent.click(
+      screen.getByRole('button', { name: 'done — save check-in' }),
+    )
+
+    expect(meters().getByText('1 step')).toBeDefined()
+    vi.useRealTimers()
+  })
+})
+
 describe('backup import (plan T1.3: warn before overwriting)', () => {
   const backupOf = (habits = []) =>
     new File(

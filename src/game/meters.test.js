@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  EXPEDITION_SEGMENT_STEPS,
   EXPEDITION_STEPS_PER_COMPLETION,
   LITERACY_MILESTONES,
   LITERACY_POINTS,
@@ -11,8 +12,10 @@ import {
 } from './completions.js'
 import {
   creditFungi,
+  expeditionSegment,
   expeditionSteps,
   literacyPoints,
+  literacySegment,
   milestonesReached,
   refundFungi,
   spendFungi,
@@ -81,6 +84,54 @@ describe('expeditionSteps', () => {
     const before = expeditionSteps(completions)
     const after = expeditionSteps(removeLatestOn(completions, 'h1', '2026-07-13'))
     expect(before - after).toBe(EXPEDITION_STEPS_PER_COMPLETION)
+  })
+})
+
+describe('expeditionSegment — the rolling bar (T2.2)', () => {
+  it('an untouched meter shows an empty bar', () => {
+    expect(expeditionSegment(0)).toEqual({
+      into: 0,
+      size: EXPEDITION_SEGMENT_STEPS,
+    })
+  })
+
+  it('mid-segment, the bar shows how far into the current segment we are', () => {
+    expect(expeditionSegment(EXPEDITION_SEGMENT_STEPS + 12).into).toBe(12)
+  })
+
+  it('completing a segment rolls the bar over to empty', () => {
+    expect(expeditionSegment(EXPEDITION_SEGMENT_STEPS).into).toBe(0)
+    expect(expeditionSegment(3 * EXPEDITION_SEGMENT_STEPS).into).toBe(0)
+  })
+
+  it('one more tap after a rollover starts filling the fresh bar', () => {
+    expect(expeditionSegment(EXPEDITION_SEGMENT_STEPS + 1).into).toBe(1)
+  })
+})
+
+describe('literacySegment — progress toward the next friendship door (T2.2)', () => {
+  it('before the first door, the bar runs from zero to the first threshold', () => {
+    expect(literacySegment(0)).toEqual({ into: 0, size: LITERACY_MILESTONES[0] })
+    expect(literacySegment(4).into).toBe(4)
+  })
+
+  it('between doors, the bar runs from the last threshold to the next', () => {
+    const [first, second] = LITERACY_MILESTONES
+    expect(literacySegment(first + 5)).toEqual({
+      into: 5,
+      size: second - first,
+    })
+  })
+
+  it('landing exactly on a threshold starts the next stretch at zero', () => {
+    const [first, second] = LITERACY_MILESTONES
+    expect(literacySegment(first)).toEqual({ into: 0, size: second - first })
+  })
+
+  it('with all 10 doors open, the bar simply shows full', () => {
+    const top = LITERACY_MILESTONES[9]
+    expect(literacySegment(top)).toEqual({ into: 1, size: 1 })
+    expect(literacySegment(top + 500)).toEqual({ into: 1, size: 1 })
   })
 })
 

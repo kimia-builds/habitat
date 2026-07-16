@@ -43,6 +43,8 @@ import BackupControls from './ui/BackupControls.jsx'
 import CheckInPanel from './ui/CheckInPanel.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
+import Meters from './ui/Meters.jsx'
+import StubPage from './ui/StubPage.jsx'
 import SymbolPicker from './ui/SymbolPicker.jsx'
 
 function App() {
@@ -52,6 +54,10 @@ function App() {
   const [filter, setFilter] = useState([])
   // What the form area is doing: null (closed), 'new', or a habit id.
   const [editing, setEditing] = useState(null)
+  // Which screen is showing (T2.2): the habit list, or one of the
+  // placeholder pages behind the meters ('map' | 'bookcase' | 'market').
+  // Plain component state — a reload lands back on the list.
+  const [page, setPage] = useState(null)
 
   // The page's own clock (Kimia's requirement 2026-07-15): a tab left
   // open must notice the new Habitat day by itself, like a fresh visit —
@@ -273,6 +279,8 @@ function App() {
 
   // While the check-in is open it IS the app: the list waits behind it,
   // and the done button (which saves the answer) is the only way back.
+  // No meters here (Kimia's decision 2026-07-16) — the check-in stays
+  // focused on answering yesterday.
   if (checkInOpen) {
     return (
       <main className="app">
@@ -290,9 +298,34 @@ function App() {
     )
   }
 
+  // The three meters (T2.2). Expedition is computed live from the
+  // completion history; literacy and the fungus wallet have no data
+  // sources until drops arrive in M3, so they read as empty for now.
+  const meters = (
+    <Meters
+      completions={data.completions}
+      readingItems={[]}
+      fungusBalance={0}
+      onOpen={setPage}
+    />
+  )
+
+  // A meter was clicked: its placeholder page (Map/Bookcase/Market
+  // arrive for real in M4), with the meters still up top.
+  if (page !== null) {
+    return (
+      <main className="app">
+        <h1>HABITAT</h1>
+        {meters}
+        <StubPage page={page} onBack={() => setPage(null)} />
+      </main>
+    )
+  }
+
   return (
     <main className="app">
       <h1>HABITAT</h1>
+      {meters}
 
       <section aria-label="filter">
         <SymbolPicker selected={filter} onToggle={toggleFilter} />

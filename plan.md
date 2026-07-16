@@ -1,8 +1,8 @@
 # plan.md — HABITAT build plan
 
-*v1.4 — 2026-07-15. T2.1 done (spec v1.6 meter decisions: 1:1:1
-difficulty, undo reverses, extras count, 6-monthly recalibration —
-T6.2 amended accordingly). Next task: **T2.2**.*
+*v1.5 — 2026-07-16. T2.2 done (spec v1.7 decisions: rolling expedition
+bar, placeholder pages behind meter clicks, no meters over the
+check-in). Next task: **T2.3**.*
 
 ## How to use this file
 
@@ -93,7 +93,7 @@ tracker. Everything after this is delight, informed by real use.
   *Done when:* tests verify advance amounts, wallet arithmetic
   (buy/return symmetry, never negative), and 5-year pacing maths is
   documented in the constants file.
-- [ ] **T2.2 Meters UI.**
+- [x] **T2.2 Meters UI.** *(done 2026-07-16)*
   All three meters permanently at top; clickable (Map/Bookcase/Market
   stubs for now). First styling pass: white/pastel/basic text on dark.
   *Done when:* meters visibly move when we complete habits.

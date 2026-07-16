@@ -40,6 +40,103 @@ body {
   color: #cfd8e3;
 }
 
+/* T2.2: the three meters — first real styling pass. One soft pastel
+   per stream (spec §7: white/pastel/basic for content; neon stays
+   reserved for the POP moments arriving with drops in M3). */
+
+.meters {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.meter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  background: #11151f;
+  border: 1px solid #2a3040;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.meter:hover {
+  border-color: #3d4660;
+}
+
+.meter-name {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: #9aa3b5;
+}
+
+.meter-bar {
+  height: 0.45rem;
+  background: #1a2030;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.meter-bar-fill {
+  height: 100%;
+  border-radius: 0.25rem;
+  transition: width 0.4s ease;
+}
+
+/* One pastel per stream. */
+.meter-bar-expedition .meter-bar-fill {
+  background: #a8dcc3; /* soft mint — the land */
+}
+
+.meter-bar-literacy .meter-bar-fill {
+  background: #c5b8e8; /* soft lavender — language */
+}
+
+.meter-expedition .meter-value {
+  color: #a8dcc3;
+}
+
+.meter-literacy .meter-value {
+  color: #c5b8e8;
+}
+
+.meter-fungus .meter-wallet {
+  font-size: 1.15rem;
+  color: #f2d9a6; /* soft amber — the glow of fungi */
+}
+
+.meter-fungus .meter-value {
+  color: #9aa3b5;
+}
+
+.meter-value {
+  font-size: 0.8rem;
+}
+
+/* The placeholder pages behind the meters (real pages arrive in M4). */
+.stub-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  border: 1px solid #2a3040;
+  border-radius: 0.5rem;
+  align-items: flex-start;
+}
+
+.stub-page h2 {
+  font-weight: 300;
+  letter-spacing: 0.2em;
+}
+
+.stub-page p {
+  color: #9aa3b5;
+}
+
 .habit-list {
   list-style: none;
   display: flex;
