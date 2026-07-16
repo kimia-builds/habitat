@@ -15,22 +15,27 @@ import {
   removeLatestOn,
 } from './game/completions.js'
 import { addDays, dayKeyFromTimestamp } from './game/days.js'
+import { shouldOpenFieldNotes } from './game/fieldnotes.js'
 import {
   activeHabits,
   addHabit,
   archiveHabit,
   archivedHabits,
+  changeSchedule,
   createHabit,
   filterBySymbols,
   moveHabit,
   removeHabit,
+  sameSchedule,
   unarchiveHabit,
   updateHabit,
 } from './game/habits.js'
 import {
   archivesWhenDone,
+  currentStreak,
   isDayFulfilled,
   requiredPerDay,
+  streakKind,
 } from './game/schedule.js'
 import {
   exportData,
@@ -41,6 +46,7 @@ import {
 } from './storage/storage.js'
 import BackupControls from './ui/BackupControls.jsx'
 import CheckInPanel from './ui/CheckInPanel.jsx'
+import FieldNotes from './ui/FieldNotes.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import Meters from './ui/Meters.jsx'
@@ -54,8 +60,9 @@ function App() {
   const [filter, setFilter] = useState([])
   // What the form area is doing: null (closed), 'new', or a habit id.
   const [editing, setEditing] = useState(null)
-  // Which screen is showing (T2.2): the habit list, or one of the
-  // placeholder pages behind the meters ('map' | 'bookcase' | 'market').
+  // Which screen is showing (T2.2): the habit list, one of the
+  // placeholder pages behind the meters ('map' | 'bookcase' | 'market'),
+  // or the field notes ('fieldnotes', T2.3).
   // Plain component state — a reload lands back on the list.
   const [page, setPage] = useState(null)
 
@@ -117,6 +124,18 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today])
+  // The Sunday ritual (T2.3, Kimia's decision 2026-07-16): on the
+  // first visit of each Sunday — once any check-in is answered — the
+  // field notes open by themselves. Settings remember the day it last
+  // happened, so later visits that Sunday go straight to the list.
+  useEffect(() => {
+    if (checkInOpen || data.habits.length === 0) return
+    if (!shouldOpenFieldNotes(today, data.settings.fieldNotesShownOn)) return
+    save({ ...data, settings: { ...data.settings, fieldNotesShownOn: today } })
+    setPage('fieldnotes')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkInOpen, today])
+
   const pastDaysEditable = editablePastDays(today).some(
     (day) =>
       habitsOn(data.habits, data.completions, day, data.settings.dayCutoffHour)
@@ -142,8 +161,35 @@ function App() {
     setEditing(null)
   }
 
+  // Saving an edit (reworked in T2.3): schedule changes go through
+  // changeSchedule so they're date-stamped and never rewrite the past.
+  // Switching between day-counted and week-counted schedules restarts
+  // the streak — the user is warned before that saves (Kimia's
+  // decision 2026-07-16).
   function handleEdit(habit, fields) {
-    const updated = updateHabit(habit, fields)
+    const { schedule, ...rest } = fields
+    let updated = updateHabit(habit, rest)
+    if (!sameSchedule(habit.schedule, schedule)) {
+      const oldKind = streakKind(habit.schedule.type)
+      if (oldKind !== null && oldKind !== streakKind(schedule.type)) {
+        const streak = currentStreak(
+          habit,
+          data.completions,
+          now,
+          data.settings.dayCutoffHour,
+        )
+        if (streak >= 1) {
+          const plural = streak === 1 ? oldKind : `${oldKind}s`
+          const sure = window.confirm(
+            `Heads up: this schedule change switches how "${habit.name}"'s ` +
+              `streak is counted, so the current streak (${streak} ${plural}) ` +
+              'starts fresh from today. Save anyway?',
+          )
+          if (!sure) return // nothing saved; the form stays open
+        }
+      }
+      updated = changeSchedule(updated, schedule, today)
+    }
     save({
       ...data,
       habits: data.habits.map((h) => (h.id === habit.id ? updated : h)),
@@ -323,6 +369,24 @@ function App() {
     </h1>
   )
 
+  // The field notes (T2.3): the weekly view, with the meters still up
+  // top — like every page reached from the list (spec §5).
+  if (page === 'fieldnotes') {
+    return (
+      <main className="app">
+        {header}
+        {meters}
+        <FieldNotes
+          habits={data.habits}
+          completions={data.completions}
+          cutoffHour={data.settings.dayCutoffHour}
+          now={now}
+          onBack={() => setPage(null)}
+        />
+      </main>
+    )
+  }
+
   // A meter was clicked: its placeholder page (Map/Bookcase/Market
   // arrive for real in M4), with the meters still up top.
   if (page !== null) {
@@ -350,10 +414,9 @@ function App() {
         <>
           <button onClick={() => setEditing('new')}>+ new habit</button>
           {pastDaysEditable && (
-            <button onClick={() => setCheckInOpen(true)}>
-              edit past days
-            </button>
+            <button onClick={() => setCheckInOpen(true)}>edit past days</button>
           )}
+          <button onClick={() => setPage('fieldnotes')}>field notes</button>
         </>
       )}
 
@@ -372,7 +435,7 @@ function App() {
               key={habit.id}
               habit={habit}
               todayCount={countOn(data.completions, habit.id, today)}
-              required={requiredPerDay(habit)}
+              required={requiredPerDay(habit, today)}
               fulfilled={isDayFulfilled(habit, data.completions, today)}
               reorderDisabled={filter.length > 0}
               onComplete={() => handleComplete(habit)}

@@ -34,10 +34,7 @@ function habit(id, schedule, createdAt = at(2026, 7, 13, 9)) {
 
 describe('editablePastDays — the backfill window as a list', () => {
   it('mid-week: every earlier day of this week, oldest first', () => {
-    expect(editablePastDays('2026-07-15')).toEqual([
-      '2026-07-13',
-      '2026-07-14',
-    ])
+    expect(editablePastDays('2026-07-15')).toEqual(['2026-07-13', '2026-07-14'])
   })
 
   it('Sunday: the whole week so far', () => {
@@ -115,9 +112,9 @@ describe('isCheckInDue — when the app opens with the check-in', () => {
   })
 
   it('not due once yesterday has been answered', () => {
-    expect(
-      isCheckInDue([walk], [], '2026-07-13', '2026-07-14', CUTOFF),
-    ).toBe(false)
+    expect(isCheckInDue([walk], [], '2026-07-13', '2026-07-14', CUTOFF)).toBe(
+      false,
+    )
   })
 
   it('not due when yesterday was simply done', () => {
@@ -127,9 +124,9 @@ describe('isCheckInDue — when the app opens with the check-in', () => {
 
   it('a multi-day gap keeps it due until answered', () => {
     // Answered through Monday; Tuesday and Wednesday missed; today Thursday.
-    expect(
-      isCheckInDue([walk], [], '2026-07-13', '2026-07-16', CUTOFF),
-    ).toBe(true)
+    expect(isCheckInDue([walk], [], '2026-07-13', '2026-07-16', CUTOFF)).toBe(
+      true,
+    )
   })
 
   it('frozen missed days never nag: only the window can make it due', () => {

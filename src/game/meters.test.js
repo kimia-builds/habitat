@@ -82,7 +82,9 @@ describe('expeditionSteps', () => {
       done('h1', 2026, 7, 13, 10),
     ]
     const before = expeditionSteps(completions)
-    const after = expeditionSteps(removeLatestOn(completions, 'h1', '2026-07-13'))
+    const after = expeditionSteps(
+      removeLatestOn(completions, 'h1', '2026-07-13'),
+    )
     expect(before - after).toBe(EXPEDITION_STEPS_PER_COMPLETION)
   })
 })
@@ -111,7 +113,10 @@ describe('expeditionSegment — the rolling bar (T2.2)', () => {
 
 describe('literacySegment — progress toward the next friendship door (T2.2)', () => {
   it('before the first door, the bar runs from zero to the first threshold', () => {
-    expect(literacySegment(0)).toEqual({ into: 0, size: LITERACY_MILESTONES[0] })
+    expect(literacySegment(0)).toEqual({
+      into: 0,
+      size: LITERACY_MILESTONES[0],
+    })
     expect(literacySegment(4).into).toBe(4)
   })
 

@@ -149,6 +149,77 @@ body {
   color: #9aa3b5;
 }
 
+/* T2.3: the field notes — the weekly view. Quiet by design. */
+.field-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid #2a3040;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  align-items: flex-start;
+}
+
+.field-notes h2,
+.field-notes h3 {
+  font-weight: 300;
+  letter-spacing: 0.2em;
+}
+
+.field-notes-blurb,
+.field-notes-legend {
+  color: #9aa3b5;
+  font-size: 0.85rem;
+}
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.week-unfolding {
+  color: #9aa3b5;
+}
+
+.week-grid {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.week-grid th,
+.week-grid td {
+  padding: 0.3rem 0.35rem;
+  text-align: center;
+  font-weight: 400;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #1a2030;
+}
+
+.week-grid th[scope='row'] {
+  text-align: left;
+}
+
+.week-grid thead th {
+  color: #9aa3b5;
+  font-size: 0.75rem;
+}
+
+.streak-cell {
+  color: #a8dcc3;
+  white-space: nowrap;
+  font-size: 0.75rem;
+}
+
+.tasks-completed {
+  list-style: none;
+  color: #9aa3b5;
+  font-size: 0.85rem;
+}
+
 .habit-list {
   list-style: none;
   display: flex;

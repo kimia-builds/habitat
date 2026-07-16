@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { recordCompletion, recordRetroCompletion } from './completions.js'
-import { createHabit } from './habits.js'
+import { changeSchedule, createHabit } from './habits.js'
 import {
   archivesWhenDone,
   currentStreak,
@@ -8,6 +8,7 @@ import {
   isScheduledOn,
   isWeekFulfilled,
   requiredPerDay,
+  scheduleOn,
   weekProgress,
 } from './schedule.js'
 
@@ -293,5 +294,112 @@ describe('streaks — informational only, no punishment', () => {
   it('a brand-new habit with nothing done yet has streak 0', () => {
     const habit = makeHabit({ type: 'daily' }, at(2026, 7, 13, 8, 0))
     expect(currentStreak(habit, [], NOW, CUTOFF)).toBe(0)
+  })
+})
+
+describe('the schedule in force on each day (T2.3)', () => {
+  it('scheduleOn answers per day; requiredPerDay follows it', () => {
+    let habit = makeHabit({ type: 'daily' })
+    habit = changeSchedule(habit, { type: 'nPerDay', n: 3 }, '2026-07-14')
+    expect(scheduleOn(habit, '2026-07-13').type).toBe('daily')
+    expect(scheduleOn(habit, '2026-07-14').type).toBe('nPerDay')
+    expect(requiredPerDay(habit, '2026-07-13')).toBe(1)
+    expect(requiredPerDay(habit, '2026-07-14')).toBe(3)
+    // without a day, it answers for the current schedule
+    expect(requiredPerDay(habit)).toBe(3)
+  })
+})
+
+describe('streaks judge each day by the schedule in force THEN (T2.3)', () => {
+  it("Kimia's example: dropping Friday on Tuesday means the missed Friday can't break the streak", () => {
+    // Mon+Fri habit, Monday 13th done. On Tuesday the 14th the
+    // schedule becomes Mondays only. Friday the 17th passes unmarked.
+    // By the next Monday evening (20th, done) the streak is two
+    // fulfilled Mondays — Friday answered to the schedule it lived
+    // under, which asked nothing of it.
+    let habit = makeHabit({ type: 'weekdays', days: [1, 5] })
+    habit = changeSchedule(habit, { type: 'weekdays', days: [1] }, '2026-07-14')
+    const completions = [done(2026, 7, 13, 9), done(2026, 7, 20, 9)]
+    expect(currentStreak(habit, completions, at(2026, 7, 20, 22), CUTOFF)).toBe(
+      2,
+    )
+  })
+
+  it('without that edit, the missed Friday breaks it', () => {
+    const habit = makeHabit({ type: 'weekdays', days: [1, 5] })
+    const completions = [done(2026, 7, 13, 9), done(2026, 7, 20, 9)]
+    expect(currentStreak(habit, completions, at(2026, 7, 20, 22), CUTOFF)).toBe(
+      1,
+    )
+  })
+
+  it('and the edit is never retroactive: a Friday missed BEFORE it still counts as missed', () => {
+    // Friday July 10th was missed while Mon+Fri was still in force;
+    // the Tuesday-the-14th edit cannot resurrect it.
+    let habit = makeHabit({ type: 'weekdays', days: [1, 5] })
+    habit = changeSchedule(habit, { type: 'weekdays', days: [1] }, '2026-07-14')
+    const completions = [
+      done(2026, 7, 6, 9), // Mon 6th
+      done(2026, 7, 13, 9), // Mon 13th (Fri 10th left unmarked)
+      done(2026, 7, 20, 9), // Mon 20th
+    ]
+    expect(currentStreak(habit, completions, at(2026, 7, 20, 22), CUTOFF)).toBe(
+      2,
+    )
+  })
+
+  it('an N-per-week target changed mid-week judges the week by where it ended up', () => {
+    // 3-per-week eased to 2-per-week on Wednesday the 15th: the week
+    // ends under n=2, so two fulfilled days keep the streak alive.
+    let habit = makeHabit({ type: 'nPerWeek', n: 3 })
+    habit = changeSchedule(habit, { type: 'nPerWeek', n: 2 }, '2026-07-15')
+    const completions = [done(2026, 7, 13, 9), done(2026, 7, 16, 9)]
+    expect(currentStreak(habit, completions, at(2026, 7, 19, 22), CUTOFF)).toBe(
+      1,
+    )
+  })
+})
+
+describe('switching streak kind restarts the streak at the switch (T2.3)', () => {
+  it('a day-counted streak does not carry into a week-counted schedule', () => {
+    // Daily and fulfilled all of the week of July 6th; switched to
+    // 1-per-week on Monday the 13th and fulfilled that week too. The
+    // streak is 1 WEEK — the seven fulfilled days belong to the old
+    // counting unit.
+    let habit = makeHabit({ type: 'daily' })
+    habit = changeSchedule(habit, { type: 'nPerWeek', n: 1 }, '2026-07-13')
+    const completions = [6, 7, 8, 9, 10, 11, 12].map((d) => done(2026, 7, d, 9))
+    completions.push(done(2026, 7, 14, 9))
+    expect(currentStreak(habit, completions, at(2026, 7, 19, 22), CUTOFF)).toBe(
+      1,
+    )
+  })
+
+  it('a week-counted streak does not carry into a day-counted schedule', () => {
+    // Two fulfilled 1-per-week weeks, then daily from Monday the 13th,
+    // done on the 13th and 14th: the streak is 2 days, counted only
+    // from the switch.
+    let habit = makeHabit({ type: 'nPerWeek', n: 1 })
+    habit = changeSchedule(habit, { type: 'daily' }, '2026-07-13')
+    const completions = [
+      done(2026, 6, 29, 9),
+      done(2026, 7, 6, 9),
+      done(2026, 7, 13, 9),
+      done(2026, 7, 14, 9),
+    ]
+    expect(currentStreak(habit, completions, at(2026, 7, 14, 22), CUTOFF)).toBe(
+      2,
+    )
+  })
+
+  it('days lived under "whenever" neither break nor extend a later day streak', () => {
+    // Whenever until Wednesday the 15th, then daily, done Wed+Thu:
+    // streak 2 — the unscheduled past is simply not part of the era.
+    let habit = makeHabit({ type: 'whenever' })
+    habit = changeSchedule(habit, { type: 'daily' }, '2026-07-15')
+    const completions = [done(2026, 7, 15, 9), done(2026, 7, 16, 9)]
+    expect(currentStreak(habit, completions, at(2026, 7, 16, 22), CUTOFF)).toBe(
+      2,
+    )
   })
 })

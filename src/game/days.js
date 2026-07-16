@@ -68,6 +68,16 @@ export function dayKeyFromTimestamp(timestampMs, cutoffHour) {
   return toDayKey(moment)
 }
 
+// The timestamp of a given local hour on a given calendar day. Field
+// notes (T2.3) use hour 23 to mean "late that evening": 23 is at or
+// after every possible cutoff (0–23), so the moment always belongs to
+// dayKey's own Habitat day, never the one before.
+export function timestampAtHour(dayKey, hour) {
+  validateDayKey(dayKey)
+  const [year, month, day] = dayKey.split('-').map(Number)
+  return new Date(year, month - 1, day, hour).getTime()
+}
+
 // The day key `days` days after (or, negative, before) the given one.
 export function addDays(dayKey, days) {
   validateDayKey(dayKey)

@@ -1,10 +1,10 @@
 # spec.md — HABITAT
 
-*v1.7 — 2026-07-16. Meters UI decided (T2.2): the expedition meter
-shows a rolling bar (fills over a ~monthly segment, rolls over, total
-count beside it); meter clicks open placeholder pages until M4; the
-meters appear on the habit list and its pages but not above the
-morning check-in, which stays focused.*
+*v1.8 — 2026-07-16 (evening). Field notes decided (T2.3): browsable
+Mon–Sun weeks, notable streaks only, Sunday auto-open. Streak rule
+tightened: every day is judged by the schedule in force ON that day —
+schedule edits are date-stamped and never retroactive. Per-habit line
+graphs designed and deferred to a new task T2.4.*
 
 ## 1. One-line pitch
 
@@ -241,15 +241,21 @@ region discovery expands what the Market can offer.
 - **Abode:** gathered flora and purchased objects, freely arrangeable,
   removable (compost / return).
 - **Guest Book:** friends made so far.
-- **Field notes:** the weekly view.
+- **Field notes:** the weekly view (T2.3) — browsable Mon–Sun weeks,
+  opening on the last completed one; reached from a link on the habit
+  list, and opens by itself on the first visit of each Sunday (after
+  any check-in). Has a short description of itself and a "back to
+  habits" link.
 - **Settings:** day cutoff, data export/import.
 
 ## 6. Data & reflection
 
 - Every completion/skip logged locally, timestamped, attributed to the
   correct day (see 4.2).
-- A **weekly view** summarises the week: completions, patterns, streaks —
+- A **weekly view** summarises the week: completions and streaks —
   presented as field notes, not a guilt dashboard. Kept simple in v1.
+  ("Patterns" were dropped from the brief — Kimia, 2026-07-16; the
+  grid speaks for itself.) Per-habit line graphs arrive in T2.4.
 
 ## 7. Look & feel
 
@@ -364,6 +370,44 @@ region discovery expands what the Market can offer.
   returns to the habit list. The one exception is the morning
   check-in, where the header stays a plain title: its done button
   remains the only way out, so yesterday always gets answered.
+- 2026-07-16 (T2.3): **streaks judge each day by the schedule in force
+  ON that day** — frequency changes are never retroactive. (Mon+Fri
+  habit, done Monday; schedule changed Tuesday to Mondays only → the
+  coming Friday can't break the streak. Without the edit, it would.
+  Equally, a Friday already missed before the edit stays missed.)
+  Schedule edits are therefore date-stamped: each habit keeps a
+  schedule history. Edits made before 2026-07-16 were never recorded,
+  so older days are judged by the current schedule — a one-time
+  limitation that fades as new history accumulates.
+- 2026-07-16 (T2.3): switching a schedule between the two streak
+  counting units — day-counted (daily / weekdays / N-per-day) and
+  week-counted (N-per-week) — restarts the streak at the switch; the
+  app warns before saving such an edit. An N-per-week target changed
+  mid-week judges that week by the n in force at the week's end.
+- 2026-07-16 (T2.3): the field notes page — browsable Mon–Sun weeks
+  (back to the first week Habitat ever saw, forward to the current
+  week, marked "still unfolding"), opening on the last completed week.
+  Rows show each habit's 7 days: ✓ / count for marks, a quiet dot for
+  a concluded scheduled day left unmarked, blank where nothing was
+  asked. "Patterns" dropped from the brief. Streaks appear only when
+  notable (≥1) — a broken streak shows nothing, not a zero. One-time
+  to-dos have no row; the week they were done lists them under "tasks
+  completed". Archived habits keep their recorded weeks (up to the
+  archive day); deleting a habit deletes its notes with it.
+- 2026-07-16 (T2.3): the field notes open by themselves on the FIRST
+  visit of each Sunday, right after any check-in; a link on the habit
+  list reaches them any time. The page carries a short description of
+  itself and a "back to habits" link.
+- 2026-07-16 (designed in T2.3, built in T2.4): per-habit **line
+  graphs** in the field notes — one collapsible graph per habit showing
+  its raw completion counts over time ("frequency, unrelated to the
+  goal" — streaks measure goal fulfilment; graphs are neutral data).
+  X-axis zoom levels: day-by-day, week-by-week, 4-weeks-by-4-weeks.
+  Each level unlocks purely by the habit's AGE — 3 days / 3 weeks /
+  12 weeks of existing on the list — never by completions (a
+  12-week-old habit with zero marks still graphs a flat zero line).
+  One-time to-dos get no graph. An archived habit keeps its graph,
+  frozen at the archive day.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

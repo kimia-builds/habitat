@@ -9,7 +9,7 @@
 import { editablePastDays, habitsOn } from '../game/checkin.js'
 import { countOn } from '../game/completions.js'
 import { addDays, isoWeekday } from '../game/days.js'
-import { requiredPerDay } from '../game/schedule.js'
+import { requiredPerDay, scheduleOn } from '../game/schedule.js'
 import { SYMBOL_COLORS, SYMBOL_GLYPHS } from './symbols.js'
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -19,7 +19,14 @@ const dayLabel = (dayKey) =>
 
 // The habits of one past day, each with its mark/undo controls —
 // a slimmer cousin of HabitRow, acting on that day instead of today.
-function DayRows({ habits, completions, dayKey, cutoffHour, onMark, onUnmark }) {
+function DayRows({
+  habits,
+  completions,
+  dayKey,
+  cutoffHour,
+  onMark,
+  onUnmark,
+}) {
   const listed = habitsOn(habits, completions, dayKey, cutoffHour)
   if (listed.length === 0) {
     return <p className="habit-meta">no habits existed yet on this day</p>
@@ -27,8 +34,10 @@ function DayRows({ habits, completions, dayKey, cutoffHour, onMark, onUnmark }) 
   return (
     <ul className="habit-list">
       {listed.map((habit) => {
+        // A past day answers to the schedule it was living under (T2.3),
+        // not to whatever the habit's schedule is today.
         const count = countOn(completions, habit.id, dayKey)
-        const required = requiredPerDay(habit)
+        const required = requiredPerDay(habit, dayKey)
         return (
           <li key={habit.id} className="habit-row">
             <span
@@ -40,7 +49,7 @@ function DayRows({ habits, completions, dayKey, cutoffHour, onMark, onUnmark }) 
             <span className="habit-main">
               <span className="habit-name">{habit.name}</span>
             </span>
-            {habit.schedule.type === 'nPerDay' ? (
+            {scheduleOn(habit, dayKey).type === 'nPerDay' ? (
               <span className="completion-controls">
                 <span>
                   {count}/{required}
@@ -90,9 +99,9 @@ function CheckInPanel({
     <section className="check-in" aria-label="check-in">
       <h2>check-in</h2>
       <p>
-        Mark what you completed <strong>yesterday, {dayLabel(yesterday)}</strong>.
-        Anything left unmarked simply counts as not done — neutral data,
-        nothing lost.
+        Mark what you completed{' '}
+        <strong>yesterday, {dayLabel(yesterday)}</strong>. Anything left
+        unmarked simply counts as not done — neutral data, nothing lost.
       </p>
       <DayRows {...rowProps} dayKey={yesterday} />
       {older.length > 0 && (

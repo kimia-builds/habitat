@@ -1,8 +1,10 @@
 # plan.md — HABITAT build plan
 
-*v1.5 — 2026-07-16. T2.2 done (spec v1.7 decisions: rolling expedition
-bar, placeholder pages behind meter clicks, no meters over the
-check-in). Next task: **T2.3**.*
+*v1.6 — 2026-07-16 (evening). T2.3 done (spec v1.8 decisions:
+browsable weekly field notes, notable streaks only, Sunday auto-open,
+date-stamped schedule history — streaks judge each day by the schedule
+in force then). The per-habit line graphs Kimia designed in the T2.3
+session became their own task. Next task: **T2.4**.*
 
 ## How to use this file
 
@@ -81,7 +83,7 @@ check-in). Next task: **T2.3**.*
 **Milestone gate:** from here, Kimia uses Habitat daily as her real
 tracker. Everything after this is delight, informed by real use.
 
-## M2 — Meters & field notes (3 sessions)
+## M2 — Meters & field notes (4 sessions)
 
 - [x] **T2.1 Meter engine.** *(done 2026-07-15)*
   Expedition meter: fixed advance per completion — same step for every
@@ -97,9 +99,25 @@ tracker. Everything after this is delight, informed by real use.
   All three meters permanently at top; clickable (Map/Bookcase/Market
   stubs for now). First styling pass: white/pastel/basic text on dark.
   *Done when:* meters visibly move when we complete habits.
-- [ ] **T2.3 Field notes (weekly view).**
-  Completions, patterns, streaks. Field-notes tone, not a dashboard.
+- [x] **T2.3 Field notes (weekly view).** *(done 2026-07-16)*
+  Browsable Mon–Sun weeks (default: last completed; current week
+  marked "still unfolding"), notable streaks only, one-time to-dos
+  under "tasks completed", Sunday first-visit auto-open after the
+  check-in. Field-notes tone, not a dashboard — no "patterns"
+  (dropped). Under the hood: schedule edits became date-stamped
+  history, so streaks judge each day by the schedule in force THEN
+  (never retroactive); switching day-counted ↔ week-counted schedules
+  restarts the streak, with a warning before saving.
   *Done when:* last week's real usage data renders correctly.
+- [ ] **T2.4 Habit line graphs (in the field notes).**
+  One collapsible graph per habit: raw completion counts over time,
+  neutral data unrelated to the goal. Zoom levels day / week / 4-week,
+  each unlocked purely by the habit's age (3 days / 3 weeks / 12
+  weeks — never by completions; a flat zero line is fine). No graphs
+  for one-time to-dos; archived habits' graphs freeze at the archive
+  day. SVG, code-drawn (spec §7). Full rule in spec §10 (2026-07-16).
+  *Done when:* graph tests pass (unlock ages, archive freeze, counts
+  per bucket) and real usage data draws sane lines at all three zooms.
 
 ## M3 — Drops engine (3 sessions)
 

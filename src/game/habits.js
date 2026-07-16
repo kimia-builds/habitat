@@ -7,18 +7,29 @@
 //     description: string, may be empty
 //     symbol:      integer 1..6 — the abstract tag (never a word)
 //     difficulty:  'easy' | 'medium' | 'difficult'
-//     schedule:    see SCHEDULE_TYPES in constants.js
+//     schedule:    see SCHEDULE_TYPES in constants.js — the CURRENT one
+//     scheduleHistory: [{ schedule, fromDay }] — every schedule this
+//                  habit has had, each stamped with the Habitat day it
+//                  took effect (ascending; the last entry is `schedule`).
+//                  Added in T2.3: schedule edits are never retroactive
+//                  (Kimia's decision 2026-07-16), so each past day is
+//                  judged by the schedule that was in force THEN.
 //     archived:    boolean — hidden from daily use, history kept
+//     archivedAt:  timestamp (ms) when archived, else null — added in
+//                  T2.3 so the field notes know when a habit's record
+//                  stops
 //     createdAt:   timestamp (ms)
 //   }
 
 import {
+  DEFAULT_DAY_CUTOFF_HOUR,
   DIFFICULTIES,
   SCHEDULE_TYPES,
   SYMBOL_COUNT,
   WEEKDAY_MAX,
   WEEKDAY_MIN,
 } from './constants.js'
+import { dayKeyFromTimestamp, isValidDayKey } from './days.js'
 
 function isInteger(value) {
   return typeof value === 'number' && Number.isInteger(value)
@@ -65,6 +76,45 @@ export function validateSchedule(schedule) {
   }
 }
 
+// Are these two schedules the same, in meaning rather than in object
+// identity? (Weekday lists compare as sets — Mon/Fri is Fri/Mon.)
+export function sameSchedule(a, b) {
+  if (a.type !== b.type) return false
+  if (a.type === 'weekdays') {
+    return [...a.days].sort().join() === [...b.days].sort().join()
+  }
+  if (a.type === 'nPerWeek' || a.type === 'nPerDay') return a.n === b.n
+  return true
+}
+
+function validateScheduleHistory(habit) {
+  const history = habit.scheduleHistory
+  if (!Array.isArray(history) || history.length === 0) {
+    throw new Error('Habit needs a schedule history with at least one entry.')
+  }
+  let previousDay = null
+  for (const entry of history) {
+    if (typeof entry !== 'object' || entry === null) {
+      throw new Error('Each schedule history entry must be an object.')
+    }
+    validateSchedule(entry.schedule)
+    if (!isValidDayKey(entry.fromDay)) {
+      throw new Error(
+        'Each schedule history entry needs the day it took effect.',
+      )
+    }
+    if (previousDay !== null && entry.fromDay <= previousDay) {
+      throw new Error('Schedule history must move forward in time.')
+    }
+    previousDay = entry.fromDay
+  }
+  if (!sameSchedule(history[history.length - 1].schedule, habit.schedule)) {
+    throw new Error(
+      "The schedule history's last entry must be the current schedule.",
+    )
+  }
+}
+
 export function validateHabit(habit) {
   if (typeof habit !== 'object' || habit === null) {
     throw new Error('Habit must be an object.')
@@ -91,8 +141,16 @@ export function validateHabit(habit) {
     )
   }
   validateSchedule(habit.schedule)
+  validateScheduleHistory(habit)
   if (typeof habit.archived !== 'boolean') {
     throw new Error('Habit archived flag must be true or false.')
+  }
+  if (habit.archived) {
+    if (!isInteger(habit.archivedAt) || habit.archivedAt < 0) {
+      throw new Error('An archived habit needs its archivedAt timestamp.')
+    }
+  } else if (habit.archivedAt !== null) {
+    throw new Error('An unarchived habit must have archivedAt null.')
   }
   if (!isInteger(habit.createdAt) || habit.createdAt < 0) {
     throw new Error('Habit createdAt must be a timestamp.')
@@ -113,7 +171,22 @@ export function createHabit(
     symbol,
     difficulty,
     schedule,
+    // The birth entry. Its fromDay uses the DEFAULT cutoff because
+    // createHabit doesn't know the user's setting — harmless, since
+    // the first entry governs every day before its own fromDay anyway
+    // (see scheduleOn in schedule.js): the exact label can't change
+    // any answer.
+    scheduleHistory:
+      schedule && SCHEDULE_TYPES.includes(schedule.type)
+        ? [
+            {
+              schedule,
+              fromDay: dayKeyFromTimestamp(now, DEFAULT_DAY_CUTOFF_HOUR),
+            },
+          ]
+        : [],
     archived: false,
+    archivedAt: null,
     createdAt: now,
   }
   validateHabit(habit)
@@ -122,8 +195,10 @@ export function createHabit(
 
 // Edit a habit's user-changeable fields. Returns a NEW object (the
 // original is untouched); identity and history stamps can't change.
+// The schedule is deliberately NOT editable here — schedule changes
+// must be date-stamped, so they go through changeSchedule below.
 export function updateHabit(habit, changes) {
-  const allowed = ['name', 'description', 'symbol', 'difficulty', 'schedule']
+  const allowed = ['name', 'description', 'symbol', 'difficulty']
   for (const key of Object.keys(changes)) {
     if (!allowed.includes(key)) {
       throw new Error(`Habit field "${key}" cannot be changed here.`)
@@ -135,12 +210,47 @@ export function updateHabit(habit, changes) {
   return updated
 }
 
-export function archiveHabit(habit) {
-  return { ...habit, archived: true }
+// A schedule edit, date-stamped and never retroactive (Kimia's decision
+// 2026-07-16): the old schedule keeps governing the days before
+// `fromDay` (normally today), so past streak judgements can never be
+// rewritten by a later edit. Several edits on the same day collapse
+// into one — only what the day ended with counts.
+export function changeSchedule(habit, schedule, fromDay) {
+  validateSchedule(schedule)
+  if (sameSchedule(habit.schedule, schedule)) return habit
+  const history = habit.scheduleHistory
+  const last = history[history.length - 1]
+  if (fromDay < last.fromDay) {
+    throw new Error(
+      'A schedule change cannot take effect before an earlier change — ' +
+        'the past is never rewritten.',
+    )
+  }
+  let newHistory
+  if (fromDay === last.fromDay) {
+    // Second thoughts on the same day: replace, don't stack. If that
+    // lands us back on the previous schedule, the day's edits simply
+    // cancelled out.
+    const kept = history.slice(0, -1)
+    const previous = kept[kept.length - 1]
+    newHistory =
+      previous && sameSchedule(previous.schedule, schedule)
+        ? kept
+        : [...kept, { schedule, fromDay }]
+  } else {
+    newHistory = [...history, { schedule, fromDay }]
+  }
+  const updated = { ...habit, schedule, scheduleHistory: newHistory }
+  validateHabit(updated)
+  return updated
+}
+
+export function archiveHabit(habit, now = Date.now()) {
+  return { ...habit, archived: true, archivedAt: now }
 }
 
 export function unarchiveHabit(habit) {
-  return { ...habit, archived: false }
+  return { ...habit, archived: false, archivedAt: null }
 }
 
 // --- Operations on the whole habit list -------------------------------

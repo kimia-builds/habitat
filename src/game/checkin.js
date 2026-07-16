@@ -45,9 +45,7 @@ export function habitsOn(habits, completions, dayKey, cutoffHour) {
   return habits.filter((habit) => {
     if (!existedOn(habit, dayKey, cutoffHour)) return false
     if (!habit.archived) return true
-    return (
-      archivesWhenDone(habit) && countOn(completions, habit.id, dayKey) > 0
-    )
+    return archivesWhenDone(habit) && countOn(completions, habit.id, dayKey) > 0
   })
 }
 

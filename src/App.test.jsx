@@ -325,22 +325,27 @@ describe('the morning check-in (T1.4)', () => {
     )
     fireEvent.click(tuesday.getByRole('button', { name: 'mark done' }))
 
-    fireEvent.click(screen.getByRole('button', { name: 'done — save check-in' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'done — save check-in' }),
+    )
 
     // Back on the list, and the data says what really happened: the
     // marks belong to the days they were DONE, entry day nowhere.
     expect(screen.getByRole('button', { name: '+ new habit' })).toBeDefined()
-    expect(stored().completions.map((c) => c.dayKey).sort()).toEqual([
-      '2026-07-14',
-      '2026-07-15',
-    ])
+    expect(
+      stored()
+        .completions.map((c) => c.dayKey)
+        .sort(),
+    ).toEqual(['2026-07-14', '2026-07-15'])
     expect(stored().checkedInThrough).toBe('2026-07-15')
   })
 
   it('leaving everything unmarked is a fine answer — saved as answered, nothing recorded', () => {
     seed()
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: 'done — save check-in' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'done — save check-in' }),
+    )
     expect(stored().completions).toEqual([])
     expect(stored().checkedInThrough).toBe('2026-07-15')
     // A reload does not ask again.
@@ -362,15 +367,16 @@ describe('the morning check-in (T1.4)', () => {
 
     // But the week's earlier days can still be opened and edited.
     fireEvent.click(screen.getByRole('button', { name: 'edit past days' }))
-    const monday = within(
-      screen.getByText('Mon 2026-07-13').closest('details'),
-    )
+    const monday = within(screen.getByText('Mon 2026-07-13').closest('details'))
     fireEvent.click(monday.getByRole('button', { name: 'mark done' }))
-    fireEvent.click(screen.getByRole('button', { name: 'done — save check-in' }))
-    expect(stored().completions.map((c) => c.dayKey).sort()).toEqual([
-      '2026-07-13',
-      '2026-07-15',
-    ])
+    fireEvent.click(
+      screen.getByRole('button', { name: 'done — save check-in' }),
+    )
+    expect(
+      stored()
+        .completions.map((c) => c.dayKey)
+        .sort(),
+    ).toEqual(['2026-07-13', '2026-07-15'])
   })
 })
 
@@ -645,5 +651,134 @@ describe('backup import (plan T1.3: warn before overwriting)', () => {
 
     expect(await screen.findByText(/not readable/)).toBeDefined()
     expect(screen.getByText('survivor')).toBeDefined()
+  })
+})
+
+describe('field notes (T2.3)', () => {
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+
+  // Seed a v1-style record directly — these tests need habits that
+  // existed on specific past days, which the UI alone can't create.
+  // (v1 on purpose: loadData's upgrade fills in the T2.3 fields.)
+  function seed(overrides = {}) {
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 1,
+        habits: [
+          {
+            id: 'walk',
+            name: 'walk',
+            description: '',
+            symbol: 1,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            archived: false,
+            createdAt: new Date(2026, 6, 6, 9).getTime(), // Mon Jul 6th
+          },
+        ],
+        completions: [],
+        settings: { dayCutoffHour: 3 },
+        checkedInThrough: null,
+        ...overrides,
+      }),
+    )
+  }
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('the habit list links to the field notes and back', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 15, 9)) // Wednesday the 15th
+    seed({
+      checkedInThrough: '2026-07-14', // yesterday answered, no check-in
+      completions: [
+        { id: 'c1', habitId: 'walk', recordedAt: 5, dayKey: '2026-07-08' },
+      ],
+    })
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'field notes' }))
+    // Opens on the last completed week, where Wednesday the 8th shows ✓.
+    expect(screen.getByText(/week of 2026-07-06 – 2026-07-12/)).toBeDefined()
+    expect(screen.getByText('✓')).toBeDefined()
+
+    // Browsing: forward to the current (still unfolding) week, no further.
+    fireEvent.click(screen.getByRole('button', { name: 'later ›' }))
+    expect(screen.getByText(/week of 2026-07-13/)).toBeDefined()
+    expect(screen.getByText(/still unfolding/)).toBeDefined()
+    expect(screen.getByRole('button', { name: 'later ›' })).toHaveProperty(
+      'disabled',
+      true,
+    )
+
+    fireEvent.click(
+      screen.getByRole('button', { name: '← back to the habits' }),
+    )
+    expect(screen.getByRole('button', { name: '+ new habit' })).toBeDefined()
+  })
+
+  it('opens by itself on the first visit of a Sunday — and only the first', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 19, 12)) // Sunday the 19th, noon
+    seed({ checkedInThrough: '2026-07-18' }) // Saturday answered
+
+    const first = render(<App />)
+    expect(screen.getByRole('heading', { name: 'field notes' })).toBeDefined()
+    expect(stored().settings.fieldNotesShownOn).toBe('2026-07-19')
+
+    // A second visit the same Sunday goes straight to the list.
+    first.unmount()
+    render(<App />)
+    expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+  })
+
+  it('the Sunday opening waits its turn behind the check-in', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 19, 12)) // Sunday the 19th
+    seed() // Saturday unanswered → the check-in must come first
+
+    render(<App />)
+    expect(screen.getByText('check-in')).toBeDefined()
+    expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'done — save check-in' }),
+    )
+    expect(screen.getByRole('heading', { name: 'field notes' })).toBeDefined()
+  })
+
+  it('warns before a schedule edit that switches the streak kind', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 15, 9)) // Wednesday the 15th
+    seed({ checkedInThrough: '2026-07-14' })
+    render(<App />)
+
+    // Build a streak of 1 day, then try daily → N-per-week.
+    fireEvent.click(row('walk').getByRole('button', { name: 'mark done' }))
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    fireEvent.click(row('walk').getByRole('button', { name: 'edit' }))
+    const form = () => within(document.querySelector('form.habit-form'))
+    fireEvent.change(form().getByLabelText('schedule'), {
+      target: { value: 'nPerWeek' },
+    })
+    fireEvent.change(form().getByLabelText('how many'), {
+      target: { value: '3' },
+    })
+    fireEvent.click(form().getByRole('button', { name: 'save' }))
+
+    // Declined: nothing saved, the form still open.
+    expect(confirm).toHaveBeenCalledOnce()
+    expect(document.querySelector('form.habit-form')).not.toBeNull()
+    expect(stored().habits[0].schedule.type).toBe('daily')
+
+    // Accepted: saved, and the change is date-stamped in the history.
+    confirm.mockReturnValue(true)
+    fireEvent.click(form().getByRole('button', { name: 'save' }))
+    expect(stored().habits[0].schedule).toEqual({ type: 'nPerWeek', n: 3 })
+    expect(stored().habits[0].scheduleHistory).toHaveLength(2)
+    expect(stored().habits[0].scheduleHistory[1].fromDay).toBe('2026-07-15')
   })
 })

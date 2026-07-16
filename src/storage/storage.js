@@ -3,33 +3,83 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 1,
-//     habits:      [...],
+//     schemaVersion: 2,
+//     habits:      [...],   // since v2 each carries scheduleHistory
+//                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — added in T1.2
-//     settings:    { dayCutoffHour: 3 },
+//     settings:    { dayCutoffHour: 3,
+//                    fieldNotesShownOn: null },  // the last Sunday the
+//                              // field notes auto-opened — added in T2.3
 //     checkedInThrough: null,  // last day whose check-in was answered
 //                              // ('YYYY-MM-DD' or null) — added in T1.4
 //   }
 //
 // The schemaVersion lets a future Habitat recognise and upgrade old
-// backups.
+// backups — upgradeData below does exactly that for v1.
 
 import { validateCompletion } from '../game/completions.js'
 import { DEFAULT_DAY_CUTOFF_HOUR } from '../game/constants.js'
-import { isValidDayKey, validateCutoffHour } from '../game/days.js'
+import {
+  dayKeyFromTimestamp,
+  isValidDayKey,
+  validateCutoffHour,
+} from '../game/days.js'
 import { validateHabit } from '../game/habits.js'
 
 const STORAGE_KEY = 'habitat-data'
-const SCHEMA_VERSION = 1
+const SCHEMA_VERSION = 2
 
 export function emptyData() {
   return {
     schemaVersion: SCHEMA_VERSION,
     habits: [],
     completions: [],
-    settings: { dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR },
+    settings: {
+      dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR,
+      fieldNotesShownOn: null,
+    },
     checkedInThrough: null,
   }
+}
+
+// v1 → v2 (T2.3): habits gain a date-stamped schedule history (so
+// streak judgements can never be rewritten by later edits) and an
+// archive timestamp. Past schedule edits were never recorded, so a v1
+// habit's history reads as its current schedule from birth (Kimia's
+// decision 2026-07-16 — the limitation fades as new history
+// accumulates). A v1 archive's moment is likewise unknown, so the
+// upgrade moment stands in. Anything malformed is left untouched for
+// validateData to complain about properly.
+function upgradeData(data, now = Date.now()) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 1) return data
+  const rawCutoff = data.settings?.dayCutoffHour
+  const cutoff =
+    Number.isInteger(rawCutoff) && rawCutoff >= 0 && rawCutoff <= 23
+      ? rawCutoff
+      : DEFAULT_DAY_CUTOFF_HOUR
+  const habits = Array.isArray(data.habits)
+    ? data.habits.map((habit) => {
+        if (
+          typeof habit !== 'object' ||
+          habit === null ||
+          !Number.isInteger(habit.createdAt)
+        ) {
+          return habit
+        }
+        return {
+          ...habit,
+          scheduleHistory: habit.scheduleHistory ?? [
+            {
+              schedule: habit.schedule,
+              fromDay: dayKeyFromTimestamp(habit.createdAt, cutoff),
+            },
+          ],
+          archivedAt: habit.archivedAt ?? (habit.archived ? now : null),
+        }
+      })
+    : data.habits
+  return { ...data, schemaVersion: SCHEMA_VERSION, habits }
 }
 
 // Older saves and backups predate completions, settings and (from
@@ -44,8 +94,10 @@ function withDefaults(data) {
     completions: data.completions === undefined ? [] : data.completions,
     settings:
       data.settings === undefined
-        ? { dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR }
-        : data.settings,
+        ? { dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR, fieldNotesShownOn: null }
+        : typeof data.settings === 'object' && data.settings !== null
+          ? { fieldNotesShownOn: null, ...data.settings }
+          : data.settings,
     checkedInThrough:
       data.checkedInThrough === undefined ? null : data.checkedInThrough,
   }
@@ -74,9 +126,12 @@ function validateData(data) {
   }
   validateCutoffHour(data.settings.dayCutoffHour)
   if (
-    data.checkedInThrough !== null &&
-    !isValidDayKey(data.checkedInThrough)
+    data.settings.fieldNotesShownOn !== null &&
+    !isValidDayKey(data.settings.fieldNotesShownOn)
   ) {
+    throw new Error('This backup has a broken field-notes marker.')
+  }
+  if (data.checkedInThrough !== null && !isValidDayKey(data.checkedInThrough)) {
     throw new Error('This backup has a broken check-in marker.')
   }
 }
@@ -84,7 +139,7 @@ function validateData(data) {
 export function loadData() {
   const raw = localStorage.getItem(STORAGE_KEY)
   if (raw === null) return emptyData()
-  const data = withDefaults(JSON.parse(raw))
+  const data = upgradeData(withDefaults(JSON.parse(raw)))
   validateData(data)
   return data
 }
@@ -124,7 +179,7 @@ export function importData(jsonString) {
   } catch {
     throw new Error('This file is not readable as a Habitat backup (not JSON).')
   }
-  data = withDefaults(data)
+  data = upgradeData(withDefaults(data))
   validateData(data)
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   return data

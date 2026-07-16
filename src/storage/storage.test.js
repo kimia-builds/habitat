@@ -62,7 +62,7 @@ describe('backup round trip (export → wipe → import)', () => {
       habits: [
         habit('a', 'Read'),
         habit('b', 'Walk'),
-        { ...habit('c', 'Old habit'), archived: true },
+        { ...habit('c', 'Old habit'), archived: true, archivedAt: 2000 },
       ],
     }
     saveData(data)
@@ -136,7 +136,10 @@ describe('completions and settings in storage (added in T1.2)', () => {
 
   it('the day-cutoff setting persists', () => {
     expect(loadData().settings.dayCutoffHour).toBe(3) // the default
-    saveData({ ...emptyData(), settings: { dayCutoffHour: 5 } })
+    saveData({
+      ...emptyData(),
+      settings: { ...emptyData().settings, dayCutoffHour: 5 },
+    })
     expect(loadData().settings.dayCutoffHour).toBe(5)
   })
 
@@ -188,5 +191,73 @@ describe('completions and settings in storage (added in T1.2)', () => {
       ),
     ).toThrow()
     expect(loadData()).toEqual(data)
+  })
+})
+
+describe('the v1 → v2 upgrade (T2.3)', () => {
+  it('a v1 save gains schedule history, archive stamps and the field-notes marker', () => {
+    // A hand-written v1 record, exactly as T1-era Habitat stored it —
+    // no scheduleHistory, no archivedAt, no fieldNotesShownOn.
+    const v1habit = {
+      id: 'a',
+      name: 'Read',
+      description: '',
+      symbol: 1,
+      difficulty: 'medium',
+      schedule: { type: 'daily' },
+      archived: false,
+      createdAt: 1000,
+    }
+    const v1archived = { ...v1habit, id: 'b', name: 'Old', archived: true }
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 1,
+        habits: [v1habit, v1archived],
+        completions: [],
+        settings: { dayCutoffHour: 3 },
+        checkedInThrough: null,
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(2)
+    expect(data.settings.fieldNotesShownOn).toBe(null)
+    const [a, b] = data.habits
+    // History reads as the current schedule from birth — past edits
+    // were never recorded, so this is all a v1 save can honestly say.
+    expect(a.scheduleHistory).toHaveLength(1)
+    expect(a.scheduleHistory[0].schedule).toEqual({ type: 'daily' })
+    expect(a.archivedAt).toBe(null)
+    // The v1 archive's moment is unknown; the upgrade moment stands in.
+    expect(typeof b.archivedAt).toBe('number')
+    // And the upgraded shape passes full validation on the next save.
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('a v1 backup file imports the same way', () => {
+    const backup = JSON.stringify({
+      schemaVersion: 1,
+      habits: [
+        {
+          id: 'a',
+          name: 'Read',
+          description: '',
+          symbol: 1,
+          difficulty: 'medium',
+          schedule: { type: 'nPerWeek', n: 3 },
+          archived: false,
+          createdAt: 1000,
+        },
+      ],
+    })
+    const restored = importData(backup)
+    expect(restored.schemaVersion).toBe(2)
+    expect(restored.habits[0].scheduleHistory[0].schedule).toEqual({
+      type: 'nPerWeek',
+      n: 3,
+    })
+    expect(restored.settings.fieldNotesShownOn).toBe(null)
   })
 })

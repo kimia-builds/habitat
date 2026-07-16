@@ -4,10 +4,12 @@ import {
   addHabit,
   archiveHabit,
   archivedHabits,
+  changeSchedule,
   createHabit,
   filterBySymbols,
   moveHabit,
   removeHabit,
+  sameSchedule,
   unarchiveHabit,
   updateHabit,
 } from './habits.js'
@@ -27,7 +29,19 @@ describe('createHabit', () => {
       ...fields,
       id: 'id-1',
       archived: false,
+      archivedAt: null,
       createdAt: 1000,
+      // The birth entry of the schedule history (T2.3): the original
+      // schedule, dated to the day the habit was created. (The exact
+      // day label depends on the clock's timezone and never affects
+      // any answer — see the comment in createHabit — so the test only
+      // pins its shape.)
+      scheduleHistory: [
+        {
+          schedule: fields.schedule,
+          fromDay: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+        },
+      ],
     })
   })
 
@@ -136,6 +150,77 @@ describe('updateHabit', () => {
     const habit = createHabit(fields, 1000, 'id-1')
     expect(() => updateHabit(habit, { symbol: 9 })).toThrow(/1 to 6/)
   })
+
+  it('refuses schedule edits — those must be date-stamped (T2.3)', () => {
+    const habit = createHabit(fields, 1000, 'id-1')
+    expect(() =>
+      updateHabit(habit, { schedule: { type: 'whenever' } }),
+    ).toThrow(/cannot be changed/)
+  })
+})
+
+describe('changeSchedule (date-stamped, never retroactive — T2.3)', () => {
+  const habit = () => createHabit(fields, 1000, 'id-1') // daily
+
+  it('stamps the change and keeps the old schedule in the history', () => {
+    const weekdays = { type: 'weekdays', days: [1, 5] }
+    const changed = changeSchedule(habit(), weekdays, '2026-07-14')
+    expect(changed.schedule).toEqual(weekdays)
+    expect(changed.scheduleHistory).toHaveLength(2)
+    expect(changed.scheduleHistory[0].schedule).toEqual({ type: 'daily' })
+    expect(changed.scheduleHistory[1]).toEqual({
+      schedule: weekdays,
+      fromDay: '2026-07-14',
+    })
+  })
+
+  it('a "change" to the same schedule records nothing', () => {
+    const same = changeSchedule(habit(), { type: 'daily' }, '2026-07-14')
+    expect(same.scheduleHistory).toHaveLength(1)
+  })
+
+  it('several edits on one day collapse into what the day ended with', () => {
+    let h = changeSchedule(habit(), { type: 'nPerWeek', n: 3 }, '2026-07-14')
+    h = changeSchedule(h, { type: 'nPerWeek', n: 2 }, '2026-07-14')
+    expect(h.scheduleHistory).toHaveLength(2)
+    expect(h.schedule).toEqual({ type: 'nPerWeek', n: 2 })
+  })
+
+  it('same-day edits that land back on the old schedule cancel out', () => {
+    let h = changeSchedule(habit(), { type: 'nPerWeek', n: 3 }, '2026-07-14')
+    h = changeSchedule(h, { type: 'daily' }, '2026-07-14')
+    expect(h.scheduleHistory).toHaveLength(1)
+    expect(h.schedule).toEqual({ type: 'daily' })
+  })
+
+  it('refuses to take effect before an earlier change — the past is never rewritten', () => {
+    const h = changeSchedule(habit(), { type: 'nPerWeek', n: 3 }, '2026-07-14')
+    expect(() => changeSchedule(h, { type: 'daily' }, '2026-07-13')).toThrow(
+      /never rewritten/,
+    )
+  })
+})
+
+describe('sameSchedule', () => {
+  it('compares meaning, not object identity', () => {
+    expect(sameSchedule({ type: 'daily' }, { type: 'daily' })).toBe(true)
+    expect(sameSchedule({ type: 'daily' }, { type: 'whenever' })).toBe(false)
+    expect(
+      sameSchedule(
+        { type: 'weekdays', days: [5, 1] },
+        { type: 'weekdays', days: [1, 5] },
+      ),
+    ).toBe(true) // Mon/Fri is Fri/Mon
+    expect(
+      sameSchedule(
+        { type: 'weekdays', days: [1] },
+        { type: 'weekdays', days: [1, 5] },
+      ),
+    ).toBe(false)
+    expect(
+      sameSchedule({ type: 'nPerWeek', n: 3 }, { type: 'nPerWeek', n: 2 }),
+    ).toBe(false)
+  })
 })
 
 describe('archiving and the habit list', () => {
@@ -144,6 +229,12 @@ describe('archiving and the habit list', () => {
     const archived = archiveHabit(habit)
     expect(archived.archived).toBe(true)
     expect(unarchiveHabit(archived)).toEqual(habit)
+  })
+
+  it('archiving stamps the moment; unarchiving clears it (T2.3)', () => {
+    const habit = archiveHabit(createHabit(fields, 1000, 'id-1'), 5000)
+    expect(habit.archivedAt).toBe(5000)
+    expect(unarchiveHabit(habit).archivedAt).toBe(null)
   })
 
   it('splits active from archived', () => {
