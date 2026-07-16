@@ -525,6 +525,18 @@ describe('the three meters (T2.2)', () => {
     expect(screen.getByText('the Market')).toBeDefined()
   })
 
+  it('the HABITAT header is a home link from every meter page (added 2026-07-16)', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+
+    for (const meter of [/expedition/, /literacy/, /fungi/]) {
+      fireEvent.click(meters().getByRole('button', { name: meter }))
+      expect(screen.queryByText('walk')).toBeNull() // we left the list
+      fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
+      expect(screen.getByText('walk')).toBeDefined() // and we're home
+    }
+  })
+
   it('retroactive check-in marks count toward the meter like live ones', () => {
     // Frozen at Thursday 16 July 2026, 9am; a daily habit missed
     // yesterday, so the check-in opens (no meters there — decision
@@ -555,6 +567,9 @@ describe('the three meters (T2.2)', () => {
     render(<App />)
 
     expect(screen.queryByRole('region', { name: 'meters' })).toBeNull()
+    // No header escape hatch either: the check-in's done button stays
+    // the only way out, so yesterday always gets answered.
+    expect(screen.queryByRole('button', { name: 'HABITAT' })).toBeNull()
     fireEvent.click(screen.getAllByRole('button', { name: 'mark done' })[0])
     fireEvent.click(
       screen.getByRole('button', { name: 'done — save check-in' }),

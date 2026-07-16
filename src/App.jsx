@@ -310,12 +310,25 @@ function App() {
     />
   )
 
+  // The HABITAT header doubles as the home link (Kimia's request
+  // 2026-07-16): from the Map, Bookcase or Market it always leads back
+  // to the habit list. The check-in screen above deliberately keeps a
+  // plain header — its done button stays the only way out, so
+  // yesterday always gets answered.
+  const header = (
+    <h1>
+      <button className="home-link" onClick={() => setPage(null)}>
+        HABITAT
+      </button>
+    </h1>
+  )
+
   // A meter was clicked: its placeholder page (Map/Bookcase/Market
   // arrive for real in M4), with the meters still up top.
   if (page !== null) {
     return (
       <main className="app">
-        <h1>HABITAT</h1>
+        {header}
         {meters}
         <StubPage page={page} onBack={() => setPage(null)} />
       </main>
@@ -324,7 +337,7 @@ function App() {
 
   return (
     <main className="app">
-      <h1>HABITAT</h1>
+      {header}
       {meters}
 
       <section aria-label="filter">

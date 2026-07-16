@@ -226,6 +226,9 @@ region discovery expands what the Market can offer.
 
 ## 5b. App structure (pages)
 
+- The **HABITAT header** on every page is the home link back to the
+  habit list (2026-07-16) — except during the morning check-in, whose
+  done button stays the only exit.
 - **Home screen:** the habit list, with the three meters fixed at top.
   The list is manually re-orderable (order persists) and filterable by
   symbols (multi-select; a temporary lens that resets each visit).
@@ -356,6 +359,11 @@ region discovery expands what the Market can offer.
 - 2026-07-16 (T2.2): meters show on the habit list and the pages
   reached from it, NOT above the morning check-in — answering
   yesterday stays distraction-free.
+- 2026-07-16 (T2.2 amendment): the HABITAT header is the home link —
+  clicking it from the Map, Bookcase or Market (or any future page)
+  returns to the habit list. The one exception is the morning
+  check-in, where the header stays a plain title: its done button
+  remains the only way out, so yesterday always gets answered.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.
