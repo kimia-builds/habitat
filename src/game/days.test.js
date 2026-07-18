@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   addDays,
   dayKeyFromTimestamp,
+  daysBetween,
   isValidDayKey,
   isoWeekday,
   validateCutoffHour,
@@ -75,6 +76,14 @@ describe('day-key arithmetic', () => {
     expect(addDays('2026-01-01', -1)).toBe('2025-12-31')
     expect(addDays('2028-02-28', 1)).toBe('2028-02-29') // leap year
     expect(addDays('2026-02-28', 1)).toBe('2026-03-01') // non-leap year
+  })
+
+  it('daysBetween is signed: later minus earlier, zero for the same day', () => {
+    expect(daysBetween('2026-07-01', '2026-07-03')).toBe(2)
+    expect(daysBetween('2026-07-03', '2026-07-01')).toBe(-2)
+    expect(daysBetween('2026-07-13', '2026-07-13')).toBe(0)
+    expect(daysBetween('2025-12-31', '2026-01-01')).toBe(1) // across years
+    expect(daysBetween('2026-01-01', '2026-12-31')).toBe(364)
   })
 
   it('day keys compare chronologically as plain strings', () => {

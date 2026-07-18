@@ -7,6 +7,7 @@
 import { useState } from 'react'
 import { addDays, dayKeyFromTimestamp, weekStart } from '../game/days.js'
 import { earliestWeek, weekNotes } from '../game/fieldnotes.js'
+import HabitGraphs from './HabitGraphs.jsx'
 import { SYMBOL_COLORS, SYMBOL_GLYPHS } from './symbols.js'
 
 const DAY_HEADINGS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
@@ -141,6 +142,15 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
           </ul>
         </>
       )}
+
+      {/* T2.4: whole-life graphs — deliberately below the weekly grid
+          and unaffected by which week is on show. */}
+      <HabitGraphs
+        habits={habits}
+        completions={completions}
+        now={now}
+        cutoffHour={cutoffHour}
+      />
 
       <button onClick={onBack}>← back to the habits</button>
     </section>

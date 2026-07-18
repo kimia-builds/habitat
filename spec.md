@@ -1,10 +1,9 @@
 # spec.md — HABITAT
 
-*v1.8 — 2026-07-16 (evening). Field notes decided (T2.3): browsable
-Mon–Sun weeks, notable streaks only, Sunday auto-open. Streak rule
-tightened: every day is judged by the schedule in force ON that day —
-schedule edits are date-stamped and never retroactive. Per-habit line
-graphs designed and deferred to a new task T2.4.*
+*v1.9 — 2026-07-18. T2.4 built: per-habit line graphs in the field
+notes. Decided today: the graphs live in their own section below the
+week grid, each shows the habit's whole life squeezed to fit, and
+opens on the coarsest unlocked zoom.*
 
 ## 1. One-line pitch
 
@@ -255,7 +254,8 @@ region discovery expands what the Market can offer.
 - A **weekly view** summarises the week: completions and streaks —
   presented as field notes, not a guilt dashboard. Kept simple in v1.
   ("Patterns" were dropped from the brief — Kimia, 2026-07-16; the
-  grid speaks for itself.) Per-habit line graphs arrive in T2.4.
+  grid speaks for itself.) Per-habit line graphs live at the foot of
+  the field notes (built in T2.4).
 
 ## 7. Look & feel
 
@@ -408,6 +408,22 @@ region discovery expands what the Market can offer.
   12-week-old habit with zero marks still graphs a flat zero line).
   One-time to-dos get no graph. An archived habit keeps its graph,
   frozen at the archive day.
+- 2026-07-18 (T2.4): the graphs live in their OWN section at the foot
+  of the field notes, below the week grid — every eligible habit as a
+  collapsed row, unaffected by which week is on show (a graph is
+  whole-life, not weekly). Archived habits appear too, marked; one-time
+  to-dos don't.
+- 2026-07-18 (T2.4): a graph's x-axis is the habit's ENTIRE life,
+  squeezed to fit — nothing hidden, no scrolling; zooming out is the
+  remedy when day-by-day gets crowded. It opens on the coarsest
+  unlocked zoom (the whole shape at a glance; zoom in from there).
+- 2026-07-18 (T2.4, filling in the spec's gaps): graph week buckets
+  are the app's usual Mon–Sun weeks, and 4-week buckets count in
+  groups of four from the habit's first week. Age counts inclusively —
+  the creation day is day 1, so day-by-day unlocks on the habit's 3rd
+  day; a younger habit's row shows a quiet "still settling in" line
+  instead of a graph. Archiving freezes the age clock along with the
+  graph.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

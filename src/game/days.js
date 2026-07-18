@@ -86,6 +86,17 @@ export function addDays(dayKey, days) {
   return toDayKey(date)
 }
 
+// How many days lie from one day key to another (later minus earlier,
+// so daysBetween('2026-07-01', '2026-07-03') is 2 and the reverse is
+// -2). Noon anchoring keeps daylight-saving out of the arithmetic, but
+// a jump still leaves the raw difference an hour off a whole day —
+// rounding absorbs it.
+export function daysBetween(fromKey, toKey) {
+  validateDayKey(fromKey)
+  validateDayKey(toKey)
+  return Math.round((atNoon(toKey) - atNoon(fromKey)) / (24 * 60 * 60 * 1000))
+}
+
 // ISO weekday of a day key: 1 = Monday … 7 = Sunday (the same numbers
 // the weekdays schedule stores).
 export function isoWeekday(dayKey) {

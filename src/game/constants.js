@@ -123,6 +123,21 @@ export const LITERACY_MILESTONES = [
   730, // Poets
 ]
 
+// ──────────────── T2.4: habit line graphs (field notes) ────────────────
+
+// Each graph's zoom levels unlock purely by the habit's AGE in days —
+// never by completions (Kimia's decision 2026-07-16): a 12-week-old
+// habit with zero marks still graphs a flat zero line. Age counts
+// inclusively — the day a habit is created is day 1 — so day-by-day
+// unlocks on the habit's 3rd day on the list, week-by-week after 3
+// full weeks, 4-weeks-at-a-time after 12. The idea: a zoom level only
+// appears once there's enough life to fill it (3 points minimum).
+export const GRAPH_UNLOCK_AGE_DAYS = {
+  day: 3, // 3 days   → 3 daily points
+  week: 21, // 3 weeks  → 3 weekly points
+  fourWeek: 84, // 12 weeks → 3 four-week points
+}
+
 // FUNGUS METER — a wallet, not a progress bar (spec §5 Stream 3).
 // Fungi are whole mushrooms: every credit, price and refund is a
 // positive whole number, and the balance can never go below zero.

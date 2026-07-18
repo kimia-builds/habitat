@@ -1,10 +1,9 @@
 # plan.md — HABITAT build plan
 
-*v1.6 — 2026-07-16 (evening). T2.3 done (spec v1.8 decisions:
-browsable weekly field notes, notable streaks only, Sunday auto-open,
-date-stamped schedule history — streaks judge each day by the schedule
-in force then). The per-habit line graphs Kimia designed in the T2.3
-session became their own task. Next task: **T2.4**.*
+*v1.7 — 2026-07-18. T2.4 done (spec v1.9 decisions: graphs in their
+own section below the week grid, whole-life x-axis squeezed to fit,
+coarsest unlocked zoom as the default). M2 complete. Next task:
+**T3.1** — the drops engine.*
 
 ## How to use this file
 
@@ -109,7 +108,7 @@ tracker. Everything after this is delight, informed by real use.
   (never retroactive); switching day-counted ↔ week-counted schedules
   restarts the streak, with a warning before saving.
   *Done when:* last week's real usage data renders correctly.
-- [ ] **T2.4 Habit line graphs (in the field notes).**
+- [x] **T2.4 Habit line graphs (in the field notes).** *(done 2026-07-18)*
   One collapsible graph per habit: raw completion counts over time,
   neutral data unrelated to the goal. Zoom levels day / week / 4-week,
   each unlocked purely by the habit's age (3 days / 3 weeks / 12

@@ -220,6 +220,69 @@ body {
   font-size: 0.85rem;
 }
 
+/* T2.4: the habit graphs — quiet lines in each habit's symbol colour. */
+.habit-graphs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.habit-graph {
+  border: 1px solid #1a2030;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.6rem;
+}
+
+.habit-graph summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.habit-graph[open] summary {
+  margin-bottom: 0.5rem;
+}
+
+.habit-graph-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.graph-label {
+  fill: #9aa3b5;
+  font-size: 10px;
+}
+
+.habit-graph-young {
+  color: #9aa3b5;
+  font-size: 0.85rem;
+}
+
+.graph-zooms {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.zoom-button {
+  font: inherit;
+  font-size: 0.75rem;
+  background: none;
+  color: #9aa3b5;
+  border: 1px solid #2a3040;
+  border-radius: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+}
+
+.zoom-button[aria-pressed='true'] {
+  border-color: currentColor;
+  color: #e8e6f0;
+  background: #1a2030;
+}
+
 .habit-list {
   list-style: none;
   display: flex;
