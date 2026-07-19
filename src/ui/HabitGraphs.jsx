@@ -10,11 +10,7 @@
 
 import { useState } from 'react'
 import { GRAPH_UNLOCK_AGE_DAYS } from '../game/constants.js'
-import {
-  graphSeries,
-  hasGraph,
-  unlockedZooms,
-} from '../game/graphs.js'
+import { graphSeries, hasGraph, unlockedZooms } from '../game/graphs.js'
 import { SYMBOL_COLORS, SYMBOL_GLYPHS } from './symbols.js'
 
 const ZOOM_LABELS = {

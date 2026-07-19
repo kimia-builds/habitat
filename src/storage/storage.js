@@ -3,7 +3,7 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 3,
+//     schemaVersion: 4,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — since v3 each
@@ -15,6 +15,9 @@
 //                              // ('YYYY-MM-DD' or null) — added in T1.4
 //     worldSeed: '…',          // anchors every seeded drop roll — created
 //                              // once, at first run, never changed (T3.2)
+//     floraDecisions: {},      // completionId → 'gathered' | 'left' |
+//                              // 'composted' (no entry = still pending)
+//                              // — see game/flora.js, added in T3.3
 //   }
 //
 // The schemaVersion lets a future Habitat recognise and upgrade old
@@ -27,10 +30,11 @@ import {
   isValidDayKey,
   validateCutoffHour,
 } from '../game/days.js'
+import { validateFloraDecisions } from '../game/flora.js'
 import { validateHabit } from '../game/habits.js'
 
 const STORAGE_KEY = 'habitat-data'
-const SCHEMA_VERSION = 3
+const SCHEMA_VERSION = 4
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -51,6 +55,7 @@ export function emptyData() {
     },
     checkedInThrough: null,
     worldSeed: newWorldSeed(),
+    floraDecisions: {},
   }
 }
 
@@ -63,7 +68,7 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV2toV3(upgradeV1toV2(data, now))
+  return upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))
 }
 
 function upgradeV1toV2(data, now) {
@@ -115,9 +120,23 @@ function upgradeV2toV3(data) {
     : data.completions
   return {
     ...data,
-    schemaVersion: SCHEMA_VERSION,
+    schemaVersion: 3,
     completions,
     worldSeed: data.worldSeed ?? newWorldSeed(),
+  }
+}
+
+// v3 → v4 (T3.3): the envelope gains the flora decisions map — what
+// happened to each flora find (gathered / left / composted). A v3 save
+// predates deciding, so every find it holds is still pending: an empty
+// map says exactly that.
+function upgradeV3toV4(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 3) return data
+  return {
+    ...data,
+    schemaVersion: SCHEMA_VERSION,
+    floraDecisions: data.floraDecisions ?? {},
   }
 }
 
@@ -176,6 +195,7 @@ function validateData(data) {
   if (typeof data.worldSeed !== 'string' || data.worldSeed === '') {
     throw new Error('This backup is missing its world seed.')
   }
+  validateFloraDecisions(data.floraDecisions)
 }
 
 export function loadData() {

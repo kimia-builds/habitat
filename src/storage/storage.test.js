@@ -227,7 +227,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(3) // upgrades chain: v1 → v2 → v3
+    expect(data.schemaVersion).toBe(4) // upgrades chain: v1 → v2 → v3 → v4
     expect(data.settings.fieldNotesShownOn).toBe(null)
     expect(typeof data.worldSeed).toBe('string')
     const [a, b] = data.habits
@@ -260,7 +260,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
       ],
     })
     const restored = importData(backup)
-    expect(restored.schemaVersion).toBe(3)
+    expect(restored.schemaVersion).toBe(4)
     expect(restored.habits[0].scheduleHistory[0].schedule).toEqual({
       type: 'nPerWeek',
       n: 3,
@@ -287,7 +287,7 @@ describe('the v2 → v3 upgrade (T3.2)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(3)
+    expect(data.schemaVersion).toBe(4)
     expect(typeof data.worldSeed).toBe('string')
     expect(data.worldSeed).not.toBe('')
     // Kimia's decision 2026-07-19: pre-update history rolls nothing.
@@ -346,5 +346,70 @@ describe('the v2 → v3 upgrade (T3.2)', () => {
         }),
       ),
     ).toThrow(/drop kind/)
+  })
+})
+
+describe('the v3 → v4 upgrade (T3.3)', () => {
+  it('a v3 save gains an empty flora decisions map — every old find still pending', () => {
+    // A hand-written v3 record, exactly as T3.2-era Habitat stored it —
+    // no floraDecisions anywhere.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 3,
+        habits: [habit('a', 'Read')],
+        completions: [
+          {
+            id: 'c1',
+            habitId: 'a',
+            recordedAt: 2000,
+            dayKey: '2026-07-12',
+            drops: [{ kind: 'flora' }],
+          },
+        ],
+        settings: { dayCutoffHour: 3, fieldNotesShownOn: null },
+        checkedInThrough: null,
+        worldSeed: 'seed',
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(4)
+    expect(data.floraDecisions).toEqual({})
+    // And the upgraded shape passes full validation on the next save.
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('flora decisions survive the save → reload and backup round trips', () => {
+    const data = {
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      completions: [
+        {
+          id: 'c1',
+          habitId: 'a',
+          recordedAt: 2000,
+          dayKey: '2026-07-12',
+          drops: [{ kind: 'flora' }],
+        },
+      ],
+      floraDecisions: { c1: 'gathered' },
+    }
+    saveData(data)
+    expect(loadData()).toEqual(data)
+
+    const backup = exportData()
+    clearData()
+    expect(importData(backup).floraDecisions).toEqual({ c1: 'gathered' })
+  })
+
+  it('rejects broken flora decisions, like any corruption', () => {
+    expect(() =>
+      saveData({ ...emptyData(), floraDecisions: { c1: 'eaten' } }),
+    ).toThrow(/flora decision/)
+    expect(() =>
+      importData(JSON.stringify({ ...emptyData(), floraDecisions: [] })),
+    ).toThrow(/map/)
   })
 })

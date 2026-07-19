@@ -79,7 +79,11 @@ describe('flora windows (Stream 1)', () => {
     const windows = 100
     for (let w = 0; w < windows; w++) {
       let finds = 0
-      for (let s = w * FLORA_WINDOW_STEPS; s < (w + 1) * FLORA_WINDOW_STEPS; s++) {
+      for (
+        let s = w * FLORA_WINDOW_STEPS;
+        s < (w + 1) * FLORA_WINDOW_STEPS;
+        s++
+      ) {
         if (floraAtStep(s, SEED)) finds++
       }
       expect(finds).toBe(1)
@@ -140,7 +144,9 @@ describe('rollReading (Stream 2)', () => {
     const rank = { dictionary: 3, novel: 2, magazine: 1, null: 0 }
     for (let i = 0; i < 5000; i++) {
       const easy = rollReading(tap({ tapIndex: i, difficulty: 'easy' }))
-      const difficult = rollReading(tap({ tapIndex: i, difficulty: 'difficult' }))
+      const difficult = rollReading(
+        tap({ tapIndex: i, difficulty: 'difficult' }),
+      )
       expect(rank[String(difficult)]).toBeGreaterThanOrEqual(rank[String(easy)])
     }
   })
@@ -196,7 +202,9 @@ describe('rollDrops — the whole tap', () => {
       for (const drop of rollDrops(tap({ tapIndex: i, stepIndex: i }))) {
         seen.add(drop.kind)
         if (drop.kind === 'reading') {
-          expect(['magazine', 'novel', 'dictionary']).toContain(drop.readingType)
+          expect(['magazine', 'novel', 'dictionary']).toContain(
+            drop.readingType,
+          )
         }
         if (drop.kind === 'fungi') {
           expect(drop.amount).toBeGreaterThan(0)
@@ -281,7 +289,10 @@ function simulateFiveYears() {
     daysSinceFlora = floraToday ? 0 : daysSinceFlora + 1
     daysSinceReading = readingToday ? 0 : daysSinceReading + 1
     tally.floraGapDaysMax = Math.max(tally.floraGapDaysMax, daysSinceFlora)
-    tally.readingGapDaysMax = Math.max(tally.readingGapDaysMax, daysSinceReading)
+    tally.readingGapDaysMax = Math.max(
+      tally.readingGapDaysMax,
+      daysSinceReading,
+    )
   }
   // Drop the final partial rotation — its income is naturally small.
   if (days % 28 !== 0) tally.fungiPerRotation.pop()
@@ -298,7 +309,9 @@ describe('five simulated years at ~3.5 taps/day (plan T3.1 “done when”)', ()
 
   it('flora arrive steadily — about one a week, never a drought', () => {
     // One guaranteed find per 25-step window.
-    expect(Math.abs(tally.flora - tally.taps / FLORA_WINDOW_STEPS)).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(tally.flora - tally.taps / FLORA_WINDOW_STEPS),
+    ).toBeLessThanOrEqual(1)
     // Longest possible wait is just under two windows ≈ 2 weeks.
     expect(tally.floraGapDaysMax).toBeLessThanOrEqual(15)
   })

@@ -1,5 +1,14 @@
 # spec.md — HABITAT
 
+*v1.16 — 2026-07-19 (sixth session). T3.3 built: gather / decline /
+compost. Decided with Kimia: undecided flora WAIT (a held arrival
+offers gather / leave it; one that fades undecided waits on the Abode
+page — no deadline, never a nag); an early, plain Abode page (reached
+from a link on the habit list) holds the waiting and gathered flora,
+compostable anytime; flora stay generic ("a flora find") until T6.1
+names the species. Storage v4 adds the flora decisions map. All in the
+decisions log.*
+
 *v1.15 — 2026-07-19 (fifth session, docs only). Visual identity
 decided from Kimia's charm reference: the six habit symbols are now
 six line-drawn SVG charms (crown, cherries, shell, anchor, shield,
@@ -288,7 +297,10 @@ region discovery expands what the Market can offer.
 - **Market** (via fungus meter): the rotating stall; buy and return
   objects.
 - **Abode:** gathered flora and purchased objects, freely arrangeable,
-  removable (compost / return).
+  removable (compost / return). An early, plain version exists since
+  T3.3 — reached from a link on the habit list — holding the flora
+  waiting to be decided and the gathered ones; the arrangeable page
+  arrives in T4.3.
 - **Guest Book:** friends made so far.
 - **Field notes:** the weekly view (T2.3) — browsable Mon–Sun weeks,
   opening on the last completed one; reached from a link on the habit
@@ -600,6 +612,30 @@ region discovery expands what the Market can offer.
   the week target already sits in the row's small print). The same
   counter appears on the check-in/backfill rows. One-time keeps its
   single-tap control.
+- 2026-07-19 (sixth session, T3.3): **undecided flora wait** — a flora
+  find has four states: pending (just arrived), gathered, left (back
+  in the world) or composted (was gathered, returned to the world).
+  A held arrival offers gather / leave it; an arrival that fades
+  undecided is NOT lost or left — it waits, pending, on the Abode page
+  with no deadline and no nagging, until Kimia decides. (Her call
+  today, over the fades-means-left alternative.) Left and composted
+  are final. Reading material and fungi stay decision-free: always
+  kept, always banked.
+- 2026-07-19 (sixth session, T3.3): **the early Abode page** — a
+  simple page like the meter stubs, reached from a link on the habit
+  list beside the field notes, listing flora waiting to decide
+  (gather / leave it) and gathered flora (a quiet compost button,
+  usable anytime — no confirmation, because nothing is ever lost).
+  The freely arrangeable Abode proper still arrives in T4.3.
+- 2026-07-19 (sixth session, T3.3): **flora stay generic until T6.1**
+  — every find is "a flora find" plus the day it dropped; species,
+  names, art and landmark status arrive with the content pools.
+  Decisions are stored per find (keyed by the completion that dropped
+  it) in storage v4; undoing a completion removes its find and its
+  decision together. Composting yields nothing — the wallet has no
+  code path from flora — and the drops engine never sees decisions,
+  so finds keep arriving on the steady window schedule: composted
+  flora can always be encountered again.
 - 2026-07-19 (fifth session, docs only): **the six symbols are the
   six charms** — crown/gold, cherries/coral, shell/pink,
   anchor/lavender, shield/sky, key/teal, mapped to symbol slots 1–6;

@@ -73,7 +73,13 @@ function validateIndex(value, name) {
   }
 }
 
-function validateTapFacts({ worldSeed, habitId, dayKey, tapIndex, difficulty }) {
+function validateTapFacts({
+  worldSeed,
+  habitId,
+  dayKey,
+  tapIndex,
+  difficulty,
+}) {
   validateWorldSeed(worldSeed)
   if (typeof habitId !== 'string' || habitId === '') {
     throw new Error('A drop roll needs the id of its habit.')
@@ -121,7 +127,9 @@ export function rollReading(tapFacts) {
   validateTapFacts(tapFacts)
   const { worldSeed, habitId, dayKey, tapIndex, difficulty } = tapFacts
   const multiplier = DIFFICULTY_DROP_MULTIPLIER[difficulty]
-  const roll = randomUnit(`${worldSeed}|reading|${habitId}|${dayKey}|${tapIndex}`)
+  const roll = randomUnit(
+    `${worldSeed}|reading|${habitId}|${dayKey}|${tapIndex}`,
+  )
   const rarestFirst = [...READING_TYPES].sort(
     (a, b) => READING_DROP_CHANCES[a] - READING_DROP_CHANCES[b],
   )

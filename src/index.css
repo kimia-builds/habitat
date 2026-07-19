@@ -149,6 +149,37 @@ body {
   color: #9aa3b5;
 }
 
+/* T3.3: the early Abode — flora waiting to decide, and the gathered. */
+.abode h3 {
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  font-size: 0.9rem;
+  color: #9aa3b5;
+}
+
+.abode-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.abode-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid #1a2030;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.6rem;
+}
+
+.abode-name {
+  flex: 1;
+  color: #e8e6f0;
+  font-size: 0.9rem;
+}
+
 /* T2.3: the field notes — the weekly view. Quiet by design. */
 .field-notes {
   display: flex;
@@ -340,6 +371,32 @@ body {
   width: 1.5rem;
   height: 1.5rem;
   display: block;
+}
+
+/* T3.3: the arrival is now a small group — the hold button plus, for a
+   held undecided flora, its two quiet choices. The group keeps the old
+   .arrival look; the hold button dresses down to nothing. */
+.arrival-hold {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.arrival-choice {
+  font: inherit;
+  font-size: 0.75rem;
+  background: none;
+  color: inherit;
+  border: 1px solid #2a3040;
+  border-radius: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
 }
 
 .arrival-caption {

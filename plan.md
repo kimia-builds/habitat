@@ -1,5 +1,13 @@
 # plan.md — HABITAT build plan
 
+*v1.15 — 2026-07-19 (sixth session). **T3.3 built**: gather / decline /
+compost. A held flora arrival offers gather / leave it; undecided
+flora wait on the new early Abode page (linked from the habit list),
+where gathered flora can be composted anytime. Kimia's calls today:
+undecided flora wait (never auto-left), the early Abode now rather
+than mechanics-only, flora stay generic until T6.1. Storage v4
+(floraDecisions). Next task: **T3.4**.*
+
 *v1.14 — 2026-07-19 (fifth session, docs only). Visual identity
 decided from Kimia's charm reference: T5.1 is now the six charms
 (crown, cherries, shell, anchor, shield, key — SVGs + colours in
@@ -170,12 +178,20 @@ tracker. Everything after this is delight, informed by real use.
   *Done when:* tests prove extra taps are stored on the right day for
   every shape, meters and drops count every tap, and fulfilment
   thresholds are unchanged; a real day's use feels right.
-- [ ] **T3.3 Gather / decline / compost.**
+- [x] **T3.3 Gather / decline / compost.** *(done 2026-07-19)*
   Flora optional to gather, compostable anytime, composted flora
   re-enter the pool (composting yields nothing). Reading material
   always kept; fungi always banked.
   *Done when:* tests prove composted flora can reappear and yield no
   fungi; nothing is ever lost.
+  Built: flora decisions module (pending / gathered / left /
+  composted, derived from history like the meters — undo removes a
+  find and its decision together); gather / leave it on the held
+  arrival; undecided flora wait on the new early Abode page (linked
+  from the habit list) with gathered flora and their quiet compost
+  buttons; storage v4 carries the decisions map through backups.
+  Tests cover the two guarantees: composting credits nothing, and
+  finds keep arriving whatever was decided.
 - [ ] **T3.4 Narration content slots.** *(decided 2026-07-19; spec
   v1.14 + design-notes §7)*
   A keyed content file with one empty slot per narrated moment

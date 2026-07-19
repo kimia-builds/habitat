@@ -98,9 +98,9 @@ describe('completing today (and undoing)', () => {
 
     // The counter (T3.2b): no toggle — a running count with +1 and undo.
     expect(row('meditate').getByText('0/1 today')).toBeDefined()
-    expect(
-      row('meditate').getByRole('button', { name: 'undo' }).disabled,
-    ).toBe(true)
+    expect(row('meditate').getByRole('button', { name: 'undo' }).disabled).toBe(
+      true,
+    )
 
     fireEvent.click(row('meditate').getByRole('button', { name: '+1' }))
     expect(row('meditate').getByText('✓ 1/1 today')).toBeDefined()
@@ -885,63 +885,64 @@ describe('field notes (T2.3)', () => {
   })
 })
 
-describe('drop arrival + first-occurrence reveals (T3.2)', () => {
-  // Drops are a pure function of the world seed, so the tests pick
-  // their luck: brute-force a seed where the very FIRST tap (habit
-  // 'walk', expedition step 0, first tap of the given day) delivers
-  // exactly the one drop the test wants and nothing else.
-  function findSeed(dayKey, want) {
-    for (let i = 0; i < 10000; i++) {
-      const seed = `seed-${i}`
-      const facts = {
-        worldSeed: seed,
-        habitId: 'walk',
-        dayKey,
-        tapIndex: 0,
-        difficulty: 'easy',
-      }
-      const flora = floraTargetStep(0, seed) === 0
-      const reading = rollReading(facts) !== null
-      const fungi = rollFungi(facts) > 0
-      if (want === 'flora' && flora && !reading && !fungi) return seed
-      if (want === 'fungi' && fungi && !flora && !reading) return seed
+// Drops are a pure function of the world seed, so the drop tests pick
+// their luck: brute-force a seed where the very FIRST tap (habit
+// 'walk', expedition step 0, first tap of the given day) delivers
+// exactly the one drop the test wants and nothing else.
+function findSeed(dayKey, want) {
+  for (let i = 0; i < 10000; i++) {
+    const seed = `seed-${i}`
+    const facts = {
+      worldSeed: seed,
+      habitId: 'walk',
+      dayKey,
+      tapIndex: 0,
+      difficulty: 'easy',
     }
-    throw new Error(`no seed found that drops only ${want} on ${dayKey}`)
+    const flora = floraTargetStep(0, seed) === 0
+    const reading = rollReading(facts) !== null
+    const fungi = rollFungi(facts) > 0
+    if (want === 'flora' && flora && !reading && !fungi) return seed
+    if (want === 'fungi' && fungi && !flora && !reading) return seed
   }
+  throw new Error(`no seed found that drops only ${want} on ${dayKey}`)
+}
 
-  // A ready-made v3 world: one daily habit since Mon the 13th, the
-  // chosen seed, and (unless overridden) yesterday already answered so
-  // the list shows straight away. The clock is Thursday 16 July, 9am.
-  function seedWorld(worldSeed, overrides = {}) {
-    localStorage.setItem(
-      'habitat-data',
-      JSON.stringify({
-        schemaVersion: 3,
-        habits: [
-          {
-            id: 'walk',
-            name: 'walk',
-            description: '',
-            symbol: 1,
-            difficulty: 'easy',
-            schedule: { type: 'daily' },
-            scheduleHistory: [
-              { schedule: { type: 'daily' }, fromDay: '2026-07-13' },
-            ],
-            archived: false,
-            archivedAt: null,
-            createdAt: new Date(2026, 6, 13, 9).getTime(),
-          },
-        ],
-        completions: [],
-        settings: { dayCutoffHour: 3, fieldNotesShownOn: null },
-        checkedInThrough: '2026-07-15',
-        worldSeed,
-        ...overrides,
-      }),
-    )
-  }
+// A ready-made v3 world: one daily habit since Mon the 13th, the
+// chosen seed, and (unless overridden) yesterday already answered so
+// the list shows straight away. The clock is Thursday 16 July, 9am.
+// (v3 on purpose: loadData's upgrade adds the T3.3 flora decisions.)
+function seedWorld(worldSeed, overrides = {}) {
+  localStorage.setItem(
+    'habitat-data',
+    JSON.stringify({
+      schemaVersion: 3,
+      habits: [
+        {
+          id: 'walk',
+          name: 'walk',
+          description: '',
+          symbol: 1,
+          difficulty: 'easy',
+          schedule: { type: 'daily' },
+          scheduleHistory: [
+            { schedule: { type: 'daily' }, fromDay: '2026-07-13' },
+          ],
+          archived: false,
+          archivedAt: null,
+          createdAt: new Date(2026, 6, 13, 9).getTime(),
+        },
+      ],
+      completions: [],
+      settings: { dayCutoffHour: 3, fieldNotesShownOn: null },
+      checkedInThrough: '2026-07-15',
+      worldSeed,
+      ...overrides,
+    }),
+  )
+}
 
+describe('drop arrival + first-occurrence reveals (T3.2)', () => {
   const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
 
   it('the first flora POPs, sits on the shelf, notes itself by the habit — and undo takes it all back', () => {
@@ -1018,5 +1019,94 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
     expect(screen.getByRole('region', { name: 'arrivals' })).toBeDefined()
     expect(screen.getByText('you came across a flora find')).toBeDefined()
+  })
+})
+
+describe('gather / decline / compost (T3.3)', () => {
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+  const decisions = () => Object.values(stored().floraDecisions)
+
+  // Tap once (the seeded first tap drops exactly one flora) and clear
+  // the first-occurrence reveal, leaving the find on the shelf.
+  function dropOneFlora() {
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    fireEvent.click(screen.getByRole('button', { name: 'onward' }))
+  }
+
+  const shelf = () => within(screen.getByRole('region', { name: 'arrivals' }))
+  const abode = () => within(screen.getByText('the Abode').closest('section'))
+
+  it('a held flora offers gather / leave it; gathering shelves it in the Abode', () => {
+    seedWorld(findSeed('2026-07-16', 'flora'))
+    render(<App />)
+    dropOneFlora()
+
+    // Hold the arrival: alongside its name, the two quiet choices.
+    fireEvent.click(shelf().getByRole('button'))
+    fireEvent.click(shelf().getByRole('button', { name: 'gather' }))
+    expect(decisions()).toEqual(['gathered'])
+
+    // The Abode lists it under gathered, dated with the day it dropped.
+    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    const gathered = within(
+      screen.getByRole('list', { name: 'gathered flora' }),
+    )
+    expect(gathered.getByText('a flora find')).toBeDefined()
+    expect(gathered.getByText('found 2026-07-16')).toBeDefined()
+  })
+
+  it('an undecided flora simply waits on the Abode page — and can be left from there', () => {
+    seedWorld(findSeed('2026-07-16', 'flora'))
+    render(<App />)
+    dropOneFlora()
+
+    // No decision made. The find waits, quietly, on the Abode page.
+    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    const waiting = within(
+      screen.getByRole('list', { name: 'waiting to decide' }),
+    )
+    expect(waiting.getByText('a flora find')).toBeDefined()
+
+    // Leave it: back in the world — off the page, out of the Abode.
+    fireEvent.click(waiting.getByRole('button', { name: 'leave it' }))
+    expect(screen.queryByRole('list', { name: 'waiting to decide' })).toBeNull()
+    expect(abode().getByText('nothing here yet')).toBeDefined()
+    expect(decisions()).toEqual(['left'])
+  })
+
+  it('composting empties the shelf spot and credits NOTHING — the wallet never moves', () => {
+    seedWorld(findSeed('2026-07-16', 'flora'))
+    render(<App />)
+    dropOneFlora()
+    const wallet = () => document.querySelector('.meter-wallet').textContent
+    expect(wallet()).toBe('0')
+
+    fireEvent.click(shelf().getByRole('button'))
+    fireEvent.click(shelf().getByRole('button', { name: 'gather' }))
+    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    fireEvent.click(abode().getByRole('button', { name: 'compost' }))
+
+    // Gone from the Abode, recorded as composted — and no fungi from
+    // it, ever (spec §5: composting yields nothing).
+    expect(abode().getByText('nothing here yet')).toBeDefined()
+    expect(decisions()).toEqual(['composted'])
+    expect(wallet()).toBe('0')
+  })
+
+  it('undoing the completion takes the find AND its decision away', () => {
+    seedWorld(findSeed('2026-07-16', 'flora'))
+    render(<App />)
+    dropOneFlora()
+
+    fireEvent.click(shelf().getByRole('button'))
+    fireEvent.click(shelf().getByRole('button', { name: 'gather' }))
+    expect(decisions()).toEqual(['gathered'])
+
+    // Undo: the completion goes, and with it the find — the decision
+    // map holds no ghosts, and the Abode is empty again.
+    fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
+    expect(stored().floraDecisions).toEqual({})
+    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    expect(abode().getByText('nothing here yet')).toBeDefined()
   })
 })

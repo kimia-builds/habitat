@@ -51,8 +51,10 @@ export function graphEndDay(habit, now, cutoffHour) {
 // as the graph stops growing.
 export function habitAgeDays(habit, now, cutoffHour) {
   return (
-    daysBetween(bornDay(habit, cutoffHour), graphEndDay(habit, now, cutoffHour)) +
-    1
+    daysBetween(
+      bornDay(habit, cutoffHour),
+      graphEndDay(habit, now, cutoffHour),
+    ) + 1
   )
 }
 

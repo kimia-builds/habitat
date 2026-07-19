@@ -41,7 +41,11 @@ describe('unlockedZooms (age is the only key)', () => {
   it('unlocks day / week / 4-week at 3 days, 3 weeks, 12 weeks of age', () => {
     const ageOf = (days) => {
       // Born `days - 1` days before NOW: creation day counts as day 1.
-      const habit = makeHabit('h', { type: 'daily' }, NOW - (days - 1) * 86400000)
+      const habit = makeHabit(
+        'h',
+        { type: 'daily' },
+        NOW - (days - 1) * 86400000,
+      )
       return unlockedZooms(habit, NOW, CUTOFF)
     }
     expect(ageOf(1)).toEqual([])

@@ -24,6 +24,12 @@ import {
 import { addDays, dayKeyFromTimestamp } from './game/days.js'
 import { shouldOpenFieldNotes } from './game/fieldnotes.js'
 import {
+  decideFlora,
+  floraFinds,
+  floraStatus,
+  pruneFloraDecisions,
+} from './game/flora.js'
+import {
   activeHabits,
   addHabit,
   archiveHabit,
@@ -51,6 +57,7 @@ import {
   loadData,
   saveData,
 } from './storage/storage.js'
+import AbodePage from './ui/AbodePage.jsx'
 import ArrivalShelf from './ui/ArrivalShelf.jsx'
 import { arrivalNote } from './ui/arrivalText.js'
 import BackupControls from './ui/BackupControls.jsx'
@@ -168,8 +175,17 @@ function App() {
   // Every change goes through here: validate-and-persist, then render.
   // Announcements are pruned to completions that still exist, so ANY
   // undo — live, retro, one-time — takes its on-screen arrivals away
-  // with it, exactly as it takes the stored drops.
+  // with it, exactly as it takes the stored drops. Flora decisions are
+  // pruned the same way (T3.3): undo a completion and its find — plus
+  // whatever was decided about it — is gone, as if it never dropped.
   function save(next) {
+    next = {
+      ...next,
+      floraDecisions: pruneFloraDecisions(
+        next.floraDecisions,
+        next.completions,
+      ),
+    }
     saveData(next)
     setData(next)
     const alive = new Set(next.completions.map((c) => c.id))
@@ -196,6 +212,20 @@ function App() {
     const append = (list) => [...list, ...items]
     if (deferred) setPendingArrivals(append)
     else setArrivals(append)
+  }
+
+  // One decision about one flora find (T3.3): gather, leave, or (from
+  // the Abode) compost. The game module enforces what may follow what.
+  function handleFloraDecision(completionId, decision) {
+    save({
+      ...data,
+      floraDecisions: decideFlora(
+        data.floraDecisions,
+        data.completions,
+        completionId,
+        decision,
+      ),
+    })
   }
 
   function toggleFilter(symbol) {
@@ -431,8 +461,17 @@ function App() {
         arrivals={arrivals.map((a) => ({
           ...a,
           awaitingReveal: a.first && !seenRevealIds.has(a.id),
+          // A flora arrival knows its decision state, so the shelf can
+          // offer gather / leave it exactly while it's still pending.
+          status:
+            a.key === 'flora'
+              ? floraStatus(data.floraDecisions, a.completionId)
+              : null,
         }))}
-        onExpire={(id) => setArrivals((list) => list.filter((a) => a.id !== id))}
+        onExpire={(id) =>
+          setArrivals((list) => list.filter((a) => a.id !== id))
+        }
+        onDecide={handleFloraDecision}
       />
       {revealing && (
         <FirstReveal
@@ -476,6 +515,23 @@ function App() {
     )
   }
 
+  // The Abode (T3.3, early version): flora waiting to be decided and
+  // the gathered ones, compostable anytime. Reached from its link on
+  // the habit list; the arrangeable Abode proper arrives in T4.3.
+  if (page === 'abode') {
+    return (
+      <main className="app">
+        {header}
+        {meters}
+        <AbodePage
+          finds={floraFinds(data.completions, data.floraDecisions)}
+          onDecide={handleFloraDecision}
+          onBack={() => setPage(null)}
+        />
+      </main>
+    )
+  }
+
   // A meter was clicked: its placeholder page (Map/Bookcase/Market
   // arrive for real in M4), with the meters still up top.
   if (page !== null) {
@@ -506,6 +562,7 @@ function App() {
             <button onClick={() => setCheckInOpen(true)}>edit past days</button>
           )}
           <button onClick={() => setPage('fieldnotes')}>field notes</button>
+          <button onClick={() => setPage('abode')}>the abode</button>
         </>
       )}
 
