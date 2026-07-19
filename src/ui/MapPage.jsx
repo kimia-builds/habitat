@@ -6,18 +6,16 @@
 // What shows here and what doesn't:
 //   - shapes are seeded generative placeholders until the T5.3 art
 //     pass (ui/mapLayout.js); no names anywhere until T6.1 names the
-//     regions — each known region offers only its discovery date.
+//     regions — and no dates either (Kimia's call 2026-07-19, T4.2:
+//     found dates are not needed on the Map or in the Bookcase). A
+//     known region simply glows; nothing else is said.
 //   - landmark markers are fully plumbed (game/map.js) but none can
 //     render until T6.1 decides which flora species are landmarks.
 //   - the discovery-moment narration slots exist (content/narration.js,
 //     mapRegions) — their ambient-swell moment is wired in T5.2.
 
 import { LANDMARK_FLORA, MAP_REGION_COUNT } from '../game/constants.js'
-import {
-  discoveredRegionCount,
-  landmarkMarkers,
-  regionDiscoveries,
-} from '../game/map.js'
+import { discoveredRegionCount, landmarkMarkers } from '../game/map.js'
 import { expeditionSteps } from '../game/meters.js'
 import { buildMapLayout, landmarkPoint } from './mapLayout.js'
 
@@ -29,7 +27,6 @@ function MapPage({
 }) {
   const layout = buildMapLayout(worldSeed)
   const known = discoveredRegionCount(expeditionSteps(completions))
-  const discoveries = regionDiscoveries(completions)
   const markers = landmarkMarkers(completions, landmarkSpecies)
 
   return (
@@ -46,13 +43,13 @@ function MapPage({
           <path
             key={region}
             className={
-              region === known - 1 ? 'map-region map-region-frontier' : 'map-region'
+              region === known - 1
+                ? 'map-region map-region-frontier'
+                : 'map-region'
             }
             style={{ color: `hsl(${hue} 65% 62%)` }}
             d={path}
-          >
-            <title>{`known since ${discoveries[region].dayKey}`}</title>
-          </path>
+          />
         ))}
         {markers.map((marker) => {
           const { x, y } = landmarkPoint(worldSeed, layout, marker)
@@ -62,7 +59,6 @@ function MapPage({
               className="map-landmark"
               transform={`translate(${x} ${y})`}
             >
-              <title>{marker.dayKey}</title>
               <line x1="0" y1="7" x2="0" y2="-1" />
               <circle cx="0" cy="-4" r="3.5" />
             </g>

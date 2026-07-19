@@ -3,7 +3,7 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 4,
+//     schemaVersion: 5,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — since v3 each
@@ -18,6 +18,11 @@
 //     floraDecisions: {},      // completionId → 'gathered' | 'left' |
 //                              // 'composted' (no entry = still pending)
 //                              // — see game/flora.js, added in T3.3
+//     bookcaseLayout: {},      // publicationId → { x, y, facing } —
+//                              // where each book sits on the constant
+//                              // bookshelf and which way it faces
+//                              // (no entry = default slot, spine)
+//                              // — see game/bookcase.js, added in T4.2
 //   }
 //
 // The schemaVersion lets a future Habitat recognise and upgrade old
@@ -25,6 +30,7 @@
 
 import { validateCompletion } from '../game/completions.js'
 import { DEFAULT_DAY_CUTOFF_HOUR } from '../game/constants.js'
+import { validateBookcaseLayout } from '../game/bookcase.js'
 import {
   dayKeyFromTimestamp,
   isValidDayKey,
@@ -34,7 +40,7 @@ import { validateFloraDecisions } from '../game/flora.js'
 import { validateHabit } from '../game/habits.js'
 
 const STORAGE_KEY = 'habitat-data'
-const SCHEMA_VERSION = 4
+const SCHEMA_VERSION = 5
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -56,6 +62,7 @@ export function emptyData() {
     checkedInThrough: null,
     worldSeed: newWorldSeed(),
     floraDecisions: {},
+    bookcaseLayout: {},
   }
 }
 
@@ -68,7 +75,7 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))
+  return upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))))
 }
 
 function upgradeV1toV2(data, now) {
@@ -135,8 +142,23 @@ function upgradeV3toV4(data) {
   if (data.schemaVersion !== 3) return data
   return {
     ...data,
-    schemaVersion: SCHEMA_VERSION,
+    schemaVersion: 4,
     floraDecisions: data.floraDecisions ?? {},
+  }
+}
+
+// v4 → v5 (T4.2): the envelope gains the bookcase layout — where each
+// publication sits on the constant bookshelf and which way it faces
+// (game/bookcase.js). A v4 save predates arranging, so every book it
+// holds still stands in its default slot, spine out: an empty map says
+// exactly that.
+function upgradeV4toV5(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 4) return data
+  return {
+    ...data,
+    schemaVersion: SCHEMA_VERSION,
+    bookcaseLayout: data.bookcaseLayout ?? {},
   }
 }
 
@@ -196,6 +218,7 @@ function validateData(data) {
     throw new Error('This backup is missing its world seed.')
   }
   validateFloraDecisions(data.floraDecisions)
+  validateBookcaseLayout(data.bookcaseLayout)
 }
 
 export function loadData() {

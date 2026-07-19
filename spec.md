@@ -1,5 +1,13 @@
 # spec.md — HABITAT
 
+*v1.21 — 2026-07-19 (tenth session). T4.2 built: the Bookcase page.
+Decided with Kimia: ONE **constant bookshelf** (bare shelves, no prose,
+no count when empty) with publications as **floating draggable books**,
+arranged anywhere; each book stands **spine or face-out** (the cover's
+quiet eye opens the T3.5 spread), place AND facing **remembered per
+book** (storage v5); and **no found dates** — on the books or on the
+Map (its tooltips came out). All in the decisions log.*
+
 *v1.20 — 2026-07-19 (ninth session). T4.1 built: the Map page.
 Decided with Kimia: the planet has **16 equal regions** (400 steps
 each ≈ 4 months — a new region roughly three times a year, steady for
@@ -336,9 +344,11 @@ region discovery expands what the Market can offer.
   Habits can be archived (history kept) or permanently deleted (with
   confirmation).
 - **Map** (via expedition meter): the discovered planet so far.
-- **Bookcase** (via literacy meter): all reading material collected;
-  any publication opens its double-page spread for (re-)reading
-  (T3.5).
+- **Bookcase** (via literacy meter): one **constant bookshelf** (T4.2)
+  holding every publication ever received — floating, draggable books,
+  each spine or face-out, the arrangement remembered; any publication's
+  eye opens its double-page spread for (re-)reading (T3.5). Bare
+  shelves when empty — no prose, no count, no dates.
 - **Market** (via fungus meter): the rotating stall; buy and return
   objects.
 - **Abode:** gathered flora and purchased objects, freely arrangeable,
@@ -720,6 +730,30 @@ region discovery expands what the Market can offer.
   reading is ever written to storage. The early Bookcase list (like
   the T3.3 Abode) shows everything received, in arrival order, each
   with its read button; the real shelves (T4.2) reuse the same popup.
+- 2026-07-19 (tenth session, T4.2): **the Bookcase is one constant
+  bookshelf** — the same frame and planks whether it holds one
+  publication or a hundred (the faint-planet precedent: bare shelves
+  when empty, no prose, no count). Publications are **floating,
+  draggable books**, arranged anywhere on the shelf; new arrivals fill
+  deterministic default slots (top plank first) until Kimia moves them.
+  Crowding is solved by her arranging, never by the shelf growing.
+- 2026-07-19 (tenth session, T4.2): **spine ↔ front, remembered per
+  book** — a click stands a book face-out; the cover's quiet **eye
+  button** opens the T3.5 spread for reading, and a click anywhere
+  else on the cover turns it back. Place AND facing are stored per
+  publication (storage v5's `bookcaseLayout`, keyed by the dropping
+  completion — an entry is written only once a book is moved or
+  turned, and undo of that completion prunes the book's place with
+  it, exactly like flora decisions). Reading itself is still tracked
+  nowhere. Books are code-drawn placeholders (slim magazine, middling
+  novel, thick dictionary, the literacy violet family) until T5.3;
+  publications stay generic until T6.1.
+- 2026-07-19 (tenth session, T4.2): **no found dates — on books or on
+  the Map.** Kimia's call: the found-date captions came off the
+  Bookcase, and the Map's "known since …" tooltips (regions and
+  landmark markers) came out with them. A known region simply glows.
+  (Discovery days stay computed in game/map.js — T5.2's
+  discovery-moment narration needs them; they're just never shown.)
 - 2026-07-19 (ninth session, T4.1): **the planet has 16 equal
   regions** — 400 expedition steps each (= 4 bar-segments ≈ 4 months
   at the current pace): a new region roughly three times a year,

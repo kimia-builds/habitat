@@ -1085,29 +1085,41 @@ describe('read now / read later + the spread popup (T3.5)', () => {
     expect(rawStored()).toBe(before)
   })
 
-  it('the Bookcase lists what was received and re-opens the popup, anytime', () => {
+  it('the Bookcase shelves what was received — arranged, faced, re-readable anytime', () => {
     dropOne('magazine')
     fireEvent.click(shelf().getByRole('button'))
     fireEvent.click(shelf().getByRole('button', { name: 'read later' }))
-    const before = rawStored()
 
-    // The literacy meter leads to the early Bookcase list…
+    // The literacy meter leads to the constant bookshelf…
     fireEvent.click(
       within(screen.getByRole('region', { name: 'meters' })).getByRole(
         'button',
         { name: /literacy/ },
       ),
     )
-    const list = within(screen.getByRole('list', { name: 'reading material' }))
-    expect(list.getByText('a magazine')).toBeDefined()
-    expect(list.getByText('found 2026-07-16')).toBeDefined()
+    const shelfPage = screen.getByRole('group', { name: 'the bookshelf' })
+    const book = within(shelfPage).getByRole('button', { name: 'a magazine' })
 
-    // …where any publication is re-readable — with still nothing
-    // stored about it, ever (no read/unread state exists).
-    fireEvent.click(list.getByRole('button', { name: 'read' }))
+    // …where a click turns the book face-out — and that is REMEMBERED
+    // per book (storage v5): position frozen in, facing kept.
+    fireEvent.pointerDown(book, { clientX: 10, clientY: 10 })
+    fireEvent.pointerUp(window, { clientX: 10, clientY: 10 })
+    const layout = JSON.parse(
+      localStorage.getItem('habitat-data'),
+    ).bookcaseLayout
+    expect(Object.values(layout)).toEqual([
+      { x: expect.any(Number), y: expect.any(Number), facing: 'front' },
+    ])
+
+    // The face-out cover's quiet eye re-opens the spread popup — and
+    // reading stores nothing, ever (no read/unread state exists).
+    const beforeRead = rawStored()
+    fireEvent.click(
+      within(shelfPage).getByRole('button', { name: 'read a magazine' }),
+    )
     expect(screen.getByRole('dialog', { name: 'a magazine' })).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: 'close' }))
-    expect(rawStored()).toBe(before)
+    expect(rawStored()).toBe(beforeRead)
   })
 })
 

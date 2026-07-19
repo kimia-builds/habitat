@@ -1,7 +1,7 @@
 // Placeholder pages behind the meters (T2.2): clicking a meter has to
 // lead SOMEWHERE so the navigation is real. Only the Market still
-// waits (T4.3b) — the Map got its real page in T4.1, the Bookcase an
-// early one in T3.5, the Abode one in T3.3.
+// waits (T4.3b) — the Map got its real page in T4.1, the Bookcase its
+// constant bookshelf in T4.2, the Abode an early one in T3.3.
 
 const STUBS = {
   market: {

@@ -227,8 +227,10 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(4) // upgrades chain: v1 → v2 → v3 → v4
+    expect(data.schemaVersion).toBe(5) // upgrades chain: v1 → … → v5
     expect(data.settings.fieldNotesShownOn).toBe(null)
+    expect(data.floraDecisions).toEqual({})
+    expect(data.bookcaseLayout).toEqual({})
     expect(typeof data.worldSeed).toBe('string')
     const [a, b] = data.habits
     // History reads as the current schedule from birth — past edits
@@ -260,7 +262,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
       ],
     })
     const restored = importData(backup)
-    expect(restored.schemaVersion).toBe(4)
+    expect(restored.schemaVersion).toBe(5)
     expect(restored.habits[0].scheduleHistory[0].schedule).toEqual({
       type: 'nPerWeek',
       n: 3,
@@ -287,7 +289,7 @@ describe('the v2 → v3 upgrade (T3.2)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(4)
+    expect(data.schemaVersion).toBe(5)
     expect(typeof data.worldSeed).toBe('string')
     expect(data.worldSeed).not.toBe('')
     // Kimia's decision 2026-07-19: pre-update history rolls nothing.
@@ -374,7 +376,7 @@ describe('the v3 → v4 upgrade (T3.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(4)
+    expect(data.schemaVersion).toBe(5)
     expect(data.floraDecisions).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -410,6 +412,77 @@ describe('the v3 → v4 upgrade (T3.3)', () => {
     ).toThrow(/flora decision/)
     expect(() =>
       importData(JSON.stringify({ ...emptyData(), floraDecisions: [] })),
+    ).toThrow(/map/)
+  })
+})
+
+describe('the v4 → v5 upgrade (T4.2)', () => {
+  it('a v4 save gains an empty bookcase layout — every book still in its default slot, spine out', () => {
+    // A hand-written v4 record, exactly as T3.3–T4.1-era Habitat stored
+    // it — floraDecisions present, no bookcaseLayout anywhere.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 4,
+        habits: [habit('a', 'Read')],
+        completions: [
+          {
+            id: 'c1',
+            habitId: 'a',
+            recordedAt: 2000,
+            dayKey: '2026-07-12',
+            drops: [{ kind: 'reading', readingType: 'magazine' }],
+          },
+        ],
+        settings: { dayCutoffHour: 3, fieldNotesShownOn: null },
+        checkedInThrough: null,
+        worldSeed: 'seed',
+        floraDecisions: {},
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(5)
+    expect(data.bookcaseLayout).toEqual({})
+    // And the upgraded shape passes full validation on the next save.
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('the bookcase layout survives the save → reload and backup round trips', () => {
+    const data = {
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      completions: [
+        {
+          id: 'c1',
+          habitId: 'a',
+          recordedAt: 2000,
+          dayKey: '2026-07-12',
+          drops: [{ kind: 'reading', readingType: 'novel' }],
+        },
+      ],
+      bookcaseLayout: { 'c1:0': { x: 0.25, y: 0.99, facing: 'front' } },
+    }
+    saveData(data)
+    expect(loadData()).toEqual(data)
+
+    const backup = exportData()
+    clearData()
+    expect(importData(backup).bookcaseLayout).toEqual({
+      'c1:0': { x: 0.25, y: 0.99, facing: 'front' },
+    })
+  })
+
+  it('rejects a broken bookcase layout, like any corruption', () => {
+    expect(() =>
+      saveData({
+        ...emptyData(),
+        bookcaseLayout: { 'c1:0': { x: 2, y: 0.5, facing: 'spine' } },
+      }),
+    ).toThrow(/between 0 and 1/)
+    expect(() =>
+      importData(JSON.stringify({ ...emptyData(), bookcaseLayout: [] })),
     ).toThrow(/map/)
   })
 })

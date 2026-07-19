@@ -110,13 +110,14 @@ const GLYPHS = {
   ),
 }
 
-function DropGlyph({ kind, className = 'drop-glyph' }) {
+function DropGlyph({ kind, className = 'drop-glyph', ...rest }) {
   return (
     <svg
       viewBox="0 0 24 24"
       className={className}
       fill="currentColor"
       aria-hidden="true"
+      {...rest}
     >
       {GLYPHS[kind]}
     </svg>

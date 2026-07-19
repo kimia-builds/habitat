@@ -14,6 +14,12 @@ import {
 import { editablePastDays, habitsOn, isCheckInDue } from './game/checkin.js'
 import { CLOCK_CHECK_MS } from './game/constants.js'
 import {
+  bookcaseItems,
+  faceBook,
+  placeBook,
+  pruneBookcaseLayout,
+} from './game/bookcase.js'
+import {
   countFor,
   countOn,
   recordCompletion,
@@ -186,11 +192,17 @@ function App() {
   // with it, exactly as it takes the stored drops. Flora decisions are
   // pruned the same way (T3.3): undo a completion and its find — plus
   // whatever was decided about it — is gone, as if it never dropped.
+  // And the bookcase layout is pruned likewise (T4.2): the undone
+  // completion's publication leaves the shelf, place and all.
   function save(next) {
     next = {
       ...next,
       floraDecisions: pruneFloraDecisions(
         next.floraDecisions,
+        next.completions,
+      ),
+      bookcaseLayout: pruneBookcaseLayout(
+        next.bookcaseLayout,
         next.completions,
       ),
     }
@@ -232,6 +244,34 @@ function App() {
         data.completions,
         completionId,
         decision,
+      ),
+    })
+  }
+
+  // The Bookcase arrangement (T4.2): a book dragged to its place, or
+  // turned spine ↔ front. Both are remembered per publication (storage
+  // v5); the game module clamps the place into the shelf and refuses
+  // books that aren't there.
+  function handleBookMove(publicationId, point) {
+    save({
+      ...data,
+      bookcaseLayout: placeBook(
+        data.bookcaseLayout,
+        data.completions,
+        publicationId,
+        point,
+      ),
+    })
+  }
+
+  function handleBookFace(publicationId, facing) {
+    save({
+      ...data,
+      bookcaseLayout: faceBook(
+        data.bookcaseLayout,
+        data.completions,
+        publicationId,
+        facing,
       ),
     })
   }
@@ -555,17 +595,19 @@ function App() {
     )
   }
 
-  // The Bookcase (T3.5, early version): every publication ever
-  // received, each re-readable via the spread popup — which renders
-  // inside the meters fragment above, so it opens over this page too.
-  // The real shelves arrive in T4.2.
+  // The Bookcase (T4.2): one constant bookshelf, every publication a
+  // draggable book with a remembered place and facing. Reading opens
+  // the T3.5 spread popup — which renders inside the meters fragment
+  // above, so it opens over this page too — and is tracked nowhere.
   if (page === 'bookcase') {
     return (
       <main className="app">
         {header}
         {meters}
         <BookcasePage
-          items={readingItemsFrom(data.completions)}
+          items={bookcaseItems(data.completions, data.bookcaseLayout)}
+          onMove={handleBookMove}
+          onFace={handleBookFace}
           onRead={setReadingItem}
           onBack={() => setPage(null)}
         />

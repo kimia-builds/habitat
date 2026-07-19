@@ -52,7 +52,7 @@ describe('the Map page (T4.1)', () => {
     ).toBeDefined()
   })
 
-  it('each known region offers its discovery date — dates, no names (T6.1)', () => {
+  it('a known region simply glows — no names (T6.1), and no dates either (Kimia’s call, T4.2)', () => {
     const { container } = render(
       <MapPage
         completions={completions(1, '2026-07-14')}
@@ -61,9 +61,8 @@ describe('the Map page (T4.1)', () => {
       />,
     )
     const region = container.querySelector('.map-region')
-    expect(region.querySelector('title').textContent).toBe(
-      'known since 2026-07-14',
-    )
+    expect(region).not.toBeNull()
+    expect(region.querySelector('title')).toBeNull()
   })
 
   it('shows NO landmark markers while the landmark set ships empty', () => {
@@ -94,7 +93,9 @@ describe('the Map page (T4.1)', () => {
   it('the back button leads home', () => {
     const onBack = vi.fn()
     render(<MapPage completions={[]} worldSeed={SEED} onBack={onBack} />)
-    fireEvent.click(screen.getByRole('button', { name: '← back to the habits' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: '← back to the habits' }),
+    )
     expect(onBack).toHaveBeenCalled()
   })
 })

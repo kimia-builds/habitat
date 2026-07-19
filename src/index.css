@@ -587,6 +587,90 @@ body {
   font-size: 0.85rem;
 }
 
+/* T4.2: the Bookcase — one constant bookshelf, bare when empty (no
+   prose, no count). Publications are floating, draggable books in the
+   literacy stream's violet family; placeholder shapes until T5.3. */
+.bookcase-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #2a3040;
+  border-radius: 0.5rem;
+  align-items: flex-start;
+}
+
+.bookcase-page h2 {
+  font-weight: 300;
+  letter-spacing: 0.2em;
+}
+
+.bookshelf-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The frame and planks: quiet, barely-there — the shelf itself never
+   changes; only the books move. */
+.bookshelf-frame {
+  fill: rgba(255, 255, 255, 0.02);
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+.bookshelf-plank {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+/* A book: soft fill, glowing edge — the everyday pastel register. */
+.book {
+  cursor: grab;
+  outline: none;
+}
+
+.book:focus-visible .book-body {
+  stroke-opacity: 1;
+}
+
+.book-body {
+  fill: currentColor;
+  fill-opacity: 0.14;
+  stroke: currentColor;
+  stroke-opacity: 0.75;
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 3px currentColor);
+}
+
+.book-glyph {
+  opacity: 0.85;
+}
+
+/* The read button on a face-out cover: a small quiet eye. */
+.book-eye {
+  cursor: pointer;
+  outline: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.8;
+  stroke-width: 1;
+}
+
+.book-eye circle:first-child {
+  fill: rgba(8, 9, 16, 0.75);
+}
+
+.book-eye-pupil {
+  fill: currentColor;
+  stroke: none;
+}
+
+.book-eye:focus-visible,
+.book-eye:hover {
+  stroke-opacity: 1;
+}
+
 .habit-list {
   list-style: none;
   display: flex;

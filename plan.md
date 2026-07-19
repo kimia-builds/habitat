@@ -1,5 +1,16 @@
 # plan.md — HABITAT build plan
 
+*v1.20 — 2026-07-19 (tenth session). **T4.2 built**: the Bookcase page.
+One constant bookshelf — bare shelves, no prose, no count when empty —
+with every publication a floating, draggable book: arrange them
+anywhere, click one to stand it face-out, and the cover's quiet eye
+opens the T3.5 spread. Kimia's calls today: the constant shelf with
+free drag arrangement, spine ↔ front with the eye-read button (both
+remembered per book, storage v5), code-drawn violet placeholder books
+until T5.3, and NO found dates — on the books or on the Map (their
+tooltips came out). Undo a dropping completion and the book leaves the
+shelf, place and all. Next task: **T4.3**.*
+
 *v1.19 — 2026-07-19 (ninth session). **T4.1 built**: the Map page.
 The planet shows as a faint outline from day one; its 16 equal
 regions (the landing site, a ring of 5, a ring of 10 — discovery
@@ -289,10 +300,21 @@ tracker. Everything after this is delight, informed by real use.
   discovery dates as quiet tooltips; landmark plumbing tested but
   invisible until T6.1 picks the species; 16 blank `mapRegions`
   narration slots (their discovery moment plays with T5.2's swell).
-- [ ] **T4.2 Bookcase page** — shelves filling with every magazine,
-  novel, dictionary ever received; every publication opens its
-  double-page spread via the T3.5 popup (re-readable anytime, no
-  read/unread tracking).
+- [x] **T4.2 Bookcase page** *(done 2026-07-19)* — shelves filling with
+  every magazine, novel, dictionary ever received; every publication
+  opens its double-page spread via the T3.5 popup (re-readable anytime,
+  no read/unread tracking).
+  Built: ONE CONSTANT BOOKSHELF (Kimia's decision) — bare shelves, no
+  prose, no count when empty; publications as floating draggable books
+  arranged anywhere, each standing spine or face-out with a quiet eye
+  read button, place AND facing remembered per book (storage v5,
+  `game/bookcase.js` + `bookcaseLayout`, pruned on undo like flora
+  decisions); code-drawn violet placeholder books (slim magazine,
+  middling novel, thick dictionary) until T5.3, generic until T6.1;
+  un-arranged books fill default slots top-shelf-first; found dates
+  removed from the Bookcase AND the Map's tooltips. Tests cover the
+  layout maths, storage upgrade, click/drag/eye flows, and that
+  reading still stores nothing.
 - [ ] **T4.3 Abode page** — gathered flora and purchased objects
   placeable by drag, movable, removable (compost / return). Play, not
   inventory management.
