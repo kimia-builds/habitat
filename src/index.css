@@ -491,6 +491,37 @@ body {
   cursor: pointer;
 }
 
+/* T3.5: the reading popup — a publication's double-page spread. Quiet
+   pastel, not neon: re-reading is an everyday pleasure, not a POP
+   moment. Reuses the reveal overlay's dimmed backdrop. */
+
+.spread-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  width: 100%;
+  max-width: 30rem;
+  padding: 1.5rem;
+  background: #0b0e14;
+  border: 1px solid #2a3040;
+  border-radius: 0.75rem;
+  animation: reveal-pop 0.45s ease;
+}
+
+.spread-image {
+  display: block;
+  width: 100%;
+  border-radius: 0.4rem;
+}
+
+.spread-empty-line {
+  color: #9aa3b5;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 .habit-list {
   list-style: none;
   display: flex;

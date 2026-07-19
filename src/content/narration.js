@@ -54,6 +54,16 @@ export const NARRATION = {
     },
   },
 
+  // ── the spread popup (T3.5) ────────────────────────────────────────
+  // Shown inside the reading popup when a publication's double-page
+  // spread doesn't exist yet (spreads are listed in
+  // src/content/spreads.js). Left blank, the popup shows just the
+  // publication and its close button — nothing invented.
+  spreadPopup: {
+    // TODO: written by Kimia.
+    emptyState: '',
+  },
+
   // ── future narrated moments ────────────────────────────────────────
   // Sections ready now; actual slots are added when each feature is
   // built and its names/counts exist (Kimia's call, 2026-07-19).

@@ -1,5 +1,14 @@
 # spec.md — HABITAT
 
+*v1.19 — 2026-07-19 (eighth session). T3.5 built: read now / read
+later + the spread popup, plus the early Bookcase list. Decided with
+Kimia: the popup's **empty-state words are a narration slot** (hers;
+blank shows just the publication and its close button — nothing
+invented); **closing the popup lets the arrival go**; **no placeholder
+spreads** — the empty state shows everywhere until T6.1 names the
+publications (the flora precedent). Spread images are keyed in
+`src/content/spreads.js` (Kimia's file). All in the decisions log.*
+
 *v1.18 — 2026-07-19 (seventh session). T3.4 built: narration content
 slots in one keyed file (`src/content/narration.js`). Decided with
 Kimia: reveal **titles are slots too** (every word on the reveal
@@ -686,6 +695,22 @@ region discovery expands what the Market can offer.
   code path from flora — and the drops engine never sees decisions,
   so finds keep arriving on the steady window schedule: composted
   flora can always be encountered again.
+- 2026-07-19 (eighth session, T3.5): **the spread popup's empty-state
+  words are a narration slot** — `spreadPopup.emptyState` in Kimia's
+  narration.js, consistent with "every word on the reveal screen is
+  hers". Left blank, the popup shows only the publication's glyph, its
+  generic name and a close button — nothing invented. Spread images
+  are keyed one-per-publication in `src/content/spreads.js` (also
+  Kimia's file; images go in `public/spreads/`); until T6.1 names the
+  publications no key exists, so every popup shows the empty state —
+  no placeholder images (the flora-stay-generic precedent).
+- 2026-07-19 (eighth session, T3.5): **closing the spread popup lets
+  the arrival go** — reading was the moment; the piece is safe in the
+  Bookcase, re-readable anytime. Read later (or letting the arrival
+  fade) means the same thing: nothing is at stake, and nothing about
+  reading is ever written to storage. The early Bookcase list (like
+  the T3.3 Abode) shows everything received, in arrival order, each
+  with its read button; the real shelves (T4.2) reuse the same popup.
 - 2026-07-19 (seventh session, T3.4): **narration lives in one keyed
   content file** — `src/content/narration.js` holds every narrated
   moment's words; the five T3.2 reveal texts moved there as marked

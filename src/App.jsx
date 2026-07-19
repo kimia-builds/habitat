@@ -61,12 +61,14 @@ import AbodePage from './ui/AbodePage.jsx'
 import ArrivalShelf from './ui/ArrivalShelf.jsx'
 import { arrivalNote } from './ui/arrivalText.js'
 import BackupControls from './ui/BackupControls.jsx'
+import BookcasePage from './ui/BookcasePage.jsx'
 import CheckInPanel from './ui/CheckInPanel.jsx'
 import FieldNotes from './ui/FieldNotes.jsx'
 import FirstReveal from './ui/FirstReveal.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import Meters from './ui/Meters.jsx'
+import SpreadPopup from './ui/SpreadPopup.jsx'
 import StubPage from './ui/StubPage.jsx'
 import SymbolPicker from './ui/SymbolPicker.jsx'
 
@@ -95,6 +97,11 @@ function App() {
   const [arrivals, setArrivals] = useState([])
   const [pendingArrivals, setPendingArrivals] = useState([])
   const [seenRevealIds, setSeenRevealIds] = useState(() => new Set())
+  // The publication being read right now (T3.5) — the spread popup is
+  // open while this is set. Screen state only, and deliberately so:
+  // reading is tracked nowhere (Kimia's decision 2026-07-19), so
+  // nothing about it may ever reach storage.
+  const [readingItem, setReadingItem] = useState(null)
 
   // The page's own clock (Kimia's requirement 2026-07-15): a tab left
   // open must notice the new Habitat day by itself, like a fresh visit —
@@ -226,6 +233,17 @@ function App() {
         decision,
       ),
     })
+  }
+
+  // Read now on a held arrival (T3.5): the spread popup opens and the
+  // arrival is let go — the overlay covers the shelf, so by the time
+  // the popup closes the arrival is quietly gone (Kimia's call
+  // 2026-07-19). The piece is in the Bookcase regardless.
+  // (publicationId stays null until T6.1 names the publications, so
+  // the popup shows its empty state for now.)
+  function handleReadNow(arrival) {
+    setArrivals((list) => list.filter((a) => a.id !== arrival.id))
+    setReadingItem({ type: arrival.key, publicationId: null })
   }
 
   function toggleFilter(symbol) {
@@ -472,6 +490,7 @@ function App() {
           setArrivals((list) => list.filter((a) => a.id !== id))
         }
         onDecide={handleFloraDecision}
+        onRead={handleReadNow}
       />
       {revealing && (
         <FirstReveal
@@ -480,6 +499,9 @@ function App() {
             setSeenRevealIds((seen) => new Set([...seen, revealing.id]))
           }
         />
+      )}
+      {readingItem && (
+        <SpreadPopup item={readingItem} onClose={() => setReadingItem(null)} />
       )}
     </>
   )
@@ -532,7 +554,25 @@ function App() {
     )
   }
 
-  // A meter was clicked: its placeholder page (Map/Bookcase/Market
+  // The Bookcase (T3.5, early version): every publication ever
+  // received, each re-readable via the spread popup — which renders
+  // inside the meters fragment above, so it opens over this page too.
+  // The real shelves arrive in T4.2.
+  if (page === 'bookcase') {
+    return (
+      <main className="app">
+        {header}
+        {meters}
+        <BookcasePage
+          items={readingItemsFrom(data.completions)}
+          onRead={setReadingItem}
+          onBack={() => setPage(null)}
+        />
+      </main>
+    )
+  }
+
+  // A meter was clicked: its placeholder page (the Map and the Market
   // arrive for real in M4), with the meters still up top.
   if (page !== null) {
     return (

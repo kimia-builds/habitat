@@ -1,5 +1,12 @@
 # design-notes.md — HABITAT (UX & feel)
 
+_v1.4 — 2026-07-19 (eighth session, T3.5 built). The drop-choice
+symmetry in §5 is now real: held reading arrivals offer read now /
+read later, and the spread popup is quiet pastel (an everyday
+pleasure, not a POP). Its empty-state words are a narration slot —
+the human-written rule holds down to this one line. Spec v1.19,
+plan v1.18._
+
 _v1.3 — 2026-07-19 (seventh session, T3.4 built). The authoring model
 in §7 is now real: `src/content/narration.js` holds the keyed slots,
 the five built reveals read from it (titles included — Kimia's call),

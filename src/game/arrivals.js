@@ -46,15 +46,25 @@ export function deliverDrops(completion, habit, existing, worldSeed) {
   return { ...completion, drops }
 }
 
-// All reading material ever received, in arrival order, shaped for the
-// literacy meter. Reading is never discarded (spec §5 Stream 2), so
-// this IS the bookcase's contents too.
+// All reading material ever received, in arrival order — the literacy
+// meter's feed AND the Bookcase's contents (reading is never
+// discarded, spec §5 Stream 2). Since T3.5 each item also knows the
+// day it arrived and which publication it is; publicationId stays
+// null until the T6.1 content pools name the publications, so until
+// then no spread image can match it and the popup shows its empty
+// state.
 export function readingItemsFrom(completions) {
   const items = []
   for (const completion of completions) {
-    for (const drop of completion.drops) {
-      if (drop.kind === 'reading') items.push({ type: drop.readingType })
-    }
+    completion.drops.forEach((drop, index) => {
+      if (drop.kind !== 'reading') return
+      items.push({
+        id: `${completion.id}:${index}`,
+        type: drop.readingType,
+        dayKey: completion.dayKey,
+        publicationId: drop.publicationId ?? null,
+      })
+    })
   }
   return items
 }

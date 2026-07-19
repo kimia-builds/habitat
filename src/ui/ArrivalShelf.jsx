@@ -6,8 +6,14 @@
 // Since T3.3, a held FLORA find also offers its decision: gather (it
 // goes home to the Abode) or leave it (it stays where it grows). No
 // pressure either way — an arrival that fades undecided simply waits
-// on the Abode page (Kimia's decision 2026-07-19). Reading material and
-// fungi keep arriving decision-free: always kept, always banked.
+// on the Abode page (Kimia's decision 2026-07-19).
+//
+// Since T3.5, held READING MATERIAL offers the symmetric choice: read
+// now (the spread popup opens) or read later (the arrival just lets
+// go). Unlike flora there is nothing to lose and nothing to store —
+// the piece is in the Bookcase either way, re-readable anytime.
+// Fungi stay choice-free: currency has only exchange value, so it
+// banks itself.
 //
 // An arrival that still owes its first-occurrence reveal never fades —
 // it waits on the shelf until the reveal has been seen.
@@ -26,12 +32,15 @@ const STREAM_OF = {
   fungi: 'fungi',
 }
 
-function ShelfItem({ arrival, onExpire, onDecide }) {
+function ShelfItem({ arrival, onExpire, onDecide, onRead }) {
   const [held, setHeld] = useState(false)
   const fading = !held && !arrival.awaitingReveal
   // The choice belongs to a held, still-undecided flora find only.
   const deciding =
     held && arrival.key === 'flora' && arrival.status === 'pending'
+  // Held reading material always offers its choice — nothing is ever
+  // decided or stored about reading, so there is no state to check.
+  const reading = held && STREAM_OF[arrival.key] === 'reading'
   return (
     <div
       className={`arrival arrival-${STREAM_OF[arrival.key]}`}
@@ -72,6 +81,19 @@ function ShelfItem({ arrival, onExpire, onDecide }) {
           </button>
         </>
       )}
+      {reading && (
+        <>
+          <button className="arrival-choice" onClick={() => onRead(arrival)}>
+            read now
+          </button>
+          <button
+            className="arrival-choice"
+            onClick={() => onExpire(arrival.id)}
+          >
+            read later
+          </button>
+        </>
+      )}
       {held && arrival.key === 'flora' && arrival.status !== 'pending' && (
         <span className="arrival-caption habit-meta">· {arrival.status}</span>
       )}
@@ -79,7 +101,7 @@ function ShelfItem({ arrival, onExpire, onDecide }) {
   )
 }
 
-function ArrivalShelf({ arrivals, onExpire, onDecide }) {
+function ArrivalShelf({ arrivals, onExpire, onDecide, onRead }) {
   if (arrivals.length === 0) return null
   return (
     <section className="arrival-shelf" aria-label="arrivals">
@@ -89,6 +111,7 @@ function ArrivalShelf({ arrivals, onExpire, onDecide }) {
           arrival={arrival}
           onExpire={onExpire}
           onDecide={onDecide}
+          onRead={onRead}
         />
       ))}
     </section>

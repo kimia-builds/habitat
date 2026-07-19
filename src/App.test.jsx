@@ -900,10 +900,13 @@ function findSeed(dayKey, want) {
       difficulty: 'easy',
     }
     const flora = floraTargetStep(0, seed) === 0
-    const reading = rollReading(facts) !== null
+    const reading = rollReading(facts) // null or a reading type
     const fungi = rollFungi(facts) > 0
-    if (want === 'flora' && flora && !reading && !fungi) return seed
-    if (want === 'fungi' && fungi && !flora && !reading) return seed
+    if (want === 'flora' && flora && reading === null && !fungi) return seed
+    if (want === 'fungi' && fungi && !flora && reading === null) return seed
+    // Reading: ask for the exact type ('magazine' | 'novel' |
+    // 'dictionary') and nothing else alongside it.
+    if (want === reading && !flora && !fungi) return seed
   }
   throw new Error(`no seed found that drops only ${want} on ${dayKey}`)
 }
@@ -1019,6 +1022,92 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
     expect(screen.getByRole('region', { name: 'arrivals' })).toBeDefined()
     expect(screen.getByText('you came across a flora find')).toBeDefined()
+  })
+})
+
+describe('read now / read later + the spread popup (T3.5)', () => {
+  // The whole raw stored record, byte for byte: reading must NEVER
+  // write anything (Kimia's decision 2026-07-19 — no read/unread
+  // state exists), so before/after snapshots have to be identical.
+  const rawStored = () => localStorage.getItem('habitat-data')
+  const shelf = () => within(screen.getByRole('region', { name: 'arrivals' }))
+
+  // Tap once (the seed makes it drop exactly one item of `kind`) and
+  // clear the first-occurrence reveal, leaving it on the shelf.
+  function dropOne(kind) {
+    seedWorld(findSeed('2026-07-16', kind))
+    render(<App />)
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    fireEvent.click(screen.getByRole('button', { name: 'onward' }))
+  }
+
+  it('a held arrival offers read now / read later — for all three reading types', () => {
+    for (const kind of ['magazine', 'novel', 'dictionary']) {
+      dropOne(kind)
+      fireEvent.click(shelf().getByRole('button')) // hold it
+      expect(shelf().getByRole('button', { name: 'read now' })).toBeDefined()
+      expect(shelf().getByRole('button', { name: 'read later' })).toBeDefined()
+      cleanup()
+      localStorage.clear()
+    }
+  })
+
+  it('fungi stay choice-free — a held fungus offers nothing', () => {
+    dropOne('fungi')
+    fireEvent.click(shelf().getByRole('button'))
+    expect(shelf().queryByRole('button', { name: /read/ })).toBeNull()
+    expect(shelf().queryByRole('button', { name: 'gather' })).toBeNull()
+  })
+
+  it('read later just lets the arrival go — and stores not a byte', () => {
+    dropOne('magazine')
+    const before = rawStored()
+    fireEvent.click(shelf().getByRole('button'))
+    fireEvent.click(shelf().getByRole('button', { name: 'read later' }))
+    expect(screen.queryByRole('region', { name: 'arrivals' })).toBeNull()
+    expect(rawStored()).toBe(before)
+  })
+
+  it('read now opens the spread popup; closing it lets the arrival go; nothing stored', () => {
+    dropOne('magazine')
+    const before = rawStored()
+    fireEvent.click(shelf().getByRole('button'))
+    fireEvent.click(shelf().getByRole('button', { name: 'read now' }))
+
+    // The popup is up. No publication has a spread yet (T6.1 names
+    // them), so the empty state shows: no image, no invented words.
+    const popup = screen.getByRole('dialog', { name: 'a magazine' })
+    expect(popup.querySelector('img')).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'close' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(screen.queryByRole('region', { name: 'arrivals' })).toBeNull()
+    expect(rawStored()).toBe(before)
+  })
+
+  it('the Bookcase lists what was received and re-opens the popup, anytime', () => {
+    dropOne('magazine')
+    fireEvent.click(shelf().getByRole('button'))
+    fireEvent.click(shelf().getByRole('button', { name: 'read later' }))
+    const before = rawStored()
+
+    // The literacy meter leads to the early Bookcase list…
+    fireEvent.click(
+      within(screen.getByRole('region', { name: 'meters' })).getByRole(
+        'button',
+        { name: /literacy/ },
+      ),
+    )
+    const list = within(screen.getByRole('list', { name: 'reading material' }))
+    expect(list.getByText('a magazine')).toBeDefined()
+    expect(list.getByText('found 2026-07-16')).toBeDefined()
+
+    // …where any publication is re-readable — with still nothing
+    // stored about it, ever (no read/unread state exists).
+    fireEvent.click(list.getByRole('button', { name: 'read' }))
+    expect(screen.getByRole('dialog', { name: 'a magazine' })).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: 'close' }))
+    expect(rawStored()).toBe(before)
   })
 })
 

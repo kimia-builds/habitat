@@ -93,8 +93,12 @@ describe('derived meters and firsts', () => {
     completion('d', 'h', '2026-07-04', [{ kind: 'flora' }]),
   ]
 
-  it('collects all reading material for the literacy meter', () => {
-    expect(readingItemsFrom(history)).toEqual([{ type: 'magazine' }])
+  it('collects all reading material, dated, for the meter and the Bookcase', () => {
+    // Since T3.5 each item carries the day it arrived and its (not yet
+    // named — T6.1) publication, so the Bookcase can list and open it.
+    expect(readingItemsFrom(history)).toEqual([
+      { id: 'c:0', type: 'magazine', dayKey: '2026-07-03', publicationId: null },
+    ])
   })
 
   it('sums all fungi into the wallet', () => {

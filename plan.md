@@ -1,5 +1,17 @@
 # plan.md — HABITAT build plan
 
+*v1.18 — 2026-07-19 (eighth session). **T3.5 built**: read now / read
+later + the spread popup. A held reading arrival offers the choice for
+all three types; read now opens the quiet pastel popup, read later
+lets the arrival go; the Bookcase stub became an early list (like the
+T3.3 Abode) where everything received is re-readable. Kimia's calls
+today: the popup's empty-state words are a **narration slot** (hers —
+blank shows just the publication and the close button), closing the
+popup lets the arrival go, and no placeholder images — every popup
+shows the empty state until T6.1 names the publications and spreads
+exist (`src/content/spreads.js`, her file, keys image to publication).
+Nothing about reading is ever stored. Next task: **T4.1**.*
+
 *v1.17 — 2026-07-19 (seventh session). **T3.4 built**: narration
 content slots — one keyed file (`src/content/narration.js`) Kimia
 edits directly. The five T3.2 reveals read title AND line from slots
@@ -221,8 +233,9 @@ tracker. Everything after this is delight, informed by real use.
   stay, no marker); labelled sections wait for friend intros, map
   regions and literacy eras. Verified in the browser: the first-fungi
   reveal pops reading its words from the file.
-- [ ] **T3.5 Read now / read later + the spread popup.** *(decided
-  2026-07-19, sixth session — spec v1.17, design-notes §5/§7)*
+- [x] **T3.5 Read now / read later + the spread popup.** *(done
+  2026-07-19; decided 2026-07-19, sixth session — spec v1.17,
+  design-notes §5/§7)*
   Drop-choice symmetry: a held reading arrival offers **read now /
   read later**, mirroring flora's gather / leave it (fungi stay
   choice-free — currency has only exchange value). Read now opens a
@@ -239,6 +252,14 @@ tracker. Everything after this is delight, informed by real use.
   shows a slotted image or the empty state; publications open from the
   Bookcase; tests cover slot lookup, empty state, and that no reading
   decision is ever written to storage.
+  Built: `src/content/spreads.js` (Kimia's file — keys each T6.1
+  publication to an image in `public/spreads/`); the quiet pastel
+  popup with its empty state (glyph + name + close; the empty-state
+  words are a narration slot, blank until Kimia writes them); read
+  now / read later on held reading arrivals (closing the popup lets
+  the arrival go); the early Bookcase list. Tests prove the choice
+  for all three types, the empty state inventing nothing, and that
+  reading stores not a byte. Verified in the browser.
 
 ## M4 — The world of N-Z-D (5 sessions)
 
