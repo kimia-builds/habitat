@@ -61,7 +61,7 @@ export const NARRATION = {
   // publication and its close button — nothing invented.
   spreadPopup: {
     // TODO: written by Kimia.
-    emptyState: '',
+    emptyState: 'something will be here soon. check in later.',
   },
 
   // ── future narrated moments ────────────────────────────────────────
