@@ -1,5 +1,13 @@
 # plan.md — HABITAT build plan
 
+*v1.17 — 2026-07-19 (seventh session). **T3.4 built**: narration
+content slots — one keyed file (`src/content/narration.js`) Kimia
+edits directly. The five T3.2 reveals read title AND line from slots
+(titles too — Kimia's call today); an empty slot renders nothing (the
+pop-up keeps its glyph and button — no marker, nothing invented);
+sections for friend intros / map regions / literacy eras sit ready,
+their slots added when those features are built. Next task: **T3.5**.*
+
 *v1.16 — 2026-07-19 (sixth session, docs addition). Added **T3.5**
 (read now / read later + the spread popup — drop-choice symmetry with
 flora; spec v1.17 + design-notes §5/§7). Next task: **T3.4**.*
@@ -196,8 +204,8 @@ tracker. Everything after this is delight, informed by real use.
   buttons; storage v4 carries the decisions map through backups.
   Tests cover the two guarantees: composting credits nothing, and
   finds keep arriving whatever was decided.
-- [ ] **T3.4 Narration content slots.** *(decided 2026-07-19; spec
-  v1.14 + design-notes §7)*
+- [x] **T3.4 Narration content slots.** *(done 2026-07-19; decided
+  2026-07-19, spec v1.14 + design-notes §7)*
   A keyed content file with one empty slot per narrated moment
   (first-occurrence reveals, friend intros, map regions, literacy
   eras). Slots ship blank (`TODO: written by Kimia`); the app renders
@@ -207,6 +215,12 @@ tracker. Everything after this is delight, informed by real use.
   momentary: shown once, never stored or re-readable.
   *Done when:* tests prove empty slots render gracefully; the five
   reveals read from slots; Kimia can fill a slot by editing one file.
+  Built: `src/content/narration.js` — the keyed content file with the
+  lookup helper; reveal titles are slots too (every word on that
+  screen is Kimia's); an empty slot renders nothing (glyph + button
+  stay, no marker); labelled sections wait for friend intros, map
+  regions and literacy eras. Verified in the browser: the first-fungi
+  reveal pops reading its words from the file.
 - [ ] **T3.5 Read now / read later + the spread popup.** *(decided
   2026-07-19, sixth session — spec v1.17, design-notes §5/§7)*
   Drop-choice symmetry: a held reading arrival offers **read now /

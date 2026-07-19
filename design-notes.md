@@ -1,5 +1,11 @@
 # design-notes.md — HABITAT (UX & feel)
 
+_v1.3 — 2026-07-19 (seventh session, T3.4 built). The authoring model
+in §7 is now real: `src/content/narration.js` holds the keyed slots,
+the five built reveals read from it (titles included — Kimia's call),
+and an empty slot renders nothing at all — the pop-up keeps its glyph
+and button, no marker. Spec v1.18, plan v1.17._
+
 _v1.2 — 2026-07-19 (sixth session, after T3.3). The human-made rule
 now covers images too: reading-material spreads are pictures Kimia
 provides, never AI-generated (§7). Drop-choice symmetry decided —
@@ -166,9 +172,11 @@ Code builds the *slots and plumbing* only.
   narrated moment (each first-occurrence reveal, each friend
   intro/welcome, each map region, each literacy era). Slots ship blank
   / `TODO: written by Kimia`; the app renders gracefully when empty
-  and never invents copy. The five built reveals (T3.2) get converted
-  to slots in **plan T3.4**, their current Claude-written text kept
-  only as a marked placeholder until Kimia replaces it.
+  and never invents copy. **Built in T3.4 (2026-07-19):** the file is
+  `src/content/narration.js`; the five T3.2 reveals read from it —
+  titles too — their Claude-written text kept only as a marked
+  placeholder until Kimia replaces it, and an empty slot shows
+  nothing at all.
 - **Narration is momentary.** Narration plays **once**, in the moment,
   and is **not stored or re-readable**. Precious, unrepeatable.
 - **Names stay visible (decision 2026-07-19).** Flora, objects,

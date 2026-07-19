@@ -1,5 +1,14 @@
 # spec.md — HABITAT
 
+*v1.18 — 2026-07-19 (seventh session). T3.4 built: narration content
+slots in one keyed file (`src/content/narration.js`). Decided with
+Kimia: reveal **titles are slots too** (every word on the reveal
+screen is hers); an **empty slot renders nothing** — the pop-up keeps
+its glyph and button, no marker, nothing invented; future narrated
+moments (friend intros, map regions, literacy eras) get labelled
+**sections now, slots later**, added when those features are built.
+All in the decisions log.*
+
 *v1.17 — 2026-07-19 (sixth session, docs addition after T3.3).
 Decided with Kimia: reading material gets the same held-arrival
 choice symmetry — **read now / read later** — mirroring gather /
@@ -677,6 +686,16 @@ region discovery expands what the Market can offer.
   code path from flora — and the drops engine never sees decisions,
   so finds keep arriving on the steady window schedule: composted
   flora can always be encountered again.
+- 2026-07-19 (seventh session, T3.4): **narration lives in one keyed
+  content file** — `src/content/narration.js` holds every narrated
+  moment's words; the five T3.2 reveal texts moved there as marked
+  Claude-written placeholders until Kimia replaces them. **Reveal
+  titles are slots too** — every word on the reveal screen is
+  Kimia's. **An empty slot renders nothing**: the reveal keeps its
+  glyph and button — no marker, no invented copy. Future narrated
+  moments (friend intros, map regions, literacy eras) have labelled
+  sections in the file now; their slots are added when the features
+  are built and their names/counts exist.
 - 2026-07-19 (fifth session, docs only): **the six symbols are the
   six charms** — crown/gold, cherries/coral, shell/pink,
   anchor/lavender, shield/sky, key/teal, mapped to symbol slots 1–6;
