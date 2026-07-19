@@ -1,8 +1,14 @@
 # plan.md — HABITAT build plan
 
+*v1.12 — 2026-07-19 (fourth session, docs only). Merged
+**design-notes.md** (the feel layer — read alongside spec.md before
+design-adjacent tasks). Added **T3.4** (narration content slots);
+feel enhancements to built surfaces (star-shimmer, meter glow) land
+in **T5.2**. No code this session. Next task: **T3.2b** or **T3.3**,
+Kimia's pick.*
+
 *v1.11 — 2026-07-19 (third session, docs only). Added **T3.2b**
-(unlimited tap counter for every shape — decisions in spec v1.13). No
-code this session. Next task: **T3.2b** or **T3.3**, Kimia's pick.*
+(unlimited tap counter for every shape — decisions in spec v1.13).*
 
 ## How to use this file
 
@@ -162,6 +168,17 @@ tracker. Everything after this is delight, informed by real use.
   always kept; fungi always banked.
   *Done when:* tests prove composted flora can reappear and yield no
   fungi; nothing is ever lost.
+- [ ] **T3.4 Narration content slots.** *(decided 2026-07-19; spec
+  v1.14 + design-notes §7)*
+  A keyed content file with one empty slot per narrated moment
+  (first-occurrence reveals, friend intros, map regions, literacy
+  eras). Slots ship blank (`TODO: written by Kimia`); the app renders
+  gracefully when a slot is empty and never invents copy. Convert the
+  five built T3.2 reveals to slots — their current text stays only as
+  a marked placeholder until Kimia writes the real words. Narration is
+  momentary: shown once, never stored or re-readable.
+  *Done when:* tests prove empty slots render gracefully; the five
+  reveals read from slots; Kimia can fill a slot by editing one file.
 
 ## M4 — The world of N-Z-D (5 sessions)
 
@@ -195,7 +212,12 @@ tracker. Everything after this is delight, informed by real use.
 
 - [ ] **T5.1 The 6 abstract symbols** — designed together, no words.
 - [ ] **T5.2 Visual identity** — palette system (white/pastel/basic +
-  neon POP), typography, glow effects, animations.
+  neon POP), typography, glow effects, animations. Includes the feel
+  enhancements decided 2026-07-19 (design-notes §4–§5): momentary
+  glow/thicken on meter advance and roll-over (layered on the built
+  bar), star-shimmer on regular drop arrivals, full firework for
+  first-occurrence reveals and friend arrivals, live-vs-retro tonal
+  palette shift.
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
   categories), flora, fungi, market objects, planet regions. Several
   sessions of creative iteration; Kimia art-directs.

@@ -1,5 +1,13 @@
 # spec.md — HABITAT
 
+*v1.14 — 2026-07-19 (fourth session, docs only). Merged the design
+interrogation into **design-notes.md** (the feel layer — read it
+alongside this file for any design-adjacent task). Decided with Kimia:
+star-shimmer/firework placement, momentary meter glow, names stay
+visible + narration momentary, undo persistent-but-quiet, no calm
+mode in v1, built reveal text to be slot-ified (new plan T3.4). All in
+the decisions log.*
+
 *v1.13 — 2026-07-19 (third session, docs only). Decided: every
 repeating schedule shape presents as an N-per-day-style counter with
 unlimited +1 taps; every tap counts toward the meter and drops for
@@ -529,6 +537,43 @@ region discovery expands what the Market can offer.
   beyond a day's goal advance the expedition meter and roll drops for
   all repeating shapes. Trust-based by design (one honest user; no
   interest in tap-farming).
+- 2026-07-19 (fourth session, design-notes merge): **the feel layer
+  lives in design-notes.md** — north star (encouragement, gym-gains
+  calm), juice = timing/scale/colour/light only, weird > cute,
+  soundless (no audio anywhere, ever), human-written story (Claude
+  Code scaffolds empty keyed content slots, never writes narration).
+- 2026-07-19 (fourth session): **drop arrival gets a star layer** —
+  regular drops add a small, brief star-shimmer over the built quiet
+  pastel arrival; the full firework (a burst of confetti-like stars
+  that slowly fade) is reserved for the five first-occurrence reveals
+  and friend arrivals. The middle path: quiet pacing kept, drops still
+  feel special.
+- 2026-07-19 (fourth session): **meters glow and thicken momentarily
+  on movement** — each advance plays a momentary glow/thicken
+  animation on the built T2.2 rolling bar, then fades straight back
+  to the normal view; segment roll-over is the same treatment with a
+  brighter celebratory pulse. The resting bar never changes; this is
+  a layer on the built bar, not a rebuild.
+- 2026-07-19 (fourth session): **names stay visible; narration is
+  momentary** — flora, objects, reading material and friends keep
+  their written names (drop click-to-hold naming and T6.1 unchanged).
+  Narration/story text plays once, in the moment, and is never stored
+  or re-readable; record pages (Guest Book, Map, Bookcase) are
+  visual-first — art + names + dates, no stored prose or captions.
+- 2026-07-19 (fourth session): **undo is persistent but quiet** —
+  available as long as the rules allow (same-day for one-time; the
+  T3.2b counter's undo), styled small and low-key, never an alarm
+  colour or a shake. (Supersedes the fading-undo idea from the design
+  draft.)
+- 2026-07-19 (fourth session): **no reduced-motion / calm mode in
+  v1** — single user; revisit only if the motion ever feels like too
+  much.
+- 2026-07-19 (fourth session): **narration content is slot-based and
+  human-written, retroactively** — a keyed content file holds one slot
+  per narrated moment; slots ship blank (`TODO: written by Kimia`) and
+  the app renders gracefully when empty. The five built T3.2 reveals
+  get converted to slots (plan T3.4); their current text remains only
+  as a marked placeholder until Kimia replaces it.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

@@ -1,6 +1,7 @@
 # CLAUDE.md — rules for AI coding sessions on Habitat
 
-Read spec.md and plan.md before writing any code. If anything is
+Read spec.md and plan.md before writing any code — and design-notes.md
+(the feel layer) before any design-adjacent task. If anything is
 ambiguous, ask Kimia before coding — never guess and never invent
 requirements.
 
@@ -64,6 +65,20 @@ Kimia is a non-coder. Therefore:
   missable, no FOMO mechanics.
 - Framing: ethical immigration to N-Z-D. We are a guest, not a
   coloniser — no conquest/claiming/extraction language anywhere.
+
+## Design guardrails (from design-notes.md — never violate)
+
+- **Soundless.** No audio, anywhere, ever. All feedback is visual.
+- **Claude Code never writes the story.** All narration, dialogue,
+  friend introductions, and captions are human-written by Kimia.
+  Scaffold empty, keyed content slots and ship them blank
+  (`TODO: written by Kimia`) — never auto-generate prose.
+- No punishment *feel* either: encouragement and motivation only.
+  Juice comes from timing, scale, colour, and light — glow, pulse,
+  anticipation pause, tap-to-reveal, nothing else. Movement
+  animations are momentary and settle back to a calm resting state.
+- Weird > cute. Undo is persistent where the spec allows it but
+  always quiet — never an alarm colour or a shake.
 
 ## Technical conventions
 
