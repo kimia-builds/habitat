@@ -1,5 +1,11 @@
 # design-notes.md — HABITAT (UX & feel)
 
+_v1.2 — 2026-07-19 (sixth session, after T3.3). The human-made rule
+now covers images too: reading-material spreads are pictures Kimia
+provides, never AI-generated (§7). Drop-choice symmetry decided —
+read now / read later mirrors gather / leave it (§5); fungi stay
+choice-free (currency). Spec v1.17, plan T3.5._
+
 _v1.1 — 2026-07-19 (fifth session, docs only). Added §11: the visual
 identity reference — the six charm symbols + colours and the
 typography system, from Kimia's design reference. Companion to
@@ -26,7 +32,11 @@ design-adjacent task.
    blank (`TODO: written by Kimia`); it must never auto-generate prose.
    This applies retroactively: the five built T3.2 reveals get
    slot-ified (plan T3.4), their current text kept only as a marked
-   placeholder until Kimia replaces it. See §7.
+   placeholder until Kimia replaces it. See §7. **Since 2026-07-19
+   this covers images too:** the reading-material spreads (plan T3.5)
+   are pictures Kimia provides — never AI-generated. Same shape:
+   Claude Code builds the keyed slots and the graceful empty state;
+   Kimia makes the content.
 
 ---
 
@@ -120,6 +130,15 @@ the quiet, patient pacing and "drops should feel special."
 Anticipation-first stays true at the top of the hierarchy: **friends
 arrive as delayed surprise drops** days after a literacy milestone
 opens the door (spec §5, T4.4).
+
+**Drop-choice symmetry (2026-07-19, plan T3.5).** The two drops with
+*intrinsic* value offer the same held-arrival choice: flora —
+**gather / leave it** (T3.3); reading material — **read now / read
+later**, where read now opens the publication's double-page spread
+and read later simply lets the arrival go (the piece is in the
+Bookcase either way, re-readable anytime, tracked nowhere). Fungi
+deliberately offer no choice: currency has only *exchange* value —
+it banks itself.
 
 ---
 

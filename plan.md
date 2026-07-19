@@ -1,5 +1,9 @@
 # plan.md — HABITAT build plan
 
+*v1.16 — 2026-07-19 (sixth session, docs addition). Added **T3.5**
+(read now / read later + the spread popup — drop-choice symmetry with
+flora; spec v1.17 + design-notes §5/§7). Next task: **T3.4**.*
+
 *v1.15 — 2026-07-19 (sixth session). **T3.3 built**: gather / decline /
 compost. A held flora arrival offers gather / leave it; undecided
 flora wait on the new early Abode page (linked from the habit list),
@@ -203,6 +207,24 @@ tracker. Everything after this is delight, informed by real use.
   momentary: shown once, never stored or re-readable.
   *Done when:* tests prove empty slots render gracefully; the five
   reveals read from slots; Kimia can fill a slot by editing one file.
+- [ ] **T3.5 Read now / read later + the spread popup.** *(decided
+  2026-07-19, sixth session — spec v1.17, design-notes §5/§7)*
+  Drop-choice symmetry: a held reading arrival offers **read now /
+  read later**, mirroring flora's gather / leave it (fungi stay
+  choice-free — currency has only exchange value). Read now opens a
+  popup: a **double-page spread of the publication**, an image Kimia
+  provides (photo/scan/collage — never AI-generated, and only images
+  she may publish in the public repo), keyed one-per-publication to
+  the T6.1 pools with a graceful empty state until a spread exists.
+  Read later just lets the arrival go — the piece is in the Bookcase
+  regardless, and any publication is re-readable from there anytime
+  (an early simple list on the Bookcase stub, like the Abode got in
+  T3.3; the real shelves in T4.2 reuse the same popup). NO read/unread
+  tracking anywhere — nothing stored, nothing nagging.
+  *Done when:* the choice shows for all three reading types; the popup
+  shows a slotted image or the empty state; publications open from the
+  Bookcase; tests cover slot lookup, empty state, and that no reading
+  decision is ever written to storage.
 
 ## M4 — The world of N-Z-D (5 sessions)
 
@@ -213,7 +235,9 @@ tracker. Everything after this is delight, informed by real use.
   expedition step falls in (gathering takes a cutting, never the
   tree — see spec §5 Stream 1).
 - [ ] **T4.2 Bookcase page** — shelves filling with every magazine,
-  novel, dictionary ever received.
+  novel, dictionary ever received; every publication opens its
+  double-page spread via the T3.5 popup (re-readable anytime, no
+  read/unread tracking).
 - [ ] **T4.3 Abode page** — gathered flora and purchased objects
   placeable by drag, movable, removable (compost / return). Play, not
   inventory management.

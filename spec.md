@@ -1,5 +1,15 @@
 # spec.md — HABITAT
 
+*v1.17 — 2026-07-19 (sixth session, docs addition after T3.3).
+Decided with Kimia: reading material gets the same held-arrival
+choice symmetry — **read now / read later** — mirroring gather /
+leave it (fungi stay choice-free: currency has only exchange value).
+Reading opens a popup with a **double-page spread of the
+publication** — images Kimia provides (never AI-generated), one per
+publication named in T6.1. Re-readable anytime from the Bookcase; NO
+read/unread tracking anywhere. New plan task **T3.5**. All in the
+decisions log.*
+
 *v1.16 — 2026-07-19 (sixth session). T3.3 built: gather / decline /
 compost. Decided with Kimia: undecided flora WAIT (a held arrival
 offers gather / leave it; one that fades undecided waits on the Abode
@@ -217,6 +227,12 @@ opening its own growing world:
 - Reading material is **never discarded** — every piece goes straight to
   the Bookcase and fills the **literacy meter**, our growing command of
   the local language.
+- Each publication can be **read** (2026-07-19, plan T3.5): a popup
+  opens a double-page spread of it — an image Kimia provides, one per
+  publication (T6.1), never AI-generated. A held arrival offers **read
+  now / read later**; either way the piece is in the Bookcase, and any
+  publication is re-readable from there anytime. No read/unread
+  tracking exists anywhere.
 - Literacy milestones unlock **friendships**, which also arrive **as
   drops** — the top of the reward hierarchy. A milestone **opens the
   door**: it makes that friend category possible, and the friend then
@@ -293,7 +309,9 @@ region discovery expands what the Market can offer.
   Habits can be archived (history kept) or permanently deleted (with
   confirmation).
 - **Map** (via expedition meter): the discovered planet so far.
-- **Bookcase** (via literacy meter): all reading material collected.
+- **Bookcase** (via literacy meter): all reading material collected;
+  any publication opens its double-page spread for (re-)reading
+  (T3.5).
 - **Market** (via fungus meter): the rotating stall; buy and return
   objects.
 - **Abode:** gathered flora and purchased objects, freely arrangeable,
@@ -612,6 +630,29 @@ region discovery expands what the Market can offer.
   the week target already sits in the row's small print). The same
   counter appears on the check-in/backfill rows. One-time keeps its
   single-tap control.
+- 2026-07-19 (sixth session, for plan T3.5): **read now / read later**
+  — a held reading arrival offers the same kind of quiet choice a
+  flora find does, for symmetry between the drops that have intrinsic
+  value. Fungi are excluded on purpose: currency has only exchange
+  value, so there is nothing to savour — the wallet stays choice-free.
+  Unlike flora there is nothing to decline or lose: reading material
+  is always kept (spec §5 Stream 2), so the choice is purely of the
+  moment — read now opens the spread; read later simply lets the
+  arrival go, the publication safe in the Bookcase.
+- 2026-07-19 (sixth session, for plan T3.5): **reading opens a
+  double-page spread** — a popup showing a spread of the publication
+  itself, as an image Kimia provides (photograph/scan/collage — never
+  AI-generated; the human-made rule extends from words to images).
+  One spread per publication, keyed to the T6.1 content pools; the
+  popup renders a graceful empty state for publications whose spread
+  doesn't exist yet. Spreads live in the public repo, so only images
+  Kimia has the right to publish go in.
+- 2026-07-19 (sixth session, for plan T3.5): **re-readable anytime,
+  tracked nowhere** — any publication ever received can be opened
+  again from the Bookcase (the spread is the publication, not
+  narration — the momentary-narration rule does not apply). There is
+  NO read/unread state: nothing stored, nothing marked, nothing
+  nagging. Read now / read later is felt, not remembered.
 - 2026-07-19 (sixth session, T3.3): **undecided flora wait** — a flora
   find has four states: pending (just arrived), gathered, left (back
   in the world) or composted (was gathered, returned to the world).
