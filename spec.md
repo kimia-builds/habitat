@@ -1,9 +1,11 @@
 # spec.md — HABITAT
 
-*v1.9 — 2026-07-18. T2.4 built: per-habit line graphs in the field
-notes. Decided today: the graphs live in their own section below the
-week grid, each shows the habit's whole life squeezed to fit, and
-opens on the coarsest unlocked zoom.*
+*v1.10 — 2026-07-19. T3.1 built: the drops engine. Decided today:
+flora finds are guaranteed once per window of expedition steps (at a
+random step inside it); difficulty nudges the chance-based drops
+(reading + fungi); fungus income targets one mid-priced object per
+market rotation; and drops are seeded — undo takes a drop back, and
+redoing the identical tap returns the identical drop.*
 
 ## 1. One-line pitch
 
@@ -424,6 +426,31 @@ region discovery expands what the Market can offer.
   day; a younger habit's row shows a quiet "still settling in" line
   instead of a graph. Archiving freezes the age clock along with the
   graph.
+- 2026-07-19 (T3.1): **flora finds are window-guaranteed** — every
+  consecutive window of 25 expedition steps (≈ a week at the current
+  pace) contains exactly one flora find, at a seeded random step
+  inside the window. Steady as the plan asks (a drought is
+  impossible; the longest wait is just under two windows) yet each
+  find still lands as a surprise. Reading material and fungi stay
+  plain per-tap chances — rare and surprising, nothing guaranteed.
+- 2026-07-19 (T3.1): **difficulty nudges the chance-based drops** —
+  reading material and fungi (easy ×0.9, medium ×1.0, difficult
+  ×1.2; the future use difficulty was kept for on 2026-07-15). Flora
+  are window-guaranteed, so difficulty doesn't apply to them. The
+  nudge is modest by design: difficulty flavours luck, it never
+  becomes a strategy.
+- 2026-07-19 (T3.1): **fungus income targets ~1 mid-priced object per
+  rotation** — ~0.15 fungi per tap ≈ 15 fungi per 28-cron rotation,
+  so when M6 prices the Market, a mid-priced object should cost
+  ≈ 10–12 fungi. Fungi arrive as small clusters of 1–3 (average 1.5);
+  difficulty affects whether a cluster drops, never its size.
+- 2026-07-19 (T3.1): **drops are seeded, never shuffled** — every
+  roll is a pure function of a stored world seed plus the tap's
+  stable facts (habit, day, tap-of-day, expedition step). Undoing a
+  completion takes its drops back with it (fungi leave the wallet,
+  reading leaves the bookcase); redoing the identical tap returns the
+  identical drops — tap–untap–tap can never be a slot machine. The
+  world seed is created once at first run (wired up in T3.2).
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

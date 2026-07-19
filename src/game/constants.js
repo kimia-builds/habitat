@@ -141,5 +141,67 @@ export const GRAPH_UNLOCK_AGE_DAYS = {
 // FUNGUS METER — a wallet, not a progress bar (spec §5 Stream 3).
 // Fungi are whole mushrooms: every credit, price and refund is a
 // positive whole number, and the balance can never go below zero.
-// No pacing constants here yet — drop rates arrive in T3.1 and
-// object prices in M4/M6.
+// Drop rates live in the T3.1 section below; object prices arrive in
+// M4/M6.
+
+// ───────────────────────── T3.1: the drops engine ─────────────────────────
+
+// FLORA (Stream 1) — steady finds tied to expedition progress.
+//
+// Kimia's decision 2026-07-19: every consecutive window of this many
+// expedition steps is guaranteed to contain exactly ONE flora find,
+// at a random step inside the window. Steady like the plan asks — a
+// drought is impossible (the longest possible wait is just under two
+// windows) — yet each find still lands as a small surprise.
+//
+//   25 steps ÷ 3.5 taps/day ≈ a find a week
+//   6,400 five-year steps ÷ 25 ≈ 256 flora in 5 years
+export const FLORA_WINDOW_STEPS = 25
+
+// READING MATERIAL (Stream 2) — rarer and surprising: a plain chance
+// per tap, nothing guaranteed. Targets follow the sketch in the
+// literacy notes above (a magazine about weekly, a novel about
+// monthly, a few dictionaries a year), sized so the last friendship
+// door (Poets, 730 points) opens just inside 5 years:
+//
+//   3.5 taps/day × 365 ≈ 1,278 taps/year
+//   magazine   0.045/tap → ~57/yr × 1 pt  ≈ 57 pts
+//   novel      0.011/tap → ~14/yr × 4 pts ≈ 56 pts
+//   dictionary 0.0028/tap → ~3.6/yr × 12 pts ≈ 43 pts
+//   total ≈ 157 pts/year → ≈ 785 pts over 5 years (≥ 730 ✓)
+//
+// The referee for these numbers is the 5-year simulation test in
+// drops.test.js; retune here, never in logic.
+export const READING_DROP_CHANCES = {
+  magazine: 0.045,
+  novel: 0.011,
+  dictionary: 0.0028,
+}
+
+// FUNGI (Stream 3) — occasional currency. A tap has this chance of
+// dropping a small CLUSTER of mushrooms (sizes weighted below,
+// average 1.5), giving ~0.15 fungi per tap:
+//
+//   28-cron rotation × 3.5 taps/day ≈ 98 taps → ~15 fungi/rotation
+//
+// Kimia's decision 2026-07-19: income should afford about one
+// mid-priced object per rotation — so when M6 prices the Market, a
+// mid-priced object should cost ≈ 10–12 fungi.
+export const FUNGUS_DROP_CHANCE = 0.1
+export const FUNGUS_CLUSTER_WEIGHTS = [
+  { amount: 1, weight: 6 },
+  { amount: 2, weight: 3 },
+  { amount: 3, weight: 1 },
+]
+
+// DIFFICULTY nudges the odds of the CHANCE-BASED drops — reading and
+// fungi (Kimia's decision 2026-07-19 — this is the future use that
+// difficulty was kept for on 2026-07-15). Flora finds are
+// window-guaranteed, so
+// difficulty doesn't apply there. The nudge is deliberately modest:
+// difficulty should flavour luck, never become a strategy.
+export const DIFFICULTY_DROP_MULTIPLIER = {
+  easy: 0.9,
+  medium: 1.0,
+  difficult: 1.2,
+}

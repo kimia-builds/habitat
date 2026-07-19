@@ -1,9 +1,10 @@
 # plan.md — HABITAT build plan
 
-*v1.7 — 2026-07-18. T2.4 done (spec v1.9 decisions: graphs in their
-own section below the week grid, whole-life x-axis squeezed to fit,
-coarsest unlocked zoom as the default). M2 complete. Next task:
-**T3.1** — the drops engine.*
+*v1.8 — 2026-07-19. T3.1 done (spec v1.10 decisions: window-guaranteed
+flora, difficulty nudges the chance-based drops, ~15 fungi per
+rotation, seeded no-slot-machine rolls). Next task: **T3.2** — drop
+arrival + first-occurrence reveals, including storing drops and the
+world seed.*
 
 ## How to use this file
 
@@ -120,7 +121,7 @@ tracker. Everything after this is delight, informed by real use.
 
 ## M3 — Drops engine (3 sessions)
 
-- [ ] **T3.1 Drop engine.**
+- [x] **T3.1 Drop engine.** *(done 2026-07-19)*
   Three drop types: flora finds tied to expedition progress (steady);
   reading material (rarer, surprising: magazines > novels >
   dictionaries); fungi (occasional, currency). Difficulty shifts odds;
