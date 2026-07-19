@@ -19,38 +19,38 @@ export const NARRATION = {
   firstReveals: {
     flora: {
       // PLACEHOLDER — Claude-written; TODO: written by Kimia.
-      title: 'your first flora find',
+      title: 'you found an indigenous plant',
       line:
-        'Something growing, right where you passed — the first plant of ' +
-        'N-Z-D you have come to know. The land has plenty more to show you.',
+        'after walking around N-Z-D for some time, you got enough steps in ' +
+        'to discover the native flora. this land holds life, just like you.'
     },
     magazine: {
       // PLACEHOLDER — Claude-written; TODO: written by Kimia.
-      title: 'your first magazine',
+      title: 'what is this? reading material?',
       line:
-        'Printed pages in the local script. You cannot read much yet — ' +
-        'but the pictures help, and it goes straight to your bookcase.',
+        'printed pages of local cultural phenomena. interesting stuff. ' +
+        'hard to tell what language means on this planet. images help.',
     },
     novel: {
       // PLACEHOLDER — Claude-written; TODO: written by Kimia.
-      title: 'your first novel',
+      title: 'more pages; heavier. a novel?',
       line:
-        'A whole story in the language of N-Z-D. One day you will read ' +
-        'it cover to cover. It waits on your bookcase.',
+        'N-Z-D is a cultured place; it is you who must raise your ' +
+        'literacy level. perhaps this is the reading challenge you need.',
     },
     dictionary: {
       // PLACEHOLDER — Claude-written; TODO: written by Kimia.
-      title: 'your first dictionary',
+      title: 'you found a dictionary',
       line:
-        'A rare treasure: the language of N-Z-D, explained in its own ' +
-        'words. Your bookcase will never hold anything more precious.',
+        'finally! a point of reference. a form of translation. a ' +
+        'rare treasure that will open doors to deeper frienships.',
     },
     fungi: {
       // PLACEHOLDER — Claude-written; TODO: written by Kimia.
-      title: 'your first fungi',
+      title: 'you earned a fungible token',
       line:
-        'Glowing mushrooms — the currency here. They go straight to ' +
-        'your wallet, ready for the market one day.',
+        'do not eat these: they are very valuable and inedible. ' +
+        'buy and sell objects for the same price at the local market.',
     },
   },
 
@@ -78,22 +78,22 @@ export const NARRATION = {
   // which plays with the ambient swell built in T5.2. All yours.
   // TODO: written by Kimia.
   mapRegions: {
-    region1: '',
-    region2: '',
-    region3: '',
-    region4: '',
-    region5: '',
-    region6: '',
-    region7: '',
-    region8: '',
-    region9: '',
-    region10: '',
-    region11: '',
-    region12: '',
-    region13: '',
-    region14: '',
-    region15: '',
-    region16: '',
+    region1: 'sahara',
+    region2: 'ari',
+    region3: 'lerato',
+    region4: 'sogol',
+    region5: 'kian',
+    region6: 'ida',
+    region7: 'sufi',
+    region8: 'cyrus',
+    region9: 'shiva',
+    region10: 'oratile',
+    region11: 'chaymae',
+    region12: 'hamid',
+    region13: 'parnian',
+    region14: 'marie-simone',
+    region15: 'tadiwa',
+    region16: 'lily',
   },
 
   // literacy eras — one slot per era.
