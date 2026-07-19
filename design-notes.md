@@ -1,9 +1,13 @@
 # design-notes.md — HABITAT (UX & feel)
 
-_v1.0 — 2026-07-19 (fourth session, docs only). Companion to **spec.md
-v1.14** and **plan.md v1.12**. This version resolves every open item
-from the v0.2 draft — decisions taken with Kimia on 2026-07-19 and
-recorded in spec.md's decisions log._
+_v1.1 — 2026-07-19 (fifth session, docs only). Added §11: the visual
+identity reference — the six charm symbols + colours and the
+typography system, from Kimia's design reference. Companion to
+**spec.md v1.15** and **plan.md v1.14**._
+
+_v1.0 — 2026-07-19 (fourth session, docs only). Resolved every open
+item from the v0.2 draft — decisions taken with Kimia on 2026-07-19
+and recorded in spec.md's decisions log._
 
 ---
 
@@ -164,7 +168,10 @@ Code builds the *slots and plumbing* only.
 
 ## 8. The beings — form, gesture & greeting  **[TO-BUILD · M4.4, M5.3]**
 
-The world **leans weird and abstract, not cutesy**. Flora, fungi,
+The world **leans weird and abstract, not cutesy**. (One deliberate
+exemption, decided 2026-07-19: the six habit-tag **charms** (§11) are
+recognisable objects — they are personal talismans, not inhabitants
+of N-Z-D. The world itself stays weird.) Flora, fungi,
 trees, and literacy are **conceptual building blocks only** — output
 should feel strange, not familiar-things-in-costume.
 
@@ -217,3 +224,107 @@ should feel strange, not familiar-things-in-costume.
    the motion ever feels like too much.
 6. **Built reveal text** → to be slot-ified (plan T3.4); the
    human-written rule applies retroactively.
+7. **The six charms** (fifth session) → the habit tags are the six
+   charm shapes in their reference colours (§11a) — a deliberate
+   exemption from "weird > cute"; still no words anywhere.
+8. **Typography** (fifth session) → the full reference type system:
+   Cormorant Garamond display + DM Sans body, uppercase display /
+   lowercase body, fonts bundled with the app (§11c).
+
+---
+
+## 11. Visual identity reference  **[TO-BUILD · T5.1 symbols, T5.2 identity]**
+
+_From Kimia's charm reference (2026-07-19). This section is the
+blueprint for T5.1 and T5.2 — everything needed is recorded here; the
+original file is personal and stays out of the repo._
+
+### 11a. The six charms (T5.1 — the habit tags)
+
+The six habit symbols are **line-drawn SVG charms**, each with its own
+colour. The symbol is still the tag — **no words, ever** — and each
+charm glows in its colour (`drop-shadow(0 0 14px colour)`, brightening
+to `24px` on hover). Stroke style: `fill="none"`,
+`stroke="currentColor"`, `stroke-width="1.4"`, round caps and joins,
+on a `24×24` viewBox. Mapping to the existing symbol slots 1–6:
+
+| # | charm | colour | hex | faint (borders/dividers) |
+|---|-------|--------|-----|--------------------------|
+| 1 | crown | gold | `#F0BB3B` | `rgba(240,187,59,0.18)` |
+| 2 | cherries | coral | `#F5805A` | `rgba(245,128,90,0.18)` |
+| 3 | shell | pink | `#E8698C` | `rgba(232,105,140,0.18)` |
+| 4 | anchor | lavender | `#A98EE0` | `rgba(169,142,224,0.18)` |
+| 5 | shield | sky | `#5AB6F3` | `rgba(90,182,243,0.18)` |
+| 6 | key | teal | `#4FBFA0` | `rgba(79,191,160,0.18)` |
+
+The exact paths (drop into the shared SVG attributes above):
+
+- **crown** — `<path d="M2 19h20l-3.5-9-4.5 5L12 5l-2 10-4.5-5L2 19z"/>
+  <line x1="2" y1="22" x2="22" y2="22"/>
+  <circle cx="12" cy="5" r="1.2" fill="currentColor" stroke="none"/>
+  <circle cx="4.5" cy="11.5" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="19.5" cy="11.5" r="1" fill="currentColor" stroke="none"/>`
+- **cherries** — `<circle cx="7.5" cy="17" r="3.5"/>
+  <circle cx="16.5" cy="17" r="3.5"/>
+  <path d="M7.5 13.5C7.5 10 10 7.5 12 6.5"/>
+  <path d="M16.5 13.5C16.5 10 14 7.5 12 6.5"/>
+  <path d="M12 6.5L13.5 3"/>`
+- **shell** — `<path d="M12 21C7.6 21 4 17.4 4 13C4 9.5 6.2 6.5 9.4
+  5.2C10.9 4.6 12.5 4.5 14 4.9C17.2 5.8 19 8.8 18 11.8C17.2 14 15
+  15.2 12.8 14.8C11.2 14.5 10 13 10.2 11.4C10.4 10 11.8 9 13.2 9.4"/>
+  <path d="M12 21C14 18 13 15 12 13"/>
+  <path d="M4 13C6 14 8 13.5 10 12.5"/>`
+- **anchor** — `<circle cx="12" cy="5" r="2.5"/>
+  <line x1="12" y1="7.5" x2="12" y2="21"/>
+  <line x1="5" y1="12" x2="9.5" y2="12"/>
+  <line x1="14.5" y1="12" x2="19" y2="12"/>
+  <path d="M5 19C5 19 7.5 22 12 22C16.5 22 19 19 19 19"/>`
+- **shield** — `<path d="M12 2L4 6V12C4 16.8 7.6 21.2 12 22C16.4 21.2
+  20 16.8 20 12V6L12 2Z"/>
+  <path d="M9 12L11 14L15 10"/>`
+- **key** — `<circle cx="7.5" cy="9.5" r="4.5"/>
+  <line x1="12" y1="9.5" x2="22" y2="9.5"/>
+  <line x1="20" y1="9.5" x2="20" y2="13"/>
+  <line x1="17" y1="9.5" x2="17" y2="12"/>
+  <circle cx="7.5" cy="9.5" r="1.5" fill="currentColor" stroke="none"/>`
+
+### 11b. Palette & surfaces (T5.2)
+
+- **Background:** `#080910` (deepens the current near-black; still
+  dark-only per spec §7).
+- **The six charm colours** double as the app's accent palette;
+  their `0.18`-alpha faint variants are the border/divider tint.
+- **Dim text tiers** (on the dark ground): primary body
+  `rgba(255,255,255,0.58)`, quiet secondary `rgba(255,255,255,0.38)`,
+  hairline borders `rgba(255,255,255,0.10)`.
+- Soft ambient depth: a faint radial `rgba(255,255,255,0.025)` wash
+  behind framed content; organic blob-radius borders welcome on
+  feature frames.
+- Neon POP moments keep their own brighter voice (spec §7) — the
+  charm palette is the everyday register, not the exclamation mark.
+
+### 11c. Typography (T5.2)
+
+Two families, **bundled with the app** (no external font loading —
+self-contained, works offline):
+
+- **Cormorant Garamond** (serif) — display only: weights 600/700 +
+  italic 400.
+- **DM Sans** (sans) — everything else: weights 300/400/500 +
+  italic 300.
+
+Case & spacing convention:
+
+- **Display names/titles:** Cormorant Garamond 700, UPPERCASE,
+  wide letterspacing (~4px at 21px size), in the accent colour.
+- **Section labels:** DM Sans 500, UPPERCASE, very wide letterspacing
+  (~6px at 11px size), accent colour at ~0.85 opacity, thin
+  faint-colour rules above and below.
+- **Body text:** DM Sans 300/400, lowercase, generous line-height
+  (~2), dim white.
+- **Quiet secondary lines:** DM Sans 300 italic, lowercase, the
+  dimmest tier.
+- Habitat's existing all-lowercase voice (habit rows, buttons,
+  captions) already matches — lowercase stays the default; uppercase
+  is reserved for display and section labels.
+

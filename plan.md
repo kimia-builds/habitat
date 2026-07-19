@@ -1,5 +1,11 @@
 # plan.md — HABITAT build plan
 
+*v1.14 — 2026-07-19 (fifth session, docs only). Visual identity
+decided from Kimia's charm reference: T5.1 is now the six charms
+(crown, cherries, shell, anchor, shield, key — SVGs + colours in
+design-notes §11a); T5.2 carries the palette + typography system
+(design-notes §11b/§11c). No code this session. Next task: **T3.3**.*
+
 *v1.13 — 2026-07-19 (fourth session). **T3.2b built**: every
 repeating shape's row is now a counter with an unlimited +1 and a
 quiet undo, on the habit list and the check-in alike (N-per-week and
@@ -212,9 +218,16 @@ tracker. Everything after this is delight, informed by real use.
 
 ## M5 — Design pass (3–4 sessions, collaborative)
 
-- [ ] **T5.1 The 6 abstract symbols** — designed together, no words.
-- [ ] **T5.2 Visual identity** — palette system (white/pastel/basic +
-  neon POP), typography, glow effects, animations. Includes the feel
+- [ ] **T5.1 The 6 charm symbols** — designed 2026-07-19 (docs): the
+  crown, cherries, shell, anchor, shield and key, each in its colour,
+  glowing. SVG paths + hexes recorded in design-notes §11a; this task
+  swaps the placeholder glyphs (● ■ ▲ ◆ ✚ ✶) for the charms
+  everywhere a symbol shows. No words, as ever.
+- [ ] **T5.2 Visual identity** — decided 2026-07-19 (docs, design-notes
+  §11b/§11c): background #080910, charm-colour accent palette with
+  faint variants, dim-white text tiers; Cormorant Garamond display +
+  DM Sans body (bundled, no external loading), UPPERCASE display /
+  lowercase body. Plus glow effects and animations. Includes the feel
   enhancements decided 2026-07-19 (design-notes §4–§5): momentary
   glow/thicken on meter advance and roll-over (layered on the built
   bar), star-shimmer on regular drop arrivals, full firework for

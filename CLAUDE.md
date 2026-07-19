@@ -36,8 +36,8 @@ Kimia is a non-coder. Therefore:
 
 - NO punishment mechanics of any kind. Missed habits only ever become
   neutral data.
-- Habit tags are 6 abstract symbols only — no words, no labels, no
-  renaming, anywhere in the UI or data model.
+- Habit tags are 6 symbols only (the six charms, design-notes §11a) —
+  no words, no labels, no renaming, anywhere in the UI or data model.
 - Date attribution is sacred: a completion recorded during morning
   check-in belongs to the day it was DONE, not the day it was entered.
   Day cutoff is 3am by default, configurable. Check-in always asks

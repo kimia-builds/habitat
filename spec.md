@@ -1,5 +1,13 @@
 # spec.md — HABITAT
 
+*v1.15 — 2026-07-19 (fifth session, docs only). Visual identity
+decided from Kimia's charm reference: the six habit symbols are now
+six line-drawn SVG charms (crown, cherries, shell, anchor, shield,
+key), each with its own colour; plus the app-wide palette and
+typography system (Cormorant Garamond display + DM Sans body,
+uppercase display / lowercase body). Full blueprint in design-notes
+§11; built in T5.1/T5.2.*
+
 *v1.14 — 2026-07-19 (fourth session, docs only). Merged the design
 interrogation into **design-notes.md** (the feel layer — read it
 alongside this file for any design-adjacent task). Decided with Kimia:
@@ -82,10 +90,13 @@ dailies/habits/to-dos distinction. Each habit has:
   taps beyond the goal are recorded and kept, and every tap counts
   toward the expedition meter and drops (see decisions log). One-time
   keeps its single-tap control (the first tap finishes it).
-- **One of exactly 6 abstract symbols** (each paired with its own
-  colour). The symbol **is** the tag — no word labels, no naming, no
-  renaming, ever. Meaning lives entirely in the user's head, never
-  explicit categories like "diet".
+- **One of exactly 6 symbols** (each paired with its own colour).
+  Since 2026-07-19 these are the six **charms** — crown (gold),
+  cherries (coral), shell (pink), anchor (lavender), shield (sky),
+  key (teal); line-drawn SVGs, full spec in design-notes §11a. The
+  symbol **is** the tag — no word labels, no naming, no renaming,
+  ever. Meaning lives entirely in the user's head, never explicit
+  categories like "diet".
 - Difficulty, set at creation: **easy / medium / difficult**. (Amended
   2026-07-15: difficulty does NOT affect the expedition meter — every
   completion advances it the same one step. The field is kept for
@@ -307,6 +318,14 @@ region discovery expands what the Market can offer.
   bioluminescent.
 - All visuals **SVG / code-drawn**: crisp, glowing, animatable, fully
   vibe-codeable, ideal for neon-on-dark.
+- **Visual identity (2026-07-19, design-notes §11):** background
+  `#080910`; the six charm colours as the accent palette with
+  0.18-alpha faint variants for borders; dim-white text tiers.
+  Typography: **Cormorant Garamond** (display, UPPERCASE, wide
+  letterspacing) + **DM Sans** (body, lowercase), both bundled with
+  the app — no external font loading. Lowercase stays Habitat's
+  default voice; uppercase is reserved for display and section
+  labels.
 
 ## 8. Architecture (v1)
 
@@ -581,6 +600,19 @@ region discovery expands what the Market can offer.
   the week target already sits in the row's small print). The same
   counter appears on the check-in/backfill rows. One-time keeps its
   single-tap control.
+- 2026-07-19 (fifth session, docs only): **the six symbols are the
+  six charms** — crown/gold, cherries/coral, shell/pink,
+  anchor/lavender, shield/sky, key/teal, mapped to symbol slots 1–6;
+  line-drawn glowing SVGs (paths + hexes recorded in design-notes
+  §11a). A deliberate exemption from "weird > cute": the charms are
+  personal talismans, not inhabitants of N-Z-D. The no-words rule is
+  untouched. Built in T5.1.
+- 2026-07-19 (fifth session, docs only): **typography & palette** —
+  Cormorant Garamond (display) + DM Sans (body), bundled with the
+  app; UPPERCASE + wide letterspacing for display and section labels,
+  lowercase everywhere else; background `#080910`; charm colours as
+  the accent palette. Full spec in design-notes §11b/§11c. Built in
+  T5.2.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.
