@@ -164,6 +164,37 @@ export function rollFungi(tapFacts) {
   throw new Error('Fungus cluster weights failed to pick a size.')
 }
 
+// ── Drop records ────────────────────────────────────────────────────
+
+// One drop record, as stored on a completion (T3.2). Shapes:
+//   { kind: 'flora' }
+//   { kind: 'reading', readingType: 'magazine' | 'novel' | 'dictionary' }
+//   { kind: 'fungi', amount: 1.. }
+export function validateDrop(drop) {
+  if (typeof drop !== 'object' || drop === null) {
+    throw new Error('A drop must be an object.')
+  }
+  if (drop.kind === 'flora') return
+  if (drop.kind === 'reading') {
+    if (!READING_TYPES.includes(drop.readingType)) {
+      throw new Error(
+        `Unknown reading type "${drop.readingType}" — expected one of: ` +
+          READING_TYPES.join(', '),
+      )
+    }
+    return
+  }
+  if (drop.kind === 'fungi') {
+    if (!Number.isInteger(drop.amount) || drop.amount <= 0) {
+      throw new Error('A fungus drop must carry a positive whole amount.')
+    }
+    return
+  }
+  throw new Error(
+    `Unknown drop kind "${drop.kind}" — expected flora, reading or fungi.`,
+  )
+}
+
 // ── The whole tap ───────────────────────────────────────────────────
 
 // Everything one completion delivers, as a list of drop records:

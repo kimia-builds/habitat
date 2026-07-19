@@ -4,6 +4,13 @@
 // all saving goes through the storage module.
 
 import { useEffect, useState } from 'react'
+import {
+  deliverDrops,
+  dropKey,
+  fungusBalanceFrom,
+  readingItemsFrom,
+  seenDropKeys,
+} from './game/arrivals.js'
 import { editablePastDays, habitsOn, isCheckInDue } from './game/checkin.js'
 import { CLOCK_CHECK_MS } from './game/constants.js'
 import {
@@ -44,9 +51,12 @@ import {
   loadData,
   saveData,
 } from './storage/storage.js'
+import ArrivalShelf from './ui/ArrivalShelf.jsx'
+import { arrivalNote } from './ui/arrivalText.js'
 import BackupControls from './ui/BackupControls.jsx'
 import CheckInPanel from './ui/CheckInPanel.jsx'
 import FieldNotes from './ui/FieldNotes.jsx'
+import FirstReveal from './ui/FirstReveal.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import Meters from './ui/Meters.jsx'
@@ -65,6 +75,19 @@ function App() {
   // or the field notes ('fieldnotes', T2.3).
   // Plain component state — a reload lands back on the list.
   const [page, setPage] = useState(null)
+
+  // Drop arrivals on screen (T3.2) — transient by nature, so plain
+  // component state: the DROPS themselves are stored on completions;
+  // these are only the announcements currently showing.
+  //   arrivals        — on the shelf right now (each fades on its own)
+  //   pendingArrivals — earned during an open check-in, held back until
+  //                     its done button (Kimia's decision 2026-07-19:
+  //                     the check-in stays distraction-free)
+  //   seenRevealIds   — first-occurrence reveals already dismissed this
+  //                     visit, so one reveal shows at a time, once
+  const [arrivals, setArrivals] = useState([])
+  const [pendingArrivals, setPendingArrivals] = useState([])
+  const [seenRevealIds, setSeenRevealIds] = useState(() => new Set())
 
   // The page's own clock (Kimia's requirement 2026-07-15): a tab left
   // open must notice the new Habitat day by itself, like a fresh visit —
@@ -143,9 +166,36 @@ function App() {
   )
 
   // Every change goes through here: validate-and-persist, then render.
+  // Announcements are pruned to completions that still exist, so ANY
+  // undo — live, retro, one-time — takes its on-screen arrivals away
+  // with it, exactly as it takes the stored drops.
   function save(next) {
     saveData(next)
     setData(next)
+    const alive = new Set(next.completions.map((c) => c.id))
+    const prune = (list) => list.filter((a) => alive.has(a.completionId))
+    setArrivals(prune)
+    setPendingArrivals(prune)
+  }
+
+  // Turn one just-saved completion's drops into on-screen arrivals.
+  // `before` is the completions list WITHOUT this completion: a drop
+  // family absent from it is a first, and owes its neon reveal.
+  // Deferred arrivals (check-in marks) wait for the done button.
+  function announceDrops(completion, before, deferred) {
+    if (completion.drops.length === 0) return
+    const seen = seenDropKeys(before)
+    const items = completion.drops.map((drop, index) => ({
+      id: `${completion.id}:${index}`,
+      completionId: completion.id,
+      habitId: completion.habitId,
+      key: dropKey(drop),
+      amount: drop.kind === 'fungi' ? drop.amount : null,
+      first: !seen.has(dropKey(drop)),
+    }))
+    const append = (list) => [...list, ...items]
+    if (deferred) setPendingArrivals(append)
+    else setArrivals(append)
   }
 
   function toggleFilter(symbol) {
@@ -205,7 +255,14 @@ function App() {
   }
 
   function handleComplete(habit) {
-    const completion = recordCompletion(habit.id, data.settings.dayCutoffHour)
+    // The tap rolls its drops right here (T3.2) and stores them on the
+    // completion — settled at tap time, forever.
+    const completion = deliverDrops(
+      recordCompletion(habit.id, data.settings.dayCutoffHour),
+      habit,
+      data.completions,
+      data.worldSeed,
+    )
     const next = { ...data, completions: [...data.completions, completion] }
     // A one-time to-do is finished for good: archive it in the same save.
     if (archivesWhenDone(habit)) {
@@ -214,6 +271,7 @@ function App() {
       )
     }
     save(next)
+    announceDrops(completion, data.completions, false)
   }
 
   // Undo an accidentally checked-off one-time to-do (today only): the
@@ -240,10 +298,14 @@ function App() {
   // module refuses days outside the backfill window). A one-time to-do
   // marked here is finished for good, exactly as if tapped live.
   function handleRetroMark(habit, dayKey) {
-    const completion = recordRetroCompletion(
-      habit.id,
-      dayKey,
-      data.settings.dayCutoffHour,
+    // Retro marks roll drops exactly like live taps (Kimia's decision
+    // 2026-07-19) — but their arrivals wait until the check-in's done
+    // button, so answering yesterday stays distraction-free.
+    const completion = deliverDrops(
+      recordRetroCompletion(habit.id, dayKey, data.settings.dayCutoffHour),
+      habit,
+      data.completions,
+      data.worldSeed,
     )
     const next = { ...data, completions: [...data.completions, completion] }
     if (archivesWhenDone(habit)) {
@@ -252,6 +314,7 @@ function App() {
       )
     }
     save(next)
+    announceDrops(completion, data.completions, true)
   }
 
   function handleRetroUndo(habit, dayKey) {
@@ -272,6 +335,9 @@ function App() {
   function handleCheckInDone() {
     save({ ...data, checkedInThrough: addDays(today, -1) })
     setCheckInOpen(false)
+    // Anything the check-in marks earned arrives now, together.
+    setArrivals((list) => [...list, ...pendingArrivals])
+    setPendingArrivals([])
   }
 
   // Move one step up (-1) or down (+1) past the neighbouring VISIBLE
@@ -320,6 +386,9 @@ function App() {
     }
     setData(importData(text))
     setEditing(null)
+    // A whole new world state: announcements from the old one are moot.
+    setArrivals([])
+    setPendingArrivals([])
     return 'backup imported'
   }
 
@@ -344,16 +413,36 @@ function App() {
     )
   }
 
-  // The three meters (T2.2). Expedition is computed live from the
-  // completion history; literacy and the fungus wallet have no data
-  // sources until drops arrive in M3, so they read as empty for now.
+  // The three meters (T2.2), all computed live from completion history
+  // — since T3.2 that includes each completion's stored drops, so the
+  // literacy meter and the fungus wallet finally move. Below them, the
+  // arrival shelf and (topmost of all) any first-occurrence reveal
+  // still owed: one at a time, dismissed by its own button.
+  const revealing = arrivals.find((a) => a.first && !seenRevealIds.has(a.id))
   const meters = (
-    <Meters
-      completions={data.completions}
-      readingItems={[]}
-      fungusBalance={0}
-      onOpen={setPage}
-    />
+    <>
+      <Meters
+        completions={data.completions}
+        readingItems={readingItemsFrom(data.completions)}
+        fungusBalance={fungusBalanceFrom(data.completions)}
+        onOpen={setPage}
+      />
+      <ArrivalShelf
+        arrivals={arrivals.map((a) => ({
+          ...a,
+          awaitingReveal: a.first && !seenRevealIds.has(a.id),
+        }))}
+        onExpire={(id) => setArrivals((list) => list.filter((a) => a.id !== id))}
+      />
+      {revealing && (
+        <FirstReveal
+          arrival={revealing}
+          onDismiss={() =>
+            setSeenRevealIds((seen) => new Set([...seen, revealing.id]))
+          }
+        />
+      )}
+    </>
   )
 
   // The HABITAT header doubles as the home link (Kimia's request
@@ -434,6 +523,9 @@ function App() {
             <HabitRow
               key={habit.id}
               habit={habit}
+              arrivalNote={arrivalNote(
+                arrivals.filter((a) => a.habitId === habit.id),
+              )}
               todayCount={countOn(data.completions, habit.id, today)}
               required={requiredPerDay(habit, today)}
               fulfilled={isDayFulfilled(habit, data.completions, today)}

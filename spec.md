@@ -1,14 +1,13 @@
 # spec.md — HABITAT
 
-*v1.11 — 2026-07-19. T3.1 built: the drops engine. Decided today:
-flora finds are guaranteed once per window of expedition steps (at a
-random step inside it); difficulty nudges the chance-based drops
-(reading + fungi); fungus income targets one mid-priced object per
-market rotation; drops are seeded — undo takes a drop back, and
-redoing the identical tap returns the identical drop. Also new:
-LANDMARK FLORA — large tree-like flora appear permanently on the Map
-where they were found; gathering one means taking a branch or fruit,
-never the tree itself (rule for T4.1/T6.1).*
+*v1.12 — 2026-07-19 (second session). T3.2 built: drop arrival +
+first-occurrence reveals. Decided today: drops START FRESH from this
+update (old history rolls nothing retroactively); every completion
+stores its drops at tap time; arrivals are a quiet note by the tapped
+habit plus the drop object itself at the top of the page — clickable,
+lingering a few seconds; check-in marks earn drops whose arrivals
+wait for the done button; FIVE first-occurrence reveals (flora,
+magazine, novel, dictionary, fungi), each its own neon POP.*
 
 ## 1. One-line pitch
 
@@ -477,6 +476,33 @@ region discovery expands what the Market can offer.
   tree, which stays on the Map regardless. Applies only to the
   special large flora, not all flora; which species are landmarks is
   chosen in T6.1.
+- 2026-07-19 (T3.2): **drops start fresh from the update** — the week
+  of completions recorded before the drops engine went live produces
+  NO retroactive drops (the storage upgrade marks them as having
+  delivered nothing). No opening burst; closest to the no-front-loading
+  rule. The world seed is created once, at first run or upgrade, and
+  travels with backups so an import restores the same luck.
+- 2026-07-19 (T3.2): **every completion stores its drops**, rolled at
+  tap time. Undo removes the completion and its drops leave with it
+  (wallet, bookcase and "firsts" all revert); no other tap's stored
+  luck ever reshuffles. Whether a drop is a FIRST is derived from
+  stored history — undo the only flora ever found and the next one
+  counts as a first again, reveal and all.
+- 2026-07-19 (T3.2): **how a drop arrives** — a quiet pastel note
+  beside the habit that was tapped ("you came across …"), while the
+  drop object itself (drawn, SVG) sits at the top of the page for a
+  few seconds before fading away. Clicking the object HOLDS it and
+  names it; clicking again lets it go. Richer click behaviour
+  (gather / decline) arrives with T3.3.
+- 2026-07-19 (T3.2): **check-in marks earn drops too** (undo/redo
+  consistency demands it), but their arrivals wait for the check-in's
+  done button — answering yesterday stays distraction-free. Everything
+  earned arrives together, back on the list.
+- 2026-07-19 (T3.2): **five first-occurrence reveals** — first flora,
+  first magazine, first novel, first dictionary, first fungi. Each is
+  its own full-screen neon POP moment (mint / violet / amber by
+  stream), dismissed only by its own button; regular arrivals stay
+  pastel and quiet.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

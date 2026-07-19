@@ -1,11 +1,10 @@
 # plan.md — HABITAT build plan
 
-*v1.9 — 2026-07-19. T3.1 done (spec v1.11 decisions: window-guaranteed
-flora, difficulty nudges the chance-based drops, ~15 fungi per
-rotation, seeded no-slot-machine rolls). New rule for later: landmark
-flora on the Map (T4.1/T6.1). Next task: **T3.2** — drop arrival +
-first-occurrence reveals, including storing drops and the world
-seed.*
+*v1.10 — 2026-07-19 (second session). T3.2 done (spec v1.12
+decisions: start fresh — no retroactive drops; drops stored on
+completions; quiet-note + fading-object arrivals; check-in drops wait
+for done; five neon first reveals). Next task: **T3.3** — gather /
+decline / compost.*
 
 ## How to use this file
 
@@ -131,12 +130,19 @@ tracker. Everything after this is delight, informed by real use.
   *Done when:* simulation test over 5 simulated years shows sane totals
   for all three types (no droughts of months, no floods; fungus income
   supports a reasonable purchase rhythm).
-- [ ] **T3.2 Drop arrival + first-occurrence reveals.**
+- [x] **T3.2 Drop arrival + first-occurrence reveals.** *(done 2026-07-19)*
   One shared arrival mechanic; distinct first-time reveal per reward
   type (first flora, first magazine, first fungus...). Neon POP
   reserved for these moments.
   *Done when:* first flora and first magazine reveals feel different
   and special (manual playtest).
+  Built: world seed created at first run/upgrade (storage v3); drops
+  rolled at tap time and stored on completions (undo takes them back);
+  literacy + fungus meters now fed from real drops; arrival shelf +
+  quiet by-the-habit notes; five neon first reveals; check-in drops
+  deferred to its done button. Playtested in the browser: fungi,
+  flora and novel reveals all POP distinctly; identical redo returns
+  identical drops.
 - [ ] **T3.3 Gather / decline / compost.**
   Flora optional to gather, compostable anytime, composted flora
   re-enter the pool (composting yields nothing). Reading material

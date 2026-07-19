@@ -194,6 +194,14 @@ export const FUNGUS_CLUSTER_WEIGHTS = [
   { amount: 3, weight: 1 },
 ]
 
+// ───────────────────────── T3.2: drop arrival ─────────────────────────
+
+// How long an arriving drop sits at the top of the page before fading
+// away (Kimia's decision 2026-07-19: the object lingers a few seconds,
+// clickable; clicking holds it). First-occurrence reveals never fade —
+// they wait to be dismissed.
+export const ARRIVAL_LINGER_MS = 6000
+
 // DIFFICULTY nudges the odds of the CHANCE-BASED drops — reading and
 // fungi (Kimia's decision 2026-07-19 — this is the future use that
 // difficulty was kept for on 2026-07-15). Flora finds are

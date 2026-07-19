@@ -3,15 +3,18 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 2,
+//     schemaVersion: 3,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
-//     completions: [...],   // see game/completions.js — added in T1.2
+//     completions: [...],   // see game/completions.js — since v3 each
+//                           // carries its drops (T3.2)
 //     settings:    { dayCutoffHour: 3,
 //                    fieldNotesShownOn: null },  // the last Sunday the
 //                              // field notes auto-opened — added in T2.3
 //     checkedInThrough: null,  // last day whose check-in was answered
 //                              // ('YYYY-MM-DD' or null) — added in T1.4
+//     worldSeed: '…',          // anchors every seeded drop roll — created
+//                              // once, at first run, never changed (T3.2)
 //   }
 //
 // The schemaVersion lets a future Habitat recognise and upgrade old
@@ -27,7 +30,15 @@ import {
 import { validateHabit } from '../game/habits.js'
 
 const STORAGE_KEY = 'habitat-data'
-const SCHEMA_VERSION = 2
+const SCHEMA_VERSION = 3
+
+// The world seed: the one random act in the whole drops system —
+// everything after it is a pure function of this string (T3.1's
+// no-slot-machine rule). Created once per world, stored forever, and
+// carried along in backups so an import restores the same luck.
+function newWorldSeed() {
+  return crypto.randomUUID()
+}
 
 export function emptyData() {
   return {
@@ -39,6 +50,7 @@ export function emptyData() {
       fieldNotesShownOn: null,
     },
     checkedInThrough: null,
+    worldSeed: newWorldSeed(),
   }
 }
 
@@ -51,6 +63,10 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
+  return upgradeV2toV3(upgradeV1toV2(data, now))
+}
+
+function upgradeV1toV2(data, now) {
   if (typeof data !== 'object' || data === null) return data
   if (data.schemaVersion !== 1) return data
   const rawCutoff = data.settings?.dayCutoffHour
@@ -79,7 +95,30 @@ function upgradeData(data, now = Date.now()) {
         }
       })
     : data.habits
-  return { ...data, schemaVersion: SCHEMA_VERSION, habits }
+  return { ...data, schemaVersion: 2, habits }
+}
+
+// v2 → v3 (T3.2): the world gets its seed, and completions start
+// carrying their drops. Existing completions get an EMPTY drops list —
+// Kimia's decision 2026-07-19: drops start fresh from this update; old
+// history never showers retroactive rewards. Anything malformed is
+// left untouched for validateData to complain about properly.
+function upgradeV2toV3(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 2) return data
+  const completions = Array.isArray(data.completions)
+    ? data.completions.map((completion) =>
+        typeof completion === 'object' && completion !== null
+          ? { drops: [], ...completion }
+          : completion,
+      )
+    : data.completions
+  return {
+    ...data,
+    schemaVersion: SCHEMA_VERSION,
+    completions,
+    worldSeed: data.worldSeed ?? newWorldSeed(),
+  }
 }
 
 // Older saves and backups predate completions, settings and (from
@@ -133,6 +172,9 @@ function validateData(data) {
   }
   if (data.checkedInThrough !== null && !isValidDayKey(data.checkedInThrough)) {
     throw new Error('This backup has a broken check-in marker.')
+  }
+  if (typeof data.worldSeed !== 'string' || data.worldSeed === '') {
+    throw new Error('This backup is missing its world seed.')
   }
 }
 

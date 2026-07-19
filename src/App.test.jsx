@@ -13,6 +13,7 @@ import {
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
+import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
 
 beforeEach(() => {
   localStorage.clear()
@@ -790,5 +791,141 @@ describe('field notes (T2.3)', () => {
     expect(stored().habits[0].schedule).toEqual({ type: 'nPerWeek', n: 3 })
     expect(stored().habits[0].scheduleHistory).toHaveLength(2)
     expect(stored().habits[0].scheduleHistory[1].fromDay).toBe('2026-07-15')
+  })
+})
+
+describe('drop arrival + first-occurrence reveals (T3.2)', () => {
+  // Drops are a pure function of the world seed, so the tests pick
+  // their luck: brute-force a seed where the very FIRST tap (habit
+  // 'walk', expedition step 0, first tap of the given day) delivers
+  // exactly the one drop the test wants and nothing else.
+  function findSeed(dayKey, want) {
+    for (let i = 0; i < 10000; i++) {
+      const seed = `seed-${i}`
+      const facts = {
+        worldSeed: seed,
+        habitId: 'walk',
+        dayKey,
+        tapIndex: 0,
+        difficulty: 'easy',
+      }
+      const flora = floraTargetStep(0, seed) === 0
+      const reading = rollReading(facts) !== null
+      const fungi = rollFungi(facts) > 0
+      if (want === 'flora' && flora && !reading && !fungi) return seed
+      if (want === 'fungi' && fungi && !flora && !reading) return seed
+    }
+    throw new Error(`no seed found that drops only ${want} on ${dayKey}`)
+  }
+
+  // A ready-made v3 world: one daily habit since Mon the 13th, the
+  // chosen seed, and (unless overridden) yesterday already answered so
+  // the list shows straight away. The clock is Thursday 16 July, 9am.
+  function seedWorld(worldSeed, overrides = {}) {
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 3,
+        habits: [
+          {
+            id: 'walk',
+            name: 'walk',
+            description: '',
+            symbol: 1,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            scheduleHistory: [
+              { schedule: { type: 'daily' }, fromDay: '2026-07-13' },
+            ],
+            archived: false,
+            archivedAt: null,
+            createdAt: new Date(2026, 6, 13, 9).getTime(),
+          },
+        ],
+        completions: [],
+        settings: { dayCutoffHour: 3, fieldNotesShownOn: null },
+        checkedInThrough: '2026-07-15',
+        worldSeed,
+        ...overrides,
+      }),
+    )
+  }
+
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+
+  it('the first flora POPs, sits on the shelf, notes itself by the habit — and undo takes it all back', () => {
+    seedWorld(findSeed('2026-07-16', 'flora'))
+    render(<App />)
+
+    fireEvent.click(row('walk').getByRole('button', { name: 'mark done' }))
+
+    // The drop was rolled at tap time and STORED on the completion.
+    expect(stored().completions[0].drops).toEqual([{ kind: 'flora' }])
+
+    // A first: the neon reveal is up, and only its button dismisses it.
+    expect(
+      screen.getByRole('dialog', { name: 'your first flora find' }),
+    ).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: 'onward' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+
+    // Behind it: the object on the arrival shelf (clicking holds it
+    // and names it) and the quiet note by the habit that was tapped.
+    const shelf = within(screen.getByRole('region', { name: 'arrivals' }))
+    expect(screen.getByText('you came across a flora find')).toBeDefined()
+    fireEvent.click(shelf.getByRole('button'))
+    expect(shelf.getByText('a flora find')).toBeDefined()
+
+    // Undo: the completion goes, and its drop — stored and on-screen —
+    // goes with it.
+    fireEvent.click(row('walk').getByRole('button', { name: '✓ done today' }))
+    expect(screen.queryByRole('region', { name: 'arrivals' })).toBeNull()
+    expect(screen.queryByText('you came across a flora find')).toBeNull()
+    expect(stored().completions).toEqual([])
+  })
+
+  it('fungi go straight to the wallet, and undo takes them back out', () => {
+    seedWorld(findSeed('2026-07-16', 'fungi'))
+    render(<App />)
+    const wallet = () => document.querySelector('.meter-wallet').textContent
+    expect(wallet()).toBe('0')
+
+    fireEvent.click(row('walk').getByRole('button', { name: 'mark done' }))
+    expect(
+      screen.getByRole('dialog', { name: 'your first fungi' }),
+    ).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: 'onward' }))
+
+    const [drop] = stored().completions[0].drops
+    expect(drop.kind).toBe('fungi')
+    expect(wallet()).toBe(String(drop.amount))
+
+    fireEvent.click(row('walk').getByRole('button', { name: '✓ done today' }))
+    expect(wallet()).toBe('0')
+  })
+
+  it('check-in marks earn drops too, but their arrivals wait for the done button', () => {
+    // Yesterday (Wed the 15th) unanswered → the check-in opens; its
+    // retro mark on the 15th is expedition step 0 and rolls flora.
+    seedWorld(findSeed('2026-07-15', 'flora'), { checkedInThrough: null })
+    render(<App />)
+    expect(screen.getByText('check-in')).toBeDefined()
+
+    fireEvent.click(screen.getAllByRole('button', { name: 'mark done' })[0])
+    // Distraction-free while answering: no reveal, no shelf.
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(screen.queryByRole('region', { name: 'arrivals' })).toBeNull()
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'done — save check-in' }),
+    )
+    // Now everything arrives together — the reveal first, the shelf
+    // and the quiet note behind it.
+    expect(
+      screen.getByRole('dialog', { name: 'your first flora find' }),
+    ).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: 'onward' }))
+    expect(screen.getByRole('region', { name: 'arrivals' })).toBeDefined()
+    expect(screen.getByText('you came across a flora find')).toBeDefined()
   })
 })

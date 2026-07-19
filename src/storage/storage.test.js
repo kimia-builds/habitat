@@ -23,7 +23,12 @@ beforeEach(() => {
 
 describe('persistence (the "survives a reload" guarantee)', () => {
   it('starts empty on a fresh browser', () => {
-    expect(loadData()).toEqual(emptyData())
+    // emptyData() mints a fresh world seed every call (T3.2), so the
+    // comparison adopts the seed of the data under test.
+    const data = loadData()
+    expect(data).toEqual({ ...emptyData(), worldSeed: data.worldSeed })
+    expect(typeof data.worldSeed).toBe('string')
+    expect(data.worldSeed).not.toBe('')
     expect(hasData()).toBe(false)
   })
 
@@ -44,13 +49,13 @@ describe('persistence (the "survives a reload" guarantee)', () => {
       saveData({ schemaVersion: 1, habits: [{ bad: true }] }),
     ).toThrow()
     expect(() => saveData({ habits: [] })).toThrow(/version/)
-    expect(loadData()).toEqual(emptyData())
+    expect(localStorage.getItem('habitat-data')).toBe(null) // nothing landed
   })
 
   it('clearData wipes everything', () => {
     saveData({ ...emptyData(), habits: [habit('a', 'Read')] })
     clearData()
-    expect(loadData()).toEqual(emptyData())
+    expect(localStorage.getItem('habitat-data')).toBe(null)
     expect(hasData()).toBe(false)
   })
 })
@@ -69,7 +74,7 @@ describe('backup round trip (export → wipe → import)', () => {
 
     const backup = exportData()
     clearData()
-    expect(loadData()).toEqual(emptyData()) // truly gone
+    expect(localStorage.getItem('habitat-data')).toBe(null) // truly gone
 
     const restored = importData(backup)
     expect(restored).toEqual(data)
@@ -118,6 +123,7 @@ describe('completions and settings in storage (added in T1.2)', () => {
     habitId: 'a',
     recordedAt: 2000,
     dayKey,
+    drops: [],
   })
 
   it('completions survive a save → reload round trip, day attribution intact', () => {
@@ -221,8 +227,9 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(2)
+    expect(data.schemaVersion).toBe(3) // upgrades chain: v1 → v2 → v3
     expect(data.settings.fieldNotesShownOn).toBe(null)
+    expect(typeof data.worldSeed).toBe('string')
     const [a, b] = data.habits
     // History reads as the current schedule from birth — past edits
     // were never recorded, so this is all a v1 save can honestly say.
@@ -253,11 +260,91 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
       ],
     })
     const restored = importData(backup)
-    expect(restored.schemaVersion).toBe(2)
+    expect(restored.schemaVersion).toBe(3)
     expect(restored.habits[0].scheduleHistory[0].schedule).toEqual({
       type: 'nPerWeek',
       n: 3,
     })
     expect(restored.settings.fieldNotesShownOn).toBe(null)
+  })
+})
+
+describe('the v2 → v3 upgrade (T3.2)', () => {
+  it('a v2 save gains a world seed, and old completions get EMPTY drops — start fresh, no retroactive rewards', () => {
+    // A hand-written v2 record, exactly as T2/T3.1-era Habitat stored
+    // it — completions without drops, no worldSeed anywhere.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 2,
+        habits: [habit('a', 'Read')],
+        completions: [
+          { id: 'c1', habitId: 'a', recordedAt: 2000, dayKey: '2026-07-12' },
+        ],
+        settings: { dayCutoffHour: 3, fieldNotesShownOn: null },
+        checkedInThrough: null,
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(3)
+    expect(typeof data.worldSeed).toBe('string')
+    expect(data.worldSeed).not.toBe('')
+    // Kimia's decision 2026-07-19: pre-update history rolls nothing.
+    expect(data.completions[0].drops).toEqual([])
+    // And the upgraded shape passes full validation on the next save.
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('a backup carries its world seed — an import restores the same luck', () => {
+    saveData({ ...emptyData(), worldSeed: 'the-original-seed' })
+    const backup = exportData()
+    clearData()
+    expect(importData(backup).worldSeed).toBe('the-original-seed')
+  })
+
+  it('drops stored on completions survive the save → reload round trip', () => {
+    const data = {
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      completions: [
+        {
+          id: 'c1',
+          habitId: 'a',
+          recordedAt: 2000,
+          dayKey: '2026-07-12',
+          drops: [
+            { kind: 'flora' },
+            { kind: 'reading', readingType: 'novel' },
+            { kind: 'fungi', amount: 2 },
+          ],
+        },
+      ],
+    }
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('rejects a missing world seed or broken drops, like any corruption', () => {
+    expect(() => saveData({ ...emptyData(), worldSeed: '' })).toThrow(
+      /world seed/,
+    )
+    expect(() =>
+      importData(
+        JSON.stringify({
+          ...emptyData(),
+          completions: [
+            {
+              id: 'c1',
+              habitId: 'a',
+              recordedAt: 2000,
+              dayKey: '2026-07-12',
+              drops: [{ kind: 'gold' }],
+            },
+          ],
+        }),
+      ),
+    ).toThrow(/drop kind/)
   })
 })

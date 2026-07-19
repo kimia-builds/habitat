@@ -5,6 +5,10 @@
 //     habitId:    the habit it belongs to
 //     recordedAt: timestamp (ms) — the moment it was ENTERED in the app
 //     dayKey:     'YYYY-MM-DD'   — the Habitat day it was DONE
+//     drops:      what this tap delivered (T3.2) — a list of drop
+//                 records (see game/drops.js), usually empty. Stored at
+//                 tap time, so undoing a completion takes its drops
+//                 with it, and no other tap's stored luck ever changes.
 //   }
 //
 // recordedAt and dayKey are two deliberately separate facts (spec §4.2):
@@ -20,6 +24,7 @@ import {
   validateDayKey,
   weekStart,
 } from './days.js'
+import { validateDrop } from './drops.js'
 
 export function validateCompletion(completion) {
   if (typeof completion !== 'object' || completion === null) {
@@ -37,6 +42,12 @@ export function validateCompletion(completion) {
   if (!isValidDayKey(completion.dayKey)) {
     throw new Error('Completion dayKey must be a real YYYY-MM-DD date.')
   }
+  if (!Array.isArray(completion.drops)) {
+    throw new Error(
+      'Completion needs its drops list — what the tap delivered (may be empty).',
+    )
+  }
+  completion.drops.forEach(validateDrop)
 }
 
 // A live completion — the user taps "done" right now. Which day it
@@ -53,6 +64,7 @@ export function recordCompletion(
     habitId,
     recordedAt: now,
     dayKey: dayKeyFromTimestamp(now, cutoffHour),
+    drops: [],
   }
   validateCompletion(completion)
   return completion
@@ -98,7 +110,7 @@ export function recordRetroCompletion(
         'editable).',
     )
   }
-  const completion = { id, habitId, recordedAt: now, dayKey }
+  const completion = { id, habitId, recordedAt: now, dayKey, drops: [] }
   validateCompletion(completion)
   return completion
 }

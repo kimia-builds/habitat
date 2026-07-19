@@ -26,6 +26,7 @@ function scheduleSummary(schedule) {
 
 function HabitRow({
   habit,
+  arrivalNote,
   todayCount,
   required,
   fulfilled,
@@ -52,6 +53,11 @@ function HabitRow({
         <span className="habit-meta">
           {scheduleSummary(habit.schedule)} · {habit.difficulty}
         </span>
+        {/* The quiet by-the-habit note (T3.2): while this habit's
+            drops are still on the arrival shelf, a soft line here
+            says what the tap turned up. No neon — that's reserved
+            for the first-occurrence reveals. */}
+        {arrivalNote && <span className="arrival-note">{arrivalNote}</span>}
       </span>
       {countsWithin ? (
         <span className="completion-controls">

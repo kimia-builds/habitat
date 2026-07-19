@@ -283,6 +283,157 @@ body {
   background: #1a2030;
 }
 
+/* T3.2: drop arrivals. The shelf sits under the meters; each arriving
+   object lingers (the fade animation's duration comes from
+   ARRIVAL_LINGER_MS, set inline), unless clicked and held. Streams
+   keep their pastel colours — neon belongs to the reveals below. */
+
+.arrival-shelf {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.arrival {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  background: #11151f;
+  border: 1px solid #2a3040;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+@keyframes arrival-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(0.3rem) scale(0.85);
+  }
+  8% {
+    opacity: 1;
+    transform: none;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.arrival-flora {
+  color: #a8dcc3;
+}
+
+.arrival-reading {
+  color: #c5b8e8;
+}
+
+.arrival-fungi {
+  color: #f2d9a6;
+}
+
+.drop-glyph {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+}
+
+.arrival-caption {
+  font-size: 0.8rem;
+  color: #e8e6f0;
+}
+
+.arrival-note {
+  font-size: 0.8rem;
+  color: #a8dcc3;
+}
+
+/* The first-occurrence reveals: the neon POP (spec §7) — the one place
+   bright colour shouts. An overlay that waits for its button. */
+
+.reveal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 10, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 10;
+}
+
+@keyframes reveal-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  max-width: 22rem;
+  padding: 2rem 1.5rem;
+  background: #0b0e14;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 3rem -0.5rem currentColor;
+  animation: reveal-pop 0.45s ease;
+}
+
+/* Neon, per stream — brighter siblings of the everyday pastels. */
+.reveal-flora {
+  color: #57ffb0;
+}
+
+.reveal-reading {
+  color: #b47bff;
+}
+
+.reveal-fungi {
+  color: #ffd24d;
+}
+
+.reveal-glyph {
+  width: 4rem;
+  height: 4rem;
+  filter: drop-shadow(0 0 0.6rem currentColor);
+}
+
+.reveal-title {
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  font-size: 1.1rem;
+  text-shadow: 0 0 1rem currentColor;
+}
+
+.reveal-line {
+  color: #e8e6f0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.reveal-button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 1px solid currentColor;
+  border-radius: 0.4rem;
+  padding: 0.4rem 1.2rem;
+  cursor: pointer;
+}
+
 .habit-list {
   list-style: none;
   display: flex;
