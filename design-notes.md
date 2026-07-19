@@ -116,9 +116,11 @@ they were _done_. Tone is cosmetic; the date logic stays strict.
 
 The meter UI is **already built** (T2.2) and stays as it is: the
 expedition meter is a **rolling bar** (one ~100-step segment ≈ a month
-at current pace, rolls over to empty, running step total beside it);
-literacy shows progress to the next friendship milestone; fungus is a
-plain wallet balance.
+at current pace, rolls over to empty — since the 2026-07-19 copy pass
+labelled simply **steps taken**, with no running total beside it);
+literacy shows progress to the next friendship milestone (**literacy
+level**, no door count); fungus is a plain wallet balance (**wallet
+balance**, just the number).
 
 **Decision (2026-07-19) — momentary glow + thicken on movement.** Each
 forward movement plays a **momentary animation**: the bar glows and

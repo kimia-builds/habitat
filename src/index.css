@@ -108,25 +108,9 @@ body {
   background: #c5b8e8; /* soft lavender — language */
 }
 
-.meter-expedition .meter-value {
-  color: #a8dcc3;
-}
-
-.meter-literacy .meter-value {
-  color: #c5b8e8;
-}
-
 .meter-fungus .meter-wallet {
   font-size: 1.15rem;
   color: #f2d9a6; /* soft amber — the glow of fungi */
-}
-
-.meter-fungus .meter-value {
-  color: #9aa3b5;
-}
-
-.meter-value {
-  font-size: 0.8rem;
 }
 
 /* The placeholder pages behind the meters (real pages arrive in M4). */
@@ -197,7 +181,6 @@ body {
   letter-spacing: 0.2em;
 }
 
-.field-notes-blurb,
 .field-notes-legend {
   color: #9aa3b5;
   font-size: 0.85rem;

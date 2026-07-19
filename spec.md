@@ -1,5 +1,12 @@
 # spec.md — HABITAT
 
+*v1.22 — 2026-07-19 (tenth session, copy pass after T4.2). Kimia's
+call: the meters are renamed — **steps taken**, **literacy level**,
+**wallet balance** — and the captions underneath are gone (no running
+step total, no n/10 doors, no "in the wallet"); the field notes'
+self-description and the graphs caption came out too. Bar maths
+untouched. All in the decisions log.*
+
 *v1.21 — 2026-07-19 (tenth session). T4.2 built: the Bookcase page.
 Decided with Kimia: ONE **constant bookshelf** (bare shelves, no prose,
 no count when empty) with publications as **floating draggable books**,
@@ -360,8 +367,7 @@ region discovery expands what the Market can offer.
 - **Field notes:** the weekly view (T2.3) — browsable Mon–Sun weeks,
   opening on the last completed one; reached from a link on the habit
   list, and opens by itself on the first visit of each Sunday (after
-  any check-in). Has a short description of itself and a "back to
-  habits" link.
+  any check-in). Has a "back to habits" link.
 - **Settings:** day cutoff, data export/import.
 
 ## 6. Data & reflection
@@ -730,6 +736,19 @@ region discovery expands what the Market can offer.
   reading is ever written to storage. The early Bookcase list (like
   the T3.3 Abode) shows everything received, in arrival order, each
   with its read button; the real shelves (T4.2) reuse the same popup.
+- 2026-07-19 (tenth session, copy pass after T4.2): **the meters are
+  renamed and fall silent** — "expedition" → **steps taken**,
+  "literacy" → **literacy level**, "fungi" → **wallet balance**, and
+  the captions underneath are gone: no running step total, no n/10
+  doors count, no "in the wallet" (supersedes that part of the T2.2
+  decision from 2026-07-16). The wallet keeps its number — the number
+  IS the balance. Bar maths, colours and pages are untouched.
+- 2026-07-19 (tenth session, copy pass after T4.2): **the field notes
+  lose their self-description and the graphs their caption** — "The
+  field notes are Habitat's memory of the weeks…" and "Each line is
+  simply how often…" came out (supersedes "the page carries a short
+  description of itself" from 2026-07-16, T2.3). The pages speak
+  visually; the back-to-habits link stays.
 - 2026-07-19 (tenth session, T4.2): **the Bookcase is one constant
   bookshelf** — the same frame and planks whether it holds one
   publication or a hundred (the faint-planet precedent: bare shelves

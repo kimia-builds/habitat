@@ -39,18 +39,10 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
       : thisWeek,
   )
 
-  const blurb = (
-    <p className="field-notes-blurb">
-      The field notes are Habitat&apos;s memory of the weeks: what was done, and
-      when. Days left empty are simply days — a record, never a judgement.
-    </p>
-  )
-
   if (firstWeek === null) {
     return (
       <section className="field-notes" aria-label="field notes">
         <h2>field notes</h2>
-        {blurb}
         <p>Nothing recorded yet — notes begin with the first habit.</p>
         <button onClick={onBack}>← back to the habits</button>
       </section>
@@ -62,7 +54,6 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
   return (
     <section className="field-notes" aria-label="field notes">
       <h2>field notes</h2>
-      {blurb}
 
       <div className="week-nav">
         <button

@@ -1,5 +1,12 @@
 # plan.md — HABITAT build plan
 
+*v1.21 — 2026-07-19 (tenth session, copy pass after T4.2). Kimia's
+call: the meters are renamed — **steps taken**, **literacy level**,
+**wallet balance** — and their under-captions are gone (no step total,
+no door count, no "in the wallet"); the field notes' self-description
+and the graphs caption came out too. Bar maths untouched; tests
+updated. Next task: **T4.3**.*
+
 *v1.20 — 2026-07-19 (tenth session). **T4.2 built**: the Bookcase page.
 One constant bookshelf — bare shelves, no prose, no count when empty —
 with every publication a floating, draggable book: arrange them

@@ -134,10 +134,6 @@ function HabitGraphs({ habits, completions, now, cutoffHour }) {
   return (
     <div className="habit-graphs">
       <h3>graphs</h3>
-      <p className="field-notes-blurb">
-        Each line is simply how often, over a habit&apos;s whole life — raw
-        counts, unrelated to any goal.
-      </p>
       {graphable.map((habit) => (
         <HabitGraph
           key={habit.id}

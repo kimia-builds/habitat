@@ -137,14 +137,18 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
     expect(row('stretch').getByText('✓ 3/1 today')).toBeDefined()
 
     // All three marks belong to today (Thu 16 July, the pinned clock),
-    // and every tap advanced the expedition meter.
+    // and every tap advanced the steps-taken meter.
     expect(stored().completions.map((c) => c.dayKey)).toEqual([
       '2026-07-16',
       '2026-07-16',
       '2026-07-16',
     ])
     const meters = within(screen.getByRole('region', { name: 'meters' }))
-    expect(meters.getByText('3 steps')).toBeDefined()
+    expect(
+      meters
+        .getByRole('progressbar', { name: 'steps taken progress' })
+        .getAttribute('aria-valuenow'),
+    ).toBe('3')
 
     // Undoing one extra keeps the day fulfilled — thresholds unchanged.
     fireEvent.click(row('stretch').getByRole('button', { name: 'undo' }))
@@ -166,9 +170,13 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
     expect(row('tidy').getByText('1 today')).toBeDefined()
     expect(row('swim').getByText('2 today')).toBeDefined()
 
-    // Every one of those taps counted toward the expedition meter.
+    // Every one of those taps counted toward the steps-taken meter.
     const meters = within(screen.getByRole('region', { name: 'meters' }))
-    expect(meters.getByText('3 steps')).toBeDefined()
+    expect(
+      meters
+        .getByRole('progressbar', { name: 'steps taken progress' })
+        .getAttribute('aria-valuenow'),
+    ).toBe('3')
   })
 
   it('a weekdays habit gets the same counter on its scheduled day', () => {
@@ -577,29 +585,28 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
 describe('the three meters (T2.2)', () => {
   // The meters section at the top of the list.
   const meters = () => within(screen.getByRole('region', { name: 'meters' }))
-  const expeditionBar = () =>
-    meters().getByRole('progressbar', { name: 'expedition progress' })
+  const stepsBar = () =>
+    meters().getByRole('progressbar', { name: 'steps taken progress' })
 
   it('shows all three meters, empty on a fresh start', () => {
     render(<App />)
-    expect(meters().getByText('0 steps')).toBeDefined()
-    expect(meters().getByText('0/10 doors')).toBeDefined()
-    expect(meters().getByText('in the wallet')).toBeDefined()
-    expect(expeditionBar().getAttribute('aria-valuenow')).toBe('0')
+    expect(meters().getByText('steps taken')).toBeDefined()
+    expect(meters().getByText('literacy level')).toBeDefined()
+    expect(meters().getByText('wallet balance')).toBeDefined()
+    expect(meters().getByText('0')).toBeDefined() // the wallet number itself
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
   })
 
-  it('completing a habit visibly moves the expedition meter; undo moves it back', () => {
+  it('completing a habit visibly moves the steps-taken meter; undo moves it back', () => {
     render(<App />)
     createHabitViaUI('walk')
 
     fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
-    expect(meters().getByText('1 step')).toBeDefined()
-    expect(expeditionBar().getAttribute('aria-valuenow')).toBe('1')
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
 
     // Undo reverses the meter exactly (decision 2026-07-15).
     fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
-    expect(meters().getByText('0 steps')).toBeDefined()
-    expect(expeditionBar().getAttribute('aria-valuenow')).toBe('0')
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
   })
 
   it('extras beyond an N-per-day target keep moving the meter — every tap counts', () => {
@@ -608,14 +615,14 @@ describe('the three meters (T2.2)', () => {
     for (let i = 0; i < 3; i++) {
       fireEvent.click(row('water').getByRole('button', { name: '+1' }))
     }
-    expect(meters().getByText('3 steps')).toBeDefined()
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('3')
   })
 
-  it('each meter opens its placeholder page, and back returns to the list', () => {
+  it('each meter opens its page, and back returns to the list', () => {
     render(<App />)
     createHabitViaUI('walk')
 
-    fireEvent.click(meters().getByRole('button', { name: /expedition/ }))
+    fireEvent.click(meters().getByRole('button', { name: /steps taken/ }))
     expect(screen.getByText('the Map')).toBeDefined()
     expect(screen.queryByText('walk')).toBeNull() // the list waits behind
     fireEvent.click(
@@ -623,13 +630,13 @@ describe('the three meters (T2.2)', () => {
     )
     expect(screen.getByText('walk')).toBeDefined()
 
-    fireEvent.click(meters().getByRole('button', { name: /literacy/ }))
+    fireEvent.click(meters().getByRole('button', { name: /literacy level/ }))
     expect(screen.getByText('the Bookcase')).toBeDefined()
     fireEvent.click(
       screen.getByRole('button', { name: '← back to the habits' }),
     )
 
-    fireEvent.click(meters().getByRole('button', { name: /fungi/ }))
+    fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
     expect(screen.getByText('the Market')).toBeDefined()
   })
 
@@ -637,7 +644,7 @@ describe('the three meters (T2.2)', () => {
     render(<App />)
     createHabitViaUI('walk')
 
-    for (const meter of [/expedition/, /literacy/, /fungi/]) {
+    for (const meter of [/steps taken/, /literacy level/, /wallet balance/]) {
       fireEvent.click(meters().getByRole('button', { name: meter }))
       expect(screen.queryByText('walk')).toBeNull() // we left the list
       fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
@@ -683,7 +690,7 @@ describe('the three meters (T2.2)', () => {
       screen.getByRole('button', { name: 'done — save check-in' }),
     )
 
-    expect(meters().getByText('1 step')).toBeDefined()
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
     vi.useRealTimers()
   })
 })
