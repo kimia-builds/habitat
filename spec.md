@@ -1,5 +1,11 @@
 # spec.md — HABITAT
 
+*v1.13 — 2026-07-19 (third session, docs only). Decided: every
+repeating schedule shape presents as an N-per-day-style counter with
+unlimited +1 taps; every tap counts toward the meter and drops for
+every shape; one-time keeps its single-tap control. Built as plan
+T3.2b (a future session — no code today).*
+
 *v1.12 — 2026-07-19 (second session). T3.2 built: drop arrival +
 first-occurrence reveals. Decided today: drops START FRESH from this
 update (old history rolls nothing retroactively); every completion
@@ -61,6 +67,13 @@ dailies/habits/to-dos distinction. Each habit has:
   auto-archives it; undoing that mark the same day un-archives it).
   One-time is a *schedule shape* of the single unified habit type — it
   does not reintroduce Habitica's habit/daily/to-do split.
+- **Every repeating shape presents as a counter (2026-07-19, plan
+  T3.2b):** the UI control for daily, weekdays, N-per-week, N-per-day
+  and whenever is the same running count with an unlimited +1 — never
+  a one-tap toggle. Fulfilment and streaks judge exactly as before;
+  taps beyond the goal are recorded and kept, and every tap counts
+  toward the expedition meter and drops (see decisions log). One-time
+  keeps its single-tap control (the first tap finishes it).
 - **One of exactly 6 abstract symbols** (each paired with its own
   colour). The symbol **is** the tag — no word labels, no naming, no
   renaming, ever. Meaning lives entirely in the user's head, never
@@ -503,6 +516,19 @@ region discovery expands what the Market can offer.
   its own full-screen neon POP moment (mint / violet / amber by
   stream), dismissed only by its own button; regular arrivals stay
   pastel and quiet.
+- 2026-07-19 (third session, for plan T3.2b): **every repeating shape
+  presents like N-per-day** — the habit row (and the check-in /
+  backfill screens) shows a running count with an unlimited +1 and an
+  undo, for daily, weekdays, N-per-week, N-per-day and whenever alike.
+  Goals and streaks are judged exactly as before (daily fulfilled at
+  1; N-per-week by distinct days); extras are simply recorded and
+  kept. One-time keeps its single-tap control — the first tap
+  finishes and archives it, as ever.
+- 2026-07-19 (third session, for plan T3.2b): **every tap counts, for
+  every shape** — generalises the 2026-07-15 N-per-day rule: taps
+  beyond a day's goal advance the expedition meter and roll drops for
+  all repeating shapes. Trust-based by design (one honest user; no
+  interest in tap-farming).
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

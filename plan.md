@@ -1,10 +1,8 @@
 # plan.md — HABITAT build plan
 
-*v1.10 — 2026-07-19 (second session). T3.2 done (spec v1.12
-decisions: start fresh — no retroactive drops; drops stored on
-completions; quiet-note + fading-object arrivals; check-in drops wait
-for done; five neon first reveals). Next task: **T3.3** — gather /
-decline / compost.*
+*v1.11 — 2026-07-19 (third session, docs only). Added **T3.2b**
+(unlimited tap counter for every shape — decisions in spec v1.13). No
+code this session. Next task: **T3.2b** or **T3.3**, Kimia's pick.*
 
 ## How to use this file
 
@@ -143,6 +141,21 @@ tracker. Everything after this is delight, informed by real use.
   deferred to its done button. Playtested in the browser: fungi,
   flora and novel reveals all POP distinctly; identical redo returns
   identical drops.
+- [ ] **T3.2b Unlimited tap counter for every shape.** *(decided
+  2026-07-19; see spec §4.1 + decisions log)*
+  Every repeating shape's row presents the way N-per-day already does:
+  a running "count today" with an unlimited **+1** and an undo — no
+  more one-tap toggle. Daily/weekdays show the goal as 1 (e.g. "2/1
+  today" once past it); whenever shows a plain count with no goal.
+  Fulfilment and streak rules are untouched (daily still fulfilled at
+  1; N-per-week still counts distinct days); extras are recorded and
+  kept, and **every tap advances the expedition meter and rolls
+  drops** (generalising the 2026-07-15 N-per-day rule). One-time
+  to-dos keep their single-tap archive behaviour. The check-in /
+  backfill screens get the same counter for past days.
+  *Done when:* tests prove extra taps are stored on the right day for
+  every shape, meters and drops count every tap, and fulfilment
+  thresholds are unchanged; a real day's use feels right.
 - [ ] **T3.3 Gather / decline / compost.**
   Flora optional to gather, compostable anytime, composted flora
   re-enter the pool (composting yields nothing). Reading material
