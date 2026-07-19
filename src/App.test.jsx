@@ -14,6 +14,13 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
+import { narrationSlot } from './content/narration.js'
+
+// The reveal dialogs are named by Kimia's words in narration.js —
+// never hard-code them here, or editing her file breaks the tests
+// (it did, 2026-07-19). Mirror FirstReveal's fallback for blank slots.
+const revealTitle = (kind) =>
+  narrationSlot(`firstReveals.${kind}.title`) ?? 'a first arrival'
 
 beforeEach(() => {
   localStorage.clear()
@@ -966,7 +973,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
 
     // A first: the neon reveal is up, and only its button dismisses it.
     expect(
-      screen.getByRole('dialog', { name: 'your first flora find' }),
+      screen.getByRole('dialog', { name: revealTitle('flora') }),
     ).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
     expect(screen.queryByRole('dialog')).toBeNull()
@@ -994,7 +1001,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
 
     fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
     expect(
-      screen.getByRole('dialog', { name: 'your first fungi' }),
+      screen.getByRole('dialog', { name: revealTitle('fungi') }),
     ).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
 
@@ -1024,7 +1031,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     // Now everything arrives together — the reveal first, the shelf
     // and the quiet note behind it.
     expect(
-      screen.getByRole('dialog', { name: 'your first flora find' }),
+      screen.getByRole('dialog', { name: revealTitle('flora') }),
     ).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
     expect(screen.getByRole('region', { name: 'arrivals' })).toBeDefined()
