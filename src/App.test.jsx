@@ -92,18 +92,21 @@ describe('creating habits', () => {
 })
 
 describe('completing today (and undoing)', () => {
-  it('mark done → done today; tap again → taken back', () => {
+  it('a daily habit counts up from 0/1, and undo takes a mark back', () => {
     render(<App />)
     createHabitViaUI('meditate')
 
-    fireEvent.click(row('meditate').getByRole('button', { name: 'mark done' }))
-    expect(row('meditate').getByRole('button', { name: '✓ done today' }))
+    // The counter (T3.2b): no toggle — a running count with +1 and undo.
+    expect(row('meditate').getByText('0/1 today')).toBeDefined()
+    expect(
+      row('meditate').getByRole('button', { name: 'undo' }).disabled,
+    ).toBe(true)
 
-    // The undo: tapping the done button removes today's mark.
-    fireEvent.click(
-      row('meditate').getByRole('button', { name: '✓ done today' }),
-    )
-    expect(row('meditate').getByRole('button', { name: 'mark done' }))
+    fireEvent.click(row('meditate').getByRole('button', { name: '+1' }))
+    expect(row('meditate').getByText('✓ 1/1 today')).toBeDefined()
+
+    fireEvent.click(row('meditate').getByRole('button', { name: 'undo' }))
+    expect(row('meditate').getByText('0/1 today')).toBeDefined()
   })
 
   it('an N-per-day habit counts up and undoes one at a time', () => {
@@ -116,6 +119,74 @@ describe('completing today (and undoing)', () => {
     expect(row('water').getByText('2/3 today')).toBeDefined()
     fireEvent.click(row('water').getByRole('button', { name: 'undo' }))
     expect(row('water').getByText('1/3 today')).toBeDefined()
+  })
+})
+
+describe('every repeating shape is an unlimited counter (T3.2b)', () => {
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+
+  it('a daily habit counts past its goal; every tap is stored on today', () => {
+    render(<App />)
+    createHabitViaUI('stretch')
+
+    for (let i = 0; i < 3; i++) {
+      fireEvent.click(row('stretch').getByRole('button', { name: '+1' }))
+    }
+    // Past the goal the day just STAYS fulfilled — extras are shown,
+    // recorded and kept, never refused.
+    expect(row('stretch').getByText('✓ 3/1 today')).toBeDefined()
+
+    // All three marks belong to today (Thu 16 July, the pinned clock),
+    // and every tap advanced the expedition meter.
+    expect(stored().completions.map((c) => c.dayKey)).toEqual([
+      '2026-07-16',
+      '2026-07-16',
+      '2026-07-16',
+    ])
+    const meters = within(screen.getByRole('region', { name: 'meters' }))
+    expect(meters.getByText('3 steps')).toBeDefined()
+
+    // Undoing one extra keeps the day fulfilled — thresholds unchanged.
+    fireEvent.click(row('stretch').getByRole('button', { name: 'undo' }))
+    expect(row('stretch').getByText('✓ 2/1 today')).toBeDefined()
+  })
+
+  it('whenever and N-per-week show a plain count — no per-day goal', () => {
+    render(<App />)
+    createHabitViaUI('tidy', { scheduleType: 'whenever' })
+    createHabitViaUI('swim', { scheduleType: 'nPerWeek', n: 3 })
+
+    expect(row('tidy').getByText('0 today')).toBeDefined()
+    expect(row('swim').getByText('0 today')).toBeDefined()
+
+    fireEvent.click(row('tidy').getByRole('button', { name: '+1' }))
+    fireEvent.click(row('swim').getByRole('button', { name: '+1' }))
+    fireEvent.click(row('swim').getByRole('button', { name: '+1' }))
+
+    expect(row('tidy').getByText('1 today')).toBeDefined()
+    expect(row('swim').getByText('2 today')).toBeDefined()
+
+    // Every one of those taps counted toward the expedition meter.
+    const meters = within(screen.getByRole('region', { name: 'meters' }))
+    expect(meters.getByText('3 steps')).toBeDefined()
+  })
+
+  it('a weekdays habit gets the same counter on its scheduled day', () => {
+    // The pinned clock is Thursday, so schedule Thursdays.
+    render(<App />)
+    createHabitViaUI('gym', { scheduleType: 'weekdays', days: ['Thu'] })
+    expect(row('gym').getByText('0/1 today')).toBeDefined()
+    fireEvent.click(row('gym').getByRole('button', { name: '+1' }))
+    fireEvent.click(row('gym').getByRole('button', { name: '+1' }))
+    expect(row('gym').getByText('✓ 2/1 today')).toBeDefined()
+  })
+
+  it('a one-time to-do keeps its single-tap control — no counter', () => {
+    render(<App />)
+    createHabitViaUI('fix tap', { scheduleType: 'oneTime' })
+    expect(row('fix tap').getByRole('button', { name: 'mark done' }))
+    expect(row('fix tap').queryByRole('button', { name: '+1' })).toBeNull()
+    expect(row('fix tap').queryByText(/today/)).toBeNull()
   })
 })
 
@@ -182,7 +253,7 @@ describe('archive, unarchive, delete forever', () => {
     expect(archived.getByText('floss')).toBeDefined()
 
     fireEvent.click(archived.getByRole('button', { name: 'unarchive' }))
-    expect(row('floss').getByRole('button', { name: 'mark done' }))
+    expect(row('floss').getByRole('button', { name: '+1' }))
   })
 
   it('delete forever asks first, and cancel keeps everything', () => {
@@ -328,13 +399,13 @@ describe('the morning check-in (T1.4)', () => {
 
     // Mark yesterday's walk (the first row is yesterday's; the
     // optional days are listed after it)…
-    fireEvent.click(screen.getAllByRole('button', { name: 'mark done' })[0])
+    fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
 
     // …and backfill Tuesday from the optional section.
     const tuesday = within(
       screen.getByText('Tue 2026-07-14').closest('details'),
     )
-    fireEvent.click(tuesday.getByRole('button', { name: 'mark done' }))
+    fireEvent.click(tuesday.getByRole('button', { name: '+1' }))
 
     fireEvent.click(
       screen.getByRole('button', { name: 'done — save check-in' }),
@@ -349,6 +420,26 @@ describe('the morning check-in (T1.4)', () => {
         .sort(),
     ).toEqual(['2026-07-14', '2026-07-15'])
     expect(stored().checkedInThrough).toBe('2026-07-15')
+  })
+
+  it('the check-in counter takes extras too, all onto their true day (T3.2b)', () => {
+    seed()
+    render(<App />)
+
+    // Yesterday's row is a counter here as well: three +1s, then one
+    // undo — the surviving two marks both belong to Wed the 15th.
+    for (let i = 0; i < 3; i++) {
+      fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
+    }
+    expect(screen.getByText('✓ 3/1')).toBeDefined()
+    fireEvent.click(screen.getAllByRole('button', { name: 'undo' })[0])
+    fireEvent.click(
+      screen.getByRole('button', { name: 'done — save check-in' }),
+    )
+    expect(stored().completions.map((c) => c.dayKey)).toEqual([
+      '2026-07-15',
+      '2026-07-15',
+    ])
   })
 
   it('leaving everything unmarked is a fine answer — saved as answered, nothing recorded', () => {
@@ -379,7 +470,7 @@ describe('the morning check-in (T1.4)', () => {
     // But the week's earlier days can still be opened and edited.
     fireEvent.click(screen.getByRole('button', { name: 'edit past days' }))
     const monday = within(screen.getByText('Mon 2026-07-13').closest('details'))
-    fireEvent.click(monday.getByRole('button', { name: 'mark done' }))
+    fireEvent.click(monday.getByRole('button', { name: '+1' }))
     fireEvent.click(
       screen.getByRole('button', { name: 'done — save check-in' }),
     )
@@ -473,13 +564,13 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
       ],
     })
     render(<App />)
-    expect(row('walk').getByRole('button', { name: '✓ done today' }))
+    expect(row('walk').getByText('✓ 1/1 today')).toBeDefined()
 
     act(() => {
       vi.advanceTimersByTime(4.5 * 60 * 60 * 1000)
     })
     expect(screen.queryByText('check-in')).toBeNull()
-    expect(row('walk').getByRole('button', { name: 'mark done' }))
+    expect(row('walk').getByText('0/1 today')).toBeDefined()
   })
 })
 
@@ -501,12 +592,12 @@ describe('the three meters (T2.2)', () => {
     render(<App />)
     createHabitViaUI('walk')
 
-    fireEvent.click(row('walk').getByRole('button', { name: 'mark done' }))
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
     expect(meters().getByText('1 step')).toBeDefined()
     expect(expeditionBar().getAttribute('aria-valuenow')).toBe('1')
 
     // Undo reverses the meter exactly (decision 2026-07-15).
-    fireEvent.click(row('walk').getByRole('button', { name: '✓ done today' }))
+    fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
     expect(meters().getByText('0 steps')).toBeDefined()
     expect(expeditionBar().getAttribute('aria-valuenow')).toBe('0')
   })
@@ -587,7 +678,7 @@ describe('the three meters (T2.2)', () => {
     // No header escape hatch either: the check-in's done button stays
     // the only way out, so yesterday always gets answered.
     expect(screen.queryByRole('button', { name: 'HABITAT' })).toBeNull()
-    fireEvent.click(screen.getAllByRole('button', { name: 'mark done' })[0])
+    fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
     fireEvent.click(
       screen.getByRole('button', { name: 'done — save check-in' }),
     )
@@ -768,7 +859,7 @@ describe('field notes (T2.3)', () => {
     render(<App />)
 
     // Build a streak of 1 day, then try daily → N-per-week.
-    fireEvent.click(row('walk').getByRole('button', { name: 'mark done' }))
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
     fireEvent.click(row('walk').getByRole('button', { name: 'edit' }))
     const form = () => within(document.querySelector('form.habit-form'))
@@ -857,7 +948,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     seedWorld(findSeed('2026-07-16', 'flora'))
     render(<App />)
 
-    fireEvent.click(row('walk').getByRole('button', { name: 'mark done' }))
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
 
     // The drop was rolled at tap time and STORED on the completion.
     expect(stored().completions[0].drops).toEqual([{ kind: 'flora' }])
@@ -878,7 +969,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
 
     // Undo: the completion goes, and its drop — stored and on-screen —
     // goes with it.
-    fireEvent.click(row('walk').getByRole('button', { name: '✓ done today' }))
+    fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
     expect(screen.queryByRole('region', { name: 'arrivals' })).toBeNull()
     expect(screen.queryByText('you came across a flora find')).toBeNull()
     expect(stored().completions).toEqual([])
@@ -890,7 +981,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     const wallet = () => document.querySelector('.meter-wallet').textContent
     expect(wallet()).toBe('0')
 
-    fireEvent.click(row('walk').getByRole('button', { name: 'mark done' }))
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
     expect(
       screen.getByRole('dialog', { name: 'your first fungi' }),
     ).toBeDefined()
@@ -900,7 +991,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     expect(drop.kind).toBe('fungi')
     expect(wallet()).toBe(String(drop.amount))
 
-    fireEvent.click(row('walk').getByRole('button', { name: '✓ done today' }))
+    fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
     expect(wallet()).toBe('0')
   })
 
@@ -911,7 +1002,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     render(<App />)
     expect(screen.getByText('check-in')).toBeDefined()
 
-    fireEvent.click(screen.getAllByRole('button', { name: 'mark done' })[0])
+    fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
     // Distraction-free while answering: no reveal, no shelf.
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(screen.queryByRole('region', { name: 'arrivals' })).toBeNull()

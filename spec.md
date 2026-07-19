@@ -574,6 +574,13 @@ region discovery expands what the Market can offer.
   the app renders gracefully when empty. The five built T3.2 reveals
   get converted to slots (plan T3.4); their current text remains only
   as a marked placeholder until Kimia replaces it.
+- 2026-07-19 (fourth session, T3.2b built): **the counter's goal
+  display** — daily/weekdays/N-per-day show "count/goal today" with a
+  quiet ✓ once fulfilled; **N-per-week and whenever show a plain
+  count with no per-day goal** (they carry no per-day expectation;
+  the week target already sits in the row's small print). The same
+  counter appears on the check-in/backfill rows. One-time keeps its
+  single-tap control.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.

@@ -38,6 +38,15 @@ function DayRows({
         // not to whatever the habit's schedule is today.
         const count = countOn(completions, habit.id, dayKey)
         const required = requiredPerDay(habit, dayKey)
+        // The same counter as the habit list (T3.2b): every repeating
+        // shape gets an unlimited +1 and an undo here too, so extras
+        // can be backfilled onto their true day. Only one-time to-dos
+        // keep a single-tap control.
+        const scheduleThen = scheduleOn(habit, dayKey)
+        const oneTime = scheduleThen.type === 'oneTime'
+        const hasDayGoal = ['daily', 'weekdays', 'nPerDay'].includes(
+          scheduleThen.type,
+        )
         return (
           <li key={habit.id} className="habit-row">
             <span
@@ -49,20 +58,7 @@ function DayRows({
             <span className="habit-main">
               <span className="habit-name">{habit.name}</span>
             </span>
-            {scheduleOn(habit, dayKey).type === 'nPerDay' ? (
-              <span className="completion-controls">
-                <span>
-                  {count}/{required}
-                </span>
-                <button onClick={() => onMark(habit, dayKey)}>+1</button>
-                <button
-                  onClick={() => onUnmark(habit, dayKey)}
-                  disabled={count === 0}
-                >
-                  undo
-                </button>
-              </span>
-            ) : (
+            {oneTime ? (
               <span className="completion-controls">
                 {count > 0 ? (
                   <button onClick={() => onUnmark(habit, dayKey)}>
@@ -73,6 +69,20 @@ function DayRows({
                     mark done
                   </button>
                 )}
+              </span>
+            ) : (
+              <span className="completion-controls">
+                <span>
+                  {hasDayGoal && count >= required ? '✓ ' : ''}
+                  {hasDayGoal ? `${count}/${required}` : count}
+                </span>
+                <button onClick={() => onMark(habit, dayKey)}>+1</button>
+                <button
+                  onClick={() => onUnmark(habit, dayKey)}
+                  disabled={count === 0}
+                >
+                  undo
+                </button>
               </span>
             )}
           </li>

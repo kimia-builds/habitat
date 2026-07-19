@@ -38,7 +38,18 @@ function HabitRow({
   onEdit,
   onArchive,
 }) {
-  const countsWithin = habit.schedule.type === 'nPerDay'
+  // Every repeating shape presents as a counter with an unlimited +1
+  // and a quiet, always-available undo (T3.2b — spec §4.1). Only
+  // one-time to-dos keep the single-tap control: the first tap
+  // finishes and archives them.
+  const oneTime = habit.schedule.type === 'oneTime'
+  // Shapes with a per-day goal show "count/goal today"; N-per-week and
+  // whenever have no per-day expectation, so they show a plain count
+  // (Kimia's decision 2026-07-19 — the week target already sits in the
+  // small print).
+  const hasDayGoal = ['daily', 'weekdays', 'nPerDay'].includes(
+    habit.schedule.type,
+  )
 
   return (
     <li className="habit-row">
@@ -59,23 +70,20 @@ function HabitRow({
             for the first-occurrence reveals. */}
         {arrivalNote && <span className="arrival-note">{arrivalNote}</span>}
       </span>
-      {countsWithin ? (
+      {oneTime ? (
+        <span className="completion-controls">
+          <button onClick={onComplete}>mark done</button>
+        </span>
+      ) : (
         <span className="completion-controls">
           <span>
-            {todayCount}/{required} today
+            {fulfilled && hasDayGoal ? '✓ ' : ''}
+            {hasDayGoal ? `${todayCount}/${required}` : todayCount} today
           </span>
           <button onClick={onComplete}>+1</button>
           <button onClick={onUndo} disabled={todayCount === 0}>
             undo
           </button>
-        </span>
-      ) : (
-        <span className="completion-controls">
-          {fulfilled ? (
-            <button onClick={onUndo}>✓ done today</button>
-          ) : (
-            <button onClick={onComplete}>mark done</button>
-          )}
         </span>
       )}
       <span className="row-buttons">

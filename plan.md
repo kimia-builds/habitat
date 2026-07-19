@@ -1,11 +1,13 @@
 # plan.md — HABITAT build plan
 
-*v1.12 — 2026-07-19 (fourth session, docs only). Merged
-**design-notes.md** (the feel layer — read alongside spec.md before
-design-adjacent tasks). Added **T3.4** (narration content slots);
-feel enhancements to built surfaces (star-shimmer, meter glow) land
-in **T5.2**. No code this session. Next task: **T3.2b** or **T3.3**,
-Kimia's pick.*
+*v1.13 — 2026-07-19 (fourth session). **T3.2b built**: every
+repeating shape's row is now a counter with an unlimited +1 and a
+quiet undo, on the habit list and the check-in alike (N-per-week and
+whenever show a plain count — Kimia's call today). Earlier the same
+session: merged **design-notes.md** (the feel layer — read alongside
+spec.md before design-adjacent tasks), added **T3.4** (narration
+content slots); feel enhancements to built surfaces land in **T5.2**.
+Next task: **T3.3**.*
 
 *v1.11 — 2026-07-19 (third session, docs only). Added **T3.2b**
 (unlimited tap counter for every shape — decisions in spec v1.13).*
@@ -147,8 +149,8 @@ tracker. Everything after this is delight, informed by real use.
   deferred to its done button. Playtested in the browser: fungi,
   flora and novel reveals all POP distinctly; identical redo returns
   identical drops.
-- [ ] **T3.2b Unlimited tap counter for every shape.** *(decided
-  2026-07-19; see spec §4.1 + decisions log)*
+- [x] **T3.2b Unlimited tap counter for every shape.** *(done
+  2026-07-19; decided same day — see spec §4.1 + decisions log)*
   Every repeating shape's row presents the way N-per-day already does:
   a running "count today" with an unlimited **+1** and an undo — no
   more one-tap toggle. Daily/weekdays show the goal as 1 (e.g. "2/1
