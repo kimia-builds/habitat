@@ -1,10 +1,11 @@
 # plan.md — HABITAT build plan
 
-*v1.8 — 2026-07-19. T3.1 done (spec v1.10 decisions: window-guaranteed
+*v1.9 — 2026-07-19. T3.1 done (spec v1.11 decisions: window-guaranteed
 flora, difficulty nudges the chance-based drops, ~15 fungi per
-rotation, seeded no-slot-machine rolls). Next task: **T3.2** — drop
-arrival + first-occurrence reveals, including storing drops and the
-world seed.*
+rotation, seeded no-slot-machine rolls). New rule for later: landmark
+flora on the Map (T4.1/T6.1). Next task: **T3.2** — drop arrival +
+first-occurrence reveals, including storing drops and the world
+seed.*
 
 ## How to use this file
 
@@ -146,7 +147,11 @@ tracker. Everything after this is delight, informed by real use.
 ## M4 — The world of N-Z-D (5 sessions)
 
 - [ ] **T4.1 Map page** — planet revealed region by region with
-  expedition progress. SVG, dark + bioluminescent.
+  expedition progress. SVG, dark + bioluminescent. Includes
+  **landmark flora** (spec 2026-07-19): large tree-like flora appear
+  permanently on the Map when they drop, in the region their
+  expedition step falls in (gathering takes a cutting, never the
+  tree — see spec §5 Stream 1).
 - [ ] **T4.2 Bookcase page** — shelves filling with every magazine,
   novel, dictionary ever received.
 - [ ] **T4.3 Abode page** — gathered flora and purchased objects
@@ -180,7 +185,9 @@ tracker. Everything after this is delight, informed by real use.
 
 - [ ] **T6.1 Content pools** — write/name the actual flora, market
   objects (with prices), reading material, and friends; assign objects
-  to regions (collaborative, fun, ongoing).
+  to regions (collaborative, fun, ongoing). Decide here which flora
+  are **landmarks** (the large tree-like ones that appear on the Map,
+  spec 2026-07-19).
 - [ ] **T6.2 Pacing tune-up (recurring)** — after ~1 month of real use,
   then roughly **every 6 months** (Kimia's decision 2026-07-15): revisit
   all pacing constants against real historical averages (starting with

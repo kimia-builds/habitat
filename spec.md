@@ -1,11 +1,14 @@
 # spec.md — HABITAT
 
-*v1.10 — 2026-07-19. T3.1 built: the drops engine. Decided today:
+*v1.11 — 2026-07-19. T3.1 built: the drops engine. Decided today:
 flora finds are guaranteed once per window of expedition steps (at a
 random step inside it); difficulty nudges the chance-based drops
 (reading + fungi); fungus income targets one mid-priced object per
-market rotation; and drops are seeded — undo takes a drop back, and
-redoing the identical tap returns the identical drop.*
+market rotation; drops are seeded — undo takes a drop back, and
+redoing the identical tap returns the identical drop. Also new:
+LANDMARK FLORA — large tree-like flora appear permanently on the Map
+where they were found; gathering one means taking a branch or fruit,
+never the tree itself (rule for T4.1/T6.1).*
 
 ## 1. One-line pitch
 
@@ -149,6 +152,20 @@ opening its own growing world:
   money.
 - Gathered flora live in the **Abode**, arrangeable like everything
   else there.
+- **Landmark flora (2026-07-19, for T4.1/T6.1):** some flora are
+  large and tree-like — too big to carry home. These special finds
+  are **revealed on the Map** the moment they drop, placed in the
+  region the expedition was passing through at that step, and the
+  marker is **permanent** — the Map records that we came to know this
+  tree, like discovery itself. (The one exception, consistent with
+  all drops: undoing the very completion that dropped it takes the
+  reveal back.) Landmark flora are still gatherable like any flora —
+  but gathering one means collecting a **branch, fruit or leaf** from
+  it, never the tree itself: the cutting goes to the Abode and is
+  compostable as usual, while the tree stays where it grows, on the
+  Map, regardless. This is a rule for the special ones only — small
+  flora don't appear on the Map. Which flora count as landmarks is
+  decided with the content pools (T6.1).
 
 ### Stream 2 — Literacy & society: earning our place
 
@@ -451,6 +468,15 @@ region discovery expands what the Market can offer.
   reading leaves the bookcase); redoing the identical tap returns the
   identical drops — tap–untap–tap can never be a slot machine. The
   world seed is created once at first run (wired up in T3.2).
+- 2026-07-19: **landmark flora** (Kimia's rule, for the Map in T4.1) —
+  large tree-like flora are revealed on the Map once they drop,
+  associated with the map region their expedition step falls in, and
+  the marker is permanent (only undoing the dropping completion
+  removes it). Gathering a landmark means taking a branch/fruit/leaf —
+  a cutting for the Abode, compostable as usual — never the whole
+  tree, which stays on the Map regardless. Applies only to the
+  special large flora, not all flora; which species are landmarks is
+  chosen in T6.1.
 - A cron = a day with ≥1 habit marked (including retroactive marks).
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.
