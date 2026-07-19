@@ -522,6 +522,71 @@ body {
   line-height: 1.5;
 }
 
+/* T4.1: the Map — dark, bioluminescent, quietly glowing. The whole
+   planet as a faint outline; known regions light up in their own
+   seeded colour. Generative placeholder shapes until the T5.3 art. */
+
+.map-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #2a3040;
+  border-radius: 0.5rem;
+  align-items: flex-start;
+}
+
+.map-page h2 {
+  font-weight: 300;
+  letter-spacing: 0.2em;
+}
+
+.map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The faint outline (Kimia's decision 2026-07-19): the planet is
+   hinted at from day one — the scale of the journey, barely there. */
+.map-silhouette {
+  fill: rgba(255, 255, 255, 0.025);
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1;
+}
+
+/* A known region glows softly in its own colour — the everyday pastel
+   register; neon stays reserved for POP moments. */
+.map-region {
+  fill: currentColor;
+  fill-opacity: 0.1;
+  stroke: currentColor;
+  stroke-opacity: 0.5;
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+/* The frontier — where the expedition is now — sits a little brighter. */
+.map-region-frontier {
+  fill-opacity: 0.16;
+  stroke-opacity: 0.85;
+  filter: drop-shadow(0 0 9px currentColor);
+}
+
+/* Landmark flora markers (none render until T6.1 names the species):
+   a small tree of light, permanent on the map. */
+.map-landmark {
+  stroke: #d9f2e6;
+  fill: rgba(217, 242, 230, 0.35);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 4px #a8dcc3);
+}
+
+.map-caption {
+  color: #9aa3b5;
+  font-size: 0.85rem;
+}
+
 .habit-list {
   list-style: none;
   display: flex;

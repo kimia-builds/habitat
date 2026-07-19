@@ -67,6 +67,7 @@ import FieldNotes from './ui/FieldNotes.jsx'
 import FirstReveal from './ui/FirstReveal.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
+import MapPage from './ui/MapPage.jsx'
 import Meters from './ui/Meters.jsx'
 import SpreadPopup from './ui/SpreadPopup.jsx'
 import StubPage from './ui/StubPage.jsx'
@@ -572,8 +573,25 @@ function App() {
     )
   }
 
-  // A meter was clicked: its placeholder page (the Map and the Market
-  // arrive for real in M4), with the meters still up top.
+  // The Map (T4.1): the planet revealing itself region by region, all
+  // derived from completion history and the world seed — undo pulls
+  // the frontier back by itself.
+  if (page === 'map') {
+    return (
+      <main className="app">
+        {header}
+        {meters}
+        <MapPage
+          completions={data.completions}
+          worldSeed={data.worldSeed}
+          onBack={() => setPage(null)}
+        />
+      </main>
+    )
+  }
+
+  // A meter was clicked: its placeholder page (the Market arrives for
+  // real in T4.3b), with the meters still up top.
   if (page !== null) {
     return (
       <main className="app">

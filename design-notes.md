@@ -1,5 +1,12 @@
 # design-notes.md — HABITAT (UX & feel)
 
+_v1.5 — 2026-07-19 (ninth session, T4.1 built). The Map is the first
+record page under §7's visual-first rule: shapes (seeded placeholders
+until T5.3), discovery dates, no stored prose — and no names until
+T6.1. The §6 ambient swell for new regions is NOT built yet — it
+arrives with T5.2, along with the playback of the 16 (blank) region
+narration slots added to narration.js. Spec v1.20, plan v1.19._
+
 _v1.4 — 2026-07-19 (eighth session, T3.5 built). The drop-choice
 symmetry in §5 is now real: held reading arrivals offer read now /
 read later, and the spread popup is quiet pastel (an everyday

@@ -1,5 +1,16 @@
 # plan.md — HABITAT build plan
 
+*v1.19 — 2026-07-19 (ninth session). **T4.1 built**: the Map page.
+The planet shows as a faint outline from day one; its 16 equal
+regions (the landing site, a ring of 5, a ring of 10 — discovery
+radiating outward) light up as the expedition steps into them, each
+a seeded generative shape glowing in its own colour until T5.3's art,
+offering only its discovery date until T6.1's names. Kimia's calls
+today: 16 equal regions, faint outline, generative placeholder
+shapes, landmark plumbing only (tested, invisible until T6.1 picks
+the species). 16 blank region narration slots added to her file.
+Next task: **T4.2**.*
+
 *v1.18 — 2026-07-19 (eighth session). **T3.5 built**: read now / read
 later + the spread popup. A held reading arrival offers the choice for
 all three types; read now opens the quiet pastel popup, read later
@@ -263,12 +274,21 @@ tracker. Everything after this is delight, informed by real use.
 
 ## M4 — The world of N-Z-D (5 sessions)
 
-- [ ] **T4.1 Map page** — planet revealed region by region with
-  expedition progress. SVG, dark + bioluminescent. Includes
-  **landmark flora** (spec 2026-07-19): large tree-like flora appear
-  permanently on the Map when they drop, in the region their
+- [x] **T4.1 Map page** *(done 2026-07-19)* — planet revealed region
+  by region with expedition progress. SVG, dark + bioluminescent.
+  Includes **landmark flora** (spec 2026-07-19): large tree-like flora
+  appear permanently on the Map when they drop, in the region their
   expedition step falls in (gathering takes a cutting, never the
   tree — see spec §5 Stream 1).
+  Built: 16 equal regions of 400 steps (constants + pacing maths);
+  `game/map.js` — region maths, discovery days and landmark markers,
+  all derived from completion history so undo reverses everything by
+  itself; the Map page with the always-faint planet silhouette and
+  seeded generative region shapes (`ui/mapLayout.js`, placeholders
+  until T5.3), known regions glowing with the frontier brightest,
+  discovery dates as quiet tooltips; landmark plumbing tested but
+  invisible until T6.1 picks the species; 16 blank `mapRegions`
+  narration slots (their discovery moment plays with T5.2's swell).
 - [ ] **T4.2 Bookcase page** — shelves filling with every magazine,
   novel, dictionary ever received; every publication opens its
   double-page spread via the T3.5 popup (re-readable anytime, no

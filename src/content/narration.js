@@ -71,8 +71,30 @@ export const NARRATION = {
   // friend introductions & welcomes (T4.4) — one slot per friend.
   friendIntros: {},
 
-  // map regions (T4.1) — one slot per region, named in T6.1.
-  mapRegions: {},
+  // map regions (T4.1) — one slot per region, in discovery order:
+  // region1 is the landing site in the middle of the Map, region2–6
+  // the ring around it, region7–16 the outer ring. Regions get their
+  // NAMES in T6.1; these are the words for each discovery moment,
+  // which plays with the ambient swell built in T5.2. All yours.
+  // TODO: written by Kimia.
+  mapRegions: {
+    region1: '',
+    region2: '',
+    region3: '',
+    region4: '',
+    region5: '',
+    region6: '',
+    region7: '',
+    region8: '',
+    region9: '',
+    region10: '',
+    region11: '',
+    region12: '',
+    region13: '',
+    region14: '',
+    region15: '',
+    region16: '',
+  },
 
   // literacy eras — one slot per era.
   literacyEras: {},

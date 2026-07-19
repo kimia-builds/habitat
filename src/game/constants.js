@@ -194,6 +194,32 @@ export const FUNGUS_CLUSTER_WEIGHTS = [
   { amount: 3, weight: 1 },
 ]
 
+// ───────────────────────── T4.1: the Map ─────────────────────────
+
+// The planet has 16 equal regions (Kimia's decision 2026-07-19), each
+// spanning an equal slice of the 5-year expedition:
+//
+//   6,400 five-year steps ÷ 16 regions = 400 steps per region
+//   400 steps ÷ 3.5 taps/day ≈ 4 months — a new region roughly three
+//   times a year, steady for 5 years (flat pacing, spec §5: no
+//   front-loading, no droughts).
+//   400 steps = 4 bar-segments of 100, so regions line up exactly
+//   with the rolling bar the meter already shows.
+//
+// Steps beyond the 16th region stay in the 16th — the planet's ~5-year
+// practical sizing (spec §5). The T6.2 recalibration is where the
+// numbers get revisited when real pace drifts from the estimate.
+export const MAP_REGION_COUNT = 16
+export const MAP_REGION_STEPS = EXPEDITION_FIVE_YEAR_STEPS / MAP_REGION_COUNT
+
+// Which flora species are LANDMARKS — the large tree-like finds that
+// appear permanently on the Map in the region where they dropped
+// (spec §5 Stream 1, decision 2026-07-19). Flora have no species at
+// all until the T6.1 content pools name them, so this set ships empty
+// and the Map shows no landmark markers yet — the mechanics beneath
+// (game/map.js) are built and tested, waiting for T6.1 to fill it.
+export const LANDMARK_FLORA = new Set([])
+
 // ───────────────────────── T3.2: drop arrival ─────────────────────────
 
 // How long an arriving drop sits at the top of the page before fading

@@ -1,5 +1,14 @@
 # spec.md — HABITAT
 
+*v1.20 — 2026-07-19 (ninth session). T4.1 built: the Map page.
+Decided with Kimia: the planet has **16 equal regions** (400 steps
+each ≈ 4 months — a new region roughly three times a year, steady for
+~5 years); the undiscovered planet shows as a **faint outline** from
+day one, regions lighting up inside it; region shapes are **seeded
+generative placeholders** until T5.3's art pass (names arrive with
+T6.1); landmark flora are **plumbing only** until T6.1 picks the
+species. All in the decisions log.*
+
 *v1.19 — 2026-07-19 (eighth session). T3.5 built: read now / read
 later + the spread popup, plus the early Bookcase list. Decided with
 Kimia: the popup's **empty-state words are a narration slot** (hers;
@@ -711,6 +720,38 @@ region discovery expands what the Market can offer.
   reading is ever written to storage. The early Bookcase list (like
   the T3.3 Abode) shows everything received, in arrival order, each
   with its read button; the real shelves (T4.2) reuse the same popup.
+- 2026-07-19 (ninth session, T4.1): **the planet has 16 equal
+  regions** — 400 expedition steps each (= 4 bar-segments ≈ 4 months
+  at the current pace): a new region roughly three times a year,
+  steady for the whole ~5 years (flat pacing, as ever). Laid out as
+  the landing site in the middle, a ring of 5 around it and a ring of
+  10 outside, so discovery radiates outward from where we first
+  arrived. Steps beyond the 16th region stay in the 16th — the
+  planet's ~5-year practical sizing; T6.2's recalibration revisits
+  the numbers if the real pace outgrows them.
+- 2026-07-19 (ninth session, T4.1): **the undiscovered planet is a
+  faint outline** — the whole silhouette is hinted at from day one
+  (the scale of the journey, barely there), and regions light up
+  inside it the moment the expedition steps into them. Discovery is
+  derived from completion history exactly like the meters — a
+  completion's expedition step IS its position in the history — so an
+  undo across a border quietly un-discovers a region by itself, and
+  nothing is stored that could go stale.
+- 2026-07-19 (ninth session, T4.1): **region shapes are seeded
+  generative placeholders** — every wobble, border and bioluminescent
+  colour is a pure function of the world seed (one stable shape per
+  world, carried in backups) until the T5.3 art pass replaces the
+  shapes and T6.1 names the regions. Until then a known region offers
+  only its discovery date — no names, nothing invented (the
+  flora-stay-generic precedent).
+- 2026-07-19 (ninth session, T4.1): **landmark flora are plumbing
+  only** — every flora find knows the region its step fell in, and
+  the Map can draw permanent markers (a marker exists exactly as long
+  as the completion that dropped its find, so only that undo removes
+  it) — but no marker renders until T6.1 decides which species are
+  landmarks. The 16 region narration slots now exist in narration.js
+  (blank, Kimia's); their discovery-moment playback arrives with
+  T5.2's ambient swell.
 - 2026-07-19 (seventh session, T3.4): **narration lives in one keyed
   content file** — `src/content/narration.js` holds every narrated
   moment's words; the five T3.2 reveal texts moved there as marked

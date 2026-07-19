@@ -1,13 +1,9 @@
 // Placeholder pages behind the meters (T2.2): clicking a meter has to
-// lead SOMEWHERE so the navigation is real, but the actual Map and
-// Market are built in M4. Until then, a quiet promise. (The Bookcase
-// got its early real page in T3.5; the Abode got one in T3.3.)
+// lead SOMEWHERE so the navigation is real. Only the Market still
+// waits (T4.3b) — the Map got its real page in T4.1, the Bookcase an
+// early one in T3.5, the Abode one in T3.3.
 
 const STUBS = {
-  map: {
-    title: 'the Map',
-    blurb: 'The planet is out there. Charting it comes in a later update.',
-  },
   market: {
     title: 'the Market',
     blurb: 'The stall is not set up yet. The locals ask for patience.',
