@@ -43,7 +43,7 @@ export const NARRATION = {
       title: 'you found a dictionary',
       line:
         'finally! a point of reference. a form of translation. a ' +
-        'rare treasure that will open doors to deeper frienships.',
+        'rare treasure that will open doors to deeper friendships.',
     },
     fungi: {
       // PLACEHOLDER — Claude-written; TODO: written by Kimia.
