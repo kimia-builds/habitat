@@ -16,10 +16,20 @@ import App from './App'
 
 beforeEach(() => {
   localStorage.clear()
+  // Pin every test to a fixed mid-week moment (Thursday 16 July 2026,
+  // 9am) so results never depend on the real day the suite runs.
+  // Discovered the hard way on Sunday 2026-07-19: unpinned tests hit
+  // the field-notes Sunday auto-open (T2.3) and failed — only on
+  // Sundays. shouldAdvanceTime keeps ordinary timers ticking (the
+  // async import tests poll on one); the date still stays Thursday.
+  // Tests that need another date or manual timers set their own.
+  vi.useFakeTimers({ shouldAdvanceTime: true })
+  vi.setSystemTime(new Date(2026, 6, 16, 9))
 })
 
 afterEach(() => {
   cleanup() // unmount this test's App (no vitest globals = no auto-cleanup)
+  vi.useRealTimers()
   vi.restoreAllMocks()
 })
 
