@@ -344,7 +344,7 @@ describe('five simulated years at ~3.5 taps/day (plan T3.1 “done when”)', ()
   it('fungus income supports about one mid-priced object per rotation', () => {
     const rotations = tally.fungiPerRotation.length
     const average = tally.fungiTotal / rotations
-    // ~15 fungi per 28-cron rotation ⇒ a mid-priced object at 10–12
+    // ~15 fungi per 28-lived-day rotation ⇒ a mid-priced object at 10–12
     // is comfortably affordable once per rotation (decision 2026-07-19).
     expect(average).toBeGreaterThan(11)
     expect(average).toBeLessThan(19)

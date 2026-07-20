@@ -83,12 +83,25 @@ src/game/             ALL game logic — pure functions, no React, no
   bookcase.js           the Bookcase layout — where each publication
                         sits on the constant bookshelf and which way it
                         faces (default slots, clamping, pruning)
+  abode.js              the Abode layout — where each gathered flora
+                        sits on the open ground (same pattern as
+                        bookcase.js: fractions of the scene, entries
+                        only for moved flora, pruned on compost/undo)
   graphs.js             per-habit line graphs (zoom unlocks by habit age)
   fieldnotes.js         the weekly view ("field notes")
+src/content/          KIMIA'S FILES — she edits these directly on
+                      GitHub's web UI. Never auto-generate their prose
+                      or images, and never hard-code their words in
+                      tests:
+  narration.js          the keyed narration slots (first-occurrence
+                        reveals, friend intros, map regions, literacy
+                        eras); blank slots render nothing at all
+  spreads.js            maps each publication to its double-page spread
+                        image in public/spreads/
 src/storage/storage.js  the ONE module that touches localStorage.
                       Everything lives under the single key
                       'habitat-data' in a versioned envelope
-                      (schemaVersion 5) with upgrade path for old backups
+                      (schemaVersion 6) with upgrade path for old backups
 src/ui/               React components, kept thin (HabitRow, HabitForm,
                       CheckInPanel, Meters, FieldNotes, HabitGraphs,
                       ArrivalShelf, DropGlyph, FirstReveal, SpreadPopup,
@@ -178,6 +191,33 @@ subfolder — do not change it.
   a bug — fix them in the same session.
 - If stuck on the same bug twice, stop and say so rather than thrashing.
 
+## Naming and copy (current as of 2026-07-20)
+
+The user-facing page titles were renamed in the T4.5 UX pass. The
+**internal** names in code and docs (Map, Bookcase, Market, Abode,
+Guest Book) are unchanged — only the displayed titles moved:
+
+| page | displayed title | reached by |
+|------|-----------------|------------|
+| Map | **map of N-Z-D** | expedition meter, or rail |
+| Abode | **your abode** | rail only |
+| Guest Book | **local community** | rail only |
+| Bookcase | **readers library** (no apostrophe) | literacy meter, or rail |
+| Market | **local market** | fungus meter, or rail |
+
+Other current copy rules:
+
+- The **left icon rail** runs down the left edge of the home screen in
+  this descending order: **map · abode · community · library · market**,
+  each revealing its name on hover. The three meters stay clickable too.
+- The home screen is **icon-only with hover labels** — no action words.
+  Undo reads **`-1`** (mirroring `+1`); habit counts are bare
+  `count/goal` with no trailing "today"; the symbol filter's hover
+  reads **"filter view"** (never "by type" — the six symbols are not
+  categories).
+- Habitat's voice is **all-lowercase** by default; uppercase is
+  reserved for display titles and section labels.
+
 ## Product guardrails (never violate — full list in CLAUDE.md)
 
 - **No punishment mechanics or punishment feel.** Missed habits are
@@ -197,13 +237,28 @@ subfolder — do not change it.
   rotation pool.
 - **Market:** objects are purchased, never dropped; buy and return
   prices are always identical; the fungus wallet only decreases via a
-  purchase the user chose; rotation runs on crons (days with ≥1 habit
-  marked), 28 crons per rotation; nothing is permanently missable.
+  purchase the user chose; rotation runs on **lived days** (days with
+  ≥1 habit marked), 28 lived days per rotation; nothing is permanently
+  missable.
+- **The word "cron" is retired** (2026-07-20). What it named is a
+  **lived day**. Do not reintroduce it in docs, code, comments or UI —
+  it collided with the scheduling sense of the word and with the daily
+  startup animation, which fires on day rollover (3am), not on
+  activity.
 - **Soundless.** No audio, anywhere, ever. All feedback is visual.
 - **AI never writes the story.** All narration, dialogue, friend
   introductions and captions are human-written. Scaffold empty, keyed
   content slots and ship them blank (`TODO: written by Kimia`) — never
-  auto-generate prose.
+  auto-generate prose. This covers images too: the reading-material
+  spreads are pictures Kimia provides, never AI-generated.
+- **Narration is momentary** — it plays once and is never stored or
+  re-readable. The single exception is the friend **card text** on the
+  Guest Book popup card (2026-07-20), which is a separate slot from the
+  arrival narration and is re-readable by design.
+- **Never hard-code Kimia's content words in tests.** She edits
+  `src/content/` directly on GitHub, so the local clone can be behind
+  origin; a test asserting her exact prose breaks CI the moment she
+  rewrites a line. Assert structure and behaviour, not her words.
 - **Framing:** ethical immigration — we are a guest, not a coloniser.
   No conquest/claiming/extraction language anywhere.
 

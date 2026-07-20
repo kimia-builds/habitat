@@ -1,5 +1,20 @@
 # plan.md — HABITAT build plan
 
+*v1.23 — 2026-07-20 (twelfth session, docs only). A UX, copy and design
+pass decided with Kimia — no code today. New task **T4.5** (page
+renames, the left icon rail, the date display, icon-only actions, -1,
+the check-in pop-up, and the inactive party-mode toggle); the startup
+animation folded into **T5.2**, the live Guest Book and party mode into
+**T4.4**. Kimia's calls: real calendar date with a 3am note rather than
+the Habitat day, meters stay clickable alongside the rail, "readers
+library" with no apostrophe, "edit past days" kept over "edit past
+habits", and the filter hover reads "filter view" — not "by type",
+which would have made categories of the six symbols. Two further calls
+this session: the word **"cron" is retired** app-wide in favour of
+**lived day**, and the friend signature animations are pinned to three
+moments (reveal, the Guest Book card, rare home-screen cameos) —
+never party mode. Spec v1.24, design-notes v1.7. Next task: **T4.3b**.*
+
 *v1.22 — 2026-07-20 (eleventh session). **T4.3 built**: the Abode
 proper. Open ground under sky — no walls, a faint horizon, bare with
 no prose when empty (the constant-bookshelf precedent) — with every
@@ -345,7 +360,7 @@ tracker. Everything after this is delight, informed by real use.
   waiting-to-decide list stays apart above the ground; no found
   dates, no empty-state prose. Purchased objects join in T4.3b.
 - [ ] **T4.3b Market page** — the rotating stall. Small selection,
-  rotates every 28 crons (a cron = a day with ≥1 habit marked,
+  rotates every 28 lived days (a lived day = a day with ≥1 habit marked,
   including retroactive marks — derivable from completion history, so
   nothing earlier needs rebuilding; never calendar days); pool grows
   as Map regions are discovered; everything eventually cycles back.
@@ -357,7 +372,72 @@ tracker. Everything after this is delight, informed by real use.
 - [ ] **T4.4 Guest Book + friendships.**
   Literacy milestones open doors; friends arrive as surprise drops in
   the following days (delay logic tested). 10 categories per spec.
-  *Done when:* delay logic tests pass; Guest Book renders friends.
+  Titled **local community**, reached from the rail's community icon
+  (its T4.5 stub becomes the real page here). Clicking a character
+  opens a **popup card**: art, name, **card text**, and the signature
+  category animation playing. The card text is a **second narration
+  slot per friend** (`src/content/narration.js`) — separate from the
+  momentary arrival narration, re-readable any time, blank until Kimia
+  writes it, rendering nothing when empty (spec §5, design-notes §7).
+  The signature animation plays in **three moments only** — arrival
+  reveal, this card, and rare home-screen cameos (design-notes §8).
+  Also activates the Abode's **party mode** (T4.5 ships the toggle
+  greyed out): friends pop up among the flora in a randomised
+  formation, not draggable, not remembered, re-rolled by a refresh —
+  the flora arrangement untouched and still draggable, and **friends do
+  not perform their animation here** (spec §5b, design-notes §12e).
+  *Done when:* delay logic tests pass; the Guest Book renders friends
+  and their cards; an empty card text renders nothing while art, name
+  and animation still show; the arrival narration is never re-readable
+  anywhere; party mode ungreys the moment the first friend exists,
+  re-rolls its formation on refresh, runs no signature animation,
+  stores nothing, and leaves the abode layout byte-identical.
+- [ ] **T4.5 UX, copy & navigation pass** *(decided 2026-07-20, twelfth
+  session — spec v1.24 §5b, design-notes §12)*
+  A pass over surfaces already built (T1.3, T2.2, T4.1–T4.3), plus the
+  plumbing for two things that come alive later. No game logic changes
+  anywhere — meters, drops, dates and schedules are untouched.
+  1. **Page renames** (copy only; internal names unchanged): the Map →
+     **map of N-Z-D**, the Bookcase → **readers library** (no
+     apostrophe), the Market → **local market**, the Abode → **your
+     abode**, the Guest Book → **local community**.
+  2. **The left icon rail** — five icons descending the left edge of
+     the home screen, away from the habit list: **map · abode ·
+     community · library · market**, each revealing its name on hover.
+     Community leads to a Guest Book stub until T4.4. The meters stay
+     clickable as well.
+  3. **The date display** — large and letterspaced
+     (`M O N D A Y   2 0   J U L   2 0 2 6`) beneath the meters, above
+     the charms. **Real calendar date.** Between midnight and the
+     configured cutoff only, a quiet line beneath: "your habits will
+     switch to a new day at 3 a.m."
+  4. **Icon-only actions, hover to reveal** — habit row: pencil
+     ("edit"), archive box ("archive"); archived habit: trash ("delete
+     forever"); the charm filter's hover reads **"filter view"** (not
+     "by type" — the symbols are never categories, spec §4.1). Three
+     discreet buttons at the foot of the habit list, above the archived
+     list: **+** ("add new habit"), pencil ("edit past days"), graph
+     ("view historical data").
+  5. **Undo becomes `-1`** on habit rows and in the check-in; the
+     counts drop the word "today" (`2/1 today` → `2/1`).
+  6. **The check-in becomes a pop-up** layered over a dimmed habit
+     list, rather than a page that replaces it. Its §4.2 rules are
+     untouched — yesterday must be answered, the done button is the
+     only exit, no meters.
+  7. **The Abode's quiet / party mode toggle**, shipped **greyed out
+     and inactive** (reads "not yet", not "broken"); T4.4 activates it.
+  8. **Startup plumbing** — detect the first visit of each Habitat day
+     (after the 3am cutoff, regardless of whether a check-in was owed)
+     and sequence it correctly: check-in pop-up → startup → Sunday
+     field notes. The animation itself is T5.2; T4.5 can hold the slot
+     with a plain fade.
+  *Done when:* tests prove the day-first-visit detection fires once per
+  Habitat day across cutoff and timezone edge cases (and independently
+  of whether a check-in was owed), the sequence order holds on a Sunday
+  with a check-in owed, the 3am note appears only between midnight and
+  the cutoff and tracks a changed cutoff setting, every icon exposes
+  its hover label to assistive tech, and party mode stays inert with
+  zero friends. A real day's use feels calmer, not more cryptic.
 
 ## M5 — Design pass (3–4 sessions, collaborative)
 
@@ -376,6 +456,16 @@ tracker. Everything after this is delight, informed by real use.
   bar), star-shimmer on regular drop arrivals, full firework for
   first-occurrence reveals and friend arrivals, live-vs-retro tonal
   palette shift.
+  Also includes the **daily startup animation** (decided 2026-07-20,
+  design-notes §12f) in the slot T4.5 built for it: a black screen with
+  a slither of glowing planet across the bottom edge, spinning slowly
+  like a satellite image, for a few seconds — then the normal screen
+  fades in. The planet glows the **shell charm's pink `#E8698C`**,
+  except on **Sundays**, when it rotates randomly between the other
+  five charm colours. No text, no numbers, no narration slot; a tap
+  skips straight to the fade; identical every day regardless of
+  streaks or milestones (design-notes §12f explains why this one moment
+  may take the screen when §6 forbids it elsewhere).
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
   categories), flora, fungi, market objects, planet regions. Several
   sessions of creative iteration; Kimia art-directs.

@@ -1,5 +1,23 @@
 # spec.md — HABITAT
 
+*v1.24 — 2026-07-20 (twelfth session, docs only). A UX, copy and design
+pass decided with Kimia — built as the new plan task **T4.5**, with the
+animation folded into T5.2 and the live half of the Guest Book into
+T4.4. Page titles renamed (**map of N-Z-D**, **readers library**,
+**local market**, **your abode**, **local community**); the home screen
+gains a **left icon rail** of five pages, a **large date display**, an
+**icon-only** treatment for every habit and list-level action, and
+**-1** in place of undo; the done-yesterday check-in becomes a
+**pop-up over** the habit list; a **daily startup animation** (a
+spinning slither of glowing planet) plays on the first visit of each
+Habitat day; and the Abode gains a **quiet / party mode** toggle,
+inactive until friends exist. Two further calls the same session: the
+word **"cron" is retired** in favour of **lived day**, and the friend
+signature animations are pinned to **three moments** (arrival reveal,
+Guest Book card, rare home-screen cameos) — never party mode — with a
+new re-readable **card text** slot per friend. All in the decisions
+log.*
+
 *v1.23 — 2026-07-20 (eleventh session). T4.3 built: the Abode proper.
 Decided with Kimia: the Abode is **open ground under sky** (no walls
 — a patch of N-Z-D, constant like the bookshelf, bare with no prose
@@ -161,7 +179,10 @@ dailies/habits/to-dos distinction. Each habit has:
   a one-tap toggle. Fulfilment and streaks judge exactly as before;
   taps beyond the goal are recorded and kept, and every tap counts
   toward the expedition meter and drops (see decisions log). One-time
-  keeps its single-tap control (the first tap finishes it).
+  keeps its single-tap control (the first tap finishes it). The count
+  reads as bare **count/goal** — since T4.5 the trailing "today" is
+  gone, the date display above the list having taken that job — and the
+  reversing control beside the **+1** reads **-1**.
 - **One of exactly 6 symbols** (each paired with its own colour).
   Since 2026-07-19 these are the six **charms** — crown (gold),
   cherries (coral), shell (pink), anchor (lavender), shield (sky),
@@ -174,7 +195,7 @@ dailies/habits/to-dos distinction. Each habit has:
   completion advances it the same one step. The field is kept for
   future use, e.g. nudging drop odds in M3.)
 
-### 4.2 Day boundaries & the morning check-in (cron)
+### 4.2 Day boundaries & the morning check-in
 
 - Every completion is logged with an accurate timestamp against the day
   it belongs to.
@@ -199,10 +220,13 @@ dailies/habits/to-dos distinction. Each habit has:
   against the day they were *done*, not the day they were *entered*. If
   Monday morning we mark Sunday's habits, the data says Sunday. Habitica
   gets this wrong; we will not. This rule gets its own automated tests.
-- **Definition of a "cron":** a day counts as a cron (an active day)
-  once it has at least one habit marked against it — including marks
-  added retroactively via check-in/backfill. Crons are the clock for
-  the market rotation (see Stream 3).
+- **Definition of a "lived day":** a day counts as lived once it has at
+  least one habit marked against it — including marks added
+  retroactively via check-in/backfill. Lived days are the clock for the
+  market rotation (see Stream 3). (Renamed 2026-07-20; this was called
+  a "cron" until then, after Habitica's term. The word is retired
+  everywhere — it collided with the scheduling sense of cron and with
+  the daily startup, which fires on day rollover, not on this.)
 - **Day cutoff: 3am by default**, configurable in settings. A habit
   completed at 1am counts for the evening before.
 - **A "visit" includes returning to an already-open tab** (2026-07-15):
@@ -308,7 +332,13 @@ opening its own growing world:
   10. **Poets** — language at its most subtle; the rarest friendship
 - Friendships live in the **Guest Book** — a page like the Abode, a
   record of everyone who has welcomed us. (We are the guest here, not
-  the owner.)
+  the owner.) Titled **local community**. Clicking a character opens a
+  **popup card** (2026-07-20): their art, their name, their **card
+  text**, and their signature category animation playing. The card text
+  is a *second* narration slot per friend, separate from the momentary
+  arrival narration and re-readable any time — who they are, not the
+  night you met them. Blank until Kimia writes it, and an empty slot
+  renders nothing (the T3.4 rule).
 - The emotional endgame: consistency → literacy → community.
 
 ### Stream 3 — Fungi & the Market: taking part in the local economy
@@ -323,8 +353,9 @@ opening its own growing world:
   purpose. Gravity is not guaranteed on this planet. Objects are
   **purchased, never dropped**.
 - **The rotating stall:** the Market shows a small selection at a time,
-  rotating every **4 weeks of crons** — 28 *active days*, not calendar
-  days. Days with no habits marked don't advance the rotation clock.
+  rotating every **4 weeks of lived days** — 28 *lived days*, not
+  calendar days. Days with no habits marked don't advance the rotation
+  clock.
 - **The stall's pool grows with the Map:** newly discovered regions add
   their goods to the rotation pool, so the Market gets *more*
   surprising over the years, never less. (Deliberate soft link:
@@ -357,30 +388,97 @@ region discovery expands what the Market can offer.
   habit list (2026-07-16) — except during the morning check-in, whose
   done button stays the only exit.
 - **Home screen:** the habit list, with the three meters fixed at top.
-  The list is manually re-orderable (order persists) and filterable by
-  symbols (multi-select; a temporary lens that resets each visit).
-  Habits can be archived (history kept) or permanently deleted (with
-  confirmation).
-- **Map** (via expedition meter): the discovered planet so far.
-- **Bookcase** (via literacy meter): one **constant bookshelf** (T4.2)
-  holding every publication ever received — floating, draggable books,
-  each spine or face-out, the arrangement remembered; any publication's
-  eye opens its double-page spread for (re-)reading (T3.5). Bare
-  shelves when empty — no prose, no count, no dates.
-- **Market** (via fungus meter): the rotating stall; buy and return
-  objects.
-- **Abode:** open ground under sky (T4.3) — gathered flora (and, from
-  T4.3b, purchased objects) freely draggable anywhere on the scene,
-  each place remembered; a click holds a flora, showing its name and
-  its quiet compost button. Flora waiting to be decided (gather /
-  leave it) sit in a plain list above the ground. Bare ground when
-  empty — no prose, no dates. Reached from a link on the habit list.
-- **Guest Book:** friends made so far.
+  Beneath the meters and above the symbol filter sits the **date
+  display** (below). The list is manually re-orderable (order persists)
+  and filterable by symbols (multi-select; a temporary lens that resets
+  each visit). Habits can be archived (history kept) or permanently
+  deleted (with confirmation). Every action on the home screen is an
+  **icon with a hover label** (T4.5) — no action words on the page.
+- **The left rail (T4.5):** five icon buttons down the left edge of the
+  home screen, away from the habit list, in descending order **map ·
+  abode · community · library · market**, each revealing its name on
+  hover. These are the five world pages. The three meters stay
+  clickable as well — meter and rail are two ways to the same page.
+- **Map** (via expedition meter or the rail): the discovered planet so
+  far. Titled **map of N-Z-D**.
+- **Bookcase** (via literacy meter or the rail's *library*): one
+  **constant bookshelf** (T4.2) holding every publication ever received
+  — floating, draggable books, each spine or face-out, the arrangement
+  remembered; any publication's eye opens its double-page spread for
+  (re-)reading (T3.5). Bare shelves when empty — no prose, no count, no
+  dates. Titled **readers library**.
+- **Market** (via fungus meter or the rail): the rotating stall; buy and
+  return objects. Titled **local market**.
+- **Abode** (via the rail): open ground under sky (T4.3) — gathered
+  flora (and, from T4.3b, purchased objects) freely draggable anywhere
+  on the scene, each place remembered; a click holds a flora, showing
+  its name and its quiet compost button. Flora waiting to be decided
+  (gather / leave it) sit in a plain list above the ground. Bare ground
+  when empty — no prose, no dates. Titled **your abode**. Carries the
+  **quiet / party mode toggle** (below).
+- **Guest Book** (via the rail's *community*): friends made so far.
+  Titled **local community**.
 - **Field notes:** the weekly view (T2.3) — browsable Mon–Sun weeks,
-  opening on the last completed one; reached from a link on the habit
-  list, and opens by itself on the first visit of each Sunday (after
-  any check-in). Has a "back to habits" link.
+  opening on the last completed one; reached from the graph icon at the
+  foot of the habit list, and opens by itself on the first visit of each
+  Sunday (after any check-in *and* after the startup animation). Has a
+  "back to habits" link.
 - **Settings:** day cutoff, data export/import.
+
+### The date display (T4.5)
+
+Beneath the meters and above the symbol filter, the home screen shows
+today's date **large and letterspaced**:
+`M O N D A Y   2 0   J U L   2 0 2 6`.
+
+It shows the **real calendar date**, not the Habitat day. Between
+midnight and 2:59am the two disagree — the habit list beneath is still
+yesterday's — so during that window only, a quiet line sits under the
+date: *"your habits will switch to a new day at 3 a.m."* (The wording
+moves with the configured cutoff.) Outside that window there is no
+note. The date is display only; nothing is clickable.
+
+### The check-in as a pop-up (T4.5)
+
+The done-yesterday check-in becomes a **pop-up layered over the habit
+list** rather than a page that replaces it. The habit list stays
+visible behind it, so it reads as a temporary view you are passing
+through. Its rules are untouched (§4.2): yesterday must still be
+answered, its done button is still the only exit, and the meters still
+do not show above it.
+
+### Quiet mode / party mode (T4.5 inactive, T4.4 live)
+
+The Abode carries a **toggle switch with an icon on either side** —
+quiet mode and party mode.
+
+- **Quiet mode** is the Abode as built: flora and objects on the open
+  ground, draggable, arrangement remembered.
+- **Party mode** adds the friends we have made, popping up **among**
+  the flora in a **randomised formation**. The arrangement of flora and
+  objects is untouched and stays draggable — party mode only ever adds.
+  Friends themselves are **not** draggable and their positions are not
+  remembered: a **refresh** re-rolls the formation. Nothing about a
+  party is stored.
+- Party mode is **greyed out and inactive until at least one friend has
+  been found** — the toggle ships visible-but-dead in T4.5 and comes
+  alive with friendships in T4.4.
+
+### The daily startup (T4.5 plumbing, T5.2 animation)
+
+On the **first visit of each Habitat day** (after the 3am cutoff), a
+short animated startup graphic plays: a black screen with a slither of
+slowly spinning, glowing planet across the bottom edge. It lasts only a
+few seconds, then the normal screen **fades in**.
+
+The order of the daily sequence is fixed:
+
+1. the **done-yesterday** check-in pop-up (if one is owed),
+2. the **startup animation**,
+3. the **field notes** (Sundays only).
+
+It plays every Habitat day, whether or not a check-in was owed. Full
+visual treatment in design-notes §12.
 
 ## 6. Data & reflection
 
@@ -424,7 +522,7 @@ region discovery expands what the Market can offer.
 
 - Automated tests for all game logic — habit scheduling, meter maths,
   drop rates, literacy milestones, wallet arithmetic (buy/return
-  symmetry), cron counting and market rotation, data export, and
+  symmetry), lived-day counting and market rotation, data export, and
   **especially check-in date attribution and backfill** (4.2). These
   run on every change and act as the non-coder's safety net.
 - Manual playtesting checklist for UI after each feature.
@@ -463,7 +561,7 @@ region discovery expands what the Market can offer.
   dropped.
 - Fungus meter is a wallet (rises with drops, falls with purchases);
   clicking it opens the Market.
-- Market: rotating stall, rotation every 28 crons (active days, not
+- Market: rotating stall, rotation every 28 lived days (not
   calendar days); pool grows with region discovery; everything cycles
   back eventually — nothing is permanently missable.
 - Symmetric buy/return prices always — no penalty, no spread.
@@ -581,7 +679,7 @@ region discovery expands what the Market can offer.
   nudge is modest by design: difficulty flavours luck, it never
   becomes a strategy.
 - 2026-07-19 (T3.1): **fungus income targets ~1 mid-priced object per
-  rotation** — ~0.15 fungi per tap ≈ 15 fungi per 28-cron rotation,
+  rotation** — ~0.15 fungi per tap ≈ 15 fungi per 28-lived-day rotation,
   so when M6 prices the Market, a mid-priced object should cost
   ≈ 10–12 fungi. Fungi arrive as small clusters of 1–3 (average 1.5);
   difficulty affects whether a cluster drops, never its size.
@@ -793,6 +891,114 @@ region discovery expands what the Market can offer.
   no-found-dates rule from the Bookcase and Map). The T3.3 page's
   "nothing here yet" and composting caption came out with them — the
   ground speaks visually, like the shelves.
+- 2026-07-20 (twelfth session, docs only, T4.5): **the pages are
+  renamed** — "the Map" → **map of N-Z-D**, "the Bookcase" → **readers
+  library** (no apostrophe, Kimia's call — a compound noun, not a
+  possessive), "the Market" → **local market**, "the Abode" → **your
+  abode**, and the Guest Book → **local community**. The articles go;
+  each title now says whose place it is. The internal names (Map,
+  Bookcase, Market, Abode, Guest Book) stay as they are in the code and
+  these docs — this is a copy change, not a rename of the concepts.
+- 2026-07-20 (twelfth session, docs only, T4.5): **a left icon rail of
+  five pages** — map · abode · community · library · market, descending
+  down the left edge of the home screen, away from the habit list, each
+  revealing its name on hover. Kimia's order groups the two lived-in
+  places (abode, community) under the planet, with the two collections
+  below. **The meters stay clickable too** (her call, over making the
+  rail the only route): meter and rail are two doors to the same three
+  pages, and the rail is the only door to the abode and the community.
+- 2026-07-20 (twelfth session, docs only, T4.5): **the home screen goes
+  icon-only** — every action becomes an icon with a hover label, no
+  action words on the page: the habit row's *edit* → a pencil (hover
+  "edit") and *archive* → an archive box (hover "archive"); an archived
+  habit's *delete* → a trash icon (hover "delete forever"); and the
+  three list-level actions sit as **three discreet buttons together at
+  the foot of the habit list, above the archived list** — **+** (hover
+  "add new habit"), a pencil (hover "edit past days") and a graph
+  (hover "view historical data"). The symbol filter's hover reads
+  **"filter view"** — deliberately *not* "filter habits by type": the
+  six symbols are never categories (§4.1), and the hover must not imply
+  they are. "View" is also the truer word: the filter is a temporary
+  lens that resets each visit, not a property of the habits.
+- 2026-07-20 (twelfth session, docs only, T4.5): **undo becomes "-1"**
+  on the habit rows and in the check-in — the mirror of the +1 beside
+  it, and a plainer read of what it does. Its behaviour and its quiet
+  styling (design-notes §2) are untouched.
+- 2026-07-20 (twelfth session, docs only, T4.5): **the habit counts
+  lose the word "today"** — "2/1 today" becomes simply **2/1**. The
+  large date display above the list now says which day it is, so every
+  row repeating it was noise (supersedes the "count today" wording from
+  T3.2b, 2026-07-19).
+- 2026-07-20 (twelfth session, docs only, T4.5): **a large letterspaced
+  date display** sits beneath the meters and above the symbol filter —
+  `M O N D A Y   2 0   J U L   2 0 2 6`. It shows the **real calendar
+  date**, not the Habitat day (Kimia's call). Because the two disagree
+  between midnight and the 3am cutoff, a quiet line appears **only in
+  that window**: "your habits will switch to a new day at 3 a.m.",
+  tracking the configured cutoff. This is the one place in the app that
+  states the cutoff rule out loud — the honest fix for the one moment
+  the date and the list below it would otherwise contradict each other.
+- 2026-07-20 (twelfth session, docs only, T4.5): **the done-yesterday
+  check-in becomes a pop-up over the habit list**, not a page that
+  replaces it — the list stays visible behind so it reads as a
+  temporary view being passed through. Every §4.2 rule is untouched:
+  yesterday must still be answered, the done button is still the only
+  exit, and the meters still stay off it.
+- 2026-07-20 (twelfth session, docs only, T4.5 / T4.4): **the Abode
+  gets a quiet / party mode toggle** — a switch with an icon either
+  side. Party mode pops the friends we have made up **among** the flora
+  in a randomised formation; the flora and objects keep their exact
+  arrangement and stay draggable (party mode only ever adds, never
+  disturbs). Friends are not draggable and their placement is not
+  remembered — a **refresh** re-rolls the formation, and nothing about
+  a party is stored. The toggle **ships greyed out and inactive in
+  T4.5** and comes alive in T4.4 once a friend exists (the Market-stub
+  precedent: the control is real before its contents are).
+- 2026-07-20 (twelfth session, docs only, T4.5 / T5.2): **a daily
+  startup animation** — on the **first visit of each Habitat day**
+  (after the 3am cutoff, whether or not a check-in was owed), a black
+  screen shows a slither of slowly spinning, glowing planet across the
+  bottom edge, like a satellite image; a few seconds, then the normal
+  screen **fades in**. It sits **after** the done-yesterday pop-up and
+  **before** the Sunday field notes. It fires on **day rollover** — the
+  3am cutoff — never on a *lived day* (a day with ≥1 habit marked),
+  which is only knowable in hindsight and so could never gate a startup
+  screen. The plumbing lands in T4.5, the animation itself in T5.2.
+  Colours in design-notes §12.
+- 2026-07-20 (twelfth session, docs only): **the word "cron" is
+  retired** — a day with ≥1 habit marked is now a **lived day**, and
+  the Market rotates every **28 lived days**. The term came from
+  Habitica and carried two clashing meanings by this session: the
+  scheduling sense, and the new daily startup, which fires on day
+  rollover rather than on activity. Not to be reintroduced anywhere,
+  in docs, code or UI. (Two stale code comments were corrected in the
+  same pass; no identifier ever used the word.)
+- 2026-07-20 (twelfth session, docs only, T4.4): **the friend signature
+  animation plays in exactly three moments** — the arrival reveal, the
+  **Guest Book popup card**, and rare unannounced home-screen cameos —
+  and **never in the Abode's party mode**, where friends are simply
+  present. Scarcity is the mechanic: a greeting summonable at will
+  stops reading as a greeting (design-notes §8, §12e).
+- 2026-07-20 (twelfth session, docs only, T4.4): **friends get a second
+  content slot — the card text** — shown on the Guest Book popup card
+  and re-readable any time. This is a deliberate, single exception to
+  "narration is momentary and never re-readable" (design-notes §7), and
+  it does not weaken that rule: the **arrival narration stays
+  momentary and is never replayed**. Two slots, two jobs — the
+  narration is the night we met them, the card text is who they are.
+  Both are Kimia's, both ship blank, and an empty card text renders
+  nothing (art, name and animation carry the card alone).
+- 2026-07-20 (twelfth session, docs only, T4.5): **the symbol filter's
+  hover reads "filter view"** (revised from "filter habits" the same
+  day) — the filter is a temporary lens that resets each visit, not a
+  property of the habits, and "view" says so without going near the
+  categories the six symbols must never become (§4.1).
+- 2026-07-20 (twelfth session, docs only, T4.5): **the two pencils are
+  told apart by size and colour** — the habit row's edit pencil small,
+  inline and dim; the foot-of-list "edit past days" pencil larger and
+  accent-coloured as a page-level action. Kimia's call, to be watched
+  in real use; if it doesn't hold, the foot pencil gains a clock or
+  calendar mark — never a word (design-notes §12a).
 - 2026-07-19 (tenth session, T4.2): **the Bookcase is one constant
   bookshelf** — the same frame and planks whether it holds one
   publication or a hundred (the faint-planet precedent: bare shelves
@@ -872,7 +1078,8 @@ region discovery expands what the Market can offer.
   lowercase everywhere else; background `#080910`; charm colours as
   the accent palette. Full spec in design-notes §11b/§11c. Built in
   T5.2.
-- A cron = a day with ≥1 habit marked (including retroactive marks).
+- A lived day = a day with ≥1 habit marked (including retroactive
+  marks). Called a "cron" until 2026-07-20.
 - Reward pacing: slow, steady, designed for a patient daily user; no
   front-loaded hooks.
 - Retroactive check-in marks attributed to the actual day of completion.

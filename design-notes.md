@@ -1,5 +1,12 @@
 # design-notes.md — HABITAT (UX & feel)
 
+_v1.7 — 2026-07-20 (twelfth session, docs only). The UX/copy/design
+pass: §12 is new — the home screen's quiet furniture (the left rail,
+the date display, icon-only actions), the check-in as a pop-up, and
+the daily startup animation, which is this file's first **interruptive**
+moment and therefore the one needing the most care. §2 gains undo's new
+face: **-1**. Spec v1.24, plan v1.23._
+
 _v1.6 — 2026-07-20 (eleventh session, T4.3 built). The Abode joins
 the record pages: open ground under sky, visual-first per §7 — flora,
 their arrangement, no prose, no dates. Undo/compost keep §2's quiet
@@ -98,6 +105,14 @@ conflicted with the spec's same-day undo rules.)
 Edge cases keep the same calm treatment: undo after a drop is held;
 undo that un-crosses a meter segment or era boundary. Those already
 need tests (T3.2b) — the visuals stay gentle through all of them.
+
+**Its face, from T4.5 (2026-07-20): `-1`.** The word "undo" becomes the
+mirror of the `+1` it sits beside. This is the quiet rule getting
+quieter — "undo" is the language of mistakes and error dialogs, `-1` is
+just arithmetic. Nothing about the behaviour changes; the control is
+still persistent, still small, still never an alarm colour. It should
+read as the same weight as the `+1`, not lighter — taking a step back
+is as ordinary as taking one forward.
 
 ---
 
@@ -201,6 +216,15 @@ Code builds the *slots and plumbing* only.
   nothing at all.
 - **Narration is momentary.** Narration plays **once**, in the moment,
   and is **not stored or re-readable**. Precious, unrepeatable.
+- **Card text is the one standing exception (2026-07-20).** Each friend
+  has a **second, separate slot**: a short **card text** shown on their
+  Guest Book popup card, re-readable any time. This does **not** soften
+  the rule above — the arrival narration stays momentary and is never
+  replayed. They are two different pieces of writing doing two
+  different jobs: the narration is *the night you met them*, seen once;
+  the card text is *who they are*, standing. Both are Kimia's, both
+  ship blank, and an empty card text renders nothing at all (the T3.4
+  precedent — glyph, name and animation carry the card alone).
 - **Names stay visible (decision 2026-07-19).** Flora, objects,
   reading material and friends **keep their written names** — in drop
   arrivals (the built click-to-hold shows the name) and on the record
@@ -208,7 +232,9 @@ Code builds the *slots and plumbing* only.
   art, names and dates — but no stored prose or captions; the
   narration was the story, seen once. (This resolves the v0.2 draft's
   "no written names" idea, which conflicted with the built T3.2
-  naming and plan T6.1.)
+  naming and plan T6.1.) The friend **card text** is the single
+  exception, and it sits *behind a click* on the Guest Book card — the
+  page itself still reads as art and names.
 - **Speech bubbles** simulate speech for friends **high enough on the
   literacy ladder to have language** (see §8); text is human-written
   and momentary.
@@ -232,10 +258,20 @@ should feel strange, not familiar-things-in-costume.
   categories (Drifters … Poets) has one signature congratulation
   animation; individuals within a category reuse it. Bounds the art
   scope.
-- **When friends react — arrival + rare cameos.** Mainly at first
-  meeting; afterward only rare, surprising cameos on the home screen.
-  **Not** on every completion — keeps them special, avoids the
-  front-loaded feel.
+- **Where the signature animation is allowed to play (decided
+  2026-07-20).** Exactly three moments, and nowhere else:
+  1. **The arrival reveal** — the friend-drop moment, with its full
+     firework (§5). The first time you meet them.
+  2. **The Guest Book card** — clicking a character on the *local
+     community* page opens a popup card (their art, their name, their
+     card text) and the animation runs. This is the one moment you can
+     summon at will.
+  3. **Rare home-screen cameos** — a friend turns up unannounced on the
+     habit list and performs, occasionally and unpredictably. **Not**
+     on every completion, and never on a schedule you could learn.
+  **Party mode on the Abode is deliberately excluded** (§12e): friends
+  gather there but do not perform. Scarcity is what makes the gesture
+  land — a greeting you can see any time you like is wallpaper.
 - **Wordless greetings — visual-only until literate.** Low-literacy
   beings (Drifters, Nesters, Mimics) communicate **visually only**
   (glyphs, light, motion). **Written speech bubbles are earned** —
@@ -266,9 +302,13 @@ should feel strange, not familiar-things-in-costume.
    rolling bar, fading straight back to normal; no rebuild (§4).
 3. **Names & narration** → names stay visible everywhere; narration
    is momentary; records are visual-first with art + names + dates,
-   no stored prose (§7).
+   no stored prose (§7). *(Amended 2026-07-20: the friend **card
+   text** on the Guest Book popup card is a standing, re-readable
+   exception — a separate slot from the arrival narration, which is
+   still never replayed. See §7.)*
 4. **Undo** → persistent but quiet — available as long as the spec's
-   rules allow, styled gently (§2).
+   rules allow, styled gently (§2). *(Amended 2026-07-20: its label is
+   now `-1`, the mirror of `+1`. Behaviour unchanged.)*
 5. **Reduced-motion / calm mode** → skipped for v1; revisit only if
    the motion ever feels like too much.
 6. **Built reveal text** → to be slot-ified (plan T3.4); the
@@ -279,6 +319,30 @@ should feel strange, not familiar-things-in-costume.
 8. **Typography** (fifth session) → the full reference type system:
    Cormorant Garamond display + DM Sans body, uppercase display /
    lowercase body, fonts bundled with the app (§11c).
+
+## 10a. Decisions resolved (2026-07-20, twelfth session, with Kimia)
+
+9. **The home screen goes icon-only** → every action an icon with a
+    hover label; the two pencils told apart by size and colour;
+    "filter view" as the filter's hover (§12a).
+10. **The date display** → real calendar date, large and letterspaced,
+    with a quiet 3am note only in the window where it disagrees with
+    the Habitat day (§12b).
+11. **The check-in becomes a pop-up** over a dimmed habit list — quiet
+    framing, unchanged mechanic (§12c).
+12. **The left rail** → five icons, map · abode · community · library ·
+    market; meters stay clickable alongside it (§12d).
+13. **Party mode** → friends present but **not performing**; your flora
+    arrangement never disturbed; greyed out until a friend exists
+    (§12e).
+14. **The daily startup animation** → the one moment allowed to take
+    the whole screen, on four conditions: short, wordless, skippable,
+    and identical every day (§12f).
+15. **The friend signature animation plays in three moments only** →
+    arrival reveal, Guest Book card, rare home-screen cameos. Never
+    party mode. Scarcity is the mechanic (§8).
+16. **Friend card text** → a second, re-readable slot per friend,
+    distinct from the momentary arrival narration (§7).
 
 ---
 
@@ -376,4 +440,175 @@ Case & spacing convention:
 - Habitat's existing all-lowercase voice (habit rows, buttons,
   captions) already matches — lowercase stays the default; uppercase
   is reserved for display and section labels.
+
+---
+
+## 12. The home screen & the daily startup  **[TO-BUILD · T4.5, T5.2]**
+
+_Decided with Kimia 2026-07-20 (twelfth session). Spec §5b carries the
+rules; this section carries the feel._
+
+### 12a. Icons over words
+
+Every action on the home screen becomes an **icon with a hover label**:
+edit (pencil), archive (box), delete forever (trash), add new habit
+(**+**), edit past days (pencil), view historical data (graph). The
+label appears on hover and nowhere else.
+
+The reason is the same one behind the six wordless symbols: **the page
+should look like a place, not a form**. Words are instructions; icons
+are furniture. A screen you visit every morning for five years should
+get quieter over time, not keep explaining itself.
+
+Two cautions this creates, both real:
+
+- **The two pencils.** A habit row's pencil edits *that habit*; the
+  pencil at the foot of the list edits *past days*. Same glyph, two
+  meanings — so they are separated by **size and colour** (Kimia's
+  call, 2026-07-20), not by position alone: the row pencil is small,
+  inline and in the dim text tier; the foot pencil is larger, sits in
+  the three-button group, and carries an accent colour that marks it as
+  a page-level action. Watch this one in real use — if size and colour
+  don't do the job, the foot pencil gains a distinguishing mark (a
+  small clock or calendar), not a word.
+- **Delete forever.** The only destructive control in Habitat. Its
+  hover says "delete forever" in full — never just "delete" — and its
+  confirmation stays (spec §5b). Being wordless on the surface is fine;
+  being *vague at the moment of pressing* is not. The trash icon is the
+  one icon allowed to look slightly colder than its neighbours.
+
+The three foot-of-list buttons sit **together, below the habits and
+above the archived list** — discreet, evenly weighted, none of them
+shouting. "Add new habit" is not a call to action here; it's one of
+three equal doors.
+
+### 12b. The date display
+
+`M O N D A Y   2 0   J U L   2 0 2 6`, large, beneath the meters and
+above the charms.
+
+This is the **one uppercase, letterspaced display moment on the home
+screen** — §11c's display register (Cormorant Garamond 700, uppercase,
+wide tracking) used where it earns its keep. The spacing is the point:
+it should read as *engraved*, an inscription over the day, closer to a
+title card than a clock. It is not information the user needs — they
+know what day it is. It is **ceremony**: the day is a thing worth
+naming.
+
+Because it is ceremony, it must not be busy. No seconds, no time, no
+weather, no counters. It never animates on its own; it simply is.
+
+**The 3am note.** Between midnight and the cutoff, a quiet line sits
+beneath it: *"your habits will switch to a new day at 3 a.m."* — the
+dimmest text tier, lowercase, DM Sans 300 italic (§11c's quiet
+secondary). This is the app being **honest at the one moment it would
+otherwise contradict itself**, and it is deliberately phrased as a
+statement of fact, not a warning. Nothing is expiring. Nothing is
+owed. Outside that window it does not exist.
+
+### 12c. The check-in as a pop-up
+
+Layering the done-yesterday check-in **over** the habit list rather
+than replacing it does one job: it tells you, without a word, that
+**this is temporary and you are already home**. A full-page takeover
+implies you have been sent somewhere. A pop-up with your own habits
+softly visible behind it implies you are standing in your own room
+answering one question.
+
+The list behind should be **dimmed and inert**, never blurred into
+mush — you should be able to recognise it as yours. The pop-up itself
+keeps §11b's framed treatment: the faint radial wash, a hairline
+border, generous internal space.
+
+This does not soften the rule (spec §4.2): yesterday must still be
+answered, and the done button is still the only way out. Quiet
+framing, firm mechanic — the same combination as undo.
+
+### 12d. The left rail
+
+Five icons descending the left edge — **map · abode · community ·
+library · market** — each revealing its name on hover, set **away from
+the habit list** so the list keeps the eye.
+
+They are a **rail, not a navbar**: no background, no dividers, no
+active-state highlight competing with the content. Think of marks in
+the margin of a page. Faint at rest; each brightens to its own charm
+colour on hover (the §11a glow, `14px` → `24px`), which is also how the
+name arrives.
+
+The meters at the top remain clickable (Kimia's call), so Map,
+Bookcase and Market each have two doors. That redundancy is fine and
+deliberate — the meters are *how much*, the rail is *where*. Two
+different questions arriving at the same room.
+
+### 12e. Quiet mode / party mode
+
+A toggle on the Abode, an icon on either side. The feel divide:
+
+- **Quiet mode** is the Abode as built — your things, your
+  arrangement, still and yours. The default, and the resting state of
+  the page.
+- **Party mode** is the one place in Habitat where **you are not in
+  control of the composition**, and that is the whole pleasure of it.
+  Friends pop up among the flora in a random formation you did not
+  arrange and cannot fix. Refresh, and they stand somewhere else. It is
+  a **visit**, not a room you decorate — you cannot pose your guests.
+
+Your flora and objects are **never disturbed** (spec §5b): the
+arrangement you built is the stage, and party mode only adds people to
+it.
+
+**Friends do not perform here (decided 2026-07-20).** The §8 signature
+category animations stay reserved for their three moments — the
+arrival reveal, the Guest Book card, and rare home-screen cameos. In
+party mode friends are simply **present**: standing, gathered, in a
+formation you did not choose. The pleasure is *that they came*, not
+what they do. A gesture available on demand, fifty times an evening,
+stops being a greeting and becomes decor — and the abode is the one
+place you could summon them at will, which is exactly why it must not
+spend them. Idle presence only; any life they show here should be far
+below the signature register.
+
+Greyed out until a friend exists. A dead control is honest here: it
+says *this place will have people in it one day*, which is exactly the
+promise the literacy stream is making. It should read as **not yet**,
+never as **broken** — dimmed, not crossed out, and its hover says so.
+
+### 12f. The daily startup animation
+
+The first visit of each Habitat day: a **complete black background**
+with a **slither of globe along the bottom edge**, stretching the full
+width of the screen, **spinning slowly and glowing** — a satellite
+image of a planet turning. The planet need not be detailed. A few
+seconds only, then the normal screen **fades in**.
+
+**Colour.** The planet glows in the **shell charm's pink `#E8698C`** —
+the third charm, and the one that already reads as *place*. On
+**Sundays** it instead rotates randomly between the other five charm
+colours (gold, coral, lavender, sky, teal): the field-notes day gets a
+different light, and you never quite know which.
+
+**Why this is allowed to interrupt.** §6 says epic moments are ambient
+and never seize the screen — and this one seizes the whole screen. The
+exemption is that it is not a *reward*: it interrupts nothing, because
+nothing is happening yet. It is the app **opening its eyes**, before
+the day starts. The rules it must obey to keep that license:
+
+- **Short.** A few seconds. Anything long enough to want to skip is too
+  long. If it ever feels like a wait, it has failed.
+- **No content.** No text, no numbers, no narration slot, no
+  achievement. Nothing to read means nothing to miss.
+- **Never blocking.** A tap during it should go straight to the fade —
+  the ceremony is offered, never enforced.
+- **Same every day.** No escalation, no streak-length variation, no
+  milestone versions. The moment its intensity depends on performance
+  it becomes a scoreboard, and Habitat does not have those.
+
+It plays every Habitat day whether or not a check-in was owed — its
+job is marking the turn of the day, not reacting to behaviour. Order:
+check-in pop-up → startup → Sunday field notes. Coming *after* the
+check-in is deliberate: yesterday gets closed, then the new day
+begins.
+
+Soundless, as ever.
 

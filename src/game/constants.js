@@ -182,7 +182,7 @@ export const READING_DROP_CHANCES = {
 // dropping a small CLUSTER of mushrooms (sizes weighted below,
 // average 1.5), giving ~0.15 fungi per tap:
 //
-//   28-cron rotation × 3.5 taps/day ≈ 98 taps → ~15 fungi/rotation
+//   28-lived-day rotation × 3.5 taps/day ≈ 98 taps → ~15 fungi/rotation
 //
 // Kimia's decision 2026-07-19: income should afford about one
 // mid-priced object per rotation — so when M6 prices the Market, a

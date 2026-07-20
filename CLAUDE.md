@@ -59,8 +59,10 @@ Kimia is a non-coder. Therefore:
   prices are always identical — no penalty, no spread, ever. The
   fungus meter is a wallet: it may only decrease via a purchase the
   user chose.
-- Market rotation runs on crons (days with ≥1 habit marked, including
-  retroactive marks) — never calendar days. 28 crons per rotation.
+- Market rotation runs on lived days (days with ≥1 habit marked,
+  including retroactive marks) — never calendar days. 28 lived days per
+  rotation. (The word "cron" is retired as of 2026-07-20 — do not
+  reintroduce it anywhere, in docs, code or UI.)
   Every object eventually cycles back — nothing is permanently
   missable, no FOMO mechanics.
 - Framing: ethical immigration to N-Z-D. We are a guest, not a
