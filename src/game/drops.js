@@ -28,6 +28,7 @@ import {
   DIFFICULTIES,
   DIFFICULTY_DROP_MULTIPLIER,
   FLORA_WINDOW_STEPS,
+  FRIEND_CATEGORIES,
   FUNGUS_CLUSTER_WEIGHTS,
   FUNGUS_DROP_CHANCE,
   READING_DROP_CHANCES,
@@ -178,6 +179,9 @@ export function rollFungi(tapFacts) {
 //   { kind: 'flora' }
 //   { kind: 'reading', readingType: 'magazine' | 'novel' | 'dictionary' }
 //   { kind: 'fungi', amount: 1.. }
+//   { kind: 'friend', category: 0..9, individual: 1.. }  (T4.4 — the
+//   category's index in FRIEND_CATEGORIES; which friend of that
+//   category, counting from 1)
 export function validateDrop(drop) {
   if (typeof drop !== 'object' || drop === null) {
     throw new Error('A drop must be an object.')
@@ -198,8 +202,25 @@ export function validateDrop(drop) {
     }
     return
   }
+  if (drop.kind === 'friend') {
+    if (
+      !Number.isInteger(drop.category) ||
+      drop.category < 0 ||
+      drop.category >= FRIEND_CATEGORIES.length
+    ) {
+      throw new Error(
+        `A friend drop must carry a category 0–${FRIEND_CATEGORIES.length - 1}.`,
+      )
+    }
+    if (!Number.isInteger(drop.individual) || drop.individual < 1) {
+      throw new Error(
+        'A friend drop must carry an individual number, 1 or more.',
+      )
+    }
+    return
+  }
   throw new Error(
-    `Unknown drop kind "${drop.kind}" — expected flora, reading or fungi.`,
+    `Unknown drop kind "${drop.kind}" — expected flora, reading, fungi or friend.`,
   )
 }
 

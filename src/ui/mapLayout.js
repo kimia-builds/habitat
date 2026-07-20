@@ -123,8 +123,22 @@ export function buildMapLayout(worldSeed) {
   ]
 
   const rings = [
-    { key: 'inner', count: INNER_RING_COUNT, innerAt: core, outerAt: ring, radiusFrom: CORE_RADIUS, radiusTo: RING_RADIUS },
-    { key: 'outer', count: OUTER_RING_COUNT, innerAt: ring, outerAt: planet, radiusFrom: RING_RADIUS, radiusTo: PLANET_RADIUS },
+    {
+      key: 'inner',
+      count: INNER_RING_COUNT,
+      innerAt: core,
+      outerAt: ring,
+      radiusFrom: CORE_RADIUS,
+      radiusTo: RING_RADIUS,
+    },
+    {
+      key: 'outer',
+      count: OUTER_RING_COUNT,
+      innerAt: ring,
+      outerAt: planet,
+      radiusFrom: RING_RADIUS,
+      radiusTo: PLANET_RADIUS,
+    },
   ]
   for (const { key, count, innerAt, outerAt, radiusFrom, radiusTo } of rings) {
     const cuts = ringCuts(worldSeed, key, count)
@@ -155,7 +169,8 @@ export function landmarkPoint(worldSeed, layout, marker) {
   const cell = layout.regions[marker.region]
   const across = unit(worldSeed, `landmark-theta-${marker.completionId}`)
   const outward = unit(worldSeed, `landmark-radius-${marker.completionId}`)
-  const theta = cell.thetaFrom + (0.25 + 0.5 * across) * (cell.thetaTo - cell.thetaFrom)
+  const theta =
+    cell.thetaFrom + (0.25 + 0.5 * across) * (cell.thetaTo - cell.thetaFrom)
   const radius =
     cell.radiusFrom + (0.3 + 0.4 * outward) * (cell.radiusTo - cell.radiusFrom)
   return {

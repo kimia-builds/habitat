@@ -269,3 +269,110 @@ describe('owned objects on the ground (T4.3b)', () => {
     expect(spies.onMove).toHaveBeenCalledWith('p1', { x: 0.75, y: 0.5 })
   })
 })
+
+describe('party mode (T4.4)', () => {
+  const friend = (category, individual, completionId) => ({
+    completionId,
+    category,
+    individual,
+    dayKey: '2026-07-20',
+  })
+
+  it('the toggle is greyed out — "not yet" — while no friend exists', () => {
+    const { container } = render(
+      <AbodePage finds={[]} items={[]} friends={[]} {...handlers()} />,
+    )
+    expect(container.querySelector('.abode-mode-off')).not.toBeNull()
+    const toggle = screen.getByRole('switch', { name: 'party mode' })
+    expect(toggle.disabled).toBe(true)
+    // Toggling does nothing; no friends visit.
+    fireEvent.click(toggle)
+    expect(screen.queryByRole('img', { name: 'a visiting friend' })).toBeNull()
+  })
+
+  it('the toggle ungreys the moment a friend exists, and the friends visit among the flora', () => {
+    const { container } = render(
+      <AbodePage
+        finds={[find('c1', 'gathered')]}
+        items={[item('c1')]}
+        friends={[friend(0, 1, 'f1'), friend(3, 1, 'f2')]}
+        worldSeed="seed"
+        {...handlers()}
+      />,
+    )
+    const toggle = screen.getByRole('switch', { name: 'party mode' })
+    expect(toggle.disabled).toBe(false)
+    fireEvent.click(toggle)
+    expect(
+      screen.getAllByRole('img', { name: 'a visiting friend' }),
+    ).toHaveLength(2)
+    // The flora is still there, still itself.
+    expect(screen.getByRole('button', { name: 'a flora find' })).toBeDefined()
+    // And no signature animation plays anywhere in the Abode.
+    expect(container.querySelector('[class*="friend-anim-"]')).toBeNull()
+  })
+
+  it('friends are simply present: not draggable, not clickable, no hold state', () => {
+    const spies = handlers()
+    render(
+      <AbodePage
+        finds={[]}
+        items={[objectItem('p1')]}
+        friends={[friend(0, 1, 'f1')]}
+        worldSeed="seed"
+        {...spies}
+      />,
+    )
+    fireEvent.click(screen.getByRole('switch', { name: 'party mode' }))
+    const visitor = screen.getByRole('img', { name: 'a visiting friend' })
+    // A press on a friend is not a drag and not a click: nothing moves,
+    // nothing is held — the visit is not interactive.
+    fireEvent.pointerDown(visitor, { clientX: 72, clientY: 90 })
+    fireEvent.pointerMove(window, { clientX: 180, clientY: 80 })
+    fireEvent.pointerUp(window, { clientX: 180, clientY: 80 })
+    expect(spies.onMove).not.toHaveBeenCalled()
+    expect(screen.queryByRole('button', { name: 'sell' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'compost' })).toBeNull()
+  })
+
+  it('stores nothing: the ground underneath is left byte-identical', () => {
+    const spies = handlers()
+    render(
+      <AbodePage
+        finds={[find('c1', 'gathered')]}
+        items={[item('c1')]}
+        friends={[friend(0, 1, 'f1')]}
+        worldSeed="seed"
+        {...spies}
+      />,
+    )
+    const toggle = screen.getByRole('switch', { name: 'party mode' })
+    fireEvent.click(toggle) // on
+    fireEvent.click(toggle) // off again
+    // No write of any kind reached the outside world — no move, no
+    // decision, no sell. The layout map never hears about a party.
+    expect(spies.onMove).not.toHaveBeenCalled()
+    expect(spies.onDecide).not.toHaveBeenCalled()
+    expect(spies.onSell).not.toHaveBeenCalled()
+    expect(screen.queryByRole('img', { name: 'a visiting friend' })).toBeNull()
+  })
+
+  it('flora stay draggable in the middle of a party', () => {
+    const spies = handlers()
+    render(
+      <AbodePage
+        finds={[find('c1', 'gathered')]}
+        items={[item('c1')]}
+        friends={[friend(0, 1, 'f1')]}
+        worldSeed="seed"
+        {...spies}
+      />,
+    )
+    fireEvent.click(screen.getByRole('switch', { name: 'party mode' }))
+    const flora = screen.getByRole('button', { name: 'a flora find' })
+    fireEvent.pointerDown(flora, { clientX: 72, clientY: 93 })
+    fireEvent.pointerMove(window, { clientX: 180, clientY: 80 })
+    fireEvent.pointerUp(window, { clientX: 180, clientY: 80 })
+    expect(spies.onMove).toHaveBeenCalledWith('c1', { x: 0.75, y: 0.5 })
+  })
+})

@@ -65,6 +65,14 @@ Kimia is a non-coder. Therefore:
   reintroduce it anywhere, in docs, code or UI.)
   Every object eventually cycles back — nothing is permanently
   missable, no FOMO mechanics.
+- Friendships (T4.4): a literacy milestone only OPENS the door — the
+  friend arrives days later as a seeded drop, stored on the completion
+  like every drop. Categories refill (repeat friends allowed); names
+  stay the draft category singulars until T6.1. Every arrival is a
+  reveal; the signature animation plays in exactly three moments —
+  arrival reveal, Guest Book card, big-win home-screen cameos (T4.6) —
+  never party mode. Party mode stores nothing and never disturbs the
+  abode layout.
 - Framing: ethical immigration to N-Z-D. We are a guest, not a
   coloniser — no conquest/claiming/extraction language anywhere.
 
@@ -74,8 +82,15 @@ Kimia is a non-coder. Therefore:
 - **Claude Code never writes the story.** All narration, dialogue,
   friend introductions, and captions are human-written by Kimia.
   Scaffold empty, keyed content slots and ship them blank
-  (`TODO: written by Kimia`) — never auto-generate prose.
-- No punishment *feel* either: encouragement and motivation only.
+  (`TODO: written by Kimia`) — never auto-generate prose. And never
+  hard-code her content words in tests: assert structure and
+  behaviour, not her prose — she edits `src/content/` directly on
+  GitHub, so a test quoting her breaks CI the moment she rewrites.
+- **Narration is momentary** — it plays once and is never stored or
+  re-readable. The single exception (2026-07-20) is the friend card
+  text on the Guest Book popup card: a separate slot from the arrival
+  narration, re-readable by design.
+- No punishment _feel_ either: encouragement and motivation only.
   Juice comes from timing, scale, colour, and light — glow, pulse,
   anticipation pause, tap-to-reveal, nothing else. Movement
   animations are momentary and settle back to a calm resting state.

@@ -15,6 +15,11 @@
 // Fungi stay choice-free: currency has only exchange value, so it
 // banks itself.
 //
+// Since T4.4, an arriving FRIEND lingers on the shelf too — always
+// choice-free (a friend simply joins the community); their reveal is
+// owed first, so like a first-occurrence arrival they never fade until
+// it has played.
+//
 // An arrival that still owes its first-occurrence reveal never fades —
 // it waits on the shelf until the reveal has been seen.
 
@@ -22,6 +27,7 @@ import { useState } from 'react'
 import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import { arrivalLabel } from './arrivalText.js'
 import DropGlyph from './DropGlyph.jsx'
+import FriendGlyph from './FriendGlyph.jsx'
 
 // Which stream's colour an arrival wears.
 const STREAM_OF = {
@@ -30,9 +36,10 @@ const STREAM_OF = {
   novel: 'reading',
   dictionary: 'reading',
   fungi: 'fungi',
+  friend: 'friend',
 }
 
-function ShelfItem({ arrival, onExpire, onDecide, onRead }) {
+function ShelfItem({ arrival, worldSeed, onExpire, onDecide, onRead }) {
   const [held, setHeld] = useState(false)
   const fading = !held && !arrival.awaitingReveal
   // The choice belongs to a held, still-undecided flora find only.
@@ -60,7 +67,16 @@ function ShelfItem({ arrival, onExpire, onDecide, onRead }) {
         onClick={() => setHeld(!held)}
         title={held ? '' : 'click to hold'}
       >
-        <DropGlyph kind={arrival.key} />
+        {arrival.key === 'friend' ? (
+          <FriendGlyph
+            category={arrival.friend.category}
+            individual={arrival.friend.individual}
+            worldSeed={worldSeed}
+            className="drop-glyph"
+          />
+        ) : (
+          <DropGlyph kind={arrival.key} />
+        )}
         {held && (
           <span className="arrival-caption">{arrivalLabel(arrival)}</span>
         )}
@@ -101,7 +117,7 @@ function ShelfItem({ arrival, onExpire, onDecide, onRead }) {
   )
 }
 
-function ArrivalShelf({ arrivals, onExpire, onDecide, onRead }) {
+function ArrivalShelf({ arrivals, worldSeed, onExpire, onDecide, onRead }) {
   if (arrivals.length === 0) return null
   return (
     <section className="arrival-shelf" aria-label="arrivals">
@@ -109,6 +125,7 @@ function ArrivalShelf({ arrivals, onExpire, onDecide, onRead }) {
         <ShelfItem
           key={arrival.id}
           arrival={arrival}
+          worldSeed={worldSeed}
           onExpire={onExpire}
           onDecide={onDecide}
           onRead={onRead}

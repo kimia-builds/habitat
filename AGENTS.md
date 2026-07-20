@@ -94,6 +94,12 @@ src/game/             ALL game logic — pure functions, no React, no
                         the price frozen at buy time; the wallet,
                         always derived (drops − owned — the display
                         never below zero, debt settled under the hood)
+  friends.js            friendships (T4.4) — literacy milestones open
+                        doors; the first friend of a category is due
+                        1–5 seeded days later, repeats every 20–50
+                        seeded days after the previous arrival; one
+                        friend per tap, stored on the completion like
+                        every drop
   graphs.js             per-habit line graphs (zoom unlocks by habit age)
   fieldnotes.js         the weekly view ("field notes")
 src/content/          KIMIA'S FILES — she edits these directly on
@@ -101,19 +107,21 @@ src/content/          KIMIA'S FILES — she edits these directly on
                       or images, and never hard-code their words in
                       tests:
   narration.js          the keyed narration slots (first-occurrence
-                        reveals, friend intros, map regions, literacy
-                        eras); blank slots render nothing at all
+                        reveals, friend intros + re-readable friend
+                        card texts, map regions, literacy eras);
+                        blank slots render nothing at all
   spreads.js            maps each publication to its double-page spread
                         image in public/spreads/
 src/storage/storage.js  the ONE module that touches localStorage.
                       Everything lives under the single key
                       'habitat-data' in a versioned envelope
-                      (schemaVersion 7) with upgrade path for old backups
+                      (schemaVersion 8) with upgrade path for old backups
 src/ui/               React components, kept thin (HabitRow, HabitForm,
                       CheckInPanel, Meters, FieldNotes, HabitGraphs,
                       ArrivalShelf, DropGlyph, ObjectGlyph, FirstReveal,
                       SpreadPopup, AbodePage, BookcasePage, MapPage,
-                      MarketPage, mapLayout.js, BackupControls,
+                      MarketPage, GuestBookPage, FriendGlyph,
+                      FriendReveal, mapLayout.js, BackupControls,
                       SymbolPicker, symbols.js, arrivalText.js)
 src/test/setup.js     test-environment repair (see Testing below)
 public/favicon.svg    the only static asset
@@ -203,19 +211,26 @@ subfolder — do not change it.
 The user-facing page titles were renamed by the T4.5 UX pass — so far
 a **decided** pass (plan.md still has T4.5 unchecked), so until it is
 built the pages on screen still show the internal names ("the Map",
-"the Bookcase", "the Market", "the Abode") and the rail, icon-only
-actions and `-1` described below do not exist in the UI yet. The
+"the Bookcase", "the Market", "the Abode", "the Guest Book") and the
+rail, icon-only actions and `-1` described below do not exist in the
+UI yet. The
 **internal** names in code and docs (Map, Bookcase, Market, Abode,
 Guest Book) are unchanged in any case — only the displayed titles
 will move:
 
-| page | displayed title | reached by |
-|------|-----------------|------------|
-| Map | **map of N-Z-D** | expedition meter, or rail |
-| Abode | **your abode** | rail only |
-| Guest Book | **local community** | rail only |
-| Bookcase | **readers library** (no apostrophe) | literacy meter, or rail |
-| Market | **local market** | fungus meter, or rail |
+| page       | displayed title                     | reached by                |
+| ---------- | ----------------------------------- | ------------------------- |
+| Map        | **map of N-Z-D**                    | expedition meter, or rail |
+| Abode      | **your abode**                      | rail only                 |
+| Guest Book | **local community**                 | rail only                 |
+| Bookcase   | **readers library** (no apostrophe) | literacy meter, or rail   |
+| Market     | **local market**                    | fungus meter, or rail     |
+
+Until the rail exists, the Guest Book (built in T4.4) is reached from
+a "the guest book" link on the habit list, beside "the abode" — the
+T3.3/T4.3 interim-link precedent — and the Abode's quiet / party
+toggle is already live: it shipped whole with T4.4, which landed
+before T4.5.
 
 Other copy rules:
 
@@ -256,6 +271,14 @@ Other copy rules:
   purchase the user chose; rotation runs on **lived days** (days with
   ≥1 habit marked), 28 lived days per rotation; nothing is permanently
   missable.
+- **Friendships (T4.4):** a literacy milestone only opens the door;
+  the friend arrives days later as a seeded drop, stored on the
+  completion like every drop. Categories refill (repeats allowed);
+  names stay the draft category singulars until T6.1. Every arrival is
+  a reveal; the signature animation plays in its **three moments
+  only** — arrival reveal, Guest Book card, big-win home-screen
+  cameos (T4.6) — never party mode. Party mode stores nothing and
+  never disturbs the abode layout.
 - **The word "cron" is retired** (2026-07-20). What it named is a
   **lived day**. Do not reintroduce it in docs, code, comments or UI —
   it collided with the scheduling sense of the word and with the daily

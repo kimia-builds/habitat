@@ -1,6 +1,21 @@
 # spec.md — HABITAT
 
-*v1.25 — 2026-07-20 (thirteenth session). T4.3b built: the Market
+_v1.26 — 2026-07-20 (fourteenth session). T4.4 built: the Guest Book +
+friendships. Decided with Kimia: a literacy milestone only OPENS the
+door — the category's first friend arrives 1–5 seeded days later;
+**repeats are allowed** (her call), each category refilling every
+20–50 seeded days after the previous arrival; friends show their
+**draft category names** ("a Drifter") until T6.1; two narration
+slots per category (the momentary intro, played at the first arrival
+only, and the re-readable card text on the Guest Book popup card);
+**party mode built whole here**, since T4.4 lands before T4.5 — greyed
+"not yet" until the first friend, then an unseeded, unstored,
+unperformed formation among the flora. Storage v8. And cameos are
+**redecided**: they celebrate big wins (a big day, a record streak, a
+lived-day milestone) with the animation plus a short message — built
+as the new task T4.6. All in the decisions log._
+
+_v1.25 — 2026-07-20 (thirteenth session). T4.3b built: the Market
 page — the rotating stall, at last. Decided with Kimia: the stall
 shows **4 curiosities**, each discovered region adds **3** to the pool
 (prices **6 / 12 / 18** fungi, one per tier per region, until T6.1
@@ -9,9 +24,9 @@ takes an object off the stall; **selling happens in the Abode**,
 compost-style, the button reading **"sell"**, the refund announced
 with the same arrival feedback as a fungus drop; and objects are
 generic **"a curiosity"** with seeded code-drawn art until T6.1/T5.3.
-Storage v7 carries the purchases list. All in the decisions log.*
+Storage v7 carries the purchases list. All in the decisions log._
 
-*v1.24 — 2026-07-20 (twelfth session, docs only). A UX, copy and design
+_v1.24 — 2026-07-20 (twelfth session, docs only). A UX, copy and design
 pass decided with Kimia — built as the new plan task **T4.5**, with the
 animation folded into T5.2 and the live half of the Guest Book into
 T4.4. Page titles renamed (**map of N-Z-D**, **readers library**,
@@ -27,9 +42,9 @@ word **"cron" is retired** in favour of **lived day**, and the friend
 signature animations are pinned to **three moments** (arrival reveal,
 Guest Book card, rare home-screen cameos) — never party mode — with a
 new re-readable **card text** slot per friend. All in the decisions
-log.*
+log._
 
-*v1.23 — 2026-07-20 (eleventh session). T4.3 built: the Abode proper.
+_v1.23 — 2026-07-20 (eleventh session). T4.3 built: the Abode proper.
 Decided with Kimia: the Abode is **open ground under sky** (no walls
 — a patch of N-Z-D, constant like the bookshelf, bare with no prose
 when empty); gathered flora are **freely draggable** anywhere on the
@@ -38,51 +53,51 @@ to decide stay in a quiet list apart** (the doorstep — they aren't
 home yet); **compost hides behind a click-to-hold** (the held flora
 shows its name and a quiet compost button, Bookcase-style); and **no
 found dates** on the Abode (the Bookcase/Map rule extends). All in
-the decisions log.*
+the decisions log._
 
-*v1.22 — 2026-07-19 (tenth session, copy pass after T4.2). Kimia's
+_v1.22 — 2026-07-19 (tenth session, copy pass after T4.2). Kimia's
 call: the meters are renamed — **steps taken**, **literacy level**,
 **wallet balance** — and the captions underneath are gone (no running
 step total, no n/10 doors, no "in the wallet"); the field notes'
 self-description and the graphs caption came out too. Bar maths
-untouched. All in the decisions log.*
+untouched. All in the decisions log._
 
-*v1.21 — 2026-07-19 (tenth session). T4.2 built: the Bookcase page.
+_v1.21 — 2026-07-19 (tenth session). T4.2 built: the Bookcase page.
 Decided with Kimia: ONE **constant bookshelf** (bare shelves, no prose,
 no count when empty) with publications as **floating draggable books**,
 arranged anywhere; each book stands **spine or face-out** (the cover's
 quiet eye opens the T3.5 spread), place AND facing **remembered per
 book** (storage v5); and **no found dates** — on the books or on the
-Map (its tooltips came out). All in the decisions log.*
+Map (its tooltips came out). All in the decisions log._
 
-*v1.20 — 2026-07-19 (ninth session). T4.1 built: the Map page.
+_v1.20 — 2026-07-19 (ninth session). T4.1 built: the Map page.
 Decided with Kimia: the planet has **16 equal regions** (400 steps
 each ≈ 4 months — a new region roughly three times a year, steady for
 ~5 years); the undiscovered planet shows as a **faint outline** from
 day one, regions lighting up inside it; region shapes are **seeded
 generative placeholders** until T5.3's art pass (names arrive with
 T6.1); landmark flora are **plumbing only** until T6.1 picks the
-species. All in the decisions log.*
+species. All in the decisions log._
 
-*v1.19 — 2026-07-19 (eighth session). T3.5 built: read now / read
+_v1.19 — 2026-07-19 (eighth session). T3.5 built: read now / read
 later + the spread popup, plus the early Bookcase list. Decided with
 Kimia: the popup's **empty-state words are a narration slot** (hers;
 blank shows just the publication and its close button — nothing
 invented); **closing the popup lets the arrival go**; **no placeholder
 spreads** — the empty state shows everywhere until T6.1 names the
 publications (the flora precedent). Spread images are keyed in
-`src/content/spreads.js` (Kimia's file). All in the decisions log.*
+`src/content/spreads.js` (Kimia's file). All in the decisions log._
 
-*v1.18 — 2026-07-19 (seventh session). T3.4 built: narration content
+_v1.18 — 2026-07-19 (seventh session). T3.4 built: narration content
 slots in one keyed file (`src/content/narration.js`). Decided with
 Kimia: reveal **titles are slots too** (every word on the reveal
 screen is hers); an **empty slot renders nothing** — the pop-up keeps
 its glyph and button, no marker, nothing invented; future narrated
 moments (friend intros, map regions, literacy eras) get labelled
 **sections now, slots later**, added when those features are built.
-All in the decisions log.*
+All in the decisions log._
 
-*v1.17 — 2026-07-19 (sixth session, docs addition after T3.3).
+_v1.17 — 2026-07-19 (sixth session, docs addition after T3.3).
 Decided with Kimia: reading material gets the same held-arrival
 choice symmetry — **read now / read later** — mirroring gather /
 leave it (fungi stay choice-free: currency has only exchange value).
@@ -90,47 +105,47 @@ Reading opens a popup with a **double-page spread of the
 publication** — images Kimia provides (never AI-generated), one per
 publication named in T6.1. Re-readable anytime from the Bookcase; NO
 read/unread tracking anywhere. New plan task **T3.5**. All in the
-decisions log.*
+decisions log._
 
-*v1.16 — 2026-07-19 (sixth session). T3.3 built: gather / decline /
+_v1.16 — 2026-07-19 (sixth session). T3.3 built: gather / decline /
 compost. Decided with Kimia: undecided flora WAIT (a held arrival
 offers gather / leave it; one that fades undecided waits on the Abode
 page — no deadline, never a nag); an early, plain Abode page (reached
 from a link on the habit list) holds the waiting and gathered flora,
 compostable anytime; flora stay generic ("a flora find") until T6.1
 names the species. Storage v4 adds the flora decisions map. All in the
-decisions log.*
+decisions log._
 
-*v1.15 — 2026-07-19 (fifth session, docs only). Visual identity
+_v1.15 — 2026-07-19 (fifth session, docs only). Visual identity
 decided from Kimia's charm reference: the six habit symbols are now
 six line-drawn SVG charms (crown, cherries, shell, anchor, shield,
 key), each with its own colour; plus the app-wide palette and
 typography system (Cormorant Garamond display + DM Sans body,
 uppercase display / lowercase body). Full blueprint in design-notes
-§11; built in T5.1/T5.2.*
+§11; built in T5.1/T5.2._
 
-*v1.14 — 2026-07-19 (fourth session, docs only). Merged the design
+_v1.14 — 2026-07-19 (fourth session, docs only). Merged the design
 interrogation into **design-notes.md** (the feel layer — read it
 alongside this file for any design-adjacent task). Decided with Kimia:
 star-shimmer/firework placement, momentary meter glow, names stay
 visible + narration momentary, undo persistent-but-quiet, no calm
 mode in v1, built reveal text to be slot-ified (new plan T3.4). All in
-the decisions log.*
+the decisions log._
 
-*v1.13 — 2026-07-19 (third session, docs only). Decided: every
+_v1.13 — 2026-07-19 (third session, docs only). Decided: every
 repeating schedule shape presents as an N-per-day-style counter with
 unlimited +1 taps; every tap counts toward the meter and drops for
 every shape; one-time keeps its single-tap control. Built as plan
-T3.2b (a future session — no code today).*
+T3.2b (a future session — no code today)._
 
-*v1.12 — 2026-07-19 (second session). T3.2 built: drop arrival +
+_v1.12 — 2026-07-19 (second session). T3.2 built: drop arrival +
 first-occurrence reveals. Decided today: drops START FRESH from this
 update (old history rolls nothing retroactively); every completion
 stores its drops at tap time; arrivals are a quiet note by the tapped
 habit plus the drop object itself at the top of the page — clickable,
 lingering a few seconds; check-in marks earn drops whose arrivals
 wait for the done button; FIVE first-occurrence reveals (flora,
-magazine, novel, dictionary, fungi), each its own neon POP.*
+magazine, novel, dictionary, fungi), each its own neon POP._
 
 ## 1. One-line pitch
 
@@ -175,14 +190,14 @@ dailies/habits/to-dos distinction. Each habit has:
 
 - Name, optional description
 - A schedule the user defines. Shapes: **daily**, **specific weekdays**
-  (e.g. Mon/Wed/Fri), **N-per-week** (fulfilled by N *distinct* days
+  (e.g. Mon/Wed/Fri), **N-per-week** (fulfilled by N _distinct_ days
   with at least one completion — three marks on one day advance the
   week by one, not three), **N-per-day** (each completion counts; the
   day is fulfilled at N; extras are recorded and kept), **whenever**
   (unscheduled, no streak — no expectation, no pressure), and
   **one-time** (a to-do: one completion finishes it for good and
   auto-archives it; undoing that mark the same day un-archives it).
-  One-time is a *schedule shape* of the single unified habit type — it
+  One-time is a _schedule shape_ of the single unified habit type — it
   does not reintroduce Habitica's habit/daily/to-do split.
 - **Every repeating shape presents as a counter (2026-07-19, plan
   T3.2b):** the UI control for daily, weekdays, N-per-week, N-per-day
@@ -228,7 +243,7 @@ dailies/habits/to-dos distinction. Each habit has:
   count as **not done**, which (as always) is neutral data, not a
   punishment. There is no separate "no data" state.
 - **Critical correctness requirement:** retroactive marks are recorded
-  against the day they were *done*, not the day they were *entered*. If
+  against the day they were _done_, not the day they were _entered_. If
   Monday morning we mark Sunday's habits, the data says Sunday. Habitica
   gets this wrong; we will not. This rule gets its own automated tests.
 - **Definition of a "lived day":** a day counts as lived once it has at
@@ -346,7 +361,7 @@ opening its own growing world:
   the owner.) Titled **local community**. Clicking a character opens a
   **popup card** (2026-07-20): their art, their name, their **card
   text**, and their signature category animation playing. The card text
-  is a *second* narration slot per friend, separate from the momentary
+  is a _second_ narration slot per friend, separate from the momentary
   arrival narration and re-readable any time — who they are, not the
   night you met them. Blank until Kimia writes it, and an empty slot
   renders nothing (the T3.4 rule).
@@ -364,13 +379,13 @@ opening its own growing world:
   purpose. Gravity is not guaranteed on this planet. Objects are
   **purchased, never dropped**.
 - **The rotating stall:** the Market shows a small selection at a time,
-  rotating every **4 weeks of lived days** — 28 *lived days*, not
+  rotating every **4 weeks of lived days** — 28 _lived days_, not
   calendar days. Days with no habits marked don't advance the rotation
   clock.
 - **The stall's pool grows with the Map:** newly discovered regions add
-  their goods to the rotation pool, so the Market gets *more*
+  their goods to the rotation pool, so the Market gets _more_
   surprising over the years, never less. (Deliberate soft link:
-  expedition shapes what's *on offer*; it never earns fungi.)
+  expedition shapes what's _on offer_; it never earns fungi.)
 - **Nothing is ever missable:** every object eventually cycles back
   into rotation. No limited-forever items, no FOMO.
 - **Symmetric prices, always:** buying an object costs its price;
@@ -390,7 +405,7 @@ opening its own growing world:
 The three streams stay independent in their **earning**: completions
 feed each separately, and no stream's rewards can be converted into
 another's (composting flora yields no fungi; fungi can't buy literacy
-or map progress). The one deliberate link is on the *spending* side:
+or map progress). The one deliberate link is on the _spending_ side:
 region discovery expands what the Market can offer.
 
 ## 5b. App structure (pages)
@@ -412,7 +427,7 @@ region discovery expands what the Market can offer.
   clickable as well — meter and rail are two ways to the same page.
 - **Map** (via expedition meter or the rail): the discovered planet so
   far. Titled **map of N-Z-D**.
-- **Bookcase** (via literacy meter or the rail's *library*): one
+- **Bookcase** (via literacy meter or the rail's _library_): one
   **constant bookshelf** (T4.2) holding every publication ever received
   — floating, draggable books, each spine or face-out, the arrangement
   remembered; any publication's eye opens its double-page spread for
@@ -428,12 +443,13 @@ region discovery expands what the Market can offer.
   (gather / leave it) sit in a plain list above the ground. Bare ground
   when empty — no prose, no dates. Titled **your abode**. Carries the
   **quiet / party mode toggle** (below).
-- **Guest Book** (via the rail's *community*): friends made so far.
-  Titled **local community**.
+- **Guest Book** (a habit-list link until the T4.5 rail lands, then
+  the rail's _community_): friends made so far. Titled **local
+  community**.
 - **Field notes:** the weekly view (T2.3) — browsable Mon–Sun weeks,
   opening on the last completed one; reached from the graph icon at the
   foot of the habit list, and opens by itself on the first visit of each
-  Sunday (after any check-in *and* after the startup animation). Has a
+  Sunday (after any check-in _and_ after the startup animation). Has a
   "back to habits" link.
 - **Settings:** day cutoff, data export/import.
 
@@ -446,7 +462,7 @@ today's date **large and letterspaced**:
 It shows the **real calendar date**, not the Habitat day. Between
 midnight and 2:59am the two disagree — the habit list beneath is still
 yesterday's — so during that window only, a quiet line sits under the
-date: *"your habits will switch to a new day at 3 a.m."* (The wording
+date: _"your habits will switch to a new day at 3 a.m."_ (The wording
 moves with the configured cutoff.) Outside that window there is no
 note. The date is display only; nothing is clickable.
 
@@ -459,7 +475,7 @@ through. Its rules are untouched (§4.2): yesterday must still be
 answered, its done button is still the only exit, and the meters still
 do not show above it.
 
-### Quiet mode / party mode (T4.5 inactive, T4.4 live)
+### Quiet mode / party mode (built live in T4.4)
 
 The Abode carries a **toggle switch with an icon on either side** —
 quiet mode and party mode.
@@ -473,8 +489,9 @@ quiet mode and party mode.
   remembered: a **refresh** re-rolls the formation. Nothing about a
   party is stored.
 - Party mode is **greyed out and inactive until at least one friend has
-  been found** — the toggle ships visible-but-dead in T4.5 and comes
-  alive with friendships in T4.4.
+  been found**. (Decided as "ship visible-but-dead in T4.5, alive in
+  T4.4" — but T4.4 landed first, so the toggle shipped whole in T4.4:
+  greyed with zero friends, alive with the first.)
 
 ### The daily startup (T4.5 plumbing, T5.2 animation)
 
@@ -962,14 +979,14 @@ visual treatment in design-notes §12.
   pages, and the rail is the only door to the abode and the community.
 - 2026-07-20 (twelfth session, docs only, T4.5): **the home screen goes
   icon-only** — every action becomes an icon with a hover label, no
-  action words on the page: the habit row's *edit* → a pencil (hover
-  "edit") and *archive* → an archive box (hover "archive"); an archived
-  habit's *delete* → a trash icon (hover "delete forever"); and the
+  action words on the page: the habit row's _edit_ → a pencil (hover
+  "edit") and _archive_ → an archive box (hover "archive"); an archived
+  habit's _delete_ → a trash icon (hover "delete forever"); and the
   three list-level actions sit as **three discreet buttons together at
   the foot of the habit list, above the archived list** — **+** (hover
   "add new habit"), a pencil (hover "edit past days") and a graph
   (hover "view historical data"). The symbol filter's hover reads
-  **"filter view"** — deliberately *not* "filter habits by type": the
+  **"filter view"** — deliberately _not_ "filter habits by type": the
   six symbols are never categories (§4.1), and the hover must not imply
   they are. "View" is also the truer word: the filter is a temporary
   lens that resets each visit, not a property of the habits.
@@ -1014,7 +1031,7 @@ visual treatment in design-notes §12.
   bottom edge, like a satellite image; a few seconds, then the normal
   screen **fades in**. It sits **after** the done-yesterday pop-up and
   **before** the Sunday field notes. It fires on **day rollover** — the
-  3am cutoff — never on a *lived day* (a day with ≥1 habit marked),
+  3am cutoff — never on a _lived day_ (a day with ≥1 habit marked),
   which is only knowable in hindsight and so could never gate a startup
   screen. The plumbing lands in T4.5, the animation itself in T5.2.
   Colours in design-notes §12.
@@ -1131,6 +1148,71 @@ visual treatment in design-notes §12.
   lowercase everywhere else; background `#080910`; charm colours as
   the accent palette. Full spec in design-notes §11b/§11c. Built in
   T5.2.
+- 2026-07-20 (fourteenth session, T4.4): **how a friendship begins** —
+  a literacy milestone only OPENS the door; the category's first friend
+  arrives 1–5 seeded Habitat days later, riding the first tap on/after
+  that day, stored on the completion like every drop (one friend per
+  tap, earliest-due first; a retro tap meets only friends its own day
+  had already reached). Seeded per category + individual, so undo takes
+  the friend back and the next tap re-derives the identical one. Doors
+  are derived from history — undoing the reading that crossed a
+  milestone quietly closes the door again (pending friends wait;
+  arrived ones stay: their stored drops are settled history).
+- 2026-07-20 (fourteenth session, T4.4): **repeat friends are allowed**
+  (Kimia's call, over one-friend-per-category) — a category keeps
+  refilling: each next friend of the same category waits a seeded
+  20–50 days after the previous one ACTUALLY arrived (never from its
+  due day — no bunching, however long the app sat closed). Roughly one
+  friend per category per month or two; the T6.2 recalibration retunes
+  the gap if the community ever feels crowded.
+- 2026-07-20 (fourteenth session, T4.4): **draft category names until
+  T6.1** — a friend shows its category's draft singular ("a Drifter")
+  on the arrival, the Guest Book and the card (the "a flora find" /
+  "a curiosity" precedent, one rung up: categories are named,
+  individuals aren't). The names live in constants.js as game data —
+  never in Kimia's narration file, never hard-coded in tests.
+- 2026-07-20 (fourteenth session, T4.4): **two narration slots per
+  category** — `friendIntros.<key>` (title + line) plays ONCE, at the
+  category's first arrival ever; later friends of the same category
+  arrive wordless (narration is momentary). `friendCards.<key>` is the
+  standing re-readable exception (2026-07-20), shown on the Guest Book
+  popup card. Both ship blank; an empty slot renders nothing.
+- 2026-07-20 (fourteenth session, T4.4): **every friend arrival is a
+  neon reveal** — the full POP register (design-notes §5; its firework
+  layer lands in T5.2) with the signature category animation playing —
+  one of the animation's three allowed moments. The arrival is
+  choice-free: a friend simply joins the community, like fungi bank
+  themselves.
+- 2026-07-20 (fourteenth session, T4.4): **the Guest Book page** —
+  visual-first: art and names, bare with no prose while no friend has
+  arrived (the constant-bookshelf precedent). Clicking a friend opens
+  the quiet popup card: art, name, card text, the signature animation
+  playing — the one moment the animation can be summoned at will.
+  Until T4.5's rail exists the page is reached from a "the guest book"
+  link on the habit list, and it shows its internal name until T4.5's
+  renames land.
+- 2026-07-20 (fourteenth session, T4.4): **party mode built whole
+  here** — T4.4 lands before T4.5 (which was to ship the greyed
+  toggle), so the quiet / party toggle ships complete: greyed "not
+  yet" with zero friends, alive the moment the first friend exists.
+  Friends pop up among the flora in a randomised UNSEEDED formation
+  (a refresh or a re-toggle re-rolls it), not draggable, not
+  remembered, nothing stored, no signature animation — simply present.
+  The flora arrangement is untouched and stays draggable; the abode
+  layout never hears about a party.
+- 2026-07-20 (fourteenth session, T4.4): **cameos redecided — they
+  celebrate big wins** (Kimia's redecision, amending the twelfth
+  session's "rare, unannounced, unpredictable"): a friend turns up on
+  the habit list to celebrate — a day with many completions, a new
+  record streak, a lived-day milestone — performs its category
+  animation once, with a short message alongside (her draft examples:
+  "12 steps in one day!", "15-day streak record!", "50 lived days!").
+  The messages are Kimia's slots, shipped blank like all her words.
+  Built as the new task T4.6, not in T4.4.
+- 2026-07-20 (fourteenth session, T4.4): **storage v8** — drops can now
+  include friends ({ kind: 'friend', category, individual }); the bump
+  only gates the new kind, so an older app never loads a backup it
+  can't validate. No fields move.
 - A lived day = a day with ≥1 habit marked (including retroactive
   marks). Called a "cron" until 2026-07-20.
 - Reward pacing: slow, steady, designed for a patient daily user; no

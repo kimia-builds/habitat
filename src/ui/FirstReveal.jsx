@@ -24,7 +24,11 @@ function FirstReveal({ arrival, onDismiss }) {
   const title = narrationSlot(`firstReveals.${arrival.key}.title`)
   const line = narrationSlot(`firstReveals.${arrival.key}.line`)
   return (
-    <div className="reveal-overlay" role="dialog" aria-label={title ?? 'a first arrival'}>
+    <div
+      className="reveal-overlay"
+      role="dialog"
+      aria-label={title ?? 'a first arrival'}
+    >
       <div className={`reveal reveal-${STREAMS[arrival.key]}`}>
         <DropGlyph kind={arrival.key} className="reveal-glyph" />
         {title && <h2 className="reveal-title">{title}</h2>}

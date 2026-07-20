@@ -97,7 +97,12 @@ describe('derived meters and firsts', () => {
     // Since T3.5 each item carries the day it arrived and its (not yet
     // named — T6.1) publication, so the Bookcase can list and open it.
     expect(readingItemsFrom(history)).toEqual([
-      { id: 'c:0', type: 'magazine', dayKey: '2026-07-03', publicationId: null },
+      {
+        id: 'c:0',
+        type: 'magazine',
+        dayKey: '2026-07-03',
+        publicationId: null,
+      },
     ])
   })
 

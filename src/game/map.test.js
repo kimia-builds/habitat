@@ -104,9 +104,7 @@ describe('landmarkMarkers — plumbing for T6.1 (T4.1)', () => {
   const landmarks = new Set(['great-tree'])
 
   it('shows no markers with the shipped (empty) landmark set — flora have no species until T6.1', () => {
-    const completions = [
-      completion('c0', '2026-07-19', [{ kind: 'flora' }]),
-    ]
+    const completions = [completion('c0', '2026-07-19', [{ kind: 'flora' }])]
     expect(landmarkMarkers(completions)).toEqual([])
   })
 

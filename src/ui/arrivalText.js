@@ -1,7 +1,9 @@
 // Plain-language names for arriving drops (T3.2) — shared by the
 // arrival shelf, the quiet by-the-habit notes, and the first reveals.
 
-// One arrival, named: "a flora find", "a novel", "2 fungi"…
+import { FRIEND_CATEGORIES } from '../game/constants.js'
+
+// One arrival, named: "a flora find", "a novel", "2 fungi", "a Drifter"…
 export function arrivalLabel(arrival) {
   switch (arrival.key) {
     case 'flora':
@@ -14,6 +16,10 @@ export function arrivalLabel(arrival) {
       return 'a dictionary'
     case 'fungi':
       return arrival.amount === 1 ? '1 fungus' : `${arrival.amount} fungi`
+    case 'friend':
+      // Until T6.1 names the beings: the draft category singular
+      // (Kimia's decision 2026-07-20).
+      return `a ${FRIEND_CATEGORIES[arrival.friend.category].singular}`
     default:
       return 'something'
   }

@@ -18,9 +18,7 @@ describe('first-occurrence reveals read from narration slots (T3.4)', () => {
         <FirstReveal arrival={{ key }} onDismiss={() => {}} />,
       )
       const slots = NARRATION.firstReveals[key]
-      expect(
-        screen.getByRole('dialog', { name: slots.title }),
-      ).toBeDefined()
+      expect(screen.getByRole('dialog', { name: slots.title })).toBeDefined()
       expect(screen.getByText(slots.line)).toBeDefined()
       unmount()
     }

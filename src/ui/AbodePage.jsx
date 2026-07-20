@@ -23,10 +23,22 @@
 // mint until the T5.3 art pass, and stay generic ("a flora find")
 // until T6.1 names the species; objects are seeded curiosities
 // (ui/ObjectGlyph.jsx), generic ("a curiosity") on the same schedule.
+//
+// PARTY MODE (T4.4, spec §5b): the quiet / party toggle — a switch
+// with an icon on either side — pops the friends we have made up
+// AMONG the flora in a randomised formation. The flora and objects
+// keep their exact places and stay draggable (party mode only ever
+// adds, never disturbs); friends are not draggable, their formation is
+// not remembered (a refresh, or re-toggling, re-rolls it), and NOTHING
+// about a party is stored. Friends are simply present here — the
+// signature animations never play in the Abode (decision 2026-07-20).
+// The toggle is greyed out, reading "not yet", until the first friend
+// exists.
 
 import { useRef, useState } from 'react'
 import { HORIZON } from '../game/abode.js'
 import DropGlyph from './DropGlyph.jsx'
+import FriendGlyph from './FriendGlyph.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
 
 // The drawing frame. The ground is constant — it never grows or
@@ -46,6 +58,20 @@ const HELD_SIZE = 26
 // anything shorter is a click (hold ↔ settle back).
 const DRAG_THRESHOLD_PX = 4
 
+// A visiting friend in party mode: a little larger than a flora.
+const PARTY_FRIEND_SIZE = 22
+
+// The randomised formation (spec §5b): friends scattered across the
+// ground half of the scene. Deliberately UNseeded — a refresh (or a
+// re-toggle) re-rolls it, and nothing about a party is stored.
+function rollFormation(friends) {
+  return friends.map((friend) => ({
+    friend,
+    x: 0.06 + Math.random() * 0.88,
+    y: 0.5 + Math.random() * 0.44,
+  }))
+}
+
 function clampUnit(value) {
   return Math.min(1, Math.max(0, value))
 }
@@ -53,6 +79,7 @@ function clampUnit(value) {
 function AbodePage({
   finds,
   items,
+  friends = [],
   worldSeed,
   onDecide,
   onMove,
@@ -66,6 +93,10 @@ function AbodePage({
   // The item currently held (clicked): its name and its quiet way back
   // (compost / sell) show while this is set. Screen state only.
   const [heldId, setHeldId] = useState(null)
+  // Party mode (T4.4): off is the quiet Abode as ever. The formation
+  // is re-rolled each time the mode is switched on — never stored.
+  const [party, setParty] = useState(false)
+  const [formation, setFormation] = useState([])
 
   const pending = finds.filter((find) => find.status === 'pending')
 
@@ -140,6 +171,16 @@ function AbodePage({
     onSell(item.id)
   }
 
+  // The quiet / party toggle (spec §5b): greyed out — "not yet", never
+  // "broken" — until at least one friend exists. Switching on rolls a
+  // fresh formation; switching off lets everyone go home.
+  const partyAvailable = friends.length > 0
+  function handlePartyToggle() {
+    if (!partyAvailable) return
+    setParty(!party)
+    setFormation(party ? [] : rollFormation(friends))
+  }
+
   // Where an item stands right now: its live drag position while
   // dragged, its resolved place otherwise.
   function placeOf(item) {
@@ -164,6 +205,70 @@ function AbodePage({
   return (
     <section className="stub-page abode">
       <h2>the Abode</h2>
+
+      {/* The quiet / party toggle (T4.4): a switch with an icon either
+          side. Greyed — "not yet" — until the first friend exists. */}
+      <div
+        className={`abode-mode${partyAvailable ? '' : ' abode-mode-off'}`}
+        title={partyAvailable ? undefined : 'not yet'}
+      >
+        <svg
+          className={`abode-mode-icon${party ? '' : ' active'}`}
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          {/* quiet: a single resting stone */}
+          <circle
+            cx="12"
+            cy="12"
+            r="4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        </svg>
+        <button
+          className="abode-mode-switch"
+          role="switch"
+          aria-checked={party}
+          aria-label="party mode"
+          disabled={!partyAvailable}
+          onClick={handlePartyToggle}
+        >
+          <span className="abode-mode-knob" />
+        </button>
+        <svg
+          className={`abode-mode-icon${party ? ' active' : ''}`}
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          {/* party: a little gathering */}
+          <circle
+            cx="7"
+            cy="14"
+            r="3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <circle
+            cx="16.5"
+            cy="8.5"
+            r="3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <circle
+            cx="17"
+            cy="16.5"
+            r="3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        </svg>
+      </div>
 
       {pending.length > 0 && (
         <>
@@ -286,6 +391,31 @@ function AbodePage({
             </g>
           )
         })}
+        {/* Party mode: the friends, simply present among the flora —
+            not draggable, not performing, never stored. */}
+        {party &&
+          formation.map(({ friend, x, y }) => {
+            const cx = x * WIDTH
+            const base = y * HEIGHT
+            return (
+              <g
+                key={friend.completionId}
+                className="abode-party-friend"
+                role="img"
+                aria-label="a visiting friend"
+              >
+                <FriendGlyph
+                  category={friend.category}
+                  individual={friend.individual}
+                  worldSeed={worldSeed}
+                  x={cx - PARTY_FRIEND_SIZE / 2}
+                  y={base - PARTY_FRIEND_SIZE}
+                  width={PARTY_FRIEND_SIZE}
+                  height={PARTY_FRIEND_SIZE}
+                />
+              </g>
+            )
+          })}
       </svg>
 
       <button onClick={onBack}>← back to the habits</button>

@@ -20,6 +20,7 @@ All state is in localStorage under the key `habitat-data` — reload the
 page to prove persistence; clear site data to reset to first-run.
 
 Flows worth driving after UI changes:
+
 - create a habit (each schedule type has different form fields)
 - tap to complete; tap again = undo; N-per-day shows count/N with +1/undo
 - symbol filter row at top (multi-select, resets on reload)

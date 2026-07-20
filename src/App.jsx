@@ -40,6 +40,7 @@ import {
   floraStatus,
   pruneFloraDecisions,
 } from './game/flora.js'
+import { friendsFrom, withFriendDrop } from './game/friends.js'
 import {
   buyObject,
   livedDayCount,
@@ -87,6 +88,8 @@ import BookcasePage from './ui/BookcasePage.jsx'
 import CheckInPanel from './ui/CheckInPanel.jsx'
 import FieldNotes from './ui/FieldNotes.jsx'
 import FirstReveal from './ui/FirstReveal.jsx'
+import FriendReveal from './ui/FriendReveal.jsx'
+import GuestBookPage from './ui/GuestBookPage.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import MapPage from './ui/MapPage.jsx'
@@ -104,8 +107,9 @@ function App() {
   const [editing, setEditing] = useState(null)
   // Which screen is showing: the habit list, one of the world pages
   // behind the meters or the list's links ('map' | 'bookcase' |
-  // 'market' | 'abode'), or the field notes ('fieldnotes', T2.3).
-  // Plain component state — a reload lands back on the list.
+  // 'market' | 'abode' | 'guestbook'), or the field notes
+  // ('fieldnotes', T2.3). Plain component state — a reload lands back
+  // on the list.
   const [page, setPage] = useState(null)
 
   // Drop arrivals on screen (T3.2) — transient by nature, so plain
@@ -250,14 +254,36 @@ function App() {
   function announceDrops(completion, before, deferred) {
     if (completion.drops.length === 0) return
     const seen = seenDropKeys(before)
-    const items = completion.drops.map((drop, index) => ({
-      id: `${completion.id}:${index}`,
-      completionId: completion.id,
-      habitId: completion.habitId,
-      key: dropKey(drop),
-      amount: drop.kind === 'fungi' ? drop.amount : null,
-      first: !seen.has(dropKey(drop)),
-    }))
+    const arrivedBefore = friendsFrom(before)
+    const items = completion.drops.map((drop, index) => {
+      // A friend (T4.4): EVERY arrival owes its neon reveal — not just
+      // the first of a family (design-notes §5). The category's intro
+      // words play only at its first arrival ever; later friends of
+      // the same category arrive wordless (narration is momentary).
+      if (drop.kind === 'friend') {
+        return {
+          id: `${completion.id}:${index}`,
+          completionId: completion.id,
+          habitId: completion.habitId,
+          key: 'friend',
+          amount: null,
+          first: false,
+          reveal: true,
+          friend: { category: drop.category, individual: drop.individual },
+          firstOfCategory: !arrivedBefore.some(
+            (friend) => friend.category === drop.category,
+          ),
+        }
+      }
+      return {
+        id: `${completion.id}:${index}`,
+        completionId: completion.id,
+        habitId: completion.habitId,
+        key: dropKey(drop),
+        amount: drop.kind === 'fungi' ? drop.amount : null,
+        first: !seen.has(dropKey(drop)),
+      }
+    })
     const append = (list) => [...list, ...items]
     if (deferred) setPendingArrivals(append)
     else setArrivals(append)
@@ -435,10 +461,15 @@ function App() {
 
   function handleComplete(habit) {
     // The tap rolls its drops right here (T3.2) and stores them on the
-    // completion — settled at tap time, forever.
-    const completion = deliverDrops(
-      recordCompletion(habit.id, data.settings.dayCutoffHour),
-      habit,
+    // completion — settled at tap time, forever. Since T4.4 the roll
+    // includes the friendship stream: a friend who is due rides along.
+    const completion = withFriendDrop(
+      deliverDrops(
+        recordCompletion(habit.id, data.settings.dayCutoffHour),
+        habit,
+        data.completions,
+        data.worldSeed,
+      ),
       data.completions,
       data.worldSeed,
     )
@@ -480,9 +511,13 @@ function App() {
     // Retro marks roll drops exactly like live taps (Kimia's decision
     // 2026-07-19) — but their arrivals wait until the check-in's done
     // button, so answering yesterday stays distraction-free.
-    const completion = deliverDrops(
-      recordRetroCompletion(habit.id, dayKey, data.settings.dayCutoffHour),
-      habit,
+    const completion = withFriendDrop(
+      deliverDrops(
+        recordRetroCompletion(habit.id, dayKey, data.settings.dayCutoffHour),
+        habit,
+        data.completions,
+        data.worldSeed,
+      ),
       data.completions,
       data.worldSeed,
     )
@@ -596,9 +631,12 @@ function App() {
   // — since T3.2 that includes each completion's stored drops, so the
   // literacy meter and the fungus wallet finally move; since T4.3b the
   // wallet also counts what the owned market objects cost. Below them,
-  // the arrival shelf and (topmost of all) any first-occurrence reveal
-  // still owed: one at a time, dismissed by its own button.
-  const revealing = arrivals.find((a) => a.first && !seenRevealIds.has(a.id))
+  // the arrival shelf and (topmost of all) any reveal still owed: one
+  // at a time, dismissed by its own button. Two kinds owe a reveal —
+  // a drop family's FIRST occurrence (T3.2) and EVERY friend (T4.4).
+  const revealing = arrivals.find(
+    (a) => (a.first || a.reveal) && !seenRevealIds.has(a.id),
+  )
   const meters = (
     <>
       <Meters
@@ -608,9 +646,10 @@ function App() {
         onOpen={setPage}
       />
       <ArrivalShelf
+        worldSeed={data.worldSeed}
         arrivals={arrivals.map((a) => ({
           ...a,
-          awaitingReveal: a.first && !seenRevealIds.has(a.id),
+          awaitingReveal: (a.first || a.reveal) && !seenRevealIds.has(a.id),
           // A flora arrival knows its decision state, so the shelf can
           // offer gather / leave it exactly while it's still pending.
           status:
@@ -624,14 +663,24 @@ function App() {
         onDecide={handleFloraDecision}
         onRead={handleReadNow}
       />
-      {revealing && (
-        <FirstReveal
-          arrival={revealing}
-          onDismiss={() =>
-            setSeenRevealIds((seen) => new Set([...seen, revealing.id]))
-          }
-        />
-      )}
+      {revealing &&
+        (revealing.key === 'friend' ? (
+          <FriendReveal
+            arrival={revealing}
+            worldSeed={data.worldSeed}
+            firstOfCategory={revealing.firstOfCategory}
+            onDismiss={() =>
+              setSeenRevealIds((seen) => new Set([...seen, revealing.id]))
+            }
+          />
+        ) : (
+          <FirstReveal
+            arrival={revealing}
+            onDismiss={() =>
+              setSeenRevealIds((seen) => new Set([...seen, revealing.id]))
+            }
+          />
+        ))}
       {readingItem && (
         <SpreadPopup item={readingItem} onClose={() => setReadingItem(null)} />
       )}
@@ -673,7 +722,9 @@ function App() {
   // T4.3b) owned market objects draggable anywhere on it, their places
   // remembered; each compostable or sellable from its quiet held state.
   // Flora still waiting to be decided keep their plain list above the
-  // ground. Reached from its link on the habit list.
+  // ground. Reached from its link on the habit list. Since T4.4 the
+  // page also carries the quiet / party toggle — friends come visiting
+  // among the flora, in a formation that is never stored.
   if (page === 'abode') {
     return (
       <main className="app">
@@ -687,10 +738,30 @@ function App() {
             data.abodeLayout,
             data.purchases,
           )}
+          friends={friendsFrom(data.completions)}
           worldSeed={data.worldSeed}
           onDecide={handleFloraDecision}
           onMove={handleItemMove}
           onSell={handleSell}
+          onBack={() => setPage(null)}
+        />
+      </main>
+    )
+  }
+
+  // The Guest Book (T4.4): everyone who has welcomed us so far, all
+  // derived from the stored friend drops. Clicking a friend opens
+  // their card — art, name, card text (Kimia's re-readable slot), and
+  // the signature animation. Reached from its link on the habit list
+  // until T4.5's rail takes over the doors.
+  if (page === 'guestbook') {
+    return (
+      <main className="app">
+        {header}
+        {meters}
+        <GuestBookPage
+          friends={friendsFrom(data.completions)}
+          worldSeed={data.worldSeed}
           onBack={() => setPage(null)}
         />
       </main>
@@ -779,6 +850,7 @@ function App() {
           )}
           <button onClick={() => setPage('fieldnotes')}>field notes</button>
           <button onClick={() => setPage('abode')}>the abode</button>
+          <button onClick={() => setPage('guestbook')}>the guest book</button>
         </>
       )}
 

@@ -1,5 +1,12 @@
 # design-notes.md — HABITAT (UX & feel)
 
+_v1.8 — 2026-07-20 (fourteenth session, T4.4 built). Friendships are
+real: §8 gains the repeat-friends rule (categories refill) and the
+cameo redecision — big-win celebrations with a short message, built in
+the new plan task T4.6 — and §12e's party mode is live, the toggle
+shipped whole with T4.4 since it landed before T4.5. Spec v1.26,
+plan v1.25._
+
 _v1.7 — 2026-07-20 (twelfth session, docs only). The UX/copy/design
 pass: §12 is new — the home screen's quiet furniture (the left rail,
 the date display, icon-only actions), the check-in as a pop-up, and
@@ -61,7 +68,7 @@ design-adjacent task.
 1. **Soundless.** No audio, anywhere, ever. All feedback is visual.
 2. **Claude Code never writes the story.** All narration, dialogue,
    friend introductions, and captions are **human-written by Kimia**.
-   Claude Code scaffolds *empty, keyed content slots* and ships them
+   Claude Code scaffolds _empty, keyed content slots_ and ships them
    blank (`TODO: written by Kimia`); it must never auto-generate prose.
    This applies retroactively: the five built T3.2 reveals get
    slot-ified (plan T3.4), their current text kept only as a marked
@@ -88,7 +95,7 @@ number-go-up spam.
 
 ---
 
-## 2. Completion & the undo affordance  **[feel rule · applies to T3.2b, T1.3]**
+## 2. Completion & the undo affordance **[feel rule · applies to T3.2b, T1.3]**
 
 The reversal logic already exists: undoing a completion reverses the
 expedition meter and takes its drops back with it (spec decisions
@@ -97,7 +104,7 @@ expedition meter and takes its drops back with it (spec decisions
 **Decision (2026-07-19) — persistent but quiet.** The undo control
 stays available for as long as the spec's rules allow (same-day for
 one-time to-dos; the T3.2b counter's undo alongside its +1) — quiet by
-*design*, not by disappearing. It is small, low-key, visual-only:
+_design_, not by disappearing. It is small, low-key, visual-only:
 never an alarm colour, never a shake. "Gentle correction," not
 "error." (This supersedes the v0.2 draft's fading-undo idea, which
 conflicted with the spec's same-day undo rules.)
@@ -116,7 +123,7 @@ is as ordinary as taking one forward.
 
 ---
 
-## 3. Live vs. retroactive completions  **[TO-BUILD · T3.2b / check-in]**
+## 3. Live vs. retroactive completions **[TO-BUILD · T3.2b / check-in]**
 
 Keep the satisfaction of checking off retroactively, but make
 **same-day taps more satisfying**.
@@ -133,7 +140,7 @@ they were _done_. Tone is cosmetic; the date logic stays strict.
 
 ---
 
-## 4. The meters — growth you can see  **[enhancement to built T2.2]**
+## 4. The meters — growth you can see **[enhancement to built T2.2]**
 
 The meter UI is **already built** (T2.2) and stays as it is: the
 expedition meter is a **rolling bar** (one ~100-step segment ≈ a month
@@ -154,7 +161,7 @@ persistent running total remains the accumulating proof of work. This
 
 ---
 
-## 5. Drops — star-shimmer & firework  **[CHANGE to built T3.2, decided]**
+## 5. Drops — star-shimmer & firework **[CHANGE to built T3.2, decided]**
 
 Drop arrival as built (T3.2): a regular drop shows a **quiet pastel
 note** beside the tapped habit ("you came across …") plus the **SVG
@@ -175,17 +182,17 @@ arrive as delayed surprise drops** days after a literacy milestone
 opens the door (spec §5, T4.4).
 
 **Drop-choice symmetry (2026-07-19, plan T3.5).** The two drops with
-*intrinsic* value offer the same held-arrival choice: flora —
+_intrinsic_ value offer the same held-arrival choice: flora —
 **gather / leave it** (T3.3); reading material — **read now / read
 later**, where read now opens the publication's double-page spread
 and read later simply lets the arrival go (the piece is in the
 Bookcase either way, re-readable anytime, tracked nowhere). Fungi
-deliberately offer no choice: currency has only *exchange* value —
+deliberately offer no choice: currency has only _exchange_ value —
 it banks itself.
 
 ---
 
-## 6. Epic unlocks & reveals  **[TO-BUILD · M4]**
+## 6. Epic unlocks & reveals **[TO-BUILD · M4]**
 
 New **era of literacy** or new **map neighbourhood** should feel
 **epic — but ambient, never interruptive**.
@@ -200,10 +207,10 @@ are personal firsts, not world unlocks.)
 
 ---
 
-## 7. Story, narration & speech  **[content human-written; slots: T3.4, M4]**
+## 7. Story, narration & speech **[content human-written; slots: T3.4, M4]**
 
 Story and narration are **written by Kimia, never generated**. Claude
-Code builds the *slots and plumbing* only.
+Code builds the _slots and plumbing_ only.
 
 - **Authoring model.** A **keyed content file** with an empty slot per
   narrated moment (each first-occurrence reveal, each friend
@@ -221,8 +228,8 @@ Code builds the *slots and plumbing* only.
   Guest Book popup card, re-readable any time. This does **not** soften
   the rule above — the arrival narration stays momentary and is never
   replayed. They are two different pieces of writing doing two
-  different jobs: the narration is *the night you met them*, seen once;
-  the card text is *who they are*, standing. Both are Kimia's, both
+  different jobs: the narration is _the night you met them_, seen once;
+  the card text is _who they are_, standing. Both are Kimia's, both
   ship blank, and an empty card text renders nothing at all (the T3.4
   precedent — glyph, name and animation carry the card alone).
 - **Names stay visible (decision 2026-07-19).** Flora, objects,
@@ -233,7 +240,7 @@ Code builds the *slots and plumbing* only.
   narration was the story, seen once. (This resolves the v0.2 draft's
   "no written names" idea, which conflicted with the built T3.2
   naming and plan T6.1.) The friend **card text** is the single
-  exception, and it sits *behind a click* on the Guest Book card — the
+  exception, and it sits _behind a click_ on the Guest Book card — the
   page itself still reads as art and names.
 - **Speech bubbles** simulate speech for friends **high enough on the
   literacy ladder to have language** (see §8); text is human-written
@@ -241,7 +248,7 @@ Code builds the *slots and plumbing* only.
 
 ---
 
-## 8. The beings — form, gesture & greeting  **[TO-BUILD · M4.4, M5.3]**
+## 8. The beings — form, gesture & greeting **[TO-BUILD · M4.4, M5.3]**
 
 The world **leans weird and abstract, not cutesy**. (One deliberate
 exemption, decided 2026-07-19: the six habit-tag **charms** (§11) are
@@ -262,16 +269,21 @@ should feel strange, not familiar-things-in-costume.
   2026-07-20).** Exactly three moments, and nowhere else:
   1. **The arrival reveal** — the friend-drop moment, with its full
      firework (§5). The first time you meet them.
-  2. **The Guest Book card** — clicking a character on the *local
-     community* page opens a popup card (their art, their name, their
+  2. **The Guest Book card** — clicking a character on the _local
+     community_ page opens a popup card (their art, their name, their
      card text) and the animation runs. This is the one moment you can
      summon at will.
-  3. **Rare home-screen cameos** — a friend turns up unannounced on the
-     habit list and performs, occasionally and unpredictably. **Not**
-     on every completion, and never on a schedule you could learn.
-  **Party mode on the Abode is deliberately excluded** (§12e): friends
-  gather there but do not perform. Scarcity is what makes the gesture
-  land — a greeting you can see any time you like is wallpaper.
+  3. **Home-screen cameos that celebrate big wins** — a friend turns
+     up on the habit list to celebrate: a day with many completions, a
+     new record streak, a lived-day milestone. It performs once, with a
+     short message alongside (Kimia's slots, shipped blank; her draft
+     examples: "12 steps in one day!", "15-day streak record!", "50
+     lived days!"). Encouragement, never a scoreboard. _(Amended
+     2026-07-20, fourteenth session — Kimia's redecision, over the
+     twelfth session's "rare and unpredictable". Built in T4.6.)_
+     **Party mode on the Abode is deliberately excluded** (§12e): friends
+     gather there but do not perform. Scarcity is what makes the gesture
+     land — a greeting you can see any time you like is wallpaper.
 - **Wordless greetings — visual-only until literate.** Low-literacy
   beings (Drifters, Nesters, Mimics) communicate **visually only**
   (glyphs, light, motion). **Written speech bubbles are earned** —
@@ -302,13 +314,13 @@ should feel strange, not familiar-things-in-costume.
    rolling bar, fading straight back to normal; no rebuild (§4).
 3. **Names & narration** → names stay visible everywhere; narration
    is momentary; records are visual-first with art + names + dates,
-   no stored prose (§7). *(Amended 2026-07-20: the friend **card
+   no stored prose (§7). _(Amended 2026-07-20: the friend **card
    text** on the Guest Book popup card is a standing, re-readable
    exception — a separate slot from the arrival narration, which is
-   still never replayed. See §7.)*
+   still never replayed. See §7.)_
 4. **Undo** → persistent but quiet — available as long as the spec's
-   rules allow, styled gently (§2). *(Amended 2026-07-20: its label is
-   now `-1`, the mirror of `+1`. Behaviour unchanged.)*
+   rules allow, styled gently (§2). _(Amended 2026-07-20: its label is
+   now `-1`, the mirror of `+1`. Behaviour unchanged.)_
 5. **Reduced-motion / calm mode** → skipped for v1; revisit only if
    the motion ever feels like too much.
 6. **Built reveal text** → to be slot-ified (plan T3.4); the
@@ -323,8 +335,8 @@ should feel strange, not familiar-things-in-costume.
 ## 10a. Decisions resolved (2026-07-20, twelfth session, with Kimia)
 
 9. **The home screen goes icon-only** → every action an icon with a
-    hover label; the two pencils told apart by size and colour;
-    "filter view" as the filter's hover (§12a).
+   hover label; the two pencils told apart by size and colour;
+   "filter view" as the filter's hover (§12a).
 10. **The date display** → real calendar date, large and letterspaced,
     with a quiet 3am note only in the window where it disagrees with
     the Habitat day (§12b).
@@ -340,13 +352,26 @@ should feel strange, not familiar-things-in-costume.
     and identical every day (§12f).
 15. **The friend signature animation plays in three moments only** →
     arrival reveal, Guest Book card, rare home-screen cameos. Never
-    party mode. Scarcity is the mechanic (§8).
+    party mode. Scarcity is the mechanic (§8). _(Amended 2026-07-20,
+    fourteenth session: the cameo is now a big-win celebration with a
+    short message — see §8 and the new §10b.)_
 16. **Friend card text** → a second, re-readable slot per friend,
     distinct from the momentary arrival narration (§7).
 
+## 10b. Decisions resolved (2026-07-20, fourteenth session, with Kimia)
+
+17. **Repeat friends** → a category refills: each next friend waits a
+    seeded 20–50 days after the previous arrival. Individuals within a
+    category genuinely share the one signature animation now (§8).
+18. **Cameos celebrate big wins** → a big day, a record streak, a
+    lived-day milestone; the signature animation plus a short message
+    from Kimia's slots. Built in T4.6 (§8). Party mode still excluded.
+19. **Party mode shipped whole with T4.4** — toggle, greyed state and
+    all, since T4.4 landed before T4.5 (§12e).
+
 ---
 
-## 11. Visual identity reference  **[TO-BUILD · T5.1 symbols, T5.2 identity]**
+## 11. Visual identity reference **[TO-BUILD · T5.1 symbols, T5.2 identity]**
 
 _From Kimia's charm reference (2026-07-19). This section is the
 blueprint for T5.1 and T5.2 — everything needed is recorded here; the
@@ -361,45 +386,46 @@ to `24px` on hover). Stroke style: `fill="none"`,
 `stroke="currentColor"`, `stroke-width="1.4"`, round caps and joins,
 on a `24×24` viewBox. Mapping to the existing symbol slots 1–6:
 
-| # | charm | colour | hex | faint (borders/dividers) |
-|---|-------|--------|-----|--------------------------|
-| 1 | crown | gold | `#F0BB3B` | `rgba(240,187,59,0.18)` |
-| 2 | cherries | coral | `#F5805A` | `rgba(245,128,90,0.18)` |
-| 3 | shell | pink | `#E8698C` | `rgba(232,105,140,0.18)` |
-| 4 | anchor | lavender | `#A98EE0` | `rgba(169,142,224,0.18)` |
-| 5 | shield | sky | `#5AB6F3` | `rgba(90,182,243,0.18)` |
-| 6 | key | teal | `#4FBFA0` | `rgba(79,191,160,0.18)` |
+| #   | charm    | colour   | hex       | faint (borders/dividers) |
+| --- | -------- | -------- | --------- | ------------------------ |
+| 1   | crown    | gold     | `#F0BB3B` | `rgba(240,187,59,0.18)`  |
+| 2   | cherries | coral    | `#F5805A` | `rgba(245,128,90,0.18)`  |
+| 3   | shell    | pink     | `#E8698C` | `rgba(232,105,140,0.18)` |
+| 4   | anchor   | lavender | `#A98EE0` | `rgba(169,142,224,0.18)` |
+| 5   | shield   | sky      | `#5AB6F3` | `rgba(90,182,243,0.18)`  |
+| 6   | key      | teal     | `#4FBFA0` | `rgba(79,191,160,0.18)`  |
 
 The exact paths (drop into the shared SVG attributes above):
 
 - **crown** — `<path d="M2 19h20l-3.5-9-4.5 5L12 5l-2 10-4.5-5L2 19z"/>
-  <line x1="2" y1="22" x2="22" y2="22"/>
-  <circle cx="12" cy="5" r="1.2" fill="currentColor" stroke="none"/>
-  <circle cx="4.5" cy="11.5" r="1" fill="currentColor" stroke="none"/>
-  <circle cx="19.5" cy="11.5" r="1" fill="currentColor" stroke="none"/>`
+<line x1="2" y1="22" x2="22" y2="22"/>
+
+<circle cx="12" cy="5" r="1.2" fill="currentColor" stroke="none"/>
+<circle cx="4.5" cy="11.5" r="1" fill="currentColor" stroke="none"/>
+<circle cx="19.5" cy="11.5" r="1" fill="currentColor" stroke="none"/>`
 - **cherries** — `<circle cx="7.5" cy="17" r="3.5"/>
-  <circle cx="16.5" cy="17" r="3.5"/>
-  <path d="M7.5 13.5C7.5 10 10 7.5 12 6.5"/>
-  <path d="M16.5 13.5C16.5 10 14 7.5 12 6.5"/>
-  <path d="M12 6.5L13.5 3"/>`
+<circle cx="16.5" cy="17" r="3.5"/>
+<path d="M7.5 13.5C7.5 10 10 7.5 12 6.5"/>
+<path d="M16.5 13.5C16.5 10 14 7.5 12 6.5"/>
+<path d="M12 6.5L13.5 3"/>`
 - **shell** — `<path d="M12 21C7.6 21 4 17.4 4 13C4 9.5 6.2 6.5 9.4
-  5.2C10.9 4.6 12.5 4.5 14 4.9C17.2 5.8 19 8.8 18 11.8C17.2 14 15
-  15.2 12.8 14.8C11.2 14.5 10 13 10.2 11.4C10.4 10 11.8 9 13.2 9.4"/>
-  <path d="M12 21C14 18 13 15 12 13"/>
-  <path d="M4 13C6 14 8 13.5 10 12.5"/>`
+5.2C10.9 4.6 12.5 4.5 14 4.9C17.2 5.8 19 8.8 18 11.8C17.2 14 15
+15.2 12.8 14.8C11.2 14.5 10 13 10.2 11.4C10.4 10 11.8 9 13.2 9.4"/>
+<path d="M12 21C14 18 13 15 12 13"/>
+<path d="M4 13C6 14 8 13.5 10 12.5"/>`
 - **anchor** — `<circle cx="12" cy="5" r="2.5"/>
-  <line x1="12" y1="7.5" x2="12" y2="21"/>
-  <line x1="5" y1="12" x2="9.5" y2="12"/>
-  <line x1="14.5" y1="12" x2="19" y2="12"/>
-  <path d="M5 19C5 19 7.5 22 12 22C16.5 22 19 19 19 19"/>`
+<line x1="12" y1="7.5" x2="12" y2="21"/>
+<line x1="5" y1="12" x2="9.5" y2="12"/>
+<line x1="14.5" y1="12" x2="19" y2="12"/>
+<path d="M5 19C5 19 7.5 22 12 22C16.5 22 19 19 19 19"/>`
 - **shield** — `<path d="M12 2L4 6V12C4 16.8 7.6 21.2 12 22C16.4 21.2
-  20 16.8 20 12V6L12 2Z"/>
-  <path d="M9 12L11 14L15 10"/>`
+20 16.8 20 12V6L12 2Z"/>
+<path d="M9 12L11 14L15 10"/>`
 - **key** — `<circle cx="7.5" cy="9.5" r="4.5"/>
-  <line x1="12" y1="9.5" x2="22" y2="9.5"/>
-  <line x1="20" y1="9.5" x2="20" y2="13"/>
-  <line x1="17" y1="9.5" x2="17" y2="12"/>
-  <circle cx="7.5" cy="9.5" r="1.5" fill="currentColor" stroke="none"/>`
+<line x1="12" y1="9.5" x2="22" y2="9.5"/>
+<line x1="20" y1="9.5" x2="20" y2="13"/>
+<line x1="17" y1="9.5" x2="17" y2="12"/>
+<circle cx="7.5" cy="9.5" r="1.5" fill="currentColor" stroke="none"/>`
 
 ### 11b. Palette & surfaces (T5.2)
 
@@ -443,7 +469,7 @@ Case & spacing convention:
 
 ---
 
-## 12. The home screen & the daily startup  **[TO-BUILD · T4.5, T5.2]**
+## 12. The home screen & the daily startup **[TO-BUILD · T4.5, T5.2]**
 
 _Decided with Kimia 2026-07-20 (twelfth session). Spec §5b carries the
 rules; this section carries the feel._
@@ -462,8 +488,8 @@ get quieter over time, not keep explaining itself.
 
 Two cautions this creates, both real:
 
-- **The two pencils.** A habit row's pencil edits *that habit*; the
-  pencil at the foot of the list edits *past days*. Same glyph, two
+- **The two pencils.** A habit row's pencil edits _that habit_; the
+  pencil at the foot of the list edits _past days_. Same glyph, two
   meanings — so they are separated by **size and colour** (Kimia's
   call, 2026-07-20), not by position alone: the row pencil is small,
   inline and in the dim text tier; the foot pencil is larger, sits in
@@ -474,7 +500,7 @@ Two cautions this creates, both real:
 - **Delete forever.** The only destructive control in Habitat. Its
   hover says "delete forever" in full — never just "delete" — and its
   confirmation stays (spec §5b). Being wordless on the surface is fine;
-  being *vague at the moment of pressing* is not. The trash icon is the
+  being _vague at the moment of pressing_ is not. The trash icon is the
   one icon allowed to look slightly colder than its neighbours.
 
 The three foot-of-list buttons sit **together, below the habits and
@@ -490,7 +516,7 @@ above the charms.
 This is the **one uppercase, letterspaced display moment on the home
 screen** — §11c's display register (Cormorant Garamond 700, uppercase,
 wide tracking) used where it earns its keep. The spacing is the point:
-it should read as *engraved*, an inscription over the day, closer to a
+it should read as _engraved_, an inscription over the day, closer to a
 title card than a clock. It is not information the user needs — they
 know what day it is. It is **ceremony**: the day is a thing worth
 naming.
@@ -499,7 +525,7 @@ Because it is ceremony, it must not be busy. No seconds, no time, no
 weather, no counters. It never animates on its own; it simply is.
 
 **The 3am note.** Between midnight and the cutoff, a quiet line sits
-beneath it: *"your habits will switch to a new day at 3 a.m."* — the
+beneath it: _"your habits will switch to a new day at 3 a.m."_ — the
 dimmest text tier, lowercase, DM Sans 300 italic (§11c's quiet
 secondary). This is the app being **honest at the one moment it would
 otherwise contradict itself**, and it is deliberately phrased as a
@@ -538,7 +564,7 @@ name arrives.
 
 The meters at the top remain clickable (Kimia's call), so Map,
 Bookcase and Market each have two doors. That redundancy is fine and
-deliberate — the meters are *how much*, the rail is *where*. Two
+deliberate — the meters are _how much_, the rail is _where_. Two
 different questions arriving at the same room.
 
 ### 12e. Quiet mode / party mode
@@ -560,9 +586,10 @@ it.
 
 **Friends do not perform here (decided 2026-07-20).** The §8 signature
 category animations stay reserved for their three moments — the
-arrival reveal, the Guest Book card, and rare home-screen cameos. In
+arrival reveal, the Guest Book card, and the home-screen cameos
+(big-win celebrations, §8). In
 party mode friends are simply **present**: standing, gathered, in a
-formation you did not choose. The pleasure is *that they came*, not
+formation you did not choose. The pleasure is _that they came_, not
 what they do. A gesture available on demand, fifty times an evening,
 stops being a greeting and becomes decor — and the abode is the one
 place you could summon them at will, which is exactly why it must not
@@ -570,9 +597,11 @@ spend them. Idle presence only; any life they show here should be far
 below the signature register.
 
 Greyed out until a friend exists. A dead control is honest here: it
-says *this place will have people in it one day*, which is exactly the
+says _this place will have people in it one day_, which is exactly the
 promise the literacy stream is making. It should read as **not yet**,
 never as **broken** — dimmed, not crossed out, and its hover says so.
+_(Built 2026-07-20 in T4.4: the toggle shipped whole — greyed state
+and live party mode alike — because T4.4 landed before T4.5.)_
 
 ### 12f. The daily startup animation
 
@@ -583,14 +612,14 @@ image of a planet turning. The planet need not be detailed. A few
 seconds only, then the normal screen **fades in**.
 
 **Colour.** The planet glows in the **shell charm's pink `#E8698C`** —
-the third charm, and the one that already reads as *place*. On
+the third charm, and the one that already reads as _place_. On
 **Sundays** it instead rotates randomly between the other five charm
 colours (gold, coral, lavender, sky, teal): the field-notes day gets a
 different light, and you never quite know which.
 
 **Why this is allowed to interrupt.** §6 says epic moments are ambient
 and never seize the screen — and this one seizes the whole screen. The
-exemption is that it is not a *reward*: it interrupts nothing, because
+exemption is that it is not a _reward_: it interrupts nothing, because
 nothing is happening yet. It is the app **opening its eyes**, before
 the day starts. The rules it must obey to keep that license:
 
@@ -606,9 +635,8 @@ the day starts. The rules it must obey to keep that license:
 
 It plays every Habitat day whether or not a check-in was owed — its
 job is marking the turn of the day, not reacting to behaviour. Order:
-check-in pop-up → startup → Sunday field notes. Coming *after* the
+check-in pop-up → startup → Sunday field notes. Coming _after_ the
 check-in is deliberate: yesterday gets closed, then the new day
 begins.
 
 Soundless, as ever.
-

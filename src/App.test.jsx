@@ -1365,7 +1365,7 @@ describe('the Market (T4.3b)', () => {
     expect(wallet()).toBe('2') // the wallet falls by exactly the price
     expect(screen.getByText('×1 at home')).toBeDefined()
     expect(stored().purchases).toHaveLength(1)
-    expect(stored().schemaVersion).toBe(7)
+    expect(stored().schemaVersion).toBe(8)
 
     // Home and into the abode: the curiosity stands on the ground.
     fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
@@ -1408,5 +1408,80 @@ describe('the Market (T4.3b)', () => {
     expect(screen.getByRole('heading', { name: 'the Market' })).toBeDefined()
     expect(screen.queryByRole('list')).toBeNull()
     expect(screen.queryByRole('button', { name: /buy/ })).toBeNull()
+  })
+})
+
+// Friendships (T4.4): the end-to-end wiring — a due friend rides the
+// next tap, the neon friend reveal plays, and the Guest Book fills.
+// The delay maths itself lives in game/friends.test.js.
+describe('friendships (T4.4)', () => {
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+
+  // The friend reveal's dialog name is Kimia's slot when she writes it
+  // — never hard-code her words (the 2026-07-19 lesson). Mirror
+  // FriendReveal's fallback for blank slots.
+  const friendRevealName = () =>
+    narrationSlot('friendIntros.drifter.title') ?? 'a friend arrives'
+
+  // A seed where the test's tap delivers NO ordinary drop (no flora at
+  // its expedition step, no reading, no fungi) — so the friend rides
+  // alone and the assertions stay simple.
+  function findQuietSeed(dayKey, stepIndex) {
+    for (let i = 0; i < 10000; i++) {
+      const seed = `friend-seed-${i}`
+      const facts = {
+        worldSeed: seed,
+        habitId: 'walk',
+        dayKey,
+        tapIndex: 0,
+        difficulty: 'easy',
+      }
+      const flora = floraTargetStep(0, seed) === stepIndex
+      if (!flora && rollReading(facts) === null && rollFungi(facts) === 0) {
+        return seed
+      }
+    }
+    throw new Error('no quiet seed found')
+  }
+
+  it('a due friend rides the next tap: stored, revealed, and in the Guest Book', () => {
+    // Ten magazines, one a day from the 1st: the first door (10
+    // points) opened on the 10th. The first friend is due 1–5 seeded
+    // days later — certainly by the 15th — so today's tap (the 16th)
+    // carries them, whatever the seed's exact wait turns out to be.
+    const seed = findQuietSeed('2026-07-16', 10)
+    seedWorld(seed, {
+      completions: Array.from({ length: 10 }, (_, i) => ({
+        id: `m${i}`,
+        habitId: 'walk',
+        recordedAt: 1000 + i,
+        dayKey: `2026-07-${String(i + 1).padStart(2, '0')}`,
+        drops: [{ kind: 'reading', readingType: 'magazine' }],
+      })),
+    })
+    render(<App />)
+
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+
+    // Rolled at tap time and STORED on the completion, like every drop.
+    expect(stored().completions.at(-1).drops).toEqual([
+      { kind: 'friend', category: 0, individual: 1 },
+    ])
+
+    // Every friend arrival is a neon reveal — dismissed by its button.
+    expect(
+      screen.getByRole('dialog', { name: friendRevealName() }),
+    ).toBeDefined()
+    expect(screen.getAllByText('a Drifter').length).toBeGreaterThan(0)
+    fireEvent.click(screen.getByRole('button', { name: 'onward' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+
+    // The Guest Book holds them, named by the draft category singular.
+    fireEvent.click(screen.getByRole('button', { name: 'the guest book' }))
+    expect(
+      screen.getByRole('heading', { name: 'the Guest Book' }),
+    ).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: 'a Drifter' }))
+    expect(screen.getByRole('dialog', { name: 'a Drifter' })).toBeDefined()
   })
 })

@@ -22,7 +22,7 @@ export const NARRATION = {
       title: 'you found an indigenous plant',
       line:
         'after walking around N-Z-D for some time, you got enough steps in ' +
-        'to discover the native flora. this land holds life, just like you.'
+        'to discover the native flora. this land holds life, just like you.',
     },
     magazine: {
       // PLACEHOLDER — Claude-written; TODO: written by Kimia.
@@ -68,8 +68,44 @@ export const NARRATION = {
   // Sections ready now; actual slots are added when each feature is
   // built and its names/counts exist (Kimia's call, 2026-07-19).
 
-  // friend introductions & welcomes (T4.4) — one slot per friend.
-  friendIntros: {},
+  // friend introductions (T4.4) — one slot per CATEGORY, played once:
+  // at the FIRST arrival of that category's first friend (later friends
+  // of the same category arrive wordless — narration is momentary).
+  // Like the first reveals, each has a title (the big line) and a line
+  // (the story beneath it). Both are yours — every word on that screen
+  // is Kimia's; left blank, the reveal shows just the friend, its name
+  // and its button. TODO: written by Kimia.
+  friendIntros: {
+    drifter: { title: '', line: '' },
+    nester: { title: '', line: '' },
+    mimic: { title: '', line: '' },
+    signer: { title: '', line: '' },
+    sprout: { title: '', line: '' },
+    chatter: { title: '', line: '' },
+    neighbour: { title: '', line: '' },
+    storyteller: { title: '', line: '' },
+    scholar: { title: '', line: '' },
+    poet: { title: '', line: '' },
+  },
+
+  // friend card texts (T4.4) — one slot per category, shown on the
+  // Guest Book popup card. This is the ONE standing exception to
+  // "narration is momentary" (decision 2026-07-20): the card text is
+  // re-readable any time — who they are, not the night you met them.
+  // Left blank, the card shows just the art, the name and the
+  // animation. TODO: written by Kimia.
+  friendCards: {
+    drifter: '',
+    nester: '',
+    mimic: '',
+    signer: '',
+    sprout: '',
+    chatter: '',
+    neighbour: '',
+    storyteller: '',
+    scholar: '',
+    poet: '',
+  },
 
   // map regions (T4.1) — one slot per region, in discovery order:
   // region1 is the landing site in the middle of the Map, region2–6

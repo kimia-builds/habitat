@@ -3,11 +3,14 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 7,
+//     schemaVersion: 8,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — since v3 each
-//                           // carries its drops (T3.2)
+//                           // carries its drops (T3.2); the drops can now
+//                           // include FRIENDS (T4.4) — { kind: 'friend',
+//                           // category, individual } — the one change v8
+//                           // gates (see game/friends.js)
 //     settings:    { dayCutoffHour: 3,
 //                    fieldNotesShownOn: null },  // the last Sunday the
 //                              // field notes auto-opened — added in T2.3
@@ -53,7 +56,7 @@ import { validateHabit } from '../game/habits.js'
 import { validatePurchases } from '../game/market.js'
 
 const STORAGE_KEY = 'habitat-data'
-const SCHEMA_VERSION = 7
+const SCHEMA_VERSION = 8
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -90,9 +93,11 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV6toV7(
-    upgradeV5toV6(
-      upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))),
+  return upgradeV7toV8(
+    upgradeV6toV7(
+      upgradeV5toV6(
+        upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))),
+      ),
     ),
   )
 }
@@ -204,9 +209,20 @@ function upgradeV6toV7(data) {
   if (data.schemaVersion !== 6) return data
   return {
     ...data,
-    schemaVersion: SCHEMA_VERSION,
+    schemaVersion: 7,
     purchases: data.purchases ?? [],
   }
+}
+
+// v7 → v8 (T4.4): drops can now include FRIENDS — { kind: 'friend',
+// category, individual } stored on completions (game/friends.js). No
+// field moves and nothing is renumbered: the bump exists so a backup
+// that contains friends is never loaded by an older app that couldn't
+// validate them. A v7 save simply has no friends yet.
+function upgradeV7toV8(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 7) return data
+  return { ...data, schemaVersion: SCHEMA_VERSION }
 }
 
 // Older saves and backups predate completions, settings and (from

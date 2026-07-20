@@ -240,6 +240,42 @@ export const DIFFICULTY_DROP_MULTIPLIER = {
   difficult: 1.2,
 }
 
+// ───────────────────────── T4.4: friendships ─────────────────────────
+
+// The 10 friend categories (spec §5 Stream 2), lowest literacy first —
+// one door per LITERACY_MILESTONES threshold above, in the same order.
+// Until T6.1 names the real beings, a friend shows its category's DRAFT
+// name (Kimia's decision 2026-07-20): the label and its singular ("a
+// Drifter") live here as game data — never in Kimia's narration file.
+export const FRIEND_CATEGORIES = [
+  { key: 'drifter', label: 'Drifters', singular: 'Drifter' },
+  { key: 'nester', label: 'Nesters', singular: 'Nester' },
+  { key: 'mimic', label: 'Mimics', singular: 'Mimic' },
+  { key: 'signer', label: 'Signers', singular: 'Signer' },
+  { key: 'sprout', label: 'Sprouts', singular: 'Sprout' },
+  { key: 'chatter', label: 'Chatters', singular: 'Chatter' },
+  { key: 'neighbour', label: 'Neighbours', singular: 'Neighbour' },
+  { key: 'storyteller', label: 'Storytellers', singular: 'Storyteller' },
+  { key: 'scholar', label: 'Scholars', singular: 'Scholar' },
+  { key: 'poet', label: 'Poets', singular: 'Poet' },
+]
+
+// WHEN a friend arrives (Kimia's decisions 2026-07-20):
+//   - a category's FIRST friend is due 1–5 Habitat days after its door
+//     opens (its milestone is crossed) — "sometime in the following
+//     days" (spec §5): anticipation first, surprise second;
+//   - repeats are allowed: each NEXT friend of the same category waits
+//     20–50 days after the previous one ACTUALLY arrived, so friends
+//     can never bunch up, however long the app sat closed.
+// Both waits are seeded per category + individual — pure functions of
+// the world seed, so undo/redo returns the identical friend on the
+// identical day. Rough pacing at ~150 literacy points/year: the first
+// door opens within weeks and Poets near year 5; a category refills
+// roughly monthly, so the community feels alive early and busy late.
+// The T6.2 recalibration retunes these if it ever feels crowded.
+export const FRIEND_FIRST_DELAY_DAYS = { min: 1, max: 5 }
+export const FRIEND_REPEAT_GAP_DAYS = { min: 20, max: 50 }
+
 // ───────────────────────── T4.3b: the Market ─────────────────────────
 
 // The stall rotates on LIVED DAYS — days with at least one habit

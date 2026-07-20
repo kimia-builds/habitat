@@ -227,7 +227,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(7) // upgrades chain: v1 → … → v7
+    expect(data.schemaVersion).toBe(8) // upgrades chain: v1 → … → v8
     expect(data.settings.fieldNotesShownOn).toBe(null)
     expect(data.floraDecisions).toEqual({})
     expect(data.bookcaseLayout).toEqual({})
@@ -263,7 +263,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
       ],
     })
     const restored = importData(backup)
-    expect(restored.schemaVersion).toBe(7)
+    expect(restored.schemaVersion).toBe(8)
     expect(restored.habits[0].scheduleHistory[0].schedule).toEqual({
       type: 'nPerWeek',
       n: 3,
@@ -290,7 +290,7 @@ describe('the v2 → v3 upgrade (T3.2)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(7)
+    expect(data.schemaVersion).toBe(8)
     expect(typeof data.worldSeed).toBe('string')
     expect(data.worldSeed).not.toBe('')
     // Kimia's decision 2026-07-19: pre-update history rolls nothing.
@@ -377,7 +377,7 @@ describe('the v3 → v4 upgrade (T3.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(7)
+    expect(data.schemaVersion).toBe(8)
     expect(data.floraDecisions).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -443,7 +443,7 @@ describe('the v4 → v5 upgrade (T4.2)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(7)
+    expect(data.schemaVersion).toBe(8)
     expect(data.bookcaseLayout).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -515,7 +515,7 @@ describe('the v5 → v6 upgrade (T4.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(7)
+    expect(data.schemaVersion).toBe(8)
     expect(data.abodeLayout).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -589,7 +589,7 @@ describe('the v6 → v7 upgrade (T4.3b)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(7)
+    expect(data.schemaVersion).toBe(8)
     expect(data.purchases).toEqual([])
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -623,5 +623,87 @@ describe('the v6 → v7 upgrade (T4.3b)', () => {
     expect(() =>
       importData(JSON.stringify({ ...emptyData(), purchases: {} })),
     ).toThrow(/list/)
+  })
+})
+
+describe('the v7 → v8 upgrade (T4.4)', () => {
+  it('a v7 save loads unchanged — the bump only gates the friend drop kind', () => {
+    // A hand-written v7 record, exactly as T4.3b-era Habitat stored it.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 7,
+        habits: [habit('a', 'Read')],
+        completions: [
+          {
+            id: 'c1',
+            habitId: 'a',
+            recordedAt: 2000,
+            dayKey: '2026-07-12',
+            drops: [{ kind: 'reading', readingType: 'magazine' }],
+          },
+        ],
+        settings: { dayCutoffHour: 3, fieldNotesShownOn: null },
+        checkedInThrough: null,
+        worldSeed: 'seed',
+        floraDecisions: {},
+        bookcaseLayout: {},
+        abodeLayout: {},
+        purchases: [],
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(8)
+    expect(data.completions[0].drops).toEqual([
+      { kind: 'reading', readingType: 'magazine' },
+    ])
+    // And the upgraded shape passes full validation on the next save.
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('friend drops on completions survive the save → reload and backup round trips', () => {
+    const data = {
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      completions: [
+        {
+          id: 'c1',
+          habitId: 'a',
+          recordedAt: 2000,
+          dayKey: '2026-07-20',
+          drops: [{ kind: 'friend', category: 0, individual: 1 }],
+        },
+      ],
+    }
+    saveData(data)
+    expect(loadData()).toEqual(data)
+
+    const backup = exportData()
+    clearData()
+    expect(importData(backup).completions).toEqual(data.completions)
+  })
+
+  it('rejects a broken friend drop, like any corruption', () => {
+    const broken = (drop) => ({
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      completions: [
+        {
+          id: 'c1',
+          habitId: 'a',
+          recordedAt: 2000,
+          dayKey: '2026-07-20',
+          drops: [drop],
+        },
+      ],
+    })
+    expect(() =>
+      saveData(broken({ kind: 'friend', category: 10, individual: 1 })),
+    ).toThrow(/category/)
+    expect(() =>
+      saveData(broken({ kind: 'friend', category: 0, individual: 0 })),
+    ).toThrow(/individual/)
   })
 })
