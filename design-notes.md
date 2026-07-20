@@ -1,5 +1,11 @@
 # design-notes.md — HABITAT (UX & feel)
 
+_v1.6 — 2026-07-20 (eleventh session, T4.3 built). The Abode joins
+the record pages: open ground under sky, visual-first per §7 — flora,
+their arrangement, no prose, no dates. Undo/compost keep §2's quiet
+treatment (a small underlined word, never an alarm), and the held
+flora is §1's tap-to-reveal in miniature. Spec v1.23, plan v1.22._
+
 _v1.5 — 2026-07-19 (ninth session, T4.1 built). The Map is the first
 record page under §7's visual-first rule: shapes (seeded placeholders
 until T5.3), discovery dates, no stored prose — and no names until

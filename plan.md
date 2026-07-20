@@ -1,5 +1,17 @@
 # plan.md — HABITAT build plan
 
+*v1.22 — 2026-07-20 (eleventh session). **T4.3 built**: the Abode
+proper. Open ground under sky — no walls, a faint horizon, bare with
+no prose when empty (the constant-bookshelf precedent) — with every
+gathered flora a floating, draggable sprig: arrange them anywhere
+(sky included; gravity is not guaranteed here), each place remembered
+per find in storage v6 and pruned by compost or undo. A click holds a
+flora — a touch larger, named — revealing its quiet compost button.
+Kimia's calls today: open ground over a room, the waiting-to-decide
+list kept apart above the ground, compost behind the click-to-hold,
+and no found dates anywhere on the page. Purchased objects join the
+same ground in T4.3b. Next task: **T4.3b**.*
+
 *v1.21 — 2026-07-19 (tenth session, copy pass after T4.2). Kimia's
 call: the meters are renamed — **steps taken**, **literacy level**,
 **wallet balance** — and their under-captions are gone (no step total,
@@ -322,9 +334,16 @@ tracker. Everything after this is delight, informed by real use.
   removed from the Bookcase AND the Map's tooltips. Tests cover the
   layout maths, storage upgrade, click/drag/eye flows, and that
   reading still stores nothing.
-- [ ] **T4.3 Abode page** — gathered flora and purchased objects
-  placeable by drag, movable, removable (compost / return). Play, not
-  inventory management.
+- [x] **T4.3 Abode page** *(done 2026-07-20)* — gathered flora and
+  purchased objects placeable by drag, movable, removable (compost /
+  return). Play, not inventory management.
+  Built: open ground under sky (`game/abode.js` + storage v6's
+  `abodeLayout`, the bookcase pattern: fractions of the scene, keyed
+  by the dropping completion, entries only for moved flora, pruned on
+  compost/undo/import); drag anywhere, click to hold — the held flora
+  grows a touch, shows its name and a quiet compost button; the
+  waiting-to-decide list stays apart above the ground; no found
+  dates, no empty-state prose. Purchased objects join in T4.3b.
 - [ ] **T4.3b Market page** — the rotating stall. Small selection,
   rotates every 28 crons (a cron = a day with ≥1 habit marked,
   including retroactive marks — derivable from completion history, so

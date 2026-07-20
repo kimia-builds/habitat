@@ -3,7 +3,7 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 5,
+//     schemaVersion: 6,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — since v3 each
@@ -23,11 +23,16 @@
 //                              // bookshelf and which way it faces
 //                              // (no entry = default slot, spine)
 //                              // — see game/bookcase.js, added in T4.2
+//     abodeLayout: {},         // floraId → { x, y } — where each
+//                              // gathered flora stands on the Abode's
+//                              // open ground (no entry = default spot)
+//                              // — see game/abode.js, added in T4.3
 //   }
 //
 // The schemaVersion lets a future Habitat recognise and upgrade old
 // backups — upgradeData below does exactly that for v1.
 
+import { validateAbodeLayout } from '../game/abode.js'
 import { validateCompletion } from '../game/completions.js'
 import { DEFAULT_DAY_CUTOFF_HOUR } from '../game/constants.js'
 import { validateBookcaseLayout } from '../game/bookcase.js'
@@ -40,7 +45,7 @@ import { validateFloraDecisions } from '../game/flora.js'
 import { validateHabit } from '../game/habits.js'
 
 const STORAGE_KEY = 'habitat-data'
-const SCHEMA_VERSION = 5
+const SCHEMA_VERSION = 6
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -63,6 +68,7 @@ export function emptyData() {
     worldSeed: newWorldSeed(),
     floraDecisions: {},
     bookcaseLayout: {},
+    abodeLayout: {},
   }
 }
 
@@ -75,7 +81,9 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))))
+  return upgradeV5toV6(
+    upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))),
+  )
 }
 
 function upgradeV1toV2(data, now) {
@@ -157,8 +165,22 @@ function upgradeV4toV5(data) {
   if (data.schemaVersion !== 4) return data
   return {
     ...data,
-    schemaVersion: SCHEMA_VERSION,
+    schemaVersion: 5,
     bookcaseLayout: data.bookcaseLayout ?? {},
+  }
+}
+
+// v5 → v6 (T4.3): the envelope gains the abode layout — where each
+// gathered flora stands on the Abode's open ground (game/abode.js). A
+// v5 save predates arranging, so every flora it holds still stands in
+// its default spot: an empty map says exactly that.
+function upgradeV5toV6(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 5) return data
+  return {
+    ...data,
+    schemaVersion: SCHEMA_VERSION,
+    abodeLayout: data.abodeLayout ?? {},
   }
 }
 
@@ -219,6 +241,7 @@ function validateData(data) {
   }
   validateFloraDecisions(data.floraDecisions)
   validateBookcaseLayout(data.bookcaseLayout)
+  validateAbodeLayout(data.abodeLayout)
 }
 
 export function loadData() {

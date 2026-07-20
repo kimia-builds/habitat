@@ -4,6 +4,7 @@
 // all saving goes through the storage module.
 
 import { useEffect, useState } from 'react'
+import { abodeItems, placeFlora, pruneAbodeLayout } from './game/abode.js'
 import {
   deliverDrops,
   dropKey,
@@ -193,17 +194,25 @@ function App() {
   // pruned the same way (T3.3): undo a completion and its find — plus
   // whatever was decided about it — is gone, as if it never dropped.
   // And the bookcase layout is pruned likewise (T4.2): the undone
-  // completion's publication leaves the shelf, place and all.
+  // completion's publication leaves the shelf, place and all. The
+  // abode layout follows the same rule (T4.3), with one more way out:
+  // a composted flora leaves the ground, place and all.
   function save(next) {
+    const floraDecisions = pruneFloraDecisions(
+      next.floraDecisions,
+      next.completions,
+    )
     next = {
       ...next,
-      floraDecisions: pruneFloraDecisions(
-        next.floraDecisions,
-        next.completions,
-      ),
+      floraDecisions,
       bookcaseLayout: pruneBookcaseLayout(
         next.bookcaseLayout,
         next.completions,
+      ),
+      abodeLayout: pruneAbodeLayout(
+        next.abodeLayout,
+        next.completions,
+        floraDecisions,
       ),
     }
     saveData(next)
@@ -244,6 +253,23 @@ function App() {
         data.completions,
         completionId,
         decision,
+      ),
+    })
+  }
+
+  // The Abode arrangement (T4.3): a gathered flora dragged to its
+  // place on the open ground, remembered per find (storage v6); the
+  // game module clamps the place into the scene and refuses flora
+  // that aren't gathered there.
+  function handleFloraMove(floraId, point) {
+    save({
+      ...data,
+      abodeLayout: placeFlora(
+        data.abodeLayout,
+        data.completions,
+        data.floraDecisions,
+        floraId,
+        point,
       ),
     })
   }
@@ -578,9 +604,11 @@ function App() {
     )
   }
 
-  // The Abode (T3.3, early version): flora waiting to be decided and
-  // the gathered ones, compostable anytime. Reached from its link on
-  // the habit list; the arrangeable Abode proper arrives in T4.3.
+  // The Abode (T4.3): open ground under sky, gathered flora draggable
+  // anywhere on it (their places in storage v6), each compostable from
+  // its quiet held state. Flora still waiting to be decided keep their
+  // plain list above the ground. Reached from its link on the habit
+  // list; purchased objects join the ground in T4.3b.
   if (page === 'abode') {
     return (
       <main className="app">
@@ -588,7 +616,13 @@ function App() {
         {meters}
         <AbodePage
           finds={floraFinds(data.completions, data.floraDecisions)}
+          items={abodeItems(
+            data.completions,
+            data.floraDecisions,
+            data.abodeLayout,
+          )}
           onDecide={handleFloraDecision}
+          onMove={handleFloraMove}
           onBack={() => setPage(null)}
         />
       </main>

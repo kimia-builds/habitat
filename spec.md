@@ -1,5 +1,16 @@
 # spec.md — HABITAT
 
+*v1.23 — 2026-07-20 (eleventh session). T4.3 built: the Abode proper.
+Decided with Kimia: the Abode is **open ground under sky** (no walls
+— a patch of N-Z-D, constant like the bookshelf, bare with no prose
+when empty); gathered flora are **freely draggable** anywhere on the
+scene, each place remembered per find (storage v6); flora **waiting
+to decide stay in a quiet list apart** (the doorstep — they aren't
+home yet); **compost hides behind a click-to-hold** (the held flora
+shows its name and a quiet compost button, Bookcase-style); and **no
+found dates** on the Abode (the Bookcase/Map rule extends). All in
+the decisions log.*
+
 *v1.22 — 2026-07-19 (tenth session, copy pass after T4.2). Kimia's
 call: the meters are renamed — **steps taken**, **literacy level**,
 **wallet balance** — and the captions underneath are gone (no running
@@ -358,11 +369,12 @@ region discovery expands what the Market can offer.
   shelves when empty — no prose, no count, no dates.
 - **Market** (via fungus meter): the rotating stall; buy and return
   objects.
-- **Abode:** gathered flora and purchased objects, freely arrangeable,
-  removable (compost / return). An early, plain version exists since
-  T3.3 — reached from a link on the habit list — holding the flora
-  waiting to be decided and the gathered ones; the arrangeable page
-  arrives in T4.3.
+- **Abode:** open ground under sky (T4.3) — gathered flora (and, from
+  T4.3b, purchased objects) freely draggable anywhere on the scene,
+  each place remembered; a click holds a flora, showing its name and
+  its quiet compost button. Flora waiting to be decided (gather /
+  leave it) sit in a plain list above the ground. Bare ground when
+  empty — no prose, no dates. Reached from a link on the habit list.
 - **Guest Book:** friends made so far.
 - **Field notes:** the weekly view (T2.3) — browsable Mon–Sun weeks,
   opening on the last completed one; reached from a link on the habit
@@ -749,6 +761,38 @@ region discovery expands what the Market can offer.
   simply how often…" came out (supersedes "the page carries a short
   description of itself" from 2026-07-16, T2.3). The pages speak
   visually; the back-to-habits link stays.
+- 2026-07-20 (eleventh session, T4.3): **the Abode is open ground
+  under sky** — no walls, no room: a patch of N-Z-D with a faint
+  horizon, the sky above, the ground below (Kimia's call, over a room
+  interior or bare space). The scene is constant like the bookshelf —
+  the same ground for one flora or fifty, bare with no prose or count
+  when empty; crowding is solved by arranging, never by the ground
+  growing. Placement is deliberately free, sky included — gravity is
+  not guaranteed on this planet (§5), so a flora hangs wherever it's
+  left.
+- 2026-07-20 (eleventh session, T4.3): **gathered flora are freely
+  draggable, remembered per find** — storage v6's `abodeLayout` maps
+  each find (keyed by its dropping completion, like floraDecisions) to
+  scene fractions; an entry is written only once a flora is moved, and
+  un-moved flora stand in deterministic default spots along the ground
+  lines, stepping forward when an earlier find leaves. Composting a
+  find — or undoing its completion — prunes its stored place with it,
+  exactly like the bookcase layout. Purchased objects join the same
+  map in T4.3b.
+- 2026-07-20 (eleventh session, T4.3): **compost hides behind a quiet
+  hold** — a click holds a flora (a touch larger, its name showing)
+  and reveals its small compost button; a click anywhere else lets it
+  settle back (the Bookcase's click-then-eye precedent, over
+  hover-buttons or drag-to-a-spot). Composting still needs no
+  confirmation — nothing is ever lost — and still yields nothing.
+- 2026-07-20 (eleventh session, T4.3): **flora waiting to decide stay
+  apart, and no found dates on the Abode** — undecided finds keep a
+  small plain list above the ground (they aren't home yet; a place
+  comes with gathering), and the found-date captions came off the
+  Abode entirely, waiting list included (extending Kimia's 2026-07-19
+  no-found-dates rule from the Bookcase and Map). The T3.3 page's
+  "nothing here yet" and composting caption came out with them — the
+  ground speaks visually, like the shelves.
 - 2026-07-19 (tenth session, T4.2): **the Bookcase is one constant
   bookshelf** — the same frame and planks whether it holds one
   publication or a hundred (the faint-planet precedent: bare shelves

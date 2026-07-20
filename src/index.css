@@ -133,6 +133,65 @@ body {
   color: #9aa3b5;
 }
 
+/* T4.3: the Abode proper — open ground under sky, quiet like the
+   bookshelf: the scene never changes, only the flora move. The
+   waiting-to-decide list keeps the T3.3 row styles below. */
+.abode-ground-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.abode-soil {
+  fill: rgba(255, 255, 255, 0.02);
+}
+
+.abode-horizon {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+/* A gathered flora: the expedition stream's mint, glowing softly. */
+.abode-flora {
+  color: #a8dcc3;
+}
+
+.abode-flora-hold {
+  cursor: grab;
+  outline: none;
+}
+
+.abode-flora-glyph {
+  filter: drop-shadow(0 0 3px currentColor);
+}
+
+.abode-flora-glyph.held,
+.abode-flora-hold:focus-visible .abode-flora-glyph {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.abode-flora-name {
+  fill: #e8e6f0;
+  font-size: 7px;
+  text-anchor: middle;
+}
+
+/* The held flora's quiet compost button — small and low-key, never an
+   alarm: composting returns it to the world, nothing is ever lost. */
+.abode-compost {
+  cursor: pointer;
+  outline: none;
+  fill: #9aa3b5;
+  font-size: 6px;
+  text-anchor: middle;
+  text-decoration: underline;
+}
+
+.abode-compost:hover,
+.abode-compost:focus-visible {
+  fill: #e8e6f0;
+}
+
 /* T3.3: the early Abode — flora waiting to decide, and the gathered. */
 .abode h3 {
   font-weight: 300;

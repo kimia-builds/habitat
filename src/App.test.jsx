@@ -1151,7 +1151,7 @@ describe('gather / decline / compost (T3.3)', () => {
   const shelf = () => within(screen.getByRole('region', { name: 'arrivals' }))
   const abode = () => within(screen.getByText('the Abode').closest('section'))
 
-  it('a held flora offers gather / leave it; gathering shelves it in the Abode', () => {
+  it('a held flora offers gather / leave it; gathering stands it on the Abode ground', () => {
     seedWorld(findSeed('2026-07-16', 'flora'))
     render(<App />)
     dropOneFlora()
@@ -1161,13 +1161,13 @@ describe('gather / decline / compost (T3.3)', () => {
     fireEvent.click(shelf().getByRole('button', { name: 'gather' }))
     expect(decisions()).toEqual(['gathered'])
 
-    // The Abode lists it under gathered, dated with the day it dropped.
+    // The Abode stands it on the open ground (T4.3) — and shows no
+    // found date (Kimia's call 2026-07-20, the Bookcase/Map rule).
     fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
-    const gathered = within(
-      screen.getByRole('list', { name: 'gathered flora' }),
-    )
-    expect(gathered.getByText('a flora find')).toBeDefined()
-    expect(gathered.getByText('found 2026-07-16')).toBeDefined()
+    expect(
+      abode().getByRole('button', { name: 'a flora find' }),
+    ).toBeDefined()
+    expect(abode().queryByText(/found 2026/)).toBeNull()
   })
 
   it('an undecided flora simply waits on the Abode page — and can be left from there', () => {
@@ -1183,9 +1183,10 @@ describe('gather / decline / compost (T3.3)', () => {
     expect(waiting.getByText('a flora find')).toBeDefined()
 
     // Leave it: back in the world — off the page, out of the Abode.
+    // The ground stays bare, with no prose about it.
     fireEvent.click(waiting.getByRole('button', { name: 'leave it' }))
     expect(screen.queryByRole('list', { name: 'waiting to decide' })).toBeNull()
-    expect(abode().getByText('nothing here yet')).toBeDefined()
+    expect(abode().queryByRole('button', { name: 'a flora find' })).toBeNull()
     expect(decisions()).toEqual(['left'])
   })
 
@@ -1199,11 +1200,15 @@ describe('gather / decline / compost (T3.3)', () => {
     fireEvent.click(shelf().getByRole('button'))
     fireEvent.click(shelf().getByRole('button', { name: 'gather' }))
     fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    // On the ground (T4.3), compost hides behind the quiet hold: click
+    // the flora to hold it, then its compost button.
+    fireEvent.pointerDown(abode().getByRole('button', { name: 'a flora find' }))
+    fireEvent.pointerUp(window)
     fireEvent.click(abode().getByRole('button', { name: 'compost' }))
 
     // Gone from the Abode, recorded as composted — and no fungi from
     // it, ever (spec §5: composting yields nothing).
-    expect(abode().getByText('nothing here yet')).toBeDefined()
+    expect(abode().queryByRole('button', { name: 'a flora find' })).toBeNull()
     expect(decisions()).toEqual(['composted'])
     expect(wallet()).toBe('0')
   })
@@ -1218,10 +1223,80 @@ describe('gather / decline / compost (T3.3)', () => {
     expect(decisions()).toEqual(['gathered'])
 
     // Undo: the completion goes, and with it the find — the decision
-    // map holds no ghosts, and the Abode is empty again.
+    // map holds no ghosts, and the Abode's ground is bare again.
     fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
     expect(stored().floraDecisions).toEqual({})
     fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
-    expect(abode().getByText('nothing here yet')).toBeDefined()
+    expect(abode().queryByRole('button', { name: 'a flora find' })).toBeNull()
+  })
+})
+
+describe('the Abode ground (T4.3)', () => {
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+  const shelf = () => within(screen.getByRole('region', { name: 'arrivals' }))
+  const abode = () => within(screen.getByText('the Abode').closest('section'))
+
+  // Tap once (the seeded first tap drops exactly one flora), clear the
+  // reveal, gather the find, and open the Abode.
+  function gatherOneFlora() {
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    fireEvent.click(screen.getByRole('button', { name: 'onward' }))
+    fireEvent.click(shelf().getByRole('button'))
+    fireEvent.click(shelf().getByRole('button', { name: 'gather' }))
+    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+  }
+
+  it('a dragged flora keeps its place — remembered in storage, per find', () => {
+    // jsdom can't measure SVG; give the scene a frame so the drag has
+    // somewhere to land.
+    const restore = SVGSVGElement.prototype.getBoundingClientRect
+    SVGSVGElement.prototype.getBoundingClientRect = () => ({
+      left: 0,
+      top: 0,
+      width: 240,
+      height: 160,
+      right: 240,
+      bottom: 160,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    })
+    try {
+      seedWorld(findSeed('2026-07-16', 'flora'))
+      render(<App />)
+      gatherOneFlora()
+
+      expect(stored().abodeLayout).toEqual({})
+      const flora = abode().getByRole('button', { name: 'a flora find' })
+      fireEvent.pointerDown(flora, { clientX: 20, clientY: 20 })
+      fireEvent.pointerMove(window, { clientX: 60, clientY: 120 })
+      fireEvent.pointerUp(window, { clientX: 60, clientY: 120 })
+
+      // A quarter across, three quarters down — stored as fractions,
+      // keyed by the completion whose tap dropped the find.
+      const places = Object.values(stored().abodeLayout)
+      expect(places).toEqual([{ x: 0.25, y: 0.75 }])
+
+      // Undo the tap: the find goes, and its stored place with it.
+      fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
+      fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
+      expect(stored().abodeLayout).toEqual({})
+    } finally {
+      SVGSVGElement.prototype.getBoundingClientRect = restore
+    }
+  })
+
+  it('composting takes the stored place with it — the map holds no ghosts', () => {
+    seedWorld(findSeed('2026-07-16', 'flora'))
+    render(<App />)
+    gatherOneFlora()
+
+    // Hold the flora and compost it (no drag: the place was never
+    // stored, and composting must leave none behind either way).
+    fireEvent.pointerDown(abode().getByRole('button', { name: 'a flora find' }))
+    fireEvent.pointerUp(window)
+    fireEvent.click(abode().getByRole('button', { name: 'compost' }))
+    expect(stored().abodeLayout).toEqual({})
+    expect(abode().queryByRole('button', { name: 'a flora find' })).toBeNull()
   })
 })
