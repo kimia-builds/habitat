@@ -1164,9 +1164,7 @@ describe('gather / decline / compost (T3.3)', () => {
     // The Abode stands it on the open ground (T4.3) — and shows no
     // found date (Kimia's call 2026-07-20, the Bookcase/Map rule).
     fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
-    expect(
-      abode().getByRole('button', { name: 'a flora find' }),
-    ).toBeDefined()
+    expect(abode().getByRole('button', { name: 'a flora find' })).toBeDefined()
     expect(abode().queryByText(/found 2026/)).toBeNull()
   })
 
@@ -1298,5 +1296,117 @@ describe('the Abode ground (T4.3)', () => {
     fireEvent.click(abode().getByRole('button', { name: 'compost' }))
     expect(stored().abodeLayout).toEqual({})
     expect(abode().queryByRole('button', { name: 'a flora find' })).toBeNull()
+  })
+})
+
+describe('the Market (T4.3b)', () => {
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+  const meters = () => within(screen.getByRole('region', { name: 'meters' }))
+  const abode = () => within(screen.getByText('the Abode').closest('section'))
+  const wallet = () => document.querySelector('.meter-wallet').textContent
+
+  // A world with 14 fungi in the wallet: five marks across three lived
+  // days (Mon–Wed), so one Map region is known and the first stall
+  // offers that region's three curiosities (6, 12 and 18 fungi).
+  // Yesterday is already answered (seedWorld), so the list shows.
+  function seedMarketWorld() {
+    seedWorld('market-seed', {
+      completions: [
+        {
+          id: 'c1',
+          habitId: 'walk',
+          recordedAt: 1000,
+          dayKey: '2026-07-13',
+          drops: [{ kind: 'fungi', amount: 3 }],
+        },
+        {
+          id: 'c2',
+          habitId: 'walk',
+          recordedAt: 2000,
+          dayKey: '2026-07-14',
+          drops: [{ kind: 'fungi', amount: 3 }],
+        },
+        {
+          id: 'c3',
+          habitId: 'walk',
+          recordedAt: 3000,
+          dayKey: '2026-07-15',
+          drops: [{ kind: 'fungi', amount: 3 }],
+        },
+        {
+          id: 'c4',
+          habitId: 'walk',
+          recordedAt: 4000,
+          dayKey: '2026-07-15',
+          drops: [{ kind: 'fungi', amount: 3 }],
+        },
+        {
+          id: 'c5',
+          habitId: 'walk',
+          recordedAt: 5000,
+          dayKey: '2026-07-15',
+          drops: [{ kind: 'fungi', amount: 2 }],
+        },
+      ],
+    })
+  }
+
+  it('buy → the object lives in the abode; sell → full refund, announced like a fungus drop', () => {
+    seedMarketWorld()
+    render(<App />)
+    expect(wallet()).toBe('14')
+
+    // The stall opens from the wallet meter, three curiosities on offer.
+    fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
+    expect(screen.getByRole('heading', { name: 'the Market' })).toBeDefined()
+    fireEvent.click(
+      screen.getByRole('button', { name: 'buy a curiosity for 12 fungi' }),
+    )
+    expect(wallet()).toBe('2') // the wallet falls by exactly the price
+    expect(screen.getByText('×1 at home')).toBeDefined()
+    expect(stored().purchases).toHaveLength(1)
+    expect(stored().schemaVersion).toBe(7)
+
+    // Home and into the abode: the curiosity stands on the ground.
+    fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
+    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    fireEvent.pointerDown(abode().getByRole('button', { name: 'a curiosity' }))
+    fireEvent.pointerUp(window)
+    fireEvent.click(abode().getByRole('button', { name: 'sell' }))
+
+    // Refunded in full — a round trip is always fungus-neutral — and
+    // the refund arrives with the same feedback a fungus drop shows.
+    expect(wallet()).toBe('14')
+    expect(stored().purchases).toEqual([])
+    expect(stored().abodeLayout).toEqual({})
+    expect(abode().queryByRole('button', { name: 'a curiosity' })).toBeNull()
+    const arrivals = screen.getByRole('region', { name: 'arrivals' })
+    expect(
+      within(arrivals).getByRole('button', { name: /click to hold|12 fungi/ }),
+    ).toBeDefined()
+  })
+
+  it('what the wallet cannot reach cannot be bought', () => {
+    seedMarketWorld() // 14 fungi
+    render(<App />)
+    fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
+    expect(
+      screen.getByRole('button', { name: 'buy a curiosity for 18 fungi' })
+        .disabled,
+    ).toBe(true)
+    fireEvent.click(
+      screen.getByRole('button', { name: 'buy a curiosity for 6 fungi' }),
+    )
+    expect(wallet()).toBe('8')
+    expect(stored().purchases).toHaveLength(1)
+  })
+
+  it('a fresh world shows a bare stall — no prose, nothing to buy', () => {
+    seedWorld('market-seed') // no completions at all: no lived days, no regions
+    render(<App />)
+    fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
+    expect(screen.getByRole('heading', { name: 'the Market' })).toBeDefined()
+    expect(screen.queryByRole('list')).toBeNull()
+    expect(screen.queryByRole('button', { name: /buy/ })).toBeNull()
   })
 })

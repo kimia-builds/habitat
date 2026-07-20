@@ -1,5 +1,16 @@
 # plan.md — HABITAT build plan
 
+*v1.24 — 2026-07-20 (thirteenth session). **T4.3b built**: the Market
+page — the rotating stall. Four curiosities on offer, sliding four
+further along the pool every 28 lived days; the pool grows with each
+discovered region (3 objects each, priced 6 / 12 / 18 until T6.1);
+everything cycles back, provably tested. Kimia's calls today:
+duplicates allowed (buying never takes an object off the stall; each
+copy is its own instance), selling from the Abode compost-style with
+the button reading "sell", the refund announced like a fungus drop,
+and generic "a curiosity" objects with seeded code-drawn art. Storage
+v7 (purchases). Spec v1.25. Next task: **T4.4**.*
+
 *v1.23 — 2026-07-20 (twelfth session, docs only). A UX, copy and design
 pass decided with Kimia — no code today. New task **T4.5** (page
 renames, the left icon rail, the date display, icon-only actions, -1,
@@ -359,7 +370,7 @@ tracker. Everything after this is delight, informed by real use.
   grows a touch, shows its name and a quiet compost button; the
   waiting-to-decide list stays apart above the ground; no found
   dates, no empty-state prose. Purchased objects join in T4.3b.
-- [ ] **T4.3b Market page** — the rotating stall. Small selection,
+- [x] **T4.3b Market page** *(done 2026-07-20)* — the rotating stall. Small selection,
   rotates every 28 lived days (a lived day = a day with ≥1 habit marked,
   including retroactive marks — derivable from completion history, so
   nothing earlier needs rebuilding; never calendar days); pool grows
@@ -369,6 +380,20 @@ tracker. Everything after this is delight, informed by real use.
   *Done when:* rotation tests pass (gap days don't advance the clock;
   backfilled days count; no item permanently missable) and buy/return
   round-trips are always fungus-neutral.
+  Built: `game/market.js` — lived-day counting, the rotation clock,
+  the region-fed pool and the sliding stall window (4 on offer, 3 per
+  region, ⌈pool/4⌉ rotations to see everything again — all tested);
+  buy/sell with the price frozen at buy time, the wallet always
+  derived (drops − owned): it shows nothing below zero, but debt from
+  undoing spent fungi stays real under the hood, settled first by
+  later income and refunds (Kimia's correction, same day). Storage v7's
+  `purchases` list. The Market page: seeded curiosity art
+  (`ui/ObjectGlyph.jsx`, four forms × a pastel hue from the seed),
+  quiet prices, dimmed buy when the wallet can't reach, "×n at home"
+  for owned copies (duplicates allowed — Kimia's call). Owned objects
+  share the Abode's ground and its drag/hold patterns: hold reveals
+  the quiet **sell** button (her word), the refund arriving like a
+  fungus drop. The stub page is gone — the Market was the last one.
 - [ ] **T4.4 Guest Book + friendships.**
   Literacy milestones open doors; friends arrive as surprise drops in
   the following days (delay logic tested). 10 categories per spec.

@@ -227,7 +227,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(6) // upgrades chain: v1 → … → v6
+    expect(data.schemaVersion).toBe(7) // upgrades chain: v1 → … → v7
     expect(data.settings.fieldNotesShownOn).toBe(null)
     expect(data.floraDecisions).toEqual({})
     expect(data.bookcaseLayout).toEqual({})
@@ -263,7 +263,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
       ],
     })
     const restored = importData(backup)
-    expect(restored.schemaVersion).toBe(6)
+    expect(restored.schemaVersion).toBe(7)
     expect(restored.habits[0].scheduleHistory[0].schedule).toEqual({
       type: 'nPerWeek',
       n: 3,
@@ -290,7 +290,7 @@ describe('the v2 → v3 upgrade (T3.2)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(6)
+    expect(data.schemaVersion).toBe(7)
     expect(typeof data.worldSeed).toBe('string')
     expect(data.worldSeed).not.toBe('')
     // Kimia's decision 2026-07-19: pre-update history rolls nothing.
@@ -377,7 +377,7 @@ describe('the v3 → v4 upgrade (T3.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(6)
+    expect(data.schemaVersion).toBe(7)
     expect(data.floraDecisions).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -443,7 +443,7 @@ describe('the v4 → v5 upgrade (T4.2)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(6)
+    expect(data.schemaVersion).toBe(7)
     expect(data.bookcaseLayout).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -515,7 +515,7 @@ describe('the v5 → v6 upgrade (T4.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(6)
+    expect(data.schemaVersion).toBe(7)
     expect(data.abodeLayout).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -558,5 +558,70 @@ describe('the v5 → v6 upgrade (T4.3)', () => {
     expect(() =>
       importData(JSON.stringify({ ...emptyData(), abodeLayout: [] })),
     ).toThrow(/map/)
+  })
+})
+
+describe('the v6 → v7 upgrade (T4.3b)', () => {
+  it('a v6 save gains an empty purchases list — nothing owned at the Market yet', () => {
+    // A hand-written v6 record, exactly as T4.3-era Habitat stored it —
+    // abodeLayout present, no purchases anywhere.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 6,
+        habits: [habit('a', 'Read')],
+        completions: [
+          {
+            id: 'c1',
+            habitId: 'a',
+            recordedAt: 2000,
+            dayKey: '2026-07-12',
+            drops: [{ kind: 'fungi', amount: 3 }],
+          },
+        ],
+        settings: { dayCutoffHour: 3, fieldNotesShownOn: null },
+        checkedInThrough: null,
+        worldSeed: 'seed',
+        floraDecisions: {},
+        bookcaseLayout: {},
+        abodeLayout: {},
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(7)
+    expect(data.purchases).toEqual([])
+    // And the upgraded shape passes full validation on the next save.
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('purchases survive the save → reload and backup round trips', () => {
+    const data = {
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      purchases: [
+        { id: 'p1', objectKey: '0:1', price: 12, boughtAt: 5000 },
+        { id: 'p2', objectKey: '0:1', price: 12, boughtAt: 6000 },
+      ],
+    }
+    saveData(data)
+    expect(loadData()).toEqual(data)
+
+    const backup = exportData()
+    clearData()
+    expect(importData(backup).purchases).toEqual(data.purchases)
+  })
+
+  it('rejects broken purchases, like any corruption', () => {
+    expect(() =>
+      saveData({
+        ...emptyData(),
+        purchases: [{ id: 'p1', objectKey: '0:1', price: -12, boughtAt: 5 }],
+      }),
+    ).toThrow(/positive whole/)
+    expect(() =>
+      importData(JSON.stringify({ ...emptyData(), purchases: {} })),
+    ).toThrow(/list/)
   })
 })

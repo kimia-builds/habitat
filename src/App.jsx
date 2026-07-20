@@ -4,11 +4,15 @@
 // all saving goes through the storage module.
 
 import { useEffect, useState } from 'react'
-import { abodeItems, placeFlora, pruneAbodeLayout } from './game/abode.js'
+import {
+  abodeItems,
+  placeFlora,
+  placeObject,
+  pruneAbodeLayout,
+} from './game/abode.js'
 import {
   deliverDrops,
   dropKey,
-  fungusBalanceFrom,
   readingItemsFrom,
   seenDropKeys,
 } from './game/arrivals.js'
@@ -36,6 +40,17 @@ import {
   floraStatus,
   pruneFloraDecisions,
 } from './game/flora.js'
+import {
+  buyObject,
+  livedDayCount,
+  marketPool,
+  rotationIndex,
+  sellObject,
+  stallObjects,
+  walletBalance,
+} from './game/market.js'
+import { discoveredRegionCount } from './game/map.js'
+import { expeditionSteps } from './game/meters.js'
 import {
   activeHabits,
   addHabit,
@@ -75,9 +90,9 @@ import FirstReveal from './ui/FirstReveal.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import MapPage from './ui/MapPage.jsx'
+import MarketPage from './ui/MarketPage.jsx'
 import Meters from './ui/Meters.jsx'
 import SpreadPopup from './ui/SpreadPopup.jsx'
-import StubPage from './ui/StubPage.jsx'
 import SymbolPicker from './ui/SymbolPicker.jsx'
 
 function App() {
@@ -87,9 +102,9 @@ function App() {
   const [filter, setFilter] = useState([])
   // What the form area is doing: null (closed), 'new', or a habit id.
   const [editing, setEditing] = useState(null)
-  // Which screen is showing (T2.2): the habit list, one of the
-  // placeholder pages behind the meters ('map' | 'bookcase' | 'market'),
-  // or the field notes ('fieldnotes', T2.3).
+  // Which screen is showing: the habit list, one of the world pages
+  // behind the meters or the list's links ('map' | 'bookcase' |
+  // 'market' | 'abode'), or the field notes ('fieldnotes', T2.3).
   // Plain component state — a reload lands back on the list.
   const [page, setPage] = useState(null)
 
@@ -195,8 +210,9 @@ function App() {
   // whatever was decided about it — is gone, as if it never dropped.
   // And the bookcase layout is pruned likewise (T4.2): the undone
   // completion's publication leaves the shelf, place and all. The
-  // abode layout follows the same rule (T4.3), with one more way out:
-  // a composted flora leaves the ground, place and all.
+  // abode layout follows the same rule (T4.3), with two more ways out:
+  // a composted flora or a sold-back object (T4.3b) leaves the ground,
+  // place and all.
   function save(next) {
     const floraDecisions = pruneFloraDecisions(
       next.floraDecisions,
@@ -213,12 +229,16 @@ function App() {
         next.abodeLayout,
         next.completions,
         floraDecisions,
+        next.purchases,
       ),
     }
     saveData(next)
     setData(next)
     const alive = new Set(next.completions.map((c) => c.id))
-    const prune = (list) => list.filter((a) => alive.has(a.completionId))
+    // Sale arrivals (T4.3b) belong to no completion — they answer to
+    // their own short linger, not to this pruning.
+    const prune = (list) =>
+      list.filter((a) => a.sale || alive.has(a.completionId))
     setArrivals(prune)
     setPendingArrivals(prune)
   }
@@ -257,21 +277,65 @@ function App() {
     })
   }
 
-  // The Abode arrangement (T4.3): a gathered flora dragged to its
-  // place on the open ground, remembered per find (storage v6); the
-  // game module clamps the place into the scene and refuses flora
-  // that aren't gathered there.
-  function handleFloraMove(floraId, point) {
+  // The Abode arrangement (T4.3): something on the ground dragged to
+  // its place, remembered per item (storage v6); the game module clamps
+  // the place into the scene and refuses items that aren't there. Since
+  // T4.3b the ground holds two id families — a flora's completion id or
+  // an object's purchase id — so the kind is told by who owns the id.
+  function handleItemMove(itemId, point) {
+    const isObject = data.purchases.some((p) => p.id === itemId)
     save({
       ...data,
-      abodeLayout: placeFlora(
-        data.abodeLayout,
-        data.completions,
-        data.floraDecisions,
-        floraId,
-        point,
+      abodeLayout: isObject
+        ? placeObject(data.abodeLayout, data.purchases, itemId, point)
+        : placeFlora(
+            data.abodeLayout,
+            data.completions,
+            data.floraDecisions,
+            itemId,
+            point,
+          ),
+    })
+  }
+
+  // Buying at the stall (T4.3b): a new owned instance with its price
+  // frozen at buy time — duplicates allowed (Kimia's call 2026-07-20).
+  // The wallet is derived, so it falls by the price on its own; the
+  // game module refuses to overdraw (the buy button is already dimmed
+  // then, so this is the backstop, never the message).
+  function handleBuy(object) {
+    save({
+      ...data,
+      purchases: buyObject(
+        data.purchases,
+        object,
+        walletBalance(data.completions, data.purchases),
       ),
     })
+  }
+
+  // Selling an owned object back to the world (T4.3b): it leaves the
+  // ground and the wallet rises by exactly its frozen price — a round
+  // trip is always fungus-neutral. The refund is announced with the
+  // same arrival feedback a fungus drop shows (Kimia's call
+  // 2026-07-20): a fungi arrival that lingers and fades. It belongs to
+  // no completion, so it carries the sale marker past save()'s pruning.
+  function handleSell(purchaseId) {
+    const sold = data.purchases.find((p) => p.id === purchaseId)
+    if (!sold) return
+    save({ ...data, purchases: sellObject(data.purchases, purchaseId) })
+    setArrivals((list) => [
+      ...list,
+      {
+        id: `sale:${purchaseId}`,
+        completionId: null,
+        habitId: null,
+        key: 'fungi',
+        amount: sold.price,
+        first: false,
+        sale: true,
+      },
+    ])
   }
 
   // The Bookcase arrangement (T4.2): a book dragged to its place, or
@@ -530,8 +594,9 @@ function App() {
 
   // The three meters (T2.2), all computed live from completion history
   // — since T3.2 that includes each completion's stored drops, so the
-  // literacy meter and the fungus wallet finally move. Below them, the
-  // arrival shelf and (topmost of all) any first-occurrence reveal
+  // literacy meter and the fungus wallet finally move; since T4.3b the
+  // wallet also counts what the owned market objects cost. Below them,
+  // the arrival shelf and (topmost of all) any first-occurrence reveal
   // still owed: one at a time, dismissed by its own button.
   const revealing = arrivals.find((a) => a.first && !seenRevealIds.has(a.id))
   const meters = (
@@ -539,7 +604,7 @@ function App() {
       <Meters
         completions={data.completions}
         readingItems={readingItemsFrom(data.completions)}
-        fungusBalance={fungusBalanceFrom(data.completions)}
+        fungusBalance={walletBalance(data.completions, data.purchases)}
         onOpen={setPage}
       />
       <ArrivalShelf
@@ -604,11 +669,11 @@ function App() {
     )
   }
 
-  // The Abode (T4.3): open ground under sky, gathered flora draggable
-  // anywhere on it (their places in storage v6), each compostable from
-  // its quiet held state. Flora still waiting to be decided keep their
-  // plain list above the ground. Reached from its link on the habit
-  // list; purchased objects join the ground in T4.3b.
+  // The Abode (T4.3): open ground under sky, gathered flora and (since
+  // T4.3b) owned market objects draggable anywhere on it, their places
+  // remembered; each compostable or sellable from its quiet held state.
+  // Flora still waiting to be decided keep their plain list above the
+  // ground. Reached from its link on the habit list.
   if (page === 'abode') {
     return (
       <main className="app">
@@ -620,9 +685,12 @@ function App() {
             data.completions,
             data.floraDecisions,
             data.abodeLayout,
+            data.purchases,
           )}
+          worldSeed={data.worldSeed}
           onDecide={handleFloraDecision}
-          onMove={handleFloraMove}
+          onMove={handleItemMove}
+          onSell={handleSell}
           onBack={() => setPage(null)}
         />
       </main>
@@ -666,14 +734,28 @@ function App() {
     )
   }
 
-  // A meter was clicked: its placeholder page (the Market arrives for
-  // real in T4.3b), with the meters still up top.
-  if (page !== null) {
+  // The Market (T4.3b): the rotating stall. Its selection is derived,
+  // never stored — lived days (counted from completion history) set the
+  // rotation, discovered regions the pool — so the stall always agrees
+  // with history, undo and all. Only the purchases list remembers what
+  // Kimia owns; the wallet is the same derivation, drops minus owned.
+  if (page === 'market') {
+    const rotation = rotationIndex(livedDayCount(data.completions))
+    const pool = marketPool(
+      discoveredRegionCount(expeditionSteps(data.completions)),
+    )
     return (
       <main className="app">
         {header}
         {meters}
-        <StubPage page={page} onBack={() => setPage(null)} />
+        <MarketPage
+          stall={stallObjects(pool, rotation)}
+          purchases={data.purchases}
+          wallet={walletBalance(data.completions, data.purchases)}
+          worldSeed={data.worldSeed}
+          onBuy={handleBuy}
+          onBack={() => setPage(null)}
+        />
       </main>
     )
   }

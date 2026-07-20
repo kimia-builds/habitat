@@ -2,31 +2,36 @@
 //
 // The Abode is OPEN GROUND under sky (Kimia's decision 2026-07-20): a
 // patch of N-Z-D, no walls, the same quiet scene whether it holds one
-// gathered flora or fifty. Gathered flora are floating objects on it —
-// Kimia drags them anywhere and arranges them freely. Where each one
-// sits lives in ONE map, stored in the envelope (storage v6):
+// gathered flora or fifty. Gathered flora — and, since T4.3b, the
+// market objects Kimia owns — are floating objects on it: she drags
+// them anywhere and arranges them freely. Where each one sits lives in
+// ONE map, stored in the envelope (storage v6):
 //
-//   abodeLayout: { [floraId]: { x, y } }
+//   abodeLayout: { [itemId]: { x, y } }
 //
-//   - floraId is the id of the completion whose tap dropped the find
-//     (at most one flora per completion — the same key floraDecisions
-//     uses). Purchased objects join this map in T4.3b with their own
-//     ids; the map itself doesn't care what kind of thing an id names.
-//   - x, y are FRACTIONS of the whole scene (0–1), the flora's anchor
+//   - For a flora, itemId is the id of the completion whose tap dropped
+//     the find (at most one flora per completion — the same key
+//     floraDecisions uses). For an owned object, itemId is the
+//     purchase's own id (T4.3b — duplicates allowed, so each copy
+//     carries its own). The map itself doesn't care which kind of
+//     thing an id names, and the two id families can't collide.
+//   - x, y are FRACTIONS of the whole scene (0–1), the item's anchor
 //     point at its bottom centre — so the arrangement survives any
 //     screen size. The scene includes the sky, and placement is
 //     deliberately free: gravity is not guaranteed on this planet
-//     (spec §5), so a flora may hang wherever Kimia leaves it.
+//     (spec §5), so a flora or curiosity may hang wherever Kimia
+//     leaves it.
 //
-// A flora with NO entry sits in its default spot (defaultSpot below) —
+// An item with NO entry sits in its default spot (defaultSpot below) —
 // an entry is written only once Kimia moves it, so the map stays tiny.
 //
 // Everything is derived from completion history + the decisions map +
-// this one (the always-derived principle, same as the meters and the
-// bookcase): only GATHERED flora stand on the ground. Compost a find,
-// or undo the completion that dropped it, and pruneAbodeLayout —
-// called on every save — takes its stored place with it. As if it was
-// never there.
+// the purchases list + this one (the always-derived principle, same as
+// the meters and the bookcase): only GATHERED flora and OWNED objects
+// stand on the ground. Compost a find, undo the completion that
+// dropped it, or sell an object back to the world, and
+// pruneAbodeLayout — called on every save — takes its stored place
+// with it. As if it was never there.
 
 import { floraFinds } from './flora.js'
 
@@ -51,9 +56,9 @@ function clampUnit(value) {
   return Math.min(1, Math.max(0, value))
 }
 
-// The default anchor for the gathered flora that is Nth on the ground.
+// The default anchor for the item that is Nth on the ground.
 // Deterministic: the same state always lays out the same untouched
-// ground. (Composting an earlier find lets later un-moved flora step
+// ground. (An earlier item leaving lets later un-moved items step
 // forward a spot — the ground quietly closes its gaps.)
 export function defaultSpot(index) {
   if (!Number.isInteger(index) || index < 0) {
@@ -69,22 +74,33 @@ export function defaultSpot(index) {
   }
 }
 
-// Every gathered flora on the ground, in arrival order, with its place
-// resolved: the stored place when Kimia has given it one, its default
-// spot otherwise. Layout entries whose flora is no longer gathered
-// (composted, undone) are simply ignored.
-export function abodeItems(completions, decisions, layout) {
-  return floraFinds(completions, decisions)
+// Everything standing on the ground, with its place resolved: the
+// stored place when Kimia has given it one, its default spot
+// otherwise. Gathered flora come first (in arrival order), then owned
+// objects (in buy order) — each item carries its kind and a single id
+// the layout map keys on (a flora's completion id, an object's
+// purchase id). Layout entries whose item is gone (composted, undone,
+// sold) are simply ignored.
+export function abodeItems(completions, decisions, layout, purchases = []) {
+  const flora = floraFinds(completions, decisions)
     .filter((find) => find.status === 'gathered')
-    .map((find, index) => {
-      const stored = layout[find.completionId]
-      const spot = defaultSpot(index)
-      return {
-        ...find,
-        x: stored?.x ?? spot.x,
-        y: stored?.y ?? spot.y,
-      }
-    })
+    .map((find) => ({ ...find, kind: 'flora', id: find.completionId }))
+  const objects = purchases.map((purchase) => ({
+    kind: 'object',
+    id: purchase.id,
+    objectKey: purchase.objectKey,
+    price: purchase.price,
+    boughtAt: purchase.boughtAt,
+  }))
+  return [...flora, ...objects].map((item, index) => {
+    const stored = layout[item.id]
+    const spot = defaultSpot(index)
+    return {
+      ...item,
+      x: stored?.x ?? spot.x,
+      y: stored?.y ?? spot.y,
+    }
+  })
 }
 
 // Record where one flora was dragged to. Fractions are clamped into
@@ -98,48 +114,69 @@ export function placeFlora(layout, completions, decisions, floraId, point) {
   if (!onGround) {
     throw new Error('No gathered flora on the ground has this id.')
   }
+  return placeItem(layout, floraId, point)
+}
+
+// Record where one owned object was dragged to (T4.3b). Same rule as
+// the flora: only an object actually standing on the ground (owned)
+// can be placed. Returns a NEW map.
+export function placeObject(layout, purchases, purchaseId, point) {
+  const onGround = purchases.some((purchase) => purchase.id === purchaseId)
+  if (!onGround) {
+    throw new Error('No owned object on the ground has this id.')
+  }
+  return placeItem(layout, purchaseId, point)
+}
+
+function placeItem(layout, itemId, point) {
   if (
     typeof point !== 'object' ||
     point === null ||
     !Number.isFinite(point.x) ||
     !Number.isFinite(point.y)
   ) {
-    throw new Error('A flora place needs finite x and y fractions.')
+    throw new Error('A place needs finite x and y fractions.')
   }
   return {
     ...layout,
-    [floraId]: { x: clampUnit(point.x), y: clampUnit(point.y) },
+    [itemId]: { x: clampUnit(point.x), y: clampUnit(point.y) },
   }
 }
 
-// Drop places whose flora no longer stands on the ground — composted,
-// left, undone, deleted forever, or an import into a different
-// history. Called on every save, so the stored map never carries
-// ghosts. (T4.3b extends this to keep purchased objects' places.)
-export function pruneAbodeLayout(layout, completions, decisions) {
-  const alive = new Set(
-    floraFinds(completions, decisions)
+// Drop places whose item no longer stands on the ground — composted,
+// left, undone, deleted forever, sold back to the world, or an import
+// into a different history. Called on every save, so the stored map
+// never carries ghosts.
+export function pruneAbodeLayout(
+  layout,
+  completions,
+  decisions,
+  purchases = [],
+) {
+  const alive = new Set([
+    ...floraFinds(completions, decisions)
       .filter((find) => find.status === 'gathered')
       .map((find) => find.completionId),
-  )
+    ...purchases.map((purchase) => purchase.id),
+  ])
   const pruned = {}
-  for (const [floraId, place] of Object.entries(layout)) {
-    if (alive.has(floraId)) pruned[floraId] = place
+  for (const [itemId, place] of Object.entries(layout)) {
+    if (alive.has(itemId)) pruned[itemId] = place
   }
   return pruned
 }
 
 // Shape check for storage: the map must be an object of complete,
-// in-bounds places. (Whether each flora is still gathered is NOT
-// checked here — orphans are legal in a freshly imported backup and
-// get pruned on the next save.)
+// in-bounds places. (Whether each item still stands on the ground is
+// NOT checked here — orphans are legal in a freshly imported backup
+// and get pruned on the next save.)
 export function validateAbodeLayout(layout) {
   if (typeof layout !== 'object' || layout === null || Array.isArray(layout)) {
-    throw new Error('The abode layout must be a map of flora id → place.')
+    throw new Error('The abode layout must be a map of item id → place.')
   }
-  for (const [floraId, place] of Object.entries(layout)) {
-    if (floraId === '') {
-      throw new Error('An abode place needs the id of its flora.')
+  for (const [itemId, place] of Object.entries(layout)) {
+    if (itemId === '') {
+      throw new Error('An abode place needs the id of its flora or object.')
     }
     if (typeof place !== 'object' || place === null || Array.isArray(place)) {
       throw new Error('An abode place must be an object.')

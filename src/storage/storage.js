@@ -3,7 +3,7 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 6,
+//     schemaVersion: 7,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — since v3 each
@@ -23,10 +23,17 @@
 //                              // bookshelf and which way it faces
 //                              // (no entry = default slot, spine)
 //                              // — see game/bookcase.js, added in T4.2
-//     abodeLayout: {},         // floraId → { x, y } — where each
-//                              // gathered flora stands on the Abode's
-//                              // open ground (no entry = default spot)
-//                              // — see game/abode.js, added in T4.3
+//     abodeLayout: {},         // floraId | purchaseId → { x, y } — where
+//                              // each gathered flora (and, since T4.3b,
+//                              // each owned market object) stands on the
+//                              // Abode's open ground (no entry = default
+//                              // spot) — see game/abode.js, added in T4.3
+//     purchases: [],           // the owned market objects, one entry per
+//                              // instance: { id, objectKey, price,
+//                              // boughtAt } — duplicates allowed, the
+//                              // price frozen at buy time so a sell
+//                              // always refunds exactly what was paid
+//                              // — see game/market.js, added in T4.3b
 //   }
 //
 // The schemaVersion lets a future Habitat recognise and upgrade old
@@ -43,9 +50,10 @@ import {
 } from '../game/days.js'
 import { validateFloraDecisions } from '../game/flora.js'
 import { validateHabit } from '../game/habits.js'
+import { validatePurchases } from '../game/market.js'
 
 const STORAGE_KEY = 'habitat-data'
-const SCHEMA_VERSION = 6
+const SCHEMA_VERSION = 7
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -69,6 +77,7 @@ export function emptyData() {
     floraDecisions: {},
     bookcaseLayout: {},
     abodeLayout: {},
+    purchases: [],
   }
 }
 
@@ -81,8 +90,10 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV5toV6(
-    upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))),
+  return upgradeV6toV7(
+    upgradeV5toV6(
+      upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))),
+    ),
   )
 }
 
@@ -179,8 +190,22 @@ function upgradeV5toV6(data) {
   if (data.schemaVersion !== 5) return data
   return {
     ...data,
-    schemaVersion: SCHEMA_VERSION,
+    schemaVersion: 6,
     abodeLayout: data.abodeLayout ?? {},
+  }
+}
+
+// v6 → v7 (T4.3b): the envelope gains the purchases list — the market
+// objects Kimia owns, one entry per instance, its price frozen at buy
+// time (game/market.js). A v6 save predates the Market, so it owns
+// nothing yet: an empty list says exactly that.
+function upgradeV6toV7(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 6) return data
+  return {
+    ...data,
+    schemaVersion: SCHEMA_VERSION,
+    purchases: data.purchases ?? [],
   }
 }
 
@@ -242,6 +267,7 @@ function validateData(data) {
   validateFloraDecisions(data.floraDecisions)
   validateBookcaseLayout(data.bookcaseLayout)
   validateAbodeLayout(data.abodeLayout)
+  validatePurchases(data.purchases)
 }
 
 export function loadData() {

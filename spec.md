@@ -1,5 +1,16 @@
 # spec.md — HABITAT
 
+*v1.25 — 2026-07-20 (thirteenth session). T4.3b built: the Market
+page — the rotating stall, at last. Decided with Kimia: the stall
+shows **4 curiosities**, each discovered region adds **3** to the pool
+(prices **6 / 12 / 18** fungi, one per tier per region, until T6.1
+prices the real objects); **duplicates are allowed** — buying never
+takes an object off the stall; **selling happens in the Abode**,
+compost-style, the button reading **"sell"**, the refund announced
+with the same arrival feedback as a fungus drop; and objects are
+generic **"a curiosity"** with seeded code-drawn art until T6.1/T5.3.
+Storage v7 carries the purchases list. All in the decisions log.*
+
 *v1.24 — 2026-07-20 (twelfth session, docs only). A UX, copy and design
 pass decided with Kimia — built as the new plan task **T4.5**, with the
 animation folded into T5.2 and the live half of the Guest Book into
@@ -410,9 +421,10 @@ region discovery expands what the Market can offer.
 - **Market** (via fungus meter or the rail): the rotating stall; buy and
   return objects. Titled **local market**.
 - **Abode** (via the rail): open ground under sky (T4.3) — gathered
-  flora (and, from T4.3b, purchased objects) freely draggable anywhere
-  on the scene, each place remembered; a click holds a flora, showing
-  its name and its quiet compost button. Flora waiting to be decided
+  flora and (since T4.3b) purchased objects freely draggable anywhere
+  on the scene, each place remembered; a click holds an item, showing
+  its name and its quiet way back to the world — compost for a flora,
+  sell for an object. Flora waiting to be decided
   (gather / leave it) sit in a plain list above the ground. Bare ground
   when empty — no prose, no dates. Titled **your abode**. Carries the
   **quiet / party mode toggle** (below).
@@ -891,6 +903,47 @@ visual treatment in design-notes §12.
   no-found-dates rule from the Bookcase and Map). The T3.3 page's
   "nothing here yet" and composting caption came out with them — the
   ground speaks visually, like the shelves.
+- 2026-07-20 (thirteenth session, T4.3b): **the stall's shape** — 4
+  curiosities on offer; each discovered region adds 3 to the pool;
+  placeholder prices 6 / 12 / 18 fungi, one per tier per region, until
+  T6.1 prices the real objects (all Kimia's calls). The mid tier keeps
+  the 2026-07-19 pacing target: ~1 mid-priced object per rotation on
+  ~15 fungi of income.
+- 2026-07-20 (thirteenth session, T4.3b): **rotation is derived, never
+  stored** — lived days are counted from completion history (gap days
+  don't advance the clock; backfilled days count; undo turns it back),
+  and the stall slides 4 objects further along the pool each rotation,
+  wrapping. Every object cycles back within ⌈pool ÷ 4⌉ rotations —
+  provably nothing permanently missable, tested.
+- 2026-07-20 (thirteenth session, T4.3b): **duplicates are allowed**
+  (Kimia's call) — buying never takes an object off the stall; each
+  purchase is its own instance with its own id, its own remembered
+  place in the Abode, and its own quiet sell button. The stall says
+  "×n at home" when copies are owned. This sharpens the older
+  "returned objects re-enter the world" line: an owned object is
+  always findable again — it's right there on the stall.
+- 2026-07-20 (thirteenth session, T4.3b): **selling happens in the
+  Abode, compost-style, and the button reads "sell"** (Kimia's word —
+  it names this spec's symmetric "return"). Full refund of the price
+  paid, no confirmation (nothing is ever lost), and the refund is
+  announced with the same arrival feedback a fungus drop shows.
+- 2026-07-20 (thirteenth session, T4.3b): **objects are generic "a
+  curiosity" with seeded code-drawn art** until T6.1 names them and
+  T5.3 art-directs (the flora-stay-generic precedent): one of four
+  abstract forms and a pastel hue, both pure functions of the world
+  seed and the object's stable key, so a curiosity looks the same
+  wherever it appears.
+- 2026-07-20 (thirteenth session, T4.3b): **the wallet shows nothing
+  below zero, but the debt stays real under the hood** (Kimia's
+  correction the same day) — undoing a completion whose fungi were
+  already spent leaves the true balance negative; the meter rests at
+  empty (a negative number would read as debt — punishment feel) and
+  owned objects are never taken away, but later income and later
+  refunds settle the debt first, quietly. A sale always adds exactly
+  the price to the true balance; while debt is being settled the
+  display may climb by less. Buying still refuses to overdraw.
+  Storage v7 carries the purchases list (id, object key, frozen price,
+  buy moment) through backups.
 - 2026-07-20 (twelfth session, docs only, T4.5): **the pages are
   renamed** — "the Map" → **map of N-Z-D**, "the Bookcase" → **readers
   library** (no apostrophe, Kimia's call — a compound noun, not a

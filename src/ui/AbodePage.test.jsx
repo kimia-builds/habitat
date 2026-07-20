@@ -13,9 +13,24 @@ const find = (completionId, status) => ({
 })
 
 // One gathered flora on the ground, as game/abode.js's abodeItems
-// resolves it (stored place or default spot).
+// resolves it (stored place or default spot) — since T4.3b carrying a
+// kind and the single id the layout map keys on.
 const item = (completionId, over = {}) => ({
   ...find(completionId, 'gathered'),
+  kind: 'flora',
+  id: completionId,
+  x: 0.3,
+  y: 0.58,
+  ...over,
+})
+
+// One owned market object on the ground (T4.3b), keyed by its purchase id.
+const objectItem = (id, over = {}) => ({
+  kind: 'object',
+  id,
+  objectKey: '0:1',
+  price: 12,
+  boughtAt: 5000,
   x: 0.3,
   y: 0.58,
   ...over,
@@ -24,6 +39,7 @@ const item = (completionId, over = {}) => ({
 const handlers = () => ({
   onDecide: vi.fn(),
   onMove: vi.fn(),
+  onSell: vi.fn(),
   onBack: vi.fn(),
 })
 
@@ -63,9 +79,9 @@ describe('the open ground', () => {
         {...handlers()}
       />,
     )
-    expect(screen.getAllByRole('button', { name: 'a flora find' })).toHaveLength(
-      2,
-    )
+    expect(
+      screen.getAllByRole('button', { name: 'a flora find' }),
+    ).toHaveLength(2)
     expect(screen.queryByText(/found/)).toBeNull()
   })
 })
@@ -73,10 +89,10 @@ describe('the open ground', () => {
 describe('the waiting list', () => {
   it('keeps undecided flora apart from the ground, with gather / leave it', () => {
     const spies = handlers()
-    render(
-      <AbodePage finds={[find('c1', 'pending')]} items={[]} {...spies} />,
-    )
-    expect(screen.getByRole('list', { name: 'waiting to decide' })).toBeDefined()
+    render(<AbodePage finds={[find('c1', 'pending')]} items={[]} {...spies} />)
+    expect(
+      screen.getByRole('list', { name: 'waiting to decide' }),
+    ).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: 'gather' }))
     expect(spies.onDecide).toHaveBeenCalledWith('c1', 'gathered')
     fireEvent.click(screen.getByRole('button', { name: 'leave it' }))
@@ -194,5 +210,62 @@ describe('dragging', () => {
     fireEvent.pointerMove(window, { clientX: 400, clientY: -50 })
     fireEvent.pointerUp(window, { clientX: 400, clientY: -50 })
     expect(spies.onMove).toHaveBeenCalledWith('c1', { x: 1, y: 0 })
+  })
+})
+
+describe('owned objects on the ground (T4.3b)', () => {
+  it('stands an owned object among the flora, named a curiosity', () => {
+    render(
+      <AbodePage
+        finds={[find('c1', 'gathered')]}
+        items={[item('c1'), objectItem('p1')]}
+        worldSeed="seed"
+        {...handlers()}
+      />,
+    )
+    expect(screen.getByRole('button', { name: 'a flora find' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'a curiosity' })).toBeDefined()
+  })
+
+  it('a click holds an object, revealing its name and the quiet sell button — never compost', () => {
+    const spies = handlers()
+    render(
+      <AbodePage
+        finds={[]}
+        items={[objectItem('p1')]}
+        worldSeed="seed"
+        {...spies}
+      />,
+    )
+    expect(screen.queryByRole('button', { name: 'sell' })).toBeNull()
+    const object = screen.getByRole('button', { name: 'a curiosity' })
+    fireEvent.pointerDown(object, { clientX: 72, clientY: 90 })
+    fireEvent.pointerUp(window, { clientX: 72, clientY: 90 })
+    expect(screen.getByRole('button', { name: 'sell' })).toBeDefined()
+    expect(screen.queryByRole('button', { name: 'compost' })).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'sell' }))
+    expect(spies.onSell).toHaveBeenCalledWith('p1')
+    // The button went with the hold — no lingering controls.
+    expect(screen.queryByRole('button', { name: 'sell' })).toBeNull()
+    // And a sell never touches the flora decisions.
+    expect(spies.onDecide).not.toHaveBeenCalled()
+  })
+
+  it('drags an object like any flora — onMove with its purchase id', () => {
+    const spies = handlers()
+    render(
+      <AbodePage
+        finds={[]}
+        items={[objectItem('p1')]}
+        worldSeed="seed"
+        {...spies}
+      />,
+    )
+    const object = screen.getByRole('button', { name: 'a curiosity' })
+    fireEvent.pointerDown(object, { clientX: 72, clientY: 93 })
+    fireEvent.pointerMove(window, { clientX: 180, clientY: 80 })
+    fireEvent.pointerUp(window, { clientX: 180, clientY: 80 })
+    expect(spies.onMove).toHaveBeenCalledWith('p1', { x: 0.75, y: 0.5 })
   })
 })

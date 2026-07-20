@@ -239,3 +239,43 @@ export const DIFFICULTY_DROP_MULTIPLIER = {
   medium: 1.0,
   difficult: 1.2,
 }
+
+// ───────────────────────── T4.3b: the Market ─────────────────────────
+
+// The stall rotates on LIVED DAYS — days with at least one habit
+// marked, including retroactive check-in/backfill marks (spec §4.2's
+// definition) — never on calendar days. Counted straight from
+// completion history, so gap days don't advance the clock and undo
+// quietly turns it back. 28 lived days per rotation (spec §5 Stream 3:
+// 4 weeks of showing up) ≈ 112 calendar days at Kimia's daily pace —
+// the stall feels unhurried, like everything else here.
+export const MARKET_ROTATION_LIVED_DAYS = 28
+
+// The stall's size and the pool behind it (both Kimia's calls
+// 2026-07-20). Every discovered Map region adds its curiosities to the
+// pool (spec §5 Stream 3: the one deliberate link between streams), so
+// the stall grows more surprising over the years, never less:
+//
+//   3 objects × 16 regions = 48 curiosities across the ~5-year planet
+//   a stall of 4 slides 4 further along the pool each rotation,
+//   wrapping — every object is back on offer within ⌈pool/4⌉
+//   rotations, so nothing is ever permanently missable (spec §5).
+//
+// Until the second region is discovered the pool holds only 3, so the
+// stall simply shows 3 — the stall never shows more than the pool.
+export const MARKET_STALL_SIZE = 4
+export const MARKET_OBJECTS_PER_REGION = 3
+
+// Placeholder price tiers until T6.1 prices the real objects (Kimia's
+// call 2026-07-20). Each region offers one object per tier. Sized
+// against the fungus income worked out at T3.1 (~15 fungi per
+// 28-lived-day rotation at Kimia's pace):
+//
+//   12 — the mid object: about one per rotation, the pacing target
+//        from 2026-07-19 ("~1 mid-priced object per rotation")
+//   18 — the dear one: asks for saving across a rotation or two
+//    6 — the small one: always within easy reach
+//
+// Buy and sell prices are ALWAYS identical (spec §5: no penalty, no
+// spread) — these numbers are both.
+export const MARKET_PRICE_TIERS = [6, 12, 18]

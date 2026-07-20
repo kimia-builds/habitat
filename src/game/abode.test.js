@@ -4,6 +4,7 @@ import {
   defaultSpot,
   GROUND_LINES,
   placeFlora,
+  placeObject,
   pruneAbodeLayout,
   SPOTS_PER_ROW,
   validateAbodeLayout,
@@ -168,5 +169,94 @@ describe('validateAbodeLayout', () => {
       /between 0 and 1/,
     )
     expect(() => validateAbodeLayout({ c1: null })).toThrow(/object/)
+  })
+})
+
+// ── T4.3b: owned market objects share the ground ────────────────────
+
+const purchase = (id, objectKey = '0:1', price = 12, boughtAt = 5000) => ({
+  id,
+  objectKey,
+  price,
+  boughtAt,
+})
+
+describe('abodeItems with owned objects', () => {
+  it('stands owned objects on the ground after the flora, each with its kind and id', () => {
+    const completions = [floraDrop('c1')]
+    const decisions = { c1: 'gathered' }
+    const purchases = [purchase('p1'), purchase('p2', '0:2', 18, 6000)]
+    const items = abodeItems(completions, decisions, {}, purchases)
+    expect(items.map((i) => [i.kind, i.id])).toEqual([
+      ['flora', 'c1'],
+      ['object', 'p1'],
+      ['object', 'p2'],
+    ])
+    // Default spots fill across the combined list, flora first.
+    expect(items[0]).toMatchObject(defaultSpot(0))
+    expect(items[1]).toMatchObject(defaultSpot(1))
+    expect(items[2]).toMatchObject({ objectKey: '0:2', price: 18 })
+  })
+
+  it('resolves an object to its stored place, keyed by its purchase id', () => {
+    const purchases = [purchase('p1')]
+    const layout = { p1: { x: 0.3, y: 0.15 } }
+    const [item] = abodeItems([], {}, layout, purchases)
+    expect(item).toMatchObject({ id: 'p1', kind: 'object', x: 0.3, y: 0.15 })
+  })
+
+  it('a flora leaving lets an un-moved object step forward a spot', () => {
+    const completions = [floraDrop('c1')]
+    const purchases = [purchase('p1')]
+    const both = abodeItems(completions, { c1: 'gathered' }, {}, purchases)
+    expect(both[1]).toMatchObject({ id: 'p1', ...defaultSpot(1) })
+    const floraGone = abodeItems(
+      completions,
+      { c1: 'composted' },
+      {},
+      purchases,
+    )
+    expect(floraGone[0]).toMatchObject({ id: 'p1', ...defaultSpot(0) })
+  })
+})
+
+describe('placeObject', () => {
+  it('records the place, clamped into the scene, and returns a NEW map', () => {
+    const layout = {}
+    const placed = placeObject(layout, [purchase('p1')], 'p1', {
+      x: 1.4,
+      y: -0.2,
+    })
+    expect(placed).toEqual({ p1: { x: 1, y: 0 } })
+    expect(layout).toEqual({})
+  })
+
+  it('refuses an object that is not owned — a stale drag fails loudly', () => {
+    expect(() =>
+      placeObject({}, [purchase('p1')], 'ghost', { x: 0.5, y: 0.5 }),
+    ).toThrow(/No owned object/)
+    expect(() =>
+      placeObject({}, [purchase('p1')], 'p1', { x: NaN, y: 0.5 }),
+    ).toThrow(/finite/)
+  })
+})
+
+describe('pruneAbodeLayout with owned objects', () => {
+  it('keeps gathered flora AND owned objects, drops everything gone', () => {
+    const completions = [floraDrop('c1')]
+    const decisions = { c1: 'gathered' }
+    const purchases = [purchase('p1')]
+    const layout = {
+      c1: { x: 0.1, y: 0.9 },
+      p1: { x: 0.2, y: 0.8 },
+      sold: { x: 0.3, y: 0.7 },
+      composted: { x: 0.4, y: 0.6 },
+    }
+    expect(pruneAbodeLayout(layout, completions, decisions, purchases)).toEqual(
+      {
+        c1: { x: 0.1, y: 0.9 },
+        p1: { x: 0.2, y: 0.8 },
+      },
+    )
   })
 })

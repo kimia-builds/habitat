@@ -84,9 +84,16 @@ src/game/             ALL game logic — pure functions, no React, no
                         sits on the constant bookshelf and which way it
                         faces (default slots, clamping, pruning)
   abode.js              the Abode layout — where each gathered flora
-                        sits on the open ground (same pattern as
-                        bookcase.js: fractions of the scene, entries
-                        only for moved flora, pruned on compost/undo)
+                        and owned market object sits on the open
+                        ground (same pattern as bookcase.js: fractions
+                        of the scene, entries only for moved items,
+                        pruned on compost/sell/undo)
+  market.js             the Market (T4.3b) — lived-day counting and
+                        the 28-lived-day rotation clock, the pool that
+                        grows with discovered regions, buy/sell with
+                        the price frozen at buy time; the wallet,
+                        always derived (drops − owned — the display
+                        never below zero, debt settled under the hood)
   graphs.js             per-habit line graphs (zoom unlocks by habit age)
   fieldnotes.js         the weekly view ("field notes")
 src/content/          KIMIA'S FILES — she edits these directly on
@@ -101,13 +108,13 @@ src/content/          KIMIA'S FILES — she edits these directly on
 src/storage/storage.js  the ONE module that touches localStorage.
                       Everything lives under the single key
                       'habitat-data' in a versioned envelope
-                      (schemaVersion 6) with upgrade path for old backups
+                      (schemaVersion 7) with upgrade path for old backups
 src/ui/               React components, kept thin (HabitRow, HabitForm,
                       CheckInPanel, Meters, FieldNotes, HabitGraphs,
-                      ArrivalShelf, DropGlyph, FirstReveal, SpreadPopup,
-                      AbodePage, BookcasePage, MapPage, mapLayout.js,
-                      BackupControls, SymbolPicker, StubPage, symbols.js,
-                      arrivalText.js)
+                      ArrivalShelf, DropGlyph, ObjectGlyph, FirstReveal,
+                      SpreadPopup, AbodePage, BookcasePage, MapPage,
+                      MarketPage, mapLayout.js, BackupControls,
+                      SymbolPicker, symbols.js, arrivalText.js)
 src/test/setup.js     test-environment repair (see Testing below)
 public/favicon.svg    the only static asset
 ```
@@ -193,9 +200,14 @@ subfolder — do not change it.
 
 ## Naming and copy (current as of 2026-07-20)
 
-The user-facing page titles were renamed in the T4.5 UX pass. The
+The user-facing page titles were renamed by the T4.5 UX pass — so far
+a **decided** pass (plan.md still has T4.5 unchecked), so until it is
+built the pages on screen still show the internal names ("the Map",
+"the Bookcase", "the Market", "the Abode") and the rail, icon-only
+actions and `-1` described below do not exist in the UI yet. The
 **internal** names in code and docs (Map, Bookcase, Market, Abode,
-Guest Book) are unchanged — only the displayed titles moved:
+Guest Book) are unchanged in any case — only the displayed titles
+will move:
 
 | page | displayed title | reached by |
 |------|-----------------|------------|
@@ -205,16 +217,20 @@ Guest Book) are unchanged — only the displayed titles moved:
 | Bookcase | **readers library** (no apostrophe) | literacy meter, or rail |
 | Market | **local market** | fungus meter, or rail |
 
-Other current copy rules:
+Other copy rules:
 
-- The **left icon rail** runs down the left edge of the home screen in
-  this descending order: **map · abode · community · library · market**,
-  each revealing its name on hover. The three meters stay clickable too.
-- The home screen is **icon-only with hover labels** — no action words.
-  Undo reads **`-1`** (mirroring `+1`); habit counts are bare
-  `count/goal` with no trailing "today"; the symbol filter's hover
-  reads **"filter view"** (never "by type" — the six symbols are not
-  categories).
+- The **left icon rail** (T4.5 — decided, not yet built) runs down the
+  left edge of the home screen in this descending order: **map · abode
+  · community · library · market**, each revealing its name on hover.
+  The three meters stay clickable too.
+- The home screen goes **icon-only with hover labels** (T4.5 —
+  decided, not yet built) — no action words. Undo reads **`-1`**
+  (mirroring `+1`); habit counts are bare `count/goal` with no
+  trailing "today"; the symbol filter's hover reads **"filter view"**
+  (never "by type" — the six symbols are not categories).
+- The Abode's quiet way back for an owned market object reads
+  **"sell"** (T4.3b, built 2026-07-20 — Kimia's word for the spec's
+  symmetric "return"); for a gathered flora it stays "compost".
 - Habitat's voice is **all-lowercase** by default; uppercase is
   reserved for display titles and section labels.
 
