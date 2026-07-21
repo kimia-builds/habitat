@@ -3,7 +3,7 @@
 // Pure display + callbacks — every decision is made in App via the
 // game modules.
 
-import { SYMBOL_COLORS, SYMBOL_GLYPHS } from './symbols.js'
+import CharmSymbol from './CharmSymbol.jsx'
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -53,9 +53,7 @@ function HabitRow({
 
   return (
     <li className="habit-row">
-      <span className="symbol" style={{ color: SYMBOL_COLORS[habit.symbol] }}>
-        {SYMBOL_GLYPHS[habit.symbol]}
-      </span>
+      <CharmSymbol symbol={habit.symbol} className="symbol" />
       <span className="habit-main">
         <span className="habit-name">{habit.name}</span>
         {habit.description && (

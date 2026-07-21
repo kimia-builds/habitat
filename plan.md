@@ -77,11 +77,7 @@ tracker. Everything after this is delight, informed by real use.
 
 ## M5 — Design pass (3–4 sessions, collaborative)
 
-- [ ] **T5.1 The 6 charm symbols** — designed 2026-07-19 (docs): the
-      crown, cherries, shell, anchor, shield and key, each in its colour,
-      glowing. SVG paths + hexes recorded in design-notes §11a; this task
-      swaps the placeholder glyphs (● ■ ▲ ◆ ✚ ✶) for the charms
-      everywhere a symbol shows. No words, as ever.
+- [x] **T5.1 The 6 charm symbols.** _(done 2026-07-21)_
 - [ ] **T5.2 Visual identity** — decided 2026-07-19 (docs, design-notes
       §11b/§11c): background #080910, charm-colour accent palette with
       faint variants, dim-white text tiers; Cormorant Garamond display +

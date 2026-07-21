@@ -344,7 +344,7 @@ should feel strange, not familiar-things-in-costume.
 
 ---
 
-## 11. Visual identity reference **[TO-BUILD · T5.1 symbols, T5.2 identity]**
+## 11. Visual identity reference **[§11a BUILT (T5.1, 2026-07-21) · T5.2 identity TO-BUILD]**
 
 _From Kimia's charm reference (2026-07-19). This section is the
 blueprint for T5.1 and T5.2 — everything needed is recorded here; the
@@ -357,7 +357,19 @@ colour. The symbol is still the tag — **no words, ever** — and each
 charm glows in its colour (`drop-shadow(0 0 14px colour)`, brightening
 to `24px` on hover). Stroke style: `fill="none"`,
 `stroke="currentColor"`, `stroke-width="1.4"`, round caps and joins,
-on a `24×24` viewBox. Mapping to the existing symbol slots 1–6:
+on a `24×24` viewBox. One shared component draws all six
+(`src/ui/CharmSymbol.jsx`); the six colours live in `src/ui/symbols.js`.
+Mapping to the existing symbol slots 1–6:
+
+**Accessible name (Kimia's decision, T5.1 2026-07-21).** A wordless
+drawing still needs a name for screen readers and the test suite — the
+old glyphs supplied one implicitly (`●` reads as "black circle"). Each
+charm SVG carries `role="img"` + an `aria-label` of its **shape name**
+(crown, cherry, shell, anchor, shield, key — singular "cherry", her
+wording). This describes the picture, never the habit's meaning, so it
+does not breach the no-labels rule; it is screen-reader/test only and
+never shown on screen. (Kimia weighed this against a meaning-free
+"symbol 1…6"; she chose the shape names.)
 
 | #   | charm    | colour   | hex       | faint (borders/dividers) |
 | --- | -------- | -------- | --------- | ------------------------ |

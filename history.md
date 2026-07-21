@@ -726,6 +726,15 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   reading spreads), reached from a door at the foot of the home screen.
   Scaffolding: it leaves or becomes deliberate when the design pass
   lands.
+- 2026-07-21 (seventeenth session, T5.1 built, Kimia's call): **the
+  charms' accessible name is their shape name** — a wordless drawing
+  still needs a name for screen readers and the test suite (the old
+  glyphs gave one implicitly: `●` reads as "black circle"). Each charm
+  SVG carries `role="img"` + `aria-label` of its shape (crown, cherry,
+  shell, anchor, shield, key — singular "cherry", her wording),
+  screen-reader/test only and never shown on screen. She weighed this
+  against a meaning-free "symbol 1…6" and chose the shape names; naming
+  the picture, not the habit's meaning, keeps the no-labels rule intact.
 - A lived day = a day with ≥1 habit marked (including retroactive
   marks). Called a "cron" until 2026-07-20.
 - Reward pacing: slow, steady, designed for a patient daily user; no
@@ -1500,3 +1509,26 @@ and recorded in spec.md's decisions log._
       (empty shelves per family, counts from constants) waits for T5.
       Trigger, priority, undo-safety, equivalence, slot and visit tests
       all pass.
+- [x] **T5.1 The 6 charm symbols** _(done 2026-07-21, seventeenth session
+      — spec §4.1, design-notes §11a)_
+      Swapped the placeholder glyphs (● ■ ▲ ◆ ✚ ✶) for the six
+      line-drawn charms — crown (gold), cherry (coral), shell (pink),
+      anchor (lavender), shield (sky), key (teal) — everywhere a habit
+      symbol shows: the list rows, the check-in rows, the field-notes
+      table, the graph headings, and the form/filter symbol buttons.
+      Still wordless on screen, as ever. The charm SVGs use the exact
+      §11a paths, colours and stroke (fill none, currentColor, width
+      1.4, round caps/joins, 24×24) and glow in their own colour
+      (drop-shadow 14px at rest, 24px on hover). Each carries a
+      screen-reader-only `role="img"` + shape-name `aria-label` (Kimia's
+      call, logged above) so buttons stay named for tests and assistive
+      tech without putting any word on screen.
+      Built: `ui/CharmSymbol.jsx` — one shared component draws all six
+      from a number 1..6; `ui/symbols.js` slimmed to the charm colours +
+      shape names (the old SYMBOL_GLYPHS map is gone). The five display
+      consumers (HabitRow, CheckInPanel, FieldNotes, HabitGraphs,
+      SymbolPicker) now render `<CharmSymbol>` in place of a coloured
+      glyph span; `.charm` CSS carries the size/glow/hover. App.test's
+      symbol-button queries moved from glyph chars to charm names, and a
+      new `CharmSymbol.test.jsx` pins the six names, colours and the
+      role="img" drawing. Full suite (542) and oxlint pass.

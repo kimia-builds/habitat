@@ -1132,16 +1132,34 @@ body {
   padding: 0.5rem;
 }
 
-.symbol {
-  font-size: 1.3rem;
+/* The six charms (design-notes §11a). Sized in em so each charm scales
+   to whatever text it sits beside; it glows in its own colour, brightening
+   on hover. currentColor is the charm's colour (set inline per symbol). */
+.charm {
+  width: 1.3em;
+  height: 1.3em;
+  flex-shrink: 0;
+  vertical-align: -0.2em;
+  filter: drop-shadow(0 0 14px currentColor);
+  transition: filter 0.18s ease;
+}
+
+.charm:hover {
+  filter: drop-shadow(0 0 24px currentColor);
 }
 
 .symbol-button {
-  font-size: 1.1rem;
+  display: inline-flex;
   background: none;
   border: 1px solid #2a3040;
   padding: 0.3rem 0.55rem;
   cursor: pointer;
+}
+
+/* Inside the picker/filter the charm is the whole button face. */
+.symbol-button .charm {
+  width: 1.4em;
+  height: 1.4em;
 }
 
 .symbol-button[aria-pressed='true'] {

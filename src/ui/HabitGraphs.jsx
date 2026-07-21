@@ -11,7 +11,8 @@
 import { useState } from 'react'
 import { GRAPH_UNLOCK_AGE_DAYS } from '../game/constants.js'
 import { graphSeries, hasGraph, unlockedZooms } from '../game/graphs.js'
-import { SYMBOL_COLORS, SYMBOL_GLYPHS } from './symbols.js'
+import CharmSymbol from './CharmSymbol.jsx'
+import { SYMBOL_COLORS } from './symbols.js'
 
 const ZOOM_LABELS = {
   day: 'day by day',
@@ -88,9 +89,7 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
   return (
     <details className="habit-graph">
       <summary>
-        <span className="symbol" style={{ color: SYMBOL_COLORS[habit.symbol] }}>
-          {SYMBOL_GLYPHS[habit.symbol]}
-        </span>{' '}
+        <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
         {habit.name}
         {habit.archived && <span className="habit-meta"> (archived)</span>}
       </summary>

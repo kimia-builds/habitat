@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { addDays, dayKeyFromTimestamp, weekStart } from '../game/days.js'
 import { earliestWeek, weekNotes } from '../game/fieldnotes.js'
 import HabitGraphs from './HabitGraphs.jsx'
-import { SYMBOL_COLORS, SYMBOL_GLYPHS } from './symbols.js'
+import CharmSymbol from './CharmSymbol.jsx'
 
 const DAY_HEADINGS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 
@@ -91,12 +91,7 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
             {notes.rows.map(({ habit, days, streak, streakUnit }) => (
               <tr key={habit.id}>
                 <th scope="row">
-                  <span
-                    className="symbol"
-                    style={{ color: SYMBOL_COLORS[habit.symbol] }}
-                  >
-                    {SYMBOL_GLYPHS[habit.symbol]}
-                  </span>{' '}
+                  <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
                   {habit.name}
                   {habit.archived && (
                     <span className="habit-meta"> (archived)</span>

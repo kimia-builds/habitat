@@ -55,8 +55,18 @@ function createHabitViaUI(name, { symbol, scheduleType, n, days } = {}) {
   const form = within(document.querySelector('form.habit-form'))
   fireEvent.change(form.getByLabelText('name'), { target: { value: name } })
   if (symbol) {
-    const glyphs = { 1: '●', 2: '■', 3: '▲', 4: '◆', 5: '✚', 6: '✶' }
-    fireEvent.click(form.getByRole('button', { name: glyphs[symbol] }))
+    // The tags are the six charms (T5.1); each button's accessible name
+    // is the charm's shape name (design-notes §11a). Still wordless on
+    // screen — this name is screen-reader/test only.
+    const charms = {
+      1: 'crown',
+      2: 'cherry',
+      3: 'shell',
+      4: 'anchor',
+      5: 'shield',
+      6: 'key',
+    }
+    fireEvent.click(form.getByRole('button', { name: charms[symbol] }))
   }
   if (scheduleType) {
     fireEvent.change(form.getByLabelText('schedule'), {
@@ -220,13 +230,13 @@ describe('the symbol filter (a temporary lens)', () => {
     createHabitViaUI('stretch', { symbol: 5 })
 
     const filter = within(screen.getByRole('region', { name: 'filter view' }))
-    fireEvent.click(filter.getByRole('button', { name: '■' })) // symbol 2
+    fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // symbol 2
     expect(screen.getByText('read')).toBeDefined()
     expect(screen.queryByText('stretch')).toBeNull()
     // While filtered, the ▲▼ buttons are off (partial view = ambiguous).
     expect(row('read').getByRole('button', { name: '▲' }).disabled).toBe(true)
 
-    fireEvent.click(filter.getByRole('button', { name: '■' })) // toggle off
+    fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // toggle off
     expect(screen.getByText('stretch')).toBeDefined()
   })
 })

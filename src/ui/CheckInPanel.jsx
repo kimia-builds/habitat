@@ -10,7 +10,7 @@ import { editablePastDays, habitsOn } from '../game/checkin.js'
 import { countOn } from '../game/completions.js'
 import { addDays, isoWeekday } from '../game/days.js'
 import { requiredPerDay, scheduleOn } from '../game/schedule.js'
-import { SYMBOL_COLORS, SYMBOL_GLYPHS } from './symbols.js'
+import CharmSymbol from './CharmSymbol.jsx'
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -49,12 +49,7 @@ function DayRows({
         )
         return (
           <li key={habit.id} className="habit-row">
-            <span
-              className="symbol"
-              style={{ color: SYMBOL_COLORS[habit.symbol] }}
-            >
-              {SYMBOL_GLYPHS[habit.symbol]}
-            </span>
+            <CharmSymbol symbol={habit.symbol} className="symbol" />
             <span className="habit-main">
               <span className="habit-name">{habit.name}</span>
             </span>
