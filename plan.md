@@ -97,7 +97,22 @@ tracker. Everything after this is delight, informed by real use.
       five charm colours. No text, no numbers, no narration slot; a tap
       skips straight to the fade; identical every day regardless of
       streaks or milestones (design-notes §12f explains why this one moment
-      may take the screen when §6 forbids it elsewhere).
+      may take the screen when §6 forbids it elsewhere). **Desktop/laptop
+      only (2026-07-21):** gated behind a min-width check; mobile and tablet
+      skip it and keep the plain fade — Habitat's only device-conditional
+      moment.
+      **M5 layout & atmosphere pass (Kimia's layout spec, merged
+      2026-07-21 — design-notes §13):** a full-width top header (wordmark ·
+      meters · date · charm filter) via CSS `grid-template-areas`, above the
+      unchanged 40rem content column; each secondary page's title promoted
+      into a shared `.page-title` region above its box; and a full-bleed
+      night-sky background (sparse, rarely-twinkling CSS stars) on every
+      device.
+      **Design-tokens file (Kimia's call 2026-07-21 — design-notes §11d,
+      CLAUDE.md):** every colour, glow, font size and spacing number moves
+      into one CSS file of named, commented values — the visual twin of
+      `constants.js`; the six charm colours become canonical there and
+      `src/ui/symbols.js` mirrors the hexes its JS needs.
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
       categories), flora, fungi, market objects, planet regions. Several
       sessions of creative iteration; Kimia art-directs.

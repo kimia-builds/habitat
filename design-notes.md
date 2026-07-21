@@ -452,6 +452,33 @@ Case & spacing convention:
   captions) already matches — lowercase stays the default; uppercase
   is reserved for display and section labels.
 
+### 11d. Design tokens — the visual twin of constants.js (T5.2)
+
+Everything §11b and §11c name — every colour, every glow strength,
+every font size, every spacing number — lives in **one CSS file of
+named values with plain-English comments**, exactly as
+`src/game/constants.js` holds the tunable game numbers. The look
+becomes retunable the way the pacing already is: one readable edit in a
+short, legible list, not a hunt through ~1,400 lines of stylesheet, and
+nothing a non-coder can't follow.
+
+- **Named, commented, single-file.** Each token is a CSS custom
+  property (`--bg`, `--text-primary`, `--glow-soft`, `--space-frame`,
+  …) with a comment saying in plain English what it is and where it
+  came from (e.g. "the shell charm's pink — also the daily startup
+  planet"). No raw hex codes or magic px scattered through the rules.
+- **The charm colours are canonical here (Kimia's call 2026-07-21).**
+  The six colours in §11a currently live in `src/ui/symbols.js` because
+  the glow drop-shadows are built in JavaScript. The tokens file becomes
+  their documented home; symbols.js keeps the hex values its JS needs,
+  marked "mirror of the tokens file — keep in sync." One source on
+  paper, no runtime indirection to explain.
+- **Why a separate file, not `:root` buried in the stylesheet.** So the
+  palette reads as a palette — a list Kimia can scan and change — rather
+  than being scattered inline through hundreds of rules.
+
+Built in T5.2, alongside the identity it encodes.
+
 ---
 
 ## 12. The home screen & the daily startup **[TO-BUILD · T4.5, T5.2]**
@@ -627,4 +654,86 @@ check-in pop-up → startup → Sunday field notes. Coming _after_ the
 check-in is deliberate: yesterday gets closed, then the new day
 begins.
 
+**Desktop/laptop only (Kimia, 2026-07-21).** The animation is gated
+behind a `min-width` check (or a viewport check at mount); on mobile
+and tablet it is **skipped entirely — not shrunk** — and the screen
+simply plain-fades in as `StartupFade` does today. Kimia's real use is
+laptop-only, so this one asset is built epic for the screen that will
+see it rather than stretched responsive down to a phone. This is the
+**only device-conditional moment** in Habitat; the night-sky background
+(§13c) and everything else render everywhere.
+
 Soundless, as ever.
+
+---
+
+## 13. Layout & atmosphere — the M5 layout pass **[TO-BUILD · T5.2]**
+
+_Kimia's M5 layout spec, merged 2026-07-21. Net-new structural pieces
+for this design pass; they sit on top of the home screen §12 already
+describes and change nothing about the habit list itself (spec §5b's
+"explicitly unchanged")._
+
+### 13a. The top header bar
+
+Today the wordmark, the three meters, the date display and the symbol
+filter all stack inside the same 40rem `.app` column. This pass lifts
+them into a **dedicated full-width header** above that column.
+
+- **Wide viewport:** one row, left to right — wordmark · meters · date ·
+  charm filter.
+- **Narrow viewport:** folds to **two deliberately-arranged rows** (a
+  suggested split: row 1 = wordmark + date, row 2 = meters + filter —
+  whichever pairing reads most balanced in practice), never a
+  document-order wrap that clumps.
+- **How:** CSS Grid with named `grid-template-areas` — one area map for
+  the wide breakpoint, a second for the narrow one, swapped by a single
+  media query. Flex-wrap was considered and **rejected**: it wraps in
+  strict source order with no control over grouping, which is exactly
+  the "clumped / cut up" look we're avoiding.
+- The `.app` **40rem max-width stays untouched below the header** — the
+  habit list and cards keep their current width.
+
+The wordmark keeps its standing job as the **home link back to the
+habit list** (spec §5b).
+
+### 13b. Page titles, promoted out of their boxes
+
+Every secondary page (Map, Bookcase, Abode, Market, Guest Book) renders
+its title _inside_ its bordered content box today, so the title reads
+as furniture squeezed into the frame. This pass pulls each title **out
+into a shared page-header region above the box**, echoing the quiet,
+letterspaced, centred treatment the date display already uses at home
+(§11c's display register, §12b's ceremony).
+
+One shared class (`.page-title`), reused across all of them rather than
+each page hand-rolling its own heading — so they read as one system and
+a copy change touches one place. The page names themselves stay pinned
+by spec §5b (map of N-Z-D, readers library, local market, your abode,
+local community).
+
+### 13c. The night-sky background
+
+No background art exists yet — `body` is a flat near-black. This pass
+adds a **full-bleed sky layer behind all content, on every device**
+(unlike the startup animation §12f, which is desktop-only).
+
+- Mostly still, with an **occasional, unsynchronised twinkle** —
+  roughly once per 30 seconds per star, never a visible pulse rippling
+  across the field.
+- **How:** a handful of small star elements, each with its own
+  randomised long `animation-duration` / `animation-delay`, so
+  individually each blinks rarely and the aggregate reads as sparse and
+  organic rather than a pattern. Pure CSS — no JS, no canvas.
+- It is **atmosphere, never the POP** (spec §7): faint and low-contrast,
+  it must never compete with a drop, a reveal, or the meters.
+
+### 13d. The startup "rolling planet" — desktop only
+
+The full "rolling planet" startup animation is built for the first time
+in this pass (its slot was scaffolded in T4.5 as a plain fade). **New
+this pass:** it plays on **desktop/laptop only** — mobile and tablet
+skip it entirely and keep the plain fade. The colour, timing and the
+four standing rules all live in §12f, which now carries the
+desktop-only clause; this note only flags that the layout pass is where
+it gets built.

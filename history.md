@@ -735,6 +735,39 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   screen-reader/test only and never shown on screen. She weighed this
   against a meaning-free "symbol 1…6" and chose the shape names; naming
   the picture, not the habit's meaning, keeps the no-labels rule intact.
+- 2026-07-21 (eighteenth session, Kimia's call): **a design-tokens CSS
+  file — the visual twin of `constants.js`.** Every colour, glow
+  strength, font size and spacing number moves into one CSS file of
+  named custom properties, each with a plain-English comment, so
+  retuning the look is one readable edit in a place a non-coder can
+  scan — the same discipline `constants.js` gives the game numbers, no
+  raw hex codes or magic px scattered through component styles. The six
+  charm colours in `src/ui/symbols.js` (§11a) become **canonical in the
+  tokens file**; symbols.js keeps the hex values its JS glow strings
+  need, marked "mirror of the tokens file — keep in sync." One source
+  on paper, no runtime indirection. Built as part of T5.2 (design-notes
+  §11d).
+- 2026-07-21 (eighteenth session, Kimia's layout spec merged): **the M5
+  layout & atmosphere pass** — three net-new structural pieces folded
+  into T5.2 (design-notes §13). (1) A full-width top **header**
+  (wordmark · meters · date · charm filter) replacing the stacked
+  `.app` header, built with CSS `grid-template-areas` so the narrow
+  layout regroups deliberately rather than wrapping in source order;
+  the habit list keeps its 40rem width, unchanged. (2) Each secondary
+  page's title is **promoted out of its content box** into a shared
+  `.page-title` region above it, echoing the date display's quiet
+  letterspaced treatment. (3) A full-bleed **night-sky background**
+  behind all content on every device — a handful of CSS stars twinkling
+  rarely (~once/30s) on randomised long timings, no JS.
+- 2026-07-21 (eighteenth session, Kimia's layout spec — narrows the
+  2026-07-20 startup rule): **the daily startup "rolling planet" is
+  desktop/laptop only.** It reads as full-window and epic, but is gated
+  behind a `min-width` check; mobile and tablet **skip it entirely**
+  (not shrunk) and fall back to the plain black fade — Kimia's real use
+  is laptop-only, so the asset is built for the one screen that will see
+  it rather than made responsive down to a phone. Everything else about
+  §12f stands (short, wordless, skippable, identical every day, plays
+  every Habitat day it runs).
 - A lived day = a day with ≥1 habit marked (including retroactive
   marks). Called a "cron" until 2026-07-20.
 - Reward pacing: slow, steady, designed for a patient daily user; no

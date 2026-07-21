@@ -124,6 +124,13 @@ Kimia is a non-coder. Therefore:
   frameworks.
 - All tunable game numbers live in `src/game/constants.js` with
   comments explaining the pacing maths. No magic numbers in logic.
+- All visual design values — every colour, glow strength, font size and
+  spacing number — live in one **CSS design-tokens file** of named
+  custom properties with plain-English comments: the visual twin of
+  `constants.js` (T5.2, design-notes §11d). No raw hex codes or magic
+  px scattered through component styles. The six charm colours are
+  canonical in the tokens file; `src/ui/symbols.js` keeps the hexes its
+  JS glow strings need, marked as a mirror — keep the two in sync.
 - Game logic lives in `src/game/` as pure functions (no React, no
   localStorage access) so it's easy to test. React components stay
   thin.

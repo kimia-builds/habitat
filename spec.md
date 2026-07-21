@@ -271,10 +271,15 @@ region discovery expands what the Market can offer.
 
 - The **HABITAT header** on every page is the home link back to the
   habit list (2026-07-16) — except during the morning check-in, whose
-  done button stays the only exit.
-- **Home screen:** the habit list, with the three meters fixed at top.
-  Beneath the meters and above the symbol filter sits the **date
-  display** (below). The list is manually re-orderable (order persists)
+  done button stays the only exit. Since the M5 layout pass (T5.2,
+  2026-07-21) the home screen carries a **full-width header region**
+  (wordmark · meters · date · charm filter) above the 40rem content
+  column, and every secondary page renders its title in a shared
+  **page-header region above its box** rather than inside it — layout
+  in design-notes §13.
+- **Home screen:** the habit list, with the three meters and the **date
+  display** (below) fixed in the full-width header (design-notes §13a).
+  The list is manually re-orderable (order persists)
   and filterable by symbols (multi-select; a temporary lens that resets
   each visit). Habits can be archived (history kept) or permanently
   deleted (with confirmation). Every action on the home screen is an
@@ -327,9 +332,11 @@ region discovery expands what the Market can offer.
 
 ### The date display (T4.5)
 
-Beneath the meters and above the symbol filter, the home screen shows
-today's date **large and letterspaced**:
-`M O N D A Y   2 0   J U L   2 0 2 6`.
+In the home-screen header (design-notes §13a), between the meters and
+the charm filter, the home screen shows today's date **large and
+letterspaced**: `M O N D A Y   2 0   J U L   2 0 2 6`. (On a narrow
+viewport the header folds to two rows and the date regroups with the
+wordmark — §13a.)
 
 It shows the **real calendar date**, not the Habitat day. Between
 midnight and 2:59am the two disagree — the habit list beneath is still
@@ -378,8 +385,10 @@ The order of the daily sequence is fixed:
 2. the **startup animation**,
 3. the **field notes** (Sundays only).
 
-It plays every Habitat day, whether or not a check-in was owed. Full
-visual treatment in design-notes §12.
+It plays every Habitat day, whether or not a check-in was owed. It runs
+on **desktop/laptop only** (2026-07-21): on mobile and tablet it is
+skipped entirely and the screen plain-fades in instead — Habitat's only
+device-conditional moment. Full visual treatment in design-notes §12f.
 
 ## 6. Data & reflection
 
@@ -399,7 +408,10 @@ visual treatment in design-notes §12.
   milestones, key accents). Neon is the exclamation mark, not the body
   text.
 - Atmospheric and moody — contemplative, not cute. The planet feels
-  bioluminescent.
+  bioluminescent. Behind all content sits a full-bleed **night-sky
+  background** on every device — sparse CSS stars that twinkle rarely
+  and unsynchronised, atmosphere that never competes with the POP
+  (T5.2, design-notes §13c).
 - All visuals **SVG / code-drawn**: crisp, glowing, animatable, fully
   vibe-codeable, ideal for neon-on-dark.
 - **Visual identity (2026-07-19, design-notes §11):** background
@@ -409,7 +421,9 @@ visual treatment in design-notes §12.
   letterspacing) + **DM Sans** (body, lowercase), both bundled with
   the app — no external font loading. Lowercase stays Habitat's
   default voice; uppercase is reserved for display and section
-  labels.
+  labels. Every colour, glow strength, font size and spacing number
+  lives in one **CSS design-tokens file** of named, commented values —
+  the visual twin of `constants.js` (T5.2, design-notes §11d).
 
 ## 8. Architecture (v1)
 
