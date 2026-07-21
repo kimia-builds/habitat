@@ -406,11 +406,6 @@ body {
   letter-spacing: 0.2em;
 }
 
-.field-notes-legend {
-  color: #9aa3b5;
-  font-size: 0.85rem;
-}
-
 .week-nav {
   display: flex;
   align-items: center;
@@ -1189,6 +1184,15 @@ body {
   align-items: center;
   gap: 0.4rem;
   flex-wrap: wrap;
+}
+
+/* One-time to-do tick-box: an empty box until done, larger than the
+   browser default so it reads as a deliberate control and is easy to hit. */
+.todo-check {
+  width: 1.15rem;
+  height: 1.15rem;
+  cursor: pointer;
+  accent-color: #8fb3ff;
 }
 
 .habit-form {

@@ -55,15 +55,20 @@ function DayRows({
             </span>
             {oneTime ? (
               <span className="completion-controls">
-                {count > 0 ? (
-                  <button onClick={() => onUnmark(habit, dayKey)}>
-                    ✓ done
-                  </button>
-                ) : (
-                  <button onClick={() => onMark(habit, dayKey)}>
-                    mark done
-                  </button>
-                )}
+                {/* An empty checkbox until done; ticking marks it, un-ticking
+                    un-marks it. Hover reads "mark done" while still open. */}
+                <input
+                  type="checkbox"
+                  className="todo-check"
+                  checked={count > 0}
+                  onChange={() =>
+                    count > 0
+                      ? onUnmark(habit, dayKey)
+                      : onMark(habit, dayKey)
+                  }
+                  title={count > 0 ? 'done' : 'mark done'}
+                  aria-label={count > 0 ? 'done' : 'mark done'}
+                />
               </span>
             ) : (
               <span className="completion-controls">
@@ -105,8 +110,7 @@ function CheckInPanel({
       <h2>check-in</h2>
       <p>
         Mark what you completed{' '}
-        <strong>yesterday, {dayLabel(yesterday)}</strong>. Anything left
-        unmarked simply counts as not done — neutral data, nothing lost.
+        <strong>yesterday, {dayLabel(yesterday)}</strong>.
       </p>
       <DayRows {...rowProps} dayKey={yesterday} />
       {older.length > 0 && (

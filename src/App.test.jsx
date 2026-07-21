@@ -216,7 +216,7 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
   it('a one-time to-do keeps its single-tap control — no counter', () => {
     render(<App />)
     createHabitViaUI('fix tap', { scheduleType: 'oneTime' })
-    expect(row('fix tap').getByRole('button', { name: 'mark done' }))
+    expect(row('fix tap').getByRole('checkbox', { name: 'mark done' }))
     expect(row('fix tap').queryByRole('button', { name: '+1' })).toBeNull()
     // No running count, no per-day goal — nothing numbered at all.
     expect(row('fix tap').queryByText(/\d+\/\d+/)).toBeNull()
@@ -314,7 +314,7 @@ describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () =
     expect(screen.getByText('one-time · medium')).toBeDefined()
 
     fireEvent.click(
-      row('renew passport').getByRole('button', { name: 'mark done' }),
+      row('renew passport').getByRole('checkbox', { name: 'mark done' }),
     )
 
     // Gone from the daily list, sitting in archived with a -1 button.
@@ -324,7 +324,7 @@ describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () =
 
     // Undo: un-archived AND un-done, as if the tap never happened.
     fireEvent.click(archived.getByRole('button', { name: '-1' }))
-    expect(row('renew passport').getByRole('button', { name: 'mark done' }))
+    expect(row('renew passport').getByRole('checkbox', { name: 'mark done' }))
     expect(screen.queryByText(/^archived/)).toBeNull()
   })
 
@@ -376,7 +376,7 @@ describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () =
 
     const archived = within(screen.getByText(/^archived/).closest('details'))
     fireEvent.click(archived.getByRole('button', { name: 'unarchive' }))
-    expect(row('call the bank').getByRole('button', { name: 'mark done' }))
+    expect(row('call the bank').getByRole('checkbox', { name: 'mark done' }))
   })
 })
 

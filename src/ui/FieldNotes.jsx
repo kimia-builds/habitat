@@ -111,11 +111,6 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
         <p>No habits existed during this week.</p>
       )}
 
-      <p className="field-notes-legend">
-        ✓ done · was on the calendar, not marked — blank means nothing was asked
-        of the day
-      </p>
-
       {notes.tasksCompleted.length > 0 && (
         <>
           <h3>tasks completed</h3>

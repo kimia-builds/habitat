@@ -63,7 +63,8 @@ dailies/habits/to-dos distinction. Each habit has:
   a one-tap toggle. Fulfilment and streaks judge exactly as before;
   taps beyond the goal are recorded and kept, and every tap counts
   toward the expedition meter and drops (see decisions log). One-time
-  keeps its single-tap control (the first tap finishes it). The count
+  is an empty tick-box (hover: "mark done"); ticking it finishes and
+  archives the to-do (2026-07-21). The count
   reads as bare **count/goal** — since T4.5 the trailing "today" is
   gone, the date display above the list having taken that job — and the
   reversing control beside the **+1** reads **-1**.

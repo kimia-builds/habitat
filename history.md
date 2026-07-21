@@ -785,6 +785,19 @@ How to append (the end-of-session rule, also in CLAUDE.md):
 - Day cutoff 3am by default, configurable.
 - Friendships space is the **Guest Book**.
 - Returned objects re-enter the world and can be found again.
+- 2026-07-21 (Kimia, copy + control tweaks, outside the plan): **an
+  undone one-time to-do is an empty tick-box, not a "mark done"
+  button** — ticking it finishes and archives it (hover reads "mark
+  done"). Same change in the check-in's past-day rows: empty box when
+  unmarked, ticked box (hover "done") when marked, un-ticking un-marks.
+  A checkbox reads as a to-do more plainly than a button. Also
+  **removed two explanatory copy lines** as visual clutter: the field
+  notes legend ("✓ done · was on the calendar, not marked — blank
+  means nothing was asked of the day") and the check-in's yesterday
+  line ("Anything left unmarked simply counts as not done — neutral
+  data, nothing lost"). The underlying principle is unchanged — unmarked
+  is still just neutral not-done data — it simply no longer needs saying
+  on screen.
 
 ## spec.md version history (formerly its preamble)
 

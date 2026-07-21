@@ -70,7 +70,16 @@ function HabitRow({
       </span>
       {oneTime ? (
         <span className="completion-controls">
-          <button onClick={onComplete}>mark done</button>
+          {/* One-time to-dos are an empty checkbox until done; ticking it
+              finishes and archives them. Hover reads "mark done". */}
+          <input
+            type="checkbox"
+            className="todo-check"
+            checked={false}
+            onChange={onComplete}
+            title="mark done"
+            aria-label="mark done"
+          />
         </span>
       ) : (
         <span className="completion-controls">
