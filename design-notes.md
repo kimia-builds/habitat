@@ -1,66 +1,8 @@
 # design-notes.md — HABITAT (UX & feel)
 
-_v1.9 — 2026-07-21 (fifteenth session, T4.5 built). §12 is now real —
-rail, date display, icon-only actions, the check-in pop-up and the
-startup's plain-fade slot are all live. §4 changes shape: Kimia's call
-today makes **all three meters bars**, the exact numbers moving behind
-each meter's hover — the wallet's hover tells the plain truth even in
-debt. Spec v1.27, plan v1.26._
-
-_v1.8 — 2026-07-20 (fourteenth session, T4.4 built). Friendships are
-real: §8 gains the repeat-friends rule (categories refill) and the
-cameo redecision — big-win celebrations with a short message, built in
-the new plan task T4.6 — and §12e's party mode is live, the toggle
-shipped whole with T4.4 since it landed before T4.5. Spec v1.26,
-plan v1.25._
-
-_v1.7 — 2026-07-20 (twelfth session, docs only). The UX/copy/design
-pass: §12 is new — the home screen's quiet furniture (the left rail,
-the date display, icon-only actions), the check-in as a pop-up, and
-the daily startup animation, which is this file's first **interruptive**
-moment and therefore the one needing the most care. §2 gains undo's new
-face: **-1**. Spec v1.24, plan v1.23._
-
-_v1.6 — 2026-07-20 (eleventh session, T4.3 built). The Abode joins
-the record pages: open ground under sky, visual-first per §7 — flora,
-their arrangement, no prose, no dates. Undo/compost keep §2's quiet
-treatment (a small underlined word, never an alarm), and the held
-flora is §1's tap-to-reveal in miniature. Spec v1.23, plan v1.22._
-
-_v1.5 — 2026-07-19 (ninth session, T4.1 built). The Map is the first
-record page under §7's visual-first rule: shapes (seeded placeholders
-until T5.3), discovery dates, no stored prose — and no names until
-T6.1. The §6 ambient swell for new regions is NOT built yet — it
-arrives with T5.2, along with the playback of the 16 (blank) region
-narration slots added to narration.js. Spec v1.20, plan v1.19._
-
-_v1.4 — 2026-07-19 (eighth session, T3.5 built). The drop-choice
-symmetry in §5 is now real: held reading arrivals offer read now /
-read later, and the spread popup is quiet pastel (an everyday
-pleasure, not a POP). Its empty-state words are a narration slot —
-the human-written rule holds down to this one line. Spec v1.19,
-plan v1.18._
-
-_v1.3 — 2026-07-19 (seventh session, T3.4 built). The authoring model
-in §7 is now real: `src/content/narration.js` holds the keyed slots,
-the five built reveals read from it (titles included — Kimia's call),
-and an empty slot renders nothing at all — the pop-up keeps its glyph
-and button, no marker. Spec v1.18, plan v1.17._
-
-_v1.2 — 2026-07-19 (sixth session, after T3.3). The human-made rule
-now covers images too: reading-material spreads are pictures Kimia
-provides, never AI-generated (§7). Drop-choice symmetry decided —
-read now / read later mirrors gather / leave it (§5); fungi stay
-choice-free (currency). Spec v1.17, plan T3.5._
-
-_v1.1 — 2026-07-19 (fifth session, docs only). Added §11: the visual
-identity reference — the six charm symbols + colours and the
-typography system, from Kimia's design reference. Companion to
-**spec.md v1.15** and **plan.md v1.14**._
-
-_v1.0 — 2026-07-19 (fourth session, docs only). Resolved every open
-item from the v0.2 draft — decisions taken with Kimia on 2026-07-19
-and recorded in spec.md's decisions log._
+_This file is the current feel layer — read the sections your task
+touches, alongside spec.md, before any design-adjacent work. Its
+version-by-version changelog lives in **history.md**._
 
 ---
 

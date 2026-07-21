@@ -1,9 +1,19 @@
 # CLAUDE.md — rules for AI coding sessions on Habitat
 
-Read spec.md and plan.md before writing any code — and design-notes.md
-(the feel layer) before any design-adjacent task. If anything is
-ambiguous, ask Kimia before coding — never guess and never invent
-requirements.
+Session-start reading — kept deliberately light (2026-07-21):
+
+- Always read this file in full (every guardrail lives here), plus the
+  current task's entry in plan.md.
+- Then read only the spec.md sections the task touches — and the
+  design-notes.md sections for any design-adjacent task. Read a whole
+  file only when the task genuinely spans it.
+- **history.md is the audit trail** (dated decisions log, version
+  history, completed-task build notes). It is never session-start
+  reading — open it only when you need the story of how a rule came
+  to be.
+
+If anything is ambiguous, ask Kimia before coding — never guess and
+never invent requirements.
 
 ## Who you're working with
 
@@ -20,16 +30,27 @@ Kimia is a non-coder. Therefore:
 - Work on exactly ONE task from plan.md at a time. Do not start the
   next task, and do not "improve" things outside the current task.
 - Game logic gets automated tests written with (or before) the code.
+- **UI tests assert structure and behaviour, never incidental wording
+  (added 2026-07-21):** query by role, aria label, count and state.
+  Asserting an exact word is allowed only where a spec decision pins
+  that word (the `-1`, "filter view", a page title); free-floating
+  prose assertions break the suite on every copy pass — and Kimia's
+  content words stay out of tests entirely, as ever.
 - Run the full test suite before declaring any task done. A task with
   failing tests is not done.
 - Commit after each completed task with a clear message (what + why).
 - Update plan.md checkboxes when a task completes.
-- **End-of-session doc sync (added 2026-07-14 after checkbox drift):**
-  before the final commit of every session, verify that (a) plan.md
-  checkboxes match what is actually built, and (b) every product
-  decision made during the session is recorded in spec.md's decisions
-  log with a date. Docs that disagree with code are a bug — say so and
-  fix them in the same session.
+- **End-of-session doc sync (2026-07-14; simplified 2026-07-21 —
+  record each decision ONCE):** before the final commit of every
+  session, verify that (a) plan.md checkboxes match what is actually
+  built — tick the box, keep the completed task to ONE line, and
+  append its full build notes to history.md; and (b) every product
+  decision made during the session has one dated entry in history.md's
+  decisions log AND is folded into the spec.md / design-notes.md
+  section it changes (those files must always describe the present on
+  their own). No version-history preambles anywhere. Docs that
+  disagree with code are a bug — say so and fix them in the same
+  session.
 - If stuck on the same bug twice, stop and say so rather than thrashing.
 
 ## Product guardrails (from spec.md — never violate)
