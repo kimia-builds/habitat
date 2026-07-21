@@ -479,12 +479,13 @@ tracker. Everything after this is delight, informed by real use.
      list, rather than a page that replaces it. Its §4.2 rules are
      untouched — yesterday must be answered, the done button is the
      only exit, no meters.
-  7. **The Abode's quiet / party mode toggle** — _already shipped live
+  7. **Meters all bars, hover to reveal data** - literacy and wallet to mirror steps taken, with hover showing the exact levels and numbers. Wallet hover should show debt, and the bar should grow to its maximum size at 40 fungi, with its minimum size at 0 or below. Literacy bar should refresh at each new level of literacy, and the data should reveal a number from minimum 0 to maximum 100, where 10 would be level 1 unlocked, bar refreshed.
+  8. **The Abode's quiet / party mode toggle** — _already shipped live
      with T4.4_ (the fourteenth session landed before this one): the
      switch with an icon either side, greyed "not yet" with zero
      friends and party mode working with the first. Nothing left to do
      here beyond the pass's styling of it.
-  8. **Startup plumbing** — detect the first visit of each Habitat day
+  9. **Startup plumbing** — detect the first visit of each Habitat day
      (after the 3am cutoff, regardless of whether a check-in was owed)
      and sequence it correctly: check-in pop-up → startup → Sunday
      field notes. The animation itself is T5.2; T4.5 can hold the slot
