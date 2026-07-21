@@ -42,7 +42,6 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
   if (firstWeek === null) {
     return (
       <section className="field-notes" aria-label="field notes">
-        <h2>field notes</h2>
         <p>Nothing recorded yet — notes begin with the first habit.</p>
         <button onClick={onBack}>← back to the habits</button>
       </section>
@@ -53,8 +52,6 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
 
   return (
     <section className="field-notes" aria-label="field notes">
-      <h2>field notes</h2>
-
       <div className="week-nav">
         <button
           onClick={() => setWeek(addDays(week, -7))}

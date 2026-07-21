@@ -9,7 +9,6 @@
 // a graph opens on the coarsest unlocked zoom.
 
 import { useState } from 'react'
-import { GRAPH_UNLOCK_AGE_DAYS } from '../game/constants.js'
 import { graphSeries, hasGraph, unlockedZooms } from '../game/graphs.js'
 import CharmSymbol from './CharmSymbol.jsx'
 import { SYMBOL_COLORS } from './symbols.js'
@@ -94,10 +93,7 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
         {habit.archived && <span className="habit-meta"> (archived)</span>}
       </summary>
       {zoom === null ? (
-        <p className="habit-graph-young">
-          A graph begins once a habit is {GRAPH_UNLOCK_AGE_DAYS.day} days old —
-          this one is still settling in.
-        </p>
+        <p className="habit-graph-young">habit is too young</p>
       ) : (
         <>
           {zooms.length > 1 && (

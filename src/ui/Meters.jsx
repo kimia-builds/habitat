@@ -64,7 +64,7 @@ function Meters({ completions, readingItems, fungusTrueBalance, onOpen }) {
           (2026-07-21). */}
       <button
         className="meter meter-expedition"
-        title={`${steps} steps taken`}
+        title={String(steps)}
         onClick={() => onOpen('map')}
       >
         <span className="meter-name">steps taken</span>
@@ -78,11 +78,12 @@ function Meters({ completions, readingItems, fungusTrueBalance, onOpen }) {
 
       {/* Literacy level: progress toward the next friendship door. The
           doors themselves are not counted out loud (2026-07-19); they
-          open in the Guest Book's time (T4.4). The level as a number
-          out of 100 lives behind the hover (2026-07-21). */}
+          open in the Guest Book's time (T4.4). The bare level number
+          lives behind the hover (2026-07-21; trimmed to just the
+          number 2026-07-22). */}
       <button
         className="meter meter-literacy"
-        title={`${Math.round(literacyLevelNumber(points))} of 100`}
+        title={String(Math.round(literacyLevelNumber(points)))}
         onClick={() => onOpen('bookcase')}
       >
         <span className="meter-name">literacy level</span>

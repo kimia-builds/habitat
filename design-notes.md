@@ -98,9 +98,10 @@ pace, rolls over to empty — labelled simply **steps taken**); literacy
 fills toward the next friendship level and refreshes at each one
 (**literacy level**); the wallet is a bar too now, clamped 0–40 fungi
 (**wallet balance**). The exact numbers moved behind each meter's
-**hover**: steps shows the lifetime total, literacy a 0–100 scale (ten
-per level), the wallet the true balance — **a plain negative number
-while debt is being settled**. Kimia weighed the punishment-feel worry
+**hover**, and since 2026-07-22 the hover is the **bare number only** —
+no label words: steps shows the lifetime total, literacy the 0–100 level
+number (ten per level), the wallet the true balance — **a plain negative
+number while debt is being settled**. Kimia weighed the punishment-feel worry
 (the face never showing debt is her 2026-07-20 rule and stands) and
 chose honesty on demand: the face stays calm, the hover is a question
 asked, so it may answer plainly.

@@ -72,20 +72,18 @@ describe('the numbers behind the hover', () => {
     )
   })
 
-  it('the steps hover carries the lifetime total', () => {
+  it('the steps hover carries the lifetime total — just the number', () => {
     renderMeters({ completions: [{}, {}] })
-    expect(screen.getByRole('button', { name: /steps taken/ }).title).toBe(
-      '2 steps taken',
-    )
+    expect(screen.getByRole('button', { name: /steps taken/ }).title).toBe('2')
   })
 
-  it('the literacy hover reads the level out of 100', () => {
+  it('the literacy hover reads the bare level number', () => {
     // Five novels are worth 20 literacy points (4 each) — a level of
     // exactly 15 (hand-verified against game/meters.js).
     const readingItems = Array.from({ length: 5 }, () => ({ type: 'novel' }))
     renderMeters({ readingItems })
     expect(screen.getByRole('button', { name: /literacy level/ }).title).toBe(
-      '15 of 100',
+      '15',
     )
   })
 })

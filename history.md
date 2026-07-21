@@ -798,6 +798,16 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   data, nothing lost"). The underlying principle is unchanged — unmarked
   is still just neutral not-done data — it simply no longer needs saying
   on screen.
+- 2026-07-22 (Kimia, field-notes + meter copy tweaks, outside the
+  plan): **the "field notes" page title is removed entirely** — the
+  page stands without a heading (its section keeps the "field notes"
+  aria-label as an invisible landmark). The **"tasks completed" and
+  "graphs" sections now sit centred** while the rest of the page stays
+  left-aligned. The young-habit graph line is shortened from "A graph
+  begins once a habit is 3 days old — this one is still settling in."
+  to just **"habit is too young"**. And the three top **meter hovers
+  are trimmed to the bare number** — "steps taken"/"of 100" suffixes
+  dropped, matching the wallet, which was already number-only.
 
 ## spec.md version history (formerly its preamble)
 

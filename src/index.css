@@ -400,10 +400,12 @@ body {
   align-items: flex-start;
 }
 
-.field-notes h2,
 .field-notes h3 {
   font-weight: 300;
   letter-spacing: 0.2em;
+  /* "tasks completed" and "graphs" headings sit centred (Kimia,
+     2026-07-22) — the section is otherwise left-aligned. */
+  align-self: center;
 }
 
 .week-nav {
@@ -452,6 +454,9 @@ body {
   list-style: none;
   color: #9aa3b5;
   font-size: 0.85rem;
+  align-self: center;
+  text-align: center;
+  padding-left: 0;
 }
 
 /* T2.4: the habit graphs — quiet lines in each habit's symbol colour. */

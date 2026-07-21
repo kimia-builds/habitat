@@ -634,10 +634,10 @@ describe('the three meters (T2.2)', () => {
         .getAttribute('aria-valuenow'),
     ).toBe('0')
     expect(meters().getByRole('button', { name: /steps taken/ }).title).toBe(
-      '0 steps taken',
+      '0',
     )
     expect(meters().getByRole('button', { name: /literacy level/ }).title).toBe(
-      '0 of 100',
+      '0',
     )
     expect(meters().getByRole('button', { name: /wallet balance/ }).title).toBe(
       '0',
@@ -887,20 +887,20 @@ describe('field notes (T2.3)', () => {
     // The startup fade plays first — the field notes wait behind it
     // (T4.5's morning order: check-in → startup → field notes).
     expect(document.querySelector('.startup-fade')).not.toBeNull()
-    expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+    expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
 
     // Once the fade has lifted, the field notes take their turn.
     act(() => {
       vi.advanceTimersByTime(STARTUP_FADE_MS)
     })
-    expect(screen.getByRole('heading', { name: 'field notes' })).toBeDefined()
+    expect(screen.getByRole('region', { name: 'field notes' })).toBeDefined()
     expect(stored().settings.startupShownOn).toBe('2026-07-19')
     expect(stored().settings.fieldNotesShownOn).toBe('2026-07-19')
 
     // A second visit the same Sunday goes straight to the list.
     first.unmount()
     render(<App />)
-    expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+    expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
     expect(document.querySelector('.startup-fade')).toBeNull()
   })
 
@@ -911,7 +911,7 @@ describe('field notes (T2.3)', () => {
 
     render(<App />)
     expect(screen.getByText('check-in')).toBeDefined()
-    expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+    expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
     // No fade while the check-in is up — it waits its turn too.
     expect(document.querySelector('.startup-fade')).toBeNull()
 
@@ -921,14 +921,14 @@ describe('field notes (T2.3)', () => {
       screen.getByRole('button', { name: 'done — save check-in' }),
     )
     expect(document.querySelector('.startup-fade')).not.toBeNull()
-    expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+    expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
 
     // Only once the fade has played do the field notes open — the full
     // morning order was check-in → startup → field notes.
     act(() => {
       vi.advanceTimersByTime(STARTUP_FADE_MS)
     })
-    expect(screen.getByRole('heading', { name: 'field notes' })).toBeDefined()
+    expect(screen.getByRole('region', { name: 'field notes' })).toBeDefined()
     expect(stored().settings.startupShownOn).toBe('2026-07-19')
   })
 
