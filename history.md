@@ -704,6 +704,28 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   pages' full display titles** ("map of N-Z-D", "your abode", "local
   community", "readers library", "local market") — the label names the
   destination, not the rail's short word for it.
+- 2026-07-21 (sixteenth session, T4.6 built): **the cameo thresholds** —
+  a big day is **8 completions** against one Habitat day; a record
+  streak must beat the habit's own all-time record AND be at least **5
+  days** strong (**2 weeks** for week-counted habits) so young streaks
+  can't fire cameos daily (never a learnable schedule); a lived-day
+  milestone is **every 50 lived days**, firing on the crossing day
+  itself. The celebrating friend is **a seeded surprise pick** from the
+  friends who have arrived — stable for the win, undo-safe. At most one
+  cameo per day (milestone > record > big day, rarest first); it visits
+  once per visit, performs its animation once, and settles back to the
+  calm list — nothing stored. (All Kimia's calls, answering T4.6's open
+  "decide with her" thresholds.)
+- 2026-07-21 (sixteenth session, Kimia's call): **the left rail persists
+  on every screen but the check-in** — the world pages are always one
+  tap away. The check-in keeps its rule: the done button stays the only
+  exit, so no rail there.
+- 2026-07-21 (sixteenth session, Kimia's call): **a temporary
+  design-assets page** prepares for T5 — one empty shelf per image-asset
+  family (charms, friends, map regions, flora, fungi, market objects,
+  reading spreads), reached from a door at the foot of the home screen.
+  Scaffolding: it leaves or becomes deliberate when the design pass
+  lands.
 - A lived day = a day with ≥1 habit marked (including retroactive
   marks). Called a "cron" until 2026-07-20.
 - Reward pacing: slow, steady, designed for a patient daily user; no
@@ -1443,3 +1465,38 @@ and recorded in spec.md's decisions log._
      once-per-day detection across the cutoff, the Sunday sequence,
      the note's window and wording, the bars' clamps and hovers, and
      every icon's exposed label.
+- [x] **T4.6 Home-screen cameos** _(done 2026-07-21, sixteenth session —
+      spec §5, design-notes §8)_
+      The third and last moment the signature animation plays: a friend
+      turns up on the habit list for a BIG WIN, performs its category
+      animation once, and the moment settles back to the calm list.
+      Three win types, thresholds decided with Kimia this session and
+      living in constants: a big day (8 completions), a record streak
+      (beats the habit's own record, floor 5 days / 2 weeks so it's
+      never a learnable schedule), a lived-day milestone (every 50,
+      the crossing day only). Only when a friend exists; the visitor is
+      a seeded surprise pick, stable for the win; at most one cameo a
+      day, rarest first (milestone > record > big day); the message is
+      Kimia's slot (`cameos.*` in narration.js), blank rendering
+      nothing. No persistence, no nagging: derived fresh from history,
+      so undo quietly takes the win back; it visits once per visit and
+      leaves by itself after CAMEO_LINGER_MS.
+      _Done when:_ trigger tests prove each win type fires its cameo
+      once (and only when a friend exists), the messages read from
+      slots with blank rendering nothing, and the moment settles back
+      to the calm list.
+      Built: `game/cameos.js` — the three win detectors as pure
+      derivations (the lived-day exact-crossing rule: count on a
+      multiple of 50 AND today lived; the record maths walking the
+      current counting era, refereed against schedule.js's currentStreak
+      in the tests; schedule.js's currentKindStart exported for it);
+      `ui/Cameo.jsx` — a quiet pastel visit between the date and the
+      list, the signature animation run a single iteration, the whole
+      visit's length fed inline from CAMEO_LINGER_MS so CSS and timer
+      never disagree; never behind the startup fade, never during the
+      check-in. Same session (Kimia's calls, both logged above): the
+      left rail moved into the shared fragment so it persists on every
+      screen but the check-in, and the temporary design-assets page
+      (empty shelves per family, counts from constants) waits for T5.
+      Trigger, priority, undo-safety, equivalence, slot and visit tests
+      all pass.

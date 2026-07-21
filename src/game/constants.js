@@ -342,3 +342,36 @@ export const MARKET_OBJECTS_PER_REGION = 3
 // Buy and sell prices are ALWAYS identical (spec §5: no penalty, no
 // spread) — these numbers are both.
 export const MARKET_PRICE_TIERS = [6, 12, 18]
+
+// ───────────────────────── T4.6: home-screen cameos ─────────────────────────
+
+// The third (and last) moment a friend's signature animation may play
+// (design-notes §8): a friend turns up on the habit list to celebrate a
+// BIG WIN, performs once, and the moment settles back to the calm list
+// — nothing stored, no scoreboard. The three win types and their
+// thresholds are Kimia's calls (2026-07-21):
+
+// A BIG DAY: this many completions against one Habitat day. At her
+// ~3.5 taps/day pace, 8 is a genuinely big day — a few times a month
+// at most, never routine.
+export const CAMEO_BIG_DAY_COMPLETIONS = 8
+
+// A RECORD STREAK: a habit's current streak beats its own all-time
+// record — but only once the streak is at least this strong. Without
+// the floor every young habit would beat its "record" daily, and a
+// cameo you can predict is a cameo you stop seeing (T4.6: never on a
+// learnable schedule). Day-counted streaks and week-counted ones
+// (N-per-week) have their own floors, in their own units.
+export const CAMEO_STREAK_RECORD_MIN = { day: 5, week: 2 }
+
+// A LIVED-DAY MILESTONE: every this-many lived days (50, 100, 150 … —
+// her draft message read "50 lived days!"). Fires only on the crossing
+// day itself; at daily use that's ~7 cameos a year.
+export const CAMEO_LIVED_DAY_STEP = 50
+
+// How long the cameo visits before settling back to the calm list: one
+// full performance of the slowest signature animation (~4s, see the
+// friend-anim-* keyframes in index.css), plus an unhurried beat to read
+// the message, plus the fade. Then it's gone until the next visit that
+// still qualifies — no persistence, no nagging.
+export const CAMEO_LINGER_MS = 9000

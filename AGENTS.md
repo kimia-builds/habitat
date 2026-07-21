@@ -2,16 +2,22 @@
 
 This file tells you what Habitat is, how it is built, and the rules you
 must follow. The project's own sources of truth are the markdown files
-in the repo root — read them before writing any code:
+in the repo root. Session-start reading is kept deliberately light
+(2026-07-21):
 
 - **CLAUDE.md** — the working agreements for AI coding sessions
   (process rules, product/design guardrails, technical conventions).
-- **spec.md** — the full product specification, with a dated decisions
-  log at the top.
+  Always read in full — every guardrail lives here.
 - **plan.md** — the build roadmap: milestones M0–M6, one task per
-  session, checkboxes ticked as tasks complete.
-- **design-notes.md** — the "feel layer" (UX, motion, visual identity);
-  read it before any design-adjacent task.
+  session, checkboxes ticked as tasks complete. Read the current
+  task's entry.
+- **spec.md** — the full product specification. Read only the sections
+  the current task touches.
+- **design-notes.md** — the "feel layer" (UX, motion, visual identity).
+  Read the relevant sections before any design-adjacent task.
+- **history.md** — the audit trail (dated decisions log, version
+  history, completed-task build notes). Never session-start reading —
+  open it only when you need the story of how a rule came to be.
 
 If anything is ambiguous, ask the user before coding — never guess and
 never invent requirements.
@@ -105,6 +111,10 @@ src/game/             ALL game logic — pure functions, no React, no
   startup.js            the daily startup's once-per-Habitat-day rule
                         (T4.5) and the morning order it enforces:
                         check-in → startup → Sunday field notes
+  cameos.js             home-screen cameos (T4.6) — the three big-win
+                        triggers (big day / record streak / lived-day
+                        milestone), derived from history, and the
+                        seeded surprise pick of the celebrating friend
 src/content/          KIMIA'S FILES — she edits these directly on
                       GitHub's web UI. Never auto-generate their prose
                       or images, and never hard-code their words in
@@ -124,9 +134,13 @@ src/ui/               React components, kept thin (HabitRow, HabitForm,
                       ArrivalShelf, DropGlyph, ObjectGlyph, FirstReveal,
                       SpreadPopup, AbodePage, BookcasePage, MapPage,
                       MarketPage, GuestBookPage, FriendGlyph,
-                      FriendReveal, IconRail, DateDisplay, StartupFade,
-                      mapLayout.js, BackupControls, SymbolPicker,
-                      symbols.js, arrivalText.js)
+                      FriendReveal, Cameo, IconRail, DateDisplay,
+                      StartupFade, mapLayout.js, BackupControls,
+                      SymbolPicker, symbols.js, arrivalText.js)
+src/ui/DesignPage.jsx   TEMPORARY (T5 prep, 2026-07-21): the
+                      design-assets workbench — one empty shelf per
+                      image family, reached from a door at the foot of
+                      the home screen; leaves when the design pass lands
 src/test/setup.js     test-environment repair (see Testing below)
 public/favicon.svg    the only static asset
 ```
@@ -184,6 +198,11 @@ subfolder — do not change it.
 - **Game logic gets automated tests written with (or before) the
   code.** The date-attribution rules (day cutoff, check-in editability,
   week freezing) get the strictest tests in the project.
+- **UI tests assert structure and behaviour, never incidental wording
+  (2026-07-21):** query by role, aria label, count and state. An exact
+  word may be asserted only where a spec decision pins that word (the
+  `-1`, "filter view", a page title) — free-floating prose assertions
+  break the suite on every copy pass.
 - `src/test/setup.js` repairs the test sandbox: Node 25+ ships a broken
   experimental `localStorage` that shadows jsdom's, so the setup swaps
   in an in-memory implementation. Keep it in the test setup files.
@@ -203,11 +222,16 @@ subfolder — do not change it.
 - Work on exactly **ONE task from plan.md at a time**. Do not start the
   next task and do not "improve" things outside the current task.
 - Commit after each completed task with a clear message.
-- **End-of-session doc sync:** before the final commit of a session,
-  verify that plan.md checkboxes match what is actually built and that
-  every product decision made during the session is recorded in
-  spec.md's decisions log with a date. Docs that disagree with code are
-  a bug — fix them in the same session.
+- **End-of-session doc sync (record each decision ONCE, 2026-07-21):**
+  before the final commit of a session, verify that (a) plan.md
+  checkboxes match what is actually built — tick the box, keep the
+  completed task to ONE line, and append its full build notes to
+  history.md; and (b) every product decision made during the session
+  has one dated entry in history.md's decisions log AND is folded into
+  the spec.md / design-notes.md section it changes (those files must
+  always describe the present on their own). No version-history
+  preambles anywhere. Docs that disagree with code are a bug — fix them
+  in the same session.
 - If stuck on the same bug twice, stop and say so rather than thrashing.
 
 ## Naming and copy (current as of 2026-07-21)
@@ -229,10 +253,11 @@ displayed titles moved:
 Other copy rules:
 
 - The **left icon rail** (T4.5, built 2026-07-21) runs down the left
-  edge of the home screen in this descending order: **map · abode ·
-  community · library · market**, each revealing its name on hover —
-  the full display title, not the rail's short word. The three meters
-  stay clickable too.
+  edge in this descending order: **map · abode · community · library ·
+  market**, each revealing its name on hover — the full display title,
+  not the rail's short word. It **persists on every screen but the
+  check-in** (Kimia's call 2026-07-21) — the check-in's done button
+  stays the only exit. The three meters stay clickable too.
 - The home screen is **icon-only with hover labels** (T4.5, built
   2026-07-21) — no action words. Every mark-reversing control reads
   **`-1`** (mirroring `+1`); habit counts are bare `count/goal` with
@@ -254,15 +279,20 @@ Other copy rules:
   labels, or renaming anywhere in UI or data model.
 - **Date attribution is sacred:** a completion belongs to the day it
   was DONE, not the day it was entered. Day cutoff is 3am (whole hours
-  0–23, configurable). Check-in always asks about calendar yesterday;
-  past days are editable only while their Mon–Sun week is current; a
-  finished week freezes.
+  0–23, configurable). Check-in always asks about calendar yesterday,
+  which must be answered; older days are optional. Past days are
+  editable only while their Mon–Sun week is current (calendar
+  yesterday always is, even on a Monday); a finished week freezes.
+  Unfilled days simply count as not done — neutral data.
 - **Reward pacing is flat and patient** — no front-loading, retention
   hooks, or early-days bonuses. Designed for one loyal daily user over
   ~5 years.
 - **Three independent reward streams** with no conversions between
   them; the only link is region discovery expanding the Market's
   rotation pool.
+- **Flora are optional to gather and always compostable;** composted
+  flora re-enter the world. Reading material is never discarded. Fungi
+  go straight to the wallet.
 - **Market:** objects are purchased, never dropped; buy and return
   prices are always identical; the fungus wallet only decreases via a
   purchase the user chose; rotation runs on **lived days** (days with

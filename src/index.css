@@ -697,10 +697,10 @@ body {
 
 /* The ten signature category animations (T4.4, design-notes §8): one
    per friend category, simple code-drawn placeholders until the T5.3
-   art pass. They play in exactly two built moments — the arrival
-   reveal and the Guest Book card (home-screen cameos arrive with
-   T4.6; party mode never plays them). All gentle, all looping while
-   their moment is open. */
+   art pass. They play in exactly three moments — the arrival reveal,
+   the Guest Book card, and the home-screen cameo (T4.6, which runs
+   them a single iteration; party mode never plays them). All gentle,
+   all looping while their moment is open. */
 @keyframes friend-drift {
   0%,
   100% {
@@ -852,6 +852,60 @@ body {
 
 .friend-anim-poet {
   animation: friend-shimmer 3.8s ease-in-out infinite;
+}
+
+/* The home-screen cameo (T4.6, design-notes §8): a friend visits the
+   habit list to celebrate a big win. Quiet pastel, not the reveal's
+   neon — an encouragement, not a first occurrence. The visit fades in,
+   holds, and fades back to the calm list; the whole visit's length is
+   CAMEO_LINGER_MS, fed in inline from constants.js so the CSS and the
+   expiry timer never disagree. The signature animation performs ONCE
+   (iteration count 1 below — scarcity is the mechanic), then the
+   friend simply rests until the visit fades. */
+@keyframes cameo-visit {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  6% {
+    opacity: 1;
+    transform: none;
+  }
+  84% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.cameo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0 0.25rem;
+  animation-name: cameo-visit;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+
+.cameo .cameo-glyph {
+  width: 2.75rem;
+  height: 2.75rem;
+  animation-iteration-count: 1;
+}
+
+.cameo-name {
+  color: #9aa3b5;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.cameo-message {
+  color: #e8e6f0;
+  font-size: 0.9rem;
+  margin: 0;
 }
 
 .reveal-glyph {
@@ -1332,4 +1386,56 @@ body {
   to {
     opacity: 0;
   }
+}
+
+/* TEMPORARY (T5 prep): the design-assets workbench — empty dashed
+   frames waiting for the M5 art. Its door sits at the foot of the
+   home screen, quieter than the backup buttons it stands beside. */
+.design-door {
+  text-align: center;
+  padding: 0.5rem 0 1rem;
+}
+
+.design-door button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  color: #6b7288;
+}
+
+.design-door button:hover {
+  color: #9aa3b5;
+}
+
+.design-family {
+  margin: 1.25rem 0;
+}
+
+.design-family h3 {
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: #9aa3b5;
+}
+
+.design-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+  padding: 0;
+}
+
+.design-slot {
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px dashed #2a3040;
+  border-radius: 0.5rem;
+}
+
+.design-shelf {
+  height: 3.5rem;
+  border: 1px dashed #2a3040;
+  border-radius: 0.5rem;
 }

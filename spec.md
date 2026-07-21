@@ -278,12 +278,20 @@ region discovery expands what the Market can offer.
   and filterable by symbols (multi-select; a temporary lens that resets
   each visit). Habits can be archived (history kept) or permanently
   deleted (with confirmation). Every action on the home screen is an
-  **icon with a hover label** (T4.5) — no action words on the page.
-- **The left rail (T4.5):** five icon buttons down the left edge of the
-  home screen, away from the habit list, in descending order **map ·
-  abode · community · library · market**, each revealing its name on
-  hover. These are the five world pages. The three meters stay
-  clickable as well — meter and rail are two ways to the same page.
+  **icon with a hover label** (T4.5) — no action words on the page. On
+  a big-win day a **cameo** visits between the date and the list
+  (T4.6): a friend celebrating — a big day (8 completions), a record
+  streak (own record beaten, 5 days / 2 weeks minimum), a lived-day
+  milestone (every 50, the crossing day only). It performs its
+  animation once beside Kimia's message slot, then settles back to the
+  calm list — once per visit, nothing stored (design-notes §8).
+- **The left rail (T4.5):** five icon buttons down the left edge in
+  descending order **map · abode · community · library · market**, each
+  revealing its name on hover. These are the five world pages. The
+  three meters stay clickable as well — meter and rail are two ways to
+  the same page. Since 2026-07-21 the rail **persists on every screen
+  but the check-in** (Kimia's call) — the check-in's done button stays
+  the only exit there.
 - **Map** (via expedition meter or the rail): the discovered planet so
   far. Titled **map of N-Z-D**.
 - **Bookcase** (via literacy meter or the rail's _library_): one
@@ -310,6 +318,12 @@ region discovery expands what the Market can offer.
   Sunday (after any check-in _and_ after the startup animation). Has a
   "back to habits" link.
 - **Settings:** day cutoff, data export/import.
+- **Design assets (TEMPORARY, T5 prep — 2026-07-21):** a workbench page
+  holding one empty shelf per image-asset family the M5 design pass
+  will fill (charms, friends, map regions, flora, fungi, market
+  objects, reading spreads). Reached from a door at the foot of the
+  home screen; it leaves or becomes deliberate when the design pass
+  lands.
 
 ### The date display (T4.5)
 

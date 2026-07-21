@@ -1,8 +1,10 @@
 // The left icon rail (T4.5, spec §5b, design-notes §12d): five icon
-// buttons descending the left edge of the home screen. A rail, not a
-// navbar — no background, no active state; faint at rest, each
-// brightening to its own charm colour on hover (the CSS does that via
-// the per-button classes; this file only names them).
+// buttons descending the left edge. Since 2026-07-21 (Kimia's call) it
+// persists on EVERY screen but the check-in pop-up — whose done button
+// stays the only exit — so the world pages are always one tap away.
+// A rail, not a navbar — no background, no active state; faint at rest,
+// each brightening to its own charm colour on hover (the CSS does that
+// via the per-button classes; this file only names them).
 //
 // The order is Kimia's — map · abode · community · library · market:
 // the two lived-in places under the planet, the two collections below.

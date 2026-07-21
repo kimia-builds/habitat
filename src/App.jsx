@@ -3,7 +3,7 @@
 // habits, days and completions is delegated to the game modules, and
 // all saving goes through the storage module.
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   abodeItems,
   placeFlora,
@@ -24,6 +24,7 @@ import {
   placeBook,
   pruneBookcaseLayout,
 } from './game/bookcase.js'
+import { cameoWin } from './game/cameos.js'
 import {
   countFor,
   countOn,
@@ -87,8 +88,10 @@ import ArrivalShelf from './ui/ArrivalShelf.jsx'
 import { arrivalNote } from './ui/arrivalText.js'
 import BackupControls from './ui/BackupControls.jsx'
 import BookcasePage from './ui/BookcasePage.jsx'
+import Cameo from './ui/Cameo.jsx'
 import CheckInPanel from './ui/CheckInPanel.jsx'
 import DateDisplay from './ui/DateDisplay.jsx'
+import DesignPage from './ui/DesignPage.jsx'
 import FieldNotes from './ui/FieldNotes.jsx'
 import FirstReveal from './ui/FirstReveal.jsx'
 import FriendReveal from './ui/FriendReveal.jsx'
@@ -217,6 +220,23 @@ function App() {
       habitsOn(data.habits, data.completions, day, data.settings.dayCutoffHour)
         .length > 0,
   )
+
+  // The home-screen cameo (T4.6): a friend celebrating today's big win
+  // — derived fresh from history like everything else, so undo quietly
+  // takes the win (and the visit) back. It visits once per visit: after
+  // its linger it expires and stays gone until a reload still finds the
+  // win standing. Nothing about it is ever stored.
+  const [cameoGone, setCameoGone] = useState(false)
+  const expireCameo = useCallback(() => setCameoGone(true), [])
+  const cameo = cameoGone
+    ? null
+    : cameoWin(
+        data.habits,
+        data.completions,
+        data.worldSeed,
+        now,
+        data.settings.dayCutoffHour,
+      )
 
   // Every change goes through here: validate-and-persist, then render.
   // Announcements are pruned to completions that still exist, so ANY
@@ -818,6 +838,14 @@ function App() {
       )}
 
       <BackupControls onExport={handleExport} onImport={handleImport} />
+
+      {/* TEMPORARY (T5 prep): the door to the design-assets workbench
+          (2026-07-21) — an empty shelf until the M5 design pass fills
+          it. Not a world page, so no rail icon; the door leaves when
+          the design pass lands. */}
+      <div className="design-door">
+        <button onClick={() => setPage('design')}>design assets</button>
+      </div>
     </>
   )
 
@@ -858,14 +886,17 @@ function App() {
   // the arrival shelf and (topmost of all) any reveal still owed: one
   // at a time, dismissed by its own button. Two kinds owe a reveal —
   // a drop family's FIRST occurrence (T3.2) and EVERY friend (T4.4).
-  // The fragment also carries the daily startup fade (T4.5): every page
-  // but the check-in renders this fragment, so the fade plays over
-  // whichever screen the new day opens on.
+  // The fragment also carries the daily startup fade (T4.5) and the
+  // left icon rail: every page but the check-in renders this fragment,
+  // so the fade plays over whichever screen the new day opens on, and
+  // the rail persists on every screen but the check-in (Kimia's call
+  // 2026-07-21) — the check-in's done button stays the only exit there.
   const revealing = arrivals.find(
     (a) => (a.first || a.reveal) && !seenRevealIds.has(a.id),
   )
   const meters = (
     <>
+      <IconRail onOpen={setPage} />
       <Meters
         completions={data.completions}
         readingItems={readingItemsFrom(data.completions)}
@@ -1059,16 +1090,34 @@ function App() {
     )
   }
 
-  // The home screen (T4.5): header and meters up top, then the large
-  // letterspaced date display, the left icon rail (the five world
-  // pages' other door — the meters stay clickable too), and the list
-  // content shared with the check-in pop-up's dimmed backdrop.
+  // TEMPORARY (T5 prep): the design-assets workbench — empty shelves
+  // for the image families the M5 design pass will fill. Reached from
+  // its door at the foot of the home screen; the rail reaches it too,
+  // like every screen but the check-in.
+  if (page === 'design') {
+    return (
+      <main className="app">
+        {header}
+        {meters}
+        <DesignPage onBack={() => setPage(null)} />
+      </main>
+    )
+  }
+
+  // The home screen (T4.5): header and meters up top (the meters
+  // fragment carries the left rail, which persists on every screen but
+  // the check-in), then the large letterspaced date display and the
+  // list content shared with the check-in pop-up's dimmed backdrop.
+  // The cameo (T4.6) visits between the date and the list — but never
+  // behind the startup fade, which takes the screen first.
   return (
     <main className="app">
       {header}
       {meters}
       <DateDisplay now={now} cutoffHour={data.settings.dayCutoffHour} />
-      <IconRail onOpen={setPage} />
+      {!startupDue && cameo && (
+        <Cameo win={cameo} worldSeed={data.worldSeed} onExpire={expireCameo} />
+      )}
       {listContent}
     </main>
   )

@@ -106,7 +106,9 @@ export function streakKind(scheduleType) {
 // through the unbroken run of same-kind schedules; the run's first
 // entry is where this era began. A run reaching the very first entry
 // began with the habit itself.
-function currentKindStart(habit, firstDay) {
+// (Exported for T4.6's cameo module: a record streak only competes
+// against records set inside the current counting era.)
+export function currentKindStart(habit, firstDay) {
   const kind = streakKind(habit.schedule.type)
   const history = habit.scheduleHistory
   let start = firstDay

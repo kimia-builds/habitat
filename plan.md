@@ -73,24 +73,7 @@ tracker. Everything after this is delight, informed by real use.
 - [x] **T4.3b Market page** _(done 2026-07-20)_
 - [x] **T4.4 Guest Book + friendships.** _(done 2026-07-20)_
 - [x] **T4.5 UX, copy & navigation pass** _(done 2026-07-21)_
-- [ ] **T4.6 Home-screen cameos** _(redecided 2026-07-20, fourteenth
-      session — spec §5, design-notes §8)_
-      The third moment the signature animation may play, now a
-      celebration rather than a random visit (Kimia's redecision,
-      amending the twelfth session's "rare and unpredictable"): a
-      friend turns up on the habit list for a BIG WIN — a day with
-      many completions, a new record streak, a lived-day milestone —
-      performs its category animation once, with a short message
-      alongside (her draft examples: "12 steps in one day!", "15-day
-      streak record!", "50 lived days!"). Only when a friend exists;
-      never on a learnable schedule; encouragement, never a
-      scoreboard. The messages are Kimia's slots, shipped blank like
-      all her words; the exact win thresholds are decided with her in
-      this task and live in constants.
-      _Done when:_ trigger tests prove each win type fires its cameo
-      once (and only when a friend exists), the messages read from
-      slots with blank rendering nothing, and the moment settles back
-      to the calm list — no persistence, no nagging.
+- [x] **T4.6 Home-screen cameos** _(done 2026-07-21)_
 
 ## M5 — Design pass (3–4 sessions, collaborative)
 

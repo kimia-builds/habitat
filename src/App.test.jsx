@@ -13,7 +13,13 @@ import {
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
-import { STARTUP_FADE_MS } from './game/constants.js'
+import {
+  CAMEO_LINGER_MS,
+  FRIEND_CATEGORIES,
+  MAP_REGION_COUNT,
+  STARTUP_FADE_MS,
+  SYMBOL_COUNT,
+} from './game/constants.js'
 import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
 import { narrationSlot } from './content/narration.js'
 
@@ -1724,5 +1730,130 @@ describe('the icon-only home screen (T4.5)', () => {
     expect(screen.getByRole('button', { name: 'unarchive' })).toBeDefined()
     expect(screen.getByRole('button', { name: 'delete forever' })).toBeDefined()
     expect(screen.getByRole('region', { name: 'filter view' })).toBeDefined()
+  })
+})
+
+// Three changes from 2026-07-21: the rail persists on every screen but
+// the check-in (Kimia's call), the TEMPORARY design-assets page waits
+// for T5, and the home-screen cameo (T4.6) celebrates big wins.
+describe('the persistent rail, the design page and the cameo (2026-07-21)', () => {
+  const settleStartup = () =>
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
+
+  it('the rail stays on every page it opens', () => {
+    seedWorld('rail-seed')
+    render(<App />)
+    settleStartup()
+    const rail = () => screen.getByRole('navigation', { name: 'pages' })
+    fireEvent.click(
+      within(rail()).getByRole('button', { name: 'map of N-Z-D' }),
+    )
+    expect(screen.getByRole('heading', { name: 'map of N-Z-D' })).toBeDefined()
+    expect(rail()).toBeDefined()
+    fireEvent.click(within(rail()).getByRole('button', { name: 'your abode' }))
+    expect(screen.getByRole('heading', { name: 'your abode' })).toBeDefined()
+    expect(rail()).toBeDefined()
+    // …and home again, never having left.
+    fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
+    expect(rail()).toBeDefined()
+  })
+
+  it('yields only to the check-in — its done button stays the only exit', () => {
+    // Yesterday unanswered: the check-in opens over the list…
+    seedWorld('rail-seed', { checkedInThrough: '2026-07-13' })
+    render(<App />)
+    expect(screen.queryByRole('navigation', { name: 'pages' })).toBeNull()
+  })
+
+  it('the design page shows the empty asset shelves, reachable and leavable', () => {
+    seedWorld('design-seed')
+    render(<App />)
+    settleStartup()
+    fireEvent.click(screen.getByRole('button', { name: 'design assets' }))
+    // The fixed-size families hold one empty slot per coming asset
+    // (counts straight from constants, so the page tracks them).
+    const fixed = [
+      ['charms', SYMBOL_COUNT],
+      ['friends', FRIEND_CATEGORIES.length],
+      ['map regions', MAP_REGION_COUNT],
+    ]
+    for (const [name, count] of fixed) {
+      const family = screen.getByRole('region', { name })
+      expect(within(family).getAllByRole('listitem')).toHaveLength(count)
+    }
+    // The open-ended families hold one empty shelf each.
+    for (const name of [
+      'flora',
+      'fungi',
+      'market objects',
+      'reading spreads',
+    ]) {
+      const family = screen.getByRole('region', { name })
+      expect(family.querySelector('.design-shelf')).not.toBeNull()
+    }
+    // The rail reaches this page too, and its back button leads home.
+    expect(screen.getByRole('navigation', { name: 'pages' })).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: /back to the habits/ }))
+    expect(screen.getByRole('button', { name: 'add new habit' })).toBeDefined()
+  })
+
+  it('a big day brings a friend cameo to the list — once, then it settles away', () => {
+    // Today is Thursday 2026-07-16: eight completions against it is a
+    // big day (the threshold in constants), and a Drifter arrived the
+    // day before, so there is a friend to celebrate.
+    seedWorld('cameo-seed', {
+      completions: [
+        {
+          id: 'f1',
+          habitId: 'walk',
+          recordedAt: 1,
+          dayKey: '2026-07-14',
+          drops: [{ kind: 'friend', category: 0, individual: 1 }],
+        },
+        ...Array.from({ length: 8 }, (_, i) => ({
+          id: `t${i}`,
+          habitId: 'walk',
+          recordedAt: 10 + i,
+          dayKey: '2026-07-16',
+          drops: [],
+        })),
+      ],
+    })
+    render(<App />)
+    settleStartup()
+
+    const cameo = screen.getByRole('status')
+    expect(cameo.querySelector('svg')).not.toBeNull()
+    // The message is Kimia's slot: whatever it holds is what shows, and
+    // a blank slot is no element at all — never assert her words here.
+    const slot = narrationSlot('cameos.bigDay')
+    const message = cameo.querySelector('.cameo-message')
+    if (slot === null) expect(message).toBeNull()
+    else expect(message.textContent).toBe(slot)
+
+    // Once per visit: after the linger it leaves by itself.
+    act(() => {
+      vi.advanceTimersByTime(CAMEO_LINGER_MS)
+    })
+    expect(screen.queryByRole('status')).toBeNull()
+  })
+
+  it('no win, no cameo — the plain day stays calm', () => {
+    seedWorld('cameo-seed', {
+      completions: [
+        {
+          id: 'f1',
+          habitId: 'walk',
+          recordedAt: 1,
+          dayKey: '2026-07-14',
+          drops: [{ kind: 'friend', category: 0, individual: 1 }],
+        },
+      ],
+    })
+    render(<App />)
+    settleStartup()
+    expect(screen.queryByRole('status')).toBeNull()
   })
 })

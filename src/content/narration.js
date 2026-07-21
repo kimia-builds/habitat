@@ -107,6 +107,19 @@ export const NARRATION = {
     poet: '',
   },
 
+  // cameo messages (T4.6) — one slot per win type, shown while a
+  // friend visits the habit list to celebrate. Momentary like all
+  // narration: it plays with the visit and is never stored. The win's
+  // number is yours to bake into the words if you want it (your drafts:
+  // "12 steps in one day!", "15-day streak record!", "50 lived days!").
+  // Left blank, the visit shows just the friend and its performance.
+  // TODO: written by Kimia.
+  cameos: {
+    bigDay: '',
+    streakRecord: '',
+    livedDays: '',
+  },
+
   // map regions (T4.1) — one slot per region, in discovery order:
   // region1 is the landing site in the middle of the Map, region2–6
   // the ring around it, region7–16 the outer ring. Regions get their

@@ -233,9 +233,16 @@ should feel strange, not familiar-things-in-costume.
      new record streak, a lived-day milestone. It performs once, with a
      short message alongside (Kimia's slots, shipped blank; her draft
      examples: "12 steps in one day!", "15-day streak record!", "50
-     lived days!"). Encouragement, never a scoreboard. _(Amended
-     2026-07-20, fourteenth session — Kimia's redecision, over the
-     twelfth session's "rare and unpredictable". Built in T4.6.)_
+     lived days!"). Encouragement, never a scoreboard. **The thresholds
+     (Kimia's calls 2026-07-21, in constants):** a big day is 8
+     completions; a record streak must beat the habit's own record and
+     be at least 5 days (2 weeks for week-counted) strong — never a
+     learnable schedule; a milestone is every 50 lived days, the
+     crossing day only. The visitor is a seeded surprise pick; at most
+     one cameo a day, rarest first; once per visit, nothing stored.
+     _(Amended 2026-07-20, fourteenth session — Kimia's redecision,
+     over the twelfth session's "rare and unpredictable". Built in
+     T4.6, 2026-07-21.)_
      **Party mode on the Abode is deliberately excluded** (§12e): friends
      gather there but do not perform. Scarcity is what makes the gesture
      land — a greeting you can see any time you like is wallpaper.
@@ -520,7 +527,10 @@ framing, firm mechanic — the same combination as undo.
 
 Five icons descending the left edge — **map · abode · community ·
 library · market** — each revealing its name on hover, set **away from
-the habit list** so the list keeps the eye.
+the habit list** so the list keeps the eye. The rail **persists on
+every screen but the check-in** (Kimia's call 2026-07-21) — the world
+pages stay one tap away from anywhere; the check-in keeps its done
+button as the only exit.
 
 They are a **rail, not a navbar**: no background, no dividers, no
 active-state highlight competing with the content. Think of marks in
