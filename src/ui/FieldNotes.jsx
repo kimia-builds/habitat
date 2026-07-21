@@ -122,6 +122,7 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
           <ul className="tasks-completed">
             {notes.tasksCompleted.map(({ habit, dayKey }) => (
               <li key={habit.id}>
+                <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
                 {habit.name} — {dayKey}
               </li>
             ))}
