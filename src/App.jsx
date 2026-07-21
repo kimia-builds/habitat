@@ -89,6 +89,7 @@ import { arrivalNote } from './ui/arrivalText.js'
 import BackupControls from './ui/BackupControls.jsx'
 import BookcasePage from './ui/BookcasePage.jsx'
 import Cameo from './ui/Cameo.jsx'
+import CharmSymbol from './ui/CharmSymbol.jsx'
 import CheckInPanel from './ui/CheckInPanel.jsx'
 import DateDisplay from './ui/DateDisplay.jsx'
 import DesignPage from './ui/DesignPage.jsx'
@@ -773,6 +774,7 @@ function App() {
                 countFor(data.completions, habit.id) > 0
               return (
                 <li key={habit.id} className="archived-row">
+                  <CharmSymbol symbol={habit.symbol} className="symbol" />
                   <span>{habit.name}</span>
                   {doneForGood ? (
                     countOn(data.completions, habit.id, today) > 0 ? (

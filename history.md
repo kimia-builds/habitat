@@ -1515,8 +1515,9 @@ and recorded in spec.md's decisions log._
       line-drawn charms — crown (gold), cherry (coral), shell (pink),
       anchor (lavender), shield (sky), key (teal) — everywhere a habit
       symbol shows: the list rows, the check-in rows, the field-notes
-      table, the graph headings, and the form/filter symbol buttons.
-      Still wordless on screen, as ever. The charm SVGs use the exact
+      table, the graph headings, the form/filter symbol buttons, and
+      (Kimia's follow-up the same session) the archived list, where the
+      charm previously vanished. Still wordless on screen, as ever. The charm SVGs use the exact
       §11a paths, colours and stroke (fill none, currentColor, width
       1.4, round caps/joins, 24×24) and glow in their own colour
       (drop-shadow 14px at rest, 24px on hover). Each carries a
@@ -1525,10 +1526,11 @@ and recorded in spec.md's decisions log._
       tech without putting any word on screen.
       Built: `ui/CharmSymbol.jsx` — one shared component draws all six
       from a number 1..6; `ui/symbols.js` slimmed to the charm colours +
-      shape names (the old SYMBOL_GLYPHS map is gone). The five display
+      shape names (the old SYMBOL_GLYPHS map is gone). The display
       consumers (HabitRow, CheckInPanel, FieldNotes, HabitGraphs,
-      SymbolPicker) now render `<CharmSymbol>` in place of a coloured
-      glyph span; `.charm` CSS carries the size/glow/hover. App.test's
+      SymbolPicker, and App.jsx's archived list — which had no symbol at
+      all before) now render `<CharmSymbol>` in place of a coloured glyph
+      span; `.charm` CSS carries the size/glow/hover. App.test's
       symbol-button queries moved from glyph chars to charm names, and a
       new `CharmSymbol.test.jsx` pins the six names, colours and the
       role="img" drawing. Full suite (542) and oxlint pass.

@@ -278,12 +278,14 @@ describe('editing', () => {
 describe('archive, unarchive, delete forever', () => {
   it('archive moves a habit out of daily use and back', () => {
     render(<App />)
-    createHabitViaUI('floss')
+    createHabitViaUI('floss', { symbol: 3 })
     fireEvent.click(row('floss').getByRole('button', { name: 'archive' }))
 
-    // Gone from the daily list, present in the archived section.
+    // Gone from the daily list, present in the archived section — and it
+    // keeps its charm there (T5.1 follow-up), not just its name.
     const archived = within(screen.getByText(/^archived/).closest('details'))
     expect(archived.getByText('floss')).toBeDefined()
+    expect(archived.getByRole('img', { name: 'shell' })).toBeDefined()
 
     fireEvent.click(archived.getByRole('button', { name: 'unarchive' }))
     expect(row('floss').getByRole('button', { name: '+1' }))
