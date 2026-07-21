@@ -39,9 +39,9 @@ function HabitRow({
   onArchive,
 }) {
   // Every repeating shape presents as a counter with an unlimited +1
-  // and a quiet, always-available undo (T3.2b — spec §4.1). Only
-  // one-time to-dos keep the single-tap control: the first tap
-  // finishes and archives them.
+  // and a quiet, always-available -1 (T3.2b — spec §4.1; the word
+  // "undo" became "-1" in T4.5, 2026-07-20). Only one-time to-dos keep
+  // the single-tap control: the first tap finishes and archives them.
   const oneTime = habit.schedule.type === 'oneTime'
   // Shapes with a per-day goal show "count/goal today"; N-per-week and
   // whenever have no per-day expectation, so they show a plain count
@@ -78,11 +78,11 @@ function HabitRow({
         <span className="completion-controls">
           <span>
             {fulfilled && hasDayGoal ? '✓ ' : ''}
-            {hasDayGoal ? `${todayCount}/${required}` : todayCount} today
+            {hasDayGoal ? `${todayCount}/${required}` : todayCount}
           </span>
           <button onClick={onComplete}>+1</button>
           <button onClick={onUndo} disabled={todayCount === 0}>
-            undo
+            -1
           </button>
         </span>
       )}
@@ -101,8 +101,46 @@ function HabitRow({
         >
           ▼
         </button>
-        <button onClick={onEdit}>edit</button>
-        <button onClick={onArchive}>archive</button>
+        {/* T4.5's icon-only actions (decision 2026-07-20): every action is
+            an icon with a hover label — title + aria-label carry the words. */}
+        <button
+          className="icon-button"
+          onClick={onEdit}
+          title="edit"
+          aria-label="edit"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z" />
+          </svg>
+        </button>
+        <button
+          className="icon-button"
+          onClick={onArchive}
+          title="archive"
+          aria-label="archive"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M4 14h16v7H4z" />
+            <path d="M12 3v8" />
+            <path d="M8.5 7.5L12 11l3.5-3.5" />
+          </svg>
+        </button>
       </span>
     </li>
   )

@@ -50,7 +50,7 @@ function GuestBookPage({ friends, worldSeed, onBack }) {
   const [selected, setSelected] = useState(null)
   return (
     <section className="stub-page guestbook">
-      <h2>the Guest Book</h2>
+      <h2>local community</h2>
       <ul className="guestbook-list" aria-label="friends">
         {friends.map((friend) => {
           const name = `a ${FRIEND_CATEGORIES[friend.category].singular}`

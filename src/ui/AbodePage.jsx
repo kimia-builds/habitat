@@ -204,7 +204,7 @@ function AbodePage({
 
   return (
     <section className="stub-page abode">
-      <h2>the Abode</h2>
+      <h2>your abode</h2>
 
       {/* The quiet / party toggle (T4.4): a switch with an icon either
           side. Greyed — "not yet" — until the first friend exists. */}

@@ -7,14 +7,26 @@
 // literacy level → the Bookcase, wallet balance → the Market. Kimia's
 // copy pass (2026-07-19): those are the names, and the meters say
 // nothing else — no running totals, door counts or captions underneath.
+//
+// Since 2026-07-21 all three meters are bars (T4.5, Kimia's call — the
+// bars mirror each other; the wallet bar fills toward 40 fungi and
+// clamps), and the exact numbers live behind each meter's hover. The
+// wallet's face still never shows debt — a negative number on the bar
+// would read as punishment — so the bar is fed by walletBar, which
+// clamps the TRUE balance (game/market.js's walletTrueBalance, negative
+// while an undo's debt is being settled) into 0..40. The hover says it
+// plainly instead: the number itself, negative and all (Kimia's
+// explicit call 2026-07-21).
 // All maths comes from the meter engine (T2.1); this component only
 // draws.
 
 import {
   expeditionSegment,
   expeditionSteps,
+  literacyLevelNumber,
   literacyPoints,
   literacySegment,
+  walletBar,
 } from '../game/meters.js'
 
 // One bar. The width is the fraction of the current stretch covered;
@@ -37,18 +49,24 @@ function Bar({ label, into, size, className }) {
   )
 }
 
-function Meters({ completions, readingItems, fungusBalance, onOpen }) {
+function Meters({ completions, readingItems, fungusTrueBalance, onOpen }) {
   const steps = expeditionSteps(completions)
   const expedition = expeditionSegment(steps)
   const points = literacyPoints(readingItems)
   const literacy = literacySegment(points)
+  const wallet = walletBar(fungusTrueBalance)
 
   return (
     <section className="meters" aria-label="meters">
       {/* Steps taken: a rolling bar (decision 2026-07-16) — fills over
           ~a month of taps, rolls over, starts again. The bar IS the
-          whole story now: no running total underneath (2026-07-19). */}
-      <button className="meter meter-expedition" onClick={() => onOpen('map')}>
+          whole story now: the lifetime total lives behind the hover
+          (2026-07-21). */}
+      <button
+        className="meter meter-expedition"
+        title={`${steps} steps taken`}
+        onClick={() => onOpen('map')}
+      >
         <span className="meter-name">steps taken</span>
         <Bar
           label="steps taken progress"
@@ -60,9 +78,11 @@ function Meters({ completions, readingItems, fungusBalance, onOpen }) {
 
       {/* Literacy level: progress toward the next friendship door. The
           doors themselves are not counted out loud (2026-07-19); they
-          open in the Guest Book's time (T4.4). */}
+          open in the Guest Book's time (T4.4). The level as a number
+          out of 100 lives behind the hover (2026-07-21). */}
       <button
         className="meter meter-literacy"
+        title={`${Math.round(literacyLevelNumber(points))} of 100`}
         onClick={() => onOpen('bookcase')}
       >
         <span className="meter-name">literacy level</span>
@@ -74,11 +94,22 @@ function Meters({ completions, readingItems, fungusBalance, onOpen }) {
         />
       </button>
 
-      {/* Wallet balance: a wallet, not a progress bar (spec §5 Stream 3)
-          — so no bar, just the number itself. */}
-      <button className="meter meter-fungus" onClick={() => onOpen('market')}>
+      {/* Wallet balance: a bar like its sisters since 2026-07-21,
+          filling toward 40 fungi and clamping. Its face never shows
+          debt — a negative number on the bar would read as punishment —
+          but the hover tells the plain truth, negative and all. */}
+      <button
+        className="meter meter-fungus"
+        title={String(fungusTrueBalance)}
+        onClick={() => onOpen('market')}
+      >
         <span className="meter-name">wallet balance</span>
-        <span className="meter-wallet">{fungusBalance}</span>
+        <Bar
+          label="wallet balance progress"
+          into={wallet.into}
+          size={wallet.size}
+          className="meter-bar-fungus"
+        />
       </button>
     </section>
   )

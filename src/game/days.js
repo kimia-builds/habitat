@@ -109,3 +109,74 @@ export function isoWeekday(dayKey) {
 export function weekStart(dayKey) {
   return addDays(dayKey, 1 - isoWeekday(dayKey))
 }
+
+// --- The calendar date display (T4.5) ----------------------------------
+//
+// The home screen shows the REAL calendar date in large letterspaced
+// type (Kimia's call 2026-07-20; spec §5b), with a quiet note that
+// appears only between midnight and the cutoff — the one stretch where
+// the calendar date and the Habitat day underneath it disagree.
+//
+// Fixed English name tables, not toLocaleDateString: the line must read
+// the same whatever language the browser speaks, and tests stay
+// locale-proof. Like everything else in this module, the maths runs on
+// the device's local clock — her clock is the only truth we need.
+const WEEKDAY_NAMES = [
+  'SUNDAY', // Date.getDay() starts the week on Sunday: 0 = Sunday
+  'MONDAY',
+  'TUESDAY',
+  'WEDNESDAY',
+  'THURSDAY',
+  'FRIDAY',
+  'SATURDAY',
+]
+
+const MONTH_NAMES = [
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
+]
+
+// The date line itself, e.g. 'MONDAY 20 JUL 2026': full uppercase
+// weekday, day of month with no zero-padding, uppercase 3-letter month,
+// 4-digit year. The letterspacing is CSS's job — the text itself holds
+// plain single spaces so screen readers read it naturally.
+export function calendarDateLine(timestampMs) {
+  const moment = new Date(timestampMs)
+  return (
+    `${WEEKDAY_NAMES[moment.getDay()]} ` +
+    `${moment.getDate()} ` +
+    `${MONTH_NAMES[moment.getMonth()]} ` +
+    `${moment.getFullYear()}`
+  )
+}
+
+// Is this moment in the small hours before the day cutoff? The same
+// rule dayKeyFromTimestamp applies: the local hour is simply compared
+// to the cutoff hour. True between midnight and the cutoff — exactly
+// when the date display and the habit list disagree, so exactly when
+// the note should show.
+export function beforeCutoff(timestampMs, cutoffHour) {
+  validateCutoffHour(cutoffHour)
+  return new Date(timestampMs).getHours() < cutoffHour
+}
+
+// An hour as the note says it: 1 → '1 a.m.', 12 → '12 p.m.',
+// 13 → '1 p.m.', 0 → '12 a.m.'. Whole hours 0–23 only — the cutoff is
+// always a whole hour, so this reuses its validation.
+export function formatHourAmPm(hour) {
+  validateCutoffHour(hour)
+  if (hour === 0) return '12 a.m.'
+  if (hour < 12) return `${hour} a.m.`
+  if (hour === 12) return '12 p.m.'
+  return `${hour - 12} p.m.`
+}

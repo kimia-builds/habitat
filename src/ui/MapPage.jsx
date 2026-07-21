@@ -31,7 +31,7 @@ function MapPage({
 
   return (
     <section className="map-page">
-      <h2>the Map</h2>
+      <h2>map of N-Z-D</h2>
       <svg
         className="map-svg"
         viewBox={`0 0 ${layout.size} ${layout.size}`}

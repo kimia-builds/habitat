@@ -134,7 +134,7 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
 
   return (
     <section className="bookcase-page">
-      <h2>the Bookcase</h2>
+      <h2>readers library</h2>
       <svg
         ref={svgRef}
         className="bookshelf-svg"

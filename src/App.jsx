@@ -49,6 +49,7 @@ import {
   sellObject,
   stallObjects,
   walletBalance,
+  walletTrueBalance,
 } from './game/market.js'
 import { discoveredRegionCount } from './game/map.js'
 import { expeditionSteps } from './game/meters.js'
@@ -73,6 +74,7 @@ import {
   requiredPerDay,
   streakKind,
 } from './game/schedule.js'
+import { shouldShowStartup } from './game/startup.js'
 import {
   exportData,
   hasData,
@@ -86,16 +88,19 @@ import { arrivalNote } from './ui/arrivalText.js'
 import BackupControls from './ui/BackupControls.jsx'
 import BookcasePage from './ui/BookcasePage.jsx'
 import CheckInPanel from './ui/CheckInPanel.jsx'
+import DateDisplay from './ui/DateDisplay.jsx'
 import FieldNotes from './ui/FieldNotes.jsx'
 import FirstReveal from './ui/FirstReveal.jsx'
 import FriendReveal from './ui/FriendReveal.jsx'
 import GuestBookPage from './ui/GuestBookPage.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
+import IconRail from './ui/IconRail.jsx'
 import MapPage from './ui/MapPage.jsx'
 import MarketPage from './ui/MarketPage.jsx'
 import Meters from './ui/Meters.jsx'
 import SpreadPopup from './ui/SpreadPopup.jsx'
+import StartupFade from './ui/StartupFade.jsx'
 import SymbolPicker from './ui/SymbolPicker.jsx'
 
 function App() {
@@ -149,6 +154,12 @@ function App() {
   }, [])
 
   const today = dayKeyFromTimestamp(now, data.settings.dayCutoffHour)
+  // The daily startup moment (T4.5): due on the first visit of each
+  // Habitat day — the day key already carries the 3am cutoff, so a tab
+  // left open overnight becomes due the moment `today` flips. It plays
+  // whether or not a check-in was owed; the morning's fixed order is
+  // check-in pop-up → startup fade → (Sundays) field notes.
+  const startupDue = shouldShowStartup(today, data.settings.startupShownOn)
   const active = activeHabits(data.habits)
   const visible = filterBySymbols(active, filter)
   const archived = archivedHabits(data.habits)
@@ -189,16 +200,17 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today])
   // The Sunday ritual (T2.3, Kimia's decision 2026-07-16): on the
-  // first visit of each Sunday — once any check-in is answered — the
-  // field notes open by themselves. Settings remember the day it last
+  // first visit of each Sunday — once any check-in is answered AND the
+  // startup fade has played (T4.5's fixed morning order) — the field
+  // notes open by themselves. Settings remember the day it last
   // happened, so later visits that Sunday go straight to the list.
   useEffect(() => {
-    if (checkInOpen || data.habits.length === 0) return
+    if (checkInOpen || startupDue || data.habits.length === 0) return
     if (!shouldOpenFieldNotes(today, data.settings.fieldNotesShownOn)) return
     save({ ...data, settings: { ...data.settings, fieldNotesShownOn: today } })
     setPage('fieldnotes')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkInOpen, today])
+  }, [checkInOpen, today, startupDue])
 
   const pastDaysEditable = editablePastDays(today).some(
     (day) =>
@@ -554,6 +566,24 @@ function App() {
     setPendingArrivals([])
   }
 
+  // The startup fade has played (T4.5): remember the day so no second
+  // visit today replays it — and, the moment it's saved, the Sunday
+  // effect above is free to take its turn in the morning's order.
+  // The save reads the LATEST data (the fade's timer fires 1.5s after
+  // it mounted, and a tap in that window must never be reverted by a
+  // stale closure); `today` is deliberately the mount render's — the
+  // fade belongs to the Habitat day it played for.
+  function handleStartupDone() {
+    setData((latest) => {
+      const next = {
+        ...latest,
+        settings: { ...latest.settings, startupShownOn: today },
+      }
+      saveData(next)
+      return next
+    })
+  }
+
   // Move one step up (-1) or down (+1) past the neighbouring VISIBLE
   // habit. moveHabit works on the full list, so the target position is
   // the neighbour's position there — archived habits in between don't
@@ -606,23 +636,216 @@ function App() {
     return 'backup imported'
   }
 
-  // While the check-in is open it IS the app: the list waits behind it,
-  // and the done button (which saves the answer) is the only way back.
-  // No meters here (Kimia's decision 2026-07-16) — the check-in stays
-  // focused on answering yesterday.
+  // The home screen's contents below the meters (T4.5 rearranged them):
+  // the symbol filter, the habit list, then THREE discreet icon buttons
+  // at the foot of the list — + (add new habit), a larger accent pencil
+  // (edit past days) and a graph (view historical data) — above the
+  // archived list. Every action is an icon with a hover label
+  // (2026-07-20): title + aria-label carry the words, the page carries
+  // no action text. The interim "the abode" / "the guest book" links
+  // are gone — the rail is now their only door. Kept as one fragment
+  // because the check-in pop-up (below) dims this exact content behind
+  // itself.
+  const listContent = (
+    <>
+      <section aria-label="filter view" title="filter view">
+        <SymbolPicker selected={filter} onToggle={toggleFilter} />
+      </section>
+
+      <ul className="habit-list">
+        {visible.map((habit) =>
+          editing === habit.id ? (
+            <li key={habit.id}>
+              <HabitForm
+                initial={habit}
+                onSave={(fields) => handleEdit(habit, fields)}
+                onCancel={() => setEditing(null)}
+              />
+            </li>
+          ) : (
+            <HabitRow
+              key={habit.id}
+              habit={habit}
+              arrivalNote={arrivalNote(
+                arrivals.filter((a) => a.habitId === habit.id),
+              )}
+              todayCount={countOn(data.completions, habit.id, today)}
+              required={requiredPerDay(habit, today)}
+              fulfilled={isDayFulfilled(habit, data.completions, today)}
+              reorderDisabled={filter.length > 0}
+              onComplete={() => handleComplete(habit)}
+              onUndo={() => handleUndo(habit)}
+              onMoveUp={() => handleMove(habit, -1)}
+              onMoveDown={() => handleMove(habit, +1)}
+              onEdit={() => setEditing(habit.id)}
+              onArchive={() => replaceHabit(archiveHabit(habit))}
+            />
+          ),
+        )}
+      </ul>
+      {visible.length === 0 && <p>nothing here yet</p>}
+
+      {editing === 'new' ? (
+        <HabitForm onSave={handleCreate} onCancel={() => setEditing(null)} />
+      ) : (
+        <div className="list-actions">
+          <button
+            className="icon-button"
+            onClick={() => setEditing('new')}
+            title="add new habit"
+            aria-label="add new habit"
+          >
+            +
+          </button>
+          {pastDaysEditable && (
+            <button
+              className="icon-button icon-button-accent"
+              onClick={() => setCheckInOpen(true)}
+              title="edit past days"
+              aria-label="edit past days"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z" />
+              </svg>
+            </button>
+          )}
+          <button
+            className="icon-button"
+            onClick={() => setPage('fieldnotes')}
+            title="view historical data"
+            aria-label="view historical data"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 4v16h16" />
+              <path d="M7 15l4-5 3 3 4-6" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {archived.length > 0 && (
+        <details className="archived">
+          <summary>archived ({archived.length})</summary>
+          <ul>
+            {archived.map((habit) => {
+              // A one-time to-do that landed here BY being checked off:
+              // undo-able today, otherwise it just reads as done. A
+              // one-time habit archived by hand (no mark) unarchives
+              // normally, like any other habit.
+              const doneForGood =
+                archivesWhenDone(habit) &&
+                countFor(data.completions, habit.id) > 0
+              return (
+                <li key={habit.id} className="archived-row">
+                  <span>{habit.name}</span>
+                  {doneForGood ? (
+                    countOn(data.completions, habit.id, today) > 0 ? (
+                      <button onClick={() => handleUndoOneTime(habit)}>
+                        -1
+                      </button>
+                    ) : (
+                      <span className="habit-meta">
+                        done{' '}
+                        {
+                          data.completions.find((c) => c.habitId === habit.id)
+                            .dayKey
+                        }
+                      </span>
+                    )
+                  ) : (
+                    <button
+                      className="icon-button"
+                      onClick={() => replaceHabit(unarchiveHabit(habit))}
+                      title="unarchive"
+                      aria-label="unarchive"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M4 14h16v7H4z" />
+                        <path d="M12 11V3" />
+                        <path d="M8.5 6.5L12 3l3.5 3.5" />
+                      </svg>
+                    </button>
+                  )}
+                  <button
+                    className="icon-button"
+                    onClick={() => handleDelete(habit)}
+                    title="delete forever"
+                    aria-label="delete forever"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 7h14" />
+                      <path d="M9 7V4h6v3" />
+                      <path d="M6.5 7l1 13h9l1-13" />
+                    </svg>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </details>
+      )}
+
+      <BackupControls onExport={handleExport} onImport={handleImport} />
+    </>
+  )
+
+  // The check-in as a pop-up (T4.5, spec §5b): it no longer REPLACES
+  // the habit list — the list stays behind, dimmed and inert, so it
+  // reads as a temporary view being passed through. Every §4.2 rule is
+  // untouched: yesterday must still be answered, the done button is
+  // still the only exit (no backdrop dismiss, no home link, no meters —
+  // the meters fragment simply isn't rendered here), and the startup
+  // fade waits its turn until the answer is saved.
   if (checkInOpen) {
     return (
       <main className="app">
         <h1>HABITAT</h1>
-        <CheckInPanel
-          habits={data.habits}
-          completions={data.completions}
-          todayKey={today}
-          cutoffHour={data.settings.dayCutoffHour}
-          onMark={handleRetroMark}
-          onUnmark={handleRetroUndo}
-          onDone={handleCheckInDone}
-        />
+        <div className="behind-checkin" aria-hidden="true" inert>
+          {listContent}
+        </div>
+        <div className="checkin-overlay">
+          <CheckInPanel
+            habits={data.habits}
+            completions={data.completions}
+            todayKey={today}
+            cutoffHour={data.settings.dayCutoffHour}
+            onMark={handleRetroMark}
+            onUnmark={handleRetroUndo}
+            onDone={handleCheckInDone}
+          />
+        </div>
       </main>
     )
   }
@@ -630,10 +853,14 @@ function App() {
   // The three meters (T2.2), all computed live from completion history
   // — since T3.2 that includes each completion's stored drops, so the
   // literacy meter and the fungus wallet finally move; since T4.3b the
-  // wallet also counts what the owned market objects cost. Below them,
+  // wallet also counts what the owned market objects cost (its bar and
+  // hover use the TRUE balance, debt included — T4.5). Below them,
   // the arrival shelf and (topmost of all) any reveal still owed: one
   // at a time, dismissed by its own button. Two kinds owe a reveal —
   // a drop family's FIRST occurrence (T3.2) and EVERY friend (T4.4).
+  // The fragment also carries the daily startup fade (T4.5): every page
+  // but the check-in renders this fragment, so the fade plays over
+  // whichever screen the new day opens on.
   const revealing = arrivals.find(
     (a) => (a.first || a.reveal) && !seenRevealIds.has(a.id),
   )
@@ -642,7 +869,7 @@ function App() {
       <Meters
         completions={data.completions}
         readingItems={readingItemsFrom(data.completions)}
-        fungusBalance={walletBalance(data.completions, data.purchases)}
+        fungusTrueBalance={walletTrueBalance(data.completions, data.purchases)}
         onOpen={setPage}
       />
       <ArrivalShelf
@@ -684,14 +911,15 @@ function App() {
       {readingItem && (
         <SpreadPopup item={readingItem} onClose={() => setReadingItem(null)} />
       )}
+      {startupDue && <StartupFade onDone={handleStartupDone} />}
     </>
   )
 
   // The HABITAT header doubles as the home link (Kimia's request
   // 2026-07-16): from the Map, Bookcase or Market it always leads back
-  // to the habit list. The check-in screen above deliberately keeps a
-  // plain header — its done button stays the only way out, so
-  // yesterday always gets answered.
+  // to the habit list. The check-in pop-up deliberately keeps a plain
+  // header — its done button stays the only way out, so yesterday
+  // always gets answered.
   const header = (
     <h1>
       <button className="home-link" onClick={() => setPage(null)}>
@@ -722,9 +950,9 @@ function App() {
   // T4.3b) owned market objects draggable anywhere on it, their places
   // remembered; each compostable or sellable from its quiet held state.
   // Flora still waiting to be decided keep their plain list above the
-  // ground. Reached from its link on the habit list. Since T4.4 the
-  // page also carries the quiet / party toggle — friends come visiting
-  // among the flora, in a formation that is never stored.
+  // ground. Reached from the rail (T4.5). Since T4.4 the page also
+  // carries the quiet / party toggle — friends come visiting among the
+  // flora, in a formation that is never stored.
   if (page === 'abode') {
     return (
       <main className="app">
@@ -752,8 +980,8 @@ function App() {
   // The Guest Book (T4.4): everyone who has welcomed us so far, all
   // derived from the stored friend drops. Clicking a friend opens
   // their card — art, name, card text (Kimia's re-readable slot), and
-  // the signature animation. Reached from its link on the habit list
-  // until T4.5's rail takes over the doors.
+  // the signature animation. Reached from the rail's community icon
+  // (T4.5).
   if (page === 'guestbook') {
     return (
       <main className="app">
@@ -831,107 +1059,17 @@ function App() {
     )
   }
 
+  // The home screen (T4.5): header and meters up top, then the large
+  // letterspaced date display, the left icon rail (the five world
+  // pages' other door — the meters stay clickable too), and the list
+  // content shared with the check-in pop-up's dimmed backdrop.
   return (
     <main className="app">
       {header}
       {meters}
-
-      <section aria-label="filter">
-        <SymbolPicker selected={filter} onToggle={toggleFilter} />
-      </section>
-
-      {editing === 'new' ? (
-        <HabitForm onSave={handleCreate} onCancel={() => setEditing(null)} />
-      ) : (
-        <>
-          <button onClick={() => setEditing('new')}>+ new habit</button>
-          {pastDaysEditable && (
-            <button onClick={() => setCheckInOpen(true)}>edit past days</button>
-          )}
-          <button onClick={() => setPage('fieldnotes')}>field notes</button>
-          <button onClick={() => setPage('abode')}>the abode</button>
-          <button onClick={() => setPage('guestbook')}>the guest book</button>
-        </>
-      )}
-
-      <ul className="habit-list">
-        {visible.map((habit) =>
-          editing === habit.id ? (
-            <li key={habit.id}>
-              <HabitForm
-                initial={habit}
-                onSave={(fields) => handleEdit(habit, fields)}
-                onCancel={() => setEditing(null)}
-              />
-            </li>
-          ) : (
-            <HabitRow
-              key={habit.id}
-              habit={habit}
-              arrivalNote={arrivalNote(
-                arrivals.filter((a) => a.habitId === habit.id),
-              )}
-              todayCount={countOn(data.completions, habit.id, today)}
-              required={requiredPerDay(habit, today)}
-              fulfilled={isDayFulfilled(habit, data.completions, today)}
-              reorderDisabled={filter.length > 0}
-              onComplete={() => handleComplete(habit)}
-              onUndo={() => handleUndo(habit)}
-              onMoveUp={() => handleMove(habit, -1)}
-              onMoveDown={() => handleMove(habit, +1)}
-              onEdit={() => setEditing(habit.id)}
-              onArchive={() => replaceHabit(archiveHabit(habit))}
-            />
-          ),
-        )}
-      </ul>
-      {visible.length === 0 && <p>nothing here yet</p>}
-
-      {archived.length > 0 && (
-        <details className="archived">
-          <summary>archived ({archived.length})</summary>
-          <ul>
-            {archived.map((habit) => {
-              // A one-time to-do that landed here BY being checked off:
-              // undo-able today, otherwise it just reads as done. A
-              // one-time habit archived by hand (no mark) unarchives
-              // normally, like any other habit.
-              const doneForGood =
-                archivesWhenDone(habit) &&
-                countFor(data.completions, habit.id) > 0
-              return (
-                <li key={habit.id} className="archived-row">
-                  <span>{habit.name}</span>
-                  {doneForGood ? (
-                    countOn(data.completions, habit.id, today) > 0 ? (
-                      <button onClick={() => handleUndoOneTime(habit)}>
-                        undo
-                      </button>
-                    ) : (
-                      <span className="habit-meta">
-                        done{' '}
-                        {
-                          data.completions.find((c) => c.habitId === habit.id)
-                            .dayKey
-                        }
-                      </span>
-                    )
-                  ) : (
-                    <button onClick={() => replaceHabit(unarchiveHabit(habit))}>
-                      unarchive
-                    </button>
-                  )}
-                  <button onClick={() => handleDelete(habit)}>
-                    delete forever
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        </details>
-      )}
-
-      <BackupControls onExport={handleExport} onImport={handleImport} />
+      <DateDisplay now={now} cutoffHour={data.settings.dayCutoffHour} />
+      <IconRail onOpen={setPage} />
+      {listContent}
     </main>
   )
 }

@@ -46,6 +46,13 @@ export const DEFAULT_DAY_CUTOFF_HOUR = 3
 // into view, since browsers throttle timers in background tabs.)
 export const CLOCK_CHECK_MS = 60 * 1000
 
+// The daily startup moment (T4.5, spec §5b): once per Habitat day the
+// screen fades in from black. This is the plain-fade PLACEHOLDER — the
+// real animation is T5.2 and lasts "a few seconds"; a second and a
+// half is short on purpose, so the placeholder never overstays its
+// welcome.
+export const STARTUP_FADE_MS = 1500
+
 // Weekday numbers use the ISO convention: 1 = Monday … 7 = Sunday.
 // (Chosen over JavaScript's own 0=Sunday counting because ISO weeks are
 // what the schedule engine in T1.2 will reason about.)
@@ -123,6 +130,13 @@ export const LITERACY_MILESTONES = [
   730, // Poets
 ]
 
+// The literacy meter's hover reveals a plain 0–100 scale (T4.5,
+// Kimia's call 2026-07-21): the 10 friendship levels × 10 each, so 10
+// means the first door (Drifters) has just opened and 100 is Poets.
+// A pure display mapping layered over the milestones above — it
+// changes nothing about pacing.
+export const LITERACY_LEVEL_SCALE = 100
+
 // ──────────────── T2.4: habit line graphs (field notes) ────────────────
 
 // Each graph's zoom levels unlock purely by the habit's AGE in days —
@@ -143,6 +157,19 @@ export const GRAPH_UNLOCK_AGE_DAYS = {
 // positive whole number, and the balance can never go below zero.
 // Drop rates live in the T3.1 section below; object prices arrive in
 // M4/M6.
+
+// …and yet in T4.5 the wallet's DISPLAY becomes a bar after all
+// (Kimia's call 2026-07-21): full at this many fungi, empty at zero
+// or below. Pacing maths, from the drop constants below:
+//
+//   ~15 fungi income per 28-lived-day rotation
+//   40 ÷ 15 ≈ 2.7 rotations of patient saving to fill the bar
+//   placeholder prices are 6/12/18, so a full bar buys the top tier
+//   twice over
+//
+// The bar CLAMPS at both ends — past 40 it simply sits full; the
+// exact number lives behind the meter's hover.
+export const WALLET_BAR_MAX = 40
 
 // ───────────────────────── T3.1: the drops engine ─────────────────────────
 

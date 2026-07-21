@@ -12,8 +12,10 @@
 //                           // category, individual } — the one change v8
 //                           // gates (see game/friends.js)
 //     settings:    { dayCutoffHour: 3,
-//                    fieldNotesShownOn: null },  // the last Sunday the
+//                    fieldNotesShownOn: null,  // the last Sunday the
 //                              // field notes auto-opened — added in T2.3
+//                    startupShownOn: null },   // the last Habitat day
+//                              // the startup fade played — added in T4.5
 //     checkedInThrough: null,  // last day whose check-in was answered
 //                              // ('YYYY-MM-DD' or null) — added in T1.4
 //     worldSeed: '…',          // anchors every seeded drop roll — created
@@ -74,6 +76,7 @@ export function emptyData() {
     settings: {
       dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR,
       fieldNotesShownOn: null,
+      startupShownOn: null,
     },
     checkedInThrough: null,
     worldSeed: newWorldSeed(),
@@ -237,9 +240,13 @@ function withDefaults(data) {
     completions: data.completions === undefined ? [] : data.completions,
     settings:
       data.settings === undefined
-        ? { dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR, fieldNotesShownOn: null }
+        ? {
+            dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR,
+            fieldNotesShownOn: null,
+            startupShownOn: null,
+          }
         : typeof data.settings === 'object' && data.settings !== null
-          ? { fieldNotesShownOn: null, ...data.settings }
+          ? { fieldNotesShownOn: null, startupShownOn: null, ...data.settings }
           : data.settings,
     checkedInThrough:
       data.checkedInThrough === undefined ? null : data.checkedInThrough,
@@ -273,6 +280,12 @@ function validateData(data) {
     !isValidDayKey(data.settings.fieldNotesShownOn)
   ) {
     throw new Error('This backup has a broken field-notes marker.')
+  }
+  if (
+    data.settings.startupShownOn !== null &&
+    !isValidDayKey(data.settings.startupShownOn)
+  ) {
+    throw new Error('This backup has a broken startup marker.')
   }
   if (data.checkedInThrough !== null && !isValidDayKey(data.checkedInThrough)) {
     throw new Error('This backup has a broken check-in marker.')

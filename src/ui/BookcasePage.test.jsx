@@ -43,7 +43,9 @@ beforeAll(() => {
 describe('the constant bookshelf', () => {
   it('shows bare shelves when empty — no prose, no count', () => {
     const { container } = render(<BookcasePage items={[]} {...handlers()} />)
-    expect(screen.getByRole('heading', { name: 'the Bookcase' })).toBeDefined()
+    expect(
+      screen.getByRole('heading', { name: 'readers library' }),
+    ).toBeDefined()
     expect(screen.getByRole('group', { name: 'the bookshelf' })).toBeDefined()
     expect(container.querySelectorAll('.bookshelf-plank')).toHaveLength(3)
     expect(container.querySelectorAll('p')).toHaveLength(0)

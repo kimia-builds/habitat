@@ -13,9 +13,11 @@
 import {
   EXPEDITION_SEGMENT_STEPS,
   EXPEDITION_STEPS_PER_COMPLETION,
+  LITERACY_LEVEL_SCALE,
   LITERACY_MILESTONES,
   LITERACY_POINTS,
   READING_TYPES,
+  WALLET_BAR_MAX,
 } from './constants.js'
 
 // ── Expedition ──────────────────────────────────────────────────────
@@ -91,6 +93,24 @@ export function literacySegment(points) {
   }
 }
 
+// The literacy meter's HOVER number (T4.5, Kimia's call 2026-07-21):
+// the same ladder read out on a plain 0..LITERACY_LEVEL_SCALE scale —
+// 10 per friendship level. Each open door contributes its whole 10;
+// while the ladder is incomplete, the fraction of the way across the
+// current milestone gap adds its share of the next 10. So exactly 10
+// at the first threshold (10 points), exactly the top of the scale
+// when all 10 doors are open (≥ 730 points), and 0 at zero.
+export function literacyLevelNumber(points) {
+  const reached = milestonesReached(points)
+  if (reached === LITERACY_MILESTONES.length) {
+    return LITERACY_LEVEL_SCALE
+  }
+  const perDoor = LITERACY_LEVEL_SCALE / LITERACY_MILESTONES.length
+  const floor = reached === 0 ? 0 : LITERACY_MILESTONES[reached - 1]
+  const gap = LITERACY_MILESTONES[reached] - floor
+  return reached * perDoor + ((points - floor) / gap) * perDoor
+}
+
 // ── Fungus wallet ───────────────────────────────────────────────────
 
 // Fungi are whole mushrooms: balances are non-negative whole numbers,
@@ -133,4 +153,20 @@ export function refundFungi(balance, price) {
   validateBalance(balance)
   validateAmount(price, 'refund')
   return balance + price
+}
+
+// The wallet's BAR display (T4.5, Kimia's call 2026-07-21): the true
+// balance clamped onto 0..WALLET_BAR_MAX. The true balance CAN be
+// negative — hidden debt from undoing a completion whose fungi were
+// already spent (see walletTrueBalance in game/market.js) — so this
+// deliberately does NOT route through validateBalance, which rejects
+// negatives: the clamping IS the validation. While debt is being
+// settled the bar simply rests empty, and past the top it sits full —
+// showing the plain number (negative included) is the hover's job,
+// not this function's.
+export function walletBar(trueBalance) {
+  return {
+    into: Math.min(Math.max(trueBalance, 0), WALLET_BAR_MAX),
+    size: WALLET_BAR_MAX,
+  }
 }

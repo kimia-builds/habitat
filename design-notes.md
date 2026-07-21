@@ -1,5 +1,12 @@
 # design-notes.md — HABITAT (UX & feel)
 
+_v1.9 — 2026-07-21 (fifteenth session, T4.5 built). §12 is now real —
+rail, date display, icon-only actions, the check-in pop-up and the
+startup's plain-fade slot are all live. §4 changes shape: Kimia's call
+today makes **all three meters bars**, the exact numbers moving behind
+each meter's hover — the wallet's hover tells the plain truth even in
+debt. Spec v1.27, plan v1.26._
+
 _v1.8 — 2026-07-20 (fourteenth session, T4.4 built). Friendships are
 real: §8 gains the repeat-friends rule (categories refill) and the
 cameo redecision — big-win celebrations with a short message, built in
@@ -140,15 +147,21 @@ they were _done_. Tone is cosmetic; the date logic stays strict.
 
 ---
 
-## 4. The meters — growth you can see **[enhancement to built T2.2]**
+## 4. The meters — growth you can see **[enhancement to built T2.2; amended 2026-07-21]**
 
-The meter UI is **already built** (T2.2) and stays as it is: the
-expedition meter is a **rolling bar** (one ~100-step segment ≈ a month
-at current pace, rolls over to empty — since the 2026-07-19 copy pass
-labelled simply **steps taken**, with no running total beside it);
-literacy shows progress to the next friendship milestone (**literacy
-level**, no door count); fungus is a plain wallet balance (**wallet
-balance**, just the number).
+The meter UI is **already built** (T2.2). Since T4.5 (Kimia's call
+2026-07-21) **all three are bars**: the expedition meter is the
+**rolling bar** as ever (one ~100-step segment ≈ a month at current
+pace, rolls over to empty — labelled simply **steps taken**); literacy
+fills toward the next friendship level and refreshes at each one
+(**literacy level**); the wallet is a bar too now, clamped 0–40 fungi
+(**wallet balance**). The exact numbers moved behind each meter's
+**hover**: steps shows the lifetime total, literacy a 0–100 scale (ten
+per level), the wallet the true balance — **a plain negative number
+while debt is being settled**. Kimia weighed the punishment-feel worry
+(the face never showing debt is her 2026-07-20 rule and stands) and
+chose honesty on demand: the face stays calm, the hover is a question
+asked, so it may answer plainly.
 
 **Decision (2026-07-19) — momentary glow + thicken on movement.** Each
 forward movement plays a **momentary animation**: the bar glows and
@@ -368,6 +381,17 @@ should feel strange, not familiar-things-in-costume.
     from Kimia's slots. Built in T4.6 (§8). Party mode still excluded.
 19. **Party mode shipped whole with T4.4** — toggle, greyed state and
     all, since T4.4 landed before T4.5 (§12e).
+
+## 10c. Decisions resolved (2026-07-21, fifteenth session, with Kimia)
+
+20. **All three meters are bars, numbers behind hover** (her PR +
+    calls) — the wallet bar clamps 0–40, its hover shows the true
+    balance as a plain number, negative in debt; literacy's hover is
+    0–100, ten per level; steps' hover is the lifetime total (§4).
+21. **Unarchive is an icon too, and every reversal reads `-1`** — a box
+    with an up arrow mirrors archive's down arrow (the one extension to
+    §12a's six icons); the archived one-time to-do's undo is `-1` like
+    every other, beside a `+1` or not.
 
 ---
 

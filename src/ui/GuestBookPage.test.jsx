@@ -26,7 +26,7 @@ describe('the Guest Book page', () => {
       <GuestBookPage friends={[]} worldSeed="seed" onBack={() => {}} />,
     )
     expect(
-      screen.getByRole('heading', { name: 'the Guest Book' }),
+      screen.getByRole('heading', { name: 'local community' }),
     ).toBeDefined()
     expect(container.querySelectorAll('p')).toHaveLength(0)
     expect(screen.queryByRole('button', { name: 'a Drifter' })).toBeNull()

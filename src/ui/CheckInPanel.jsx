@@ -39,7 +39,7 @@ function DayRows({
         const count = countOn(completions, habit.id, dayKey)
         const required = requiredPerDay(habit, dayKey)
         // The same counter as the habit list (T3.2b): every repeating
-        // shape gets an unlimited +1 and an undo here too, so extras
+        // shape gets an unlimited +1 and a -1 here too, so extras
         // can be backfilled onto their true day. Only one-time to-dos
         // keep a single-tap control.
         const scheduleThen = scheduleOn(habit, dayKey)
@@ -81,7 +81,7 @@ function DayRows({
                   onClick={() => onUnmark(habit, dayKey)}
                   disabled={count === 0}
                 >
-                  undo
+                  -1
                 </button>
               </span>
             )}

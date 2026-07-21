@@ -102,6 +102,9 @@ src/game/             ALL game logic — pure functions, no React, no
                         every drop
   graphs.js             per-habit line graphs (zoom unlocks by habit age)
   fieldnotes.js         the weekly view ("field notes")
+  startup.js            the daily startup's once-per-Habitat-day rule
+                        (T4.5) and the morning order it enforces:
+                        check-in → startup → Sunday field notes
 src/content/          KIMIA'S FILES — she edits these directly on
                       GitHub's web UI. Never auto-generate their prose
                       or images, and never hard-code their words in
@@ -121,8 +124,9 @@ src/ui/               React components, kept thin (HabitRow, HabitForm,
                       ArrivalShelf, DropGlyph, ObjectGlyph, FirstReveal,
                       SpreadPopup, AbodePage, BookcasePage, MapPage,
                       MarketPage, GuestBookPage, FriendGlyph,
-                      FriendReveal, mapLayout.js, BackupControls,
-                      SymbolPicker, symbols.js, arrivalText.js)
+                      FriendReveal, IconRail, DateDisplay, StartupFade,
+                      mapLayout.js, BackupControls, SymbolPicker,
+                      symbols.js, arrivalText.js)
 src/test/setup.js     test-environment repair (see Testing below)
 public/favicon.svg    the only static asset
 ```
@@ -206,17 +210,13 @@ subfolder — do not change it.
   a bug — fix them in the same session.
 - If stuck on the same bug twice, stop and say so rather than thrashing.
 
-## Naming and copy (current as of 2026-07-20)
+## Naming and copy (current as of 2026-07-21)
 
-The user-facing page titles were renamed by the T4.5 UX pass — so far
-a **decided** pass (plan.md still has T4.5 unchecked), so until it is
-built the pages on screen still show the internal names ("the Map",
-"the Bookcase", "the Market", "the Abode", "the Guest Book") and the
-rail, icon-only actions and `-1` described below do not exist in the
-UI yet. The
-**internal** names in code and docs (Map, Bookcase, Market, Abode,
-Guest Book) are unchanged in any case — only the displayed titles
-will move:
+The T4.5 UX pass is **built** (2026-07-21): the pages on screen show
+their new titles, and the rail, icon-only actions and `-1` below all
+exist in the UI. The **internal** names in code and docs (Map,
+Bookcase, Market, Abode, Guest Book) are unchanged — only the
+displayed titles moved:
 
 | page       | displayed title                     | reached by                |
 | ---------- | ----------------------------------- | ------------------------- |
@@ -226,23 +226,20 @@ will move:
 | Bookcase   | **readers library** (no apostrophe) | literacy meter, or rail   |
 | Market     | **local market**                    | fungus meter, or rail     |
 
-Until the rail exists, the Guest Book (built in T4.4) is reached from
-a "the guest book" link on the habit list, beside "the abode" — the
-T3.3/T4.3 interim-link precedent — and the Abode's quiet / party
-toggle is already live: it shipped whole with T4.4, which landed
-before T4.5.
-
 Other copy rules:
 
-- The **left icon rail** (T4.5 — decided, not yet built) runs down the
-  left edge of the home screen in this descending order: **map · abode
-  · community · library · market**, each revealing its name on hover.
-  The three meters stay clickable too.
-- The home screen goes **icon-only with hover labels** (T4.5 —
-  decided, not yet built) — no action words. Undo reads **`-1`**
-  (mirroring `+1`); habit counts are bare `count/goal` with no
-  trailing "today"; the symbol filter's hover reads **"filter view"**
-  (never "by type" — the six symbols are not categories).
+- The **left icon rail** (T4.5, built 2026-07-21) runs down the left
+  edge of the home screen in this descending order: **map · abode ·
+  community · library · market**, each revealing its name on hover —
+  the full display title, not the rail's short word. The three meters
+  stay clickable too.
+- The home screen is **icon-only with hover labels** (T4.5, built
+  2026-07-21) — no action words. Every mark-reversing control reads
+  **`-1`** (mirroring `+1`); habit counts are bare `count/goal` with
+  no trailing "today"; the symbol filter's hover reads **"filter
+  view"** (never "by type" — the six symbols are not categories).
+  Unarchive is an icon too (a box with an up arrow — Kimia's call
+  2026-07-21, the one extension to the six enumerated icons).
 - The Abode's quiet way back for an owned market object reads
   **"sell"** (T4.3b, built 2026-07-20 — Kimia's word for the spec's
   symmetric "return"); for a gathered flora it stays "compost".
@@ -270,7 +267,9 @@ Other copy rules:
   prices are always identical; the fungus wallet only decreases via a
   purchase the user chose; rotation runs on **lived days** (days with
   ≥1 habit marked), 28 lived days per rotation; nothing is permanently
-  missable.
+  missable. The wallet is a bar (T4.5) clamped 0–40 whose face never
+  shows debt — but its hover reveals the true balance as a plain
+  number, negative while debt settles (Kimia's call 2026-07-21).
 - **Friendships (T4.4):** a literacy milestone only opens the door;
   the friend arrives days later as a seeded drop, stored on the
   completion like every drop. Categories refill (repeats allowed);

@@ -13,6 +13,7 @@ import {
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
+import { STARTUP_FADE_MS } from './game/constants.js'
 import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
 import { narrationSlot } from './content/narration.js'
 
@@ -44,7 +45,7 @@ afterEach(() => {
 // Drive the real form the way a user would. Options beyond a name are
 // optional; the form's defaults (symbol 1, medium, daily) fill the rest.
 function createHabitViaUI(name, { symbol, scheduleType, n, days } = {}) {
-  fireEvent.click(screen.getByRole('button', { name: '+ new habit' }))
+  fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
   const form = within(document.querySelector('form.habit-form'))
   fireEvent.change(form.getByLabelText('name'), { target: { value: name } })
   if (symbol) {
@@ -99,33 +100,33 @@ describe('creating habits', () => {
 })
 
 describe('completing today (and undoing)', () => {
-  it('a daily habit counts up from 0/1, and undo takes a mark back', () => {
+  it('a daily habit counts up from 0/1, and -1 takes a mark back', () => {
     render(<App />)
     createHabitViaUI('meditate')
 
-    // The counter (T3.2b): no toggle — a running count with +1 and undo.
-    expect(row('meditate').getByText('0/1 today')).toBeDefined()
-    expect(row('meditate').getByRole('button', { name: 'undo' }).disabled).toBe(
+    // The counter (T3.2b): no toggle — a running count with +1 and -1.
+    expect(row('meditate').getByText('0/1')).toBeDefined()
+    expect(row('meditate').getByRole('button', { name: '-1' }).disabled).toBe(
       true,
     )
 
     fireEvent.click(row('meditate').getByRole('button', { name: '+1' }))
-    expect(row('meditate').getByText('✓ 1/1 today')).toBeDefined()
+    expect(row('meditate').getByText('✓ 1/1')).toBeDefined()
 
-    fireEvent.click(row('meditate').getByRole('button', { name: 'undo' }))
-    expect(row('meditate').getByText('0/1 today')).toBeDefined()
+    fireEvent.click(row('meditate').getByRole('button', { name: '-1' }))
+    expect(row('meditate').getByText('0/1')).toBeDefined()
   })
 
   it('an N-per-day habit counts up and undoes one at a time', () => {
     render(<App />)
     createHabitViaUI('water', { scheduleType: 'nPerDay', n: 3 })
 
-    expect(row('water').getByText('0/3 today')).toBeDefined()
+    expect(row('water').getByText('0/3')).toBeDefined()
     fireEvent.click(row('water').getByRole('button', { name: '+1' }))
     fireEvent.click(row('water').getByRole('button', { name: '+1' }))
-    expect(row('water').getByText('2/3 today')).toBeDefined()
-    fireEvent.click(row('water').getByRole('button', { name: 'undo' }))
-    expect(row('water').getByText('1/3 today')).toBeDefined()
+    expect(row('water').getByText('2/3')).toBeDefined()
+    fireEvent.click(row('water').getByRole('button', { name: '-1' }))
+    expect(row('water').getByText('1/3')).toBeDefined()
   })
 })
 
@@ -141,7 +142,7 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
     }
     // Past the goal the day just STAYS fulfilled — extras are shown,
     // recorded and kept, never refused.
-    expect(row('stretch').getByText('✓ 3/1 today')).toBeDefined()
+    expect(row('stretch').getByText('✓ 3/1')).toBeDefined()
 
     // All three marks belong to today (Thu 16 July, the pinned clock),
     // and every tap advanced the steps-taken meter.
@@ -158,8 +159,8 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
     ).toBe('3')
 
     // Undoing one extra keeps the day fulfilled — thresholds unchanged.
-    fireEvent.click(row('stretch').getByRole('button', { name: 'undo' }))
-    expect(row('stretch').getByText('✓ 2/1 today')).toBeDefined()
+    fireEvent.click(row('stretch').getByRole('button', { name: '-1' }))
+    expect(row('stretch').getByText('✓ 2/1')).toBeDefined()
   })
 
   it('whenever and N-per-week show a plain count — no per-day goal', () => {
@@ -167,15 +168,15 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
     createHabitViaUI('tidy', { scheduleType: 'whenever' })
     createHabitViaUI('swim', { scheduleType: 'nPerWeek', n: 3 })
 
-    expect(row('tidy').getByText('0 today')).toBeDefined()
-    expect(row('swim').getByText('0 today')).toBeDefined()
+    expect(row('tidy').getByText('0')).toBeDefined()
+    expect(row('swim').getByText('0')).toBeDefined()
 
     fireEvent.click(row('tidy').getByRole('button', { name: '+1' }))
     fireEvent.click(row('swim').getByRole('button', { name: '+1' }))
     fireEvent.click(row('swim').getByRole('button', { name: '+1' }))
 
-    expect(row('tidy').getByText('1 today')).toBeDefined()
-    expect(row('swim').getByText('2 today')).toBeDefined()
+    expect(row('tidy').getByText('1')).toBeDefined()
+    expect(row('swim').getByText('2')).toBeDefined()
 
     // Every one of those taps counted toward the steps-taken meter.
     const meters = within(screen.getByRole('region', { name: 'meters' }))
@@ -190,10 +191,10 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
     // The pinned clock is Thursday, so schedule Thursdays.
     render(<App />)
     createHabitViaUI('gym', { scheduleType: 'weekdays', days: ['Thu'] })
-    expect(row('gym').getByText('0/1 today')).toBeDefined()
+    expect(row('gym').getByText('0/1')).toBeDefined()
     fireEvent.click(row('gym').getByRole('button', { name: '+1' }))
     fireEvent.click(row('gym').getByRole('button', { name: '+1' }))
-    expect(row('gym').getByText('✓ 2/1 today')).toBeDefined()
+    expect(row('gym').getByText('✓ 2/1')).toBeDefined()
   })
 
   it('a one-time to-do keeps its single-tap control — no counter', () => {
@@ -201,7 +202,8 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
     createHabitViaUI('fix tap', { scheduleType: 'oneTime' })
     expect(row('fix tap').getByRole('button', { name: 'mark done' }))
     expect(row('fix tap').queryByRole('button', { name: '+1' })).toBeNull()
-    expect(row('fix tap').queryByText(/today/)).toBeNull()
+    // No running count, no per-day goal — nothing numbered at all.
+    expect(row('fix tap').queryByText(/\d+\/\d+/)).toBeNull()
   })
 })
 
@@ -211,7 +213,7 @@ describe('the symbol filter (a temporary lens)', () => {
     createHabitViaUI('read', { symbol: 2 })
     createHabitViaUI('stretch', { symbol: 5 })
 
-    const filter = within(screen.getByRole('region', { name: 'filter' }))
+    const filter = within(screen.getByRole('region', { name: 'filter view' }))
     fireEvent.click(filter.getByRole('button', { name: '■' })) // symbol 2
     expect(screen.getByText('read')).toBeDefined()
     expect(screen.queryByText('stretch')).toBeNull()
@@ -297,13 +299,13 @@ describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () =
       row('renew passport').getByRole('button', { name: 'mark done' }),
     )
 
-    // Gone from the daily list, sitting in archived with an undo button.
+    // Gone from the daily list, sitting in archived with a -1 button.
     expect(screen.queryByText('one-time · medium')).toBeNull()
     const archived = within(screen.getByText(/^archived/).closest('details'))
     expect(archived.getByText('renew passport')).toBeDefined()
 
     // Undo: un-archived AND un-done, as if the tap never happened.
-    fireEvent.click(archived.getByRole('button', { name: 'undo' }))
+    fireEvent.click(archived.getByRole('button', { name: '-1' }))
     expect(row('renew passport').getByRole('button', { name: 'mark done' }))
     expect(screen.queryByText(/^archived/)).toBeNull()
   })
@@ -341,7 +343,7 @@ describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () =
 
     const archived = within(screen.getByText(/^archived/).closest('details'))
     expect(archived.getByText('done 2026-07-01')).toBeDefined()
-    expect(archived.queryByRole('button', { name: 'undo' })).toBeNull()
+    expect(archived.queryByRole('button', { name: '-1' })).toBeNull()
     expect(archived.queryByRole('button', { name: 'unarchive' })).toBeNull()
     // Delete forever remains the only way out.
     expect(archived.getByRole('button', { name: 'delete forever' }))
@@ -403,9 +405,10 @@ describe('the morning check-in (T1.4)', () => {
     seed()
     render(<App />)
 
-    // The check-in IS the screen — the list is waiting behind it.
+    // The check-in pops up over the dimmed, inert list — role queries
+    // skip the aria-hidden backdrop, so the foot buttons read as gone.
     expect(screen.getByText('check-in')).toBeDefined()
-    expect(screen.queryByRole('button', { name: '+ new habit' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'add new habit' })).toBeNull()
 
     // Yesterday (Wed the 15th) is the question; the frozen previous
     // week is not offered at all.
@@ -428,7 +431,7 @@ describe('the morning check-in (T1.4)', () => {
 
     // Back on the list, and the data says what really happened: the
     // marks belong to the days they were DONE, entry day nowhere.
-    expect(screen.getByRole('button', { name: '+ new habit' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'add new habit' })).toBeDefined()
     expect(
       stored()
         .completions.map((c) => c.dayKey)
@@ -442,14 +445,18 @@ describe('the morning check-in (T1.4)', () => {
     render(<App />)
 
     // Yesterday's row is a counter here as well: three +1s, then one
-    // undo — the surviving two marks both belong to Wed the 15th.
+    // -1 — the surviving two marks both belong to Wed the 15th. The
+    // dimmed list behind the pop-up prints the same count texts, so
+    // scope every query to the check-in itself (text queries don't
+    // respect its aria-hidden backdrop).
+    const checkIn = within(screen.getByRole('region', { name: 'check-in' }))
     for (let i = 0; i < 3; i++) {
-      fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
+      fireEvent.click(checkIn.getAllByRole('button', { name: '+1' })[0])
     }
-    expect(screen.getByText('✓ 3/1')).toBeDefined()
-    fireEvent.click(screen.getAllByRole('button', { name: 'undo' })[0])
+    expect(checkIn.getByText('✓ 3/1')).toBeDefined()
+    fireEvent.click(checkIn.getAllByRole('button', { name: '-1' })[0])
     fireEvent.click(
-      screen.getByRole('button', { name: 'done — save check-in' }),
+      checkIn.getByRole('button', { name: 'done — save check-in' }),
     )
     expect(stored().completions.map((c) => c.dayKey)).toEqual([
       '2026-07-15',
@@ -579,13 +586,13 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
       ],
     })
     render(<App />)
-    expect(row('walk').getByText('✓ 1/1 today')).toBeDefined()
+    expect(row('walk').getByText('✓ 1/1')).toBeDefined()
 
     act(() => {
       vi.advanceTimersByTime(4.5 * 60 * 60 * 1000)
     })
     expect(screen.queryByText('check-in')).toBeNull()
-    expect(row('walk').getByText('0/1 today')).toBeDefined()
+    expect(row('walk').getByText('0/1')).toBeDefined()
   })
 })
 
@@ -600,8 +607,23 @@ describe('the three meters (T2.2)', () => {
     expect(meters().getByText('steps taken')).toBeDefined()
     expect(meters().getByText('literacy level')).toBeDefined()
     expect(meters().getByText('wallet balance')).toBeDefined()
-    expect(meters().getByText('0')).toBeDefined() // the wallet number itself
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+    // All three are bars now (T4.5); the exact numbers live behind each
+    // meter's hover — the wallet's is its true balance, debt and all.
+    expect(
+      meters()
+        .getByRole('progressbar', { name: 'wallet balance progress' })
+        .getAttribute('aria-valuenow'),
+    ).toBe('0')
+    expect(meters().getByRole('button', { name: /steps taken/ }).title).toBe(
+      '0 steps taken',
+    )
+    expect(meters().getByRole('button', { name: /literacy level/ }).title).toBe(
+      '0 of 100',
+    )
+    expect(meters().getByRole('button', { name: /wallet balance/ }).title).toBe(
+      '0',
+    )
   })
 
   it('completing a habit visibly moves the steps-taken meter; undo moves it back', () => {
@@ -612,7 +634,7 @@ describe('the three meters (T2.2)', () => {
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
 
     // Undo reverses the meter exactly (decision 2026-07-15).
-    fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
+    fireEvent.click(row('walk').getByRole('button', { name: '-1' }))
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
   })
 
@@ -630,7 +652,7 @@ describe('the three meters (T2.2)', () => {
     createHabitViaUI('walk')
 
     fireEvent.click(meters().getByRole('button', { name: /steps taken/ }))
-    expect(screen.getByText('the Map')).toBeDefined()
+    expect(screen.getByText('map of N-Z-D')).toBeDefined()
     expect(screen.queryByText('walk')).toBeNull() // the list waits behind
     fireEvent.click(
       screen.getByRole('button', { name: '← back to the habits' }),
@@ -638,13 +660,13 @@ describe('the three meters (T2.2)', () => {
     expect(screen.getByText('walk')).toBeDefined()
 
     fireEvent.click(meters().getByRole('button', { name: /literacy level/ }))
-    expect(screen.getByText('the Bookcase')).toBeDefined()
+    expect(screen.getByText('readers library')).toBeDefined()
     fireEvent.click(
       screen.getByRole('button', { name: '← back to the habits' }),
     )
 
     fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
-    expect(screen.getByText('the Market')).toBeDefined()
+    expect(screen.getByText('local market')).toBeDefined()
   })
 
   it('the HABITAT header is a home link from every meter page (added 2026-07-16)', () => {
@@ -816,7 +838,9 @@ describe('field notes (T2.3)', () => {
     })
     render(<App />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'field notes' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'view historical data' }),
+    )
     // Opens on the last completed week, where Wednesday the 8th shows ✓.
     expect(screen.getByText(/week of 2026-07-06 – 2026-07-12/)).toBeDefined()
     expect(screen.getByText('✓')).toBeDefined()
@@ -833,7 +857,7 @@ describe('field notes (T2.3)', () => {
     fireEvent.click(
       screen.getByRole('button', { name: '← back to the habits' }),
     )
-    expect(screen.getByRole('button', { name: '+ new habit' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'add new habit' })).toBeDefined()
   })
 
   it('opens by itself on the first visit of a Sunday — and only the first', () => {
@@ -842,16 +866,27 @@ describe('field notes (T2.3)', () => {
     seed({ checkedInThrough: '2026-07-18' }) // Saturday answered
 
     const first = render(<App />)
+    // The startup fade plays first — the field notes wait behind it
+    // (T4.5's morning order: check-in → startup → field notes).
+    expect(document.querySelector('.startup-fade')).not.toBeNull()
+    expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+
+    // Once the fade has lifted, the field notes take their turn.
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
     expect(screen.getByRole('heading', { name: 'field notes' })).toBeDefined()
+    expect(stored().settings.startupShownOn).toBe('2026-07-19')
     expect(stored().settings.fieldNotesShownOn).toBe('2026-07-19')
 
     // A second visit the same Sunday goes straight to the list.
     first.unmount()
     render(<App />)
     expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+    expect(document.querySelector('.startup-fade')).toBeNull()
   })
 
-  it('the Sunday opening waits its turn behind the check-in', () => {
+  it('the Sunday opening waits its turn behind the check-in AND the startup', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date(2026, 6, 19, 12)) // Sunday the 19th
     seed() // Saturday unanswered → the check-in must come first
@@ -859,11 +894,24 @@ describe('field notes (T2.3)', () => {
     render(<App />)
     expect(screen.getByText('check-in')).toBeDefined()
     expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+    // No fade while the check-in is up — it waits its turn too.
+    expect(document.querySelector('.startup-fade')).toBeNull()
 
+    // The check-in answered, the startup fade takes the next turn —
+    // and the field notes still wait.
     fireEvent.click(
       screen.getByRole('button', { name: 'done — save check-in' }),
     )
+    expect(document.querySelector('.startup-fade')).not.toBeNull()
+    expect(screen.queryByRole('heading', { name: 'field notes' })).toBeNull()
+
+    // Only once the fade has played do the field notes open — the full
+    // morning order was check-in → startup → field notes.
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
     expect(screen.getByRole('heading', { name: 'field notes' })).toBeDefined()
+    expect(stored().settings.startupShownOn).toBe('2026-07-19')
   })
 
   it('warns before a schedule edit that switches the streak kind', () => {
@@ -987,7 +1035,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
 
     // Undo: the completion goes, and its drop — stored and on-screen —
     // goes with it.
-    fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
+    fireEvent.click(row('walk').getByRole('button', { name: '-1' }))
     expect(screen.queryByRole('region', { name: 'arrivals' })).toBeNull()
     expect(screen.queryByText('you came across a flora find')).toBeNull()
     expect(stored().completions).toEqual([])
@@ -996,7 +1044,9 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
   it('fungi go straight to the wallet, and undo takes them back out', () => {
     seedWorld(findSeed('2026-07-16', 'fungi'))
     render(<App />)
-    const wallet = () => document.querySelector('.meter-wallet').textContent
+    // The wallet number lives behind the meter's hover now (T4.5) —
+    // the title carries the true balance, debt and all.
+    const wallet = () => document.querySelector('.meter-fungus').title
     expect(wallet()).toBe('0')
 
     fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
@@ -1009,7 +1059,7 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     expect(drop.kind).toBe('fungi')
     expect(wallet()).toBe(String(drop.amount))
 
-    fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
+    fireEvent.click(row('walk').getByRole('button', { name: '-1' }))
     expect(wallet()).toBe('0')
   })
 
@@ -1051,6 +1101,12 @@ describe('read now / read later + the spread popup (T3.5)', () => {
   function dropOne(kind) {
     seedWorld(findSeed('2026-07-16', kind))
     render(<App />)
+    // Settle the startup fade before anything else: these tests assert
+    // the stored bytes stay unchanged, and the fade saves when its
+    // timer fires.
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
     fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
   }
@@ -1149,7 +1205,7 @@ describe('gather / decline / compost (T3.3)', () => {
   }
 
   const shelf = () => within(screen.getByRole('region', { name: 'arrivals' }))
-  const abode = () => within(screen.getByText('the Abode').closest('section'))
+  const abode = () => within(screen.getByText('your abode').closest('section'))
 
   it('a held flora offers gather / leave it; gathering stands it on the Abode ground', () => {
     seedWorld(findSeed('2026-07-16', 'flora'))
@@ -1163,7 +1219,7 @@ describe('gather / decline / compost (T3.3)', () => {
 
     // The Abode stands it on the open ground (T4.3) — and shows no
     // found date (Kimia's call 2026-07-20, the Bookcase/Map rule).
-    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    fireEvent.click(screen.getByRole('button', { name: 'your abode' }))
     expect(abode().getByRole('button', { name: 'a flora find' })).toBeDefined()
     expect(abode().queryByText(/found 2026/)).toBeNull()
   })
@@ -1174,7 +1230,7 @@ describe('gather / decline / compost (T3.3)', () => {
     dropOneFlora()
 
     // No decision made. The find waits, quietly, on the Abode page.
-    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    fireEvent.click(screen.getByRole('button', { name: 'your abode' }))
     const waiting = within(
       screen.getByRole('list', { name: 'waiting to decide' }),
     )
@@ -1192,12 +1248,12 @@ describe('gather / decline / compost (T3.3)', () => {
     seedWorld(findSeed('2026-07-16', 'flora'))
     render(<App />)
     dropOneFlora()
-    const wallet = () => document.querySelector('.meter-wallet').textContent
+    const wallet = () => document.querySelector('.meter-fungus').title
     expect(wallet()).toBe('0')
 
     fireEvent.click(shelf().getByRole('button'))
     fireEvent.click(shelf().getByRole('button', { name: 'gather' }))
-    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    fireEvent.click(screen.getByRole('button', { name: 'your abode' }))
     // On the ground (T4.3), compost hides behind the quiet hold: click
     // the flora to hold it, then its compost button.
     fireEvent.pointerDown(abode().getByRole('button', { name: 'a flora find' }))
@@ -1222,9 +1278,9 @@ describe('gather / decline / compost (T3.3)', () => {
 
     // Undo: the completion goes, and with it the find — the decision
     // map holds no ghosts, and the Abode's ground is bare again.
-    fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
+    fireEvent.click(row('walk').getByRole('button', { name: '-1' }))
     expect(stored().floraDecisions).toEqual({})
-    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    fireEvent.click(screen.getByRole('button', { name: 'your abode' }))
     expect(abode().queryByRole('button', { name: 'a flora find' })).toBeNull()
   })
 })
@@ -1232,7 +1288,7 @@ describe('gather / decline / compost (T3.3)', () => {
 describe('the Abode ground (T4.3)', () => {
   const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
   const shelf = () => within(screen.getByRole('region', { name: 'arrivals' }))
-  const abode = () => within(screen.getByText('the Abode').closest('section'))
+  const abode = () => within(screen.getByText('your abode').closest('section'))
 
   // Tap once (the seeded first tap drops exactly one flora), clear the
   // reveal, gather the find, and open the Abode.
@@ -1241,7 +1297,7 @@ describe('the Abode ground (T4.3)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
     fireEvent.click(shelf().getByRole('button'))
     fireEvent.click(shelf().getByRole('button', { name: 'gather' }))
-    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    fireEvent.click(screen.getByRole('button', { name: 'your abode' }))
   }
 
   it('a dragged flora keeps its place — remembered in storage, per find', () => {
@@ -1277,7 +1333,7 @@ describe('the Abode ground (T4.3)', () => {
 
       // Undo the tap: the find goes, and its stored place with it.
       fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
-      fireEvent.click(row('walk').getByRole('button', { name: 'undo' }))
+      fireEvent.click(row('walk').getByRole('button', { name: '-1' }))
       expect(stored().abodeLayout).toEqual({})
     } finally {
       SVGSVGElement.prototype.getBoundingClientRect = restore
@@ -1302,8 +1358,8 @@ describe('the Abode ground (T4.3)', () => {
 describe('the Market (T4.3b)', () => {
   const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
   const meters = () => within(screen.getByRole('region', { name: 'meters' }))
-  const abode = () => within(screen.getByText('the Abode').closest('section'))
-  const wallet = () => document.querySelector('.meter-wallet').textContent
+  const abode = () => within(screen.getByText('your abode').closest('section'))
+  const wallet = () => document.querySelector('.meter-fungus').title
 
   // A world with 14 fungi in the wallet: five marks across three lived
   // days (Mon–Wed), so one Map region is known and the first stall
@@ -1358,7 +1414,7 @@ describe('the Market (T4.3b)', () => {
 
     // The stall opens from the wallet meter, three curiosities on offer.
     fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
-    expect(screen.getByRole('heading', { name: 'the Market' })).toBeDefined()
+    expect(screen.getByRole('heading', { name: 'local market' })).toBeDefined()
     fireEvent.click(
       screen.getByRole('button', { name: 'buy a curiosity for 12 fungi' }),
     )
@@ -1369,7 +1425,7 @@ describe('the Market (T4.3b)', () => {
 
     // Home and into the abode: the curiosity stands on the ground.
     fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
-    fireEvent.click(screen.getByRole('button', { name: 'the abode' }))
+    fireEvent.click(screen.getByRole('button', { name: 'your abode' }))
     fireEvent.pointerDown(abode().getByRole('button', { name: 'a curiosity' }))
     fireEvent.pointerUp(window)
     fireEvent.click(abode().getByRole('button', { name: 'sell' }))
@@ -1405,7 +1461,7 @@ describe('the Market (T4.3b)', () => {
     seedWorld('market-seed') // no completions at all: no lived days, no regions
     render(<App />)
     fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
-    expect(screen.getByRole('heading', { name: 'the Market' })).toBeDefined()
+    expect(screen.getByRole('heading', { name: 'local market' })).toBeDefined()
     expect(screen.queryByRole('list')).toBeNull()
     expect(screen.queryByRole('button', { name: /buy/ })).toBeNull()
   })
@@ -1477,11 +1533,196 @@ describe('friendships (T4.4)', () => {
     expect(screen.queryByRole('dialog')).toBeNull()
 
     // The Guest Book holds them, named by the draft category singular.
-    fireEvent.click(screen.getByRole('button', { name: 'the guest book' }))
+    fireEvent.click(screen.getByRole('button', { name: 'local community' }))
     expect(
-      screen.getByRole('heading', { name: 'the Guest Book' }),
+      screen.getByRole('heading', { name: 'local community' }),
     ).toBeDefined()
     fireEvent.click(screen.getByRole('button', { name: 'a Drifter' }))
     expect(screen.getByRole('dialog', { name: 'a Drifter' })).toBeDefined()
+  })
+})
+
+// The daily startup (T4.5): on the first visit of each Habitat day a
+// fade plays over whatever the day opens on — after any owed check-in,
+// before the Sunday field notes. Manual timers here: the fade's
+// STARTUP_FADE_MS moves only when a test says so.
+describe('the daily startup (T4.5)', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 16, 9)) // Thursday 16 July, 9am
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  // The fade says nothing and has no role — only its class marks it.
+  const fade = () => document.querySelector('.startup-fade')
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+
+  // A quiet world: one daily habit since Monday, yesterday's check-in
+  // already answered — the list shows straight away.
+  function seed(overrides = {}) {
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 1,
+        habits: [
+          {
+            id: 'walk',
+            name: 'walk',
+            description: '',
+            symbol: 1,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            archived: false,
+            createdAt: new Date(2026, 6, 13, 9).getTime(), // Mon the 13th
+          },
+        ],
+        completions: [],
+        settings: { dayCutoffHour: 3 },
+        checkedInThrough: '2026-07-15',
+        ...overrides,
+      }),
+    )
+  }
+
+  it('plays on the first visit of a Habitat day, then remembers it played', () => {
+    seed()
+    render(<App />)
+    expect(fade()).not.toBeNull()
+
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
+    expect(fade()).toBeNull()
+    expect(stored().settings.startupShownOn).toBe('2026-07-16')
+  })
+
+  it('does not play twice on the same Habitat day', () => {
+    seed()
+    const first = render(<App />)
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
+    first.unmount()
+
+    render(<App />)
+    expect(fade()).toBeNull()
+  })
+
+  it('plays again the next Habitat day', () => {
+    // A live mark on Thursday keeps Friday's visit check-in-free, so
+    // the fade is the only thing the new day opens with.
+    seed({
+      completions: [
+        { id: 'c1', habitId: 'walk', recordedAt: 5, dayKey: '2026-07-16' },
+      ],
+    })
+    const first = render(<App />)
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
+    first.unmount()
+
+    vi.setSystemTime(new Date(2026, 6, 17, 9)) // Friday the 17th
+    render(<App />)
+    expect(fade()).not.toBeNull()
+  })
+
+  it('waits for the check-in when one is owed', () => {
+    seed({ checkedInThrough: null }) // yesterday unanswered
+    render(<App />)
+    expect(screen.getByText('check-in')).toBeDefined()
+    expect(fade()).toBeNull() // no fade while the check-in is up
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'done — save check-in' }),
+    )
+    expect(fade()).not.toBeNull()
+  })
+
+  it('belongs to the Habitat day, not the calendar day (the 3am cutoff)', () => {
+    seed()
+    // 1am Thursday on the clock is still Wednesday in Habitat.
+    vi.setSystemTime(new Date(2026, 6, 16, 1))
+    const first = render(<App />)
+    expect(fade()).not.toBeNull()
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
+    expect(stored().settings.startupShownOn).toBe('2026-07-15')
+    first.unmount()
+
+    // 4am the same calendar day: Thursday has begun — the fade plays
+    // again, for the new Habitat day.
+    vi.setSystemTime(new Date(2026, 6, 16, 4))
+    render(<App />)
+    expect(fade()).not.toBeNull()
+  })
+})
+
+// The T4.5 home screen speaks in icons: every action is an icon button
+// whose aria-label (mirrored by its hover title) carries the words.
+// This test is the contract for those names — changing one should be a
+// deliberate copy decision, never an accident.
+describe('the icon-only home screen (T4.5)', () => {
+  it('names every action: the rail, the rows, the foot, the archived list', () => {
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 1,
+        habits: [
+          {
+            id: 'walk',
+            name: 'walk',
+            description: '',
+            symbol: 1,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            archived: false,
+            createdAt: new Date(2026, 6, 13, 9).getTime(), // Mon the 13th
+          },
+          {
+            id: 'old',
+            name: 'old friend',
+            description: '',
+            symbol: 2,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            archived: true,
+            createdAt: new Date(2026, 6, 13, 9).getTime(),
+          },
+        ],
+        completions: [],
+        settings: { dayCutoffHour: 3 },
+        checkedInThrough: '2026-07-15', // yesterday answered — no check-in
+      }),
+    )
+    render(<App />)
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS) // settle the startup fade
+    })
+
+    // The left rail: the five world pages' other door.
+    const rail = within(screen.getByRole('navigation', { name: 'pages' }))
+    expect(rail.getByRole('button', { name: 'map of N-Z-D' })).toBeDefined()
+    expect(rail.getByRole('button', { name: 'your abode' })).toBeDefined()
+    expect(rail.getByRole('button', { name: 'local community' })).toBeDefined()
+    expect(rail.getByRole('button', { name: 'readers library' })).toBeDefined()
+    expect(rail.getByRole('button', { name: 'local market' })).toBeDefined()
+
+    // The habit row and the foot of the list.
+    expect(screen.getByRole('button', { name: 'edit' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'archive' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'add new habit' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'edit past days' })).toBeDefined()
+    expect(
+      screen.getByRole('button', { name: 'view historical data' }),
+    ).toBeDefined()
+
+    // The archived list and the symbol filter.
+    expect(screen.getByRole('button', { name: 'unarchive' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'delete forever' })).toBeDefined()
+    expect(screen.getByRole('region', { name: 'filter view' })).toBeDefined()
   })
 })

@@ -31,7 +31,7 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
 
   return (
     <section className="stub-page market">
-      <h2>the Market</h2>
+      <h2>local market</h2>
 
       {stall.length > 0 && (
         <ul className="market-stall" aria-label="the stall">

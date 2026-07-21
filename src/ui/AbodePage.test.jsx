@@ -64,7 +64,7 @@ describe('the open ground', () => {
     const { container } = render(
       <AbodePage finds={[]} items={[]} {...handlers()} />,
     )
-    expect(screen.getByRole('heading', { name: 'the Abode' })).toBeDefined()
+    expect(screen.getByRole('heading', { name: 'your abode' })).toBeDefined()
     expect(screen.getByRole('group', { name: 'the ground' })).toBeDefined()
     expect(container.querySelector('.abode-horizon')).not.toBeNull()
     expect(container.querySelectorAll('p')).toHaveLength(0)

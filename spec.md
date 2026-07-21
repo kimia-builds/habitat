@@ -1,5 +1,18 @@
 # spec.md — HABITAT
 
+_v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
+navigation pass — the five page renames are live, the left icon rail
+runs down the home screen's edge, the large letterspaced date display
+sits beneath the meters, every home-screen action is an icon with a
+hover label, undo reads **-1** everywhere, the check-in is a pop-up
+over the dimmed list, and the startup plumbing holds its slot with a
+plain fade (the animation itself is T5.2). Plus Kimia's PR and calls
+today: **all three meters are bars** with the exact numbers behind
+hover — the wallet bar clamps 0–40 and its hover tells the plain
+truth (a negative number while debt settles); the literacy hover
+reads 0–100, ten per level; the steps hover is the lifetime total.
+All in the decisions log._
+
 _v1.26 — 2026-07-20 (fourteenth session). T4.4 built: the Guest Book +
 friendships. Decided with Kimia: a literacy milestone only OPENS the
 door — the category's first friend arrives 1–5 seeded days later;
@@ -282,10 +295,11 @@ opening its own growing world:
 - **Literacy meter** → opens the **Bookcase**: every magazine, novel,
   and dictionary we've ever received, filling shelves over time. Grows
   infinitely.
-- **Fungus meter** → opens the **Market**. This one is a **wallet, not
-  a progress bar**: it rises with fungus drops and falls with
-  purchases. The only meter that can go down — and only ever by our
-  own choice to spend.
+- **Fungus meter** → opens the **Market**. This one is a **wallet**: it
+  rises with fungus drops and falls with purchases. The only meter that
+  can go down — and only ever by our own choice to spend. (Since T4.5
+  it is a bar like the others — clamped 0–40 fungi — with the exact
+  balance behind its hover; decisions log 2026-07-21.)
 
 ### Stream 1 — Expedition: getting to know the planet
 
@@ -443,9 +457,8 @@ region discovery expands what the Market can offer.
   (gather / leave it) sit in a plain list above the ground. Bare ground
   when empty — no prose, no dates. Titled **your abode**. Carries the
   **quiet / party mode toggle** (below).
-- **Guest Book** (a habit-list link until the T4.5 rail lands, then
-  the rail's _community_): friends made so far. Titled **local
-  community**.
+- **Guest Book** (via the rail's _community_): friends made so far.
+  Titled **local community**.
 - **Field notes:** the weekly view (T2.3) — browsable Mon–Sun weeks,
   opening on the last completed one; reached from the graph icon at the
   foot of the habit list, and opens by itself on the first visit of each
@@ -1213,6 +1226,40 @@ visual treatment in design-notes §12.
   include friends ({ kind: 'friend', category, individual }); the bump
   only gates the new kind, so an older app never loads a backup it
   can't validate. No fields move.
+- 2026-07-21 (fifteenth session, T4.5 built): **the pass lands** — the
+  five page renames are live (map of N-Z-D, readers library, local
+  market, your abode, local community); the left icon rail (map · abode
+  · community · library · market) is the only door to the abode and the
+  community, with the meters staying clickable; the date display shows
+  the real calendar date with the 3am note only between midnight and
+  the cutoff; every home-screen action is an icon with a hover label
+  (title + aria-label); the check-in is a pop-up over the dimmed,
+  inert list with every §4.2 rule untouched; and the startup plumbing
+  holds its slot with a plain fade — settings gains `startupShownOn`
+  (no schema bump, the fieldNotesShownOn precedent), the morning order
+  check-in → startup → Sunday field notes enforced by gating.
+- 2026-07-21 (fifteenth session, Kimia's PR + calls): **all three
+  meters are bars, with the exact numbers behind hover** — the wallet
+  is no longer the odd one out. The wallet bar clamps 0–40 fungi (full
+  bar ≈ 2.7 rotations of saving at ~15 fungi per rotation); its hover
+  shows the TRUE balance as a plain number, **negative while debt is
+  being settled** — the face still never shows debt (the 2026-07-20
+  rule stands), the hover is simply honest on demand, Kimia's call over
+  the punishment-feel worry. The literacy hover reads 0–100, ten per
+  friendship level (10 = level 1 unlocked; the bar refreshes at each
+  level, as it already did). The steps hover is the lifetime total.
+  This supersedes "a wallet has no progress bar" (2026-07-16) and "the
+  number IS the balance" (2026-07-19): the wallet's always-visible
+  number moved behind the hover.
+- 2026-07-21 (fifteenth session, Kimia's calls): **unarchive is an icon
+  too** (a box with an up arrow, mirroring archive's down arrow — the
+  one extension to §12a's six enumerated icons), and **every
+  mark-reversing control reads `-1`**, including the archived one-time
+  to-do's undo — beside a `+1` or not.
+- 2026-07-21 (fifteenth session): **the rail's hover labels are the
+  pages' full display titles** ("map of N-Z-D", "your abode", "local
+  community", "readers library", "local market") — the label names the
+  destination, not the rail's short word for it.
 - A lived day = a day with ≥1 habit marked (including retroactive
   marks). Called a "cron" until 2026-07-20.
 - Reward pacing: slow, steady, designed for a patient daily user; no

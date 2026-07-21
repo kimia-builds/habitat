@@ -28,7 +28,7 @@ describe('the stall', () => {
         {...handlers()}
       />,
     )
-    expect(screen.getByRole('heading', { name: 'the Market' })).toBeDefined()
+    expect(screen.getByRole('heading', { name: 'local market' })).toBeDefined()
     const items = screen.getByRole('list', { name: 'the stall' }).children
     expect(items).toHaveLength(3)
     for (const price of [6, 12, 18]) {
@@ -50,7 +50,7 @@ describe('the stall', () => {
         {...handlers()}
       />,
     )
-    expect(screen.getByRole('heading', { name: 'the Market' })).toBeDefined()
+    expect(screen.getByRole('heading', { name: 'local market' })).toBeDefined()
     expect(screen.queryByRole('list')).toBeNull()
     expect(container.querySelectorAll('p')).toHaveLength(0)
     expect(screen.queryByRole('button', { name: /buy/ })).toBeNull()

@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest'
 import {
   EXPEDITION_SEGMENT_STEPS,
   EXPEDITION_STEPS_PER_COMPLETION,
+  LITERACY_LEVEL_SCALE,
   LITERACY_MILESTONES,
   LITERACY_POINTS,
+  WALLET_BAR_MAX,
 } from './constants.js'
 import {
   recordCompletion,
@@ -14,12 +16,14 @@ import {
   creditFungi,
   expeditionSegment,
   expeditionSteps,
+  literacyLevelNumber,
   literacyPoints,
   literacySegment,
   milestonesReached,
   refundFungi,
   spendFungi,
   validateReadingItem,
+  walletBar,
 } from './meters.js'
 
 const at = (y, month, d, h, min = 0) =>
@@ -195,6 +199,40 @@ describe('milestonesReached', () => {
   })
 })
 
+describe('literacyLevelNumber — the hover’s 0–100 scale (T4.5)', () => {
+  it('no points means zero', () => {
+    expect(literacyLevelNumber(0)).toBe(0)
+  })
+
+  it('landing exactly on the first threshold scores exactly one level', () => {
+    expect(literacyLevelNumber(LITERACY_MILESTONES[0])).toBe(10)
+  })
+
+  it('halfway across a gap adds half of the next level', () => {
+    // Halfway from milestone 1 (10 points) to milestone 2 (30 points)
+    // is 20 points → 10 + 5.
+    expect(literacyLevelNumber(20)).toBe(15)
+  })
+
+  it('landing on a later threshold scores that many whole levels', () => {
+    // 65 points is the third milestone exactly → 3 open doors.
+    expect(literacyLevelNumber(LITERACY_MILESTONES[2])).toBe(30)
+  })
+
+  it('a quarter of the way across a wide mid-ladder gap adds 2.5', () => {
+    // 200 points: five doors open (10/30/65/115/180), then 20 of the
+    // 80-point gap toward 260 → 50 + 2.5.
+    expect(literacyLevelNumber(200)).toBe(52.5)
+  })
+
+  it('all 10 doors open is the top of the scale — and it stops there', () => {
+    expect(literacyLevelNumber(LITERACY_MILESTONES[9])).toBe(
+      LITERACY_LEVEL_SCALE,
+    )
+    expect(literacyLevelNumber(1_000_000)).toBe(LITERACY_LEVEL_SCALE)
+  })
+})
+
 describe('fungus wallet', () => {
   it('a fungus drop pays in', () => {
     expect(creditFungi(0, 3)).toBe(3)
@@ -230,5 +268,32 @@ describe('fungus wallet', () => {
     expect(() => refundFungi(5, -1)).toThrow()
     expect(() => creditFungi(-1, 2)).toThrow()
     expect(() => spendFungi(2.5, 1)).toThrow()
+  })
+})
+
+describe('walletBar — the wallet shown as a bar (T4.5)', () => {
+  it('an empty wallet shows an empty bar', () => {
+    expect(walletBar(0)).toEqual({ into: 0, size: WALLET_BAR_MAX })
+  })
+
+  it('hidden debt rests the bar at empty — never below zero', () => {
+    // The true balance can be negative (undoing spent fungi — see
+    // game/market.js); the bar clamps it away instead of throwing.
+    expect(walletBar(-8)).toEqual({ into: 0, size: WALLET_BAR_MAX })
+  })
+
+  it('mid-range, the bar shows the balance as it is', () => {
+    expect(walletBar(12).into).toBe(12)
+  })
+
+  it('exactly at the top, the bar is full', () => {
+    expect(walletBar(WALLET_BAR_MAX)).toEqual({
+      into: WALLET_BAR_MAX,
+      size: WALLET_BAR_MAX,
+    })
+  })
+
+  it('past the top, the bar simply sits full', () => {
+    expect(walletBar(99).into).toBe(WALLET_BAR_MAX)
   })
 })

@@ -1,5 +1,23 @@
 # plan.md — HABITAT build plan
 
+_v1.26 — 2026-07-21 (fifteenth session). **T4.5 built**: the UX, copy
+and navigation pass. The five pages show their new titles; the left
+icon rail (map · abode · community · library · market) descends the
+home screen's edge, the only door to the abode and the community; the
+large letterspaced date display shows the real calendar date, with the
+quiet cutoff note only between midnight and 3am; every home-screen
+action is an icon with a hover label; undo reads **-1** everywhere;
+the check-in is a pop-up over the dimmed, inert list; and the daily
+startup holds its slot with a plain fade (the animation lands in
+T5.2), the morning order check-in → startup → Sunday field notes now
+enforced. Kimia's PR + calls today: **all three meters are bars** with
+the numbers behind hover — the wallet bar clamps 0–40 and its hover
+shows the true balance, a plain negative number while debt settles;
+literacy's hover reads 0–100, ten per level; steps' hover is the
+lifetime total. Two more calls: unarchive is an icon too, and every
+mark-reversing control reads -1. Spec v1.27, design-notes v1.9.
+Next task: **T4.6**._
+
 _v1.25 — 2026-07-20 (fourteenth session). **T4.4 built**: the Guest
 Book + friendships. Literacy milestones open doors; a category's first
 friend arrives 1–5 seeded days later, repeats every 20–50 seeded days
@@ -447,8 +465,8 @@ tracker. Everything after this is delight, informed by real use.
       formation, never stored, never performing. Storage v8 gates the
       friend drop kind. Delay logic, undo re-derivation, card,
       empty-slot and party tests all pass.
-- [ ] **T4.5 UX, copy & navigation pass** _(decided 2026-07-20, twelfth
-      session — spec v1.24 §5b, design-notes §12)_
+- [x] **T4.5 UX, copy & navigation pass** _(done 2026-07-21; decided
+      2026-07-20, twelfth session — spec v1.24 §5b, design-notes §12)_
       A pass over surfaces already built (T1.3, T2.2, T4.1–T4.3), plus the
       plumbing for two things that come alive later. No game logic changes
       anywhere — meters, drops, dates and schedules are untouched.
@@ -497,6 +515,27 @@ tracker. Everything after this is delight, informed by real use.
      the cutoff and tracks a changed cutoff setting, every icon exposes
      its hover label to assistive tech, and party mode stays inert with
      zero friends. A real day's use feels calmer, not more cryptic.
+     Built: the five titles live on their pages; `ui/IconRail.jsx` (the
+     five icons' hover labels are the pages' full display titles — the
+     rail is the only door to abode and community, the meters stay
+     clickable); `ui/DateDisplay.jsx` + days.js helpers (the note's
+     wording is built from the cutoff setting, so it tracks it); the
+     home screen icon-only — row pencil/archive, foot + · pencil ·
+     graph, archived-row trash and unarchive (box with an up arrow —
+     Kimia's call, the one extension to §12a's six), the filter's
+     "filter view"; `-1` on every mark-reversing control and bare
+     `count/goal`; the check-in a pop-up over the dimmed, inert list
+     (aria-hidden + inert — role queries see only the panel); all
+     three meters bars (`game/meters.js`'s `walletBar` clamped to
+     `WALLET_BAR_MAX` 40 and `literacyLevelNumber` 0–100, ten per
+     level), numbers behind hover — the wallet's hover is the TRUE
+     balance, plain negative in debt; the startup plumbing —
+     `game/startup.js`, settings' `startupShownOn` (no schema bump),
+     `ui/StartupFade.jsx`'s plain non-blocking fade, and the Sunday
+     auto-open gated check-in → startup → field notes. Tests prove the
+     once-per-day detection across the cutoff, the Sunday sequence,
+     the note's window and wording, the bars' clamps and hovers, and
+     every icon's exposed label.
 - [ ] **T4.6 Home-screen cameos** _(redecided 2026-07-20, fourteenth
       session — spec §5, design-notes §8)_
       The third moment the signature animation may play, now a
