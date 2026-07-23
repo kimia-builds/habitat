@@ -1638,14 +1638,20 @@ and recorded in spec.md's decisions log._
       a named `MIN_APP_WIDTH = 1024` next to its only use; the check is
       `width >= MIN_APP_WIDTH` so 1024 renders and 1023 blocks.
       Wired in `main.jsx`: `<ViewportGate><App /></ViewportGate>` under
-      StrictMode. The message copy is a blank Kimia-written content slot
+      StrictMode. The message copy is a Kimia-written content slot
       (`content/blocked.js`, `blockedMessage()` mirrors narrationSlot) —
       while blank the block screen shows nothing rather than invented
-      copy (design-notes §7); **Kimia still needs to write it.** CSS
+      copy (design-notes §7); Kimia filled it the same day. CSS
       `.viewport-block` / `.viewport-block-message` matches the app's
-      deep-space near-black, centred and quiet. New `ViewportGate.test.jsx`
-      (6 tests) asserts which side of the gate renders at 1024 / 1440 /
-      1023 / 768 / 600, the live two-way swap on resize, and that no copy
-      shows while the slot is blank — structure only, never wording. Full
-      suite (549) and oxlint pass; verified in-browser at 1280 (app) and
-      800 (block), no console errors.
+      deep-space near-black, centred and quiet. `ViewportGate.test.jsx`
+      asserts which side of the gate renders at 1024 / 1440 / 1023 / 768 /
+      600, the live two-way swap on resize, and that the block screen
+      reflects the slot (fixture copy shows, blank shows nothing) — set
+      via a controlled fixture that is restored after, so the suite never
+      depends on Kimia's real words; plus a unit test for `blockedMessage`.
+      Structure only, never wording. NOTE: the first cut of that last test
+      hard-coded the slot as blank and broke the deploy the moment Kimia
+      filled it (same trap as the 2026-07-19 CI break) — fixed the same
+      session to be content-independent. Full suite (552) and oxlint pass;
+      verified in-browser at 1280 (app) and 600 (block, showing her copy),
+      no console errors.
