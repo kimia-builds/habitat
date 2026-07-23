@@ -9,7 +9,7 @@
 
 export const BLOCKED = {
   // TODO: written by Kimia — the message a phone/tablet visitor sees.
-  message: '',
+  message: 'N-Z-D is currently only a habitat that can be experienced on a big browser, like a laptop or desktop computer. check back in on the big screen!',
 }
 
 // The message text, trimmed, or null when the slot is still blank — so
