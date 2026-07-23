@@ -619,39 +619,34 @@ function App() {
     })
   }
 
-  // Drop a dragged habit into the visible slot `toVisibleIndex`. moveHabit
-  // works on the full list (active + archived), so we translate the
-  // destination slot to the full-list position of whatever visible habit
-  // sits there now — archived habits in between keep their places and
-  // don't get in the way. A no-op if it lands back where it started.
-  function handleMoveTo(habit, toVisibleIndex) {
-    const from = visible.findIndex((h) => h.id === habit.id)
-    if (
-      toVisibleIndex === from ||
-      toVisibleIndex < 0 ||
-      toVisibleIndex >= visible.length
-    ) {
-      return
-    }
-    const targetHabit = visible[toVisibleIndex]
-    const target = data.habits.findIndex((h) => h.id === targetHabit.id)
+  // Drop a dragged habit onto the row `toId` sits on now. moveHabit works
+  // on the full list (active + archived), so we translate that row to its
+  // full-list position — archived habits in between keep their places and
+  // don't get in the way. A no-op if it lands back on itself.
+  function handleMoveTo(habit, toId) {
+    if (!toId || toId === habit.id) return
+    const target = data.habits.findIndex((h) => h.id === toId)
+    if (target === -1) return
     save({ ...data, habits: moveHabit(data.habits, habit.id, target) })
   }
 
   // Begin a drag-to-reorder from a row's drag handle (T5.1c). We watch the
   // pointer on the WINDOW so the drag keeps tracking even when it leaves
-  // the handle, and decide at release which visible slot it landed in —
-  // the last row whose top edge the pointer has passed. A press that never
-  // travels far enough stays a press and reorders nothing. Reordering is
-  // off while a symbol filter is on (the list is a partial lens), so the
-  // handle is disabled then and this never runs. Desktop-only (T5.1b), so
-  // a single primary-button pointer press is all we handle.
+  // the handle, and decide at release which row it landed on — the last
+  // row whose top edge the pointer has passed. The dragged row itself is
+  // skipped: it follows the pointer (an inline transform), so its own
+  // shifted position must never count, or an upward drag would keep
+  // "landing" back on itself. A press that never travels far enough stays
+  // a press and reorders nothing. Reordering is off while a symbol filter
+  // is on (the list is a partial lens), so the handle is disabled then and
+  // this never runs. Desktop-only (T5.1b), so a single primary-button
+  // pointer press is all we handle.
   function handleReorderStart(habit, event) {
     if (event.button) return // left / primary only
     event.preventDefault()
     const startY = event.clientY
     let dragging = false
-    let target = visible.findIndex((h) => h.id === habit.id)
+    let targetId = habit.id
     function move(moveEvent) {
       const offsetY = moveEvent.clientY - startY
       if (!dragging && Math.abs(offsetY) < REORDER_DRAG_THRESHOLD_PX) return
@@ -659,8 +654,10 @@ function App() {
       const rows = listRef.current
         ? [...listRef.current.querySelectorAll('[data-habit-id]')]
         : []
-      rows.forEach((row, index) => {
-        if (moveEvent.clientY >= row.getBoundingClientRect().top) target = index
+      rows.forEach((row) => {
+        const id = row.getAttribute('data-habit-id')
+        if (id === habit.id) return // never the dragged row itself
+        if (moveEvent.clientY >= row.getBoundingClientRect().top) targetId = id
       })
       setReorderDrag({ id: habit.id, offsetY })
     }
@@ -668,7 +665,7 @@ function App() {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', up)
       setReorderDrag(null)
-      if (dragging) handleMoveTo(habit, target)
+      if (dragging) handleMoveTo(habit, targetId)
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)

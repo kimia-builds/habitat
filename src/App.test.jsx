@@ -285,6 +285,55 @@ describe('re-ordering', () => {
     expect(names()).toEqual(['two', 'three', 'one'])
   })
 
+  it('dragging a row UP lands it higher — its own shifted box is ignored', () => {
+    const first = render(<App />)
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+    createHabitViaUI('three')
+
+    // Rows sit at 0 / 50 / 100. The dragged row carries a transform that
+    // follows the pointer, so its real box shifts UP as it is dragged up —
+    // model that, because ignoring the dragged row's own box is exactly
+    // what this guards: an upward drag used to keep "landing" back on the
+    // row it started on and so never moved.
+    const rows = [...document.querySelectorAll('[data-habit-id]')]
+    const draggedId = rows[2].getAttribute('data-habit-id')
+    let pointerY = 110
+    rows.forEach((el, i) => {
+      el.getBoundingClientRect = () => {
+        const top =
+          el.getAttribute('data-habit-id') === draggedId ? pointerY - 20 : i * 50
+        return {
+          top,
+          bottom: top + 40,
+          height: 40,
+          left: 0,
+          right: 100,
+          width: 100,
+          x: 0,
+          y: top,
+          toJSON: () => {},
+        }
+      }
+    })
+
+    // Grab 'three' and drag it up above 'one' (pointer to y 5, over the
+    // first row, whose top is 0).
+    const handle = row('three').getByRole('button', { name: 're-order' })
+    fireEvent.pointerDown(handle, { button: 0, clientX: 0, clientY: 110 })
+    pointerY = 5
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 5 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 5 })
+
+    const names = () =>
+      [...document.querySelectorAll('.habit-name')].map((el) => el.textContent)
+    expect(names()).toEqual(['three', 'one', 'two'])
+
+    first.unmount()
+    render(<App />)
+    expect(names()).toEqual(['three', 'one', 'two'])
+  })
+
   it('a press that never travels is not a drag — the order is untouched', () => {
     render(<App />)
     createHabitViaUI('alpha')

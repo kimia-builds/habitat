@@ -1687,13 +1687,23 @@ and recorded in spec.md's decisions log._
       raise (`.habit-row--dragging`), settling the instant it drops. A
       press that never travels past `REORDER_DRAG_THRESHOLD_PX` (4px,
       mirroring the other drags) stays a press and reorders nothing.
-      The drop slot is read from layout: `App` keeps a `listRef` on the
+      The drop target is read from layout: `App` keeps a `listRef` on the
       `<ul>`; on each move it finds the last row (by `data-habit-id`) whose
-      top edge the pointer has passed, and on release `handleMoveTo(habit,
-      slot)` maps that visible slot to the full-list position of whatever
-      visible habit sits there — so archived habits interleaved in
-      `data.habits` keep their places (the same neighbour-index trick the
-      old ▲▼ used). No change persists until the drop.
+      top edge the pointer has passed — **skipping the dragged row itself**
+      — and on release `handleMoveTo(habit, toId)` maps that row's id to its
+      full-list position, so archived habits interleaved in `data.habits`
+      keep their places (the same neighbour trick the old ▲▼ used). No
+      change persists until the drop.
+      BUG FIX (same session, on Kimia's report): the first cut compared by
+      loop index and did NOT skip the dragged row. Because the lifted row
+      carries a `translateY` that follows the pointer, an *upward* drag
+      shifted the dragged row's own box up under the pointer; being lower in
+      DOM order it then won the "last row the pointer passed" test, so the
+      target snapped back to the row itself and the move became a no-op —
+      down worked, up did nothing. Fix: skip the dragged row in the scan and
+      track the target by habit id, not index. A new UP-drag test models the
+      dragged row's shifted box (its mock rect follows the pointer) so the
+      regression is caught in jsdom, where there is otherwise no layout.
       Filter-lock carried over: while a symbol filter is on, the list is a
       partial lens, so the handle is `disabled` and its hover switches from
       "drag to re-order" to "clear the symbol filter to re-order"; the
@@ -1701,10 +1711,11 @@ and recorded in spec.md's decisions log._
       primary-button pointer press is the only input — no touch path (the
       handle sets `touch-action: none` regardless).
       Tests: the filter test now asserts the handle is disabled and carries
-      the clear-filter hover; the re-ordering test drives a real pointer
-      drag (mocked row rects, dispatched pointerdown/move/up) and checks the
-      row lands in its new slot AND survives a reload, plus a new test that
-      a sub-threshold press leaves the order untouched. Full suite (553) and
-      oxlint pass; verified in a live browser — dragging a row reordered the
-      list and persisted to localStorage, handle renders in place of the
-      arrows, no console errors.
+      the clear-filter hover; a down-drag test and an up-drag test each
+      drive a real pointer drag (mocked row rects, dispatched
+      pointerdown/move/up) and check the row lands in its new slot AND
+      survives a reload, plus a test that a sub-threshold press leaves the
+      order untouched. Full suite (554) and oxlint pass; verified in a live
+      browser — dragging a row up AND down reordered the list and persisted
+      to localStorage both ways, handle renders in place of the arrows, no
+      console errors.
