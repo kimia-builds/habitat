@@ -78,19 +78,7 @@ tracker. Everything after this is delight, informed by real use.
 ## M5 — Design pass (3–4 sessions, collaborative)
 
 - [x] **T5.1 The 6 charm symbols.** _(done 2026-07-21)_
-- [ ] **T5.1b Mobile & tablet block** — decided 2026-07-23 (Kimia's
-      call). Habitat is **desktop/laptop only**; mobile and tablet are
-      parked indefinitely. A single gate at the app root checks viewport
-      width: **below 1024px** (phones and tablets, including tablets held
-      sideways) the whole app is replaced by one full-screen message; at
-      **1024px and wider** the app renders exactly as today. The message
-      copy is **Kimia-written** — scaffold a blank content slot
-      (`TODO: written by Kimia`), never auto-generate the words. This is
-      a **reversible gate**: all app code stays intact, so a future
-      responsive pass just removes/softens the gate and adds small-screen
-      layouts — nothing built now is lost. This is the task the
-      desktop-only startup animation (§12f) then lives *inside*. Do
-      before T5.2 so the visual pass never designs for blocked screens.
+- [x] **T5.1b Mobile & tablet block.** _(done 2026-07-23)_
 - [ ] **T5.1c Habit-card drag-to-reorder** — decided 2026-07-23 (Kimia's
       call). Replace the ▲▼ arrow buttons on the home-screen habit list
       with **drag-and-drop**: drag a habit card up or down to reorder,

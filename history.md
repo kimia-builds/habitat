@@ -1617,3 +1617,35 @@ and recorded in spec.md's decisions log._
       symbol-button queries moved from glyph chars to charm names, and a
       new `CharmSymbol.test.jsx` pins the six names, colours and the
       role="img" drawing. Full suite (542) and oxlint pass.
+
+- [x] **T5.1b Mobile & tablet block** _(done 2026-07-23, spec §3,
+      design-notes §12f)_
+      The app-root device gate: Habitat is desktop/laptop only, so below
+      1024px viewport width (phones, and tablets held sideways) the whole
+      app is replaced by one full-screen message; at 1024px and wider it
+      renders exactly as before. A reversible gate — it wraps the app and
+      changes nothing inside it, so a future responsive pass just
+      removes/softens it.
+      Built as a JS gate (`ui/ViewportGate.jsx`) that swaps the React
+      tree, not a CSS media query that hides it: below the threshold the
+      App never mounts, so nothing inside it runs on a blocked screen —
+      no timers, and in particular no daily startup animation. That is
+      why the desktop-only startup (§12f) simply *lives inside* this gate
+      rather than needing its own device check — being inside the app, it
+      only ever runs on desktop. The gate reads `window.innerWidth`, keeps
+      it in state, and re-checks on `resize`, so narrowing/widening a
+      window (or turning a tablet sideways) swaps live. The threshold is
+      a named `MIN_APP_WIDTH = 1024` next to its only use; the check is
+      `width >= MIN_APP_WIDTH` so 1024 renders and 1023 blocks.
+      Wired in `main.jsx`: `<ViewportGate><App /></ViewportGate>` under
+      StrictMode. The message copy is a blank Kimia-written content slot
+      (`content/blocked.js`, `blockedMessage()` mirrors narrationSlot) —
+      while blank the block screen shows nothing rather than invented
+      copy (design-notes §7); **Kimia still needs to write it.** CSS
+      `.viewport-block` / `.viewport-block-message` matches the app's
+      deep-space near-black, centred and quiet. New `ViewportGate.test.jsx`
+      (6 tests) asserts which side of the gate renders at 1024 / 1440 /
+      1023 / 768 / 600, the live two-way swap on resize, and that no copy
+      shows while the slot is blank — structure only, never wording. Full
+      suite (549) and oxlint pass; verified in-browser at 1280 (app) and
+      800 (block), no console errors.

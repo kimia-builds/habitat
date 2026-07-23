@@ -1415,6 +1415,27 @@ body {
   }
 }
 
+/* The device gate (T5.1b, spec §3): below 1024px the whole app is
+   replaced by this single full-screen message. Same deep-space
+   near-black as the body; the message sits centred and quiet — calm,
+   never an alarm. The exact colours/spacing move into the design-tokens
+   file in T5.2. */
+.viewport-block {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.viewport-block-message {
+  max-width: 28rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: #cfd8e3;
+}
+
 /* TEMPORARY (T5 prep): the design-assets workbench — empty dashed
    frames waiting for the M5 art. Its door sits at the foot of the
    home screen, quieter than the backup buttons it stands beside. */
