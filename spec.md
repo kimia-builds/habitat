@@ -38,6 +38,16 @@ battles.
   loss. They simply appear in weekly data.
 - Non-goals for v1: mobile app, sync across devices, social features,
   seasonal events (candidate for v2).
+- **Device stance — desktop/laptop only (2026-07-23).** Habitat is
+  designed for wide screens; **mobile and tablet are parked
+  indefinitely**. Below **1024px** viewport width (phones, and tablets
+  held sideways) the whole app is replaced by a single full-screen
+  message — Kimia-written copy in a content slot — and at 1024px and
+  wider the app runs unchanged. This is a **reversible gate**, not a
+  teardown: every existing feature stays built, so a future responsive
+  pass simply removes/softens the gate and adds small-screen layouts.
+  The desktop-only startup animation (§5) is one moment *inside* this
+  block, no longer a special case on its own.
 
 ## 4. Core mechanics
 
@@ -387,9 +397,12 @@ The order of the daily sequence is fixed:
 3. the **field notes** (Sundays only).
 
 It plays every Habitat day, whether or not a check-in was owed. It runs
-on **desktop/laptop only** (2026-07-21): on mobile and tablet it is
-skipped entirely and the screen plain-fades in instead — Habitat's only
-device-conditional moment. Full visual treatment in design-notes §12f.
+on **desktop/laptop only**: on mobile and tablet it is skipped entirely
+and the screen plain-fades in instead. (Since 2026-07-23 the whole app
+is desktop/laptop only — see §3 device stance — so this animation
+simply lives on the desktop side of that block; the plain fade is the
+resting behaviour just below the 1024px line.) Full visual treatment in
+design-notes §12f.
 
 ## 6. Data & reflection
 

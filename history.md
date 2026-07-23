@@ -808,6 +808,30 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   to just **"habit is too young"**. And the three top **meter hovers
   are trimmed to the bare number** — "steps taken"/"of 100" suffixes
   dropped, matching the wallet, which was already number-only.
+- 2026-07-23 (Kimia's call, planning session): **Habitat is
+  desktop/laptop only — mobile and tablet are parked indefinitely.**
+  Below **1024px** viewport width (phones and tablets, including tablets
+  held sideways) the whole app is replaced by a single full-screen
+  message; at 1024px and wider the app renders unchanged. This is a
+  reversible gate, not a teardown: all app code stays intact, so a
+  future responsive pass just removes/softens the gate and adds the
+  small-screen layouts — nothing built now is thrown away. The block's
+  wording is **Kimia-written copy** in a content slot (shipped blank,
+  `TODO`), never auto-generated. Supersedes the old "the startup
+  animation is Habitat's only device-conditional moment" line — the
+  whole-app block is now the primary device split, and the desktop-only
+  startup animation (§12f) simply lives inside the desktop side of it.
+  Built in T5.1b. (v1 non-goals already excluded a mobile *app*; this
+  makes the stance explicit and visible to the user.)
+- 2026-07-23 (Kimia's call, planning session): **habit-list reordering
+  moves from the ▲▼ arrow buttons to drag-and-drop.** The arrows are
+  **replaced**, not supplemented — dragging a habit card up or down
+  becomes the one way to reorder, and order still persists. The arrows'
+  **filter-lock behaviour carries over unchanged**: while a symbol
+  filter is active the list is a temporary lens over a hidden full
+  order, so reordering (now dragging) is disabled, with the same
+  hover explanation to clear the filter first. Built in T5.1c, right
+  after the device block.
 
 ## spec.md version history (formerly its preamble)
 
