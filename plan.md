@@ -79,15 +79,8 @@ tracker. Everything after this is delight, informed by real use.
 
 - [x] **T5.1 The 6 charm symbols.** _(done 2026-07-21)_
 - [x] **T5.1b Mobile & tablet block.** _(done 2026-07-23)_
-- [ ] **T5.1c Habit-card drag-to-reorder** — decided 2026-07-23 (Kimia's
-      call). Replace the ▲▼ arrow buttons on the home-screen habit list
-      with **drag-and-drop**: drag a habit card up or down to reorder,
-      order persists (as it does now). The arrows are **removed**, not
-      kept alongside. The existing **filter-lock rule carries over**:
-      while a symbol filter is active, reordering is disabled (the list
-      is a temporary lens over a hidden full order), with the same "clear
-      the filter to re-order" hover explanation. Desktop-only per T5.1b,
-      so pointer-drag is the only input we need to support.
+- [x] **T5.1c Habit-card drag-to-reorder** _(done 2026-07-23, spec §4.1,
+      design-notes §12a — build notes in history.md)_
 - [ ] **T5.2 Visual identity** — decided 2026-07-19 (docs, design-notes
       §11b/§11c): background #080910, charm-colour accent palette with
       faint variants, dim-white text tiers; Cormorant Garamond display +

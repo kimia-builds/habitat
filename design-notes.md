@@ -521,6 +521,18 @@ above the archived list** — discreet, evenly weighted, none of them
 shouting. "Add new habit" is not a call to action here; it's one of
 three equal doors.
 
+**Reordering is a drag handle** (T5.1c, 2026-07-23), not a pair of
+▲▼ arrows. Each row carries a small six-dot grip in its button group;
+you press it and drag the row up or down, and the new order persists.
+A handle rather than a whole-draggable card because the row already
+holds tap controls (+1, −1, edit, archive) — grabbing a dedicated grip
+keeps those taps unambiguous and gives an obvious "grab here" cue. Its
+hover reads "drag to re-order". While a symbol filter is on the list is
+only a partial lens, so the handle **disables** and its hover switches
+to "clear the symbol filter to re-order" (the filter-lock rule the old
+arrows had). Desktop-only (T5.1b), so a plain pointer press is the only
+input supported — no touch path.
+
 ### 12b. The date display
 
 `M O N D A Y   2 0   J U L   2 0 2 6`, large, beneath the meters and

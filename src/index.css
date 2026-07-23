@@ -1132,6 +1132,33 @@ body {
   padding: 0.5rem;
 }
 
+/* Drag-to-reorder (T5.1c). The handle is a grab affordance: the row moves
+   only when you pull this, so the +1 / -1 / edit / archive taps are never
+   caught up in a drag. `touch-action: none` keeps a press from scrolling
+   the page instead of dragging (harmless on the desktop-only build, but
+   correct). A disabled handle (a symbol filter is on) dims and shows its
+   hover reason. */
+.drag-handle {
+  cursor: grab;
+  touch-action: none;
+}
+
+.drag-handle:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+/* The lifted row while it is being dragged: it follows the pointer (the
+   translateY is set inline) and rises above its neighbours with a soft
+   lift, settling back the instant it is dropped. */
+.habit-row--dragging {
+  position: relative;
+  z-index: 2;
+  cursor: grabbing;
+  background: #12151f;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
 /* The six charms (design-notes §11a). Sized in em so each charm scales
    to whatever text it sits beside; it glows in its own colour, brightening
    on hover. currentColor is the charm's colour (set inline per symbol). */

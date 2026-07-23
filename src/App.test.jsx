@@ -233,8 +233,11 @@ describe('the symbol filter (a temporary lens)', () => {
     fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // symbol 2
     expect(screen.getByText('read')).toBeDefined()
     expect(screen.queryByText('stretch')).toBeNull()
-    // While filtered, the ▲▼ buttons are off (partial view = ambiguous).
-    expect(row('read').getByRole('button', { name: '▲' }).disabled).toBe(true)
+    // While filtered, the drag handle is off (partial view = ambiguous)
+    // and its hover explains how to switch reordering back on.
+    const handle = row('read').getByRole('button', { name: 're-order' })
+    expect(handle.disabled).toBe(true)
+    expect(handle.title).toBe('clear the symbol filter to re-order')
 
     fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // toggle off
     expect(screen.getByText('stretch')).toBeDefined()
@@ -242,21 +245,59 @@ describe('the symbol filter (a temporary lens)', () => {
 })
 
 describe('re-ordering', () => {
-  it('▼ moves a habit down and the order survives a reload', () => {
+  it('dragging a row lands it in a new slot and the order survives a reload', () => {
     const first = render(<App />)
     createHabitViaUI('one')
     createHabitViaUI('two')
     createHabitViaUI('three')
 
-    fireEvent.click(row('one').getByRole('button', { name: '▼' }))
+    // jsdom has no layout, so hand each row a fixed vertical position:
+    // one at top 0, two at 50, three at 100. The drag reads these to work
+    // out which slot the pointer is over.
+    const rows = [...document.querySelectorAll('[data-habit-id]')]
+    rows.forEach((el, i) => {
+      el.getBoundingClientRect = () => ({
+        top: i * 50,
+        bottom: i * 50 + 40,
+        height: 40,
+        left: 0,
+        right: 100,
+        width: 100,
+        x: 0,
+        y: i * 50,
+        toJSON: () => {},
+      })
+    })
+
+    // Grab 'one' and drag it down past 'three' (pointer ends at y 105,
+    // below the third row's top of 100). It should land last.
+    const handle = row('one').getByRole('button', { name: 're-order' })
+    fireEvent.pointerDown(handle, { button: 0, clientX: 0, clientY: 5 })
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 105 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 105 })
 
     const names = () =>
       [...document.querySelectorAll('.habit-name')].map((el) => el.textContent)
-    expect(names()).toEqual(['two', 'one', 'three'])
+    expect(names()).toEqual(['two', 'three', 'one'])
 
     first.unmount()
     render(<App />)
-    expect(names()).toEqual(['two', 'one', 'three'])
+    expect(names()).toEqual(['two', 'three', 'one'])
+  })
+
+  it('a press that never travels is not a drag — the order is untouched', () => {
+    render(<App />)
+    createHabitViaUI('alpha')
+    createHabitViaUI('beta')
+
+    const handle = row('alpha').getByRole('button', { name: 're-order' })
+    fireEvent.pointerDown(handle, { button: 0, clientX: 0, clientY: 5 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 6 })
+
+    const names = [...document.querySelectorAll('.habit-name')].map(
+      (el) => el.textContent,
+    )
+    expect(names).toEqual(['alpha', 'beta'])
   })
 })
 

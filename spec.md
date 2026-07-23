@@ -290,9 +290,10 @@ region discovery expands what the Market can offer.
   in design-notes §13.
 - **Home screen:** the habit list, with the three meters and the **date
   display** (below) fixed in the full-width header (design-notes §13a).
-  The list is manually re-orderable (order persists)
-  and filterable by symbols (multi-select; a temporary lens that resets
-  each visit). Habits can be archived (history kept) or permanently
+  The list is manually re-orderable by dragging a habit's grip handle
+  (order persists; disabled while a symbol filter is on — design-notes
+  §12a) and filterable by symbols (multi-select; a temporary lens that
+  resets each visit). Habits can be archived (history kept) or permanently
   deleted (with confirmation). Every action on the home screen is an
   **icon with a hover label** (T4.5) — no action words on the page. On
   a big-win day a **cameo** visits between the date and the list

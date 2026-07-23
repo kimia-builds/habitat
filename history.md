@@ -832,6 +832,16 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   order, so reordering (now dragging) is disabled, with the same
   hover explanation to clear the filter first. Built in T5.1c, right
   after the device block.
+- 2026-07-23 (Kimia's call during the T5.1c build): **you grab a small
+  drag handle, not the whole card.** A six-dot grip sits where the
+  ▲▼ arrows were; pressing it and moving is what lifts and reorders the
+  row. Chosen over making the whole card draggable because each row
+  already holds tap controls (+1, −1, edit, archive) — a handle keeps
+  those taps unambiguous and gives an obvious "grab here" cue. The
+  handle carries the filter-lock hover ("clear the symbol filter to
+  re-order") when a filter is on, and disables then. Desktop-only
+  (T5.1b), so a single primary-button pointer press is the only input
+  supported (design-notes §12a).
 
 ## spec.md version history (formerly its preamble)
 
@@ -1655,3 +1665,46 @@ and recorded in spec.md's decisions log._
       session to be content-independent. Full suite (552) and oxlint pass;
       verified in-browser at 1280 (app) and 600 (block, showing her copy),
       no console errors.
+
+- [x] **T5.1c Habit-card drag-to-reorder** _(done 2026-07-23, spec §4.1,
+      design-notes §12a)_
+      The home-screen habit list stops reordering by ▲▼ arrows and starts
+      reordering by dragging. Each row's button group now holds a small
+      six-dot **grip handle** (`.drag-handle`) where the arrows were; you
+      press it and drag the row up or down, and the new order persists to
+      storage. Order still persists exactly as before — the underlying
+      `moveHabit` game function is untouched.
+      A dedicated handle, not a whole-draggable card (Kimia's call this
+      session — see the decisions log): the row already holds tap controls
+      (+1, −1, edit, archive), so a grip keeps those unambiguous and gives
+      an obvious grab point.
+      The drag follows the abode/bookcase pointer pattern: `HabitRow` is
+      still a pure display component — its handle's `onPointerDown` calls
+      up to `App.handleReorderStart(habit, event)`, which watches the
+      pointer on the WINDOW (so the drag keeps tracking off the handle) and
+      resolves on release. During the drag the lifted row follows the
+      pointer (an inline `translateY` from `reorderDrag` state) with a soft
+      raise (`.habit-row--dragging`), settling the instant it drops. A
+      press that never travels past `REORDER_DRAG_THRESHOLD_PX` (4px,
+      mirroring the other drags) stays a press and reorders nothing.
+      The drop slot is read from layout: `App` keeps a `listRef` on the
+      `<ul>`; on each move it finds the last row (by `data-habit-id`) whose
+      top edge the pointer has passed, and on release `handleMoveTo(habit,
+      slot)` maps that visible slot to the full-list position of whatever
+      visible habit sits there — so archived habits interleaved in
+      `data.habits` keep their places (the same neighbour-index trick the
+      old ▲▼ used). No change persists until the drop.
+      Filter-lock carried over: while a symbol filter is on, the list is a
+      partial lens, so the handle is `disabled` and its hover switches from
+      "drag to re-order" to "clear the symbol filter to re-order"; the
+      pointer handler never runs then. Desktop-only per T5.1b, so a single
+      primary-button pointer press is the only input — no touch path (the
+      handle sets `touch-action: none` regardless).
+      Tests: the filter test now asserts the handle is disabled and carries
+      the clear-filter hover; the re-ordering test drives a real pointer
+      drag (mocked row rects, dispatched pointerdown/move/up) and checks the
+      row lands in its new slot AND survives a reload, plus a new test that
+      a sub-threshold press leaves the order untouched. Full suite (553) and
+      oxlint pass; verified in a live browser — dragging a row reordered the
+      list and persisted to localStorage, handle renders in place of the
+      arrows, no console errors.

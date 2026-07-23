@@ -1,7 +1,7 @@
 // One habit in the list: its symbol, name, schedule-at-a-glance, the
-// tap-to-complete control, and the row buttons (move, edit, archive).
-// Pure display + callbacks — every decision is made in App via the
-// game modules.
+// tap-to-complete control, and the row buttons (drag handle, edit,
+// archive). Pure display + callbacks — every decision is made in App
+// via the game modules.
 
 import CharmSymbol from './CharmSymbol.jsx'
 
@@ -31,10 +31,11 @@ function HabitRow({
   required,
   fulfilled,
   reorderDisabled,
+  dragging,
+  dragOffsetY,
   onComplete,
   onUndo,
-  onMoveUp,
-  onMoveDown,
+  onReorderStart,
   onEdit,
   onArchive,
 }) {
@@ -52,7 +53,11 @@ function HabitRow({
   )
 
   return (
-    <li className="habit-row">
+    <li
+      className={`habit-row${dragging ? ' habit-row--dragging' : ''}`}
+      data-habit-id={habit.id}
+      style={dragging ? { transform: `translateY(${dragOffsetY}px)` } : undefined}
+    >
       <CharmSymbol symbol={habit.symbol} className="symbol" />
       <span className="habit-main">
         <span className="habit-name">{habit.name}</span>
@@ -94,19 +99,31 @@ function HabitRow({
         </span>
       )}
       <span className="row-buttons">
+        {/* Drag-to-reorder (T5.1c, 2026-07-23): grab this handle and drag
+            the row up or down; the new order persists. It replaces the old
+            ▲▼ arrows. Desktop-only (T5.1b), so a pointer press is the only
+            input we support. While a symbol filter is on the list is a
+            partial lens, so reordering is disabled and the hover explains
+            why. */}
         <button
-          onClick={onMoveUp}
+          className="icon-button drag-handle"
+          onPointerDown={reorderDisabled ? undefined : onReorderStart}
           disabled={reorderDisabled}
-          title={reorderDisabled ? 'clear the symbol filter to re-order' : ''}
+          title={
+            reorderDisabled
+              ? 'clear the symbol filter to re-order'
+              : 'drag to re-order'
+          }
+          aria-label="re-order"
         >
-          ▲
-        </button>
-        <button
-          onClick={onMoveDown}
-          disabled={reorderDisabled}
-          title={reorderDisabled ? 'clear the symbol filter to re-order' : ''}
-        >
-          ▼
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <circle cx="9" cy="6" r="1.4" />
+            <circle cx="15" cy="6" r="1.4" />
+            <circle cx="9" cy="12" r="1.4" />
+            <circle cx="15" cy="12" r="1.4" />
+            <circle cx="9" cy="18" r="1.4" />
+            <circle cx="15" cy="18" r="1.4" />
+          </svg>
         </button>
         {/* T4.5's icon-only actions (decision 2026-07-20): every action is
             an icon with a hover label — title + aria-label carry the words. */}

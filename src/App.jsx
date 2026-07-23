@@ -3,7 +3,7 @@
 // habits, days and completions is delegated to the game modules, and
 // all saving goes through the storage module.
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   abodeItems,
   placeFlora,
@@ -107,6 +107,11 @@ import SpreadPopup from './ui/SpreadPopup.jsx'
 import StartupFade from './ui/StartupFade.jsx'
 import SymbolPicker from './ui/SymbolPicker.jsx'
 
+// A press on a row's drag handle becomes a reorder drag once the pointer
+// has travelled this many pixels; anything shorter stays a press and
+// reorders nothing (mirrors the abode/bookcase drag threshold).
+const REORDER_DRAG_THRESHOLD_PX = 4
+
 function App() {
   const [data, setData] = useState(loadData)
   // The symbol filter is a temporary lens: plain component state, so it
@@ -138,6 +143,15 @@ function App() {
   // reading is tracked nowhere (Kimia's decision 2026-07-19), so
   // nothing about it may ever reach storage.
   const [readingItem, setReadingItem] = useState(null)
+
+  // Drag-to-reorder (T5.1c): while a habit row is being dragged, this
+  // holds { id, offsetY } — which row is lifted and how far it has moved
+  // vertically from where the press began — so the row can follow the
+  // pointer. Screen state only; the persisted order changes just once, on
+  // release. `listRef` points at the <ul> so a drag can measure the rows
+  // and work out which slot the pointer is over.
+  const [reorderDrag, setReorderDrag] = useState(null)
+  const listRef = useRef(null)
 
   // The page's own clock (Kimia's requirement 2026-07-15): a tab left
   // open must notice the new Habitat day by itself, like a fresh visit —
@@ -605,17 +619,59 @@ function App() {
     })
   }
 
-  // Move one step up (-1) or down (+1) past the neighbouring VISIBLE
-  // habit. moveHabit works on the full list, so the target position is
-  // the neighbour's position there — archived habits in between don't
-  // get in the way. Disabled while a filter is on (moving within a
-  // partial view would be ambiguous).
-  function handleMove(habit, direction) {
-    const at = visible.findIndex((h) => h.id === habit.id)
-    const neighbour = visible[at + direction]
-    if (!neighbour) return // already at the edge
-    const target = data.habits.findIndex((h) => h.id === neighbour.id)
+  // Drop a dragged habit into the visible slot `toVisibleIndex`. moveHabit
+  // works on the full list (active + archived), so we translate the
+  // destination slot to the full-list position of whatever visible habit
+  // sits there now — archived habits in between keep their places and
+  // don't get in the way. A no-op if it lands back where it started.
+  function handleMoveTo(habit, toVisibleIndex) {
+    const from = visible.findIndex((h) => h.id === habit.id)
+    if (
+      toVisibleIndex === from ||
+      toVisibleIndex < 0 ||
+      toVisibleIndex >= visible.length
+    ) {
+      return
+    }
+    const targetHabit = visible[toVisibleIndex]
+    const target = data.habits.findIndex((h) => h.id === targetHabit.id)
     save({ ...data, habits: moveHabit(data.habits, habit.id, target) })
+  }
+
+  // Begin a drag-to-reorder from a row's drag handle (T5.1c). We watch the
+  // pointer on the WINDOW so the drag keeps tracking even when it leaves
+  // the handle, and decide at release which visible slot it landed in —
+  // the last row whose top edge the pointer has passed. A press that never
+  // travels far enough stays a press and reorders nothing. Reordering is
+  // off while a symbol filter is on (the list is a partial lens), so the
+  // handle is disabled then and this never runs. Desktop-only (T5.1b), so
+  // a single primary-button pointer press is all we handle.
+  function handleReorderStart(habit, event) {
+    if (event.button) return // left / primary only
+    event.preventDefault()
+    const startY = event.clientY
+    let dragging = false
+    let target = visible.findIndex((h) => h.id === habit.id)
+    function move(moveEvent) {
+      const offsetY = moveEvent.clientY - startY
+      if (!dragging && Math.abs(offsetY) < REORDER_DRAG_THRESHOLD_PX) return
+      dragging = true
+      const rows = listRef.current
+        ? [...listRef.current.querySelectorAll('[data-habit-id]')]
+        : []
+      rows.forEach((row, index) => {
+        if (moveEvent.clientY >= row.getBoundingClientRect().top) target = index
+      })
+      setReorderDrag({ id: habit.id, offsetY })
+    }
+    function up() {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', up)
+      setReorderDrag(null)
+      if (dragging) handleMoveTo(habit, target)
+    }
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', up)
   }
 
   function handleDelete(habit) {
@@ -673,7 +729,7 @@ function App() {
         <SymbolPicker selected={filter} onToggle={toggleFilter} />
       </section>
 
-      <ul className="habit-list">
+      <ul className="habit-list" ref={listRef}>
         {visible.map((habit) =>
           editing === habit.id ? (
             <li key={habit.id}>
@@ -694,10 +750,11 @@ function App() {
               required={requiredPerDay(habit, today)}
               fulfilled={isDayFulfilled(habit, data.completions, today)}
               reorderDisabled={filter.length > 0}
+              dragging={reorderDrag?.id === habit.id}
+              dragOffsetY={reorderDrag?.id === habit.id ? reorderDrag.offsetY : 0}
               onComplete={() => handleComplete(habit)}
               onUndo={() => handleUndo(habit)}
-              onMoveUp={() => handleMove(habit, -1)}
-              onMoveDown={() => handleMove(habit, +1)}
+              onReorderStart={(event) => handleReorderStart(habit, event)}
               onEdit={() => setEditing(habit.id)}
               onArchive={() => replaceHabit(archiveHabit(habit))}
             />
