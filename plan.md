@@ -122,6 +122,14 @@ tracker. Everything after this is delight, informed by real use.
       fixed counts in **design-bible.md** (2026-07-24); assets land on
       the temporary design-assets page first, then move into the game
       source before that page is removed (spec §5b).
+      _In progress (2026-07-24): the shared **texture library**
+      (design-bible §8) landed in `src/ui/textures.jsx` — seven filter
+      surfaces (moss · bark · pores · sponge glow green; pumice ·
+      weathered · cratered non-glowing per §3/§7) and four procedural
+      hair modes — and renders as live swatches on the DesignPage
+      workbench for the eyeball pass. TEX_COLORS are stand-ins until the
+      T5.2 design-tokens file exists. Still to come: the actual friend /
+      flora / fungi / object / region art that composes from these._
 
 ## M6 — Hardening & content (ongoing)
 

@@ -1514,3 +1514,36 @@ body {
   border: 1px dashed #2a3040;
   border-radius: 0.5rem;
 }
+
+/* TEMPORARY (T5.3, 2026-07-24): the texture-library swatches — the §8
+   surface vocabulary drawn at a readable size for the eyeball pass. A
+   plain wrapped shelf; each swatch is a rounded SVG tile with its name
+   beneath. Leaves with the workbench when the design pass lands. */
+.texture-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  list-style: none;
+  padding: 0;
+}
+
+.texture-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 5.5rem;
+}
+
+.texture-swatch-art {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 0.75rem;
+}
+
+.texture-swatch-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: #8b93a6;
+  text-align: center;
+}
