@@ -10,7 +10,9 @@ version-by-version changelog lives in **history.md**._
 
 This is the **feel layer** on top of spec.md (what the app is) and
 plan.md (the order we build it). Read it alongside them before any
-design-adjacent task.
+design-adjacent task. The world-art language and asset catalogue live
+in **design-bible.md** (2026-07-24) — asset-creation sessions read
+that; this file stays about the app's feel.
 
 **Two hard rules** (also in CLAUDE.md — they cut across every task):
 
@@ -211,7 +213,9 @@ exemption, decided 2026-07-19: the six habit-tag **charms** (§11) are
 recognisable objects — they are personal talismans, not inhabitants
 of N-Z-D. The world itself stays weird.) Flora, fungi,
 trees, and literacy are **conceptual building blocks only** — output
-should feel strange, not familiar-things-in-costume.
+should feel strange, not familiar-things-in-costume. (Forms, textures
+and the fixed friend roster — 10 categories, 55 individuals — live in
+design-bible.md §9c.)
 
 - **Form & gesture — semi-abstract.** Suggested anatomy;
   congratulation gestures **read as** a wave / jump / dance but

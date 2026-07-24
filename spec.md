@@ -146,8 +146,9 @@ morning check-in stays meter-free and focused). Each is clickable,
 opening its own growing world:
 
 - **Expedition meter** → opens the **Map**: the discovered planet,
-  populating region by region over time. Grows infinitely (~5 years
-  practical sizing).
+  populating region by region over time — **16 regions at full
+  discovery** (design-bible §11c), sized for ~5 years. The meter
+  itself grows infinitely.
 - **Literacy meter** → opens the **Bookcase**: every magazine, novel,
   and dictionary we've ever received, filling shelves over time. Grows
   infinitely.
@@ -187,7 +188,10 @@ opening its own growing world:
   it, never the tree itself: the cutting goes to the Abode and is
   compostable as usual, while the tree stays where it grows, on the
   Map, regardless. This is a rule for the special ones only — small
-  flora don't appear on the Map. Which flora count as landmarks is
+  flora don't appear on the Map. There are **16 landmark species — one
+  per Map region, enforced (2026-07-24)**: the drop seeding guarantees
+  each region receives exactly its own landmark tree, placed as the
+  expedition passes through it. Which flora count as landmarks is
   decided with the content pools (T6.1).
 
 ### Stream 2 — Literacy & society: earning our place
@@ -226,6 +230,12 @@ opening its own growing world:
   8. **Storytellers** — share N-Z-D's folklore and history
   9. **Scholars** — the local professors; deep, technical language
   10. **Poets** — language at its most subtle; the rarest friendship
+- Each category has a **fixed roster of individuals** — 10 Drifters
+  down to a single Poet, **55 in all** (design-bible §9c). A category
+  refills — the next friend arriving a seeded 20–50 days after the
+  previous — **only until its roster is exhausted**; 55 friendships is
+  the lifetime maximum (2026-07-24, amending the 2026-07-20
+  repeat-friends rule).
 - Friendships live in the **Guest Book** — a page like the Abode, a
   record of everyone who has welcomed us. (We are the guest here, not
   the owner.) Titled **local community**. Clicking a character opens a
@@ -439,6 +449,9 @@ design-notes §12f.
   labels. Every colour, glow strength, font size and spacing number
   lives in one **CSS design-tokens file** of named, commented values —
   the visual twin of `constants.js` (T5.2, design-notes §11d).
+- **The world-art language and full asset catalogue** (every family's
+  form rules and fixed counts) live in **design-bible.md**
+  (2026-07-24) — the reference for asset-creation sessions.
 
 ## 8. Architecture (v1)
 

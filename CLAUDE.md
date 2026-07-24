@@ -7,6 +7,9 @@ Session-start reading — kept deliberately light (2026-07-21):
 - Then read only the spec.md sections the task touches — and the
   design-notes.md sections for any design-adjacent task. Read a whole
   file only when the task genuinely spans it.
+- **design-bible.md is the art language + asset catalogue**
+  (2026-07-24) — session-start reading only for asset-creation and
+  art-direction work (T5.3, T6.1); coding sessions skip it.
 - **history.md is the audit trail** (dated decisions log, version
   history, completed-task build notes). It is never session-start
   reading — open it only when you need the story of how a rule came
@@ -88,8 +91,9 @@ Kimia is a non-coder. Therefore:
   missable, no FOMO mechanics.
 - Friendships (T4.4): a literacy milestone only OPENS the door — the
   friend arrives days later as a seeded drop, stored on the completion
-  like every drop. Categories refill (repeat friends allowed); names
-  stay the draft category singulars until T6.1. Every arrival is a
+  like every drop. Categories refill only until their fixed roster is
+  exhausted — 10 Drifters down to 1 Poet, 55 friendships lifetime max
+  (2026-07-24); names stay the draft category singulars until T6.1. Every arrival is a
   reveal; the signature animation plays in exactly three moments —
   arrival reveal, Guest Book card, big-win home-screen cameos (T4.6) —
   never party mode. Party mode stores nothing and never disturbs the

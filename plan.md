@@ -118,7 +118,10 @@ tracker. Everything after this is delight, informed by real use.
       `src/ui/symbols.js` mirrors the hexes its JS needs.
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
       categories), flora, fungi, market objects, planet regions. Several
-      sessions of creative iteration; Kimia art-directs.
+      sessions of creative iteration; Kimia art-directs. Language and
+      fixed counts in **design-bible.md** (2026-07-24); assets land on
+      the temporary design-assets page first, then move into the game
+      source before that page is removed (spec §5b).
 
 ## M6 — Hardening & content (ongoing)
 

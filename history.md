@@ -842,6 +842,46 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   re-order") when a filter is on, and disables then. Desktop-only
   (T5.1b), so a single primary-button pointer press is the only input
   supported (design-notes §12a).
+- 2026-07-24 (Kimia's docs, merged this session): **design-bible.md
+  created** — a new standing doc holding the art language (Visual DNA,
+  Design Genome, visual constraints, shape/surface/material/light
+  language) and the full asset taxonomy, merged from Kimia's two
+  attached drafts (habitat-visual-design + asset-taxonomy-v2). Asset
+  sessions read CLAUDE.md + design-bible.md; coding sessions skip it
+  (CLAUDE.md reading rules updated). Chosen over folding into
+  design-notes.md so each session type loads only what it needs. The
+  drafts' roadmap section was left out — plan.md stays the only
+  roadmap; the asset pipeline (dedicated art sessions → temporary
+  design-assets page → game source → remove the temp page) is noted in
+  the bible's intro. Versus the earlier taxonomy draft, the merged doc
+  fixed every asset quantity, deduped repeated glow/texture rules into
+  shared preambles, reframed the texture library as the instantiation
+  of the surface/material language, consolidated glow intensity into
+  one ladder, and added the production count layer.
+- 2026-07-24: **all world-asset counts fixed** (design-bible Part II):
+  flora 64 species (48 collectible + 16 landmark); fungi exactly 1
+  species; friends 55 individuals on a fixed ladder (10 Drifters → 1
+  Poet); curiosities 64 (4 per Map region × 16); publications 30 (10
+  per type; spine + cover + Kimia's interior spread = 90 images); Map
+  16 regions; one Abode sky asset in 4 palettes (the shared night sky
+  stays the §13c CSS star layer); one terrain asset serving the
+  startup planet, Abode ground and Bookcase backdrop. Riding along:
+  curiosity price correlates directly with physical size; every friend
+  has eyes; publications glow less than living things; living-thing
+  glow colour never varies — variation lives in form only.
+- 2026-07-24 (Kimia's call): **landmark flora are one per region,
+  enforced** — 16 landmark species for 16 Map regions, and the drop
+  seeding guarantees each region receives exactly its own landmark
+  tree (not just matching counts). Folded into spec §5.
+- 2026-07-24 (Kimia's call): **friend rosters are a cap** — amends the
+  2026-07-20 "categories refill / repeat friends" rule: a category
+  refills only until its fixed roster is exhausted, so 55 friendships
+  is the lifetime maximum. Folded into spec §5 and the CLAUDE.md
+  friendships guardrail.
+- 2026-07-24: **the Abode sky is the one sky exception** — a separate
+  sky asset (realistic clouds and nebulae, same composition every
+  time) in four interchangeable colour palettes; everywhere else keeps
+  the single shared night sky.
 
 ## spec.md version history (formerly its preamble)
 
