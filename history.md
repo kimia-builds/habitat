@@ -882,6 +882,17 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   sky asset (realistic clouds and nebulae, same composition every
   time) in four interchangeable colour palettes; everywhere else keeps
   the single shared night sky.
+- 2026-07-24 (Kimia's call, during the sky merge): **sky colours stay
+  JS stand-ins until T5.2**, exactly like `textures.jsx`'s `TEX_COLORS`.
+  The `src/ui/sky.jsx` hand-off assumed the CSS design-tokens file
+  already existed; it does not (T5.2 is unbuilt), so rather than start
+  T5.2 early and leave a half-populated tokens file, `SKY_TOKENS` keeps
+  its values in JS with `TODO(T5.2)` markers, to be moved into the
+  tokens file in one sweep with the textures when T5.2 lands. Both skies
+  are surfaced on the DesignPage workbench first (design-bible §11a step
+  d); mounting NightSky as the real app-shell background is T5.2, and
+  wiring AbodeSky into the real Abode screen is a later T5.3 step —
+  neither done in this merge.
 
 ## spec.md version history (formerly its preamble)
 

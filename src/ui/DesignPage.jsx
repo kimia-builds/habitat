@@ -26,6 +26,7 @@ import {
   SYMBOL_COUNT,
 } from '../game/constants.js'
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
+import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
 
 const FAMILIES = [
   { key: 'charms', slots: SYMBOL_COUNT }, // T5.1 — the six habit tags
@@ -154,6 +155,29 @@ function DesignPage({ onBack }) {
           </ul>
         </section>
       ))}
+
+      {/* Environment skies (T5.3, design-bible §11a). Both land here first
+          for the eyeball pass before wiring into the real screens: the
+          shared NightSky (pure-CSS, slow rare twinkle) in one bounded box,
+          and the static AbodeSky in all four palettes so its one fixed
+          composition can be compared colour-to-colour. */}
+      <section className="design-family" aria-label="night sky">
+        <h3>night sky</h3>
+        <div className="sky-swatch night-sky-swatch">
+          <NightSky />
+        </div>
+      </section>
+      <section className="design-family" aria-label="abode sky">
+        <h3>abode sky</h3>
+        <ul className="sky-swatches">
+          {ABODE_PALETTES.map((palette) => (
+            <li key={palette} className="sky-swatch abode-sky-swatch">
+              <AbodeSky palette={palette} />
+              <span className="sky-swatch-name">{palette}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <button onClick={onBack}>← back to the habits</button>
     </section>

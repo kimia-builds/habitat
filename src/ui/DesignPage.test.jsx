@@ -8,6 +8,7 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
+import { ABODE_PALETTES } from './sky.jsx'
 import {
   FRIEND_CATEGORIES,
   MAP_REGION_COUNT,
@@ -29,12 +30,14 @@ describe('DesignPage workbench', () => {
   })
 
   it('draws one live swatch for every texture in the manifest', () => {
-    render(<DesignPage onBack={vi.fn()} />)
-    // Each swatch is an accessible <svg role="img"> labelled by its
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // Each texture swatch is an accessible <svg role="img"> labelled by its
     // texture name — so the whole §8 library is present and eyeball-able.
-    const names = screen
-      .getAllByRole('img')
-      .map((img) => img.getAttribute('aria-label'))
+    // Scoped to the texture shelves so the environment-sky images below
+    // don't count here.
+    const names = [...container.querySelectorAll('.texture-swatch svg[role="img"]')].map(
+      (img) => img.getAttribute('aria-label'),
+    )
     expect(names.slice().sort()).toEqual(TEXTURES.map((t) => t.name).sort())
   })
 
@@ -47,6 +50,29 @@ describe('DesignPage workbench', () => {
       const expected = TEXTURES.filter((t) => t.family === family).length
       expect(shelf.querySelectorAll('.texture-swatch')).toHaveLength(expected)
     }
+  })
+
+  it('surfaces the shared night sky for the eyeball pass', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    // The night sky is a decorative CSS star layer (aria-hidden), so we
+    // assert its labelled shelf holds the one star-layer box.
+    const shelf = screen.getByLabelText('night sky')
+    expect(shelf.querySelectorAll('.nzd-night-sky')).toHaveLength(1)
+  })
+
+  it('draws the abode sky in each of its four palettes', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    // One <svg role="img"> per palette, labelled by palette, so the single
+    // fixed composition can be compared colour-to-colour.
+    const labels = ABODE_PALETTES.map((p) => `Abode sky, ${p}`)
+    // getByRole throws if the labelled image is missing, so reaching the
+    // end with all four found is the assertion.
+    for (const label of labels) {
+      expect(screen.getByRole('img', { name: label }).tagName.toLowerCase()).toBe(
+        'svg',
+      )
+    }
+    expect(labels).toHaveLength(4)
   })
 
   it('leads back to the habits', async () => {

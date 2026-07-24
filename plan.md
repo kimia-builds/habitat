@@ -128,8 +128,15 @@ tracker. Everything after this is delight, informed by real use.
       weathered · cratered non-glowing per §3/§7) and four procedural
       hair modes — and renders as live swatches on the DesignPage
       workbench for the eyeball pass. TEX_COLORS are stand-ins until the
-      T5.2 design-tokens file exists. Still to come: the actual friend /
-      flora / fungi / object / region art that composes from these._
+      T5.2 design-tokens file exists. The **environment skies**
+      (design-bible §11a) also landed in `src/ui/sky.jsx` — the shared
+      pure-CSS `NightSky` (white stars, rare unsynchronised twinkle) and
+      the static `AbodeSky` in four muted palettes — surfaced on the same
+      workbench; SKY_TOKENS are stand-ins on the same T5.2 footing.
+      Mounting NightSky as the app background (T5.2) and AbodeSky on the
+      real Abode screen are still to come. Still to come too: the actual
+      friend / flora / fungi / object / region art that composes from
+      these._
 
 ## M6 — Hardening & content (ongoing)
 
