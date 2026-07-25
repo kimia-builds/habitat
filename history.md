@@ -931,6 +931,34 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   footing as `TEX_COLORS`/`SKY_TOKENS`. The DesignPage workbench now
   shows the chosen eye at small/medium/large (size being the live
   variation); it is the eye the T5.3b bodies get.
+- 2026-07-25 (Kimia's calls, T5.3b): **the pilot Drifter's recipe** —
+  the first friend assembled end-to-end, proving the workflow the other
+  nine archetypes follow. Three art-direction calls: the body wears
+  **wispy hair** (the §8 "wispy waves" mode — long fine drifting
+  strands, into the "loose wisp passing through" read); it carries
+  **two canonical eyes** as the Drifter baseline (other Drifter
+  individuals vary the count/size from this in T5.3d); and its
+  **signature congratulation animation is a slow "drift-and-bob"** —
+  floats up, hangs, settles back, glow swelling with the lift (design-
+  notes §8), replacing the T4-era placeholder that drifted sideways.
+  Drifters are the simplest, lowest rung, so the body stays a single
+  quiet surface — complexity climbs from here, never via brighter
+  colour or stronger glow (§9c). Folded into design-bible §9c and
+  design-notes §8.
+  _Build:_ Kimia's hand-drawn winning Drifter, Inkscape-traced, lives
+  verbatim in `src/ui/drifterSilhouette.js` (kept isolated so code never
+  edits the trace). `src/ui/drifter.jsx` assembles it in four layers
+  (green glow aura → opaque body base → wispy hair clipped to the
+  silhouette → the two eyes) as `<Drifter prefix seed/>` + its
+  `<DrifterDefs/>`; it relies on `<TextureDefs/>` in the same `<svg>`
+  for the hair's support filters, exactly as the texture swatches do.
+  Eye positions were tuned onto the silhouette's densest mass on the
+  workbench (a slightly-larger/smaller asymmetric pair). `BODY_BASE`/
+  `GLOW` are JS stand-ins with `TODO(T5.2)` markers. The DesignPage
+  workbench now shows the finished Drifter resting and mid-greeting; the
+  real `friend-drift` keyframe in `index.css` became the drift-and-bob.
+  Colours/eye-placement/hair stay free to retune on the workbench —
+  the tests pin only the recipe invariants (verbatim trace, two eyes).
 
 ## spec.md version history (formerly its preamble)
 

@@ -144,7 +144,7 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **T5.3a The eye** — canonical glowing eye chosen (the orb)
             and recorded in design-bible §9c; reusable `<Eye>` in
             `src/ui/eye.jsx`.
-      - [ ] **T5.3b Pilot Drifter** — Kimia thumbnails Drifter bodies,
+      - [x] **T5.3b Pilot Drifter** — Kimia thumbnails Drifter bodies,
             draws the winner clean, Inkscape-traces to SVG; assembly
             (texture + eyes + glow) on the workbench; then the Drifter
             signature congratulation animation (design-notes §8). The

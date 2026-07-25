@@ -701,20 +701,29 @@ body {
    the Guest Book card, and the home-screen cameo (T4.6, which runs
    them a single iteration; party mode never plays them). All gentle,
    all looping while their moment is open. */
+/* Drifter — the signature "drift-and-bob" (T5.3b, Kimia's call 2026-07-25):
+   floats slowly UP, hangs a beat at the top, then settles back — something
+   adrift in low gravity. The gentle glow-swell (opacity) rides with the lift so
+   the rise reads as a breath, not a bounce. Vertical only; the earlier T4-era
+   placeholder drifted sideways. */
 @keyframes friend-drift {
-  0%,
-  100% {
-    transform: translateX(-6%);
-    opacity: 0.75;
+  0% {
+    transform: translateY(4%);
+    opacity: 0.8;
   }
-  50% {
-    transform: translateX(6%);
+  45%,
+  60% {
+    transform: translateY(-5%);
     opacity: 1;
+  }
+  100% {
+    transform: translateY(4%);
+    opacity: 0.8;
   }
 }
 
 .friend-anim-drifter {
-  animation: friend-drift 4s ease-in-out infinite;
+  animation: friend-drift 5s ease-in-out infinite;
 }
 
 @keyframes friend-nest {
@@ -1575,6 +1584,43 @@ body {
 }
 
 .eye-swatch-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: #8b93a6;
+  text-align: center;
+}
+
+/* TEMPORARY (T5.3b, 2026-07-25): the pilot Drifter (design-bible §9c) — the
+   first finished friend. Drawn large so the assembled recipe (silhouette +
+   wispy hair + eyes + glow) reads, on the same dark page the other assets use.
+   The frame keeps the trace's wide aspect. Leaves with the workbench. */
+.drifter-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  list-style: none;
+  padding: 0;
+}
+
+.drifter-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 18rem;
+  max-width: 100%;
+}
+
+.drifter-swatch-art {
+  width: 18rem;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 187.451 / 115.126;
+  border-radius: 0.75rem;
+  background: #0b0f14;
+}
+
+.drifter-swatch-name {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   color: #8b93a6;

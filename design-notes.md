@@ -224,7 +224,9 @@ design-bible.md §9c.)
 - **One signature animation per category (10).** Each of the 10 friend
   categories (Drifters … Poets) has one signature congratulation
   animation; individuals within a category reuse it. Bounds the art
-  scope.
+  scope. (First built, T5.3b 2026-07-25: the **Drifter's is a slow
+  "drift-and-bob"** — floats up, hangs, settles back, its glow swelling
+  with the lift; `friend-drift` in index.css.)
 - **Where the signature animation is allowed to play (decided
   2026-07-20).** Exactly three moments, and nowhere else:
   1. **The arrival reveal** — the friend-drop moment, with its full

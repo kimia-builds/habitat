@@ -67,6 +67,22 @@ describe('DesignPage workbench', () => {
     ])
   })
 
+  it('assembles the pilot Drifter, resting and mid-greeting', () => {
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // The first finished friend (§9c) is drawn twice: once resting, once
+    // playing its signature animation — both accessible <svg role="img">.
+    const labels = [
+      ...container.querySelectorAll('.drifter-swatch svg[role="img"]'),
+    ].map((img) => img.getAttribute('aria-label'))
+    expect(labels).toEqual(['pilot drifter, resting', 'pilot drifter, greeting'])
+    // Only the greeting carries the Drifter's signature animation class; the
+    // resting state is still. (Behaviour, not the wording of the motion.)
+    const greeting = screen.getByRole('img', { name: 'pilot drifter, greeting' })
+    const resting = screen.getByRole('img', { name: 'pilot drifter, resting' })
+    expect(greeting.classList.contains('friend-anim-drifter')).toBe(true)
+    expect(resting.classList.contains('friend-anim-drifter')).toBe(false)
+  })
+
   it('surfaces the shared night sky for the eyeball pass', () => {
     render(<DesignPage onBack={vi.fn()} />)
     // The night sky is a decorative CSS star layer (aria-hidden), so we

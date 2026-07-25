@@ -32,6 +32,7 @@ import {
 } from '../game/constants.js'
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
 import { Eye, EyeDefs } from './eye.jsx'
+import { Drifter, DrifterDefs, DRIFTER_VIEWBOX } from './drifter.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
 
 const FAMILIES = [
@@ -158,6 +159,34 @@ function EyeSwatch({ size }) {
   )
 }
 
+// The pilot Drifter (T5.3b) — the first friend assembled end-to-end
+// (silhouette + wispy hair + two canonical eyes + green glow, design-bible
+// §9c). Drawn twice on the workbench: once RESTING (its calm still state) and
+// once GREETING (its signature congratulation animation, friend-anim-drifter,
+// which plays in the three allowed moments — design-notes §8). Both rely on the
+// page's one <TextureDefs/> for the hair's support filters, exactly as the
+// texture swatches do; each carries its OWN <DrifterDefs prefix/> so their eye
+// gradients / clip / glow ids never collide.
+function DrifterSwatch({ variant, animate }) {
+  const prefix = `drifter-${variant}-`
+  return (
+    <li className="drifter-swatch">
+      <svg
+        className={`drifter-swatch-art${animate ? ' friend-anim-drifter' : ''}`}
+        viewBox={`0 0 ${DRIFTER_VIEWBOX.w} ${DRIFTER_VIEWBOX.h}`}
+        role="img"
+        aria-label={`pilot drifter, ${variant}`}
+      >
+        <defs>
+          <DrifterDefs prefix={prefix} />
+        </defs>
+        <Drifter prefix={prefix} />
+      </svg>
+      <span className="drifter-swatch-name">{variant}</span>
+    </li>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -212,6 +241,18 @@ function DesignPage({ onBack }) {
           {EYE_SIZES.map((size) => (
             <EyeSwatch key={size.key} size={size} />
           ))}
+        </ul>
+      </section>
+
+      {/* The pilot Drifter (T5.3b, design-bible §9c) — the first friend
+          assembled end-to-end. Shown resting and mid-greeting so the finished
+          recipe (silhouette + hair + eyes + glow) and its signature animation
+          can both be eyeballed. */}
+      <section className="design-family" aria-label="pilot drifter">
+        <h3>pilot drifter</h3>
+        <ul className="drifter-swatches">
+          <DrifterSwatch variant="resting" animate={false} />
+          <DrifterSwatch variant="greeting" animate={true} />
         </ul>
       </section>
 
