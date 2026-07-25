@@ -31,7 +31,7 @@ import {
   SYMBOL_COUNT,
 } from '../game/constants.js'
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
-import { EYE_CANDIDATES, EyeDefs } from './eye.jsx'
+import { Eye, EyeDefs } from './eye.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
 
 const FAMILIES = [
@@ -118,23 +118,29 @@ function TextureSwatch({ tex }) {
   )
 }
 
-// One eye candidate, drawn centred and large on the same dark ground the
-// texture swatches use, clipped to the rounded card so its glow can't spill
-// onto its neighbours. Size is deliberately fixed here — the candidates are
-// judged on FORM, and the canonical eye's real variation is size at USE time.
-// Each swatch is a self-contained SVG: it carries its OWN <EyeDefs/> under a
-// per-candidate id prefix, so five eye SVGs on one page never share gradients.
-function EyeSwatch({ candidate }) {
-  const { id, name, Eye } = candidate
-  const clipId = `${id}-clip`
-  const prefix = `${id}-`
+// The canonical eye (T5.3a: Kimia chose the "orb"), drawn on the same dark
+// ground the texture swatches use and clipped to the rounded card. We draw it
+// at a few RADII in one row, because size is now the only thing that varies
+// per friend (§9c) — this is the eye that gets placed on the T5.3b bodies.
+// Each swatch is a self-contained SVG carrying its OWN <EyeDefs/> under a
+// per-size id prefix, so the eye SVGs on the page never share gradient ids.
+const EYE_SIZES = [
+  { key: 'small', frac: 0.16 },
+  { key: 'medium', frac: 0.26 },
+  { key: 'large', frac: 0.36 },
+]
+
+function EyeSwatch({ size }) {
+  const { key, frac } = size
+  const clipId = `eye-${key}-clip`
+  const prefix = `eye-${key}-`
   return (
     <li className="eye-swatch">
       <svg
         className="eye-swatch-art"
         viewBox={`0 0 ${SWATCH} ${SWATCH}`}
         role="img"
-        aria-label={name}
+        aria-label={`canonical eye, ${key}`}
       >
         <defs>
           <clipPath id={clipId}>
@@ -144,10 +150,10 @@ function EyeSwatch({ candidate }) {
         </defs>
         <rect width={SWATCH} height={SWATCH} rx="12" fill={SWATCH_GROUND} />
         <g clipPath={`url(#${clipId})`}>
-          <Eye cx={SWATCH / 2} cy={SWATCH / 2} r={SWATCH * 0.29} prefix={prefix} />
+          <Eye cx={SWATCH / 2} cy={SWATCH / 2} r={SWATCH * frac} prefix={prefix} />
         </g>
       </svg>
-      <span className="eye-swatch-name">{name}</span>
+      <span className="eye-swatch-name">{key}</span>
     </li>
   )
 }
@@ -196,15 +202,15 @@ function DesignPage({ onBack }) {
         </section>
       ))}
 
-      {/* Friend-eye candidates (T5.3a, design-bible §9c). A shelf of candidate
-          eyes for Kimia to pick the one canonical eye from; each swatch is
-          self-contained (its own glow defs). Same glow on each — form is the
-          choice. */}
-      <section className="design-family" aria-label="friend eyes">
-        <h3>friend eyes</h3>
+      {/* The canonical friend eye (T5.3a, design-bible §9c). Kimia chose the
+          "orb"; here it is at a few sizes, since size is now the only thing
+          that varies per friend. Each swatch is self-contained (its own glow
+          defs). This is the eye the T5.3b bodies get. */}
+      <section className="design-family" aria-label="friend eye">
+        <h3>friend eye</h3>
         <ul className="eye-swatches">
-          {EYE_CANDIDATES.map((candidate) => (
-            <EyeSwatch key={candidate.id} candidate={candidate} />
+          {EYE_SIZES.map((size) => (
+            <EyeSwatch key={size.key} size={size} />
           ))}
         </ul>
       </section>

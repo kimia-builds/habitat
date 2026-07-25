@@ -55,6 +55,17 @@ Kimia is a non-coder. Therefore:
   disagree with code are a bug — say so and fix them in the same
   session.
 - If stuck on the same bug twice, stop and say so rather than thrashing.
+- **Don't open the browser preview just so Kimia can see it
+  (2026-07-25):** every task ends by pushing to the live site
+  (https://kimia-builds.github.io/habitat), and she can view the
+  result there herself. So never spin up the in-Claude browser pane
+  for the sole purpose of showing her "how it looks" — that spends
+  credits on something the live site already shows for free. Once a
+  change is pushed, just point her to the live URL. (This does NOT
+  stop you from using the browser pane when YOU need to verify your
+  own code actually works before pushing — e.g. drag surfaces, see
+  history.md's browser-verification notes. The rule is only: no
+  preview runs purely for Kimia's benefit.)
 
 ## Product guardrails (from spec.md — never violate)
 

@@ -205,9 +205,16 @@ Recognisable as a **silhouette first, texture second** — always.
 **The canonical eye (2026-07-25).** One designed glowing eye is shared
 by every friend in the app; only the **number and size** of eyes vary
 per individual. The eye is built once as a reusable component and
-placed on each body — never redrawn per friend. (Its actual design is
-chosen in the eye-design session, the first step of the character plan
-in plan.md T5.3.)
+placed on each body — never redrawn per friend.
+
+Its design (Kimia's pick from five candidates, T5.3a): the **orb** — a
+plain glowing eyeball, **no pupil**. A bright near-white core fades to
+the canonical living-thing green at the rim, wrapped in a soft green
+halo, with a single small off-centre catch-light so it reads as
+wet/alive. It glows the one green (§3, §7) and scales by radius alone.
+Lives as the reusable `<Eye cx cy r/>` in `src/ui/eye.jsx` (its two
+glow gradients in `<EyeDefs/>`). The four rejected candidates (slit,
+ring, crescent, compound) were exploration only.
 
 **Production workflow (2026-07-25).** The 10 **category archetypes are
 hand-drawn by Kimia** (raster drawing → Inkscape trace → SVG), keeping

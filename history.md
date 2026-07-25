@@ -913,19 +913,24 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   characters start before the 8 new flora silhouettes land (parked as
   T5.3f). Folded into design-bible §9c and the plan.md T5.3 character
   sub-plan (T5.3a–f).
-- 2026-07-25 (T5.3a, build): **five candidate eyes landed on the
-  workbench** — `src/ui/eye.jsx` holds the reusable `<Eye cx cy r/>`
-  candidates orb · slit · ring · crescent · compound (simplest → most
-  complex), surfaced as swatches on the DesignPage for Kimia to pick the
-  one canonical eye from. Per §3 every candidate glows the SAME
-  living-thing green (matching the organic-texture green); they differ
-  only in form, and each scales by size alone (the §9c rule that only
-  number/size vary). Each eye paints from two shared gradients (soft halo
-  + lit body) held in `<EyeDefs/>`; on the workbench each swatch carries
-  its own prefixed `<EyeDefs/>` so five eye SVGs never share ids.
-  `EYE_TOKENS` colours are JS stand-ins with `TODO(T5.2)` markers, the
-  same footing as `TEX_COLORS`/`SKY_TOKENS`. NOT done yet: Kimia's pick
-  and the §9c write-up of the chosen design — so T5.3a stays unticked.
+- 2026-07-25 (Kimia's call, T5.3a): **the canonical friend eye is the
+  "orb"** — a plain glowing eyeball with no pupil: bright core → green
+  rim, soft green halo, one off-centre catch-light. Chosen from five
+  code-drawn candidates (orb · slit · ring · crescent · compound) shown
+  on the DesignPage workbench; the orb won as the simplest, most "just
+  light" form. Per §3 all candidates glowed the same living-thing green
+  and varied only in form — colour/glow were never on the table. Folded
+  into design-bible §9c.
+  _Build:_ `src/ui/eye.jsx` now holds the single reusable `<Eye cx cy r/>`
+  (the orb) plus `<EyeDefs/>` (its two glow gradients: soft halo + lit
+  body). The eye scales by radius alone (the §9c rule that only
+  number/size vary per friend); `<EyeDefs/>` must sit in the same `<svg>`
+  and takes an optional id `prefix` so several eye SVGs on one page never
+  share gradient ids. The four rejected candidate components were removed.
+  `EYE_TOKENS` colours are JS stand-ins with `TODO(T5.2)` markers, same
+  footing as `TEX_COLORS`/`SKY_TOKENS`. The DesignPage workbench now
+  shows the chosen eye at small/medium/large (size being the live
+  variation); it is the eye the T5.3b bodies get.
 
 ## spec.md version history (formerly its preamble)
 
