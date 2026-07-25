@@ -144,6 +144,12 @@ tracker. Everything after this is delight, informed by real use.
       - [ ] **T5.3a The eye** — code-drawn candidate glowing eyes on
             the workbench; Kimia picks the canonical eye and its design
             is recorded in design-bible §9c.
+            _In progress (2026-07-25): five candidate eyes landed in
+            `src/ui/eye.jsx` and on the DesignPage workbench — orb, slit,
+            ring, crescent, compound — all glowing the one living-thing
+            green, differing only in form (§3). EYE_TOKENS colours are JS
+            stand-ins on the same T5.2 footing as textures/skies. Awaiting
+            Kimia's pick; then §9c records the chosen eye and this ticks._
       - [ ] **T5.3b Pilot Drifter** — Kimia thumbnails Drifter bodies,
             draws the winner clean, Inkscape-traces to SVG; assembly
             (texture + eyes + glow) on the workbench; then the Drifter

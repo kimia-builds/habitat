@@ -19,6 +19,11 @@
 // grain reads: the seven filter surfaces (moss/bark glow green, pores/
 // sponge glow green, the three rock surfaces NON-glowing per §3/§7) and
 // the four procedural hair modes. Grouped by §8 family.
+//
+// FRIEND EYES (T5.3a, 2026-07-25): candidate glowing eyes (design-bible
+// §9c) land here for Kimia to pick ONE canonical eye from. Every
+// candidate glows the same living-thing green — they differ only in
+// form (§3) — and each is drawn at one clear size so its shape reads.
 
 import {
   FRIEND_CATEGORIES,
@@ -26,6 +31,7 @@ import {
   SYMBOL_COUNT,
 } from '../game/constants.js'
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
+import { EYE_CANDIDATES, EyeDefs } from './eye.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
 
 const FAMILIES = [
@@ -112,6 +118,40 @@ function TextureSwatch({ tex }) {
   )
 }
 
+// One eye candidate, drawn centred and large on the same dark ground the
+// texture swatches use, clipped to the rounded card so its glow can't spill
+// onto its neighbours. Size is deliberately fixed here — the candidates are
+// judged on FORM, and the canonical eye's real variation is size at USE time.
+// Each swatch is a self-contained SVG: it carries its OWN <EyeDefs/> under a
+// per-candidate id prefix, so five eye SVGs on one page never share gradients.
+function EyeSwatch({ candidate }) {
+  const { id, name, Eye } = candidate
+  const clipId = `${id}-clip`
+  const prefix = `${id}-`
+  return (
+    <li className="eye-swatch">
+      <svg
+        className="eye-swatch-art"
+        viewBox={`0 0 ${SWATCH} ${SWATCH}`}
+        role="img"
+        aria-label={name}
+      >
+        <defs>
+          <clipPath id={clipId}>
+            <rect width={SWATCH} height={SWATCH} rx="12" />
+          </clipPath>
+          <EyeDefs prefix={prefix} />
+        </defs>
+        <rect width={SWATCH} height={SWATCH} rx="12" fill={SWATCH_GROUND} />
+        <g clipPath={`url(#${clipId})`}>
+          <Eye cx={SWATCH / 2} cy={SWATCH / 2} r={SWATCH * 0.29} prefix={prefix} />
+        </g>
+      </svg>
+      <span className="eye-swatch-name">{name}</span>
+    </li>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -155,6 +195,19 @@ function DesignPage({ onBack }) {
           </ul>
         </section>
       ))}
+
+      {/* Friend-eye candidates (T5.3a, design-bible §9c). A shelf of candidate
+          eyes for Kimia to pick the one canonical eye from; each swatch is
+          self-contained (its own glow defs). Same glow on each — form is the
+          choice. */}
+      <section className="design-family" aria-label="friend eyes">
+        <h3>friend eyes</h3>
+        <ul className="eye-swatches">
+          {EYE_CANDIDATES.map((candidate) => (
+            <EyeSwatch key={candidate.id} candidate={candidate} />
+          ))}
+        </ul>
+      </section>
 
       {/* Environment skies (T5.3, design-bible §11a). Both land here first
           for the eyeball pass before wiring into the real screens: the

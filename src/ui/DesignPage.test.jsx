@@ -8,6 +8,7 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
+import { EYE_CANDIDATES } from './eye.jsx'
 import { ABODE_PALETTES } from './sky.jsx'
 import {
   FRIEND_CATEGORIES,
@@ -50,6 +51,17 @@ describe('DesignPage workbench', () => {
       const expected = TEXTURES.filter((t) => t.family === family).length
       expect(shelf.querySelectorAll('.texture-swatch')).toHaveLength(expected)
     }
+  })
+
+  it('draws one live swatch for every friend-eye candidate', () => {
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // Each eye candidate is an accessible <svg role="img"> labelled by its
+    // name, so the whole §9c candidate set is present and pickable. Scoped
+    // to the eye shelf so the texture/sky images don't count here.
+    const names = [...container.querySelectorAll('.eye-swatch svg[role="img"]')].map(
+      (img) => img.getAttribute('aria-label'),
+    )
+    expect(names.slice().sort()).toEqual(EYE_CANDIDATES.map((c) => c.name).sort())
   })
 
   it('surfaces the shared night sky for the eyeball pass', () => {

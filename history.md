@@ -913,6 +913,19 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   characters start before the 8 new flora silhouettes land (parked as
   T5.3f). Folded into design-bible §9c and the plan.md T5.3 character
   sub-plan (T5.3a–f).
+- 2026-07-25 (T5.3a, build): **five candidate eyes landed on the
+  workbench** — `src/ui/eye.jsx` holds the reusable `<Eye cx cy r/>`
+  candidates orb · slit · ring · crescent · compound (simplest → most
+  complex), surfaced as swatches on the DesignPage for Kimia to pick the
+  one canonical eye from. Per §3 every candidate glows the SAME
+  living-thing green (matching the organic-texture green); they differ
+  only in form, and each scales by size alone (the §9c rule that only
+  number/size vary). Each eye paints from two shared gradients (soft halo
+  + lit body) held in `<EyeDefs/>`; on the workbench each swatch carries
+  its own prefixed `<EyeDefs/>` so five eye SVGs never share ids.
+  `EYE_TOKENS` colours are JS stand-ins with `TODO(T5.2)` markers, the
+  same footing as `TEX_COLORS`/`SKY_TOKENS`. NOT done yet: Kimia's pick
+  and the §9c write-up of the chosen design — so T5.3a stays unticked.
 
 ## spec.md version history (formerly its preamble)
 
