@@ -84,16 +84,21 @@ Stated once so no asset family has to repeat them:
   recognisable in black-on-black outline before any surface or hue
   reads.
 - **Every living thing glows equally, always.** Glow is intrinsic to
-  the organism, never an effect applied on top, and its **colour never
-  varies** between species or individuals. Only intensity conventions
-  differ (§7).
+  the organism, never an effect applied on top; only intensity
+  conventions differ (§7). Its **colour is the thing's own body colour**
+  (revised 2026-07-25, T5.3b — reverses the earlier "one green, never
+  varies"): **friends** each carry their own body colour and glow it
+  (the pilot Drifter is deep blue, §9c); friend **eyes are the one fixed
+  exception** — always yellow in a dark socket, and by rule always a
+  different colour from the body. (Flora & fungi colour is still their
+  earlier green pending their own passes — T5.3f / T6.1.)
 - **Darkness is the default; nothing casts a shadow.**
 - **Palette by class:** organic life stays in the restrained palette;
   curiosities use the broadest palette; publications take one block
-  colour each. Glow colour is never a source of variation for living
-  things.
+  colour each.
 - **Variation lives in form** — size, silhouette, texture, appendage —
-  never in tricks, effects, or brighter light.
+  and now, for friends, in **body colour** (§9c); never in tricks,
+  effects, or brighter light.
 - **Function follows mystery.**
 
 ### 4. Shape language
@@ -110,7 +115,10 @@ Mushroom · rock · leaf · moss · gravel · hair.
 
 ### 7. Light language
 
-- Living things emit light.
+- Living things emit light — in their own body colour (friends; §3, §9c).
+- Friend **eyes are the exception**: a fixed yellow, set in a **dark
+  socket** rather than a bright bloom, so the yellow reads against the
+  body (the dark halo is the eye's own socket, not a cast shadow).
 - Darkness is the default.
 - No shadows.
 - Artificial objects may glow, but don't have to.
@@ -149,6 +157,12 @@ mineral · weathered rock
 | Friends | Any organic — Plant-like, Fungal, Hair |
 | Curiosities | **Rock and Fungal only** — never leafy, hairy, or fleshy |
 | Terrain / Map | Rock and Ground |
+
+**Surface colour** (revised 2026-07-25, T5.3b): an organic texture is
+**tinted to its wearer's body colour**, not a fixed green — a friend's
+sponge/hair/etc. takes that friend's own colour (§3, §9c). In code the
+tint is a parameter (e.g. `<SpongeFilter light=…/>`); the library's
+default green instances are only the workbench swatches.
 
 ### 9. Living assets
 
@@ -202,18 +216,24 @@ body plan.
 blobbish silhouettes. **No human faces, no obvious anthropomorphism.**
 Recognisable as a **silhouette first, texture second** — always.
 
-**The canonical eye (2026-07-25).** One designed glowing eye is shared
-by every friend in the app; only the **number and size** of eyes vary
-per individual. The eye is built once as a reusable component and
-placed on each body — never redrawn per friend.
+**The canonical eye (2026-07-25).** One designed eye is shared by every
+friend in the app; only the **number and size** of eyes vary per
+individual. The eye is built once as a reusable component and placed on
+each body — never redrawn per friend.
 
 Its design (Kimia's pick from five candidates, T5.3a): the **orb** — a
-plain glowing eyeball, **no pupil**. A bright near-white core fades to
-the canonical living-thing green at the rim, wrapped in a soft green
-halo, with a single small off-centre catch-light so it reads as
-wet/alive. It glows the one green (§3, §7) and scales by radius alone.
-Lives as the reusable `<Eye cx cy r/>` in `src/ui/eye.jsx` (its two
-glow gradients in `<EyeDefs/>`). The four rejected candidates (slit,
+plain glowing eyeball, **no pupil**, with a single small off-centre
+catch-light so it reads as wet/alive.
+
+**The eye is always yellow (revised 2026-07-25, T5.3b — reverses the
+first "one green eye" call).** A pale-warm core fades through yellow to
+an amber rim, set in a **dark ("blackish") socket** — a darkening halo,
+not a bright bloom — so the yellow dot pops off the body. This is a
+standing rule: **eyes are yellow on every friend, and by rule always a
+different colour from the body** (bodies carry their own per-friend
+colour, §3). Only size and number vary; the colour and the dark socket
+never do. Lives as the reusable `<Eye cx cy r/>` in `src/ui/eye.jsx`
+(its two gradients in `<EyeDefs/>`). The four rejected candidates (slit,
 ring, crescent, compound) were exploration only.
 
 **Production workflow (2026-07-25).** The 10 **category archetypes are
@@ -226,9 +246,10 @@ variation approved or rejected by Kimia.
 
 **Pilot: the Drifter (T5.3b, done 2026-07-25).** The first archetype
 assembled end-to-end, proving the recipe for the other nine. Its traced
-silhouette wears **wispy hair** (§8), **two canonical eyes** (the
-Drifter baseline the individuals vary from), and the shared green glow.
-As the simplest, lowest rung it stays a single quiet surface —
+silhouette (kept plain, no hair) wears a **sponge** texture (§8) tinted
+its **deep-blue body colour**, glows that same deep blue, and carries
+**two tiny yellow eyes** (the Drifter baseline the individuals vary
+from). As the simplest, lowest rung it stays a single quiet surface —
 complexity climbs from here. Lives in `src/ui/drifter.jsx` (assembly)
 and `src/ui/drifterSilhouette.js` (the verbatim trace); its signature
 animation is the drift-and-bob (design-notes §8).

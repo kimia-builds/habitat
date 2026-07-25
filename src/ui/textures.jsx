@@ -81,6 +81,41 @@ export const TEX_COLORS = {
  *   elevation      ↓ = grazing light = longer, more dramatic shadows in the relief.
  *   seed           = change to get a different-but-same-style instance.
  * =========================================================================== */
+/* -----------------------------------------------------------------------------
+ * SPONGE — a porous holey mass, its tint PARAMETERISED. The discrete alpha
+ * table PUNCHES HOLES (the 0s), then diffuse lighting gives the remaining walls
+ * relief in `light`. Standalone (not inlined in TextureDefs) because organic
+ * surfaces no longer glow one green: a FRIEND wears the sponge in its own body
+ * colour (Kimia's rule, T5.3b), so it must be emittable under a per-friend id
+ * and tint. TextureDefs renders the default green instance for the swatch.
+ * --------------------------------------------------------------------------- */
+export function SpongeFilter({ id = 'tex-sponge', light = TEX_COLORS.spongeLight }) {
+  return (
+    <filter id={id} x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.11"
+        numOctaves="3"
+        seed="14"
+        result="n"
+      />
+      <feComponentTransfer in="n" result="h">
+        <feFuncA type="discrete" tableValues="1 1 1 0 0 1 1" />
+      </feComponentTransfer>
+      <feDiffuseLighting
+        in="h"
+        surfaceScale="2.2"
+        diffuseConstant="1.0"
+        lightingColor={light}
+        result="l"
+      >
+        <feDistantLight azimuth="220" elevation="55" />
+      </feDiffuseLighting>
+      <feComposite in="l" in2="SourceAlpha" operator="in" />
+    </filter>
+  )
+}
+
 export function TextureDefs() {
   const c = TEX_COLORS
   const [pr, pg, pb] = c.poresTint
@@ -148,30 +183,10 @@ export function TextureDefs() {
         <feComposite in="c" in2="SourceAlpha" operator="in" />
       </filter>
 
-      {/* SPONGE — porous holey mass. The discrete alpha table PUNCHES HOLES
-          (the 0s), then diffuse lighting gives the remaining walls relief. */}
-      <filter id="tex-sponge" x="-15%" y="-15%" width="130%" height="130%">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.11"
-          numOctaves="3"
-          seed="14"
-          result="n"
-        />
-        <feComponentTransfer in="n" result="h">
-          <feFuncA type="discrete" tableValues="1 1 1 0 0 1 1" />
-        </feComponentTransfer>
-        <feDiffuseLighting
-          in="h"
-          surfaceScale="2.2"
-          diffuseConstant="1.0"
-          lightingColor={c.spongeLight}
-          result="l"
-        >
-          <feDistantLight azimuth="220" elevation="55" />
-        </feDiffuseLighting>
-        <feComposite in="l" in2="SourceAlpha" operator="in" />
-      </filter>
+      {/* SPONGE — porous holey mass. Default green instance for the swatch;
+          the tint is parameterised (see SpongeFilter) because a FRIEND now
+          wears the sponge in its OWN body colour (Kimia's rule, T5.3b). */}
+      <SpongeFilter />
 
       {/* PUMICE — fine light rock grain. Pair with pumicePits() below for the
           characteristic vesicle holes. NO glow (rock class). */}

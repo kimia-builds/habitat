@@ -931,34 +931,47 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   footing as `TEX_COLORS`/`SKY_TOKENS`. The DesignPage workbench now
   shows the chosen eye at small/medium/large (size being the live
   variation); it is the eye the T5.3b bodies get.
+- 2026-07-25 (Kimia's call, T5.3b — **reverses the "one green" rules
+  of §3/§7/§9c**): **the friend colour language.** Friends no longer all
+  glow one canonical green. Instead: **each friend has its own body
+  colour and glows that colour**; **eyes are always yellow**, set in a
+  **dark ("blackish") socket** rather than a bright halo; and by rule
+  **eyes and body are always different colours on every friend**. Chosen
+  over the earlier "single green eye, colour never varies between
+  friends" (T5.3a) once real colour went on the bodies — a green glow
+  can't coexist with coloured bodies, and yellow-in-a-dark-socket makes
+  the eyes read as distinct points. Scoped to **friends**; flora/fungi
+  keep their green pending their own passes (T5.3f/T6.1). Folded into
+  design-bible §3, §7, §8, §9c.
 - 2026-07-25 (Kimia's calls, T5.3b): **the pilot Drifter's recipe** —
   the first friend assembled end-to-end, proving the workflow the other
-  nine archetypes follow. Three art-direction calls: the body wears
-  **wispy hair** (the §8 "wispy waves" mode — long fine drifting
-  strands, into the "loose wisp passing through" read); it carries
-  **two canonical eyes** as the Drifter baseline (other Drifter
-  individuals vary the count/size from this in T5.3d); and its
-  **signature congratulation animation is a slow "drift-and-bob"** —
-  floats up, hangs, settles back, glow swelling with the lift (design-
-  notes §8), replacing the T4-era placeholder that drifted sideways.
-  Drifters are the simplest, lowest rung, so the body stays a single
-  quiet surface — complexity climbs from here, never via brighter
-  colour or stronger glow (§9c). Folded into design-bible §9c and
-  design-notes §8.
+  nine archetypes follow. Iterated from a first pass (wispy hair / green
+  glow / larger eyes) to Kimia's final calls: the plain traced silhouette
+  (no hair) wears a **sponge** texture (§8) **tinted its deep-blue body
+  colour**, glows that same deep blue, and carries **two tiny yellow
+  eyes** (almost dots) as the Drifter baseline (other individuals vary
+  the count/size in T5.3d, never the eye colour). Its **signature
+  congratulation animation is a slow "drift-and-bob"** — floats up,
+  hangs, settles back, glow swelling with the lift (design-notes §8),
+  replacing the T4-era placeholder that drifted sideways. Drifters are
+  the simplest, lowest rung, so the body stays a single quiet surface —
+  complexity climbs from here, never via brighter colour or stronger
+  glow (§9c). Folded into design-bible §9c and design-notes §8.
   _Build:_ Kimia's hand-drawn winning Drifter, Inkscape-traced, lives
   verbatim in `src/ui/drifterSilhouette.js` (kept isolated so code never
   edits the trace). `src/ui/drifter.jsx` assembles it in four layers
-  (green glow aura → opaque body base → wispy hair clipped to the
-  silhouette → the two eyes) as `<Drifter prefix seed/>` + its
-  `<DrifterDefs/>`; it relies on `<TextureDefs/>` in the same `<svg>`
-  for the hair's support filters, exactly as the texture swatches do.
-  Eye positions were tuned onto the silhouette's densest mass on the
-  workbench (a slightly-larger/smaller asymmetric pair). `BODY_BASE`/
-  `GLOW` are JS stand-ins with `TODO(T5.2)` markers. The DesignPage
-  workbench now shows the finished Drifter resting and mid-greeting; the
-  real `friend-drift` keyframe in `index.css` became the drift-and-bob.
-  Colours/eye-placement/hair stay free to retune on the workbench —
-  the tests pin only the recipe invariants (verbatim trace, two eyes).
+  (deep-blue glow aura → dark-blue body base → the tinted sponge, which
+  self-clips to the silhouette via its filter → the two tiny eyes) as
+  `<Drifter prefix/>` + a self-contained `<DrifterDefs/>` (eye gradients,
+  glow blur, and the Drifter's own `<SpongeFilter light=…/>` instance —
+  extracted from `textures.jsx` so a friend can tint the sponge to its
+  body colour). The shared eye in `src/ui/eye.jsx` was recoloured yellow
+  with a dark socket-halo (it is the one shared eye, so this is global).
+  Body colours are JS stand-ins with `TODO(T5.2)` markers. The DesignPage
+  workbench shows the finished Drifter resting and mid-greeting; the real
+  `friend-drift` keyframe in `index.css` became the drift-and-bob.
+  Colours/eye-placement stay free to retune on the workbench — the tests
+  pin only the recipe invariants (verbatim trace, two eyes).
 
 ## spec.md version history (formerly its preamble)
 

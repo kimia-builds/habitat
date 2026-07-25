@@ -6,19 +6,26 @@
  * once, here, as a reusable <Eye cx cy r/> and placed on each body.
  *
  * THE CHOSEN DESIGN (Kimia's pick, 2026-07-25): the "orb" — a plain glowing
- * eyeball, no pupil. A bright core fading to a green rim, wrapped in a soft
- * green halo, with a single off-centre catch-light so it reads as wet/alive.
- * Picked from five candidates on the DesignPage workbench (orb · slit · ring ·
- * crescent · compound); the orb won for being the simplest and most "just
- * light". The four rejected forms were exploration only and are not kept.
+ * eyeball, no pupil. A bright core fading to its rim, with a single off-centre
+ * catch-light so it reads as wet/alive. Picked from five candidates on the
+ * DesignPage workbench (orb · slit · ring · crescent · compound); the orb won
+ * for being the simplest and most "just light". The four rejected forms were
+ * exploration only and are not kept.
+ *
+ * THE COLOUR RULE (Kimia's call, 2026-07-25, T5.3b — REVERSES the earlier
+ * "eyes glow the one green" rule): the eye is ALWAYS YELLOW, on every friend,
+ * set in a DARK ("blackish") halo — not a bright bloom but a dark socket that
+ * makes the yellow dot pop off the body. The body carries its OWN colour (which
+ * varies per friend) and its glow matches that body colour; the eyes stay a
+ * fixed yellow accent that, by rule, always differs from the body colour. So
+ * the eye's colours never change between friends — only its SIZE and NUMBER do.
  *
  * DESIGN-BIBLE COMPLIANCE (keep these true):
- *   • Glow is intrinsic to living things and its COLOUR NEVER VARIES (§3, §7).
- *     The eye glows the one living-thing green; nothing about it varies between
- *     friends except size and how many there are.
+ *   • The eye is one shared design (§9c): only size and number vary per friend,
+ *     never its colour or the dark-halo treatment.
  *   • Silhouette first, texture/colour last (§3): a round eye reads as a shape
- *     on black before its glow does.
- *   • No shadow (§3, §7). The only light is the eye's own green glow.
+ *     before its colour does.
+ *   • No shadow (§3, §7): the dark halo is the eye's own socket, not a cast shadow.
  *   • Scales by SIZE alone (§9c): the eye is parameterised purely by centre
  *     (cx, cy) and radius (r); nothing is hard-coded to one size.
  *
@@ -33,25 +40,25 @@
  * COLOURS ARE STAND-INS. TODO(T5.2): once the CSS design-tokens file exists
  * (design-notes §11d), move each EYE_TOKENS value into it as a named custom
  * property and reference var(--…) here — exactly as textures.jsx's TEX_COLORS
- * and sky.jsx's SKY_TOKENS wait to be wired. The green below deliberately
- * matches the organic-texture green so eyes and bodies read as one glow.
+ * and sky.jsx's SKY_TOKENS wait to be wired.
  * =============================================================================
  */
 
 /* -----------------------------------------------------------------------------
  * COLOUR TABLE — TODO(T5.2): replace each value with a design token.
- * The eye is organic life, so it stays in the restrained palette + the one
- * canonical green glow (§3). These are the ONLY colours the eye uses.
+ * The eye is ALWAYS yellow, in a dark halo, on every friend (Kimia's rule,
+ * T5.3b). These are the ONLY colours the eye uses, and they never vary.
  * --------------------------------------------------------------------------- */
 export const EYE_TOKENS = {
-  glow: '#63d79c', // canonical living-thing glow-green (matches TEX_COLORS)
-  coreBright: '#eafff4', // pale near-white centre of a lit eye
-  coreMid: '#4fb882', // mid green, the eye's body colour toward its rim
+  haloDark: '#04050b', // the dark "blackish" halo — a socket, not a bright bloom
+  coreBright: '#fff7d4', // pale warm centre of the lit orb (and its catch-light)
+  coreMid: '#ffcf1e', // the yellow body of the eye
+  rim: '#e0a400', // deeper amber at the very rim, so the orb has a little depth
 }
 
-// The soft halo is drawn at this multiple of the eye's radius, so the glow
-// grows with the eye instead of a fixed blur that would swamp small eyes.
-const HALO_SCALE = 1.5
+// The dark halo is drawn at this multiple of the eye's radius, so the socket
+// grows with the eye instead of a fixed size that would swamp small eyes.
+const HALO_SCALE = 2
 
 // The two gradient ids the eye paints with, optionally namespaced so several
 // eye SVGs on one page never share (and fight over) the same id.
@@ -67,17 +74,18 @@ export function EyeDefs({ prefix = '' }) {
   const t = EYE_TOKENS
   return (
     <>
-      {/* the outward glow: green at the centre, fading to nothing at the rim */}
+      {/* the dark socket: near-black at the centre, fading to nothing at the rim,
+          so the body darkens just around the eye and the yellow dot pops */}
       <radialGradient id={haloId(prefix)}>
-        <stop offset="0%" stopColor={t.glow} stopOpacity="0.55" />
-        <stop offset="55%" stopColor={t.glow} stopOpacity="0.18" />
-        <stop offset="100%" stopColor={t.glow} stopOpacity="0" />
+        <stop offset="0%" stopColor={t.haloDark} stopOpacity="0.72" />
+        <stop offset="55%" stopColor={t.haloDark} stopOpacity="0.3" />
+        <stop offset="100%" stopColor={t.haloDark} stopOpacity="0" />
       </radialGradient>
-      {/* the lit body of the eye: bright core → green rim */}
+      {/* the lit body of the eye: pale-warm core → yellow → amber rim */}
       <radialGradient id={coreId(prefix)}>
         <stop offset="0%" stopColor={t.coreBright} />
-        <stop offset="55%" stopColor={t.glow} />
-        <stop offset="100%" stopColor={t.coreMid} />
+        <stop offset="55%" stopColor={t.coreMid} />
+        <stop offset="100%" stopColor={t.rim} />
       </radialGradient>
     </>
   )
@@ -88,8 +96,8 @@ export function EyeDefs({ prefix = '' }) {
  * `prefix` (default '') namespaces the shared gradient ids; pass the same value
  * to the <EyeDefs/> that sits in the eye's SVG.
  *
- *   1. the soft green halo (drawn first, so the eye lands on its own light)
- *   2. the lit body: bright core → green rim
+ *   1. the dark socket-halo (drawn first, so the eye lands in its own darkening)
+ *   2. the lit body: pale-warm core → yellow → amber rim
  *   3. a small off-centre catch-light: the spark that makes it read as alive
  * =========================================================================== */
 export function Eye({ cx, cy, r, prefix = '' }) {

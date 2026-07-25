@@ -11,17 +11,16 @@
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Drifter, DrifterDefs, DRIFTER_VIEWBOX } from './drifter.jsx'
-import { TextureDefs } from './textures.jsx'
 import { DRIFTER_SILHOUETTE } from './drifterSilhouette.js'
 
 afterEach(cleanup)
 
-// The Drifter needs its defs (and the hair's support filters) in the same SVG.
+// The Drifter is self-contained: <DrifterDefs/> emits everything it paints with
+// (eye gradients, glow blur, its own tinted sponge), all in the same SVG.
 function renderDrifter() {
   return render(
     <svg viewBox={`0 0 ${DRIFTER_VIEWBOX.w} ${DRIFTER_VIEWBOX.h}`}>
       <defs>
-        <TextureDefs />
         <DrifterDefs />
       </defs>
       <Drifter />

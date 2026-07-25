@@ -3,47 +3,47 @@
  * =============================================================================
  * The FIRST friend assembled end-to-end (design-bible §9c): Kimia's hand-drawn,
  * Inkscape-traced silhouette (drifterSilhouette.js) is here dressed IN CODE with
- * the three things every living thing shares — a texture, the canonical eye, and
- * the intrinsic green glow. It proves the whole recipe the other nine category
- * archetypes (T5.3c) will follow.
+ * the three things a friend now carries — a texture, the canonical eye, and an
+ * intrinsic glow in its own body colour. It proves the whole recipe the other
+ * nine category archetypes (T5.3c) will follow.
  *
  * THE DRIFTER'S RECIPE (Kimia's calls, 2026-07-25):
- *   • Texture  — WISPY HAIR (§8 hair "wispy waves"): long, fine, drifting
- *                strands, leaning into the Drifter's "loose wisp passing through"
- *                read. Drifters are the simplest, lowest rung of the literacy
- *                ladder, so this stays a single quiet surface — complexity climbs
- *                from here (§9c), never brighter colour or stronger glow.
- *   • Eyes     — TWO canonical orbs (eye.jsx), the Drifter baseline. Other
- *                Drifter individuals (T5.3d) vary the count/size UP or down from
- *                this; the eye's DESIGN never changes, only how many and how big.
- *   • Glow     — the one living-thing green (§3, §7), a soft aura behind the
- *                body. Colour never varies between friends; nothing here does but
- *                size and eye count.
+ *   • Texture  — SPONGE (§8), tinted to the Drifter's body colour. A porous,
+ *                holey, weird surface on the plain silhouette (no hair — the
+ *                traced outline is kept as-is). Drifters are the simplest,
+ *                lowest rung, so this stays a single quiet surface — complexity
+ *                climbs from here (§9c), never brighter colour or stronger glow.
+ *   • Body     — DEEP BLUE. Each friend has its OWN body colour (Kimia's rule,
+ *                T5.3b); the Drifter's is a deep blue. The intrinsic glow behind
+ *                the body matches that body colour.
+ *   • Eyes     — TWO canonical orbs (eye.jsx), tiny — almost dots. Eyes are
+ *                ALWAYS YELLOW in a dark socket (the shared eye), and by rule
+ *                always a different colour from the body. Two is the Drifter
+ *                baseline; other individuals (T5.3d) vary the count/size, never
+ *                the eye's colour.
  *
  * LAYER ORDER (back → front) — silhouette first, texture second, colour last (§3):
- *   1. GLOW aura   — the silhouette blurred and filled green, sitting behind.
- *   2. BODY base   — the silhouette in an opaque near-black, so the hair reads
- *                    against it and the shape reads on the dark page.
- *   3. HAIR        — the wispy field, CLIPPED to the silhouette so it can never
- *                    redraw the outline, only fill it (§3: texture never defines
- *                    a shape).
- *   4. EYES        — two orbs, drawn last so they sit on top of the fur.
+ *   1. GLOW aura   — the silhouette blurred and filled the body colour, behind.
+ *   2. BODY base   — the silhouette in an opaque dark blue, so the sponge holes
+ *                    fall back to a dark ground and the shape reads on the page.
+ *   3. SPONGE      — the tinted sponge, self-clipped to the silhouette by the
+ *                    filter (it never redraws the outline, only fills it — §3).
+ *   4. EYES        — two tiny yellow orbs, drawn last so they sit on top.
  *
- * WHAT THE CONSUMER MUST PROVIDE (kept out of here so many Drifters can share one
- * copy of each): the hair's support filters live in textures.jsx's <TextureDefs/>,
- * so a <TextureDefs/> must sit in the same <svg>. Everything ELSE this component
- * needs — the eye gradients, the silhouette clip, the glow filter — is emitted by
- * <DrifterDefs/>, namespaced by `prefix` so several Drifters never share ids.
+ * WHAT THE CONSUMER MUST PROVIDE: nothing shared — <DrifterDefs prefix/> emits
+ * everything this component references (the eye gradients, the glow blur, and
+ * the Drifter's own tinted sponge filter), namespaced by `prefix` so several
+ * Drifters never share ids. (No dependency on <TextureDefs/> anymore, since the
+ * sponge is emitted here in the body colour rather than the library's green.)
  *
- * COLOURS ARE STAND-INS. TODO(T5.2): move BODY_BASE / GLOW into the CSS
+ * COLOURS ARE STAND-INS. TODO(T5.2): move the body colours into the CSS
  * design-tokens file as named custom properties, exactly as textures.jsx's
- * TEX_COLORS and eye.jsx's EYE_TOKENS wait to be wired. GLOW deliberately equals
- * the canonical living-thing green so body, eyes and aura read as one light.
+ * TEX_COLORS and eye.jsx's EYE_TOKENS wait to be wired.
  * =============================================================================
  */
 
 import { Eye, EyeDefs } from './eye.jsx'
-import { hairField } from './textures.jsx'
+import { SpongeFilter } from './textures.jsx'
 import { DRIFTER_SILHOUETTE } from './drifterSilhouette.js'
 
 const { d: SIL_D, transform: SIL_TRANSFORM, viewBox: VB } = DRIFTER_SILHOUETTE
@@ -54,70 +54,67 @@ export const DRIFTER_VIEWBOX = VB
 
 /* -----------------------------------------------------------------------------
  * COLOUR TABLE — TODO(T5.2): replace each value with a design token.
+ * The Drifter's body colour is a DEEP BLUE (its own colour, per Kimia's rule).
+ * The eyes are yellow — that lives in the shared eye (eye.jsx), never here — and
+ * by rule the body colour is never that yellow.
  * --------------------------------------------------------------------------- */
-const BODY_BASE = '#0c1a13' // opaque near-black green: the ground the hair sits on
-const GLOW = '#63d79c' // canonical living-thing glow-green (matches eye + textures)
+const BODY_GLOW = '#2f66d8' // deep-blue aura: the glow matches the body colour
+const SPONGE_LIGHT = '#3d6ad0' // the sponge's lit surface tint → reads deep blue
+const BODY_BASE = '#0a1430' // opaque dark blue: the ground the sponge holes fall to
 
-// The two eyes (Kimia's call). Positions and radii are in native art units, on
-// the Drifter's densest mass; tuned on the workbench. Size is the only per-eye
-// variable (§9c), so each is just a centre + radius.
+// The two eyes (Kimia's call), tiny — almost dots. Positions/radii are in native
+// art units, on the Drifter's densest mass; tuned on the workbench. Size is the
+// only per-eye variable (§9c), so each is just a centre + radius.
 const DRIFTER_EYES = [
-  { cx: 80, cy: 60, r: 8 },
-  { cx: 95, cy: 58, r: 6.5 },
+  { cx: 80, cy: 60, r: 3 },
+  { cx: 93, cy: 58, r: 2.5 },
 ]
 
-// The wispy field is seeded so a given Drifter always grows the same coat.
-const DEFAULT_HAIR_SEED = 71
-
 // Namespaced ids, so two Drifters on one page never fight over a paint id.
-const clipId = (prefix) => `${prefix}drifter-clip`
 const glowId = (prefix) => `${prefix}drifter-glow`
+const spongeId = (prefix) => `${prefix}drifter-sponge`
 
 /* =============================================================================
  * SHARED DEFS — render one <DrifterDefs/> inside the same <svg> as the Drifter
- * that references it (pass the matching `prefix`). Emits the eye gradients, the
- * silhouette clip, and the soft-glow blur. The hair's own support filters come
- * from <TextureDefs/>, which the consumer supplies once for the whole page.
+ * that references it (pass the matching `prefix`). Emits everything the Drifter
+ * paints with: the eye gradients, the soft-glow blur, and the Drifter's own
+ * body-coloured sponge filter. Self-contained — no <TextureDefs/> needed.
  * =========================================================================== */
 export function DrifterDefs({ prefix = '' }) {
   return (
     <>
       <EyeDefs prefix={prefix} />
-      {/* clip the hair to the exact traced outline (same transform as the body) */}
-      <clipPath id={clipId(prefix)}>
-        <path d={SIL_D} transform={SIL_TRANSFORM} />
-      </clipPath>
-      {/* the intrinsic glow: just a soft blur — the green comes from the fill */}
+      {/* the intrinsic glow: just a soft blur — the colour comes from the fill */}
       <filter id={glowId(prefix)} x="-40%" y="-40%" width="180%" height="180%">
         <feGaussianBlur stdDeviation="4.5" />
       </filter>
+      {/* the body's sponge, tinted the Drifter's own deep blue */}
+      <SpongeFilter id={spongeId(prefix)} light={SPONGE_LIGHT} />
     </>
   )
 }
 
 /* =============================================================================
- * THE PILOT DRIFTER — <Drifter prefix seed/>. Renders the assembled body into
+ * THE PILOT DRIFTER — <Drifter prefix/>. Renders the assembled body into
  * whatever <svg viewBox="0 0 {DRIFTER_VIEWBOX.w} {DRIFTER_VIEWBOX.h}"> holds it.
- * Requires <DrifterDefs prefix/> and <TextureDefs/> in the same SVG.
+ * Requires <DrifterDefs prefix/> in the same SVG.
  * =========================================================================== */
-export function Drifter({ prefix = '', seed = DEFAULT_HAIR_SEED }) {
+export function Drifter({ prefix = '' }) {
   return (
     <g>
-      {/* 1. glow aura — the shape blurred and filled the one green, behind all */}
+      {/* 1. glow aura — the shape blurred and filled the body colour, behind all */}
       <path
         d={SIL_D}
         transform={SIL_TRANSFORM}
-        fill={GLOW}
+        fill={BODY_GLOW}
         filter={`url(#${glowId(prefix)})`}
-        opacity="0.65"
+        opacity="0.6"
       />
-      {/* 2. body base — opaque ground so the hair reads and the shape reads */}
+      {/* 2. body base — opaque dark-blue ground so the sponge holes read dark */}
       <path d={SIL_D} transform={SIL_TRANSFORM} fill={BODY_BASE} />
-      {/* 3. wispy hair, clipped to the silhouette (never redraws the outline) */}
-      <g clipPath={`url(#${clipId(prefix)})`}>
-        {hairField({ mode: 'wispy', x: 0, y: 0, w: VB.w, h: VB.h, seed })}
-      </g>
-      {/* 4. the two canonical eyes, on top of the coat */}
+      {/* 3. the tinted sponge (self-clips to the silhouette via the filter) */}
+      <path d={SIL_D} transform={SIL_TRANSFORM} fill="#000" filter={`url(#${spongeId(prefix)})`} />
+      {/* 4. the two tiny yellow eyes, drawn last so they sit on top */}
       {DRIFTER_EYES.map((e, i) => (
         <Eye key={i} cx={e.cx} cy={e.cy} r={e.r} prefix={prefix} />
       ))}
