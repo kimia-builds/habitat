@@ -34,6 +34,7 @@ import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
 import { Eye, EyeDefs } from './eye.jsx'
 import { Drifter, DrifterDefs, DRIFTER_VIEWBOX } from './drifter.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
+import { Signer, SIGNER_VIEWBOX, SIGNER_PALETTES } from './signer.jsx'
 
 const FAMILIES = [
   { key: 'charms', slots: SYMBOL_COUNT }, // T5.1 — the six habit tags
@@ -187,6 +188,30 @@ function DrifterSwatch({ variant, animate }) {
   )
 }
 
+// The signer illustration (signer.jsx, added 2026-07-26). It's an imported
+// seven-layer drawing rather than a code-drawn asset; here it is in the three
+// Habitat reward-stream pastels so Kimia can eyeball which hue reads best on
+// the dark page. The order is fixed so the colour row is stable. Each swatch
+// is a self-contained accessible <svg role="img">, sized to the artwork's own
+// tall portrait viewBox and standing on the same dark ground as the textures.
+const SIGNER_TINTS = ['green', 'violet', 'amber']
+
+function SignerSwatch({ tint }) {
+  return (
+    <li className="signer-swatch">
+      <svg
+        className="signer-swatch-art"
+        viewBox={`0 0 ${SIGNER_VIEWBOX.w} ${SIGNER_VIEWBOX.h}`}
+        role="img"
+        aria-label={`signer, ${tint}`}
+      >
+        <Signer palette={SIGNER_PALETTES[tint]} />
+      </svg>
+      <span className="signer-swatch-name">{tint}</span>
+    </li>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -275,6 +300,17 @@ function DesignPage({ onBack }) {
               <AbodeSky palette={palette} />
               <span className="sky-swatch-name">{palette}</span>
             </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* The signer illustration (signer.jsx) — an imported drawing shown in
+          the three reward-stream pastels so its hue can be chosen by eye. */}
+      <section className="design-family" aria-label="signer">
+        <h3>signer</h3>
+        <ul className="signer-swatches">
+          {SIGNER_TINTS.map((tint) => (
+            <SignerSwatch key={tint} tint={tint} />
           ))}
         </ul>
       </section>

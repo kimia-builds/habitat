@@ -83,6 +83,18 @@ describe('DesignPage workbench', () => {
     expect(resting.classList.contains('friend-anim-drifter')).toBe(false)
   })
 
+  it('shows the signer illustration in its three tints', () => {
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // The imported signer drawing is shown once per reward-stream pastel, each
+    // an accessible <svg role="img"> labelled by tint — so the one artwork and
+    // its three colour treatments are all present. Scoped to the signer shelf
+    // so the other assets' images don't count.
+    const labels = [
+      ...container.querySelectorAll('.signer-swatch svg[role="img"]'),
+    ].map((img) => img.getAttribute('aria-label'))
+    expect(labels).toEqual(['signer, green', 'signer, violet', 'signer, amber'])
+  })
+
   it('surfaces the shared night sky for the eyeball pass', () => {
     render(<DesignPage onBack={vi.fn()} />)
     // The night sky is a decorative CSS star layer (aria-hidden), so we

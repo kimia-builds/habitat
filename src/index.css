@@ -1627,6 +1627,45 @@ body {
   text-align: center;
 }
 
+/* TEMPORARY (2026-07-26): the signer illustration swatches. An imported
+   drawing (signer.jsx) shown in three reward-stream pastels for the eyeball
+   pass — the same dark card the other assets stand on, sized to the artwork's
+   tall portrait aspect. Leaves with the workbench. */
+.signer-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  list-style: none;
+  padding: 0;
+}
+
+.signer-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 9rem;
+  max-width: 100%;
+}
+
+.signer-swatch-art {
+  width: 9rem;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 174 / 343.49;
+  border-radius: 0.75rem;
+  background: #0b0f14;
+  padding: 0.6rem;
+  box-sizing: border-box;
+}
+
+.signer-swatch-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: #8b93a6;
+  text-align: center;
+}
+
 /* TEMPORARY (T5.3, 2026-07-24): the environment-sky swatches (design-bible
    §11a). Each swatch is a bounded, positioned box so NightSky (which fills
    its positioned parent) and AbodeSky (100% of its box) have somewhere to
