@@ -137,6 +137,33 @@ tracker. Everything after this is delight, informed by real use.
       real Abode screen are still to come. Still to come too: the actual
       friend / flora / fungi / object / region art that composes from
       these._
+      **Character sub-plan (2026-07-25, Kimia's calls: characters
+      before the 8 new flora silhouettes land; one canonical eye;
+      hand-drawn archetypes with code-derived individuals; pilot one
+      friend end-to-end first — workflow rules in design-bible §9c):**
+      - [ ] **T5.3a The eye** — code-drawn candidate glowing eyes on
+            the workbench; Kimia picks the canonical eye and its design
+            is recorded in design-bible §9c.
+      - [ ] **T5.3b Pilot Drifter** — Kimia thumbnails Drifter bodies,
+            draws the winner clean, Inkscape-traces to SVG; assembly
+            (texture + eyes + glow) on the workbench; then the Drifter
+            signature congratulation animation (design-notes §8). The
+            first finished friend, proving the whole recipe.
+      - [ ] **T5.3c The ladder** — the 9 remaining category
+            archetypes, drawn simplest → most complex, assembled on
+            the workbench. Checkpoint before moving on: all 10 side by
+            side must read as one family, complexity visibly climbing
+            (design-bible §9c).
+      - [ ] **T5.3d Individuals** — per category, derive the remaining
+            individuals in code from the archetype (size, texture,
+            appendage, eye count/size); Kimia approves each. 45 across
+            all categories.
+      - [ ] **T5.3e Animations** — the 9 remaining signature category
+            animations (one per category, design-notes §8).
+      - [ ] **T5.3f The 8 new flora silhouettes** (parked 2026-07-25,
+            Kimia's call to start characters first) — land them on the
+            workbench with textures + glow, then continue the flora
+            collection toward the 64-species count.
 
 ## M6 — Hardening & content (ongoing)
 

@@ -893,6 +893,26 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   d); mounting NightSky as the real app-shell background is T5.2, and
   wiring AbodeSky into the real Abode screen is a later T5.3 step —
   neither done in this merge.
+- 2026-07-25 (Kimia's call): **one canonical eye for all friends** — a
+  single designed glowing eye shared by every friend; only the number
+  and size of eyes vary per individual. Chosen over per-category eye
+  styles and free-per-individual eyes for coherence and to keep eyes a
+  placeable component rather than 55 redrawings. The eye's actual
+  design is picked in the T5.3a workbench session. Folded into
+  design-bible §9c.
+- 2026-07-25 (Kimia's call): **friend production is hybrid** — Kimia
+  hand-draws the 10 category archetypes (raster → Inkscape → SVG, the
+  same pipeline as her flora, keeping the world from one hand); code
+  assembles texture + eyes + glow and derives the 45 remaining
+  individuals from each archetype (size, texture, appendage, eye
+  count/size), every variation subject to her approval. Chosen over
+  all-hand-drawn (too many drawing hours, hand-drawn eyes would
+  undercut the canonical-eye rule) and all-code-drawn (risks the
+  engineered feel the bible forbids). Order of work: pilot one Drifter
+  end-to-end first, then all 10 archetypes, then individuals — and
+  characters start before the 8 new flora silhouettes land (parked as
+  T5.3f). Folded into design-bible §9c and the plan.md T5.3 character
+  sub-plan (T5.3a–f).
 
 ## spec.md version history (formerly its preamble)
 

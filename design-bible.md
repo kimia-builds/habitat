@@ -202,6 +202,21 @@ body plan.
 blobbish silhouettes. **No human faces, no obvious anthropomorphism.**
 Recognisable as a **silhouette first, texture second** — always.
 
+**The canonical eye (2026-07-25).** One designed glowing eye is shared
+by every friend in the app; only the **number and size** of eyes vary
+per individual. The eye is built once as a reusable component and
+placed on each body — never redrawn per friend. (Its actual design is
+chosen in the eye-design session, the first step of the character plan
+in plan.md T5.3.)
+
+**Production workflow (2026-07-25).** The 10 **category archetypes are
+hand-drawn by Kimia** (raster drawing → Inkscape trace → SVG), keeping
+friends visibly from the same hand as the flora; texture, eyes and
+glow are then assembled in code on the workbench. The remaining
+**individuals are derived in code from their category's archetype** —
+varying size, texture, appendages, and eye count/size — with every
+variation approved or rejected by Kimia.
+
 **Complexity scales with size.** Larger friends are more visually
 complex, but complexity comes from **layered texture, appendages, and
 silhouette** — never brighter colour or stronger glow.
