@@ -95,6 +95,32 @@ describe('DesignPage workbench', () => {
     expect(labels).toEqual(['signer, green', 'signer, violet', 'signer, amber'])
   })
 
+  it('shows the storyteller in three tints with two blinking eyes each', () => {
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // The imported storyteller drawing is shown once per reward-stream
+    // pastel. The accessible image is the swatch's wrapper div (its two
+    // stacked svgs — static body, blinking eyes — are decorative).
+    const swatches = [
+      ...container.querySelectorAll('.storyteller-swatch [role="img"]'),
+    ]
+    const labels = swatches.map((img) => img.getAttribute('aria-label'))
+    expect(labels).toEqual([
+      'storyteller, green',
+      'storyteller, violet',
+      'storyteller, amber',
+    ])
+    // Every tint arrives assembled: the two canonical eyes are mounted,
+    // each in its own blink wrapper (the idle-blink behaviour hangs off
+    // that class), and the eyes live in a separate overlay svg from the
+    // heavy body so blinking never repaints the blurred figure.
+    for (const swatch of swatches) {
+      expect(swatch.querySelectorAll('svg')).toHaveLength(2)
+      const [body, eyes] = swatch.querySelectorAll('svg')
+      expect(body.querySelectorAll('.storyteller-eye-blink')).toHaveLength(0)
+      expect(eyes.querySelectorAll('.storyteller-eye-blink')).toHaveLength(2)
+    }
+  })
+
   it('surfaces the shared night sky for the eyeball pass', () => {
     render(<DesignPage onBack={vi.fn()} />)
     // The night sky is a decorative CSS star layer (aria-hidden), so we

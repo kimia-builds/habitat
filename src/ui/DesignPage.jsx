@@ -35,6 +35,14 @@ import { Eye, EyeDefs } from './eye.jsx'
 import { Drifter, DrifterDefs, DRIFTER_VIEWBOX } from './drifter.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
 import { Signer, SIGNER_VIEWBOX, SIGNER_PALETTES } from './signer.jsx'
+import {
+  StorytellerBody,
+  StorytellerBodyDefs,
+  StorytellerEyes,
+  EyeDefs as StorytellerEyeDefs,
+  STORYTELLER_VIEWBOX,
+  STORYTELLER_PALETTES,
+} from './storyteller.jsx'
 
 const FAMILIES = [
   { key: 'charms', slots: SYMBOL_COUNT }, // T5.1 — the six habit tags
@@ -212,6 +220,46 @@ function SignerSwatch({ tint }) {
   )
 }
 
+// The storyteller illustration (storyteller.jsx, added 2026-07-26) — the
+// Storytellers-category archetype, imported like the signer and shown in the
+// same three reward-stream pastels so the candidate body colours can be
+// compared like-for-like. Unlike the bare signer it arrives ASSEMBLED: the
+// canonical yellow eyes are mounted (blinking idly) and the body glows its
+// own colour. The heavy static body and the small blinking eyes are TWO
+// stacked SVGs sharing one viewBox — that split is load-bearing (see the
+// note in storyteller.jsx: blinking inside the body svg would re-blur the
+// whole figure every blink). The accessible image is the wrapper div; each
+// swatch prefixes its ids so the three tints' defs never collide.
+const STORYTELLER_TINTS = ['green', 'violet', 'amber']
+
+function StorytellerSwatch({ tint }) {
+  const prefix = `storyteller-${tint}-`
+  const viewBox = `0 0 ${STORYTELLER_VIEWBOX.w} ${STORYTELLER_VIEWBOX.h}`
+  return (
+    <li className="storyteller-swatch">
+      <div
+        className="storyteller-swatch-art"
+        role="img"
+        aria-label={`storyteller, ${tint}`}
+      >
+        <svg className="storyteller-swatch-layer" viewBox={viewBox} aria-hidden="true">
+          <defs>
+            <StorytellerBodyDefs prefix={prefix} />
+          </defs>
+          <StorytellerBody palette={STORYTELLER_PALETTES[tint]} prefix={prefix} />
+        </svg>
+        <svg className="storyteller-swatch-layer" viewBox={viewBox} aria-hidden="true">
+          <defs>
+            <StorytellerEyeDefs prefix={prefix} />
+          </defs>
+          <StorytellerEyes prefix={prefix} />
+        </svg>
+      </div>
+      <span className="storyteller-swatch-name">{tint}</span>
+    </li>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -311,6 +359,18 @@ function DesignPage({ onBack }) {
         <ul className="signer-swatches">
           {SIGNER_TINTS.map((tint) => (
             <SignerSwatch key={tint} tint={tint} />
+          ))}
+        </ul>
+      </section>
+
+      {/* The storyteller illustration (storyteller.jsx) — the Storytellers
+          archetype in the three reward-stream pastels, assembled with the
+          canonical blinking eyes and its body-colour glow. */}
+      <section className="design-family" aria-label="storyteller">
+        <h3>storyteller</h3>
+        <ul className="storyteller-swatches">
+          {STORYTELLER_TINTS.map((tint) => (
+            <StorytellerSwatch key={tint} tint={tint} />
           ))}
         </ul>
       </section>

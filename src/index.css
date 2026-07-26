@@ -1666,6 +1666,75 @@ body {
   text-align: center;
 }
 
+/* TEMPORARY (2026-07-26): the storyteller illustration swatches — the same
+   dark card as the signer's, sized to this artwork's own portrait aspect.
+   Leaves with the workbench. */
+.storyteller-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  list-style: none;
+  padding: 0;
+}
+
+.storyteller-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 10rem;
+  max-width: 100%;
+}
+
+/* The art card is a positioned div holding TWO stacked svgs — the heavy
+   static body below, the featherweight blinking eyes above, same viewBox
+   so they align exactly (the split is load-bearing: see storyteller.jsx). */
+.storyteller-swatch-art {
+  position: relative;
+  width: 10rem;
+  max-width: 100%;
+  aspect-ratio: 256.86 / 357.53;
+  border-radius: 0.75rem;
+  background: #0b0f14;
+}
+
+.storyteller-swatch-layer {
+  position: absolute;
+  inset: 0.6rem;
+  width: calc(100% - 1.2rem);
+  height: calc(100% - 1.2rem);
+}
+
+.storyteller-swatch-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: #8b93a6;
+  text-align: center;
+}
+
+/* NOT workbench-temporary — part of the storyteller asset itself
+   (storyteller.jsx), and moves with it into the game source. The idle
+   blink: each canonical eye sits in its own wrapper and squashes shut
+   around its own centre for a beat, then reopens — rare and quiet
+   (design-notes §8: calm resting states; juice from timing, never
+   alarm). The whole cycle is 6.5s with the blink itself ~400ms of it. */
+@keyframes storyteller-blink {
+  0%,
+  93.5%,
+  100% {
+    transform: scaleY(1);
+  }
+  96.75% {
+    transform: scaleY(0.08);
+  }
+}
+
+.storyteller-eye-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: storyteller-blink 6.5s ease-in-out infinite;
+}
+
 /* TEMPORARY (T5.3, 2026-07-24): the environment-sky swatches (design-bible
    §11a). Each swatch is a bounded, positioned box so NightSky (which fills
    its positioned parent) and AbodeSky (100% of its box) have somewhere to
