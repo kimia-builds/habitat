@@ -1869,31 +1869,16 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
     expect(screen.queryByRole('navigation', { name: 'pages' })).toBeNull()
   })
 
-  it('the design page shows the empty asset shelves, reachable and leavable', () => {
+  it('the design page shows its made-asset shelves, reachable and leavable', () => {
     seedWorld('design-seed')
     render(<App />)
     settleStartup()
     fireEvent.click(screen.getByRole('button', { name: 'design assets' }))
-    // The fixed-size families hold one empty slot per coming asset
-    // (counts straight from constants, so the page tracks them).
-    const fixed = [
-      ['charms', SYMBOL_COUNT],
-      ['friends', FRIEND_CATEGORIES.length],
-      ['map regions', MAP_REGION_COUNT],
-    ]
-    for (const [name, count] of fixed) {
-      const family = screen.getByRole('region', { name })
-      expect(within(family).getAllByRole('listitem')).toHaveLength(count)
-    }
-    // The open-ended families hold one empty shelf each.
-    for (const name of [
-      'flora',
-      'fungi',
-      'market objects',
-      'reading spreads',
-    ]) {
-      const family = screen.getByRole('region', { name })
-      expect(family.querySelector('.design-shelf')).not.toBeNull()
+    // Assets appear as they are made (2026-07-26 — no more empty
+    // placeholder tiles), so the page holds only shelves with real
+    // content: at least the texture library and the imported archetypes.
+    for (const name of ['textures — plant-like', 'friend eye', 'storyteller']) {
+      expect(screen.getByRole('region', { name })).toBeDefined()
     }
     // The rail reaches this page too, and its back button leads home.
     expect(screen.getByRole('navigation', { name: 'pages' })).toBeDefined()

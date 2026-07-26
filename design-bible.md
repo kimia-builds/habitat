@@ -244,15 +244,14 @@ glow are then assembled in code on the workbench. The remaining
 varying size, texture, appendages, and eye count/size — with every
 variation approved or rejected by Kimia.
 
-**Pilot: the Drifter (T5.3b, done 2026-07-25).** The first archetype
-assembled end-to-end, proving the recipe for the other nine. Its traced
-silhouette (kept plain, no hair) wears a **sponge** texture (§8) tinted
-its **deep-blue body colour**, glows that same deep blue, and carries
-**two tiny yellow eyes** (the Drifter baseline the individuals vary
-from). As the simplest, lowest rung it stays a single quiet surface —
-complexity climbs from here. Lives in `src/ui/drifter.jsx` (assembly)
-and `src/ui/drifterSilhouette.js` (the verbatim trace); its signature
-animation is the drift-and-bob (design-notes §8).
+**Pilot: the Drifter (T5.3b, 2026-07-25; body art rejected
+2026-07-26).** The Drifter was assembled end-to-end first and proved
+the recipe every archetype now follows — traced silhouette + tinted §8
+texture + the canonical eyes + body-colour glow. The recipe stands, but
+Kimia rejected the pilot's body art itself and it was removed from the
+app (no drifter source files remain); a redone Drifter joins the T5.3c
+ladder pass. Its signature animation, the drift-and-bob (design-notes
+§8), was kept and still serves the category.
 
 **Complexity scales with size.** Larger friends are more visually
 complex, but complexity comes from **layered texture, appendages, and

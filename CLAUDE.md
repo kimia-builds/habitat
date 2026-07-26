@@ -66,6 +66,20 @@ Kimia is a non-coder. Therefore:
   own code actually works before pushing — e.g. drag surfaces, see
   history.md's browser-verification notes. The rule is only: no
   preview runs purely for Kimia's benefit.)
+- **Verifying visuals on long pages, e.g. the design workbench
+  (2026-07-26):** the in-Claude browser pane runs its tab "hidden", so
+  (a) screenshots more than ~a viewport down a long page render solid
+  black, and (b) anything awaiting requestAnimationFrame (frame probes,
+  smooth scrolling) times out and merely LOOKS like a frozen renderer.
+  Verify structure with DOM queries first; for a screenshot of a deep
+  section, temporarily `display:none` the sections above it via debug
+  JS, screenshot near the top, then restore. CSS animations do run
+  while hidden — pause and seek one (`anim.pause(); anim.currentTime =
+  …`) to screenshot a specific frame, then `play()`. The PageBolt MCP
+  can take precise element/full-page screenshots too, but ONLY of the
+  deployed live site (it is a cloud service and cannot reach the local
+  dev server) — use it for post-deploy proof shots, never for pre-push
+  verification, and remember each capture is billed.
 
 ## Product guardrails (from spec.md — never violate)
 

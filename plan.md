@@ -150,8 +150,10 @@ tracker. Everything after this is delight, informed by real use.
             signature congratulation animation (design-notes §8). The
             first finished friend, proving the whole recipe.
       - [ ] **T5.3c The ladder** — the 9 remaining category
-            archetypes, drawn simplest → most complex, assembled on
-            the workbench. Checkpoint before moving on: all 10 side by
+            archetypes PLUS a redone Drifter (the T5.3b pilot body was
+            rejected and removed 2026-07-26; its recipe and animation
+            stand), drawn simplest → most complex, assembled on the
+            workbench. Checkpoint before moving on: all 10 side by
             side must read as one family, complexity visibly climbing
             (design-bible §9c).
       - [ ] **T5.3d Individuals** — per category, derive the remaining

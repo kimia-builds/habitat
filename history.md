@@ -972,6 +972,20 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   `friend-drift` keyframe in `index.css` became the drift-and-bob.
   Colours/eye-placement stay free to retune on the workbench — the tests
   pin only the recipe invariants (verbatim trace, two eyes).
+- 2026-07-26 (Kimia's calls, workbench maintenance): **the pilot
+  Drifter's body art is rejected and removed** — Kimia judged the
+  assembled pilot body not good enough; `drifter.jsx`,
+  `drifterSilhouette.js` and their tests were deleted and the swatches
+  left the DesignPage. The T5.3b **recipe and workflow stand** (they
+  produced the storyteller assembly the same week), and the
+  **drift-and-bob keyframes stay** in index.css — the in-game Drifter
+  friends still play them via `friend-anim-drifter`. A redone Drifter
+  archetype joins the T5.3c ladder pass. Folded into design-bible §9c
+  and plan T5.3c. Same session: **the workbench's empty placeholder
+  tiles are gone** — the slot grids (charms / friends / map regions)
+  and the four empty shelves only pushed real art further down the
+  page; assets now appear on the DesignPage as they are made. Folded
+  into the DesignPage header comment and its tests.
 
 ## spec.md version history (formerly its preamble)
 

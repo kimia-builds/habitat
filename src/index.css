@@ -1503,27 +1503,6 @@ body {
   color: #9aa3b5;
 }
 
-.design-slots {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  list-style: none;
-  padding: 0;
-}
-
-.design-slot {
-  width: 3.5rem;
-  height: 3.5rem;
-  border: 1px dashed #2a3040;
-  border-radius: 0.5rem;
-}
-
-.design-shelf {
-  height: 3.5rem;
-  border: 1px dashed #2a3040;
-  border-radius: 0.5rem;
-}
-
 /* TEMPORARY (T5.3, 2026-07-24): the texture-library swatches — the §8
    surface vocabulary drawn at a readable size for the eyeball pass. A
    plain wrapped shelf; each swatch is a rounded SVG tile with its name
@@ -1584,43 +1563,6 @@ body {
 }
 
 .eye-swatch-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  color: #8b93a6;
-  text-align: center;
-}
-
-/* TEMPORARY (T5.3b, 2026-07-25): the pilot Drifter (design-bible §9c) — the
-   first finished friend. Drawn large so the assembled recipe (silhouette +
-   wispy hair + eyes + glow) reads, on the same dark page the other assets use.
-   The frame keeps the trace's wide aspect. Leaves with the workbench. */
-.drifter-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.4rem;
-  list-style: none;
-  padding: 0;
-}
-
-.drifter-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  width: 18rem;
-  max-width: 100%;
-}
-
-.drifter-swatch-art {
-  width: 18rem;
-  max-width: 100%;
-  height: auto;
-  aspect-ratio: 187.451 / 115.126;
-  border-radius: 0.75rem;
-  background: #0b0f14;
-}
-
-.drifter-swatch-name {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   color: #8b93a6;

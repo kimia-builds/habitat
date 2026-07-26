@@ -1,17 +1,12 @@
 // TEMPORARY (T5 prep, Kimia's call 2026-07-21) — the design-assets
-// workbench: one shelf per image-asset family the M5 design pass will
-// fill — the six charms (T5.1), the friend, flora, fungi, market-object
-// and region art (T5.3), and the reading spreads (T3.5, images Kimia
-// provides). Everything ships empty for now: a place to hang each
-// asset as it's designed, and one page to eyeball the whole set
-// together. This page and its door at the foot of the home screen are
-// scaffolding — they leave (or become something deliberate) when the
-// design pass lands.
+// workbench: one shelf per image-asset family of the M5 design pass,
+// and one page to eyeball the whole set together. This page and its
+// door at the foot of the home screen are scaffolding — they leave (or
+// become something deliberate) when the design pass lands.
 //
-// The fixed-size families take their counts from constants, so the
-// page grows right if those ever move; the open-ended families (flora,
-// fungi, objects, spreads — sized by the T6.1 content pools) get one
-// empty shelf each.
+// Assets appear here AS THEY ARE MADE (Kimia's call 2026-07-26 —
+// replaces the earlier grids of empty placeholder tiles, which only
+// pushed the real art further down the page).
 //
 // TEXTURE LIBRARY (T5.3, 2026-07-24): the shared surface vocabulary
 // (design-bible §8) lands here first for the eyeball pass before it
@@ -25,14 +20,8 @@
 // candidate glows the same living-thing green — they differ only in
 // form (§3) — and each is drawn at one clear size so its shape reads.
 
-import {
-  FRIEND_CATEGORIES,
-  MAP_REGION_COUNT,
-  SYMBOL_COUNT,
-} from '../game/constants.js'
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
 import { Eye, EyeDefs } from './eye.jsx'
-import { Drifter, DrifterDefs, DRIFTER_VIEWBOX } from './drifter.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
 import { Signer, SIGNER_VIEWBOX, SIGNER_PALETTES } from './signer.jsx'
 import {
@@ -43,16 +32,6 @@ import {
   STORYTELLER_VIEWBOX,
   STORYTELLER_PALETTES,
 } from './storyteller.jsx'
-
-const FAMILIES = [
-  { key: 'charms', slots: SYMBOL_COUNT }, // T5.1 — the six habit tags
-  { key: 'friends', slots: FRIEND_CATEGORIES.length }, // T5.3
-  { key: 'map regions', slots: MAP_REGION_COUNT }, // T5.3
-  { key: 'flora', slots: 0 }, // open-ended — one empty shelf
-  { key: 'fungi', slots: 0 },
-  { key: 'market objects', slots: 0 },
-  { key: 'reading spreads', slots: 0 },
-]
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -131,7 +110,7 @@ function TextureSwatch({ tex }) {
 // The canonical eye (T5.3a: Kimia chose the "orb"), drawn on the same dark
 // ground the texture swatches use and clipped to the rounded card. We draw it
 // at a few RADII in one row, because size is now the only thing that varies
-// per friend (§9c) — this is the eye that gets placed on the T5.3b bodies.
+// per friend (§9c) — this is the eye that gets placed on every friend body.
 // Each swatch is a self-contained SVG carrying its OWN <EyeDefs/> under a
 // per-size id prefix, so the eye SVGs on the page never share gradient ids.
 const EYE_SIZES = [
@@ -164,34 +143,6 @@ function EyeSwatch({ size }) {
         </g>
       </svg>
       <span className="eye-swatch-name">{key}</span>
-    </li>
-  )
-}
-
-// The pilot Drifter (T5.3b) — the first friend assembled end-to-end
-// (silhouette + wispy hair + two canonical eyes + green glow, design-bible
-// §9c). Drawn twice on the workbench: once RESTING (its calm still state) and
-// once GREETING (its signature congratulation animation, friend-anim-drifter,
-// which plays in the three allowed moments — design-notes §8). Both rely on the
-// page's one <TextureDefs/> for the hair's support filters, exactly as the
-// texture swatches do; each carries its OWN <DrifterDefs prefix/> so their eye
-// gradients / clip / glow ids never collide.
-function DrifterSwatch({ variant, animate }) {
-  const prefix = `drifter-${variant}-`
-  return (
-    <li className="drifter-swatch">
-      <svg
-        className={`drifter-swatch-art${animate ? ' friend-anim-drifter' : ''}`}
-        viewBox={`0 0 ${DRIFTER_VIEWBOX.w} ${DRIFTER_VIEWBOX.h}`}
-        role="img"
-        aria-label={`pilot drifter, ${variant}`}
-      >
-        <defs>
-          <DrifterDefs prefix={prefix} />
-        </defs>
-        <Drifter prefix={prefix} />
-      </svg>
-      <span className="drifter-swatch-name">{variant}</span>
     </li>
   )
 }
@@ -265,25 +216,6 @@ function DesignPage({ onBack }) {
     <section className="stub-page design-page">
       <h2>design assets</h2>
 
-      {FAMILIES.map((family) => (
-        <section
-          key={family.key}
-          className="design-family"
-          aria-label={family.key}
-        >
-          <h3>{family.key}</h3>
-          {family.slots > 0 ? (
-            <ul className="design-slots">
-              {Array.from({ length: family.slots }, (_, index) => (
-                <li key={index} className="design-slot" />
-              ))}
-            </ul>
-          ) : (
-            <div className="design-shelf" />
-          )}
-        </section>
-      ))}
-
       {/* The shared texture library (T5.3, design-bible §8). One <defs>
           for the whole page, then a shelf of live swatches per family. */}
       <svg width="0" height="0" aria-hidden="true" className="texture-defs">
@@ -307,25 +239,13 @@ function DesignPage({ onBack }) {
       {/* The canonical friend eye (T5.3a, design-bible §9c). Kimia chose the
           "orb"; here it is at a few sizes, since size is now the only thing
           that varies per friend. Each swatch is self-contained (its own glow
-          defs). This is the eye the T5.3b bodies get. */}
+          defs). This is the eye every friend body gets. */}
       <section className="design-family" aria-label="friend eye">
         <h3>friend eye</h3>
         <ul className="eye-swatches">
           {EYE_SIZES.map((size) => (
             <EyeSwatch key={size.key} size={size} />
           ))}
-        </ul>
-      </section>
-
-      {/* The pilot Drifter (T5.3b, design-bible §9c) — the first friend
-          assembled end-to-end. Shown resting and mid-greeting so the finished
-          recipe (silhouette + hair + eyes + glow) and its signature animation
-          can both be eyeballed. */}
-      <section className="design-family" aria-label="pilot drifter">
-        <h3>pilot drifter</h3>
-        <ul className="drifter-swatches">
-          <DrifterSwatch variant="resting" animate={false} />
-          <DrifterSwatch variant="greeting" animate={true} />
         </ul>
       </section>
 

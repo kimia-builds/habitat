@@ -1,34 +1,18 @@
 // Tests for the design-assets workbench (T5 prep). The page is
 // scaffolding, so these prove only its STRUCTURE (CLAUDE.md: roles,
-// counts, behaviour — never incidental wording): the fixed-size asset
-// families size themselves from the constants, and the T5.3 texture
-// library draws one live swatch per primitive in its manifest.
+// counts, behaviour — never incidental wording). Assets appear on the
+// page as they are made (2026-07-26 — the empty placeholder tiles are
+// gone), so each shelf's test asserts its live swatches.
 
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
 import { ABODE_PALETTES } from './sky.jsx'
-import {
-  FRIEND_CATEGORIES,
-  MAP_REGION_COUNT,
-  SYMBOL_COUNT,
-} from '../game/constants.js'
 
 afterEach(cleanup)
 
 describe('DesignPage workbench', () => {
-  it('sizes the fixed asset families from the constants', () => {
-    render(<DesignPage onBack={vi.fn()} />)
-    // The charms / friends / map-region shelves each hold one empty
-    // slot per unit, so the page grows right if a count ever moves.
-    const countSlots = (label) =>
-      screen.getByLabelText(label).querySelectorAll('.design-slot').length
-    expect(countSlots('charms')).toBe(SYMBOL_COUNT)
-    expect(countSlots('friends')).toBe(FRIEND_CATEGORIES.length)
-    expect(countSlots('map regions')).toBe(MAP_REGION_COUNT)
-  })
-
   it('draws one live swatch for every texture in the manifest', () => {
     const { container } = render(<DesignPage onBack={vi.fn()} />)
     // Each texture swatch is an accessible <svg role="img"> labelled by its
@@ -65,22 +49,6 @@ describe('DesignPage workbench', () => {
       'canonical eye, medium',
       'canonical eye, large',
     ])
-  })
-
-  it('assembles the pilot Drifter, resting and mid-greeting', () => {
-    const { container } = render(<DesignPage onBack={vi.fn()} />)
-    // The first finished friend (§9c) is drawn twice: once resting, once
-    // playing its signature animation — both accessible <svg role="img">.
-    const labels = [
-      ...container.querySelectorAll('.drifter-swatch svg[role="img"]'),
-    ].map((img) => img.getAttribute('aria-label'))
-    expect(labels).toEqual(['pilot drifter, resting', 'pilot drifter, greeting'])
-    // Only the greeting carries the Drifter's signature animation class; the
-    // resting state is still. (Behaviour, not the wording of the motion.)
-    const greeting = screen.getByRole('img', { name: 'pilot drifter, greeting' })
-    const resting = screen.getByRole('img', { name: 'pilot drifter, resting' })
-    expect(greeting.classList.contains('friend-anim-drifter')).toBe(true)
-    expect(resting.classList.contains('friend-anim-drifter')).toBe(false)
   })
 
   it('shows the signer illustration in its three tints', () => {
