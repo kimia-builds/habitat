@@ -147,6 +147,15 @@ export function currentStreak(habit, completions, now, cutoffHour) {
   const firstDay = dayKeyFromTimestamp(habit.createdAt, cutoffHour)
   const eraStart = currentKindStart(habit, firstDay)
 
+  // Asked about a moment BEFORE this counting era began — which the
+  // field notes do every time they browse back past a schedule change
+  // that swapped the counting unit (Kimia's decision 2026-07-27: those
+  // older weeks show no streak at all). The current streak simply
+  // hadn't started yet; nothing below would even be a sensible
+  // question, since the habit was living under a different kind of
+  // schedule then.
+  if (today < eraStart) return 0
+
   if (kind === 'week') {
     const firstWeek = weekStart(eraStart)
     let week = weekStart(today)

@@ -987,6 +987,49 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   page; assets now appear on the DesignPage as they are made. Folded
   into the DesignPage header comment and its tests.
 
+- 2026-07-27 (bug fix session, T2.3 / T6.5): **an older week shows no
+  streak once a habit has changed counting unit.** Reported as a black
+  screen: browsing back from the field notes to an earlier week blanked
+  the page. Cause — `currentStreak` picks its counting unit (days vs
+  weeks) from the habit's schedule TODAY, but the field notes ask it
+  "as of" the week on show. For a habit that is N-per-week now and was
+  something else then, that made it ask `isWeekFulfilled` of a week
+  with no weekly target, which throws by design; with no error boundary
+  in the app, React unmounted everything and left the near-black body
+  showing. Only that one direction crashed (daily→N-per-week,
+  whenever→N-per-week); N-per-week→daily and same-kind changes were
+  always fine. Kimia's call: those older weeks show **no streak at
+  all** — the existing rule already says switching counting unit
+  restarts the streak (2026-07-16), so as of that week the current
+  streak had not begun, and blank is what a not-running streak looks
+  like everywhere else. (The alternative, resurrecting the day-streak
+  that was truly running back then, was declined as more machinery than
+  the notes need.) Folded into spec.md §6.
+  _Build:_ one guard in `src/game/schedule.js` — `if (today < eraStart)
+  return 0` right after the era is worked out, so a moment before the
+  current counting era simply has no streak, whatever the kind. This
+  also makes the week-walk below it safe by construction: every day
+  from `eraStart` onward resolves to a week-kind schedule entry.
+  Regression tests at both levels (`schedule.test.js` for the engine,
+  `fieldnotes.test.js` for the page, which asserts the week still draws
+  its marks with a blank streak).
+- 2026-07-27 (bug fix session, T6.5): **the app gets a safety net**
+  (Kimia's call, made while fixing the above): any screen that fails to
+  draw is replaced by one calm full-screen message rather than a black
+  nothing. Words are Kimia's, in a content slot
+  (`src/content/mishap.js`, mirroring `blocked.js`): something went
+  wrong, tell the maker, refresh to get back to habits. Deliberately
+  **no in-app way back** — a refresh is the whole recovery, and habits
+  are untouched in storage regardless. A net, not a cure: every crash
+  it catches is still a bug. Folded into spec.md §3.
+  _Build:_ `src/ui/ErrorBoundary.jsx` — the codebase's one class
+  component, because React offers no hook for catching render errors.
+  It swaps in `.mishap` (styled exactly like the device gate's block
+  screen) and logs the real error to the console for diagnosis. Wrapped
+  OUTSIDE `ViewportGate` in `main.jsx` so it catches the gate too.
+  Tests use a controlled copy fixture, never Kimia's real words, and
+  cover both the filled and blank slot.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { recordCompletion } from './completions.js'
 import { earliestWeek, shouldOpenFieldNotes, weekNotes } from './fieldnotes.js'
-import { archiveHabit, createHabit } from './habits.js'
+import { archiveHabit, changeSchedule, createHabit } from './habits.js'
 
 const at = (y, month, d, h, min = 0) =>
   new Date(y, month - 1, d, h, min).getTime()
@@ -113,6 +113,21 @@ describe('weekNotes', () => {
 
     const weekAfter = weekNotes([habit], completions, '2026-07-13', NOW, CUTOFF)
     expect(weekAfter.rows).toHaveLength(0)
+  })
+
+  it('an earlier week survives a habit that has since changed counting unit', () => {
+    // Daily back then, N-per-week now (switched Monday the 20th).
+    // Browsing back to the week of the 6th used to throw and leave a
+    // blank page (bug found 2026-07-27). The week still draws; its
+    // streak is blank, because that era hadn't begun.
+    let habit = makeHabit('h1', { type: 'daily' })
+    habit = changeSchedule(habit, { type: 'nPerWeek', n: 3 }, '2026-07-20')
+    const completions = [doneBy('h1', 2026, 7, 6), doneBy('h1', 2026, 7, 7)]
+    const later = at(2026, 7, 27, 12)
+    const shown = weekNotes([habit], completions, WEEK, later, CUTOFF)
+    expect(shown.rows).toHaveLength(1)
+    expect(shown.rows[0].days[0].count).toBe(1)
+    expect(shown.rows[0].streak).toBe(null)
   })
 
   it('a habit created after the shown week is absent from it', () => {

@@ -48,6 +48,14 @@ battles.
   pass simply removes/softens the gate and adds small-screen layouts.
   The desktop-only startup animation (§5) is one moment *inside* this
   block, no longer a special case on its own.
+- **Safety net (2026-07-27).** If any screen ever fails to draw, one
+  calm full-screen message replaces it — Kimia-written copy in a
+  content slot — instead of the blank black page React otherwise
+  leaves behind. It says something went wrong, asks that the maker be
+  told, and points at a refresh; there is no in-app way back, by
+  design. Nothing is lost when it shows: habits live in storage, which
+  a drawing failure never touches. It is a net, not a cure — every
+  crash it catches is still a bug to fix.
 
 ## 4. Core mechanics
 
@@ -424,6 +432,12 @@ design-notes §12f.
   ("Patterns" were dropped from the brief — Kimia, 2026-07-16; the
   grid speaks for itself.) Per-habit line graphs live at the foot of
   the field notes (built in T2.4).
+- **Streaks in an older week (2026-07-27).** Each week's streak is told
+  as of that week's end. Switching a habit between a day-counted and a
+  week-counted schedule restarts its streak at the switch (§4.2), so
+  weeks BEFORE such a switch fall outside the streak now running: they
+  simply show no streak, the same blank a broken streak shows. The
+  grid, the marks and the graphs are unaffected.
 
 ## 7. Look & feel
 

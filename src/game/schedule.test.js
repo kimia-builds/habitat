@@ -392,6 +392,19 @@ describe('switching streak kind restarts the streak at the switch (T2.3)', () =>
     )
   })
 
+  it('a moment before the era began has no streak, whatever the kind', () => {
+    // The field notes ask "as of" the week on show, so they can ask
+    // about a moment when this habit was counted in DAYS, not weeks
+    // (bug found 2026-07-27: this used to throw and blank the page).
+    // The current era hadn't begun then, so the streak is nothing.
+    let habit = makeHabit({ type: 'daily' })
+    habit = changeSchedule(habit, { type: 'nPerWeek', n: 3 }, '2026-07-20')
+    const completions = [6, 7, 8].map((d) => done(2026, 7, d, 9))
+    expect(currentStreak(habit, completions, at(2026, 7, 13, 22), CUTOFF)).toBe(
+      0,
+    )
+  })
+
   it('days lived under "whenever" neither break nor extend a later day streak', () => {
     // Whenever until Wednesday the 15th, then daily, done Wed+Thu:
     // streak 2 — the unscheduled past is simply not part of the era.

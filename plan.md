@@ -183,6 +183,8 @@ tracker. Everything after this is delight, informed by real use.
 - [ ] **T6.3 Portfolio polish** — README with screenshots, repo
       description, demo-friendly first-run experience.
 - [ ] **T6.4 Backup habit** — periodic "export your data" nudge.
+- [x] **T6.5 Safety net (error boundary).** _(done 2026-07-27, unplanned
+      — added while fixing the field notes crash)_
 
 ---
 

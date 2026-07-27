@@ -1472,6 +1472,26 @@ body {
   color: #cfd8e3;
 }
 
+/* The safety net (ErrorBoundary, 2026-07-27): if a screen ever fails to
+   draw, this one message replaces it instead of a black nothing. Styled
+   exactly like the device gate above — calm and centred, never an alarm
+   colour. */
+.mishap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.mishap-message {
+  max-width: 28rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: #cfd8e3;
+}
+
 /* TEMPORARY (T5 prep): the design-assets workbench — empty dashed
    frames waiting for the M5 art. Its door sits at the foot of the
    home screen, quieter than the backup buttons it stands beside. */
