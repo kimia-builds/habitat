@@ -51,7 +51,14 @@ Kimia is a non-coder. Therefore:
   decision made during the session has one dated entry in history.md's
   decisions log AND is folded into the spec.md / design-notes.md
   section it changes (those files must always describe the present on
-  their own). No version-history preambles anywhere. Docs that
+  their own); and (c) **README.md's Status section still describes
+  what is actually built** — it is the only doc outsiders read, and it
+  sat on "early days — in M1" until after M4 shipped because this rule
+  didn't name it (fixed 2026-08-06). Its `<!-- current-milestone: MX -->`
+  marker is enforced by `src/test/docs.test.js`, so a milestone
+  rollover now fails the suite until the Status prose is rewritten —
+  treat that failure as the reminder it is, never by just bumping the
+  marker. No version-history preambles anywhere. Docs that
   disagree with code are a bug — say so and fix them in the same
   session.
 - If stuck on the same bug twice, stop and say so rather than thrashing.

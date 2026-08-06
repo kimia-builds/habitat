@@ -821,7 +821,7 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   animation is Habitat's only device-conditional moment" line — the
   whole-app block is now the primary device split, and the desktop-only
   startup animation (§12f) simply lives inside the desktop side of it.
-  Built in T5.1b. (v1 non-goals already excluded a mobile *app*; this
+  Built in T5.1b. (v1 non-goals already excluded a mobile _app_; this
   makes the stance explicit and visible to the user.)
 - 2026-07-23 (Kimia's call, planning session): **habit-list reordering
   moves from the ▲▼ arrow buttons to drag-and-drop.** The arrows are
@@ -1006,7 +1006,7 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   that was truly running back then, was declined as more machinery than
   the notes need.) Folded into spec.md §6.
   _Build:_ one guard in `src/game/schedule.js` — `if (today < eraStart)
-  return 0` right after the era is worked out, so a moment before the
+return 0` right after the era is worked out, so a moment before the
   current counting era simply has no streak, whatever the kind. This
   also makes the week-walk below it safe by construction: every day
   from `eraStart` onward resolves to a week-kind schedule entry.
@@ -1029,6 +1029,27 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   OUTSIDE `ViewportGate` in `main.jsx` so it catches the gate too.
   Tests use a controlled copy fixture, never Kimia's real words, and
   cover both the filled and blank slot.
+
+- 2026-08-06 (docs session): **the README is now a synced doc, enforced
+  by a test.** It had sat on "🌱 Early days — in M1" since M1 while the
+  app reached M5 — the one document outsiders read, and the one the
+  end-of-session doc-sync rule never named. Two fixes, because the rule
+  alone had already failed once: CLAUDE.md's sync rule gains clause (c)
+  for README.md, and the README's Status section carries a
+  `<!-- current-milestone: MX -->` marker that `src/test/docs.test.js`
+  compares against the milestone holding plan.md's first unticked task.
+  A milestone rollover now fails the suite — deliberately, since a
+  failing suite blocks the deploy until the Status prose is rewritten.
+  The test reads exactly one fact from each file and is untouchable by
+  Kimia's `src/content/` edits, which is the standing constraint on
+  anything that can break CI (see the 2026-07-19 and 2026-07-23
+  content-coupled test failures above).
+  _Also corrected in the same pass:_ the README gained the app's page
+  list, the desktop-only device stance (a visitor on a phone otherwise
+  meets the block screen with no warning), the documents table, and a
+  more accurate description of the storage layer. This is an accuracy
+  refresh, **not** T6.3 — screenshots, repo description and the
+  demo-friendly first run are still that task's work.
 
 ## spec.md version history (formerly its preamble)
 
@@ -1827,7 +1848,7 @@ and recorded in spec.md's decisions log._
       tree, not a CSS media query that hides it: below the threshold the
       App never mounts, so nothing inside it runs on a blocked screen —
       no timers, and in particular no daily startup animation. That is
-      why the desktop-only startup (§12f) simply *lives inside* this gate
+      why the desktop-only startup (§12f) simply _lives inside_ this gate
       rather than needing its own device check — being inside the app, it
       only ever runs on desktop. The gate reads `window.innerWidth`, keeps
       it in state, and re-checks on `resize`, so narrowing/widening a
@@ -1883,7 +1904,7 @@ and recorded in spec.md's decisions log._
       change persists until the drop.
       BUG FIX (same session, on Kimia's report): the first cut compared by
       loop index and did NOT skip the dragged row. Because the lifted row
-      carries a `translateY` that follows the pointer, an *upward* drag
+      carries a `translateY` that follows the pointer, an _upward_ drag
       shifted the dragged row's own box up under the pointer; being lower in
       DOM order it then won the "last row the pointer passed" test, so the
       target snapped back to the row itself and the move became a no-op —
