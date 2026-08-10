@@ -1067,6 +1067,47 @@ return 0` right after the era is worked out, so a moment before the
   idle-blink class was renamed storyteller-eye-blink →
   **friend-eye-blink** (shared by every assembled archetype).
 
+- 2026-08-10 (Kimia's calls, second workbench session of the day):
+  **her nine remaining traced archetypes land on the workbench**, each in
+  the three reward-stream pastels and assembled to the friend recipe
+  (canonical blinking eyes at her placeholders, body-colour glow, the
+  body/eyes split). With friend 10 that is the whole cast side by side —
+  the T5.3c checkpoint's purpose, though the checkpoint itself stays
+  unticked until Kimia says it is met. Four decisions came out of it.
+  **(1) The traces are two different animals**, and the file says which:
+  friends 01, 02 and 06 are STACKED like the storyteller (a #333 layer
+  that is the whole figure, lighter shades on top, nothing lost), while
+  03, 04, 05, 07, 08 and 09 are BANDED like friend 10 (non-overlapping
+  tonal bands whose darkest layer the tracing lost) and get a
+  reconstructed base. Every one was checked on a magenta ground first.
+  **(2) The seal is per friend, and much wider than friend 10's.**
+  Checked against Kimia's pixel character sheet the first pass still read
+  as too gappy — on the sheet these are continuous bodies, not filigree —
+  so the seal went to 8x for 03/04/05/07 (+40% to +101% more solid than
+  the bands paint), 18x for 08 and 25x for 09. Those two need their own
+  numbers because their gaps are not enclosed holes but **bays opening
+  outward**, and a seal only closes gaps narrower than itself. The stop
+  point is where the outer curls begin welding together: past that the
+  filigree goes, which is the real cost of filling harder. Friend 05's
+  sealed tendril loops were accepted as they are, the same call friend 10
+  got. **(3) Sizes come from the character sheet**, which is now the
+  authority on how big each archetype is against the others — not the
+  trace canvases, which are export settings. Friend 01 is faithfully tiny
+  (1.6rem); friend 10 recomputed to exactly the 11rem it already had.
+  Friend 01's eyes came down to 0.55x its placeholders: they were drawn
+  at ~7% of its body where every other friend sits near 1%. **(4) The
+  storyteller leaves the lineup** — it is not on the character sheet and
+  Kimia removed it; `storyteller.jsx` stays only because its header is
+  where the body/eyes split is explained. Also this session: the friends'
+  colours moved into one shared **grey→pastel table**
+  (`src/ui/friendPalettes.js`) — every trace came out of Inkscape in the
+  same greys, so retuning a hue is now one edit rather than nine, and
+  T5.2's move to design tokens is one file's work. Values are unchanged.
+  Noted for later: **friend 01's trace is far coarser** than the rest (a
+  64-unit canvas against 174–715), which is why it reads as faceted
+  blocks; nothing was lost, and Kimia kept it — its size makes the
+  coarseness moot. Folded into design-bible §9c.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

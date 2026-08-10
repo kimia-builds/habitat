@@ -150,13 +150,13 @@ mineral · weathered rock
 
 **Who may use what:**
 
-| Family | Draws from |
-| --- | --- |
-| Flora | Plant-like, Fungal, Hair (any organic) |
-| Fungi | Fungal (primary), Plant-like |
-| Friends | Any organic — Plant-like, Fungal, Hair |
-| Curiosities | **Rock and Fungal only** — never leafy, hairy, or fleshy |
-| Terrain / Map | Rock and Ground |
+| Family        | Draws from                                               |
+| ------------- | -------------------------------------------------------- |
+| Flora         | Plant-like, Fungal, Hair (any organic)                   |
+| Fungi         | Fungal (primary), Plant-like                             |
+| Friends       | Any organic — Plant-like, Fungal, Hair                   |
+| Curiosities   | **Rock and Fungal only** — never leafy, hairy, or fleshy |
+| Terrain / Map | Rock and Ground                                          |
 
 **Surface colour** (revised 2026-07-25, T5.3b): an organic texture is
 **tinted to its wearer's body colour**, not a fixed green — a friend's
@@ -253,6 +253,43 @@ app (no drifter source files remain); a redone Drifter joins the T5.3c
 ladder pass. Its signature animation, the drift-and-bob (design-notes
 §8), was kept and still serves the category.
 
+**Importing a traced archetype (2026-08-10).** Kimia's drawings arrive
+as Inkscape traces, and they come in two shapes. A **stacked** trace
+paints its darkest shade as the whole figure and layers lighter shades
+on top; a **banded** trace paints non-overlapping tonal bands and has
+usually **lost its darkest layer** in tracing, leaving holes through the
+body. Which one a trace is decides how it is assembled, so every import
+starts with the same test: **render it on a magenta ground.** Magenta
+showing through the interior means the darkest layer is gone.
+
+A lost layer is **reconstructed**, not redrawn: sample every band, union
+them, seal the cracks, keep the exterior rings (this is the step that
+fills the holes), drop the crumbs. The result sits behind the bands as
+an extra darkest shade and is also the shape the glow aura blurs. Two
+things about the seal, learned across nine imports:
+
+- **Its width is per drawing, not a constant.** A seal only closes gaps
+  narrower than itself, so a figure whose gaps are enclosed holes seals
+  easily, while one whose gaps are **bays opening out to the background**
+  needs a far wider seal before the body reads whole.
+- **The stop point is where fringe detail welds together.** Filling
+  harder always costs filigree eventually; that trade is Kimia's call,
+  not the script's. Sealing also closes enclosed background pockets
+  (tendril-loop interiors) — flag conspicuous ones rather than deciding.
+
+Layers are kept **verbatim in the source's paint order**, which is not
+always light-to-dark; the colour ramps are listed in that same order so
+each shade lands on the tone it was drawn in. All the traces share one
+grey ramp, so one **grey→pastel table** serves every friend
+(`src/ui/friendPalettes.js`).
+
+**Size is set by the character sheet (2026-08-10)** — Kimia's pixel
+sheet of the whole cast at their canonical scales, not by the traces'
+own canvases, which are only export settings. An archetype's size is
+read from the sheet as one figure (the square root of its width × height
+there) and applied as a card width through the artwork's own
+proportions, so a drawing only ever changes scale, never shape.
+
 **Complexity scales with size.** Larger friends are more visually
 complex, but complexity comes from **layered texture, appendages, and
 silhouette** — never brighter colour or stronger glow.
@@ -266,18 +303,18 @@ analogue. Weird, not familiar-in-costume.
 literacy, from 10 Drifters down to a single Poet:
 
 | Category (low → high literacy) | Individuals |
-| --- | --- |
-| Drifters | 10 |
-| Nesters | 9 |
-| Mimics | 8 |
-| Signers | 7 |
-| Sprouts | 6 |
-| Chatters | 5 |
-| Neighbours | 4 |
-| Storytellers | 3 |
-| Scholars | 2 |
-| Poets | 1 |
-| **Total** | **55** |
+| ------------------------------ | ----------- |
+| Drifters                       | 10          |
+| Nesters                        | 9           |
+| Mimics                         | 8           |
+| Signers                        | 7           |
+| Sprouts                        | 6           |
+| Chatters                       | 5           |
+| Neighbours                     | 4           |
+| Storytellers                   | 3           |
+| Scholars                       | 2           |
+| Poets                          | 1           |
+| **Total**                      | **55**      |
 
 The roster is a **cap** (2026-07-24): a category refills only until its
 roster is exhausted — 55 friendships is the lifetime maximum (spec §5).
@@ -390,15 +427,15 @@ A checklist view for the M5 design pass. Every quantity is fixed;
 boundaries and content-pool assignments (which flora are landmarks,
 region order) are detailed with T6.1.
 
-| Family | Count | Assets per unit |
-| --- | --- | --- |
-| Flora — collectible | 48 | body (+ optional leaves, one fruit type) |
-| Flora — landmark | 16 | body + Map marker + one keepsake type |
-| Fungi | 1 | single form |
-| Friend categories | 10 | 1 signature animation each |
-| Friend individuals | 55 | body each (10 → 1 down the ladder) |
-| Curiosities | 64 | body (4 per region × 16) |
-| Publications | 30 | spine + cover + interior spread (10 per type) |
-| Sky | 1 | Abode sky × 4 palettes (shared night sky is CSS, §11a) |
-| Terrain | 1 | serves 3 screens |
-| Map regions | 16 | region art + 1 landmark marker each |
+| Family              | Count | Assets per unit                                        |
+| ------------------- | ----- | ------------------------------------------------------ |
+| Flora — collectible | 48    | body (+ optional leaves, one fruit type)               |
+| Flora — landmark    | 16    | body + Map marker + one keepsake type                  |
+| Fungi               | 1     | single form                                            |
+| Friend categories   | 10    | 1 signature animation each                             |
+| Friend individuals  | 55    | body each (10 → 1 down the ladder)                     |
+| Curiosities         | 64    | body (4 per region × 16)                               |
+| Publications        | 30    | spine + cover + interior spread (10 per type)          |
+| Sky                 | 1     | Abode sky × 4 palettes (shared night sky is CSS, §11a) |
+| Terrain             | 1     | serves 3 screens                                       |
+| Map regions         | 16    | region art + 1 landmark marker each                    |
