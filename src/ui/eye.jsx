@@ -51,9 +51,13 @@
  * --------------------------------------------------------------------------- */
 export const EYE_TOKENS = {
   haloDark: '#04050b', // the dark "blackish" halo — a socket, not a bright bloom
-  coreBright: '#fff7d4', // pale warm centre of the lit orb (and its catch-light)
-  coreMid: '#ffcf1e', // the yellow body of the eye
-  rim: '#e0a400', // deeper amber at the very rim, so the orb has a little depth
+  // Kimia's call 2026-08-10: the eye's main colour is #ffeeaa (a softer,
+  // paler yellow than the first #ffcf1e); core and rim are derived from
+  // it — a touch brighter and a touch deeper in the same warm family —
+  // so the orb keeps its wet/alive depth.
+  coreBright: '#fffae0', // pale warm centre of the lit orb (and its catch-light)
+  coreMid: '#ffeeaa', // the yellow body of the eye
+  rim: '#d9b44e', // deeper amber at the very rim, so the orb has a little depth
 }
 
 // The dark halo is drawn at this multiple of the eye's radius, so the socket

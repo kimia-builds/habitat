@@ -32,6 +32,14 @@ import {
   STORYTELLER_VIEWBOX,
   STORYTELLER_PALETTES,
 } from './storyteller.jsx'
+import {
+  Friend10Body,
+  Friend10BodyDefs,
+  Friend10Eyes,
+  EyeDefs as Friend10EyeDefs,
+  FRIEND10_VIEWBOX,
+  FRIEND10_PALETTES,
+} from './friend10.jsx'
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -211,6 +219,41 @@ function StorytellerSwatch({ tint }) {
   )
 }
 
+// Friend 10 (friend10.jsx, added 2026-08-10) — the tenth archetype drawing,
+// imported and assembled exactly like the storyteller (three reward-stream
+// pastels, canonical blinking eyes, body-colour glow, body/eyes split), plus
+// a reconstructed darkest base layer that the trace had lost (see
+// friend10.jsx's header for the story).
+const FRIEND10_TINTS = ['green', 'violet', 'amber']
+
+function Friend10Swatch({ tint }) {
+  const prefix = `friend10-${tint}-`
+  const viewBox = `0 0 ${FRIEND10_VIEWBOX.w} ${FRIEND10_VIEWBOX.h}`
+  return (
+    <li className="friend10-swatch">
+      <div
+        className="friend10-swatch-art"
+        role="img"
+        aria-label={`friend 10, ${tint}`}
+      >
+        <svg className="friend10-swatch-layer" viewBox={viewBox} aria-hidden="true">
+          <defs>
+            <Friend10BodyDefs prefix={prefix} />
+          </defs>
+          <Friend10Body palette={FRIEND10_PALETTES[tint]} prefix={prefix} />
+        </svg>
+        <svg className="friend10-swatch-layer" viewBox={viewBox} aria-hidden="true">
+          <defs>
+            <Friend10EyeDefs prefix={prefix} />
+          </defs>
+          <Friend10Eyes prefix={prefix} />
+        </svg>
+      </div>
+      <span className="friend10-swatch-name">{tint}</span>
+    </li>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -291,6 +334,18 @@ function DesignPage({ onBack }) {
         <ul className="storyteller-swatches">
           {STORYTELLER_TINTS.map((tint) => (
             <StorytellerSwatch key={tint} tint={tint} />
+          ))}
+        </ul>
+      </section>
+
+      {/* Friend 10 (friend10.jsx) — the tenth archetype in the three
+          reward-stream pastels, assembled with the canonical blinking eyes,
+          its body-colour glow, and the reconstructed darkest base. */}
+      <section className="design-family" aria-label="friend 10">
+        <h3>friend 10</h3>
+        <ul className="friend10-swatches">
+          {FRIEND10_TINTS.map((tint) => (
+            <Friend10Swatch key={tint} tint={tint} />
           ))}
         </ul>
       </section>

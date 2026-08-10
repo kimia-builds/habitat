@@ -15,7 +15,7 @@
 //   • the body glows its OWN body colour (never the eyes' yellow): the
 //     bottom layer, blurred and filled with the palette's glow colour,
 //     sits behind the figure — the same aura recipe as the Drifter;
-//   • each eye sits in its own .storyteller-eye-blink wrapper so the
+//   • each eye sits in its own .friend-eye-blink wrapper so the
 //     idle blink (index.css) squashes it around its own centre — and the
 //     eyes live in a SEPARATE overlay svg from the heavy body (see the
 //     note above StorytellerBodyDefs for why that split is load-bearing).
@@ -128,14 +128,14 @@ export function StorytellerBody({ palette = STORYTELLER_GREYS, prefix = '' }) {
 }
 
 // The light, animated half: the two canonical yellow eyes, each in its
-// own .storyteller-eye-blink wrapper so the idle blink (index.css)
+// own .friend-eye-blink wrapper so the idle blink (index.css)
 // squashes it around its own centre. Render inside an <svg> with the
 // storyteller viewBox and one <EyeDefs prefix/> (eye.jsx) in its defs.
 export function StorytellerEyes({ prefix = '' }) {
   return (
     <g>
       {STORYTELLER_EYES.map((eye, i) => (
-        <g key={i} className="storyteller-eye-blink">
+        <g key={i} className="friend-eye-blink">
           <Eye cx={eye.cx} cy={eye.cy} r={eye.r} prefix={prefix} />
         </g>
       ))}

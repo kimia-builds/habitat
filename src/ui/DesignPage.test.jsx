@@ -84,8 +84,31 @@ describe('DesignPage workbench', () => {
     for (const swatch of swatches) {
       expect(swatch.querySelectorAll('svg')).toHaveLength(2)
       const [body, eyes] = swatch.querySelectorAll('svg')
-      expect(body.querySelectorAll('.storyteller-eye-blink')).toHaveLength(0)
-      expect(eyes.querySelectorAll('.storyteller-eye-blink')).toHaveLength(2)
+      expect(body.querySelectorAll('.friend-eye-blink')).toHaveLength(0)
+      expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(2)
+    }
+  })
+
+  it('shows friend 10 in three tints with two blinking eyes each', () => {
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // The tenth archetype follows the storyteller's assembled pattern:
+    // one accessible wrapper div per reward-stream pastel, each holding
+    // a static body svg and a separate eyes overlay svg (the blink
+    // lives only in the overlay, so it never repaints the heavy body).
+    const swatches = [
+      ...container.querySelectorAll('.friend10-swatch [role="img"]'),
+    ]
+    const labels = swatches.map((img) => img.getAttribute('aria-label'))
+    expect(labels).toEqual([
+      'friend 10, green',
+      'friend 10, violet',
+      'friend 10, amber',
+    ])
+    for (const swatch of swatches) {
+      expect(swatch.querySelectorAll('svg')).toHaveLength(2)
+      const [body, eyes] = swatch.querySelectorAll('svg')
+      expect(body.querySelectorAll('.friend-eye-blink')).toHaveLength(0)
+      expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(2)
     }
   })
 

@@ -1674,13 +1674,14 @@ body {
   text-align: center;
 }
 
-/* NOT workbench-temporary — part of the storyteller asset itself
-   (storyteller.jsx), and moves with it into the game source. The idle
-   blink: each canonical eye sits in its own wrapper and squashes shut
-   around its own centre for a beat, then reopens — rare and quiet
-   (design-notes §8: calm resting states; juice from timing, never
-   alarm). The whole cycle is 6.5s with the blink itself ~400ms of it. */
-@keyframes storyteller-blink {
+/* NOT workbench-temporary — the SHARED friend idle blink (renamed from
+   storyteller-only 2026-08-10; used by every assembled archetype's eye
+   overlay), and it moves with the assets into the game source. Each
+   canonical eye sits in its own wrapper and squashes shut around its
+   own centre for a beat, then reopens — rare and quiet (design-notes
+   §8: calm resting states; juice from timing, never alarm). The whole
+   cycle is 6.5s with the blink itself ~400ms of it. */
+@keyframes friend-blink {
   0%,
   93.5%,
   100% {
@@ -1691,10 +1692,54 @@ body {
   }
 }
 
-.storyteller-eye-blink {
+.friend-eye-blink {
   transform-box: fill-box;
   transform-origin: center;
-  animation: storyteller-blink 6.5s ease-in-out infinite;
+  animation: friend-blink 6.5s ease-in-out infinite;
+}
+
+/* TEMPORARY (2026-08-10): the friend-10 illustration swatches — the same
+   dark card as the other imported archetypes, sized to this artwork's own
+   nearly-square portrait aspect. Two stacked svgs per card (static body,
+   blinking eyes), as with the storyteller. Leaves with the workbench. */
+.friend10-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  list-style: none;
+  padding: 0;
+}
+
+.friend10-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 11rem;
+  max-width: 100%;
+}
+
+.friend10-swatch-art {
+  position: relative;
+  width: 11rem;
+  max-width: 100%;
+  aspect-ratio: 687.651 / 832.012;
+  border-radius: 0.75rem;
+  background: #0b0f14;
+}
+
+.friend10-swatch-layer {
+  position: absolute;
+  inset: 0.6rem;
+  width: calc(100% - 1.2rem);
+  height: calc(100% - 1.2rem);
+}
+
+.friend10-swatch-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: #8b93a6;
+  text-align: center;
 }
 
 /* TEMPORARY (T5.3, 2026-07-24): the environment-sky swatches (design-bible

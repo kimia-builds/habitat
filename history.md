@@ -1051,6 +1051,22 @@ return 0` right after the era is worked out, so a moment before the
   refresh, **not** T6.3 — screenshots, repo description and the
   demo-friendly first run are still that task's work.
 
+- 2026-08-10 (Kimia's calls, workbench session): **the canonical eye's
+  colour is now #ffeeaa on every friend** — a softer, paler yellow
+  replacing the first #ffcf1e; the gradient keeps its depth (core and
+  rim derived from the new mid: #fffae0 / #d9b44e, eye.jsx). Same
+  session: **friend-10.svg lands on the workbench** in the three
+  reward-stream pastels, assembled like the storyteller (canonical
+  blinking eyes at Kimia's traced placeholders, body-colour glow,
+  body/eyes split). Its trace had LOST its darkest layer — the seven
+  tonal bands don't overlap, leaving holes through the figure's core —
+  so a **reconstructed darkest base** (the sealed outer silhouette,
+  computed from all bands with shapely) now sits behind the bands as an
+  extra ramp shade. Caveat flagged to Kimia: the seal also closes the
+  tendril loops' interiors, which the raster reads as background. The
+  idle-blink class was renamed storyteller-eye-blink →
+  **friend-eye-blink** (shared by every assembled archetype).
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
