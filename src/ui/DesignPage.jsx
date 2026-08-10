@@ -40,6 +40,7 @@ import {
   FRIEND10_VIEWBOX,
   FRIEND10_PALETTES,
 } from './friend10.jsx'
+import { TRACED_FRIENDS, FRIEND_TINTS } from './tracedFriends.js'
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -254,6 +255,47 @@ function Friend10Swatch({ tint }) {
   )
 }
 
+// Kimia's nine other traced archetypes (friend01.jsx … friend09.jsx, added
+// 2026-08-10), each assembled exactly like friend 10 and the storyteller. They
+// are all the same shape of component, so one swatch serves all nine, driven
+// by tracedFriends.js. Per-friend class names are kept on the card so its size
+// can still be tuned one archetype at a time.
+function TracedFriendSwatch({ friend, tint }) {
+  const prefix = `friend${friend.num}-${tint}-`
+  const { Body, BodyDefs, Eyes, EyeDefs: FriendEyeDefs, viewBox } = friend
+  const box = `0 0 ${viewBox.w} ${viewBox.h}`
+  // The card takes its shape from the artwork's own canvas and its size from
+  // the one width column in tracedFriends.js.
+  const shape = {
+    width: `${friend.width}rem`,
+    aspectRatio: `${viewBox.w} / ${viewBox.h}`,
+  }
+  return (
+    <li className={`traced-swatch friend${friend.num}-swatch`} style={{ width: shape.width }}>
+      <div
+        className="traced-swatch-art"
+        style={shape}
+        role="img"
+        aria-label={`${friend.label}, ${tint}`}
+      >
+        <svg className="traced-swatch-layer" viewBox={box} aria-hidden="true">
+          <defs>
+            <BodyDefs prefix={prefix} />
+          </defs>
+          <Body palette={friend.palettes[tint]} prefix={prefix} />
+        </svg>
+        <svg className="traced-swatch-layer" viewBox={box} aria-hidden="true">
+          <defs>
+            <FriendEyeDefs prefix={prefix} />
+          </defs>
+          <Eyes prefix={prefix} />
+        </svg>
+      </div>
+      <span className="traced-swatch-name">{tint}</span>
+    </li>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -349,6 +391,22 @@ function DesignPage({ onBack }) {
           ))}
         </ul>
       </section>
+
+      {/* The nine other traced archetypes (friend01.jsx … friend09.jsx), each
+          in the three reward-stream pastels, assembled with the canonical
+          blinking eyes and a body-colour glow — six of them over a
+          reconstructed darkest base, as friend 10 needed. One shelf each, so
+          the whole cast can be read down the page at their relative sizes. */}
+      {TRACED_FRIENDS.map((friend) => (
+        <section className="design-family" aria-label={friend.label} key={friend.num}>
+          <h3>{friend.label}</h3>
+          <ul className="traced-swatches">
+            {FRIEND_TINTS.map((tint) => (
+              <TracedFriendSwatch key={tint} friend={friend} tint={tint} />
+            ))}
+          </ul>
+        </section>
+      ))}
 
       <button onClick={onBack}>← back to the habits</button>
     </section>

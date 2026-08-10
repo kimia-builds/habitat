@@ -1742,6 +1742,52 @@ body {
   text-align: center;
 }
 
+/* TEMPORARY (2026-08-10): the nine other traced archetypes' swatches. Same
+   dark card as friend 10's, but ONE set of rules for all nine — each card's
+   width and its artwork's aspect ratio are set per friend in tracedFriends.js
+   (the one place the archetypes' relative sizes live), so this file no longer
+   needs a block per drawing. Leaves with the workbench. */
+.traced-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.4rem;
+  list-style: none;
+  padding: 0;
+}
+
+.traced-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+}
+
+/* The art card is a positioned div holding TWO stacked svgs — the heavy static
+   body below, the featherweight blinking eyes above, same viewBox so they
+   align exactly (the split is load-bearing: see storyteller.jsx). */
+.traced-swatch-art {
+  position: relative;
+  max-width: 100%;
+  border-radius: 0.75rem;
+  background: #0b0f14;
+}
+
+.traced-swatch-layer {
+  position: absolute;
+  inset: 0.6rem;
+  width: calc(100% - 1.2rem);
+  height: calc(100% - 1.2rem);
+}
+
+.traced-swatch-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: #8b93a6;
+  text-align: center;
+}
+
 /* TEMPORARY (T5.3, 2026-07-24): the environment-sky swatches (design-bible
    §11a). Each swatch is a bounded, positioned box so NightSky (which fills
    its positioned parent) and AbodeSky (100% of its box) have somewhere to

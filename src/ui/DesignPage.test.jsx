@@ -9,8 +9,24 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
 import { ABODE_PALETTES } from './sky.jsx'
+import { TRACED_FRIENDS } from './tracedFriends.js'
 
 afterEach(cleanup)
+
+// How many eye placeholders each of Kimia's nine traces carries — pinned here
+// rather than read from the components, so dropping or doubling a friend's
+// eyes fails the suite instead of quietly agreeing with itself.
+const EYE_COUNTS = {
+  '01': 2,
+  '02': 3,
+  '03': 4,
+  '04': 2,
+  '05': 3,
+  '06': 2,
+  '07': 5,
+  '08': 2,
+  '09': 2,
+}
 
 describe('DesignPage workbench', () => {
   it('draws one live swatch for every texture in the manifest', () => {
@@ -111,6 +127,35 @@ describe('DesignPage workbench', () => {
       expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(2)
     }
   })
+
+  it.each(TRACED_FRIENDS.map((f) => f.num))(
+    'shows friend %s in three tints with its eyes blinking in their own overlay',
+    (num) => {
+      const { container } = render(<DesignPage onBack={vi.fn()} />)
+      // Every traced archetype follows the friend-10 pattern: one accessible
+      // wrapper div per reward-stream pastel, each holding a static body svg
+      // and a separate eyes overlay svg, with the blink living only in the
+      // overlay so it never repaints the heavy blurred body.
+      const swatches = [
+        ...container.querySelectorAll(`.friend${num}-swatch [role="img"]`),
+      ]
+      const labels = swatches.map((img) => img.getAttribute('aria-label'))
+      expect(labels).toEqual([
+        `friend ${num}, green`,
+        `friend ${num}, violet`,
+        `friend ${num}, amber`,
+      ])
+      // The drawing's own eye placeholders are replaced by the canonical
+      // <Eye/>, one per wrapper, so the count is the trace's eye count.
+      const eyeCount = EYE_COUNTS[num]
+      for (const swatch of swatches) {
+        expect(swatch.querySelectorAll('svg')).toHaveLength(2)
+        const [body, eyes] = swatch.querySelectorAll('svg')
+        expect(body.querySelectorAll('.friend-eye-blink')).toHaveLength(0)
+        expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(eyeCount)
+      }
+    },
+  )
 
   it('surfaces the shared night sky for the eyeball pass', () => {
     render(<DesignPage onBack={vi.fn()} />)
