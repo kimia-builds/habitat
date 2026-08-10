@@ -6,11 +6,17 @@
 // render nothing, exactly like the T3.4 reveals.
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NARRATION } from '../content/narration.js'
+import { restoreNames, setSpeciesName } from '../test/nameFixture.js'
 import FriendReveal from './FriendReveal.jsx'
 
 afterEach(cleanup)
+
+// A fixture name, never Kimia's real one (src/test/nameFixture.js).
+const DRIFTER = 'test species name'
+beforeEach(() => setSpeciesName('drifter', DRIFTER))
+afterEach(restoreNames)
 
 const arrival = (category = 0, individual = 1) => ({
   key: 'friend',
@@ -34,7 +40,17 @@ describe('the friend arrival reveal', () => {
     renderReveal()
     const dialog = screen.getByRole('dialog')
     expect(dialog.querySelector('.friend-anim-drifter')).not.toBeNull()
-    expect(screen.getByText('a Drifter')).toBeDefined()
+    expect(screen.getByText(DRIFTER)).toBeDefined()
+    expect(screen.getByRole('button', { name: 'onward' })).toBeDefined()
+  })
+
+  it('shows no name line while the species slot is blank', () => {
+    // Ships this way until Kimia writes: art, her narration, the button.
+    setSpeciesName('drifter', '')
+    renderReveal()
+    const dialog = screen.getByRole('dialog')
+    expect(dialog.querySelector('.reveal-friend-name')).toBeNull()
+    expect(dialog.querySelector('.friend-anim-drifter')).not.toBeNull()
     expect(screen.getByRole('button', { name: 'onward' })).toBeDefined()
   })
 
@@ -78,7 +94,7 @@ describe('the friend arrival reveal', () => {
       expect(screen.queryByText('only the first drifter hears this')).toBeNull()
       expect(screen.queryByText('momentary words')).toBeNull()
       // …but the moment still pops: art, name, animation, button.
-      expect(screen.getByText('a Drifter')).toBeDefined()
+      expect(screen.getByText(DRIFTER)).toBeDefined()
       expect(
         screen.getByRole('dialog').querySelector('.friend-anim-drifter'),
       ).not.toBeNull()

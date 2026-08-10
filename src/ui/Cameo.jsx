@@ -17,12 +17,15 @@
 
 import { useEffect } from 'react'
 import { CAMEO_LINGER_MS, FRIEND_CATEGORIES } from '../game/constants.js'
+import { friendDisplayName } from '../content/names.js'
 import { narrationSlot } from '../content/narration.js'
 import FriendGlyph from './FriendGlyph.jsx'
 
 function Cameo({ win, worldSeed, onExpire }) {
   const key = FRIEND_CATEGORIES[win.friend.category].key
-  const name = `a ${FRIEND_CATEGORIES[win.friend.category].singular}`
+  // Null until Kimia names the species (T6.1a): the visit then shows the
+  // friend and its message with no name line, rather than a stand-in.
+  const name = friendDisplayName(key, win.friend.individual)
   const message = narrationSlot(`cameos.${win.type}`)
   // The visit's whole length is one timer; the CSS fade is driven from
   // the same constant (inline below), so the two never disagree.
@@ -42,7 +45,7 @@ function Cameo({ win, worldSeed, onExpire }) {
         worldSeed={worldSeed}
         className={`cameo-glyph friend-anim-${key}`}
       />
-      <span className="cameo-name">{name}</span>
+      {name && <span className="cameo-name">{name}</span>}
       {message && <p className="cameo-message">{message}</p>}
     </div>
   )

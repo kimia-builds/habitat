@@ -7,9 +7,13 @@
 
 import { act, cleanup, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { CAMEO_LINGER_MS, FRIEND_CATEGORIES } from '../game/constants.js'
+import { CAMEO_LINGER_MS } from '../game/constants.js'
 import { narrationSlot } from '../content/narration.js'
+import { restoreNames, setSpeciesName } from '../test/nameFixture.js'
 import Cameo from './Cameo.jsx'
+
+// A fixture name, never Kimia's real one (src/test/nameFixture.js).
+const SIGNER = 'test species name'
 
 // A record-streak win celebrated by the second Signer.
 const WIN = {
@@ -20,19 +24,31 @@ const WIN = {
 
 beforeEach(() => {
   vi.useFakeTimers()
+  setSpeciesName('signer', SIGNER)
 })
 
 afterEach(() => {
   cleanup()
+  restoreNames()
   vi.useRealTimers()
 })
 
 describe('the cameo visit (T4.6)', () => {
-  it('shows the celebrating friend, named by its category singular', () => {
+  it('shows the celebrating friend, named by whatever its slot holds', () => {
     render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
     const visit = screen.getByRole('status')
     expect(visit.querySelector('svg')).not.toBeNull()
-    expect(visit.textContent).toContain(FRIEND_CATEGORIES[3].singular)
+    expect(visit.textContent).toContain(SIGNER)
+  })
+
+  it('visits without a name while the slot is blank', () => {
+    // Ships this way until Kimia writes: the friend and her message,
+    // no stand-in name (T6.1a).
+    setSpeciesName('signer', '')
+    render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
+    const visit = screen.getByRole('status')
+    expect(visit.querySelector('svg')).not.toBeNull()
+    expect(visit.querySelector('.cameo-name')).toBeNull()
   })
 
   it("reads its message from Kimia's slot — blank renders nothing", () => {

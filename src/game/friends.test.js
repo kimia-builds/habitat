@@ -18,7 +18,6 @@ import { validateDrop } from './drops.js'
 import {
   doorOpenDays,
   friendDueDay,
-  friendName,
   friendsFrom,
   nextFriendDue,
   withFriendDrop,
@@ -302,8 +301,6 @@ describe('friend drop records', () => {
     expect(() => validateDrop({ kind: 'friend' })).toThrow()
   })
 
-  it('friends are named by their draft category singular until T6.1', () => {
-    expect(friendName({ category: 0 })).toBe('a Drifter')
-    expect(friendName({ category: 9 })).toBe('a Poet')
-  })
+  // What a friend is CALLED moved out of the game layer in T6.1a — it
+  // is Kimia's copy now, and src/content/names.test.js covers the slots.
 })

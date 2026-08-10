@@ -2,6 +2,7 @@
 // arrival shelf, the quiet by-the-habit notes, and the first reveals.
 
 import { FRIEND_CATEGORIES } from '../game/constants.js'
+import { friendDisplayName } from '../content/names.js'
 
 // One arrival, named: "a flora find", "a novel", "2 fungi", "a Drifter"…
 export function arrivalLabel(arrival) {
@@ -16,10 +17,14 @@ export function arrivalLabel(arrival) {
       return 'a dictionary'
     case 'fungi':
       return arrival.amount === 1 ? '1 fungus' : `${arrival.amount} fungi`
-    case 'friend':
-      // Until T6.1 names the beings: the draft category singular
-      // (Kimia's decision 2026-07-20).
-      return `a ${FRIEND_CATEGORIES[arrival.friend.category].singular}`
+    case 'friend': {
+      // Kimia's name for them once she writes one (T6.1a). Until then
+      // the plain functional word, exactly like "a flora find" above —
+      // this sentence has to name SOMETHING, and the honest generic is
+      // better than a species name Claude invented.
+      const key = FRIEND_CATEGORIES[arrival.friend.category].key
+      return friendDisplayName(key, arrival.friend.individual) ?? 'a friend'
+    }
     default:
       return 'something'
   }

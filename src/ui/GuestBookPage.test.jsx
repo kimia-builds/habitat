@@ -6,11 +6,28 @@
 // (friendIntros) never shows here — it played once, at the arrival.
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NARRATION } from '../content/narration.js'
+import {
+  restoreNames,
+  setIndividualName,
+  setSpeciesName,
+} from '../test/nameFixture.js'
 import GuestBookPage from './GuestBookPage.jsx'
 
 afterEach(cleanup)
+
+// Every friend name here is a FIXTURE, never Kimia's real slot value —
+// hers are hers to rewrite, and a test that quoted them would break the
+// deploy the moment she did (src/test/nameFixture.js explains).
+const DRIFTER = 'test species name'
+const POET = 'another test species name'
+
+beforeEach(() => {
+  setSpeciesName('drifter', DRIFTER)
+  setSpeciesName('poet', POET)
+})
+afterEach(restoreNames)
 
 // One arrived friend, as game/friends.js's friendsFrom reports it.
 const friend = (category, individual, completionId = 'c1') => ({
@@ -29,10 +46,10 @@ describe('the Guest Book page', () => {
       screen.getByRole('heading', { name: 'local community' }),
     ).toBeDefined()
     expect(container.querySelectorAll('p')).toHaveLength(0)
-    expect(screen.queryByRole('button', { name: 'a Drifter' })).toBeNull()
+    expect(screen.queryByRole('button', { name: DRIFTER })).toBeNull()
   })
 
-  it('shows every friend, named by its draft category singular', () => {
+  it('shows every friend, named by whatever name its slot holds', () => {
     render(
       <GuestBookPage
         friends={[friend(0, 1, 'c1'), friend(0, 2, 'c2'), friend(9, 1, 'c3')]}
@@ -40,8 +57,37 @@ describe('the Guest Book page', () => {
         onBack={() => {}}
       />,
     )
-    expect(screen.getAllByRole('button', { name: 'a Drifter' })).toHaveLength(2)
-    expect(screen.getByRole('button', { name: 'a Poet' })).toBeDefined()
+    expect(screen.getAllByRole('button', { name: DRIFTER })).toHaveLength(2)
+    expect(screen.getByRole('button', { name: POET })).toBeDefined()
+  })
+
+  it('prefers a friend\'s own name over its species name', () => {
+    // The T6.1a ladder: individual name first, species name second.
+    setIndividualName('drifter', 2, 'a named individual')
+    render(
+      <GuestBookPage
+        friends={[friend(0, 1, 'c1'), friend(0, 2, 'c2')]}
+        worldSeed="seed"
+        onBack={() => {}}
+      />,
+    )
+    expect(screen.getByRole('button', { name: 'a named individual' })).toBeDefined()
+    expect(screen.getAllByRole('button', { name: DRIFTER })).toHaveLength(1)
+  })
+
+  it('shows no name at all while the slots are blank, and stays usable', () => {
+    // Habitat ships this way until Kimia writes. The art carries the
+    // friend; a screen reader still gets a handle on the control.
+    setSpeciesName('drifter', '')
+    const { container } = render(
+      <GuestBookPage
+        friends={[friend(0, 1, 'c1')]}
+        worldSeed="seed"
+        onBack={() => {}}
+      />,
+    )
+    expect(container.querySelector('.guestbook-name')).toBeNull()
+    expect(screen.getByRole('button', { name: 'friend' })).toBeDefined()
   })
 })
 
@@ -54,8 +100,8 @@ describe('the popup card', () => {
         onBack={() => {}}
       />,
     )
-    fireEvent.click(screen.getByRole('button', { name: 'a Drifter' }))
-    const card = screen.getByRole('dialog', { name: 'a Drifter' })
+    fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
+    const card = screen.getByRole('dialog', { name: DRIFTER })
     expect(card).toBeDefined()
     // The signature category animation plays on the card's art.
     expect(card.querySelector('.friend-anim-drifter')).not.toBeNull()
@@ -76,7 +122,7 @@ describe('the popup card', () => {
           onBack={() => {}}
         />,
       )
-      fireEvent.click(screen.getByRole('button', { name: 'a Drifter' }))
+      fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
       expect(screen.getByText('a written card text')).toBeDefined()
       unmount()
 
@@ -89,8 +135,8 @@ describe('the popup card', () => {
           onBack={() => {}}
         />,
       )
-      fireEvent.click(screen.getByRole('button', { name: 'a Drifter' }))
-      const card = screen.getByRole('dialog', { name: 'a Drifter' })
+      fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
+      const card = screen.getByRole('dialog', { name: DRIFTER })
       expect(card.querySelector('.friend-card-text')).toBeNull()
       expect(card.querySelector('.friend-anim-drifter')).not.toBeNull()
     } finally {
@@ -111,7 +157,7 @@ describe('the popup card', () => {
           onBack={() => {}}
         />,
       )
-      fireEvent.click(screen.getByRole('button', { name: 'a Drifter' }))
+      fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
       expect(screen.queryByText('the night we met (momentary)')).toBeNull()
       expect(screen.queryByText('played once, never re-readable')).toBeNull()
     } finally {
@@ -127,10 +173,10 @@ describe('the popup card', () => {
         onBack={() => {}}
       />,
     )
-    fireEvent.click(screen.getByRole('button', { name: 'a Drifter' }))
+    fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
     fireEvent.click(screen.getByRole('button', { name: 'close' }))
     expect(screen.queryByRole('dialog')).toBeNull()
-    expect(screen.getByRole('button', { name: 'a Drifter' })).toBeDefined()
+    expect(screen.getByRole('button', { name: DRIFTER })).toBeDefined()
   })
 
   it('the back button leads home', () => {

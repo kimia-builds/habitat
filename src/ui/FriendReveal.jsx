@@ -13,11 +13,15 @@
 // nothing at all (the T3.4 rule). The overlay waits to be dismissed.
 
 import { FRIEND_CATEGORIES } from '../game/constants.js'
+import { friendDisplayName } from '../content/names.js'
 import { narrationSlot } from '../content/narration.js'
 import FriendGlyph from './FriendGlyph.jsx'
 
 function FriendReveal({ arrival, worldSeed, firstOfCategory, onDismiss }) {
   const key = FRIEND_CATEGORIES[arrival.friend.category].key
+  // Null until Kimia names the species (T6.1a) — the reveal then carries
+  // the art, her narration and the button, and no name line.
+  const name = friendDisplayName(key, arrival.friend.individual)
   const title = firstOfCategory
     ? narrationSlot(`friendIntros.${key}.title`)
     : null
@@ -37,9 +41,7 @@ function FriendReveal({ arrival, worldSeed, firstOfCategory, onDismiss }) {
           worldSeed={worldSeed}
           className={`reveal-glyph friend-anim-${key}`}
         />
-        <span className="reveal-friend-name">
-          a {FRIEND_CATEGORIES[arrival.friend.category].singular}
-        </span>
+        {name && <span className="reveal-friend-name">{name}</span>}
         {title && <h2 className="reveal-title">{title}</h2>}
         {line && <p className="reveal-line">{line}</p>}
         <button className="reveal-button" onClick={onDismiss}>

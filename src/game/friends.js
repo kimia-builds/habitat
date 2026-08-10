@@ -160,8 +160,7 @@ export function withFriendDrop(completion, existing, worldSeed) {
   }
 }
 
-// What one friend is called until T6.1 names the beings: the draft
-// category singular (Kimia's decision 2026-07-20) — "a Drifter".
-export function friendName(friend) {
-  return `a ${FRIEND_CATEGORIES[friend.category].singular}`
-}
+// What a friend is CALLED is not game logic and no longer lives here
+// (T6.1a, 2026-08-10). The name is Kimia's copy: the slots and the
+// "individual name, else species name, else nothing" ladder are in
+// `src/content/names.js`, and every screen asks it directly.

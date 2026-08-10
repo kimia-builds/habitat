@@ -25,6 +25,7 @@ import { backupAgeLabel } from './game/backup.js'
 import { addDays, dayKeyFromTimestamp } from './game/days.js'
 import { SCHEMA_VERSION } from './storage/storage.js'
 import { narrationSlot } from './content/narration.js'
+import { restoreNames, setSpeciesName } from './test/nameFixture.js'
 
 // The Habitat day these tests are running in, on the default 3am
 // cutoff — so backup-age expectations never go stale.
@@ -1635,6 +1636,12 @@ describe('the Market (T4.3b)', () => {
 describe('friendships (T4.4)', () => {
   const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
 
+  // A FIXTURE species name — Kimia's real slots stay out of the suite
+  // (src/test/nameFixture.js explains why).
+  const DRIFTER_NAME = 'test species name'
+  beforeEach(() => setSpeciesName('drifter', DRIFTER_NAME))
+  afterEach(restoreNames)
+
   // The friend reveal's dialog name is Kimia's slot when she writes it
   // — never hard-code her words (the 2026-07-19 lesson). Mirror
   // FriendReveal's fallback for blank slots.
@@ -1690,17 +1697,17 @@ describe('friendships (T4.4)', () => {
     expect(
       screen.getByRole('dialog', { name: friendRevealName() }),
     ).toBeDefined()
-    expect(screen.getAllByText('a Drifter').length).toBeGreaterThan(0)
+    expect(screen.getAllByText(DRIFTER_NAME).length).toBeGreaterThan(0)
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
     expect(screen.queryByRole('dialog')).toBeNull()
 
-    // The Guest Book holds them, named by the draft category singular.
+    // The Guest Book holds them, named from Kimia's slot.
     fireEvent.click(screen.getByRole('button', { name: 'local community' }))
     expect(
       screen.getByRole('heading', { name: 'local community' }),
     ).toBeDefined()
-    fireEvent.click(screen.getByRole('button', { name: 'a Drifter' }))
-    expect(screen.getByRole('dialog', { name: 'a Drifter' })).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: DRIFTER_NAME }))
+    expect(screen.getByRole('dialog', { name: DRIFTER_NAME })).toBeDefined()
   })
 })
 

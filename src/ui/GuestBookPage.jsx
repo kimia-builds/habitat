@@ -18,15 +18,23 @@
 
 import { useState } from 'react'
 import { FRIEND_CATEGORIES } from '../game/constants.js'
+import { friendDisplayName } from '../content/names.js'
 import { narrationSlot } from '../content/narration.js'
 import FriendGlyph from './FriendGlyph.jsx'
 
+// A friend with no name yet (T6.1a: blank slots until Kimia writes
+// them) shows no name on screen — the art carries it. A screen reader
+// still needs a handle on the control, so the accessible name falls
+// back to the plain functional word, never to a stand-in species name.
+// Same standing as the charms' shape names: heard, never seen.
+const UNNAMED = 'friend'
+
 function FriendCard({ friend, worldSeed, onClose }) {
   const key = FRIEND_CATEGORIES[friend.category].key
-  const name = `a ${FRIEND_CATEGORIES[friend.category].singular}`
+  const name = friendDisplayName(key, friend.individual)
   const cardText = narrationSlot(`friendCards.${key}`)
   return (
-    <div className="reveal-overlay" role="dialog" aria-label={name}>
+    <div className="reveal-overlay" role="dialog" aria-label={name ?? UNNAMED}>
       <div className="spread-popup friend-card">
         <FriendGlyph
           category={friend.category}
@@ -34,7 +42,7 @@ function FriendCard({ friend, worldSeed, onClose }) {
           worldSeed={worldSeed}
           className={`reveal-glyph friend-anim-${key}`}
         />
-        <p className="arrival-caption">{name}</p>
+        {name && <p className="arrival-caption">{name}</p>}
         {cardText && <p className="friend-card-text">{cardText}</p>}
         <button className="reveal-button" onClick={onClose}>
           close
@@ -53,20 +61,21 @@ function GuestBookPage({ friends, worldSeed, onBack }) {
       <h2>local community</h2>
       <ul className="guestbook-list" aria-label="friends">
         {friends.map((friend) => {
-          const name = `a ${FRIEND_CATEGORIES[friend.category].singular}`
+          const key = FRIEND_CATEGORIES[friend.category].key
+          const name = friendDisplayName(key, friend.individual)
           return (
             <li key={friend.completionId}>
               <button
                 className="guestbook-friend"
                 onClick={() => setSelected(friend)}
-                aria-label={name}
+                aria-label={name ?? UNNAMED}
               >
                 <FriendGlyph
                   category={friend.category}
                   individual={friend.individual}
                   worldSeed={worldSeed}
                 />
-                <span className="guestbook-name">{name}</span>
+                {name && <span className="guestbook-name">{name}</span>}
               </button>
             </li>
           )

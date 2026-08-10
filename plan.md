@@ -201,17 +201,18 @@ tracker. Everything after this is delight, informed by real use.
       are **landmarks** (the large tree-like ones that appear on the Map,
       spec 2026-07-19).
 
-      - [ ] **T6.1a Every name becomes Kimia's to write** (new
-            2026-08-10, her call) — the ten species names ("Drifter",
-            "Nester", …) were Claude-drafted on 2026-07-20 and parked in
-            `src/game/constants.js` as game data. They are copy, and copy
-            is human-written (CLAUDE.md), so the WORDS move into
-            `src/content/` where she edits them on GitHub; the stable
-            keys the save file and tests use stay in code. Individual
-            names — 45 of them — have no home at all yet: a friend is
-            still "a Drifter". This builds the empty, keyed slots for
-            both, blank until she fills them, per design-notes §7. The
-            plumbing is a coding task; naming the beings is T6.1 itself.
+      - [x] **T6.1a Every name becomes Kimia's to write** _(done
+            2026-08-10 — `src/content/names.js` holds 10 species slots
+            and 55 individual slots, all blank; build notes in
+            history.md)_
+      - [ ] **T6.1b Enforce the 55-friendship roster cap** (found
+            2026-08-10 while building T6.1a) — spec §5, design-bible §9c
+            and CLAUDE.md all say a category refills only until its
+            roster is exhausted, but `nextFriendDue` has no ceiling: it
+            would send an eleventh drifter, for which no name slot
+            exists. `FRIEND_ROSTER` is now in constants.js; this makes
+            the code obey it, with tests for an exhausted category and
+            for every roster exhausted at once.
 - [ ] **T6.2 Pacing tune-up (recurring)** — after ~1 month of real use,
       then roughly **every 6 months** (Kimia's decision 2026-07-15): revisit
       all pacing constants against real historical averages (starting with

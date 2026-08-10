@@ -226,8 +226,14 @@ opening its own growing world:
 - N-Z-D has **10 categories of friend** on a sliding scale of required
   literacy — the way Earth has animals, child humans, and adult humans,
   N-Z-D has a whole ecology of beings reachable at different depths of
-  language. Draft ladder (names and details to be iterated; lowest
-  literacy first):
+  language. The ladder below is a WORKING DESCRIPTION, not the names:
+  the ten species names are Kimia's to write (T6.1a, 2026-08-10), and
+  they live in `src/content/names.js` alongside a slot for each of the
+  55 individuals. What "Drifters", "Nesters" … name here is the RUNG —
+  each species' place on the literacy ladder and what it is like — and
+  those same words survive in code as permanent internal ids that are
+  never shown on screen. A species with a blank name slot simply shows
+  no name in the app; nothing invents one. Lowest literacy first:
   1. **Drifters** — ambient beings; no language, just presence
   2. **Nesters** — small critters that respond to routine and warmth
   3. **Mimics** — creatures that echo our sounds and gestures back
@@ -243,7 +249,12 @@ opening its own growing world:
   refills — the next friend arriving a seeded 20–50 days after the
   previous — **only until its roster is exhausted**; 55 friendships is
   the lifetime maximum (2026-07-24, amending the 2026-07-20
-  repeat-friends rule).
+  repeat-friends rule). The roster now exists in code as
+  `FRIEND_ROSTER`, and `src/content/names.js` carries exactly one name
+  slot per individual — but **the cap itself is not yet enforced**
+  (found 2026-08-10): `nextFriendDue` keeps sending a category's next
+  individual for ever. See the decisions log; it is a defect against
+  this rule, not a change to it.
 - Friendships live in the **Guest Book** — a page like the Abode, a
   record of everyone who has welcomed us. (We are the guest here, not
   the owner.) Titled **local community**. Clicking a character opens a

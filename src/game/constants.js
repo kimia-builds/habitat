@@ -271,21 +271,38 @@ export const DIFFICULTY_DROP_MULTIPLIER = {
 
 // The 10 friend categories (spec §5 Stream 2), lowest literacy first —
 // one door per LITERACY_MILESTONES threshold above, in the same order.
-// Until T6.1 names the real beings, a friend shows its category's DRAFT
-// name (Kimia's decision 2026-07-20): the label and its singular ("a
-// Drifter") live here as game data — never in Kimia's narration file.
+//
+// KEYS ONLY, no words (T6.1a, Kimia's call 2026-08-10). These used to
+// carry drafted names ("Drifters", "a Drifter") written by Claude on
+// 2026-07-20 and classed as game data. They are words a player reads,
+// so they are copy, and copy is human-written (CLAUDE.md): the names
+// now live in `src/content/names.js`, where Kimia writes them, and a
+// species with a blank slot is simply shown without a name.
+//
+// What survives here is the key — a permanent internal id that is never
+// displayed. It orders the ladder, names the CSS animation classes
+// (`friend-anim-drifter`) and keys the narration slots Kimia already
+// has (`friendIntros.drifter`), so it must NOT be renamed when she
+// names a species something else.
 export const FRIEND_CATEGORIES = [
-  { key: 'drifter', label: 'Drifters', singular: 'Drifter' },
-  { key: 'nester', label: 'Nesters', singular: 'Nester' },
-  { key: 'mimic', label: 'Mimics', singular: 'Mimic' },
-  { key: 'signer', label: 'Signers', singular: 'Signer' },
-  { key: 'sprout', label: 'Sprouts', singular: 'Sprout' },
-  { key: 'chatter', label: 'Chatters', singular: 'Chatter' },
-  { key: 'neighbour', label: 'Neighbours', singular: 'Neighbour' },
-  { key: 'storyteller', label: 'Storytellers', singular: 'Storyteller' },
-  { key: 'scholar', label: 'Scholars', singular: 'Scholar' },
-  { key: 'poet', label: 'Poets', singular: 'Poet' },
+  { key: 'drifter' },
+  { key: 'nester' },
+  { key: 'mimic' },
+  { key: 'signer' },
+  { key: 'sprout' },
+  { key: 'chatter' },
+  { key: 'neighbour' },
+  { key: 'storyteller' },
+  { key: 'scholar' },
+  { key: 'poet' },
 ]
+
+// How many individuals each category ever sends, lowest literacy first
+// — the fixed roster of design-bible §9c and spec §5: 10 drifters down
+// to a single poet, 55 friendships in a lifetime. Indexed like
+// FRIEND_CATEGORIES above. `src/content/names.js` carries exactly this
+// many name slots per species.
+export const FRIEND_ROSTER = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
 
 // WHEN a friend arrives (Kimia's decisions 2026-07-20):
 //   - a category's FIRST friend is due 1–5 Habitat days after its door

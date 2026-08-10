@@ -1235,6 +1235,61 @@ return 0` right after the era is worked out, so a moment before the
   names the folder, but the README — the doc she is most likely to open
   — says nothing. Worth fixing when T6.3 rewrites it.
 
+- 2026-08-10 (T6.1a, names session): **every species and individual
+  name is now Kimia's to write, and the drafts are out of the app.** The
+  ten names Claude drafted on 2026-07-20 lived in
+  `src/game/constants.js`, classed as game data on the reasoning that a
+  category label is a mechanic, not a story. Kimia has reversed that:
+  they are words a player reads, so they are copy, and copy is
+  human-written. `FRIEND_CATEGORIES` now carries `key` and nothing else.
+  **The names live in `src/content/names.js`** — a new file of hers,
+  built to the narration.js pattern: 10 species slots, 55 individual
+  slots (one per friend the roster can ever send), all blank, plus the
+  readers that trim them and return null when empty.
+  **The display ladder** (new, and the reason individuals can wait): a
+  friend shows its own name if it has one, else its species name, else
+  NOTHING — no stand-in, no "a friend". So filling ten species slots
+  names every friend in the game, and individual names are a finer pass
+  she can do one at a time, for years, with no half-named state ever
+  looking broken. Every screen that names a friend — Guest Book list and
+  card, arrival reveal, home-screen cameo — asks the one function, so a
+  name she writes appears in all of them at once.
+  **Two deliberate exceptions to "show nothing".** (1) The Guest Book's
+  buttons and card keep an accessible name when the slot is blank — the
+  plain functional word "friend", heard by screen readers, never seen,
+  exactly the standing the charms' shape names have (T5.1). A control
+  with no accessible name is unusable, and that is not a copy question.
+  (2) The arrival shelf's sentence ("you came across …") falls back to
+  "a friend", because that line must name something and the honest
+  generic beats a species name Claude invented — it sits with "a flora
+  find" and "a magazine" as functional UI wording, not story.
+  **The keys stay as they are, and that is a wrinkle worth knowing.**
+  `drifter`, `nester` … remain in code as permanent internal ids: they
+  order the ladder, name the CSS animation classes and key the narration
+  slots Kimia has already been filling (`friendIntros.drifter`).
+  Renaming them would churn her file mid-edit for no gain, so the key
+  `drifter` may well end up holding a species she calls something else
+  entirely. names.js says so at the top.
+  _Tests:_ ten tests across five files were asserting the drafted names
+  — the exact copy-coupling that has broken CI twice. They now use
+  `src/test/nameFixture.js`, a controlled fixture that sets a name,
+  restores it after, and asserts behaviour (a name shows; a blank shows
+  nothing) rather than words. New `src/content/names.test.js` guards the
+  file's SHAPE: one species slot per category, one individual slot per
+  roster place, 55 in total, and no display word creeping back into
+  `FRIEND_CATEGORIES`. Full suite 998 and oxlint pass; the app boots and
+  the Guest Book opens clean in a real browser.
+  _Found while doing it, and NOT fixed here:_ **the 55-friendship cap is
+  documented everywhere and implemented nowhere.** spec §5, design-bible
+  §9c and CLAUDE.md all say a category refills only until its roster is
+  exhausted, but `nextFriendDue` computes the next individual as
+  "however many have arrived, plus one", with no ceiling — so an
+  eleventh drifter would arrive years from now, and there is no name
+  slot for it. The roster now exists in code as `FRIEND_ROSTER` for the
+  name slots to be measured against, which is the groundwork; enforcing
+  it is a behaviour change to the friendship stream and wants its own
+  task and its own tests. Flagged to Kimia the same day.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
@@ -2181,3 +2236,37 @@ and recorded in spec.md's decisions log._
       became tasks rather than being folded in here: the size canon must
       hold as a RATIO everywhere (T5.3d) and every species and individual
       name is Kimia's to write (T6.1a). See the decisions log.
+
+- [x] **T6.1a Every name becomes Kimia's to write** _(done 2026-08-10,
+      spec §5, design-notes §7)_
+      A new file of hers, `src/content/names.js`, built to the
+      narration.js pattern: **10 species slots and 55 individual slots**,
+      every one blank, each with a plain-English note on where it shows.
+      Beside them the three readers — `speciesName`, `individualName` and
+      `friendDisplayName` — which trim what she writes and return null
+      for a blank slot, so a screen renders nothing rather than an empty
+      line.
+      `FRIEND_CATEGORIES` in constants.js lost its `label` and `singular`
+      and keeps only `key`; the drafted words are gone from the app
+      entirely. Five screens changed to ask the new ladder: the Guest
+      Book list, its popup card, the arrival reveal, the home-screen
+      cameo, and the arrival shelf's sentence. `friendName()` left
+      `src/game/friends.js` — what a friend is called was never game
+      logic.
+      Also added `FRIEND_ROSTER` (10, 9, 8 … 1) so the name file's slot
+      count is measured against the spec's roster rather than a number
+      typed twice.
+      The reasoning behind the display ladder, the two accessible-name
+      exceptions and the decision to keep the old words as internal keys
+      is in the decisions log — as is the roster-cap defect found while
+      building this (T6.1b).
+      _Tests:_ 998 pass. Ten existing tests across five files had been
+      asserting the drafted names; they now go through
+      `src/test/nameFixture.js` — set a name, restore it after, assert
+      the behaviour — so Kimia's real file can never decide whether the
+      suite is green, and can never block her own deploy. New
+      `src/content/names.test.js` (9) guards the file's shape: a species
+      slot per category, an individual slot per roster place, 55 in all,
+      and no display word creeping back into the game layer. Verified in
+      a real browser too: the app boots and the Guest Book opens with no
+      console errors.
