@@ -65,8 +65,11 @@ export const FRIEND01_PALETTES = palettesFor(GREY_ORDER)
 // Where Kimia's traced eye placeholders sat: centres and radii measured
 // from the placeholder paths, already shifted into viewBox space.
 export const FRIEND01_EYES = [
-  { cx: 16.2, cy: 21.1, r: 4.5 },
-  { cx: 33.2, cy: 21.6, r: 4.5 },
+  // Scaled to 0.55x the traced placeholders (see the note above):
+  // this trace's eyes were drawn far larger against its body than any
+  // other friend's. Their CENTRES are untouched.
+  { cx: 16.2, cy: 21.1, r: 2.5 },
+  { cx: 33.2, cy: 21.6, r: 2.5 },
 ]
 
 const glowId = (prefix) => `${prefix}friend01-glow`
