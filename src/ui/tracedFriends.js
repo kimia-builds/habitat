@@ -22,21 +22,32 @@ import * as f07 from './friend07.jsx'
 import * as f08 from './friend08.jsx'
 import * as f09 from './friend09.jsx'
 
-// PROVISIONAL WIDTHS (2026-08-10): a placeholder scale taken from each trace's
-// own canvas, pending Kimia's pixel character sheet — which is the real source
-// of how big each archetype is against the others. TODO: replace this column
-// with the sheet's proportions (and re-proportion friend-10 and the
-// storyteller to match) once she has sent it.
-const PROVISIONAL_WIDTH = {
-  '01': 7,
-  '02': 9,
-  '03': 9,
-  '04': 11,
-  '05': 13,
-  '06': 8,
-  '07': 13,
-  '08': 13,
-  '09': 14,
+// CARD WIDTHS, in rem, read off Kimia's pixel character sheet (2026-08-10):
+// the sheet draws all ten archetypes together at their canonical sizes, so it
+// — not the trace canvases, which are just export settings — is what says how
+// big each friend is against the others.
+//
+// How a sheet size became a width: each friend was measured on the sheet, and
+// the two numbers reduced to one "how big does it read" figure, the square
+// root of width × height. Going by width alone would have made the wide, low
+// friends (05, 07) loom over the tall narrow ones (06) even where the sheet
+// shows them similar. That figure is then turned back into a card width using
+// the artwork's own proportions, so each drawing keeps its shape and only its
+// scale changes.
+//
+// The scale is set by friend 09, the widest, filling the shelf three to a row.
+// Friend 10 falls out of the same maths at 11rem — exactly the width its card
+// already had, which is a decent check that the mapping is sound.
+const CARD_WIDTH = {
+  '01': 1.6, // the tiny one — Kimia: "its relative size should be tiny"
+  '02': 4.8,
+  '03': 4.8,
+  '04': 6.9,
+  '05': 9.4,
+  '06': 4.2,
+  '07': 9.9,
+  '08': 9.1,
+  '09': 11.5, // the widest of the nine, and the scale's anchor
 }
 
 function entry(num, mod) {
@@ -51,7 +62,7 @@ function entry(num, mod) {
     BodyDefs: mod[`${C}BodyDefs`],
     Eyes: mod[`${C}Eyes`],
     EyeDefs: mod.EyeDefs,
-    width: PROVISIONAL_WIDTH[num],
+    width: CARD_WIDTH[num],
   }
 }
 

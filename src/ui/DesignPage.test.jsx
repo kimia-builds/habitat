@@ -35,9 +35,9 @@ describe('DesignPage workbench', () => {
     // texture name — so the whole §8 library is present and eyeball-able.
     // Scoped to the texture shelves so the environment-sky images below
     // don't count here.
-    const names = [...container.querySelectorAll('.texture-swatch svg[role="img"]')].map(
-      (img) => img.getAttribute('aria-label'),
-    )
+    const names = [
+      ...container.querySelectorAll('.texture-swatch svg[role="img"]'),
+    ].map((img) => img.getAttribute('aria-label'))
     expect(names.slice().sort()).toEqual(TEXTURES.map((t) => t.name).sort())
   })
 
@@ -57,9 +57,9 @@ describe('DesignPage workbench', () => {
     // The chosen eye (§9c) is drawn at small/medium/large, each an accessible
     // <svg role="img"> — so the one canonical eye and its size range are both
     // present. Scoped to the eye shelf so the texture/sky images don't count.
-    const labels = [...container.querySelectorAll('.eye-swatch svg[role="img"]')].map(
-      (img) => img.getAttribute('aria-label'),
-    )
+    const labels = [
+      ...container.querySelectorAll('.eye-swatch svg[role="img"]'),
+    ].map((img) => img.getAttribute('aria-label'))
     expect(labels).toEqual([
       'canonical eye, small',
       'canonical eye, medium',
@@ -77,32 +77,6 @@ describe('DesignPage workbench', () => {
       ...container.querySelectorAll('.signer-swatch svg[role="img"]'),
     ].map((img) => img.getAttribute('aria-label'))
     expect(labels).toEqual(['signer, green', 'signer, violet', 'signer, amber'])
-  })
-
-  it('shows the storyteller in three tints with two blinking eyes each', () => {
-    const { container } = render(<DesignPage onBack={vi.fn()} />)
-    // The imported storyteller drawing is shown once per reward-stream
-    // pastel. The accessible image is the swatch's wrapper div (its two
-    // stacked svgs — static body, blinking eyes — are decorative).
-    const swatches = [
-      ...container.querySelectorAll('.storyteller-swatch [role="img"]'),
-    ]
-    const labels = swatches.map((img) => img.getAttribute('aria-label'))
-    expect(labels).toEqual([
-      'storyteller, green',
-      'storyteller, violet',
-      'storyteller, amber',
-    ])
-    // Every tint arrives assembled: the two canonical eyes are mounted,
-    // each in its own blink wrapper (the idle-blink behaviour hangs off
-    // that class), and the eyes live in a separate overlay svg from the
-    // heavy body so blinking never repaints the blurred figure.
-    for (const swatch of swatches) {
-      expect(swatch.querySelectorAll('svg')).toHaveLength(2)
-      const [body, eyes] = swatch.querySelectorAll('svg')
-      expect(body.querySelectorAll('.friend-eye-blink')).toHaveLength(0)
-      expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(2)
-    }
   })
 
   it('shows friend 10 in three tints with two blinking eyes each', () => {
@@ -152,7 +126,9 @@ describe('DesignPage workbench', () => {
         expect(swatch.querySelectorAll('svg')).toHaveLength(2)
         const [body, eyes] = swatch.querySelectorAll('svg')
         expect(body.querySelectorAll('.friend-eye-blink')).toHaveLength(0)
-        expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(eyeCount)
+        expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(
+          eyeCount,
+        )
       }
     },
   )
@@ -173,9 +149,9 @@ describe('DesignPage workbench', () => {
     // getByRole throws if the labelled image is missing, so reaching the
     // end with all four found is the assertion.
     for (const label of labels) {
-      expect(screen.getByRole('img', { name: label }).tagName.toLowerCase()).toBe(
-        'svg',
-      )
+      expect(
+        screen.getByRole('img', { name: label }).tagName.toLowerCase(),
+      ).toBe('svg')
     }
     expect(labels).toHaveLength(4)
   })

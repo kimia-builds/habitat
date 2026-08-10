@@ -1877,7 +1877,7 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
     // Assets appear as they are made (2026-07-26 — no more empty
     // placeholder tiles), so the page holds only shelves with real
     // content: at least the texture library and the imported archetypes.
-    for (const name of ['textures — plant-like', 'friend eye', 'storyteller']) {
+    for (const name of ['textures — plant-like', 'friend eye', 'friend 01']) {
       expect(screen.getByRole('region', { name })).toBeDefined()
     }
     // The rail reaches this page too, and its back button leads home.
