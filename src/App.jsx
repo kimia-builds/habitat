@@ -81,6 +81,7 @@ import {
   hasData,
   importData,
   loadData,
+  requestPersistentStorage,
   saveData,
 } from './storage/storage.js'
 import AbodePage from './ui/AbodePage.jsx'
@@ -229,6 +230,24 @@ function App() {
     setPage('fieldnotes')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkInOpen, today, startupDue])
+  // Ask the browser to keep our storage (T6.4a). Browsers evict a whole
+  // origin at once when the disk gets tight, which for Habitat means
+  // every day of history at a stroke; marking storage persistent makes
+  // routine eviction skip us.
+  //
+  // Asked only ONCE, and only when there is something to protect:
+  // Firefox answers this with a permission prompt, and a first-time
+  // visitor who has recorded nothing should never be asked to keep
+  // nothing. Fire-and-forget — the answer changes no behaviour, and
+  // every failure path inside is already swallowed, so a browser that
+  // refuses (or has never heard of the API) simply carries on.
+  const persistenceAsked = useRef(false)
+  useEffect(() => {
+    if (persistenceAsked.current) return
+    if (data.habits.length === 0 && data.completions.length === 0) return
+    persistenceAsked.current = true
+    requestPersistentStorage()
+  }, [data.habits.length, data.completions.length])
 
   const pastDaysEditable = editablePastDays(today).some(
     (day) =>
@@ -692,6 +711,10 @@ function App() {
     link.download = `habitat-backup-${today}.json`
     link.click()
     URL.revokeObjectURL(url)
+    // exportData stamped today's date into storage; re-read so the
+    // backup-age line beside the button says "backed up today" straight
+    // away, rather than waiting for the next thing that reloads state.
+    setData(loadData())
   }
 
   function handleImport(text) {
@@ -748,7 +771,9 @@ function App() {
               fulfilled={isDayFulfilled(habit, data.completions, today)}
               reorderDisabled={filter.length > 0}
               dragging={reorderDrag?.id === habit.id}
-              dragOffsetY={reorderDrag?.id === habit.id ? reorderDrag.offsetY : 0}
+              dragOffsetY={
+                reorderDrag?.id === habit.id ? reorderDrag.offsetY : 0
+              }
               onComplete={() => handleComplete(habit)}
               onUndo={() => handleUndo(habit)}
               onReorderStart={(event) => handleReorderStart(habit, event)}
@@ -893,7 +918,12 @@ function App() {
         </details>
       )}
 
-      <BackupControls onExport={handleExport} onImport={handleImport} />
+      <BackupControls
+        onExport={handleExport}
+        onImport={handleImport}
+        lastExportedOn={data.settings.lastExportedOn}
+        todayKey={today}
+      />
 
       {/* TEMPORARY (T5 prep): the door to the design-assets workbench
           (2026-07-21) — an empty shelf until the M5 design pass fills

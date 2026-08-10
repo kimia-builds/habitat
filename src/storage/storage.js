@@ -14,8 +14,12 @@
 //     settings:    { dayCutoffHour: 3,
 //                    fieldNotesShownOn: null,  // the last Sunday the
 //                              // field notes auto-opened — added in T2.3
-//                    startupShownOn: null },   // the last Habitat day
+//                    startupShownOn: null,     // the last Habitat day
 //                              // the startup fade played — added in T4.5
+//                    lastExportedOn: null },   // the last Habitat day a
+//                              // backup was exported — added in T6.4a,
+//                              // the only thing that knows how stale
+//                              // the backup is
 //     checkedInThrough: null,  // last day whose check-in was answered
 //                              // ('YYYY-MM-DD' or null) — added in T1.4
 //     worldSeed: '…',          // anchors every seeded drop roll — created
@@ -58,7 +62,10 @@ import { validateHabit } from '../game/habits.js'
 import { validatePurchases } from '../game/market.js'
 
 const STORAGE_KEY = 'habitat-data'
-const SCHEMA_VERSION = 8
+// Exported so tests can assert "the upgrade chain reaches the CURRENT
+// version" rather than hard-coding a number that has to be edited in
+// nine places on every schema bump.
+export const SCHEMA_VERSION = 9
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -77,6 +84,7 @@ export function emptyData() {
       dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR,
       fieldNotesShownOn: null,
       startupShownOn: null,
+      lastExportedOn: null,
     },
     checkedInThrough: null,
     worldSeed: newWorldSeed(),
@@ -96,10 +104,12 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV7toV8(
-    upgradeV6toV7(
-      upgradeV5toV6(
-        upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))),
+  return upgradeV8toV9(
+    upgradeV7toV8(
+      upgradeV6toV7(
+        upgradeV5toV6(
+          upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))),
+        ),
       ),
     ),
   )
@@ -228,6 +238,21 @@ function upgradeV7toV8(data) {
   return { ...data, schemaVersion: SCHEMA_VERSION }
 }
 
+// v8 → v9 (T6.4a): settings gain lastExportedOn — the Habitat day a
+// backup was last exported, which is the only thing that can tell us
+// how stale the safety copy is. A v8 save has never recorded one, and
+// null is honest about that: it reads as "no backup yet", which for a
+// save that predates the feature is exactly right.
+function upgradeV8toV9(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 8) return data
+  const settings =
+    typeof data.settings === 'object' && data.settings !== null
+      ? { lastExportedOn: null, ...data.settings }
+      : data.settings
+  return { ...data, schemaVersion: SCHEMA_VERSION, settings }
+}
+
 // Older saves and backups predate completions, settings and (from
 // T1.4) checkedInThrough; filling ONLY those gaps with defaults lets
 // old data load cleanly. Nothing present is ever touched, and
@@ -244,9 +269,15 @@ function withDefaults(data) {
             dayCutoffHour: DEFAULT_DAY_CUTOFF_HOUR,
             fieldNotesShownOn: null,
             startupShownOn: null,
+            lastExportedOn: null,
           }
         : typeof data.settings === 'object' && data.settings !== null
-          ? { fieldNotesShownOn: null, startupShownOn: null, ...data.settings }
+          ? {
+              fieldNotesShownOn: null,
+              startupShownOn: null,
+              lastExportedOn: null,
+              ...data.settings,
+            }
           : data.settings,
     checkedInThrough:
       data.checkedInThrough === undefined ? null : data.checkedInThrough,
@@ -286,6 +317,12 @@ function validateData(data) {
     !isValidDayKey(data.settings.startupShownOn)
   ) {
     throw new Error('This backup has a broken startup marker.')
+  }
+  if (
+    data.settings.lastExportedOn !== null &&
+    !isValidDayKey(data.settings.lastExportedOn)
+  ) {
+    throw new Error('This backup has a broken backup-date marker.')
   }
   if (data.checkedInThrough !== null && !isValidDayKey(data.checkedInThrough)) {
     throw new Error('This backup has a broken check-in marker.')
@@ -327,8 +364,60 @@ export function clearData() {
 
 // Export: the entire envelope as human-readable JSON — this string is
 // what gets saved to a backup file.
-export function exportData() {
-  return JSON.stringify(loadData(), null, 2)
+//
+// It also records TODAY as the last export day, so the app can show how
+// stale the safety copy is (T6.4a). Two deliberate details:
+//
+//   - the marker is stamped AFTER the JSON string is built, so the file
+//     carries the PREVIOUS export day, not its own. Re-importing an old
+//     backup therefore reports the backup as older than it is — the safe
+//     direction to be wrong in, for a number whose whole job is to
+//     prompt a fresh backup.
+//   - the day key uses the same 3am cutoff as everything else, so a
+//     backup taken at 1am counts for the Habitat day that is still
+//     running, not the calendar one that just started.
+export function exportData(now = Date.now()) {
+  const data = loadData()
+  const json = JSON.stringify(data, null, 2)
+  const today = dayKeyFromTimestamp(now, data.settings.dayCutoffHour)
+  if (data.settings.lastExportedOn !== today) {
+    saveData({ ...data, settings: { ...data.settings, lastExportedOn: today } })
+  }
+  return json
+}
+
+// Persistent storage (T6.4a). Browsers may evict a site's storage when
+// the disk gets tight, and they evict a whole origin at once — which
+// for Habitat means every day of history, silently. This asks the
+// browser to mark our storage durable so routine eviction skips us.
+//
+// Chrome and Edge answer silently from their own engagement heuristics
+// (bookmarked, installed, visited often); Firefox asks the user. Safari
+// is the one this cannot fix: WebKit clears script-writable storage
+// after seven days without a visit, and a persistence grant is not
+// known to exempt a site from that. Exporting a real file is the only
+// answer there — which is why the backup-age line exists too.
+//
+// Every path is guarded: an old browser, a non-secure context or a
+// browser that simply refuses must never break the app. `null` means
+// "the browser wouldn't say", distinct from a definite false.
+export async function isStoragePersisted() {
+  if (!navigator.storage?.persisted) return null
+  try {
+    return await navigator.storage.persisted()
+  } catch {
+    return null
+  }
+}
+
+export async function requestPersistentStorage() {
+  if (!navigator.storage?.persist) return null
+  try {
+    if (await navigator.storage.persisted()) return true
+    return await navigator.storage.persist()
+  } catch {
+    return null
+  }
 }
 
 // Import: validate the backup FULLY before anything is overwritten —

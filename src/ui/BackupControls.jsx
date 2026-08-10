@@ -2,10 +2,18 @@
 // Export downloads the whole data envelope as a JSON file; import asks
 // App to handle the file's text (App owns the overwrite warning —
 // plan.md T1.3: warn via storage's hasData() before replacing).
+//
+// Since T6.4a a quiet line sits beside the buttons saying how old the
+// backup is. It is the whole point of the feature: browser storage can
+// be evicted, so an exported file is the only real safety net, and an
+// unseen age is no safety net at all. It states a fact and stops there
+// — no colour change, no urgency, no counting up of neglect.
 
 import { useRef, useState } from 'react'
 
-function BackupControls({ onExport, onImport }) {
+import { backupAgeLabel } from '../game/backup.js'
+
+function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
   const fileInput = useRef(null)
   const [message, setMessage] = useState('')
 
@@ -33,6 +41,9 @@ function BackupControls({ onExport, onImport }) {
         onChange={handleFile}
         aria-label="backup file"
       />
+      <span className="backup-age">
+        {backupAgeLabel(lastExportedOn, todayKey)}
+      </span>
       {message && <p role="status">{message}</p>}
     </div>
   )

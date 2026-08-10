@@ -46,7 +46,7 @@ battles.
   wider the app runs unchanged. This is a **reversible gate**, not a
   teardown: every existing feature stays built, so a future responsive
   pass simply removes/softens the gate and adds small-screen layouts.
-  The desktop-only startup animation (§5) is one moment *inside* this
+  The desktop-only startup animation (§5) is one moment _inside_ this
   block, no longer a special case on its own.
 - **Safety net (2026-07-27).** If any screen ever fails to draw, one
   calm full-screen message replaces it — Kimia-written copy in a
@@ -473,6 +473,26 @@ design-notes §12f.
   plan phase — likely React or plain JS, whichever keeps us simplest).
 - No backend. All state in `localStorage`, with a manual "export/import
   data" button as backup insurance.
+- **Durability (2026-08-10).** Browsers may evict a site's storage, and
+  they evict a whole origin at once — which here would mean every day of
+  history, silently and with no error. Size is not the risk: five years
+  at the planned pace is about 1 MB, well inside the ~5 MB localStorage
+  allowance. Eviction is. Two defences, neither a backend:
+  - on first run **with data present**, the app asks the browser to mark
+    its storage persistent (`navigator.storage.persist()`). Chrome and
+    Edge decide silently from their own engagement heuristics — a
+    bookmark or frequent visits make a grant far likelier — and Firefox
+    asks. A refusal changes nothing and is never surfaced. It is asked
+    only when there is something to protect, so a first-time visitor is
+    never prompted to keep nothing.
+  - the export row carries a **backup-age line** ("backed up 12 days
+    ago"). Persistence is a request, not a guarantee, and it does
+    nothing against WebKit's rule that clears script-writable storage
+    after seven days without a visit — so an exported file kept
+    elsewhere remains the only real safety net, and its age is the only
+    thing that says whether it still counts. The line states a fact and
+    stops there: no colour change, no urgency, no counting of neglect
+    (§ no punishment mechanics applies to chores too).
 - Deployed via GitHub Pages from the public repo.
 
 ## 9. Testing strategy

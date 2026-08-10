@@ -1227,6 +1227,14 @@ body {
   flex-wrap: wrap;
 }
 
+/* How old the backup is (T6.4a). Deliberately the dimmest thing in the
+   row: it is there to be found when looked for, never to demand
+   attention. No alarm colour at any age — Habitat does not nag. */
+.backup-age {
+  font-size: 0.8rem;
+  opacity: 0.55;
+}
+
 /* One-time to-do tick-box: an empty box until done, larger than the
    browser default so it reads as a deliberate control and is easy to hit. */
 .todo-check {

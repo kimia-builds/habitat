@@ -1051,6 +1051,55 @@ return 0` right after the era is worked out, so a moment before the
   refresh, **not** T6.3 — screenshots, repo description and the
   demo-friendly first run are still that task's work.
 
+- 2026-08-10 (docs session, T6.4a): **the storage threat, reviewed —
+  and the two cheap defences built.** Kimia asked whether five years of
+  history in one browser store is a real threat and whether T6.4's
+  export nudge was too light a mitigation.
+  _Findings:_ **size is a non-issue** — a completion serialises to 156
+  bytes, so five years at `TAPS_PER_DAY_ESTIMATE` (3.5/day) is ~6,400
+  records ≈ 1 MB against a ~5 MB allowance; even 12 taps/day stays
+  inside it. **Eviction is the real threat**: browsers evict a whole
+  origin at once, WebKit clears script-writable storage after seven
+  days without a visit (so the danger fires exactly during the holidays
+  and gaps when the app ISN'T opened), and the data is single-copy and
+  not regenerable — losing it loses the map, the friends and the abode,
+  since the meters are computed from history. The nudge alone is too
+  light for three reasons: it depends on remembering, it can only fire
+  when the app is open (blind to its own worst case), and it leaves the
+  file on the same laptop. It is kept, as the last line of defence, not
+  the first.
+  _Rejected:_ **a backend** (Kimia asked whether Habitica's is worth
+  copying). Habitica runs Node + Express + MongoDB for multiplayer,
+  cross-device sync and a public API — all explicit non-goals in spec
+  §3. A server would move the backup problem rather than solve it, and
+  add hosting, auth and downtime for one user. Worth stealing from
+  Habitica instead: its licence split (code GPL-3.0, art CC BY-NC-SA),
+  and the confirmation that schema versioning is the hard part of
+  long-lived personal data — which Habitat already does properly.
+  _Also decided:_ **no LICENCE file for now** (Kimia's call). Default
+  copyright applies, GitHub's ToS still lets people view and fork, and
+  a licence can be added later but not easily withdrawn. Revisit at
+  T6.3.
+  _Build:_ storage schema **v8 → v9** — `settings.lastExportedOn`, a
+  day key or null. `exportData(now)` stamps it AFTER building the JSON
+  string, so a restored backup reports itself as older than it is; that
+  is the safe direction to be wrong in for a number whose job is to
+  prompt a fresh export. `requestPersistentStorage()` /
+  `isStoragePersisted()` wrap the Storage API with every path guarded
+  (`null` = "the browser wouldn't say"), and App asks once, only when
+  habits or completions exist. `game/backup.js` turns the marker into
+  one plain line; `.backup-age` renders it at 0.55 opacity beside the
+  export button. `SCHEMA_VERSION` is now exported so tests assert "the
+  chain reaches the current version" instead of a literal that needed
+  editing in nine places — this bump broke exactly those nine.
+  _Verified in a real browser_ (not just jsdom): the v8→v9 upgrade ran
+  on existing data without complaint, export flipped the line from "no
+  backup yet" to "backed up today", and a backdated marker read "backed
+  up 12 days ago". Chrome **refused** the persistence grant on a fresh
+  localhost profile with no engagement history — expected, and exactly
+  why the refusal path is silent. On a real profile a bookmark is one
+  of the strongest signals toward a grant.
+
 - 2026-08-10 (Kimia's calls, workbench session): **the canonical eye's
   colour is now #ffeeaa on every friend** — a softer, paler yellow
   replacing the first #ffcf1e; the gradient keeps its depth (core and

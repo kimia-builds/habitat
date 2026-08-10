@@ -7,6 +7,9 @@ import {
   hasData,
   importData,
   loadData,
+  requestPersistentStorage,
+  isStoragePersisted,
+  SCHEMA_VERSION,
   saveData,
 } from './storage.js'
 
@@ -227,7 +230,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(8) // upgrades chain: v1 → … → v8
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION) // the chain runs v1 → … → now
     expect(data.settings.fieldNotesShownOn).toBe(null)
     expect(data.floraDecisions).toEqual({})
     expect(data.bookcaseLayout).toEqual({})
@@ -263,7 +266,7 @@ describe('the v1 → v2 upgrade (T2.3)', () => {
       ],
     })
     const restored = importData(backup)
-    expect(restored.schemaVersion).toBe(8)
+    expect(restored.schemaVersion).toBe(SCHEMA_VERSION)
     expect(restored.habits[0].scheduleHistory[0].schedule).toEqual({
       type: 'nPerWeek',
       n: 3,
@@ -290,7 +293,7 @@ describe('the v2 → v3 upgrade (T3.2)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(8)
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
     expect(typeof data.worldSeed).toBe('string')
     expect(data.worldSeed).not.toBe('')
     // Kimia's decision 2026-07-19: pre-update history rolls nothing.
@@ -377,7 +380,7 @@ describe('the v3 → v4 upgrade (T3.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(8)
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
     expect(data.floraDecisions).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -443,7 +446,7 @@ describe('the v4 → v5 upgrade (T4.2)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(8)
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
     expect(data.bookcaseLayout).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -515,7 +518,7 @@ describe('the v5 → v6 upgrade (T4.3)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(8)
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
     expect(data.abodeLayout).toEqual({})
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -589,7 +592,7 @@ describe('the v6 → v7 upgrade (T4.3b)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(8)
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
     expect(data.purchases).toEqual([])
     // And the upgraded shape passes full validation on the next save.
     saveData(data)
@@ -654,7 +657,7 @@ describe('the v7 → v8 upgrade (T4.4)', () => {
     )
 
     const data = loadData()
-    expect(data.schemaVersion).toBe(8)
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
     expect(data.completions[0].drops).toEqual([
       { kind: 'reading', readingType: 'magazine' },
     ])
@@ -705,5 +708,178 @@ describe('the v7 → v8 upgrade (T4.4)', () => {
     expect(() =>
       saveData(broken({ kind: 'friend', category: 0, individual: 0 })),
     ).toThrow(/individual/)
+  })
+})
+
+describe('the v8 → v9 upgrade (T6.4a)', () => {
+  it('a v8 save gains a null backup marker — it has never been exported', () => {
+    // A hand-written v8 record, exactly as T4.4-era Habitat stored it.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 8,
+        habits: [habit('a', 'Read')],
+        completions: [],
+        settings: {
+          dayCutoffHour: 3,
+          fieldNotesShownOn: null,
+          startupShownOn: null,
+        },
+        checkedInThrough: null,
+        worldSeed: 'seed',
+        floraDecisions: {},
+        bookcaseLayout: {},
+        abodeLayout: {},
+        purchases: [],
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
+    expect(data.settings.lastExportedOn).toBe(null)
+    // Nothing else moved, and the upgraded shape survives a save.
+    expect(data.settings.dayCutoffHour).toBe(3)
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('keeps a backup marker that is already there', () => {
+    const data = {
+      ...emptyData(),
+      settings: { ...emptyData().settings, lastExportedOn: '2026-08-01' },
+    }
+    saveData(data)
+    expect(loadData().settings.lastExportedOn).toBe('2026-08-01')
+  })
+
+  it('rejects a backup marker that is not a real day', () => {
+    const withMarker = (marker) => ({
+      ...emptyData(),
+      settings: { ...emptyData().settings, lastExportedOn: marker },
+    })
+    expect(() => saveData(withMarker('not-a-day'))).toThrow(/backup-date/)
+    expect(() => saveData(withMarker('2026-02-30'))).toThrow(/backup-date/)
+    expect(() => saveData(withMarker(1234567890))).toThrow(/backup-date/)
+  })
+})
+
+describe('exporting stamps the backup day (T6.4a)', () => {
+  // 2026-08-06 14:00 local — comfortably inside the Habitat day, so the
+  // 3am cutoff cannot make this test ambiguous.
+  const afternoon = new Date(2026, 7, 6, 14, 0).getTime()
+
+  it('records the day of the export', () => {
+    saveData({ ...emptyData(), habits: [habit('a', 'Read')] })
+    expect(loadData().settings.lastExportedOn).toBe(null)
+
+    exportData(afternoon)
+    expect(loadData().settings.lastExportedOn).toBe('2026-08-06')
+  })
+
+  it('uses the 3am cutoff, so a 1am export belongs to the day still running', () => {
+    saveData({ ...emptyData(), habits: [habit('a', 'Read')] })
+    exportData(new Date(2026, 7, 7, 1, 0).getTime())
+    expect(loadData().settings.lastExportedOn).toBe('2026-08-06')
+  })
+
+  it('the exported FILE carries the previous marker, not its own export', () => {
+    // Deliberate: the marker is stamped after the string is built, so a
+    // restored backup reports itself as older than it is. Erring toward
+    // "back up again" is the safe direction for this particular number.
+    saveData({ ...emptyData(), habits: [habit('a', 'Read')] })
+    const backup = exportData(afternoon)
+    expect(JSON.parse(backup).settings.lastExportedOn).toBe(null)
+    expect(loadData().settings.lastExportedOn).toBe('2026-08-06')
+  })
+
+  it('exports the same data it always did, marker aside', () => {
+    const data = { ...emptyData(), habits: [habit('a', 'Read')] }
+    saveData(data)
+    const restored = importData(exportData(afternoon))
+    expect(restored.habits).toEqual(data.habits)
+    expect(restored.worldSeed).toBe(data.worldSeed)
+  })
+})
+
+describe('asking the browser to keep our storage (T6.4a)', () => {
+  const withStorageApi = async (api, run) => {
+    const original = Object.getOwnPropertyDescriptor(navigator, 'storage')
+    Object.defineProperty(navigator, 'storage', {
+      value: api,
+      configurable: true,
+    })
+    try {
+      await run()
+    } finally {
+      if (original) Object.defineProperty(navigator, 'storage', original)
+      else delete navigator.storage
+    }
+  }
+
+  it('says "unknown" rather than throwing when the browser lacks the API', async () => {
+    await withStorageApi(undefined, async () => {
+      expect(await isStoragePersisted()).toBe(null)
+      expect(await requestPersistentStorage()).toBe(null)
+    })
+  })
+
+  it('asks for persistence when storage is not yet persisted', async () => {
+    let asked = false
+    await withStorageApi(
+      {
+        persisted: async () => false,
+        persist: async () => {
+          asked = true
+          return true
+        },
+      },
+      async () => {
+        expect(await requestPersistentStorage()).toBe(true)
+        expect(asked).toBe(true)
+      },
+    )
+  })
+
+  it('does not ask again when storage is already persisted', async () => {
+    let asked = false
+    await withStorageApi(
+      {
+        persisted: async () => true,
+        persist: async () => {
+          asked = true
+          return true
+        },
+      },
+      async () => {
+        expect(await requestPersistentStorage()).toBe(true)
+        expect(asked).toBe(false)
+      },
+    )
+  })
+
+  it('reports a refusal as false, not as an error', async () => {
+    await withStorageApi(
+      { persisted: async () => false, persist: async () => false },
+      async () => {
+        expect(await requestPersistentStorage()).toBe(false)
+      },
+    )
+  })
+
+  it('swallows a browser that throws — durability is never worth a crash', async () => {
+    await withStorageApi(
+      {
+        persisted: async () => {
+          throw new Error('refused')
+        },
+        persist: async () => {
+          throw new Error('refused')
+        },
+      },
+      async () => {
+        expect(await isStoragePersisted()).toBe(null)
+        expect(await requestPersistentStorage()).toBe(null)
+      },
+    )
   })
 })

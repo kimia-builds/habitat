@@ -140,32 +140,26 @@ tracker. Everything after this is delight, informed by real use.
       **Character sub-plan (2026-07-25, Kimia's calls: characters
       before the 8 new flora silhouettes land; one canonical eye;
       hand-drawn archetypes with code-derived individuals; pilot one
-      friend end-to-end first — workflow rules in design-bible §9c):**
-      - [x] **T5.3a The eye** — canonical glowing eye chosen (the orb)
-            and recorded in design-bible §9c; reusable `<Eye>` in
-            `src/ui/eye.jsx`.
-      - [x] **T5.3b Pilot Drifter** — Kimia thumbnails Drifter bodies,
-            draws the winner clean, Inkscape-traces to SVG; assembly
-            (texture + eyes + glow) on the workbench; then the Drifter
-            signature congratulation animation (design-notes §8). The
-            first finished friend, proving the whole recipe.
-      - [ ] **T5.3c The ladder** — the 9 remaining category
-            archetypes PLUS a redone Drifter (the T5.3b pilot body was
-            rejected and removed 2026-07-26; its recipe and animation
-            stand), drawn simplest → most complex, assembled on the
-            workbench. Checkpoint before moving on: all 10 side by
-            side must read as one family, complexity visibly climbing
-            (design-bible §9c).
-      - [ ] **T5.3d Individuals** — per category, derive the remaining
-            individuals in code from the archetype (size, texture,
-            appendage, eye count/size); Kimia approves each. 45 across
-            all categories.
-      - [ ] **T5.3e Animations** — the 9 remaining signature category
-            animations (one per category, design-notes §8).
-      - [ ] **T5.3f The 8 new flora silhouettes** (parked 2026-07-25,
-            Kimia's call to start characters first) — land them on the
-            workbench with textures + glow, then continue the flora
-            collection toward the 64-species count.
+      friend end-to-end first — workflow rules in design-bible §9c):** - [x] **T5.3a The eye** — canonical glowing eye chosen (the orb)
+      and recorded in design-bible §9c; reusable `<Eye>` in
+      `src/ui/eye.jsx`. - [x] **T5.3b Pilot Drifter** — Kimia thumbnails Drifter bodies,
+      draws the winner clean, Inkscape-traces to SVG; assembly
+      (texture + eyes + glow) on the workbench; then the Drifter
+      signature congratulation animation (design-notes §8). The
+      first finished friend, proving the whole recipe. - [ ] **T5.3c The ladder** — the 9 remaining category
+      archetypes PLUS a redone Drifter (the T5.3b pilot body was
+      rejected and removed 2026-07-26; its recipe and animation
+      stand), drawn simplest → most complex, assembled on the
+      workbench. Checkpoint before moving on: all 10 side by
+      side must read as one family, complexity visibly climbing
+      (design-bible §9c). - [ ] **T5.3d Individuals** — per category, derive the remaining
+      individuals in code from the archetype (size, texture,
+      appendage, eye count/size); Kimia approves each. 45 across
+      all categories. - [ ] **T5.3e Animations** — the 9 remaining signature category
+      animations (one per category, design-notes §8). - [ ] **T5.3f The 8 new flora silhouettes** (parked 2026-07-25,
+      Kimia's call to start characters first) — land them on the
+      workbench with textures + glow, then continue the flora
+      collection toward the 64-species count.
 
 ## M6 — Hardening & content (ongoing)
 
@@ -182,7 +176,17 @@ tracker. Everything after this is delight, informed by real use.
       progress.
 - [ ] **T6.3 Portfolio polish** — README with screenshots, repo
       description, demo-friendly first-run experience.
-- [ ] **T6.4 Backup habit** — periodic "export your data" nudge.
+- [ ] **T6.4 Backup habit** — keeping five years of history alive in a
+      browser store that browsers are allowed to evict (threat reviewed
+      2026-08-10; the size worry turned out to be unfounded — ~1 MB at
+      five years — while the eviction one is real). - [x] **T6.4a Durability groundwork** _(done 2026-08-10 — build
+      notes in history.md)_ - [ ] **T6.4b The nudge** — the periodic "export your data"
+      prompt, now that the backup-age line gives it something to
+      read. Quiet, and never a scold. - [ ] **T6.4c Automatic export to a file** (candidate, Kimia's
+      call) — File System Access API: pick a backup file once,
+      rewrite it on every launch. Points at an iCloud/Dropbox
+      folder and backup stops being a chore. Chromium-only, so
+      T6.4b stays the fallback everywhere else.
 - [x] **T6.5 Safety net (error boundary).** _(done 2026-07-27, unplanned
       — added while fixing the field notes crash)_
 

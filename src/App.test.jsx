@@ -21,7 +21,14 @@ import {
   SYMBOL_COUNT,
 } from './game/constants.js'
 import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
+import { backupAgeLabel } from './game/backup.js'
+import { addDays, dayKeyFromTimestamp } from './game/days.js'
+import { SCHEMA_VERSION } from './storage/storage.js'
 import { narrationSlot } from './content/narration.js'
+
+// The Habitat day these tests are running in, on the default 3am
+// cutoff — so backup-age expectations never go stale.
+const todayKey = () => dayKeyFromTimestamp(Date.now(), 3)
 
 // The reveal dialogs are named by Kimia's words in narration.js —
 // never hard-code them here, or editing her file breaks the tests
@@ -302,7 +309,9 @@ describe('re-ordering', () => {
     rows.forEach((el, i) => {
       el.getBoundingClientRect = () => {
         const top =
-          el.getAttribute('data-habit-id') === draggedId ? pointerY - 20 : i * 50
+          el.getAttribute('data-habit-id') === draggedId
+            ? pointerY - 20
+            : i * 50
         return {
           top,
           bottom: top + 40,
@@ -829,6 +838,51 @@ describe('the three meters (T2.2)', () => {
 
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
     vi.useRealTimers()
+  })
+})
+
+describe('the backup-age line (T6.4a)', () => {
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+  const ageLine = () => document.querySelector('.backup-age').textContent
+  // The exact words are pinned and tested in game/backup.test.js; here
+  // we only check the wiring, so the label is derived, never quoted.
+  const expected = (lastExportedOn) =>
+    backupAgeLabel(lastExportedOn, todayKey())
+
+  it('says there is no backup yet, then updates the moment one is taken', () => {
+    render(<App />)
+    createHabitViaUI('worth keeping')
+    expect(stored().settings.lastExportedOn).toBe(null)
+    expect(ageLine()).toBe(expected(null))
+
+    // jsdom has no real download; the click is harmless, and what we
+    // care about is that the stamp lands and the line re-reads it.
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:fake')
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+    fireEvent.click(screen.getByRole('button', { name: 'export backup' }))
+
+    expect(stored().settings.lastExportedOn).toBe(todayKey())
+    expect(ageLine()).toBe(expected(todayKey()))
+  })
+
+  it('reports the age of a backup taken a while ago', () => {
+    render(<App />)
+    createHabitViaUI('worth keeping')
+    const old = addDays(todayKey(), -9)
+    act(() => {
+      const data = stored()
+      localStorage.setItem(
+        'habitat-data',
+        JSON.stringify({
+          ...data,
+          settings: { ...data.settings, lastExportedOn: old },
+        }),
+      )
+    })
+    cleanup()
+    render(<App />)
+
+    expect(ageLine()).toBe(expected(old))
   })
 })
 
@@ -1529,7 +1583,7 @@ describe('the Market (T4.3b)', () => {
     expect(wallet()).toBe('2') // the wallet falls by exactly the price
     expect(screen.getByText('×1 at home')).toBeDefined()
     expect(stored().purchases).toHaveLength(1)
-    expect(stored().schemaVersion).toBe(8)
+    expect(stored().schemaVersion).toBe(SCHEMA_VERSION)
 
     // Home and into the abode: the curiosity stands on the ground.
     fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
