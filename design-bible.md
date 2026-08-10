@@ -290,6 +290,18 @@ read from the sheet as one figure (the square root of its width × height
 there) and applied as a card width through the artwork's own
 proportions, so a drawing only ever changes scale, never shape.
 
+**The canon is the RATIO, and it holds everywhere and always (Kimia's
+rule, 2026-08-10).** A friend does not have a size; it has a place in one
+ordered scale. Absolute values are free to differ — a Guest Book card, an
+arrival reveal and a home-screen cameo may each pick whatever base size
+suits them — but within any one of them the ten must stand in exactly the
+sheet's proportions, forever. A tiny friend never out-sizes a large one
+anywhere in the app. Practically: one unitless table of relative scales
+in a permanent home, every render site multiplying its own base by that
+number, and a test holding the ratios to the sheet. Never a per-screen
+size typed in by hand — that is how a cast loses its scale one screen at
+a time. (Built in T5.3d.)
+
 **Complexity scales with size.** Larger friends are more visually
 complex, but complexity comes from **layered texture, appendages, and
 silhouette** — never brighter colour or stronger glow.

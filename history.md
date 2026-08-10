@@ -1204,6 +1204,37 @@ return 0` right after the era is worked out, so a moment before the
   prose is ours. (The nesting itself was repaired first, in its own
   commit.)
 
+- 2026-08-10 (Kimia's calls, after the tokens session): **the ten
+  archetypes pass the T5.3c checkpoint** — she is happy with them on the
+  eyeball test, so the ladder is done and the cast reads as one family.
+  Two rules came with the approval, and both are now plan tasks.
+  **(1) The canon is the RATIO, and it holds everywhere and always**
+  (new T5.3d, folded into design-bible §9c). Her words: the sizes must
+  remain true in relation to each other, "not necessarily in absolute
+  values", everywhere and always. So a friend has no fixed size — it has
+  a place in one ordered scale, and every screen that draws friends
+  picks its own base size and multiplies. Today's canon fails that test
+  in three ways: it is absolute rem, it is split between
+  `tracedFriends.js` (nine friends) and one CSS rule (friend 10's
+  11rem), and its home is a file marked temporary that leaves with the
+  workbench — so the cast's proportions would die with the shelf they
+  were measured for. The fix is one unitless table in a permanent home,
+  every render site deriving from it, and a test, because "always" is a
+  promise a comment cannot keep.
+  **(2) The beings' names are copy, and copy is human-written** (new
+  T6.1a). The ten species names were Claude-drafted on 2026-07-20 and
+  put in `src/game/constants.js` deliberately, as game data rather than
+  narration. Kimia has reversed that: they are words the player reads,
+  so they are hers. The stable keys stay in code (the save file and the
+  tests reference them); the WORDS move to `src/content/`, where she
+  edits on GitHub. Individual names — 45 — have no home at all yet, since
+  a friend is still announced as "a Drifter"; T6.1a builds keyed, blank
+  slots for both and ships them empty, per design-notes §7.
+  _Also noted:_ nothing in the repo tells her where her copy lives. The
+  content files explain themselves in their own headers, and AGENTS.md
+  names the folder, but the README — the doc she is most likely to open
+  — says nothing. Worth fixing when T6.3 rewrites it.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
@@ -2129,3 +2160,24 @@ and recorded in spec.md's decisions log._
       palettes say they stay put; sky.jsx's night-sky ground says it
       moves in the §13c slice. Their old "TODO(T5.2)" notes are gone, so
       no future session inherits a promise that was reconsidered.
+
+- [x] **T5.3c The ladder** _(done 2026-08-10, design-bible §9c)_
+      All ten category archetypes now stand side by side on the design
+      workbench, each in the three reward-stream pastels and assembled to
+      the friend recipe — Kimia's traced body, canonical blinking eyes at
+      her placeholders, body-colour glow, the body/eyes split. Nine
+      arrived in the two workbench sessions of 2026-08-10 (stacked vs
+      banded traces, per-friend seals, sizes read off the character
+      sheet); friend 10 landed earlier the same day. The build detail is
+      in those two decisions-log entries, which is where the reasoning
+      lives.
+      _Done when:_ the checkpoint the sub-plan set — all ten read as one
+      family, complexity visibly climbing — and that is a human judgement,
+      not a test. **Kimia passed it on the eyeball test (2026-08-10).**
+      The rejected T5.3b pilot Drifter stays gone; its recipe and its
+      drift-and-bob animation stand, and the cast's Drifter is one of the
+      ten traced bodies.
+      Two rules came out of the approval rather than the build, and both
+      became tasks rather than being folded in here: the size canon must
+      hold as a RATIO everywhere (T5.3d) and every species and individual
+      name is Kimia's to write (T6.1a). See the decisions log.

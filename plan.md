@@ -168,23 +168,30 @@ tracker. Everything after this is delight, informed by real use.
             (texture + eyes + glow) on the workbench; then the Drifter
             signature congratulation animation (design-notes §8). The
             first finished friend, proving the whole recipe.
-      - [ ] **T5.3c The ladder** — the 9 remaining category
-            archetypes PLUS a redone Drifter (the T5.3b pilot body was
-            rejected and removed 2026-07-26; its recipe and animation
-            stand), drawn simplest → most complex, assembled on the
-            workbench. Checkpoint before moving on: all 10 side by
-            side must read as one family, complexity visibly climbing
-            (design-bible §9c).
-      - [ ] **T5.3d Individuals** — per category, derive the remaining
-            individuals in code from the archetype (size, texture,
-            appendage, eye count/size); Kimia approves each. 45 across
-            all categories.
-      - [ ] **T5.3e Animations** — the 9 remaining signature category
-            animations (one per category, design-notes §8).
-      - [ ] **T5.3f The 8 new flora silhouettes** (parked 2026-07-25,
-            Kimia's call to start characters first) — land them on the
-            workbench with textures + glow, then continue the flora
-            collection toward the 64-species count.
+      - [x] **T5.3c The ladder** _(done 2026-08-10 — checkpoint passed
+            on Kimia's eyeball test: all ten read as one family. Build
+            notes in history.md)_
+      - [ ] **T5.3d The size canon** (new 2026-08-10, Kimia's rule:
+            "their canon sizes must remain true in relation to each
+            other — not necessarily in absolute values — everywhere and
+            always") — the ten archetypes' relative scales become ONE
+            unitless table in a permanent home, and every place a friend
+            is drawn takes its size from it against that place's own
+            base size. Today the canon is absolute rem, split across a
+            temporary workbench file and one CSS rule, and describes the
+            shelf rather than the cast. Comes before T5.3e because the
+            individuals vary size against their archetype.
+      - [ ] **T5.3e Individuals** _(was T5.3d before the 2026-08-10
+            insert)_ — per category, derive the remaining individuals in
+            code from the archetype (size, texture, appendage, eye
+            count/size); Kimia approves each. 45 across all categories.
+      - [ ] **T5.3f Animations** _(was T5.3e)_ — the 9 remaining
+            signature category animations (one per category,
+            design-notes §8).
+      - [ ] **T5.3g The 8 new flora silhouettes** _(was T5.3f;_ parked
+            2026-07-25, Kimia's call to start characters first) — land
+            them on the workbench with textures + glow, then continue the
+            flora collection toward the 64-species count.
 
 ## M6 — Hardening & content (ongoing)
 
@@ -193,6 +200,18 @@ tracker. Everything after this is delight, informed by real use.
       to regions (collaborative, fun, ongoing). Decide here which flora
       are **landmarks** (the large tree-like ones that appear on the Map,
       spec 2026-07-19).
+
+      - [ ] **T6.1a Every name becomes Kimia's to write** (new
+            2026-08-10, her call) — the ten species names ("Drifter",
+            "Nester", …) were Claude-drafted on 2026-07-20 and parked in
+            `src/game/constants.js` as game data. They are copy, and copy
+            is human-written (CLAUDE.md), so the WORDS move into
+            `src/content/` where she edits them on GitHub; the stable
+            keys the save file and tests use stay in code. Individual
+            names — 45 of them — have no home at all yet: a friend is
+            still "a Drifter". This builds the empty, keyed slots for
+            both, blank until she fills them, per design-notes §7. The
+            plumbing is a coding task; naming the beings is T6.1 itself.
 - [ ] **T6.2 Pacing tune-up (recurring)** — after ~1 month of real use,
       then roughly **every 6 months** (Kimia's decision 2026-07-15): revisit
       all pacing constants against real historical averages (starting with
