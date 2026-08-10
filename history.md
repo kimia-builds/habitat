@@ -1157,6 +1157,53 @@ return 0` right after the era is worked out, so a moment before the
   blocks; nothing was lost, and Kimia kept it — its size makes the
   coarseness moot. Folded into design-bible §9c.
 
+- 2026-08-10 (T5.2a, tokens session): **T5.2 is now five slices, and the
+  first one is built.** Visual identity was always going to take several
+  sessions; plan.md now says so out loud (T5.2a tokens → b palette → c
+  typography → d layout → e glow & startup). The tokens file goes first
+  because every slice after it becomes an edit to one short list instead
+  of a tour of a 1,400-line stylesheet. Three boundaries were decided
+  while building it, all folded into design-notes §11d.
+  **(1) Colour moved in; glow, type and spacing did not, yet.** §11d asks
+  for every colour, glow strength, font size and spacing number. Colour is
+  a finished set — 122 literals, 40 distinct, each with a clear job — so
+  naming it is pure gain. The others are not: today's four
+  near-identical glow radii and the paddings of the ugly-on-purpose
+  skeleton are placeholders the §13 layout pass and §11c type scale are
+  about to replace. Naming them now would mean naming them twice, so each
+  joins the file in the slice that actually decides it.
+  **(2) The tokens file holds the colours the STYLESHEET wears; artwork
+  keeps its own paints.** This SUPERSEDES the note in the session above
+  that friendPalettes.js would move into the tokens file wholesale. The
+  friends' 24 pastels, textures.jsx's surface tints and the Abode sky
+  palettes are consumed only as JavaScript strings painting SVG — no CSS
+  rule reads them, so moving them would buy nothing and cost a second
+  hand-kept mirror. They stay beside the drawings, cross-referenced both
+  ways. On a schedule, one exception: the night sky's three ground
+  colours become real stylesheet colours when §13c mounts it as the app
+  background, and move then. The charm colours are the opposite case —
+  CSS and JS both need them — which is exactly why §11d's mirror rule
+  exists for symbols.js.
+  **(3) The tokens file gets a guard test**, on the same reasoning as the
+  README's milestone marker: a rule that only lives in a comment has
+  already been shown to fail. `src/test/tokens.test.js` fails the suite
+  if a raw colour reappears in index.css, if a rule asks for a token that
+  is not defined, or if symbols.js drifts from the canonical charm hexes.
+  Like docs.test.js it reads files as text and touches nothing in
+  `src/content/`, so no edit of Kimia's can break the deploy through it.
+  **(4) Prettier no longer touches the documents** (`*.md` added to
+  `.prettierignore`). Found the same day, by cause: plan.md's T5.3 and
+  T6.4 sub-plans had been folded into run-on paragraphs — nine tick-boxes
+  gone — and the culprit was `npm run format`. Prettier's markdown
+  formatter reads an indented sub-task list as continuation prose and
+  flattens it; adding the blank line that makes it a "real" list only
+  moves the damage, because it then re-nests the whole block one level
+  deeper on every subsequent run, so the file never settles. CI runs
+  tests and oxlint and has never run Prettier, so nothing depended on
+  the formatting it was imposing. Code stays formatted; hand-wrapped
+  prose is ours. (The nesting itself was repaired first, in its own
+  commit.)
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
@@ -2033,3 +2080,52 @@ and recorded in spec.md's decisions log._
       browser — dragging a row up AND down reordered the list and persisted
       to localStorage both ways, handle renders in place of the arrows, no
       console errors.
+
+- [x] **T5.2a The tokens file — colour** _(done 2026-08-10, design-notes
+      §11d)_
+      The first slice of the visual identity, and deliberately an
+      invisible one: every colour the app wears got a name, and not one
+      of them changed value. `src/index.css` had 122 hand-written colour
+      literals (40 distinct) scattered through ~1,400 lines; it now has
+      none. They live in **`src/tokens.css`** as named custom properties
+      with plain-English comments — `--text-quiet`, `--veil-checkin`,
+      `--pop-friend` — grouped into charms, surfaces, borders, text
+      tiers, washes, the three reward streams, and the neon POP. Rules
+      ask for them by name: `color: var(--text-quiet)`.
+      The point is the NEXT slice. §11b's identity — the deeper #080910
+      ground, dim-white text tiers, charm colours as the everyday accent
+      — is now an edit to one short list rather than a hunt through the
+      stylesheet, which is exactly the promise §11d made and the reason
+      Kimia asked for the file.
+      `index.css` reaches the tokens with a plain `@import './tokens.css'`
+      on its first line (Vite inlines it at build), so there is one thing
+      to know and no build config to explain.
+      Naming was semantic, not literal: `--bg`, not `--dark-blue`. Where
+      two near-identical values had genuinely different jobs they kept
+      separate names (`--surface` #11151f for a panel, `--surface-lifted`
+      #12151f for a dragged row) rather than being quietly merged —
+      merging them would have been a design change smuggled into a
+      rename, and this slice changes nothing on screen.
+      _Tests:_ new `src/test/tokens.test.js` (3) guards the arrangement
+      itself, since a comment saying "no raw hex here" has no teeth: it
+      fails if a colour literal reappears in index.css, if a rule asks
+      for a token tokens.css does not define, or if `symbols.js` — the
+      declared mirror that needs the charm hexes as JS strings for its
+      glow drop-shadows — drifts from the canonical values. It reads both
+      files as text, like docs.test.js, and touches nothing in
+      `src/content/`, so no edit of Kimia's can break the deploy through
+      it. Full suite 986 and oxlint pass (the two pre-existing prettier
+      warnings on sky.jsx/textures.jsx are untouched and unrelated).
+      _Verified in a real browser_, since "nothing changed" is the whole
+      claim and jsdom cannot check it: the tokens all resolve, and every
+      computed colour matched its old value exactly — body #0b0e14 on
+      #e8e6f0, the meter's #11151f/#2a3040, the four neon reveal
+      colours, both veils, the drag lift and its shadow, the workbench
+      card, the rail's rgba white. No console errors.
+      _Also this session:_ the four JS colour tables got honest headers
+      about which of them ever move into the tokens file (decisions log,
+      2026-08-10) — `symbols.js` now says it is a mirror and is under
+      test; `friendPalettes.js`, `textures.jsx` and sky.jsx's Abode
+      palettes say they stay put; sky.jsx's night-sky ground says it
+      moves in the §13c slice. Their old "TODO(T5.2)" notes are gone, so
+      no future session inherits a promise that was reconsidered.

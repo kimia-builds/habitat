@@ -1,3 +1,15 @@
 dist
 node_modules
 package-lock.json
+
+# The project's documents are hand-wrapped prose, and Prettier damages
+# them (2026-08-10). Its markdown formatter re-parses plan.md's nested
+# sub-tasks as continuation text and folds nine tick-boxes into one
+# run-on paragraph — which is exactly what happened to T5.3's and T6.4's
+# sub-plans in that day's earlier session. Indenting them differently
+# does not help: Prettier then re-nests them one level deeper on every
+# run, so the file never settles. CI runs tests and oxlint, never
+# Prettier, so nothing needed this formatting; `npm run format` was
+# simply corrupting the roadmap in passing. Code stays formatted; prose
+# is ours.
+*.md

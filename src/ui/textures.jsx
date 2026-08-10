@@ -25,9 +25,13 @@
  *   • "Silhouette first, texture second, colour last" (§3): these are the
  *     SECOND layer — always applied on top of / clipped to a silhouette shape,
  *     never used to define one.
- *   • Colours below are stand-ins. TODO(T5.2): once the CSS design-tokens file
- *     exists (design-notes §11d), wire TEX_COLORS to the canonical token values
- *     so the whole library shifts with the palette in one move.
+ *   • Colours below STAY HERE (settled T5.2a, 2026-08-10). The design-tokens
+ *     file now exists (`src/tokens.css`), and it holds the colours the
+ *     stylesheet wears. These are surface tints fed to SVG filter primitives
+ *     as JavaScript strings — no CSS rule reads them — so they live beside the
+ *     filters that use them, the same call friendPalettes.js and sky.jsx got.
+ *     They are still stand-ins in the sense that matters: the art pass may
+ *     retune them, and design-bible §8 is what they answer to.
  *
  * WHAT MAPS TO KIMIA'S APPROVED SCREENSHOTS:
  *   tex-moss      = "moss" / the demo's "fractal-noise grain"
@@ -42,7 +46,8 @@
  */
 
 /* -----------------------------------------------------------------------------
- * COLOUR TABLE  —  TODO(T5.2): replace each value with a design token.
+ * COLOUR TABLE  —  the texture library's own paints (see the header: these do
+ * not move to tokens.css; no CSS rule reads them).
  * `light` is the feDiffuseLighting colour (the surface tint). Organic families
  * carry a green light + a glow; rock/ground carry a cool grey light + NO glow.
  * --------------------------------------------------------------------------- */

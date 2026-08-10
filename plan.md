@@ -116,6 +116,25 @@ tracker. Everything after this is delight, informed by real use.
       into one CSS file of named, commented values — the visual twin of
       `constants.js`; the six charm colours become canonical there and
       `src/ui/symbols.js` mirrors the hexes its JS needs.
+      **Sliced 2026-08-10** — one task was always several sessions, so it
+      now says so. The tokens file goes first, because every slice after
+      it is an edit to one short list instead of a tour of the stylesheet:
+      - [x] **T5.2a The tokens file — colour** _(done 2026-08-10 — build
+            notes in history.md)_
+      - [ ] **T5.2b The §11b palette** — spend the tokens file: the
+            `#080910` ground, the dim-white text tiers, the charm colours
+            and their faint variants as the everyday accent and border
+            tint. Mostly an edit to `src/tokens.css`.
+      - [ ] **T5.2c Typography (§11c)** — bundle Cormorant Garamond and
+            DM Sans (no external loading), then the case and letterspacing
+            convention; the type scale joins the tokens file here.
+      - [ ] **T5.2d Layout & atmosphere (§13)** — the top header bar,
+            promoted page titles, and the night sky mounted as the app
+            background (its ground colours move into the tokens file with
+            it, per §11d); the spacing scale joins the tokens file here.
+      - [ ] **T5.2e Glow, feel & the startup animation** — the §4–§5 feel
+            enhancements and the §12f rolling planet; the glow scale joins
+            the tokens file here, once there is a real one to name.
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
       categories), flora, fungi, market objects, planet regions. Several
       sessions of creative iteration; Kimia art-directs. Language and

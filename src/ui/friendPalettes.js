@@ -17,9 +17,14 @@
  * violet, fungi amber). A friend's GLOW is its own body colour (design-bible
  * §3), so the glow is a mid tone of the same hue rather than a separate light.
  *
- * COLOURS ARE STAND-INS. TODO(T5.2): move this table into the CSS design-tokens
- * file once it exists — it is now the single place the friend body colours
- * live, so that migration is one file's worth of work.
+ * WHERE THIS TABLE LIVES (settled T5.2a, 2026-08-10). The design-tokens file
+ * now exists (`src/tokens.css`), and this table is deliberately NOT in it. The
+ * tokens file holds the colours the STYLESHEET wears — one name, one value,
+ * read straight by a CSS rule. These are artwork colours: 24 pastels consumed
+ * only as JavaScript strings, painting SVG layers. Moving them would buy no
+ * CSS rule anything and would cost a second hand-kept mirror. So the split is:
+ * the palette Habitat's interface wears lives in tokens.css; a drawing's own
+ * paints live beside the drawing. Same rule as textures.jsx and sky.jsx.
  * =========================================================================== */
 
 // Each row is one of the traces' greys and the pastel it becomes in each hue.

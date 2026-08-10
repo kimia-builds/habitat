@@ -1,0 +1,132 @@
+/*
+ * tokens.css — every colour Habitat wears, named once (T5.2a)
+ * =============================================================================
+ * The visual twin of `src/game/constants.js` (design-notes §11d). That file
+ * holds the tunable game numbers; this one holds the tunable LOOK, so retuning
+ * the palette is one readable edit in a short list rather than a hunt through
+ * 1,400 lines of stylesheet. Nothing here is clever: it is a list of colours
+ * with plain-English notes on what each one is for.
+ *
+ * HOW TO CHANGE A COLOUR: edit the value here. Every rule in index.css asks for
+ * these by name — `color: var(--text-quiet)` — so one edit moves every place
+ * that colour appears, and nowhere else needs touching.
+ *
+ * WHAT IS AND ISN'T HERE (2026-08-10):
+ *   - COLOUR is here, all of it. index.css holds no raw hex or rgba any more.
+ *   - Glow strengths, font sizes and spacing are NOT here yet, on purpose.
+ *     Today's values are ad-hoc leftovers of the ugly-on-purpose skeleton (four
+ *     near-identical glow radii; paddings the §13 layout pass is about to
+ *     rewrite). Naming them now would be naming numbers that are about to be
+ *     replaced — they arrive in the T5.2 slices that actually decide them.
+ *
+ * THE VALUES BELOW ARE TODAY'S LOOK, unchanged. This slice gave the existing
+ * colours names and changed nothing on screen. The §11b identity — the deeper
+ * #080910 ground, the dim-white text tiers, the charm palette as the everyday
+ * accent — lands next, and by design that is an edit to THIS FILE, not a
+ * re-tour of the stylesheet.
+ *
+ * MIRRORS: some colours are also needed as strings in JavaScript, because they
+ * are built into SVG filters and glow attributes. Those files keep their own
+ * literals and say so at the top — this file is the documented home, and the
+ * pair must be kept in step by hand (design-notes §11d chose this over runtime
+ * indirection). The mirrors are `src/ui/symbols.js` (the six charms) and
+ * `src/ui/friendPalettes.js` (the friend pastels).
+ * =========================================================================== */
+
+:root {
+  /* ===========================================================================
+   * THE SIX CHARMS — canonical here (design-notes §11a, Kimia's call 11d)
+   * The habit tags, and the app's accent palette. Mirrored in symbols.js,
+   * which needs them as JS strings to build its glow drop-shadows.
+   * ========================================================================= */
+  --charm-crown: #f0bb3b; /* 1 · gold */
+  --charm-cherry: #f5805a; /* 2 · coral */
+  --charm-shell: #e8698c; /* 3 · pink — also the daily startup planet (§12f) */
+  --charm-anchor: #a98ee0; /* 4 · lavender */
+  --charm-shield: #5ab6f3; /* 5 · sky */
+  --charm-key: #4fbfa0; /* 6 · teal */
+
+  /* The same six at 0.18 alpha: §11b's border and divider tint, for the
+     identity slice that adopts them. Nothing wears these yet. */
+  --charm-crown-faint: rgba(240, 187, 59, 0.18);
+  --charm-cherry-faint: rgba(245, 128, 90, 0.18);
+  --charm-shell-faint: rgba(232, 105, 140, 0.18);
+  --charm-anchor-faint: rgba(169, 142, 224, 0.18);
+  --charm-shield-faint: rgba(90, 182, 243, 0.18);
+  --charm-key-faint: rgba(79, 191, 160, 0.18);
+
+  /* Crown gold lifted a step, for the hover of the gold page-level pencil. */
+  --charm-crown-bright: #f5cd66;
+
+  /* ===========================================================================
+   * SURFACES — the dark ground everything sits on (spec §7: dark only)
+   * ========================================================================= */
+  --bg: #0b0e14; /* the page itself, and the pop-up panels that sit on it */
+  --surface: #11151f; /* a panel or card raised off the background */
+  --surface-lifted: #12151f; /* a habit row while it is being dragged */
+  --shadow-lifted: 0 6px 18px rgba(0, 0, 0, 0.45); /* …and the lift under it */
+
+  /* Veils: full-screen washes that dim what is behind them. */
+  --veil-reveal: rgba(4, 6, 10, 0.88); /* behind a first-occurrence reveal */
+  --veil-checkin: rgba(4, 6, 10, 0.72); /* behind the morning check-in */
+  --veil-startup: #000; /* the daily startup fade — true black, then gone */
+
+  /* ===========================================================================
+   * BORDERS — three weights, quietest first
+   * ========================================================================= */
+  --border-quiet: #1a2030; /* barely there; separates without drawing a line */
+  --border: #2a3040; /* the everyday edge of a panel or control */
+  --border-hover: #3d4660; /* that edge, woken up by a pointer */
+  --hairline: rgba(255, 255, 255, 0.12); /* a drawn line inside artwork */
+  --hairline-faint: rgba(255, 255, 255, 0.1); /* the same, fainter still */
+
+  /* ===========================================================================
+   * TEXT — brightest at the top, dimmest at the bottom. Habitat's voice is
+   * quiet: most text lives in the middle of this list, not the top.
+   * ========================================================================= */
+  --text: #e8e6f0; /* body text and anything that must simply be read */
+  --text-title: #cfd8e3; /* page titles, the date, the block-screen message */
+  --text-quiet: #9aa3b5; /* captions, secondary lines, icon buttons at rest */
+  --text-quieter: #8b93a6; /* the workbench's swatch labels */
+  --text-faint: #6b7288; /* the cutoff note, the workbench door */
+  --text-faintest: #5b6375; /* an inactive mode icon */
+  --text-dim-white: rgba(255, 255, 255, 0.38); /* the left rail at rest */
+
+  /* ===========================================================================
+   * WASHES — fills so faint they read as texture, not colour
+   * ========================================================================= */
+  --wash-soil: rgba(255, 255, 255, 0.02); /* the abode's ground */
+  /* the map's silhouette of the unvisited planet */
+  --wash-planet: rgba(255, 255, 255, 0.025);
+  --wash-socket: rgba(8, 9, 16, 0.75); /* the dark behind a book's eye */
+
+  /* ===========================================================================
+   * THE THREE REWARD STREAMS — the everyday pastel register
+   * One soft colour per stream, worn by its meter, its drops and its pages.
+   * ========================================================================= */
+  --expedition: #a8dcc3; /* soft mint — the land, and the flora it gives */
+  --literacy: #c5b8e8; /* soft lavender — language and reading */
+  --fungi: #f2d9a6; /* soft amber — the glow of fungi, and the wallet */
+  --friendship: #eec6d3; /* soft rose — friends arriving and visiting */
+
+  /* Landmark flora on the map: a small tree of light, permanent once found. */
+  --landmark: #d9f2e6;
+  --landmark-fill: rgba(217, 242, 230, 0.35);
+
+  /* ===========================================================================
+   * NEON POP — the one place bright colour shouts (spec §7)
+   * Brighter siblings of the pastels above, reserved for first-occurrence
+   * reveals and friend arrivals. Never the everyday register.
+   * ========================================================================= */
+  --pop-flora: #57ffb0;
+  --pop-reading: #b47bff;
+  --pop-fungi: #ffd24d;
+  --pop-friend: #ff9ec7; /* the brightest of all — kept for friends alone */
+
+  /* ===========================================================================
+   * ODDS AND ENDS
+   * ========================================================================= */
+  --tick: #8fb3ff; /* the browser's own tick-box, tinted to match */
+  --surface-workbench: #0b0f14; /* the design workbench's card ground —
+                                   temporary, and leaves with that page */
+}

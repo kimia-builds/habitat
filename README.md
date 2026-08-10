@@ -102,10 +102,12 @@ built on top of a live, in-use app.
   its reveals; and the full world of N-Z-D — map, bookcase, abode,
   market and guest book.
 - **M5 — in progress.** The design pass: the six charm symbols, the
-  device gate and drag-to-reorder are in; the visual identity (design
-  tokens, type, the startup animation, night sky) and the creature,
-  flora and object art are being built now.
-- **M6 — ahead.** Content pools, pacing tune-ups, portfolio polish and
-  the backup habit. The error-boundary safety net is already in.
+  device gate, drag-to-reorder and the colour design-tokens file are in;
+  the rest of the visual identity (palette, type, layout, the startup
+  animation) and the creature, flora and object art are being built now.
+- **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
+  The error-boundary safety net is already in, and so is the first half
+  of the backup habit — persistent-storage groundwork and a line saying
+  how old your last export is.
 
 See [plan.md](plan.md) for the task-level truth.

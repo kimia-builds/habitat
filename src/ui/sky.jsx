@@ -28,18 +28,24 @@
  *     motion on the Abode sky.
  *   • prefers-reduced-motion disables the twinkle (handled in the CSS below).
  *
- * COLOURS ARE STAND-INS. TODO(T5.2): once the CSS design-tokens file exists
- * (design-notes §11d), move each SKY_TOKENS value into it as a named custom
- * property and reference var(--…) here — exactly as textures.jsx's TEX_COLORS
- * waits to be wired. Kept as JS stand-ins for now (Kimia's call 2026-07-24):
- * that file is the unbuilt T5.2 task, and this merge stays inside T5.3.
+ * WHERE THESE COLOURS LIVE (revisited T5.2a, 2026-08-10, now that
+ * `src/tokens.css` exists). The tokens file holds the colours the STYLESHEET
+ * wears; artwork keeps its own paints. That splits this table in two, and the
+ * split is a schedule, not an argument:
+ *   • the ABODE palettes are artwork — four painted skies, read only as JS
+ *     strings. They stay here for good, like textures.jsx's tints.
+ *   • the NIGHT SKY's three ground colours become real stylesheet colours the
+ *     moment §13c mounts it as the app background (a later T5.2 slice). They
+ *     move into tokens.css in that slice, with the rules that use them — not
+ *     before, because a token nothing reads is just a colour in a lonelier file.
  * =============================================================================
  */
 
 import { useMemo, Fragment } from 'react'
 
 /* -----------------------------------------------------------------------------
- * COLOUR / TIMING TABLE  —  TODO(T5.2): replace each value with a design token.
+ * COLOUR / TIMING TABLE  —  see the header for which of these move to
+ * tokens.css (the night-sky ground, in the §13c slice) and which never do.
  * --------------------------------------------------------------------------- */
 export const SKY_TOKENS = {
   // shared night sky

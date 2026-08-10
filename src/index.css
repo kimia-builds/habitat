@@ -1,5 +1,13 @@
+@import './tokens.css';
+
 /* Base look per spec.md §7: dark mode only, deep-space near-blacks,
-   white/pastel content. Neon is reserved for POP moments (none yet). */
+   white/pastel content. Neon is reserved for POP moments (none yet).
+
+   Every colour in this file is asked for BY NAME — `var(--text-quiet)`,
+   never a raw hex (T5.2a, design-notes §11d). The names and their values
+   live in tokens.css, which is the one place to change how Habitat looks.
+   A colour literal appearing in this file again is a bug; tokens.test.js
+   fails the suite if one does. */
 
 :root {
   color-scheme: dark;
@@ -12,8 +20,8 @@
 }
 
 body {
-  background-color: #0b0e14;
-  color: #e8e6f0;
+  background-color: var(--bg);
+  color: var(--text);
   font-family:
     system-ui,
     -apple-system,
@@ -37,7 +45,7 @@ body {
   font-weight: 300;
   letter-spacing: 0.5em;
   font-size: 1.5rem;
-  color: #cfd8e3;
+  color: var(--text-title);
 }
 
 /* The header as the home link (2026-07-16): a button dressed as the
@@ -68,8 +76,8 @@ body {
   align-items: stretch;
   gap: 0.4rem;
   padding: 0.6rem 0.7rem;
-  background: #11151f;
-  border: 1px solid #2a3040;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   cursor: pointer;
   font: inherit;
@@ -77,18 +85,18 @@ body {
 }
 
 .meter:hover {
-  border-color: #3d4660;
+  border-color: var(--border-hover);
 }
 
 .meter-name {
   font-size: 0.75rem;
   letter-spacing: 0.15em;
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 .meter-bar {
   height: 0.45rem;
-  background: #1a2030;
+  background: var(--border-quiet);
   border-radius: 0.25rem;
   overflow: hidden;
 }
@@ -101,15 +109,15 @@ body {
 
 /* One pastel per stream. */
 .meter-bar-expedition .meter-bar-fill {
-  background: #a8dcc3; /* soft mint — the land */
+  background: var(--expedition); /* soft mint — the land */
 }
 
 .meter-bar-literacy .meter-bar-fill {
-  background: #c5b8e8; /* soft lavender — language */
+  background: var(--literacy); /* soft lavender — language */
 }
 
 .meter-bar-fungus .meter-bar-fill {
-  background: #f2d9a6; /* soft amber — the glow of fungi */
+  background: var(--fungi); /* soft amber — the glow of fungi */
 }
 
 /* The shared frame of the world pages (the class predates the real
@@ -120,7 +128,7 @@ body {
   flex-direction: column;
   gap: 0.75rem;
   padding: 2rem 1rem;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   align-items: flex-start;
 }
@@ -131,7 +139,7 @@ body {
 }
 
 .stub-page p {
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 /* T4.3b: the Market — the rotating stall. Quiet like the bookshelf and
@@ -152,7 +160,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.45rem;
-  border: 1px solid #1a2030;
+  border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
   padding: 0.9rem 0.6rem;
 }
@@ -167,7 +175,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  color: #f2d9a6; /* soft amber — the glow of fungi */
+  color: var(--fungi); /* soft amber — the glow of fungi */
   font-size: 0.85rem;
 }
 
@@ -178,7 +186,7 @@ body {
 
 /* How many copies already live at home — quiet, neutral data. */
 .market-owned {
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font-size: 0.75rem;
 }
 
@@ -198,17 +206,17 @@ body {
 }
 
 .abode-soil {
-  fill: rgba(255, 255, 255, 0.02);
+  fill: var(--wash-soil);
 }
 
 .abode-horizon {
-  stroke: rgba(255, 255, 255, 0.12);
+  stroke: var(--hairline);
   stroke-width: 1;
 }
 
 /* A gathered flora: the expedition stream's mint, glowing softly. */
 .abode-flora {
-  color: #a8dcc3;
+  color: var(--expedition);
 }
 
 .abode-flora-hold {
@@ -226,7 +234,7 @@ body {
 }
 
 .abode-flora-name {
-  fill: #e8e6f0;
+  fill: var(--text);
   font-size: 7px;
   text-anchor: middle;
 }
@@ -236,7 +244,7 @@ body {
 .abode-compost {
   cursor: pointer;
   outline: none;
-  fill: #9aa3b5;
+  fill: var(--text-quiet);
   font-size: 6px;
   text-anchor: middle;
   text-decoration: underline;
@@ -244,7 +252,7 @@ body {
 
 .abode-compost:hover,
 .abode-compost:focus-visible {
-  fill: #e8e6f0;
+  fill: var(--text);
 }
 
 /* T4.4: the quiet / party toggle — a switch with an icon on either
@@ -254,7 +262,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 .abode-mode-off {
@@ -264,11 +272,11 @@ body {
 .abode-mode-icon {
   width: 1.15rem;
   height: 1.15rem;
-  color: #5b6375;
+  color: var(--text-faintest);
 }
 
 .abode-mode-icon.active {
-  color: #cfd8e3;
+  color: var(--text-title);
   filter: drop-shadow(0 0 4px currentColor);
 }
 
@@ -276,9 +284,9 @@ body {
   position: relative;
   width: 2.1rem;
   height: 1.1rem;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   border-radius: 0.6rem;
-  background: #11151f;
+  background: var(--surface);
   cursor: pointer;
   padding: 0;
 }
@@ -294,13 +302,13 @@ body {
   width: 0.7rem;
   height: 0.7rem;
   border-radius: 50%;
-  background: #9aa3b5;
+  background: var(--text-quiet);
   transition: transform 0.25s ease;
 }
 
 .abode-mode-switch[aria-checked='true'] .abode-mode-knob {
   transform: translateX(0.95rem);
-  background: #eec6d3;
+  background: var(--friendship);
 }
 
 /* A visiting friend in party mode: simply present — a soft glow, no
@@ -325,7 +333,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.45rem;
-  border: 1px solid #1a2030;
+  border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
   padding: 0.9rem 0.8rem;
   background: none;
@@ -334,7 +342,7 @@ body {
 }
 
 .guestbook-friend:hover {
-  border-color: #2a3040;
+  border-color: var(--border);
 }
 
 .guestbook-friend .friend-glyph {
@@ -344,7 +352,7 @@ body {
 }
 
 .guestbook-name {
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font-size: 0.75rem;
 }
 
@@ -352,7 +360,7 @@ body {
    look, not a POP), the signature animation playing. An empty card
    text renders nothing — art, name and animation carry the card. */
 .friend-card-text {
-  color: #e8e6f0;
+  color: var(--text);
   font-size: 0.9rem;
   line-height: 1.5;
   max-width: 24rem;
@@ -363,7 +371,7 @@ body {
   font-weight: 300;
   letter-spacing: 0.15em;
   font-size: 0.9rem;
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 .abode-list {
@@ -378,14 +386,14 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  border: 1px solid #1a2030;
+  border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
   padding: 0.4rem 0.6rem;
 }
 
 .abode-name {
   flex: 1;
-  color: #e8e6f0;
+  color: var(--text);
   font-size: 0.9rem;
 }
 
@@ -394,7 +402,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   padding: 1rem;
   align-items: flex-start;
@@ -418,7 +426,7 @@ body {
 }
 
 .week-unfolding {
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 .week-grid {
@@ -432,7 +440,7 @@ body {
   text-align: center;
   font-weight: 400;
   font-size: 0.85rem;
-  border-bottom: 1px solid #1a2030;
+  border-bottom: 1px solid var(--border-quiet);
 }
 
 .week-grid th[scope='row'] {
@@ -440,19 +448,19 @@ body {
 }
 
 .week-grid thead th {
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font-size: 0.75rem;
 }
 
 .streak-cell {
-  color: #a8dcc3;
+  color: var(--expedition);
   white-space: nowrap;
   font-size: 0.75rem;
 }
 
 .tasks-completed {
   list-style: none;
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font-size: 0.85rem;
   align-self: center;
   text-align: center;
@@ -468,7 +476,7 @@ body {
 }
 
 .habit-graph {
-  border: 1px solid #1a2030;
+  border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
   padding: 0.4rem 0.6rem;
 }
@@ -489,12 +497,12 @@ body {
 }
 
 .graph-label {
-  fill: #9aa3b5;
+  fill: var(--text-quiet);
   font-size: 10px;
 }
 
 .habit-graph-young {
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font-size: 0.85rem;
 }
 
@@ -509,8 +517,8 @@ body {
   font: inherit;
   font-size: 0.75rem;
   background: none;
-  color: #9aa3b5;
-  border: 1px solid #2a3040;
+  color: var(--text-quiet);
+  border: 1px solid var(--border);
   border-radius: 0.3rem;
   padding: 0.2rem 0.5rem;
   cursor: pointer;
@@ -518,8 +526,8 @@ body {
 
 .zoom-button[aria-pressed='true'] {
   border-color: currentColor;
-  color: #e8e6f0;
-  background: #1a2030;
+  color: var(--text);
+  background: var(--border-quiet);
 }
 
 /* T3.2: drop arrivals. The shelf sits under the meters; each arriving
@@ -539,8 +547,8 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.4rem 0.5rem;
-  background: #11151f;
-  border: 1px solid #2a3040;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   cursor: pointer;
   font: inherit;
@@ -564,22 +572,22 @@ body {
 }
 
 .arrival-flora {
-  color: #a8dcc3;
+  color: var(--expedition);
 }
 
 .arrival-reading {
-  color: #c5b8e8;
+  color: var(--literacy);
 }
 
 .arrival-fungi {
-  color: #f2d9a6;
+  color: var(--fungi);
 }
 
 /* T4.4: friends — the top of the reward hierarchy wears a soft rose
    in the everyday pastel register (tunable until the T5.2 identity
    pass); the neon sibling below is for the reveal. */
 .arrival-friend {
-  color: #eec6d3;
+  color: var(--friendship);
 }
 
 .friend-glyph {
@@ -614,7 +622,7 @@ body {
   font-size: 0.75rem;
   background: none;
   color: inherit;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   border-radius: 0.3rem;
   padding: 0.2rem 0.5rem;
   cursor: pointer;
@@ -622,12 +630,12 @@ body {
 
 .arrival-caption {
   font-size: 0.8rem;
-  color: #e8e6f0;
+  color: var(--text);
 }
 
 .arrival-note {
   font-size: 0.8rem;
-  color: #a8dcc3;
+  color: var(--expedition);
 }
 
 /* The first-occurrence reveals: the neon POP (spec §7) — the one place
@@ -636,7 +644,7 @@ body {
 .reveal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(4, 6, 10, 0.88);
+  background: var(--veil-reveal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -663,7 +671,7 @@ body {
   text-align: center;
   max-width: 22rem;
   padding: 2rem 1.5rem;
-  background: #0b0e14;
+  background: var(--bg);
   border: 1px solid currentColor;
   border-radius: 0.75rem;
   box-shadow: 0 0 3rem -0.5rem currentColor;
@@ -672,25 +680,25 @@ body {
 
 /* Neon, per stream — brighter siblings of the everyday pastels. */
 .reveal-flora {
-  color: #57ffb0;
+  color: var(--pop-flora);
 }
 
 .reveal-reading {
-  color: #b47bff;
+  color: var(--pop-reading);
 }
 
 .reveal-fungi {
-  color: #ffd24d;
+  color: var(--pop-fungi);
 }
 
 /* The friend reveal's neon rose (T4.4) — the brightest register, kept
    distinct from the four drop families. */
 .reveal-friend {
-  color: #ff9ec7;
+  color: var(--pop-friend);
 }
 
 .reveal-friend-name {
-  color: #e8e6f0;
+  color: var(--text);
   font-size: 0.85rem;
   letter-spacing: 0.08em;
 }
@@ -906,13 +914,13 @@ body {
 }
 
 .cameo-name {
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font-size: 0.8rem;
   letter-spacing: 0.08em;
 }
 
 .cameo-message {
-  color: #e8e6f0;
+  color: var(--text);
   font-size: 0.9rem;
   margin: 0;
 }
@@ -931,7 +939,7 @@ body {
 }
 
 .reveal-line {
-  color: #e8e6f0;
+  color: var(--text);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -959,8 +967,8 @@ body {
   width: 100%;
   max-width: 30rem;
   padding: 1.5rem;
-  background: #0b0e14;
-  border: 1px solid #2a3040;
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 0.75rem;
   animation: reveal-pop 0.45s ease;
 }
@@ -972,7 +980,7 @@ body {
 }
 
 .spread-empty-line {
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -986,7 +994,7 @@ body {
   flex-direction: column;
   gap: 0.75rem;
   padding: 1rem;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   align-items: flex-start;
 }
@@ -1005,8 +1013,8 @@ body {
 /* The faint outline (Kimia's decision 2026-07-19): the planet is
    hinted at from day one — the scale of the journey, barely there. */
 .map-silhouette {
-  fill: rgba(255, 255, 255, 0.025);
-  stroke: rgba(255, 255, 255, 0.1);
+  fill: var(--wash-planet);
+  stroke: var(--hairline-faint);
   stroke-width: 1;
 }
 
@@ -1031,14 +1039,14 @@ body {
 /* Landmark flora markers (none render until T6.1 names the species):
    a small tree of light, permanent on the map. */
 .map-landmark {
-  stroke: #d9f2e6;
-  fill: rgba(217, 242, 230, 0.35);
+  stroke: var(--landmark);
+  fill: var(--landmark-fill);
   stroke-width: 1.2;
-  filter: drop-shadow(0 0 4px #a8dcc3);
+  filter: drop-shadow(0 0 4px var(--expedition));
 }
 
 .map-caption {
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font-size: 0.85rem;
 }
 
@@ -1050,7 +1058,7 @@ body {
   flex-direction: column;
   gap: 0.75rem;
   padding: 1rem;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   align-items: flex-start;
 }
@@ -1069,13 +1077,13 @@ body {
 /* The frame and planks: quiet, barely-there — the shelf itself never
    changes; only the books move. */
 .bookshelf-frame {
-  fill: rgba(255, 255, 255, 0.02);
-  stroke: rgba(255, 255, 255, 0.12);
+  fill: var(--wash-soil);
+  stroke: var(--hairline);
   stroke-width: 1;
 }
 
 .bookshelf-plank {
-  stroke: rgba(255, 255, 255, 0.12);
+  stroke: var(--hairline);
   stroke-width: 1;
 }
 
@@ -1113,7 +1121,7 @@ body {
 }
 
 .book-eye circle:first-child {
-  fill: rgba(8, 9, 16, 0.75);
+  fill: var(--wash-socket);
 }
 
 .book-eye-pupil {
@@ -1137,7 +1145,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   padding: 0.5rem;
 }
 
@@ -1164,8 +1172,8 @@ body {
   position: relative;
   z-index: 2;
   cursor: grabbing;
-  background: #12151f;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  background: var(--surface-lifted);
+  box-shadow: var(--shadow-lifted);
 }
 
 /* The six charms (design-notes §11a). Sized in em so each charm scales
@@ -1187,7 +1195,7 @@ body {
 .symbol-button {
   display: inline-flex;
   background: none;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   padding: 0.3rem 0.55rem;
   cursor: pointer;
 }
@@ -1200,7 +1208,7 @@ body {
 
 .symbol-button[aria-pressed='true'] {
   border-color: currentColor;
-  background: #1a2030;
+  background: var(--border-quiet);
 }
 
 .habit-main {
@@ -1212,7 +1220,7 @@ body {
 .habit-description,
 .habit-meta {
   font-size: 0.8rem;
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 .completion-controls,
@@ -1241,14 +1249,14 @@ body {
   width: 1.15rem;
   height: 1.15rem;
   cursor: pointer;
-  accent-color: #8fb3ff;
+  accent-color: var(--tick);
 }
 
 .habit-form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  border: 1px solid #2a3040;
+  border: 1px solid var(--border);
   padding: 0.75rem;
 }
 
@@ -1260,7 +1268,7 @@ body {
 
 .archived summary {
   cursor: pointer;
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 .archived ul {
@@ -1289,7 +1297,7 @@ body {
   font-size: 1.3rem;
   font-weight: 300;
   letter-spacing: 0.35em;
-  color: #cfd8e3;
+  color: var(--text-title);
 }
 
 /* The honest line, only between midnight and the cutoff: the dimmest
@@ -1297,7 +1305,7 @@ body {
 .date-cutoff-note {
   margin: 0.25rem 0 0;
   font-size: 0.8rem;
-  color: #6b7288;
+  color: var(--text-faint);
 }
 
 /* The left rail (§12d): five icons descending the left edge, away from
@@ -1318,7 +1326,7 @@ body {
   border: none;
   padding: 0.25rem;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.38);
+  color: var(--text-dim-white);
   transition:
     color 0.2s ease,
     filter 0.2s ease;
@@ -1335,23 +1343,23 @@ body {
 }
 
 .rail-map:hover {
-  color: #e8698c; /* shell pink — the one that reads as place */
+  color: var(--charm-shell); /* shell pink — the one that reads as place */
 }
 
 .rail-abode:hover {
-  color: #f0bb3b; /* crown gold — the hearth */
+  color: var(--charm-crown); /* crown gold — the hearth */
 }
 
 .rail-community:hover {
-  color: #f5805a; /* cherries coral — company */
+  color: var(--charm-cherry); /* cherries coral — company */
 }
 
 .rail-library:hover {
-  color: #a98ee0; /* anchor lavender — the literacy family */
+  color: var(--charm-anchor); /* anchor lavender — the literacy family */
 }
 
 .rail-market:hover {
-  color: #4fbfa0; /* key teal — trade */
+  color: var(--charm-key); /* key teal — trade */
 }
 
 /* Icon-only actions (§12a): every action an icon, its name on hover
@@ -1365,12 +1373,12 @@ body {
   border: none;
   padding: 0.15rem;
   cursor: pointer;
-  color: #9aa3b5;
+  color: var(--text-quiet);
   font: inherit;
 }
 
 .icon-button:hover {
-  color: #e8e6f0;
+  color: var(--text);
 }
 
 .icon-button svg {
@@ -1402,11 +1410,11 @@ body {
    2026-07-20): the row pencil is small, inline and dim; this foot
    pencil is larger and carries the gold page-level accent. */
 .icon-button-accent {
-  color: #f0bb3b;
+  color: var(--charm-crown);
 }
 
 .icon-button-accent:hover {
-  color: #f5cd66;
+  color: var(--charm-crown-bright);
 }
 
 /* The check-in as a pop-up (§12c): the list stays visible behind,
@@ -1426,15 +1434,15 @@ body {
   align-items: flex-start;
   overflow-y: auto;
   padding: 2rem 1rem;
-  background: rgba(4, 6, 10, 0.72);
+  background: var(--veil-checkin);
 }
 
 .check-in {
   width: 100%;
   max-width: 32rem;
   padding: 1.25rem;
-  background: #0b0e14;
-  border: 1px solid #2a3040;
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
 }
 
@@ -1446,7 +1454,7 @@ body {
   inset: 0;
   z-index: 20;
   pointer-events: none;
-  background: #000;
+  background: var(--veil-startup);
   animation: startup-fade 1.5s ease forwards;
 }
 
@@ -1477,7 +1485,7 @@ body {
   max-width: 28rem;
   font-weight: 300;
   line-height: 1.6;
-  color: #cfd8e3;
+  color: var(--text-title);
 }
 
 /* The safety net (ErrorBoundary, 2026-07-27): if a screen ever fails to
@@ -1497,7 +1505,7 @@ body {
   max-width: 28rem;
   font-weight: 300;
   line-height: 1.6;
-  color: #cfd8e3;
+  color: var(--text-title);
 }
 
 /* TEMPORARY (T5 prep): the design-assets workbench — empty dashed
@@ -1514,11 +1522,11 @@ body {
   cursor: pointer;
   font: inherit;
   font-size: 0.8rem;
-  color: #6b7288;
+  color: var(--text-faint);
 }
 
 .design-door button:hover {
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 .design-family {
@@ -1528,7 +1536,7 @@ body {
 .design-family h3 {
   font-weight: 400;
   letter-spacing: 0.12em;
-  color: #9aa3b5;
+  color: var(--text-quiet);
 }
 
 /* TEMPORARY (T5.3, 2026-07-24): the texture-library swatches — the §8
@@ -1560,7 +1568,7 @@ body {
 .texture-swatch-name {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
-  color: #8b93a6;
+  color: var(--text-quieter);
   text-align: center;
 }
 
@@ -1593,7 +1601,7 @@ body {
 .eye-swatch-name {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
-  color: #8b93a6;
+  color: var(--text-quieter);
   text-align: center;
 }
 
@@ -1624,7 +1632,7 @@ body {
   height: auto;
   aspect-ratio: 174 / 343.49;
   border-radius: 0.75rem;
-  background: #0b0f14;
+  background: var(--surface-workbench);
   padding: 0.6rem;
   box-sizing: border-box;
 }
@@ -1632,7 +1640,7 @@ body {
 .signer-swatch-name {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
-  color: #8b93a6;
+  color: var(--text-quieter);
   text-align: center;
 }
 
@@ -1687,7 +1695,7 @@ body {
   max-width: 100%;
   aspect-ratio: 687.651 / 832.012;
   border-radius: 0.75rem;
-  background: #0b0f14;
+  background: var(--surface-workbench);
 }
 
 .friend10-swatch-layer {
@@ -1700,7 +1708,7 @@ body {
 .friend10-swatch-name {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
-  color: #8b93a6;
+  color: var(--text-quieter);
   text-align: center;
 }
 
@@ -1737,7 +1745,7 @@ body {
   position: relative;
   max-width: 100%;
   border-radius: 0.75rem;
-  background: #0b0f14;
+  background: var(--surface-workbench);
 }
 
 /* The breathing room around the artwork is a PERCENTAGE, not a fixed 0.6rem
@@ -1754,7 +1762,7 @@ body {
 .traced-swatch-name {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
-  color: #8b93a6;
+  color: var(--text-quieter);
   text-align: center;
 }
 
@@ -1803,6 +1811,6 @@ body {
 .sky-swatch-name {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
-  color: #8b93a6;
+  color: var(--text-quieter);
   text-align: center;
 }

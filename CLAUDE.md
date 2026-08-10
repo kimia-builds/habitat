@@ -167,6 +167,17 @@ Kimia is a non-coder. Therefore:
   px scattered through component styles. The six charm colours are
   canonical in the tokens file; `src/ui/symbols.js` keeps the hexes its
   JS glow strings need, marked as a mirror — keep the two in sync.
+  **Built for colour as `src/tokens.css` (T5.2a, 2026-08-10)** and
+  guarded by `src/test/tokens.test.js`: a raw colour in index.css, a
+  `var(--…)` with no definition, or a drifted symbols.js mirror fails
+  the suite. Glow, type and spacing join it in the slices that decide
+  them; artwork palettes consumed only by JavaScript (textures, skies,
+  friend pastels) stay beside their drawings — see §11d.
+- **Never run Prettier on the `.md` documents (2026-08-10).** They are
+  hand-wrapped, and Prettier's markdown formatter collapses plan.md's
+  nested sub-tasks into run-on paragraphs — it silently ate nine
+  tick-boxes once. `*.md` is in `.prettierignore`; leave it there. Code
+  is still Prettier-formatted, and CI has never checked either.
 - Game logic lives in `src/game/` as pure functions (no React, no
   localStorage access) so it's easy to test. React components stay
   thin.

@@ -459,7 +459,7 @@ Case & spacing convention:
   captions) already matches — lowercase stays the default; uppercase
   is reserved for display and section labels.
 
-### 11d. Design tokens — the visual twin of constants.js (T5.2)
+### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10]**
 
 Everything §11b and §11c name — every colour, every glow strength,
 every font size, every spacing number — lives in **one CSS file of
@@ -484,7 +484,33 @@ nothing a non-coder can't follow.
   palette reads as a palette — a list Kimia can scan and change — rather
   than being scattered inline through hundreds of rules.
 
-Built in T5.2, alongside the identity it encodes.
+**The file is `src/tokens.css`, and colour moved in first (T5.2a,
+2026-08-10).** Every colour index.css wore — 122 hand-written hex and
+rgba values, 40 distinct — is now a named token, values unchanged, so
+nothing on screen moved; the §11b identity above lands next as an edit to that one
+list. `src/test/tokens.test.js` fails the suite if a raw colour is
+pasted back into index.css, if a rule asks for a token that does not
+exist, or if symbols.js drifts from the canonical charm colours.
+
+**Two boundaries settled while building it (2026-08-10):**
+
+- **Glow strengths, font sizes and spacing are not in the file yet, and
+  that is deliberate.** Today's values are leftovers of the
+  ugly-on-purpose skeleton — four near-identical glow radii, paddings
+  the §13 layout pass will rewrite. They join the file in the slices
+  that actually decide them, rather than being named now and renamed
+  later.
+- **The tokens file holds the colours the _stylesheet_ wears; artwork
+  keeps its own paints.** `friendPalettes.js` (the friends' 24 pastels),
+  `textures.jsx` (surface tints fed to SVG filters) and the Abode sky
+  palettes are consumed only as JavaScript strings — no CSS rule reads
+  them — so they stay beside the drawings they paint, cross-referenced
+  in both directions. The one exception on a schedule: the night sky's
+  three ground colours become stylesheet colours when §13c mounts it as
+  the app background, and move into the tokens file in that slice. The
+  charm colours are the reverse case and the reason the mirror rule
+  exists: CSS _and_ JS both need them, so they are canonical here and
+  duplicated in symbols.js under test.
 
 ---
 
