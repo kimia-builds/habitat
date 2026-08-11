@@ -348,6 +348,78 @@ describe('re-ordering', () => {
     expect(names()).toEqual(['three', 'one', 'two'])
   })
 
+  it('the whole tile is the grab area — dragging the name re-orders', () => {
+    render(<App />)
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+    createHabitViaUI('three')
+
+    // Same fixed geometry as above: rows at 0 / 50 / 100.
+    const rows = [...document.querySelectorAll('[data-habit-id]')]
+    rows.forEach((el, i) => {
+      el.getBoundingClientRect = () => ({
+        top: i * 50,
+        bottom: i * 50 + 40,
+        height: 40,
+        left: 0,
+        right: 100,
+        width: 100,
+        x: 0,
+        y: i * 50,
+        toJSON: () => {},
+      })
+    })
+
+    // Grab 'one' by its NAME — not the grip — and pull it below 'three'.
+    fireEvent.pointerDown(row('one').getByText('one'), {
+      button: 0,
+      clientX: 0,
+      clientY: 5,
+    })
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 105 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 105 })
+
+    const names = [...document.querySelectorAll('.habit-name')].map(
+      (el) => el.textContent,
+    )
+    expect(names).toEqual(['two', 'three', 'one'])
+  })
+
+  it('a press on a row control is a tap, never a drag', () => {
+    render(<App />)
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+
+    const rows = [...document.querySelectorAll('[data-habit-id]')]
+    rows.forEach((el, i) => {
+      el.getBoundingClientRect = () => ({
+        top: i * 50,
+        bottom: i * 50 + 40,
+        height: 40,
+        left: 0,
+        right: 100,
+        width: 100,
+        x: 0,
+        y: i * 50,
+        toJSON: () => {},
+      })
+    })
+
+    // A press on +1 that drifts down the list must count the habit and
+    // leave the order alone — otherwise every tap risks moving a row.
+    const plus = row('one').getByRole('button', { name: '+1' })
+    fireEvent.pointerDown(plus, { button: 0, clientX: 0, clientY: 5 })
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 105 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 105 })
+    fireEvent.click(plus)
+
+    const names = [...document.querySelectorAll('.habit-name')].map(
+      (el) => el.textContent,
+    )
+    expect(names).toEqual(['one', 'two'])
+    expect(row('one').getByText(/1\/1/)).toBeDefined()
+  })
+
   it('a press that never travels is not a drag — the order is untouched', () => {
     render(<App />)
     createHabitViaUI('alpha')

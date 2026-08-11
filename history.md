@@ -1494,6 +1494,20 @@ return 0` right after the era is worked out, so a moment before the
   gets agreed with Kimia at the start of the session, not now. T6.7 is
   deliberately placed before T6.3, whose "demo-friendly first-run
   experience" is the same ground seen from the portfolio side.
+- 2026-08-11 (Kimia's call, after living with T5.1c): **the whole habit
+  tile is the grab area for re-ordering, not the grip alone.** Press
+  anywhere on a row — charm, name, meta line, empty space — and pull it
+  up or down. This reverses the T5.1c reasoning that a dedicated handle
+  was needed to keep the row's taps unambiguous: in use, hunting for a
+  six-dot target to move a row was the friction, and the taps stay safe
+  anyway because a press that lands on a control (+1, -1, the to-do
+  tick, edit, archive) is left alone and the 4px travel threshold means
+  a stationary press is still just a press. **The grip stays** — now
+  purely the visible "this moves" cue, and still the thing that dims
+  with its explanation while a symbol filter is on.
+  _Tests:_ two added — dragging a row by its NAME re-orders it, and a
+  press on +1 that drifts down the list counts the habit without moving
+  it. Full suite 1028 and oxlint pass.
 
 ## spec.md version history (formerly its preamble)
 

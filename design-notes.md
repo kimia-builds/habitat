@@ -615,17 +615,23 @@ above the archived list** — discreet, evenly weighted, none of them
 shouting. "Add new habit" is not a call to action here; it's one of
 three equal doors.
 
-**Reordering is a drag handle** (T5.1c, 2026-07-23), not a pair of
-▲▼ arrows. Each row carries a small six-dot grip in its button group;
-you press it and drag the row up or down, and the new order persists.
-A handle rather than a whole-draggable card because the row already
-holds tap controls (+1, −1, edit, archive) — grabbing a dedicated grip
-keeps those taps unambiguous and gives an obvious "grab here" cue. Its
-hover reads "drag to re-order". While a symbol filter is on the list is
-only a partial lens, so the handle **disables** and its hover switches
-to "clear the symbol filter to re-order" (the filter-lock rule the old
-arrows had). Desktop-only (T5.1b), so a plain pointer press is the only
-input supported — no touch path.
+**Reordering is a drag of the whole tile** (T5.1c, 2026-07-23; the grip
+alone until 2026-08-11), not a pair of ▲▼ arrows. Press anywhere on a
+row — the charm, the name, the meta line, the space between them — and
+pull it up or down; the new order persists. The row's tap controls (+1,
+−1, the to-do tick, edit, archive) are the exception: a press that lands
+on one of them is a tap and never starts a drag, so nothing a finger
+does on a button can move a row. That, plus the small travel threshold
+(a press that doesn't move reorders nothing), is what keeps taps
+unambiguous — T5.1c thought a dedicated handle was needed for it, but
+hunting for a six-dot target turned out to be the real friction.
+Each row still carries the **six-dot grip** in its button group: now
+purely the "this moves" cue and a place to grab that is obviously not a
+tap. Its hover reads "drag to re-order". While a symbol filter is on the
+list is only a partial lens, so the whole row **stops dragging** and the
+grip dims, its hover switching to "clear the symbol filter to re-order"
+(the filter-lock rule the old arrows had). Desktop-only (T5.1b), so a
+plain pointer press is the only input supported — no touch path.
 
 ### 12b. The date display
 

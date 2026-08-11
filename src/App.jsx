@@ -676,17 +676,19 @@ function App() {
     save({ ...data, habits: moveHabit(data.habits, habit.id, target) })
   }
 
-  // Begin a drag-to-reorder from a row's drag handle (T5.1c). We watch the
+  // Begin a drag-to-reorder from a press on a habit row (T5.1c; the whole
+  // tile is the grab area since 2026-08-11 — HabitRow decides which
+  // presses count, letting the row's own buttons through). We watch the
   // pointer on the WINDOW so the drag keeps tracking even when it leaves
-  // the handle, and decide at release which row it landed on — the last
+  // the row, and decide at release which row it landed on — the last
   // row whose top edge the pointer has passed. The dragged row itself is
   // skipped: it follows the pointer (an inline transform), so its own
   // shifted position must never count, or an upward drag would keep
   // "landing" back on itself. A press that never travels far enough stays
   // a press and reorders nothing. Reordering is off while a symbol filter
-  // is on (the list is a partial lens), so the handle is disabled then and
-  // this never runs. Desktop-only (T5.1b), so a single primary-button
-  // pointer press is all we handle.
+  // is on (the list is a partial lens), so no press starts a drag then.
+  // Desktop-only (T5.1b), so a single primary-button pointer press is all
+  // we handle.
   function handleReorderStart(habit, event) {
     if (event.button) return // left / primary only
     event.preventDefault()

@@ -1224,20 +1224,41 @@ body {
   padding: 0.5rem 1.25rem;
 }
 
-/* Drag-to-reorder (T5.1c). The handle is a grab affordance: the row moves
-   only when you pull this, so the +1 / -1 / edit / archive taps are never
-   caught up in a drag. `touch-action: none` keeps a press from scrolling
-   the page instead of dragging (harmless on the desktop-only build, but
-   correct). A disabled handle (a symbol filter is on) dims and shows its
-   hover reason. */
-.drag-handle {
+/* Drag-to-reorder (T5.1c; whole-tile since 2026-08-11). The whole row is
+   the grab area, so it wears the grab cursor — but its controls keep the
+   pointer cursor they had, because cursor inherits and a +1 button that
+   says "grab me" would be a lie. (The row's buttons are unstyled by
+   default, so this is where they get their pointer.) `touch-action: none`
+   keeps a press from scrolling the page instead of dragging (harmless on
+   the desktop-only build, but correct). A disabled grip — a symbol filter
+   is on, nothing on the row drags — dims and shows its hover reason. */
+.habit-row {
   cursor: grab;
   touch-action: none;
 }
 
-.drag-handle:disabled {
+.habit-row button:not(.drag-handle),
+.habit-row input {
+  cursor: pointer;
+}
+
+.habit-row .drag-handle {
+  cursor: grab;
+}
+
+.habit-row button:disabled {
   cursor: default;
+}
+
+.habit-row .drag-handle:disabled {
   opacity: 0.4;
+}
+
+/* A row that cannot be re-ordered right now (a symbol filter is on): no
+   grab cursor anywhere on it, since nothing here moves. */
+.habit-row--fixed,
+.habit-row--fixed .drag-handle {
+  cursor: default;
 }
 
 /* The lifted row while it is being dragged: it follows the pointer (the

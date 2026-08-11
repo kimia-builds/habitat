@@ -1,7 +1,7 @@
 // One habit in the list: its symbol, name, schedule-at-a-glance, the
-// tap-to-complete control, and the row buttons (drag handle, edit,
-// archive). Pure display + callbacks — every decision is made in App
-// via the game modules.
+// tap-to-complete control, and the row buttons (grip, edit, archive).
+// Pure display + callbacks — every decision is made in App via the game
+// modules.
 
 import CharmSymbol from './CharmSymbol.jsx'
 
@@ -52,14 +52,32 @@ function HabitRow({
     habit.schedule.type,
   )
 
+  // Drag-to-reorder starts anywhere on the tile (2026-08-11 — it used to
+  // be the grip only). A press that lands on one of the row's controls is
+  // left alone, so +1, -1, the to-do tick, edit and archive still just
+  // tap; everywhere else — the charm, the name, the meta line, the empty
+  // space between them — is a grab. The grip is the one control that DOES
+  // start a drag: grabbing it is all it is for.
+  function handlePointerDown(event) {
+    if (reorderDisabled) return
+    const control = event.target.closest('button, input, a, select, textarea')
+    if (control && !control.classList.contains('drag-handle')) return
+    onReorderStart(event)
+  }
+
   return (
     <li
       // `charm-N` tells the stylesheet which of the six this row wears,
       // so it can be edged in that charm's own colour (T5.2b, §11b).
       // The class carries the NUMBER only — the colours themselves stay
       // in tokens.css, which is what keeps them a list Kimia can edit.
-      className={`habit-row charm-${habit.symbol}${dragging ? ' habit-row--dragging' : ''}`}
+      className={
+        `habit-row charm-${habit.symbol}` +
+        (dragging ? ' habit-row--dragging' : '') +
+        (reorderDisabled ? ' habit-row--fixed' : '')
+      }
       data-habit-id={habit.id}
+      onPointerDown={handlePointerDown}
       style={
         dragging ? { transform: `translateY(${dragOffsetY}px)` } : undefined
       }
@@ -105,15 +123,15 @@ function HabitRow({
         </span>
       )}
       <span className="row-buttons">
-        {/* Drag-to-reorder (T5.1c, 2026-07-23): grab this handle and drag
-            the row up or down; the new order persists. It replaces the old
-            ▲▼ arrows. Desktop-only (T5.1b), so a pointer press is the only
-            input we support. While a symbol filter is on the list is a
-            partial lens, so reordering is disabled and the hover explains
-            why. */}
+        {/* Drag-to-reorder (T5.1c, 2026-07-23; whole-tile since
+            2026-08-11): the drag itself is handled on the row above, so
+            this grip is the visible "you can move this" cue and a place to
+            grab that is unmistakably not a tap. Desktop-only (T5.1b), so a
+            pointer press is the only input we support. While a symbol
+            filter is on the list is a partial lens, so reordering is
+            disabled and the hover explains why. */}
         <button
           className="icon-button drag-handle"
-          onPointerDown={reorderDisabled ? undefined : onReorderStart}
           disabled={reorderDisabled}
           title={
             reorderDisabled
