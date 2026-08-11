@@ -455,8 +455,16 @@ The exact paths (drop into the shared SVG attributes above):
   fills with its charm to say done, rather than drawing a mark. An
   outline takes its colour from the tile beneath it — the charm on a
   saved habit tile, plain white (`--button-edge`) everywhere else,
-  which is the accent rule above applied to buttons. Open text fields
-  are baguettes: the same full pill, dropdowns included.
+  which is the accent rule above applied to buttons — including the
+  archived list's own `-1`, which borrows the charm of the habit it
+  belongs to. Open text fields are baguettes: the same full pill,
+  dropdowns included.
+  **Every one of those outlines is diluted by one number** —
+  `--button-edge-strength`, 38% to start (Kimia, an hour later: the
+  shapes were right, the edges too loud). White and all six charms are
+  softened together, mixed live like the tile fill, so there is a dial
+  rather than a second palette of near-whites to keep in step. The
+  tick-box's FILL keeps full strength: it is a mark, not an edge.
 - **The draft tile is a softly-rounded box, not a pill (same call).**
   It shares the tiles' family — `--radius-form`, corners rounded off
   generously — but stays a box, because a 999px radius on something
@@ -467,6 +475,17 @@ The exact paths (drop into the shared SVG attributes above):
   sentences now and a sentence cannot share a line with the field it
   introduces. Save and cancel are centred at the foot with a wide gap
   between them.
+- **A tile is seen leaving for the archive (Kimia's call
+  2026-08-11).** It used to blink out of existence the instant it was
+  archived — by the archive button, or by ticking off a to-do — which
+  read as a glitch rather than as something happening. It now sinks,
+  fades and closes its own gap over `ARCHIVE_FAREWELL_MS` so the tiles
+  below glide up rather than jump. Momentary and settling, per §5; no
+  alarm colour, nothing to dismiss, and the reduced-motion setting gets
+  the same pause with a plain fade instead of the travel. The archiving
+  itself is NOT delayed — the data is written at once and the tile left
+  on screen is an inert copy, so the farewell can never be something a
+  rule or a reload has to wait for.
 - **The charms themselves wear no box (same revision).** They are
   drawings, and a drawing does not need a frame; the filter row is
   centred under the date. The box used to carry the on/off state, so

@@ -61,7 +61,7 @@ function DayRows({
                     un-marks it. Hover reads "mark done" while still open. */}
                 <input
                   type="checkbox"
-                  className="todo-check"
+                  className="todo-check circle-button"
                   checked={count > 0}
                   onChange={() =>
                     count > 0 ? onUnmark(habit, dayKey) : onMark(habit, dayKey)
@@ -76,8 +76,14 @@ function DayRows({
                   {hasDayGoal && count >= required ? '✓ ' : ''}
                   {hasDayGoal ? `${count}/${required}` : count}
                 </span>
-                <button onClick={() => onMark(habit, dayKey)}>+1</button>
                 <button
+                  className="circle-button"
+                  onClick={() => onMark(habit, dayKey)}
+                >
+                  +1
+                </button>
+                <button
+                  className="circle-button"
                   onClick={() => onUnmark(habit, dayKey)}
                   disabled={count === 0}
                 >

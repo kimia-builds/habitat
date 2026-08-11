@@ -33,6 +33,7 @@ function HabitRow({
   reorderDisabled,
   dragging,
   dragOffsetY,
+  leaving,
   onComplete,
   onUndo,
   onReorderStart,
@@ -74,7 +75,11 @@ function HabitRow({
       className={
         `habit-row charm-${habit.symbol}` +
         (dragging ? ' habit-row--dragging' : '') +
-        (reorderDisabled ? ' habit-row--fixed' : '')
+        (reorderDisabled ? ' habit-row--fixed' : '') +
+        // On its way to the archive: the stylesheet sinks and fades it
+        // (2026-08-11). App keeps it on screen for exactly as long as
+        // the animation lasts, then drops it.
+        (leaving ? ' habit-row--leaving' : '')
       }
       data-habit-id={habit.id}
       onPointerDown={handlePointerDown}
@@ -103,7 +108,7 @@ function HabitRow({
               finishes and archives them. Hover reads "mark done". */}
           <input
             type="checkbox"
-            className="todo-check"
+            className="todo-check circle-button"
             checked={false}
             onChange={onComplete}
             title="mark done"
@@ -116,8 +121,14 @@ function HabitRow({
             {fulfilled && hasDayGoal ? '✓ ' : ''}
             {hasDayGoal ? `${todayCount}/${required}` : todayCount}
           </span>
-          <button onClick={onComplete}>+1</button>
-          <button onClick={onUndo} disabled={todayCount === 0}>
+          <button className="circle-button" onClick={onComplete}>
+            +1
+          </button>
+          <button
+            className="circle-button"
+            onClick={onUndo}
+            disabled={todayCount === 0}
+          >
             -1
           </button>
         </span>

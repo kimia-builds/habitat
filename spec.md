@@ -447,7 +447,12 @@ design-notes §12f.
   presented as field notes, not a guilt dashboard. Kept simple in v1.
   ("Patterns" were dropped from the brief — Kimia, 2026-07-16; the
   grid speaks for itself.) Per-habit line graphs live at the foot of
-  the field notes (built in T2.4).
+  the field notes (built in T2.4). Their line has **rounded corners,
+  never smoothing** (Kimia's call 2026-08-11): the readings and the
+  straight runs between them stay exactly where the data puts them, and
+  only the last few pixels either side of a change of direction are
+  curved. Nothing on a graph may ever be resampled, averaged or
+  invented — a graph here is raw frequency, and it stays honest.
 - **Streaks in an older week (2026-07-27).** Each week's streak is told
   as of that week's end. Switching a habit between a day-counted and a
   week-counted schedule restarts its streak at the switch (§4.2), so

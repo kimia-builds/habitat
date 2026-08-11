@@ -1281,6 +1281,57 @@ body {
   box-shadow: var(--shadow-lifted);
 }
 
+/* A tile on its way to the archive (Kimia's call 2026-08-11). It used to
+   blink out of existence the instant it was archived — whether by the
+   archive button or by ticking off a to-do — which read as a glitch
+   rather than as something happening. Now it sinks, fades, and closes
+   its own gap so the tiles below glide up rather than jump. It is
+   already archived in the data while this plays: the farewell is for
+   the eye only, and nothing waits on it. Momentary and settling, per
+   design-notes §5 — no alarm, no shake, nothing to dismiss.
+   The duration is ARCHIVE_FAREWELL_MS in constants.js; keep the two in
+   step (the tile must not be pulled out from under its own animation). */
+.habit-row--leaving {
+  pointer-events: none;
+  overflow: hidden;
+  animation: tile-to-archive 420ms ease-in forwards;
+}
+
+@keyframes tile-to-archive {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    max-height: 8rem;
+  }
+  55% {
+    transform: translateY(0.9rem) scale(0.97);
+    opacity: 0.35;
+    max-height: 8rem;
+  }
+  100% {
+    transform: translateY(1.6rem) scale(0.94);
+    opacity: 0;
+    max-height: 0;
+    padding-block: 0;
+    border-width: 0;
+  }
+}
+
+/* Whoever asked not to be moved at is not moved at (the browser setting).
+   The tile still waits its turn before leaving — the list stays calm
+   either way — it simply fades instead of travelling. */
+@media (prefers-reduced-motion: reduce) {
+  .habit-row--leaving {
+    animation: tile-to-archive-quiet 420ms ease-in forwards;
+  }
+
+  @keyframes tile-to-archive-quiet {
+    to {
+      opacity: 0;
+    }
+  }
+}
+
 /* The six charms (design-notes §11a). Sized in em so each charm scales
    to whatever text it sits beside; it glows in its own colour, brightening
    on hover. currentColor is the charm's colour (set inline per symbol). */
@@ -1388,7 +1439,12 @@ body {
    archive, the foot-of-list trio, the left rail) and the charms — keeps
    its bare, boxless look: those are drawings, not buttons with words.
    Two shapes only: a long oval for anything with a word on it, and a
-   circle for the counters. */
+   circle for the counters.
+   Every one of these outlines is DILUTED by --button-edge-strength
+   (Kimia, an hour after the shapes landed: the shapes were right, the
+   outlines too loud). One number softens the white edges and all six
+   charm edges together, so there is no palette of near-whites to keep
+   in step — just a dial. */
 .pill-button {
   display: inline-flex;
   align-items: center;
@@ -1396,7 +1452,12 @@ body {
   font: inherit;
   color: inherit;
   background: none;
-  border: 1px solid var(--button-edge);
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--button-edge) var(--button-edge-strength),
+      transparent
+    );
   border-radius: var(--radius-pill);
   padding: 0.4rem 1.4rem;
   cursor: pointer;
@@ -1413,9 +1474,9 @@ body {
    they sit on: a saved habit tile hands down its own charm colour
    (`--charm-here`), and anywhere without a charm falls back to plain
    white. The check-in's rows are the same rows wearing the same charms,
-   so they inherit all of this for free. */
-.completion-controls button,
-.completion-controls .todo-check {
+   so they inherit all of this for free — and so does the archived list's
+   own `-1`, the undo on a to-do ticked off today (2026-08-11). */
+.circle-button {
   width: 2rem;
   height: 2rem;
   flex-shrink: 0;
@@ -1427,12 +1488,17 @@ body {
   line-height: 1;
   color: inherit;
   background: none;
-  border: 1px solid var(--charm-here, var(--button-edge));
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--charm-here, var(--button-edge)) var(--button-edge-strength),
+      transparent
+    );
   border-radius: 50%;
   cursor: pointer;
 }
 
-.completion-controls button:disabled {
+.circle-button:disabled {
   opacity: 0.35;
 }
 
@@ -1446,6 +1512,8 @@ body {
   -webkit-appearance: none;
 }
 
+/* The FILL, unlike the outlines, keeps its full strength: it is not an
+   edge but a mark — the one moment this control says "done". */
 .todo-check:checked {
   background: var(--charm-here, var(--button-edge));
 }

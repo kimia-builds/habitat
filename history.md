@@ -1553,6 +1553,44 @@ return 0` right after the era is worked out, so a moment before the
   for Kimia's words breaks on every one. Full suite 1029 and oxlint
   pass.
 
+- 2026-08-11 (Kimia's calls, an hour after the shapes landed): **four
+  follow-ups.**
+  1. **The archived list's `-1` joins the button list** — the undo on a
+     to-do ticked off today. It is the same control as the `-1` on a
+     tile, so it is now the same circle, and it borrows the charm of the
+     habit it belongs to (the archived row carries its `charm-N` class
+     for exactly that).
+  2. **Softer outlines, across every colour.** The shapes were right and
+     the edges too loud. Rather than a second palette of near-whites,
+     every button edge — the white ones and all six charm ones — is
+     diluted live by ONE number, `--button-edge-strength` (38% to
+     start), the same trick as the tile fill. The tick-box's FILL keeps
+     full strength: it is a mark, not an edge.
+  3. **The graph line's corners are rounded.** Her constraint was
+     explicit — keep the precision, only lose the sharp corners — so
+     this is not smoothing: no resampling, no averaging, no invented
+     readings. At each turn the line stops a few units short, curves
+     through using the corner itself as the pull, and carries on; every
+     straight run is exactly where it was, and nothing moves further
+     from a reading than the corner radius (6 viewBox units, shrinking
+     automatically on short segments so a dense day-by-day line simply
+     rounds by less). `src/ui/graphPath.js`, tested on its own.
+  4. **An archived tile is seen to leave.** It used to blink out of
+     existence the instant it was archived — by the archive button or by
+     ticking off a to-do — which read as a glitch rather than as
+     something happening. Now the tile is left on screen for
+     `ARCHIVE_FAREWELL_MS` (420ms), sinking, fading and closing its own
+     gap so the tiles below glide up instead of jumping. **The
+     archiving itself is not delayed**: the data is written immediately
+     and the lingering tile is an inert copy that answers to nothing —
+     so no rule, no test and no reload can be caught mid-farewell.
+  _Tests:_ seven added — six on the corner geometry (ends stay put,
+  straight runs stay straight, a turn is rounded by no more than the
+  radius, short segments shrink it, a repeated reading draws no
+  nonsense) and one on the farewell (the tile lingers, inert, then
+  goes). Four existing archive tests now wait the farewell out through a
+  named helper. Full suite 1036 and oxlint pass.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

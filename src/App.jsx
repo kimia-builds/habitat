@@ -17,7 +17,7 @@ import {
   seenDropKeys,
 } from './game/arrivals.js'
 import { editablePastDays, habitsOn, isCheckInDue } from './game/checkin.js'
-import { CLOCK_CHECK_MS } from './game/constants.js'
+import { ARCHIVE_FAREWELL_MS, CLOCK_CHECK_MS } from './game/constants.js'
 import {
   bookcaseItems,
   faceBook,
@@ -122,6 +122,10 @@ function App() {
   const [filter, setFilter] = useState([])
   // What the form area is doing: null (closed), 'new', or a habit id.
   const [editing, setEditing] = useState(null)
+  // The tile currently sinking into the archive, if any: { habit, index }
+  // — a copy of the habit and the slot it held in the visible list. See
+  // the farewell note further down.
+  const [leaving, setLeaving] = useState(null)
   // Which screen is showing: the habit list, one of the world pages
   // behind the meters or the list's links ('map' | 'bookcase' |
   // 'market' | 'abode' | 'guestbook'), or the field notes
@@ -162,6 +166,12 @@ function App() {
   const [reorderDrag, setReorderDrag] = useState(null)
   const listRef = useRef(null)
 
+  // The countdown that ends a tile's farewell (see startFarewell). Held
+  // in a ref so a second archive can cancel the first, and so leaving the
+  // page never leaves a timer running against an unmounted screen.
+  const farewellTimer = useRef(null)
+  useEffect(() => () => clearTimeout(farewellTimer.current), [])
+
   // The page's own clock (Kimia's requirement 2026-07-15): a tab left
   // open must notice the new Habitat day by itself, like a fresh visit —
   // no refresh needed. Re-checked once a minute, and immediately when
@@ -188,8 +198,18 @@ function App() {
   // check-in pop-up → startup fade → (Sundays) field notes.
   const startupDue = shouldShowStartup(today, data.settings.startupShownOn)
   const active = activeHabits(data.habits)
-  const visible = filterBySymbols(active, filter)
+  const filtered = filterBySymbols(active, filter)
   const archived = archivedHabits(data.habits)
+
+  // A tile that has just been archived is put back on screen where it
+  // was standing, purely so it can be SEEN to leave (Kimia's call
+  // 2026-08-11). The archiving itself already happened — this is the
+  // farewell, not a delay: `leaving` holds a copy of the habit and the
+  // slot it occupied, and ARCHIVE_FAREWELL_MS later it is dropped and
+  // the list closes up. Everything about the copy is inert: it takes no
+  // taps, and it never drags.
+  const visible = [...filtered]
+  if (leaving) visible.splice(leaving.index, 0, leaving.habit)
 
   // The completions THE GAME may count (T6.6): everything except the
   // marks stamped as belonging to a game Kimia has started over from.
@@ -552,6 +572,21 @@ function App() {
     })
   }
 
+  // Put a just-archived tile back on screen for its farewell (Kimia's
+  // call 2026-08-11), in the slot it was standing in. The archiving has
+  // already happened in the data — this only decides how long the copy
+  // lingers. A second archive during a farewell simply takes over: the
+  // first tile has said its goodbye by then.
+  function startFarewell(habit) {
+    const index = filtered.findIndex((h) => h.id === habit.id)
+    setLeaving({ habit, index: index === -1 ? filtered.length : index })
+    clearTimeout(farewellTimer.current)
+    farewellTimer.current = setTimeout(
+      () => setLeaving(null),
+      ARCHIVE_FAREWELL_MS,
+    )
+  }
+
   function handleComplete(habit) {
     // The tap rolls its drops right here (T3.2) and stores them on the
     // completion — settled at tap time, forever. Since T4.4 the roll
@@ -574,6 +609,9 @@ function App() {
       )
     }
     save(next)
+    // A to-do that just finished is on its way to the archive: let it be
+    // seen going, the same as one archived by hand.
+    if (archivesWhenDone(habit)) startFarewell(habit)
     announceDrops(completion, played, false)
   }
 
@@ -800,7 +838,21 @@ function App() {
 
       <ul className="habit-list" ref={listRef}>
         {visible.map((habit) =>
-          editing === habit.id ? (
+          // The tile saying goodbye: the same row, drawn one last time,
+          // with nothing wired up. It cannot be tapped, dragged or
+          // edited — it is already archived; this is only its exit.
+          habit.id === leaving?.habit.id ? (
+            <HabitRow
+              key={habit.id}
+              habit={habit}
+              todayCount={countOn(data.completions, habit.id, today)}
+              required={requiredPerDay(habit, today)}
+              fulfilled={isDayFulfilled(habit, data.completions, today)}
+              leaving
+              reorderDisabled
+              onReorderStart={() => {}}
+            />
+          ) : editing === habit.id ? (
             <li key={habit.id}>
               <HabitForm
                 initial={habit}
@@ -827,7 +879,10 @@ function App() {
               onUndo={() => handleUndo(habit)}
               onReorderStart={(event) => handleReorderStart(habit, event)}
               onEdit={() => setEditing(habit.id)}
-              onArchive={() => replaceHabit(archiveHabit(habit))}
+              onArchive={() => {
+                startFarewell(habit)
+                replaceHabit(archiveHabit(habit))
+              }}
             />
           ),
         )}
@@ -910,12 +965,20 @@ function App() {
                 archivesWhenDone(habit) &&
                 countFor(data.completions, habit.id) > 0
               return (
-                <li key={habit.id} className="archived-row">
+                <li
+                  key={habit.id}
+                  // The charm class hands this row its own colour, so the
+                  // `-1` below is edged like the tile it came from.
+                  className={`archived-row charm-${habit.symbol}`}
+                >
                   <CharmSymbol symbol={habit.symbol} className="symbol" />
                   <span>{habit.name}</span>
                   {doneForGood ? (
                     countOn(data.completions, habit.id, today) > 0 ? (
-                      <button onClick={() => handleUndoOneTime(habit)}>
+                      <button
+                        className="circle-button"
+                        onClick={() => handleUndoOneTime(habit)}
+                      >
                         -1
                       </button>
                     ) : (

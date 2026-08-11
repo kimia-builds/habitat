@@ -11,6 +11,7 @@
 import { useState } from 'react'
 import { graphSeries, hasGraph, unlockedZooms } from '../game/graphs.js'
 import CharmSymbol from './CharmSymbol.jsx'
+import { roundedPath } from './graphPath.js'
 import { SYMBOL_COLORS } from './symbols.js'
 
 const ZOOM_LABELS = {
@@ -26,6 +27,11 @@ const H = 150
 const PAD_X = 8
 const PAD_TOP = 14
 const PAD_BOTTOM = 20
+// How much a change of direction may be rounded off, in viewBox units
+// (the drawing is 600 wide). Big enough to take the glassy edge off a
+// week-by-week line; on a dense day-by-day line the points sit closer
+// than this and graphPath.js quietly rounds by less.
+const GRAPH_CORNER_RADIUS = 6
 
 function GraphLine({ series, color, habitName, zoom }) {
   const top = Math.max(1, ...series.map((b) => b.count))
@@ -36,7 +42,10 @@ function GraphLine({ series, color, habitName, zoom }) {
       : PAD_X + (i * (lastX - PAD_X)) / (series.length - 1)
   const y = (count) =>
     H - PAD_BOTTOM - (count / top) * (H - PAD_TOP - PAD_BOTTOM)
-  const points = series.map((b, i) => `${x(i)},${y(b.count)}`).join(' ')
+  // The line is drawn as a path with rounded turns rather than a
+  // polyline (Kimia's call 2026-08-11): same readings, same straight
+  // runs, only the sharp corners softened — see graphPath.js.
+  const points = series.map((b, i) => ({ x: x(i), y: y(b.count) }))
 
   return (
     <svg
@@ -57,12 +66,14 @@ function GraphLine({ series, color, habitName, zoom }) {
       {series.length === 1 ? (
         <circle cx={x(0)} cy={y(series[0].count)} r="3" fill={color} />
       ) : (
-        <polyline
-          points={points}
+        <path
+          className="graph-line"
+          d={roundedPath(points, GRAPH_CORNER_RADIUS)}
           fill="none"
           stroke={color}
           strokeWidth="1.5"
           strokeLinejoin="round"
+          strokeLinecap="round"
         />
       )}
       {/* quiet corner labels: the scale, and where the line starts/ends */}
@@ -88,8 +99,7 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
   return (
     <details className="habit-graph">
       <summary>
-        <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
-        {habit.name}
+        <CharmSymbol symbol={habit.symbol} className="symbol" /> {habit.name}
         {habit.archived && <span className="habit-meta"> (archived)</span>}
       </summary>
       {zoom === null ? (

@@ -14,6 +14,7 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import {
+  ARCHIVE_FAREWELL_MS,
   CAMEO_LINGER_MS,
   FRIEND_CATEGORIES,
   MAP_REGION_COUNT,
@@ -103,6 +104,14 @@ function createHabitViaUI(name, { symbol, scheduleType, n, days } = {}) {
   }
   fireEvent.click(form.getByRole('button', { name: 'save' }))
 }
+
+// An archived tile stays on screen for its farewell — it sinks and fades
+// before the list closes up (2026-08-11). It is already archived in the
+// data by then, but it is still DRAWN, so a test that looks at the list
+// straight after archiving sees both copies. Waiting the farewell out is
+// how a test says "after the tile has gone".
+const settleFarewell = () =>
+  act(() => vi.advanceTimersByTime(ARCHIVE_FAREWELL_MS))
 
 // The <li> row a habit is displayed in, found by its name.
 function row(name) {
@@ -493,6 +502,7 @@ describe('archive, unarchive, delete forever', () => {
     render(<App />)
     createHabitViaUI('floss', { symbol: 3 })
     fireEvent.click(row('floss').getByRole('button', { name: 'archive' }))
+    settleFarewell()
 
     // Gone from the daily list, present in the archived section — and it
     // keeps its charm there (T5.1 follow-up), not just its name.
@@ -504,10 +514,39 @@ describe('archive, unarchive, delete forever', () => {
     expect(row('floss').getByRole('button', { name: '+1' }))
   })
 
+  // Kimia's call 2026-08-11: a tile used to blink out of existence the
+  // instant it was archived. Now it is left on screen, inert, long enough
+  // to be seen sinking away.
+  it('an archived tile stays for its farewell, then goes', () => {
+    render(<App />)
+    createHabitViaUI('floss')
+    fireEvent.click(row('floss').getByRole('button', { name: 'archive' }))
+
+    // Still drawn, and marked as leaving. It answers to nothing: the
+    // archiving already happened, so a tap on the departing copy stores
+    // no completion and cannot bring it back.
+    const tile = document.querySelector('.habit-row--leaving')
+    expect(tile).not.toBeNull()
+    expect(within(tile).getByText('floss')).toBeDefined()
+    fireEvent.click(within(tile).getByRole('button', { name: '+1' }))
+    const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+    expect(stored().completions).toEqual([])
+    expect(stored().habits[0].archived).toBe(true)
+
+    // Once the farewell is over the copy is gone, and the only 'floss'
+    // left on the page is the archived list's own row.
+    settleFarewell()
+    expect(document.querySelector('.habit-row--leaving')).toBeNull()
+    expect(screen.getByText('floss').closest('li').className).toContain(
+      'archived-row',
+    )
+  })
+
   it('delete forever asks first, and cancel keeps everything', () => {
     render(<App />)
     createHabitViaUI('typo habit')
     fireEvent.click(row('typo habit').getByRole('button', { name: 'archive' }))
+    settleFarewell()
 
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
     fireEvent.click(screen.getByRole('button', { name: 'delete forever' }))
@@ -529,6 +568,9 @@ describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () =
     fireEvent.click(
       row('renew passport').getByRole('checkbox', { name: 'mark done' }),
     )
+    // Archived the moment it was ticked; the tile itself takes a beat to
+    // sink out of the list (2026-08-11).
+    settleFarewell()
 
     // Gone from the daily list, sitting in archived with a -1 button.
     expect(screen.queryByText('one-time · medium')).toBeNull()
@@ -586,6 +628,7 @@ describe('one-time habits — to-dos that auto-archive (added 2026-07-13)', () =
     fireEvent.click(
       row('call the bank').getByRole('button', { name: 'archive' }),
     )
+    settleFarewell()
 
     const archived = within(screen.getByText(/^archived/).closest('details'))
     fireEvent.click(archived.getByRole('button', { name: 'unarchive' }))

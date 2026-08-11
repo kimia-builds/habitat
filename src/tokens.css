@@ -100,6 +100,13 @@
      button borrows that tile's own charm colour instead. */
   --button-edge: #ffffff;
 
+  /* …and how much of it actually shows. Full-strength outlines were too
+     loud on the dark ground (Kimia, an hour after they landed), so every
+     button edge is diluted by this ONE number — the white ones and all
+     six charm ones alike, mixed live like the tile fill above. Turn it up
+     for a firmer outline, down for a fainter one. */
+  --button-edge-strength: 38%;
+
   /* ===========================================================================
    * SURFACES — the dark ground everything sits on (spec §7: dark only)
    * ========================================================================= */

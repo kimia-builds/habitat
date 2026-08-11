@@ -53,6 +53,13 @@ export const CLOCK_CHECK_MS = 60 * 1000
 // welcome.
 export const STARTUP_FADE_MS = 1500
 
+// The farewell an archived tile gets before it leaves the list (Kimia's
+// call 2026-08-11): it sinks downward and fades instead of vanishing
+// mid-blink. Long enough to be seen as a movement, short enough that it
+// never becomes a wait — the tile is already archived in the data by
+// then, so nothing depends on this number but the eye.
+export const ARCHIVE_FAREWELL_MS = 420
+
 // Weekday numbers use the ISO convention: 1 = Monday … 7 = Sunday.
 // (Chosen over JavaScript's own 0=Sunday counting because ISO weeks are
 // what the schedule engine in T1.2 will reason about.)
