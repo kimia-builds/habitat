@@ -529,12 +529,18 @@ describe('the morning check-in (T1.4)', () => {
 
     // The check-in pops up over the dimmed, inert list — role queries
     // skip the aria-hidden backdrop, so the foot buttons read as gone.
-    expect(screen.getByText('check-in')).toBeDefined()
+    expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
     expect(screen.queryByRole('button', { name: 'add new habit' })).toBeNull()
 
-    // Yesterday (Wed the 15th) is the question; the frozen previous
-    // week is not offered at all.
-    expect(screen.getByText(/yesterday, Wed 2026-07-15/)).toBeDefined()
+    // Yesterday (Wed the 15th) is the unnamed question at the top —
+    // since 2026-08-11 the header just asks, and no date is printed.
+    // What IS printed is the optional list below it: Monday and
+    // Tuesday only. Wednesday's absence from that list is what proves
+    // it is the question, and the frozen previous week is not offered
+    // at all. Where the marks actually land is asserted further down.
+    expect(screen.getByText('Mon 2026-07-13')).toBeDefined()
+    expect(screen.getByText('Tue 2026-07-14')).toBeDefined()
+    expect(screen.queryByText(/2026-07-15/)).toBeNull()
     expect(screen.queryByText(/2026-07-12/)).toBeNull()
 
     // Mark yesterday's walk (the first row is yesterday's; the
@@ -547,9 +553,7 @@ describe('the morning check-in (T1.4)', () => {
     )
     fireEvent.click(tuesday.getByRole('button', { name: '+1' }))
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'done — save check-in' }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'done' }))
 
     // Back on the list, and the data says what really happened: the
     // marks belong to the days they were DONE, entry day nowhere.
@@ -577,9 +581,7 @@ describe('the morning check-in (T1.4)', () => {
     }
     expect(checkIn.getByText('✓ 3/1')).toBeDefined()
     fireEvent.click(checkIn.getAllByRole('button', { name: '-1' })[0])
-    fireEvent.click(
-      checkIn.getByRole('button', { name: 'done — save check-in' }),
-    )
+    fireEvent.click(checkIn.getByRole('button', { name: 'done' }))
     expect(stored().completions.map((c) => c.dayKey)).toEqual([
       '2026-07-15',
       '2026-07-15',
@@ -589,15 +591,13 @@ describe('the morning check-in (T1.4)', () => {
   it('leaving everything unmarked is a fine answer — saved as answered, nothing recorded', () => {
     seed()
     render(<App />)
-    fireEvent.click(
-      screen.getByRole('button', { name: 'done — save check-in' }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'done' }))
     expect(stored().completions).toEqual([])
     expect(stored().checkedInThrough).toBe('2026-07-15')
     // A reload does not ask again.
     cleanup()
     render(<App />)
-    expect(screen.queryByText('check-in')).toBeNull()
+    expect(screen.queryByRole('region', { name: 'check-in' })).toBeNull()
   })
 
   it('stays quiet when yesterday was already done, but past days remain editable by hand', () => {
@@ -609,15 +609,13 @@ describe('the morning check-in (T1.4)', () => {
     render(<App />)
 
     // No check-in — straight to the list.
-    expect(screen.queryByText('check-in')).toBeNull()
+    expect(screen.queryByRole('region', { name: 'check-in' })).toBeNull()
 
     // But the week's earlier days can still be opened and edited.
     fireEvent.click(screen.getByRole('button', { name: 'edit past days' }))
     const monday = within(screen.getByText('Mon 2026-07-13').closest('details'))
     fireEvent.click(monday.getByRole('button', { name: '+1' }))
-    fireEvent.click(
-      screen.getByRole('button', { name: 'done — save check-in' }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'done' }))
     expect(
       stored()
         .completions.map((c) => c.dayKey)
@@ -668,7 +666,7 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
     vi.setSystemTime(new Date(2026, 6, 16, 23, 30))
     seed()
     render(<App />)
-    expect(screen.queryByText('check-in')).toBeNull()
+    expect(screen.queryByRole('region', { name: 'check-in' })).toBeNull()
 
     // The tab sits in the background until 4am — past the 3am cutoff,
     // so a new Habitat day (Friday) has begun and Thursday went
@@ -678,23 +676,31 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
 
     // …and the page behaves exactly like a fresh visit: the check-in
     // opens, asking about the real yesterday (Thursday the 16th).
-    expect(screen.getByText('check-in')).toBeDefined()
-    expect(screen.getByText(/yesterday, Thu 2026-07-16/)).toBeDefined()
+    // Nothing on screen names that day any more (2026-08-11), so the
+    // proof the window moved is the OPTIONAL list: it now offers Wed
+    // the 15th, which can only mean Thursday has been promoted to the
+    // unnamed question at the top.
+    expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
+    expect(screen.getByText('Wed 2026-07-15')).toBeDefined()
+    expect(screen.queryByText(/2026-07-16/)).toBeNull()
   })
 
   it('even without focusing, the minute-tick notices the rollover', () => {
     vi.setSystemTime(new Date(2026, 6, 16, 23, 30))
     seed()
     render(<App />)
-    expect(screen.queryByText('check-in')).toBeNull()
+    expect(screen.queryByRole('region', { name: 'check-in' })).toBeNull()
 
     // Let the page's own clock tick past the 3am boundary (fake timers
     // advance Date.now() and fire the interval together).
     act(() => {
       vi.advanceTimersByTime(4.5 * 60 * 60 * 1000) // 11:30pm → 4am
     })
-    expect(screen.getByText('check-in')).toBeDefined()
-    expect(screen.getByText(/yesterday, Thu 2026-07-16/)).toBeDefined()
+    // Same proof as above: Wed the 15th has dropped into the optional
+    // list, so Thursday is now the question the header asks unnamed.
+    expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
+    expect(screen.getByText('Wed 2026-07-15')).toBeDefined()
+    expect(screen.queryByText(/2026-07-16/)).toBeNull()
   })
 
   it('a quiet rollover (nothing missed) just moves the list to the new day', () => {
@@ -713,7 +719,7 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
     act(() => {
       vi.advanceTimersByTime(4.5 * 60 * 60 * 1000)
     })
-    expect(screen.queryByText('check-in')).toBeNull()
+    expect(screen.queryByRole('region', { name: 'check-in' })).toBeNull()
     expect(row('walk').getByText('0/1')).toBeDefined()
   })
 })
@@ -837,9 +843,7 @@ describe('the three meters (T2.2)', () => {
     // the only way out, so yesterday always gets answered.
     expect(screen.queryByRole('button', { name: 'HABITAT' })).toBeNull()
     fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
-    fireEvent.click(
-      screen.getByRole('button', { name: 'done — save check-in' }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'done' }))
 
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
     vi.useRealTimers()
@@ -1059,16 +1063,14 @@ describe('field notes (T2.3)', () => {
     seed() // Saturday unanswered → the check-in must come first
 
     render(<App />)
-    expect(screen.getByText('check-in')).toBeDefined()
+    expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
     expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
     // No fade while the check-in is up — it waits its turn too.
     expect(document.querySelector('.startup-fade')).toBeNull()
 
     // The check-in answered, the startup fade takes the next turn —
     // and the field notes still wait.
-    fireEvent.click(
-      screen.getByRole('button', { name: 'done — save check-in' }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'done' }))
     expect(document.querySelector('.startup-fade')).not.toBeNull()
     expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
 
@@ -1235,16 +1237,14 @@ describe('drop arrival + first-occurrence reveals (T3.2)', () => {
     // retro mark on the 15th is expedition step 0 and rolls flora.
     seedWorld(findSeed('2026-07-15', 'flora'), { checkedInThrough: null })
     render(<App />)
-    expect(screen.getByText('check-in')).toBeDefined()
+    expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
 
     fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
     // Distraction-free while answering: no reveal, no shelf.
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(screen.queryByRole('region', { name: 'arrivals' })).toBeNull()
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'done — save check-in' }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'done' }))
     // Now everything arrives together — the reveal first, the shelf
     // and the quiet note behind it.
     expect(
@@ -1811,12 +1811,10 @@ describe('the daily startup (T4.5)', () => {
   it('waits for the check-in when one is owed', () => {
     seed({ checkedInThrough: null }) // yesterday unanswered
     render(<App />)
-    expect(screen.getByText('check-in')).toBeDefined()
+    expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
     expect(fade()).toBeNull() // no fade while the check-in is up
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'done — save check-in' }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'done' }))
     expect(fade()).not.toBeNull()
   })
 

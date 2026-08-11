@@ -1454,6 +1454,21 @@ body {
   border-radius: 0.5rem;
 }
 
+/* The question and the way out sit centred (Kimia's call 2026-08-11) —
+   they address you, so they face you. Everything between them is a
+   LIST, and lists read from the left: yesterday's habit rows and the
+   optional earlier-days section keep their left edge. `>` matters here
+   — it centres the panel's own heading and its own button, never a
+   button inside a row. */
+.check-in > h2 {
+  text-align: center;
+}
+
+.check-in > button {
+  display: block;
+  margin-inline: auto;
+}
+
 /* The daily startup fade (T4.5's placeholder for T5.2's animation):
    a black veil that lifts over STARTUP_FADE_MS and is gone. It never
    intercepts a tap — §12f's "never blocking" holds even here. */

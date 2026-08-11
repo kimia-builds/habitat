@@ -240,6 +240,30 @@ tracker. Everything after this is delight, informed by real use.
 - [x] **T6.6 Start a new game.** _(done 2026-08-11, unplanned — Kimia
       asked for a way to wipe the world and go again while keeping every
       habit and every completion; build notes in history.md)_
+- [ ] **T6.7 The first hour — storytelling & narration for a new
+      player** (Kimia's call 2026-08-11) — revisit what arriving on
+      N-Z-D actually feels like for someone who has never opened
+      Habitat. Today the story slots (T3.4, design-notes §7) fire from
+      the first drop onward, but nothing frames WHERE you are, WHY you
+      are a guest, or what the meters are for; a brand-new world is
+      also an empty one, so the quietest days are the first ones. Look
+      at the whole arc — the first launch, the first check-in, the
+      first drop, the first friend — and decide where narration
+      belongs and where silence is better. Kimia writes every word
+      (CLAUDE.md's standing rule); this task builds the slots and the
+      moments they play in. Overlaps T6.3's "demo-friendly first-run
+      experience" — do this one first and let T6.3 inherit it. Also
+      the natural home for whatever T6.6's new-game path should say.
+- [ ] **T6.8 Field notes — more graphs and data views** (Kimia's call
+      2026-08-11) — the weekly view (T2.3) and the per-habit line
+      graphs (T2.4) are the whole of it today. Add more ways to look
+      at the record: longer spans than one week, comparisons between
+      habits, per-charm and per-difficulty cuts, and whatever the
+      shapes suggest once they are drawn. Scope the actual list with
+      Kimia before building — this is a "revisit and decide", not a
+      fixed spec. Reads history only; the no-punishment rule binds
+      here as hard as anywhere (a sparse month is neutral data, never
+      a red patch).
 
 ---
 

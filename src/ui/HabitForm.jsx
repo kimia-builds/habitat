@@ -11,8 +11,8 @@ const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const SCHEDULE_LABELS = {
   daily: 'every day',
   weekdays: 'specific weekdays',
-  nPerWeek: 'N days a week',
-  nPerDay: 'N times a day',
+  nPerWeek: 'n days a week',
+  nPerDay: 'n times a day',
   whenever: 'whenever',
   oneTime: 'one-time (a to-do)',
 }

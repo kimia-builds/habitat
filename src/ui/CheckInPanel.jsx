@@ -1,4 +1,4 @@
-// The morning check-in (T1.4): "mark what you completed yesterday",
+// The morning check-in (T1.4): "what did you do yesterday?",
 // plus optional backfill for the other still-editable days of the
 // current week. Pure display + callbacks — which days are editable and
 // which habits appear come from the game modules; recording happens in
@@ -62,9 +62,7 @@ function DayRows({
                   className="todo-check"
                   checked={count > 0}
                   onChange={() =>
-                    count > 0
-                      ? onUnmark(habit, dayKey)
-                      : onMark(habit, dayKey)
+                    count > 0 ? onUnmark(habit, dayKey) : onMark(habit, dayKey)
                   }
                   title={count > 0 ? 'done' : 'mark done'}
                   aria-label={count > 0 ? 'done' : 'mark done'}
@@ -105,13 +103,14 @@ function CheckInPanel({
   const older = editablePastDays(todayKey).filter((day) => day !== yesterday)
   const rowProps = { habits, completions, cutoffHour, onMark, onUnmark }
 
+  // The question IS the heading (Kimia's call 2026-08-11): the old
+  // "check-in" title and its dated "Mark what you completed yesterday,
+  // Mon 2026-08-10" line are both gone. The panel keeps "check-in" as
+  // its accessible name — screen readers still need to know which
+  // region this is, and nothing shows that word on screen.
   return (
     <section className="check-in" aria-label="check-in">
-      <h2>check-in</h2>
-      <p>
-        Mark what you completed{' '}
-        <strong>yesterday, {dayLabel(yesterday)}</strong>.
-      </p>
+      <h2>what did you do yesterday?</h2>
       <DayRows {...rowProps} dayKey={yesterday} />
       {older.length > 0 && (
         <>
@@ -126,7 +125,7 @@ function CheckInPanel({
           ))}
         </>
       )}
-      <button onClick={onDone}>done — save check-in</button>
+      <button onClick={onDone}>done</button>
     </section>
   )
 }

@@ -1346,6 +1346,50 @@ return 0` right after the era is worked out, so a moment before the
   wipe, marks counting again afterwards, and a reload. Full suite 1026
   and oxlint pass.
 
+- 2026-08-11 (Kimia's calls, copy pass before T5.2b): **the check-in
+  stops introducing itself and just asks the question.** The `<h2>`
+  reading "check-in" and the line under it — "Mark what you completed
+  yesterday, Mon 2026-08-10." — are replaced by one heading: **"what
+  did you do yesterday?"** The button under it is now just **"done"**.
+  The word "check-in" survives only as the panel's accessible name,
+  which nothing draws on screen.
+  **The date is dropped on purpose, and that is the interesting part.**
+  Naming the day was the one place the screen confirmed which day a
+  mark would land on — spec §2's date attribution made visible. Kimia
+  weighed it and chose the plainer question anyway: the check-in only
+  ever asks about yesterday, so the sentence carries the fact that the
+  date was merely evidencing. The rule itself is untouched; only its
+  caption is gone.
+  _What this cost the tests, and what replaced it._ Twenty-odd
+  assertions in `App.test.jsx` read that wording — `getByText('check-in')`
+  and `/yesterday, Wed 2026-07-15/` — exactly the free-floating prose
+  CLAUDE.md tells us not to assert. They now query the region by role
+  and accessible name. The "is it asking about the right day?" claim
+  has no on-screen text left to read, so it is proved two better ways
+  instead: where a mark actually lands in storage, and which days
+  appear in the OPTIONAL earlier-this-week list — yesterday's absence
+  from that list is what identifies it.
+- 2026-08-11 (Kimia's call): **the question and the way out are centred;
+  everything between them stays left.** `.check-in > h2` and
+  `.check-in > button` centre — they address you, so they face you.
+  Yesterday's habit rows and the optional earlier-days section are
+  lists, and lists read from the left. The child combinator is load-
+  bearing: without it the centring would reach the `+1` and `-1`
+  buttons inside every row.
+- 2026-08-11 (Kimia's call): **the schedule shapes say `n`, not `N`.**
+  "n days a week" and "n times a day" in the habit form — Habitat's
+  voice is lowercase (design-notes §11c), and a capital in the middle
+  of a lowercase list read as a shout. The capital N survives in code
+  comments and prose, where it is standing for a mathematical variable,
+  not talking to Kimia.
+- 2026-08-11 (Kimia's calls): **two things to revisit became plan tasks
+  rather than notes** — T6.7, the storytelling and narration a brand-new
+  player meets in their first hour, and T6.8, more graph and data views
+  in the field notes. Both are "revisit and decide" tasks: the scope
+  gets agreed with Kimia at the start of the session, not now. T6.7 is
+  deliberately placed before T6.3, whose "demo-friendly first-run
+  experience" is the same ground seen from the portfolio side.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
