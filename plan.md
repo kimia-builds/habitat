@@ -121,10 +121,9 @@ tracker. Everything after this is delight, informed by real use.
       it is an edit to one short list instead of a tour of the stylesheet:
       - [x] **T5.2a The tokens file — colour** _(done 2026-08-10 — build
             notes in history.md)_
-      - [ ] **T5.2b The §11b palette** — spend the tokens file: the
-            `#080910` ground, the dim-white text tiers, the charm colours
-            and their faint variants as the everyday accent and border
-            tint. Mostly an edit to `src/tokens.css`.
+      - [x] **T5.2b The §11b palette** _(done 2026-08-11 — build notes in
+            history.md; the dim-white text tiers were dropped on Kimia's
+            eyeball test, design-notes §11b)_
       - [ ] **T5.2c Typography (§11c)** — bundle Cormorant Garamond and
             DM Sans (no external loading), then the case and letterspacing
             convention; the type scale joins the tokens file here.

@@ -419,20 +419,45 @@ The exact paths (drop into the shared SVG attributes above):
 <line x1="17" y1="9.5" x2="17" y2="12"/>
 <circle cx="7.5" cy="9.5" r="1.5" fill="currentColor" stroke="none"/>`
 
-### 11b. Palette & surfaces (T5.2)
+### 11b. Palette & surfaces **[BUILT — T5.2b, 2026-08-11]**
 
 - **Background:** `#080910` (deepens the current near-black; still
   dark-only per spec §7).
 - **The six charm colours** double as the app's accent palette;
   their `0.18`-alpha faint variants are the border/divider tint.
-- **Dim text tiers** (on the dark ground): primary body
-  `rgba(255,255,255,0.58)`, quiet secondary `rgba(255,255,255,0.38)`,
-  hairline borders `rgba(255,255,255,0.10)`.
+  **The accent rule (Kimia's call 2026-08-11): a charm colour where
+  there is a charm, neutral dim white everywhere else.** A habit row
+  is edged in its own charm's faint variant, in the list and in the
+  check-in alike, and so is a picker/filter chip; general chrome with
+  no charm attached stays neutral. This is what stops six accent
+  colours becoming a fruit salad — the colour always MEANS the charm,
+  never decorates.
+- **Hairline borders** are dim white — `rgba(255,255,255,0.10)` for
+  the everyday edge, fainter at `0.06`, waking to `0.22` under a
+  pointer. White at low alpha reads correctly on any ground, so these
+  do not have to be re-mixed when the background moves.
+- **Panels are a white wash** (`rgba(255,255,255,0.03)`), not a colour
+  of their own — a raised surface is the same ground with a little
+  light on it. The one exception is the row being dragged, which stays
+  opaque so it hides the rows it passes over.
+- **Text brightness: unchanged, deliberately (Kimia's call
+  2026-08-11).** This section originally specified dim text tiers —
+  body at `rgba(255,255,255,0.58)`, quiet secondary at `0.38`. Kimia
+  compared them against today's near-white and kept today's:
+  habit names are what she scans fastest each morning, and dimmer text
+  is slower to scan. The moodier tiers are not lost, only not chosen —
+  they are one line in `src/tokens.css` if she ever wants them.
 - Soft ambient depth: a faint radial `rgba(255,255,255,0.025)` wash
-  behind framed content; organic blob-radius borders welcome on
-  feature frames.
+  behind the content column (built as `.app::before`; §13c's night sky
+  will sit in it). Organic blob-radius borders remain welcome on
+  feature frames — there are none yet; §13 builds the first.
 - Neon POP moments keep their own brighter voice (spec §7) — the
   charm palette is the everyday register, not the exclamation mark.
+- **Still wearing browser defaults, and now conspicuous:** the `+1` /
+  `-1`, backup and new-game buttons have never been styled, and with
+  everything around them quietened they are the brightest thing on the
+  screen. They are not part of the palette question — they need a type
+  and control pass, which is T5.2c/T5.2d.
 
 ### 11c. Typography (T5.2)
 
@@ -459,7 +484,7 @@ Case & spacing convention:
   captions) already matches — lowercase stays the default; uppercase
   is reserved for display and section labels.
 
-### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10]**
+### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10; SPENT — T5.2b, 2026-08-11]**
 
 Everything §11b and §11c name — every colour, every glow strength,
 every font size, every spacing number — lives in **one CSS file of
@@ -491,6 +516,27 @@ nothing on screen moved; the §11b identity above lands next as an edit to that 
 list. `src/test/tokens.test.js` fails the suite if a raw colour is
 pasted back into index.css, if a rule asks for a token that does not
 exist, or if symbols.js drifts from the canonical charm colours.
+
+**Spending it (T5.2b, 2026-08-11) proved the point.** The whole §11b
+identity — a new ground, new borders, new panel treatment, the charm
+accent — was an edit to that one list plus about a dozen lines of
+index.css. Two things the file learned in the process:
+
+- **A name may be defined in index.css, so long as it holds no colour
+  of its own.** The accent rule needs a row to hand its own charm down
+  to the rules below it, which the six `.charm-1`…`.charm-6` classes do
+  by setting `--charm-here` / `--charm-here-faint` to the matching
+  tokens. That is plumbing, not palette — the VALUES are still
+  tokens.css's, and the raw-colour ban makes it impossible to smuggle a
+  colour in this way. tokens.test.js now accepts definitions from
+  either file, and strips comments before counting anything: prose
+  describing a token was being read as a use of it.
+- **Prefer a token that survives the ground moving.** The old borders
+  and panel were opaque blue-greys mixed against the old background, so
+  changing the background would have meant re-mixing all of them. Their
+  §11b replacements are white at low alpha, which sits correctly on any
+  ground. When a token can be written as light rather than as a colour,
+  write it as light.
 
 **Two boundaries settled while building it (2026-08-10):**
 

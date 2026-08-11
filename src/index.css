@@ -41,6 +41,62 @@ body {
   gap: 1rem;
 }
 
+/* §11b's ambient depth (T5.2b): a barely-there pool of light behind the
+   content column, so the page reads as a lit space rather than a flat
+   sheet of black. It fades out well before the column edges, which is
+   what keeps it from drawing a visible seam down the page.
+   §13c mounts the night sky as the app background in T5.2d — this wash
+   is what the stars will sit in. */
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 60% 45% at 50% 22%,
+    var(--wash-ambient),
+    transparent 70%
+  );
+}
+
+/* The charm a thing belongs to, as CSS can see it (T5.2b). A row that
+   carries a charm gets `charm-N` alongside its own class, and these six
+   rules hand it that charm's two colours under one pair of names — so
+   every rule below can say `var(--charm-here)` without knowing or
+   caring which of the six it is. This is the accent rule in one place
+   (Kimia's call 2026-08-11): charm colour where there is a charm,
+   neutral dim white everywhere else. */
+.charm-1 {
+  --charm-here: var(--charm-crown);
+  --charm-here-faint: var(--charm-crown-faint);
+}
+
+.charm-2 {
+  --charm-here: var(--charm-cherry);
+  --charm-here-faint: var(--charm-cherry-faint);
+}
+
+.charm-3 {
+  --charm-here: var(--charm-shell);
+  --charm-here-faint: var(--charm-shell-faint);
+}
+
+.charm-4 {
+  --charm-here: var(--charm-anchor);
+  --charm-here-faint: var(--charm-anchor-faint);
+}
+
+.charm-5 {
+  --charm-here: var(--charm-shield);
+  --charm-here-faint: var(--charm-shield-faint);
+}
+
+.charm-6 {
+  --charm-here: var(--charm-key);
+  --charm-here-faint: var(--charm-key-faint);
+}
+
 .app h1 {
   font-weight: 300;
   letter-spacing: 0.5em;
@@ -1141,11 +1197,16 @@ body {
   gap: 0.75rem;
 }
 
+/* Each row is edged in its OWN charm, at the 0.18 alpha §11b sets aside
+   for borders (T5.2b) — the clearest place the charm palette earns its
+   keep as the everyday accent, since the list is what Kimia looks at
+   most. The fallback matters: a row with no charm class falls back to
+   the neutral hairline rather than losing its border entirely. */
 .habit-row {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--charm-here-faint, var(--border));
   padding: 0.5rem;
 }
 
@@ -1192,10 +1253,13 @@ body {
   filter: drop-shadow(0 0 24px currentColor);
 }
 
+/* The picker/filter chips carry a charm too, so they take the same faint
+   edge as a habit row (T5.2b). Pressed, the edge goes to the full charm
+   colour — `currentColor` is that charm, set inline on the button. */
 .symbol-button {
   display: inline-flex;
   background: none;
-  border: 1px solid var(--border);
+  border: 1px solid var(--charm-here-faint, var(--border));
   padding: 0.3rem 0.55rem;
   cursor: pointer;
 }
@@ -1460,13 +1524,21 @@ body {
    optional earlier-days section keep their left edge. `>` matters here
    — it centres the panel's own heading and its own button, never a
    button inside a row. */
+/* The margins here are doing a job the deleted paragraph used to do by
+   accident: it sat between the heading and the list and held them
+   apart. With it gone the question butted straight onto the first row,
+   and the button onto the last. (Spacing numbers are still raw rem —
+   they join the tokens file in T5.2d, which is the slice that decides
+   the real scale.) */
 .check-in > h2 {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .check-in > button {
   display: block;
   margin-inline: auto;
+  margin-top: 1.25rem;
 }
 
 /* The daily startup fade (T4.5's placeholder for T5.2's animation):

@@ -54,9 +54,15 @@ function HabitRow({
 
   return (
     <li
-      className={`habit-row${dragging ? ' habit-row--dragging' : ''}`}
+      // `charm-N` tells the stylesheet which of the six this row wears,
+      // so it can be edged in that charm's own colour (T5.2b, §11b).
+      // The class carries the NUMBER only — the colours themselves stay
+      // in tokens.css, which is what keeps them a list Kimia can edit.
+      className={`habit-row charm-${habit.symbol}${dragging ? ' habit-row--dragging' : ''}`}
       data-habit-id={habit.id}
-      style={dragging ? { transform: `translateY(${dragOffsetY}px)` } : undefined}
+      style={
+        dragging ? { transform: `translateY(${dragOffsetY}px)` } : undefined
+      }
     >
       <CharmSymbol symbol={habit.symbol} className="symbol" />
       <span className="habit-main">

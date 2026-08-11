@@ -19,11 +19,16 @@
  *     rewrite). Naming them now would be naming numbers that are about to be
  *     replaced — they arrive in the T5.2 slices that actually decide them.
  *
- * THE VALUES BELOW ARE TODAY'S LOOK, unchanged. This slice gave the existing
- * colours names and changed nothing on screen. The §11b identity — the deeper
- * #080910 ground, the dim-white text tiers, the charm palette as the everyday
- * accent — lands next, and by design that is an edit to THIS FILE, not a
- * re-tour of the stylesheet.
+ * THE §11b IDENTITY LANDED HERE ON 2026-08-11 (T5.2b), and it was an edit to
+ * this file plus about a dozen lines of index.css — which was the whole point
+ * of building the list first. What changed: the ground went deeper (#080910),
+ * the neutral borders became dim-white hairlines, panels became a white wash
+ * instead of their own blue-grey, and the charm colours became the everyday
+ * accent — every habit row is now edged in the faint variant of its own charm.
+ * What deliberately did NOT change: the text. §11b originally called for body
+ * text at 58% white; Kimia looked at it on 2026-08-11 and kept today's
+ * brightness, because habit names are the thing she scans fastest each
+ * morning. design-notes §11b records that reversal.
  *
  * MIRRORS: some colours are also needed as strings in JavaScript, because they
  * are built into SVG filters and glow attributes. Those files keep their own
@@ -46,8 +51,11 @@
   --charm-shield: #5ab6f3; /* 5 · sky */
   --charm-key: #4fbfa0; /* 6 · teal */
 
-  /* The same six at 0.18 alpha: §11b's border and divider tint, for the
-     identity slice that adopts them. Nothing wears these yet. */
+  /* The same six at 0.18 alpha: §11b's border and divider tint. Since
+     T5.2b every habit row wears its own charm's faint variant as its
+     edge — the accent rule is "charm where there is a charm, neutral
+     dim white everywhere else" (Kimia's call 2026-08-11). The rows pick
+     one up through the `.charm-1`…`.charm-6` classes in index.css. */
   --charm-crown-faint: rgba(240, 187, 59, 0.18);
   --charm-cherry-faint: rgba(245, 128, 90, 0.18);
   --charm-shell-faint: rgba(232, 105, 140, 0.18);
@@ -61,10 +69,23 @@
   /* ===========================================================================
    * SURFACES — the dark ground everything sits on (spec §7: dark only)
    * ========================================================================= */
-  --bg: #0b0e14; /* the page itself, and the pop-up panels that sit on it */
-  --surface: #11151f; /* a panel or card raised off the background */
-  --surface-lifted: #12151f; /* a habit row while it is being dragged */
+  /* §11b's ground (T5.2b, 2026-08-11) — deeper and a shade more violet
+     than the old #0b0e14. Everything else on this list is either a white
+     wash or a charm colour, so nothing else had to be re-mixed to match. */
+  --bg: #080910; /* the page itself, and the pop-up panels that sit on it */
+
+  /* A raised panel is not a different colour — it is the same ground with
+     a little light on it. A white wash works over any background, which
+     is why it survives the ground changing under it. */
+  --surface: rgba(255, 255, 255, 0.03); /* a panel or card, raised */
+  /* a habit row mid-drag — opaque on purpose, so it hides the rows it
+     is passing over on its way */
+  --surface-lifted: #101320;
   --shadow-lifted: 0 6px 18px rgba(0, 0, 0, 0.45); /* …and the lift under it */
+
+  /* §11b's ambient depth: a wash so faint it reads as light, not colour,
+     pooled behind the content column. */
+  --wash-ambient: rgba(255, 255, 255, 0.025);
 
   /* Veils: full-screen washes that dim what is behind them. */
   --veil-reveal: rgba(4, 6, 10, 0.88); /* behind a first-occurrence reveal */
@@ -73,10 +94,18 @@
 
   /* ===========================================================================
    * BORDERS — three weights, quietest first
+   * §11b asks for hairlines of dim white rather than the old blue-grey
+   * solids (T5.2b): white at a low alpha sits correctly on ANY ground, so
+   * these no longer have to be re-mixed every time the background moves.
+   * These are the NEUTRAL edges — anything carrying a charm uses that
+   * charm's faint variant instead.
    * ========================================================================= */
-  --border-quiet: #1a2030; /* barely there; separates without drawing a line */
-  --border: #2a3040; /* the everyday edge of a panel or control */
-  --border-hover: #3d4660; /* that edge, woken up by a pointer */
+  /* barely there; separates without drawing a line */
+  --border-quiet: rgba(255, 255, 255, 0.06);
+  /* §11b's hairline: the everyday edge of a panel or control */
+  --border: rgba(255, 255, 255, 0.1);
+  /* that edge, woken up by a pointer */
+  --border-hover: rgba(255, 255, 255, 0.22);
   --hairline: rgba(255, 255, 255, 0.12); /* a drawn line inside artwork */
   --hairline-faint: rgba(255, 255, 255, 0.1); /* the same, fainter still */
 

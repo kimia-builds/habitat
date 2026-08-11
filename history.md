@@ -1382,6 +1382,66 @@ return 0` right after the era is worked out, so a moment before the
   of a lowercase list read as a shout. The capital N survives in code
   comments and prose, where it is standing for a mathematical variable,
   not talking to Kimia.
+- 2026-08-11 (T5.2b, palette session): **the §11b identity is on, and
+  the tokens file paid for itself.** The ground went to `#080910`, the
+  neutral borders became dim-white hairlines, panels became a white
+  wash, and the six charm colours became the everyday accent. The whole
+  change was an edit to `src/tokens.css` plus about a dozen lines of
+  index.css — which is exactly the promise T5.2a was built on, now
+  tested rather than asserted.
+  **The accent rule, decided today because §11b did not say.** "The
+  charm colours double as the app's accent palette" leaves open what a
+  button or a panel edge does when no charm is attached to it. Kimia's
+  answer: **charm colour where there is a charm, neutral dim white
+  everywhere else.** So a habit row is edged in its own charm's 0.18
+  variant — in the list and in the check-in alike — and so is a
+  picker/filter chip, while general chrome stays neutral. The colour
+  always means the charm; it never decorates. The alternatives were one
+  house accent for all chrome, and a colour per page; both were set
+  aside as louder than Habitat's register.
+  **How CSS learns which charm a row wears.** The row gets a
+  `charm-1`…`charm-6` class alongside its own, and six rules in
+  index.css translate that number into `--charm-here` and
+  `--charm-here-faint`. Every rule below then says
+  `var(--charm-here-faint, var(--border))` without knowing which of the
+  six it got — and falls back to the neutral hairline if it got none.
+  The class carries the NUMBER only; the colours stay in tokens.css,
+  which is what keeps them a list Kimia can scan and edit.
+  **The dim text tiers were reversed** — §11b called for body text at
+  58% white; Kimia compared it against today's near-white and kept
+  today's, because habit names are what she scans fastest each morning.
+  Recorded in §11b rather than quietly dropped: the tiers are one line
+  away if she changes her mind.
+  **Borders are now light, not colour, and that is the reusable
+  lesson.** The old borders and panel fill were opaque blue-greys mixed
+  against the OLD background, so moving the ground would have meant
+  re-mixing every one of them. Their replacements are white at low
+  alpha, which sits correctly on any ground. The dragged row is the one
+  deliberate exception — it stays opaque, because a translucent row
+  would show the rows it is passing over.
+  _Two things the tokens test learned._ It failed twice, both times
+  correctly pointing at something real. It counted a token name that
+  appeared only inside a COMMENT as a genuine use, so a comment
+  explaining `var(--charm-here)` failed the suite for describing the
+  code accurately — comments are now stripped before anything is
+  counted. And it only accepted definitions from tokens.css, which the
+  `.charm-N` plumbing legitimately needed to do in index.css; it now
+  accepts either file. Neither loosens the guard that matters: index.css
+  still may not contain a colour literal at all, so a name defined there
+  can only ever pass along a value from the palette.
+  _Verified in the browser, not just in tests_ — a palette change is
+  invisible to the suite by definition. All six rows resolved to their
+  own charm colour, the ground to `rgb(8,9,16)`, the meter panel to the
+  3% wash, and habit-name text to the unchanged `#e8e6f0`.
+  _Found while looking:_ removing the check-in's dated paragraph earlier
+  in the session had left the question butting onto the first row and
+  the done button onto the last — that paragraph had been holding them
+  apart by accident. Both got explicit margins.
+  _Also noted, not fixed:_ the `+1` / `-1`, backup and new-game buttons
+  have never been styled, and now that everything around them is quiet
+  they are the brightest thing on screen. That is a type-and-control
+  job, so it waits for T5.2c/T5.2d. Recorded in §11b.
+  _Tests:_ full suite 1026 and oxlint pass.
 - 2026-08-11 (Kimia's calls): **two things to revisit became plan tasks
   rather than notes** — T6.7, the storytelling and narration a brand-new
   player meets in their first hour, and T6.8, more graph and data views

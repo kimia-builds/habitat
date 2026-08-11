@@ -16,7 +16,9 @@ function SymbolPicker({ selected, onToggle }) {
         <button
           key={symbol}
           type="button"
-          className="symbol-button"
+          // `charm-N` for the faint edge (T5.2b); the inline colour is
+          // what `currentColor` picks up when the button is pressed.
+          className={`symbol-button charm-${symbol}`}
           style={{ color: SYMBOL_COLORS[symbol] }}
           aria-pressed={selected.includes(symbol)}
           onClick={() => onToggle(symbol)}

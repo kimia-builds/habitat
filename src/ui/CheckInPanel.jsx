@@ -48,7 +48,9 @@ function DayRows({
           scheduleThen.type,
         )
         return (
-          <li key={habit.id} className="habit-row">
+          // Same charm edging as the main list (T5.2b) — the check-in's
+          // rows are the same rows, so they wear the same colour.
+          <li key={habit.id} className={`habit-row charm-${habit.symbol}`}>
             <CharmSymbol symbol={habit.symbol} className="symbol" />
             <span className="habit-main">
               <span className="habit-name">{habit.name}</span>
