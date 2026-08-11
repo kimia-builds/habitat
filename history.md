@@ -1591,6 +1591,62 @@ return 0` right after the era is worked out, so a moment before the
   goes). Four existing archive tests now wait the farewell out through a
   named helper. Full suite 1036 and oxlint pass.
 
+- 2026-08-11 (Kimia's calls, a third pass the same day): **five UI
+  changes — the lens goes everywhere, the drag floats, the grip goes.**
+  1. **The charm lens narrows the whole screen, not just the live
+     list.** The archived drawer now holds only the archived habits
+     wearing the chosen charms (and counts only those — the drawer
+     simply isn't there when none of them do), and the lens travels to
+     the field notes, where the same row of charms sits at the top of
+     the page and narrows the week grid, the completed tasks and the
+     graphs alike. Still ONE lens, still held on the home screen, still
+     cleared by a reload — the field notes just read it and can toggle
+     it. The marks travel with their habits when the lens is applied, so
+     the graphs and the "how far back can I browse" bound agree with the
+     grid rather than reaching back to a habit that is filtered out.
+     Narrowing the lens can strand the week being browsed outside what
+     is left; rather than yank the state about, the week is held inside
+     its bounds as it is drawn.
+  2. **The dragged tile floats.** It was welded to the cursor, which
+     read as sharp and mechanical; the transform is now transitioned
+     (420ms, ease-out), so the tile eases toward wherever the pointer
+     has got to, trails a little behind a quick pull and glides into
+     place when the hand stops. It also lifts as it travels (scale 1.02,
+     the existing shadow, its charm edge lit). Where it LANDS is
+     unchanged — the drop still reads the real pointer position, so the
+     float is purely how it looks. Reduced-motion keeps the instant
+     follow.
+  3. **The dragged tile actually covers what it passes over — a real
+     bug, not a taste change.** `.habit-row--dragging` was trying to
+     stack a see-through charm layer over an opaque one inside a single
+     `background:` shorthand. A multi-layer background may only carry a
+     colour in its FINAL layer, so the declaration was invalid; because
+     it contained `var()`, CSS didn't ignore it and fall back — it
+     treated it as unset, wiping the tile's background to nothing. The
+     dragged tile had been fully transparent since T5.2b. It is now one
+     property: the charm mixed INTO the opaque lifted ground at
+     `--charm-fill-strength-lifted` (26%, new token beside the resting
+     9%). Same one-number recipe, an opaque result.
+  4. **The six-dot grip is retired.** Once the whole tile was the handle
+     (earlier the same day) the grip was a cue for something already
+     obvious, and it read as clutter at the end of every row. Its one
+     remaining job — explaining why nothing drags while a filter is on —
+     moved onto the tile itself, which carries that hover and no other.
+  5. **The field notes' week header.** "week of" is gone and the dates
+     are DD-MM-YY (`03-08-26 – 09-08-26`, new `shortDate` in days.js),
+     and "still unfolding" sits on its own line under them. It used to
+     run inline, where it lengthened the middle of the nav row enough to
+     wrap "later" onto a second line — leaving both buttons stacked on
+     the left. The row is now forbidden to wrap, so the two buttons keep
+     the two ends.
+  _Tests:_ four added — two on `shortDate` (the turn-around, and that it
+  still refuses a non-key), one that the lens narrows the archive
+  drawer, one that it travels to the field notes and can be changed
+  there. The drag tests now grab the tile itself rather than the retired
+  grip, and the field-notes test reads the new header. Full suite 1040
+  and oxlint pass; the drag, the lens and the header were also checked
+  in a real browser against seeded history.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

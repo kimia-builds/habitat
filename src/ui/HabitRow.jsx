@@ -1,5 +1,5 @@
 // One habit in the list: its symbol, name, schedule-at-a-glance, the
-// tap-to-complete control, and the row buttons (grip, edit, archive).
+// tap-to-complete control, and the row buttons (edit, archive).
 // Pure display + callbacks — every decision is made in App via the game
 // modules.
 
@@ -54,15 +54,14 @@ function HabitRow({
   )
 
   // Drag-to-reorder starts anywhere on the tile (2026-08-11 — it used to
-  // be the grip only). A press that lands on one of the row's controls is
-  // left alone, so +1, -1, the to-do tick, edit and archive still just
-  // tap; everywhere else — the charm, the name, the meta line, the empty
-  // space between them — is a grab. The grip is the one control that DOES
-  // start a drag: grabbing it is all it is for.
+  // be the grip only; the grip itself was retired 2026-08-11, Kimia's
+  // call, now that the whole tile does its job). A press that lands on
+  // one of the row's controls is left alone, so +1, -1, the to-do tick,
+  // edit and archive still just tap; everywhere else — the charm, the
+  // name, the meta line, the empty space between them — is a grab.
   function handlePointerDown(event) {
     if (reorderDisabled) return
-    const control = event.target.closest('button, input, a, select, textarea')
-    if (control && !control.classList.contains('drag-handle')) return
+    if (event.target.closest('button, input, a, select, textarea')) return
     onReorderStart(event)
   }
 
@@ -82,9 +81,23 @@ function HabitRow({
         (leaving ? ' habit-row--leaving' : '')
       }
       data-habit-id={habit.id}
+      // With the grip gone, this is where the "why won't it move?" answer
+      // lives: while a symbol filter is on, the list is a partial lens and
+      // nothing re-orders, so the tile itself says so on hover. No title
+      // at all the rest of the time — a tooltip on every tile would be
+      // noise.
+      title={
+        reorderDisabled ? 'clear the symbol filter to re-order' : undefined
+      }
       onPointerDown={handlePointerDown}
+      // A dragged tile follows the pointer and sits a touch larger while
+      // it travels — picked up rather than pushed along. The stylesheet
+      // eases this transform rather than applying it instantly, which is
+      // what makes the movement float (2026-08-11).
       style={
-        dragging ? { transform: `translateY(${dragOffsetY}px)` } : undefined
+        dragging
+          ? { transform: `translateY(${dragOffsetY}px) scale(1.02)` }
+          : undefined
       }
     >
       <CharmSymbol symbol={habit.symbol} className="symbol" />
@@ -134,32 +147,6 @@ function HabitRow({
         </span>
       )}
       <span className="row-buttons">
-        {/* Drag-to-reorder (T5.1c, 2026-07-23; whole-tile since
-            2026-08-11): the drag itself is handled on the row above, so
-            this grip is the visible "you can move this" cue and a place to
-            grab that is unmistakably not a tap. Desktop-only (T5.1b), so a
-            pointer press is the only input we support. While a symbol
-            filter is on the list is a partial lens, so reordering is
-            disabled and the hover explains why. */}
-        <button
-          className="icon-button drag-handle"
-          disabled={reorderDisabled}
-          title={
-            reorderDisabled
-              ? 'clear the symbol filter to re-order'
-              : 'drag to re-order'
-          }
-          aria-label="re-order"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <circle cx="9" cy="6" r="1.4" />
-            <circle cx="15" cy="6" r="1.4" />
-            <circle cx="9" cy="12" r="1.4" />
-            <circle cx="15" cy="12" r="1.4" />
-            <circle cx="9" cy="18" r="1.4" />
-            <circle cx="15" cy="18" r="1.4" />
-          </svg>
-        </button>
         {/* T4.5's icon-only actions (decision 2026-07-20): every action is
             an icon with a hover label — title + aria-label carry the words. */}
         <button

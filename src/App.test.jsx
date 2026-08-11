@@ -118,6 +118,12 @@ function row(name) {
   return within(screen.getByText(name).closest('li'))
 }
 
+// The row's element itself — what a drag grabs now that the grip is gone
+// (2026-08-11): pressing the tile anywhere but on a control starts one.
+function tile(name) {
+  return screen.getByText(name).closest('li')
+}
+
 describe('creating habits', () => {
   it('a created habit appears and survives a full reload', () => {
     const first = render(<App />)
@@ -262,11 +268,13 @@ describe('the symbol filter (a temporary lens)', () => {
     fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // symbol 2
     expect(screen.getByText('read')).toBeDefined()
     expect(screen.queryByText('stretch')).toBeNull()
-    // While filtered, the drag handle is off (partial view = ambiguous)
-    // and its hover explains how to switch reordering back on.
-    const handle = row('read').getByRole('button', { name: 're-order' })
-    expect(handle.disabled).toBe(true)
-    expect(handle.title).toBe('clear the symbol filter to re-order')
+    // While filtered, re-ordering is off (partial view = ambiguous) and
+    // the tile's own hover explains how to switch it back on. (The grip
+    // that used to carry this was retired 2026-08-11 — the whole tile is
+    // the handle, so the whole tile answers for it.)
+    const filteredTile = document.querySelector('.habit-row')
+    expect(filteredTile.title).toBe('clear the symbol filter to re-order')
+    expect(filteredTile.className).toContain('habit-row--fixed')
 
     fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // toggle off
     expect(screen.getByText('stretch')).toBeDefined()
@@ -300,6 +308,57 @@ describe('the symbol filter (a temporary lens)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
     expect(draftCharm()).toEqual(['crown'])
   })
+
+  // Kimia's call 2026-08-11: the lens is for the whole screen, not just
+  // the live list — the archive drawer holds only what the chosen charms
+  // wear too.
+  it('narrows the archive drawer as well as the list', () => {
+    render(<App />)
+    createHabitViaUI('read', { symbol: 2 })
+    createHabitViaUI('stretch', { symbol: 5 })
+    fireEvent.click(row('stretch').getByRole('button', { name: 'archive' }))
+    settleFarewell()
+
+    const drawer = () => screen.queryByText(/^archived/)
+    expect(drawer()).not.toBeNull() // 'stretch' is in there
+
+    const filter = within(screen.getByRole('region', { name: 'filter view' }))
+    fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // symbol 2
+    expect(drawer()).toBeNull() // nothing archived wears the cherry
+
+    fireEvent.click(filter.getByRole('button', { name: 'shield' })) // add 5
+    expect(
+      within(drawer().closest('details')).getByText('stretch'),
+    ).toBeDefined()
+  })
+
+  // …and it travels to the field notes, where it narrows the week grid
+  // (and, further down that page, the graphs), and can still be changed
+  // from the same row of charms.
+  it('travels to the field notes and narrows what they show', () => {
+    render(<App />)
+    createHabitViaUI('read', { symbol: 2 })
+    createHabitViaUI('stretch', { symbol: 5 })
+
+    const homeFilter = within(
+      screen.getByRole('region', { name: 'filter view' }),
+    )
+    fireEvent.click(homeFilter.getByRole('button', { name: 'cherry' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'view historical data' }),
+    )
+
+    // The lens came with us: only the cherry habit has a row.
+    expect(screen.getByRole('rowheader', { name: /read/ })).toBeDefined()
+    expect(screen.queryByRole('rowheader', { name: /stretch/ })).toBeNull()
+
+    // And it is still adjustable here — clearing it brings the other back.
+    const notesFilter = within(
+      screen.getByRole('region', { name: 'filter view' }),
+    )
+    fireEvent.click(notesFilter.getByRole('button', { name: 'cherry' }))
+    expect(screen.getByRole('rowheader', { name: /stretch/ })).toBeDefined()
+  })
 })
 
 describe('re-ordering', () => {
@@ -329,8 +388,7 @@ describe('re-ordering', () => {
 
     // Grab 'one' and drag it down past 'three' (pointer ends at y 105,
     // below the third row's top of 100). It should land last.
-    const handle = row('one').getByRole('button', { name: 're-order' })
-    fireEvent.pointerDown(handle, { button: 0, clientX: 0, clientY: 5 })
+    fireEvent.pointerDown(tile('one'), { button: 0, clientX: 0, clientY: 5 })
     fireEvent.pointerMove(window, { clientX: 0, clientY: 105 })
     fireEvent.pointerUp(window, { clientX: 0, clientY: 105 })
 
@@ -379,8 +437,11 @@ describe('re-ordering', () => {
 
     // Grab 'three' and drag it up above 'one' (pointer to y 5, over the
     // first row, whose top is 0).
-    const handle = row('three').getByRole('button', { name: 're-order' })
-    fireEvent.pointerDown(handle, { button: 0, clientX: 0, clientY: 110 })
+    fireEvent.pointerDown(tile('three'), {
+      button: 0,
+      clientX: 0,
+      clientY: 110,
+    })
     pointerY = 5
     fireEvent.pointerMove(window, { clientX: 0, clientY: 5 })
     fireEvent.pointerUp(window, { clientX: 0, clientY: 5 })
@@ -471,8 +532,7 @@ describe('re-ordering', () => {
     createHabitViaUI('alpha')
     createHabitViaUI('beta')
 
-    const handle = row('alpha').getByRole('button', { name: 're-order' })
-    fireEvent.pointerDown(handle, { button: 0, clientX: 0, clientY: 5 })
+    fireEvent.pointerDown(tile('alpha'), { button: 0, clientX: 0, clientY: 5 })
     fireEvent.pointerUp(window, { clientX: 0, clientY: 6 })
 
     const names = [...document.querySelectorAll('.habit-name')].map(
@@ -1165,12 +1225,13 @@ describe('field notes (T2.3)', () => {
       screen.getByRole('button', { name: 'view historical data' }),
     )
     // Opens on the last completed week, where Wednesday the 8th shows ✓.
-    expect(screen.getByText(/week of 2026-07-06 – 2026-07-12/)).toBeDefined()
+    // The week is headed DD-MM-YY, no "week of" (Kimia, 2026-08-11).
+    expect(screen.getByText(/06-07-26 – 12-07-26/)).toBeDefined()
     expect(screen.getByText('✓')).toBeDefined()
 
     // Browsing: forward to the current (still unfolding) week, no further.
     fireEvent.click(screen.getByRole('button', { name: 'later ›' }))
-    expect(screen.getByText(/week of 2026-07-13/)).toBeDefined()
+    expect(screen.getByText(/13-07-26/)).toBeDefined()
     expect(screen.getByText(/still unfolding/)).toBeDefined()
     expect(screen.getByRole('button', { name: 'later ›' })).toHaveProperty(
       'disabled',

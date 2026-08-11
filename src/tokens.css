@@ -76,6 +76,13 @@
      ones being eyeballed right now.) */
   --charm-fill-strength: 9%;
 
+  /* …and how much of it a tile wears while it is being DRAGGED
+     (2026-08-11). Stronger than the resting fill on purpose: the tile in
+     hand has to cover the tiles it floats over, so it is the one moment a
+     tile is meant to look solid rather than washed. Same one-number rule
+     — it mixes live from whichever charm the tile wears. */
+  --charm-fill-strength-lifted: 26%;
+
   /* The task tiles' generous rounding — long baguettes (Kimia's call
      2026-08-11). Big enough that the ends read as full half-circles at
      any row height; lower it toward ~1rem for softened rectangles. */

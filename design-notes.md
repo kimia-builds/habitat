@@ -500,7 +500,14 @@ The exact paths (drop into the shared SVG attributes above):
 - **Panels are a white wash** (`rgba(255,255,255,0.03)`), not a colour
   of their own — a raised surface is the same ground with a little
   light on it. The one exception is the row being dragged, which stays
-  opaque so it hides the rows it passes over.
+  opaque so it hides the rows it passes over. A resting tile mixes its
+  charm with _nothing_ (that is what makes it see-through); the dragged
+  tile mixes a stronger dose of the same charm into the opaque lifted
+  ground instead (`--charm-fill-strength-lifted`), so it comes out
+  solid. Trying to stack the two as layers of one `background:`
+  shorthand is invalid CSS and silently leaves the tile with no
+  background at all — the bug Kimia reported on 2026-08-11 as "the tile
+  doesn't cover what it moves over".
 - **Text brightness: unchanged, deliberately (Kimia's call
   2026-08-11).** This section originally specified dim text tiers —
   body at `rgba(255,255,255,0.58)`, quiet secondary at `0.38`. Kimia
@@ -670,13 +677,27 @@ does on a button can move a row. That, plus the small travel threshold
 (a press that doesn't move reorders nothing), is what keeps taps
 unambiguous — T5.1c thought a dedicated handle was needed for it, but
 hunting for a six-dot target turned out to be the real friction.
-Each row still carries the **six-dot grip** in its button group: now
-purely the "this moves" cue and a place to grab that is obviously not a
-tap. Its hover reads "drag to re-order". While a symbol filter is on the
-list is only a partial lens, so the whole row **stops dragging** and the
-grip dims, its hover switching to "clear the symbol filter to re-order"
-(the filter-lock rule the old arrows had). Desktop-only (T5.1b), so a
-plain pointer press is the only input supported — no touch path.
+**The six-dot grip is gone (Kimia, 2026-08-11)**: once the whole tile
+was the handle it was a cue for something already obvious, and it read
+as clutter on the right of every row. The row buttons are now the pencil
+and the archive box, nothing else. While a symbol filter is on the list
+is only a partial lens, so the whole row **stops dragging** — the tile
+itself carries the hover "clear the symbol filter to re-order" (the
+filter-lock rule the old arrows had), and no tile carries a hover at any
+other time. Desktop-only (T5.1b), so a plain pointer press is the only
+input supported — no touch path.
+
+**The lifted tile floats (Kimia, 2026-08-11).** A dragged tile used to
+be welded to the cursor, which read as sharp and mechanical. Now it is
+**slow and floaty**: the tile eases toward wherever the pointer has got
+to rather than arriving there instantly, so it drifts after the hand,
+trails a little behind a quick pull, and glides into place whenever the
+hand stops. It lifts while it travels — a touch larger, a deeper shadow
+under it, its charm edge lit — so it reads as picked up and held above
+the list rather than shoved along inside it. Where it LANDS is still
+decided by the pointer, not by the drifting tile: the hand is the truth,
+the float is only how it looks. Reduced-motion keeps the old instant
+follow.
 
 ### 12b. The date display
 

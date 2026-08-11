@@ -199,7 +199,11 @@ function App() {
   const startupDue = shouldShowStartup(today, data.settings.startupShownOn)
   const active = activeHabits(data.habits)
   const filtered = filterBySymbols(active, filter)
-  const archived = archivedHabits(data.habits)
+  // The archive answers to the same lens (Kimia's call 2026-08-11):
+  // while charms are chosen, the dropdown holds only the archived habits
+  // wearing them — and its count says how many that is. With no lens on,
+  // it is the whole archive, exactly as before.
+  const archived = filterBySymbols(archivedHabits(data.habits), filter)
 
   // A tile that has just been archived is put back on screen where it
   // was standing, purely so it can be SEEN to leave (Kimia's call
@@ -1183,6 +1187,8 @@ function App() {
           completions={data.completions}
           cutoffHour={data.settings.dayCutoffHour}
           now={now}
+          filter={filter}
+          onToggleFilter={toggleFilter}
           onBack={() => setPage(null)}
         />
       </main>

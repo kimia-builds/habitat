@@ -8,6 +8,7 @@ import {
   formatHourAmPm,
   isValidDayKey,
   isoWeekday,
+  shortDate,
   validateCutoffHour,
   weekStart,
 } from './days.js'
@@ -121,6 +122,19 @@ describe('weeks (Monday-start, ISO weekday numbers)', () => {
     expect(weekStart('2026-07-15')).toBe('2026-07-13') // Wednesday
     expect(weekStart('2026-07-19')).toBe('2026-07-13') // Sunday
     expect(weekStart('2026-07-12')).toBe('2026-07-06') // previous week
+  })
+})
+
+describe('shortDate — DD-MM-YY, how the field notes head a week', () => {
+  it('turns a day key round, day first, on a two-digit year', () => {
+    expect(shortDate('2026-07-06')).toBe('06-07-26')
+    expect(shortDate('2026-12-31')).toBe('31-12-26')
+    expect(shortDate('2030-01-01')).toBe('01-01-30')
+  })
+
+  it('refuses anything that is not a day key', () => {
+    expect(() => shortDate('06-07-2026')).toThrow()
+    expect(() => shortDate('')).toThrow()
   })
 })
 

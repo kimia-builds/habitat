@@ -257,8 +257,11 @@ tracker. Everything after this is delight, informed by real use.
       2026-08-11) — the weekly view (T2.3) and the per-habit line
       graphs (T2.4) are the whole of it today. Add more ways to look
       at the record: longer spans than one week, comparisons between
-      habits, per-charm and per-difficulty cuts, and whatever the
-      shapes suggest once they are drawn. Scope the actual list with
+      habits, per-difficulty cuts, and whatever the shapes suggest once
+      they are drawn. (The **per-charm cut already landed** later the
+      same day — the home screen's charm lens now travels to the field
+      notes and narrows the grid and the graphs; spec §5b. So this task
+      starts from there, not from scratch.) Scope the actual list with
       Kimia before building — this is a "revisit and decide", not a
       fixed spec. Reads history only; the no-punishment rule binds
       here as hard as anywhere (a sparse month is neutral data, never

@@ -326,7 +326,14 @@ region discovery expands what the Market can offer.
   habit's draft opens already wearing it** (2026-08-11) — filtering to
   one charm and then adding a habit almost always means "another one of
   these"; two or more filtered is no longer a hint, so the draft falls
-  back to the first charm. Habits can be archived (history kept) or permanently
+  back to the first charm. **The lens narrows the whole screen, not just
+  the live list (2026-08-11):** the archived drawer holds only the
+  archived habits wearing the chosen charms (and counts only those), and
+  the lens travels to the field notes, where the same row of charms sits
+  at the top of the page and narrows the week grid, the completed tasks
+  and the graphs alike. It stays a temporary lens — one filter, held on
+  the home screen, cleared by a reload wherever you are.
+  Habits can be archived (history kept) or permanently
   deleted (with confirmation). Every action on the home screen is an
   **icon with a hover label** (T4.5) — no action words on the page. On
   a big-win day a **cameo** visits between the date and the list
@@ -366,7 +373,13 @@ region discovery expands what the Market can offer.
   opening on the last completed one; reached from the graph icon at the
   foot of the habit list, and opens by itself on the first visit of each
   Sunday (after any check-in _and_ after the startup animation). Has a
-  "back to habits" link.
+  "back to habits" link. It carries the **charm lens** (above): the same
+  row of charms sits at the top of the page, narrowing the grid and the
+  graphs, and adjustable without going back. The week is headed by its
+  dates alone in **DD-MM-YY** — `03-08-26 – 09-08-26`, no "week of"
+  (2026-08-11) — with "still unfolding" on its own line underneath when
+  the week on show is the current one, so the earlier / later buttons
+  keep the two ends of the row.
 - **Settings:** day cutoff, data export/import, and **start a new game**
   (§8) — the one door that wipes the world.
 - **Design assets (TEMPORARY, T5 prep — 2026-07-21):** a workbench page

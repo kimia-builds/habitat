@@ -110,6 +110,17 @@ export function weekStart(dayKey) {
   return addDays(dayKey, 1 - isoWeekday(dayKey))
 }
 
+// A day key written the short way: '2026-07-06' → '06-07-26' (DD-MM-YY,
+// Kimia's call 2026-08-11). Day first, as she reads dates — and short
+// enough that a whole week range fits on one line between the field
+// notes' earlier / later buttons. Pure string surgery: a day key is
+// already a local calendar date, so there is no clock to consult.
+export function shortDate(dayKey) {
+  validateDayKey(dayKey)
+  const [year, month, day] = dayKey.split('-')
+  return `${day}-${month}-${year.slice(2)}`
+}
+
 // --- The calendar date display (T4.5) ----------------------------------
 //
 // The home screen shows the REAL calendar date in large letterspaced

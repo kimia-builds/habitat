@@ -472,16 +472,32 @@ body {
   align-self: center;
 }
 
+/* earlier ‹ … week … › later. The two buttons hold the two ends of the
+   row; the week sits between them and takes whatever is left.
+   No wrapping (Kimia, 2026-08-11): the "still unfolding" note used to
+   lengthen the middle enough to push "later" down onto a second line,
+   where it sat beside "earlier" instead of in its own corner. The note
+   is now a line of its own underneath the dates (below), and the row
+   itself is forbidden to wrap, so the buttons keep their corners. */
 .week-nav {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   justify-content: space-between;
   width: 100%;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+}
+
+.week-nav .pill-button {
+  flex-shrink: 0;
+}
+
+.week-range {
+  text-align: center;
 }
 
 .week-unfolding {
+  display: block;
   color: var(--text-quiet);
 }
 
@@ -1224,61 +1240,80 @@ body {
   padding: 0.5rem 1.25rem;
 }
 
-/* Drag-to-reorder (T5.1c; whole-tile since 2026-08-11). The whole row is
-   the grab area, so it wears the grab cursor — but its controls keep the
-   pointer cursor they had, because cursor inherits and a +1 button that
-   says "grab me" would be a lie. (The row's buttons are unstyled by
-   default, so this is where they get their pointer.) `touch-action: none`
-   keeps a press from scrolling the page instead of dragging (harmless on
-   the desktop-only build, but correct). A disabled grip — a symbol filter
-   is on, nothing on the row drags — dims and shows its hover reason. */
+/* Drag-to-reorder (T5.1c; whole-tile since 2026-08-11, and the grip that
+   used to sit on the right was retired the same day — the tile is the
+   handle now). The whole row is the grab area, so it wears the grab
+   cursor — but its controls keep the pointer cursor they had, because
+   cursor inherits and a +1 button that says "grab me" would be a lie.
+   (The row's buttons are unstyled by default, so this is where they get
+   their pointer.) `touch-action: none` keeps a press from scrolling the
+   page instead of dragging (harmless on the desktop-only build, but
+   correct). */
 .habit-row {
   cursor: grab;
   touch-action: none;
 }
 
-.habit-row button:not(.drag-handle),
+.habit-row button,
 .habit-row input {
   cursor: pointer;
-}
-
-.habit-row .drag-handle {
-  cursor: grab;
 }
 
 .habit-row button:disabled {
   cursor: default;
 }
 
-.habit-row .drag-handle:disabled {
-  opacity: 0.4;
-}
-
 /* A row that cannot be re-ordered right now (a symbol filter is on): no
    grab cursor anywhere on it, since nothing here moves. */
-.habit-row--fixed,
-.habit-row--fixed .drag-handle {
+.habit-row--fixed {
   cursor: default;
 }
 
-/* The lifted row while it is being dragged: it follows the pointer (the
-   translateY is set inline) and rises above its neighbours with a soft
-   lift, settling back the instant it is dropped. */
-/* Two layers, because a dragged row must stay OPAQUE (it has to hide the
-   rows it passes over) without losing the charm colour it had a moment
-   ago: the charm fill on top, the opaque lifted ground beneath it. */
+/* The lifted row while it is being dragged. It follows the pointer (the
+   translateY is set inline) and rises above its neighbours.
+
+   Floaty and slow (Kimia's call 2026-08-11): the tile used to be welded
+   to the cursor, which read as sharp and mechanical. Now the transform
+   is TRANSITIONED, so the tile eases toward wherever the pointer has got
+   to instead of arriving there instantly — it drifts after the hand,
+   lagging a little, settling into place whenever the hand stops. The
+   easing curve is what does the floating; the duration is what makes it
+   slow. Nothing about WHERE it lands changes: the drop still reads the
+   real pointer position, so the lag is purely how it looks.
+
+   It also lifts while it travels — a touch larger, with a deeper shadow
+   under it — so it reads as picked up and held above the list rather
+   than sliding along inside it.
+
+   And it properly COVERS the rows it passes over. This is where the fill
+   changes from a wash to a solid: at rest a tile mixes its charm with
+   NOTHING (transparent), which is why the list shows through it; in hand
+   it mixes that charm — at its stronger lifted strength — into the
+   opaque lifted ground instead. Same one-number recipe, an opaque
+   result. (It used to try to stack a see-through charm layer over an
+   opaque one in a single `background:` shorthand, which CSS reads as
+   invalid and throws away wholesale — leaving the dragged tile with no
+   background at all. That was the transparent tile Kimia was seeing.) */
 .habit-row--dragging {
   position: relative;
   z-index: 2;
   cursor: grabbing;
-  background:
-    color-mix(
-      in srgb,
-      var(--charm-here, transparent) var(--charm-fill-strength),
-      transparent
-    ),
-    var(--surface-lifted);
+  background-color: color-mix(
+    in srgb,
+    var(--charm-here, var(--surface-lifted)) var(--charm-fill-strength-lifted),
+    var(--surface-lifted)
+  );
+  border-color: var(--charm-here, var(--border));
   box-shadow: var(--shadow-lifted);
+  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Whoever asked not to be moved at keeps the old instant follow: the
+   tile still goes exactly where it is dragged, it just doesn't drift. */
+@media (prefers-reduced-motion: reduce) {
+  .habit-row--dragging {
+    transition: none;
+  }
 }
 
 /* A tile on its way to the archive (Kimia's call 2026-08-11). It used to
