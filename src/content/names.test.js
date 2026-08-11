@@ -11,7 +11,7 @@
 // no slot would have nowhere to be named, and nobody would notice until
 // that friend arrived — possibly years in.
 
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import { FRIEND_CATEGORIES, FRIEND_ROSTER } from '../game/constants.js'
 import {
@@ -21,6 +21,7 @@ import {
   speciesName,
 } from './names.js'
 import {
+  blankAllNames,
   restoreNames,
   setIndividualName,
   setSpeciesName,
@@ -63,6 +64,9 @@ describe('the name slots', () => {
 })
 
 describe('reading a slot', () => {
+  // Start from a wiped file every time, so these tests describe the
+  // READER and never Kimia's words — or whether she has written yet.
+  beforeEach(blankAllNames)
   afterEach(restoreNames)
 
   it('gives back what is written, trimmed', () => {
@@ -86,6 +90,7 @@ describe('reading a slot', () => {
 })
 
 describe('the display ladder', () => {
+  beforeEach(blankAllNames)
   afterEach(restoreNames)
 
   it('prefers the individual name over the species name', () => {

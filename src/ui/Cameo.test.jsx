@@ -9,7 +9,11 @@ import { act, cleanup, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { CAMEO_LINGER_MS } from '../game/constants.js'
 import { narrationSlot } from '../content/narration.js'
-import { restoreNames, setSpeciesName } from '../test/nameFixture.js'
+import {
+  blankAllNames,
+  restoreNames,
+  setSpeciesName,
+} from '../test/nameFixture.js'
 import Cameo from './Cameo.jsx'
 
 // A fixture name, never Kimia's real one (src/test/nameFixture.js).
@@ -24,6 +28,9 @@ const WIN = {
 
 beforeEach(() => {
   vi.useFakeTimers()
+  // Wipe first — an individual name outranks a species name, and this
+  // win is celebrated by signer 2, who now has one (2026-08-11).
+  blankAllNames()
   setSpeciesName('signer', SIGNER)
 })
 

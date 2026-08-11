@@ -9,6 +9,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NARRATION } from '../content/narration.js'
 import {
+  blankAllNames,
   restoreNames,
   setIndividualName,
   setSpeciesName,
@@ -24,6 +25,11 @@ const DRIFTER = 'test species name'
 const POET = 'another test species name'
 
 beforeEach(() => {
+  // Blank EVERY slot first, then set only what this file needs. Without
+  // the wipe these tests would read whatever Kimia has written — and an
+  // individual name outranks a species name, so her real words would
+  // decide the result. That is what broke the deploy on 2026-08-11.
+  blankAllNames()
   setSpeciesName('drifter', DRIFTER)
   setSpeciesName('poet', POET)
 })

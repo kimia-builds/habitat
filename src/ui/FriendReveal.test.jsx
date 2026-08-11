@@ -8,14 +8,23 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NARRATION } from '../content/narration.js'
-import { restoreNames, setSpeciesName } from '../test/nameFixture.js'
+import {
+  blankAllNames,
+  restoreNames,
+  setSpeciesName,
+} from '../test/nameFixture.js'
 import FriendReveal from './FriendReveal.jsx'
 
 afterEach(cleanup)
 
 // A fixture name, never Kimia's real one (src/test/nameFixture.js).
 const DRIFTER = 'test species name'
-beforeEach(() => setSpeciesName('drifter', DRIFTER))
+beforeEach(() => {
+  // Wipe first: an individual name outranks a species name, so without
+  // this the test would read Kimia's real words (2026-08-11).
+  blankAllNames()
+  setSpeciesName('drifter', DRIFTER)
+})
 afterEach(restoreNames)
 
 const arrival = (category = 0, individual = 1) => ({
