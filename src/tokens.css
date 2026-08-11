@@ -66,6 +66,21 @@
   /* Crown gold lifted a step, for the hover of the gold page-level pencil. */
   --charm-crown-bright: #f5cd66;
 
+  /* How much of its charm a task tile is filled with (2026-08-11). This is
+     ONE number for all six: the tile's background is mixed live from
+     whichever charm it wears, so changing this changes every tile at once.
+     Kimia is tuning this by eye — turn it up for more colour, down for
+     less, and nothing else needs touching.
+     (The first non-colour value in this file. Radius, spacing and type
+     arrive properly in T5.2d; these two came early because they are the
+     ones being eyeballed right now.) */
+  --charm-fill-strength: 9%;
+
+  /* The task tiles' generous rounding — long baguettes (Kimia's call
+     2026-08-11). Big enough that the ends read as full half-circles at
+     any row height; lower it toward ~1rem for softened rectangles. */
+  --radius-tile: 999px;
+
   /* ===========================================================================
    * SURFACES — the dark ground everything sits on (spec §7: dark only)
    * ========================================================================= */

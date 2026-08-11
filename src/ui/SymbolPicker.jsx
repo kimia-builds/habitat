@@ -11,7 +11,12 @@ const ALL_SYMBOLS = Array.from({ length: SYMBOL_COUNT }, (_, i) => i + 1)
 
 function SymbolPicker({ selected, onToggle }) {
   return (
-    <div className="symbol-picker">
+    // `--choosing` while at least one charm is on: the stylesheet uses it
+    // to fade the ones that are off. With nothing chosen there is no lens,
+    // so every charm stays at full presence (2026-08-11).
+    <div
+      className={`symbol-picker${selected.length > 0 ? ' symbol-picker--choosing' : ''}`}
+    >
       {ALL_SYMBOLS.map((symbol) => (
         <button
           key={symbol}

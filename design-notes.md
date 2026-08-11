@@ -426,12 +426,28 @@ The exact paths (drop into the shared SVG attributes above):
 - **The six charm colours** double as the app's accent palette;
   their `0.18`-alpha faint variants are the border/divider tint.
   **The accent rule (Kimia's call 2026-08-11): a charm colour where
-  there is a charm, neutral dim white everywhere else.** A habit row
-  is edged in its own charm's faint variant, in the list and in the
-  check-in alike, and so is a picker/filter chip; general chrome with
-  no charm attached stays neutral. This is what stops six accent
+  there is a charm, neutral dim white everywhere else.** General chrome
+  with no charm attached stays neutral. This is what stops six accent
   colours becoming a fruit salad — the colour always MEANS the charm,
   never decorates.
+- **The task tiles are long baguettes of their own charm (Kimia's
+  revision, 2026-08-11, after seeing the first version).** Border alone
+  was too thin a statement — the accent read as an outline rather than
+  an identity. Each row is now FILLED with its charm at
+  `--charm-fill-strength` (9% to start; one number, mixed live from
+  whichever charm the row wears, so there is a single value to tune
+  rather than six), keeps its 0.18 edge, and is rounded to
+  `--radius-tile` until both ends are half-circles. Horizontal padding
+  is larger than vertical, because at that radius the ends curve inward
+  and the charm would otherwise sit in the curve. The check-in's rows
+  are the same rows and get the same treatment.
+- **The charms themselves wear no box (same revision).** They are
+  drawings, and a drawing does not need a frame; the filter row is
+  centred under the date. The box used to carry the on/off state, so
+  that moved to presence: while any charm is chosen the others recede
+  to 0.3 opacity, and with nothing chosen there is no lens at all, so
+  every charm sits at full strength. Nothing is drawn on the screen to
+  say "selected" — the rest simply step back.
 - **Hairline borders** are dim white — `rgba(255,255,255,0.10)` for
   the everyday edge, fainter at `0.06`, waking to `0.22` under a
   pointer. White at low alpha reads correctly on any ground, so these

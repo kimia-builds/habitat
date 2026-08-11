@@ -1197,17 +1197,31 @@ body {
   gap: 0.75rem;
 }
 
-/* Each row is edged in its OWN charm, at the 0.18 alpha §11b sets aside
-   for borders (T5.2b) — the clearest place the charm palette earns its
-   keep as the everyday accent, since the list is what Kimia looks at
-   most. The fallback matters: a row with no charm class falls back to
-   the neutral hairline rather than losing its border entirely. */
+/* Each row is a long baguette of its OWN charm (Kimia's call
+   2026-08-11): filled with that charm at --charm-fill-strength, edged in
+   its 0.18 variant, and rounded until the ends are half-circles. This is
+   where the charm palette earns its keep as the everyday accent — the
+   list is what Kimia looks at most.
+   The fill is MIXED, not stored: `color-mix` takes whichever charm the
+   row wears and dilutes it to the one strength named in tokens.css, so
+   there is a single number to tune rather than six. A row with no charm
+   mixes transparent with transparent and simply has no fill, and falls
+   back to the neutral hairline for its edge.
+   The horizontal padding is larger than the vertical on purpose: at this
+   radius the ends curve inward, and the charm would otherwise sit in the
+   curve. */
 .habit-row {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   border: 1px solid var(--charm-here-faint, var(--border));
-  padding: 0.5rem;
+  border-radius: var(--radius-tile);
+  background: color-mix(
+    in srgb,
+    var(--charm-here, transparent) var(--charm-fill-strength),
+    transparent
+  );
+  padding: 0.5rem 1.25rem;
 }
 
 /* Drag-to-reorder (T5.1c). The handle is a grab affordance: the row moves
@@ -1229,11 +1243,20 @@ body {
 /* The lifted row while it is being dragged: it follows the pointer (the
    translateY is set inline) and rises above its neighbours with a soft
    lift, settling back the instant it is dropped. */
+/* Two layers, because a dragged row must stay OPAQUE (it has to hide the
+   rows it passes over) without losing the charm colour it had a moment
+   ago: the charm fill on top, the opaque lifted ground beneath it. */
 .habit-row--dragging {
   position: relative;
   z-index: 2;
   cursor: grabbing;
-  background: var(--surface-lifted);
+  background:
+    color-mix(
+      in srgb,
+      var(--charm-here, transparent) var(--charm-fill-strength),
+      transparent
+    ),
+    var(--surface-lifted);
   box-shadow: var(--shadow-lifted);
 }
 
@@ -1253,15 +1276,17 @@ body {
   filter: drop-shadow(0 0 24px currentColor);
 }
 
-/* The picker/filter chips carry a charm too, so they take the same faint
-   edge as a habit row (T5.2b). Pressed, the edge goes to the full charm
-   colour — `currentColor` is that charm, set inline on the button. */
+/* The charms lost their boxes (Kimia's call 2026-08-11) — they are
+   drawings, and a drawing does not need a frame. What the box used to
+   carry was the on/off state, so that moves to presence: see
+   .symbol-picker--choosing below. */
 .symbol-button {
   display: inline-flex;
   background: none;
-  border: 1px solid var(--charm-here-faint, var(--border));
-  padding: 0.3rem 0.55rem;
+  border: none;
+  padding: 0.3rem;
   cursor: pointer;
+  transition: opacity 0.18s ease;
 }
 
 /* Inside the picker/filter the charm is the whole button face. */
@@ -1270,9 +1295,26 @@ body {
   height: 1.4em;
 }
 
-.symbol-button[aria-pressed='true'] {
-  border-color: currentColor;
-  background: var(--border-quiet);
+/* On/off without adding a shape back: while ANY charm is chosen, the
+   ones that are not simply recede. Nothing is drawn on the screen to say
+   "selected" — the others just step back, which is the quietest way to
+   show a lens (design-notes §9). With nothing chosen there is no lens at
+   all, so `--choosing` is absent and every charm sits at full presence.
+   In the habit form exactly one is always chosen, so the same rule reads
+   there as "this is the one you picked". */
+.symbol-picker--choosing .symbol-button {
+  opacity: 0.3;
+}
+
+.symbol-picker--choosing .symbol-button[aria-pressed='true'] {
+  opacity: 1;
+}
+
+/* The filter row is centred under the date (Kimia's call 2026-08-11),
+   and roomier now that nothing boxes the charms apart. */
+.filter-view .symbol-picker {
+  justify-content: center;
+  gap: 0.9rem;
 }
 
 .habit-main {

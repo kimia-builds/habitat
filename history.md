@@ -1442,6 +1442,51 @@ return 0` right after the era is worked out, so a moment before the
   they are the brightest thing on screen. That is a type-and-control
   job, so it waits for T5.2c/T5.2d. Recorded in §11b.
   _Tests:_ full suite 1026 and oxlint pass.
+- 2026-08-11 (Kimia's revision, same session, after seeing T5.2b live):
+  **the accent became a fill, not an outline.** Her verdict on the first
+  version was that she did not like how the accents looked, and the
+  diagnosis is worth keeping: a 1px charm-coloured border reads as an
+  OUTLINE — a hard edge drawn around a grey box — rather than as the
+  row's identity. Three changes followed.
+  **Task tiles are long baguettes.** Rounded (`--radius-tile: 999px`)
+  until both ends are half-circles, and filled with their own charm at
+  `--charm-fill-strength` (9% to start). The faint 0.18 border stays —
+  Kimia's call over dropping it, so the tile keeps its definition.
+  Horizontal padding went up to 1.25rem: at that radius the ends curve
+  inward and the charm sat in the curve.
+  **The fill is mixed, not stored.** `color-mix(in srgb,
+  var(--charm-here) var(--charm-fill-strength), transparent)` dilutes
+  whichever charm the row wears down to one named strength, so tuning
+  the colour is ONE number rather than six new tokens — which matters,
+  because Kimia is tuning it by eye. `--charm-fill-strength` and
+  `--radius-tile` are the first non-colour values in tokens.css; they
+  arrived early for exactly that reason, ahead of the spacing and type
+  scales that T5.2d will bring properly.
+  **The dragged row needed two background layers.** It must stay opaque
+  (it hides the rows it passes over) but must not lose the colour it had
+  a moment earlier, so the charm fill sits on top of the opaque lifted
+  ground as a second background layer.
+  **The charms lost their boxes and moved to the centre.** They are
+  drawings and do not need frames. The box had been carrying the on/off
+  state, so that moved to presence: `.symbol-picker--choosing` fades
+  every unselected charm to 0.3, and the class is absent when nothing is
+  selected, so a resting filter shows six charms at full strength rather
+  than six dimmed ones. In the habit form, where exactly one is always
+  selected, the same rule reads as "this is the one you picked" for
+  free.
+  _A new browser-pane trap, worth knowing._ The fade LOOKED broken:
+  `getComputedStyle` reported opacity 1 on the faded charms even though
+  the rule was in the stylesheet and the element matched the selector.
+  It was neither. The pane's tab runs hidden, and while CSS keyframe
+  ANIMATIONS keep running there (noted 2026-07-26), CSS TRANSITIONS do
+  not advance — the value was frozen at its start. Setting
+  `transition: none` returned 0.3 instantly. To screenshot a
+  transitioned state in the pane, inject `*{transition:none !important}`
+  first and remove it after. Do not "fix" a transition that is only
+  stalled.
+  _Tests:_ full suite 1026 and oxlint pass, unchanged — every one of
+  these is a visual property no test asserts, which is why it was all
+  verified in the browser.
 - 2026-08-11 (Kimia's calls): **two things to revisit became plan tasks
   rather than notes** — T6.7, the storytelling and narration a brand-new
   player meets in their first hour, and T6.8, more graph and data views

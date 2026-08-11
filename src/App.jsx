@@ -788,7 +788,11 @@ function App() {
   // itself.
   const listContent = (
     <>
-      <section aria-label="filter view" title="filter view">
+      <section
+        className="filter-view"
+        aria-label="filter view"
+        title="filter view"
+      >
         <SymbolPicker selected={filter} onToggle={toggleFilter} />
       </section>
 
