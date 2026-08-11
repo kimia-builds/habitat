@@ -237,6 +237,9 @@ tracker. Everything after this is delight, informed by real use.
             T6.4b stays the fallback everywhere else.
 - [x] **T6.5 Safety net (error boundary).** _(done 2026-07-27, unplanned
       — added while fixing the field notes crash)_
+- [x] **T6.6 Start a new game.** _(done 2026-08-11, unplanned — Kimia
+      asked for a way to wipe the world and go again while keeping every
+      habit and every completion; build notes in history.md)_
 
 ---
 

@@ -1289,6 +1289,62 @@ return 0` right after the era is worked out, so a moment before the
   name slots to be measured against, which is the groundwork; enforcing
   it is a behaviour change to the friendship stream and wants its own
   task and its own tests. Flagged to Kimia the same day.
+- 2026-08-11 (T6.6, Kimia's calls): **starting a new game keeps the
+  habit record.** Kimia asked for a way to wipe her game progress in
+  the app and go again from nothing, WITHOUT losing her habit data. The
+  two are entangled by design — the world is derived from history, not
+  stored beside it — so this needed a decision about what "habit data"
+  means, and she chose the strongest reading: **habits AND every
+  completion survive, and the world genuinely restarts.** Grid,
+  streaks, graphs, field notes and the check-in are untouched; the
+  planet begins again.
+  **Two mechanisms, because the world hangs off history two ways.**
+  Drops are stored ON completions, so a new game empties every
+  completion's drops list — and that alone resets the literacy meter,
+  the fungus wallet, the bookcase, the guest book and every flora find,
+  since all of them are derived from drops (the same move the v2→v3
+  upgrade made on 2026-07-19). But the expedition meter, region
+  discovery and the Market's lived-day rotation COUNT completions
+  rather than read them, and emptying drops does nothing to those. So
+  each existing completion is stamped `pastGame: true` and the game
+  side reads only `gameCompletions()` (`src/game/newgame.js`). The
+  world seed is replaced too — drops are a pure function of seed plus
+  tap, so keeping it would have made the new game a note-for-note
+  replay rather than a new planet.
+  **Why a stamp and not "everything recorded after the reset".** A
+  timestamp boundary was built first and was wrong twice over. It has
+  to decide what happens to a mark made in the same millisecond as the
+  reset and gets it wrong whichever way it leans (the App tests caught
+  exactly this — a completion survived its own reset). And filtering on
+  the DAY instead would have swallowed the next morning's check-in,
+  which always asks about yesterday and would therefore always be
+  marking days from before the fresh start: a reward that never comes
+  is punishment by omission, which spec §3 forbids. A stamp put on the
+  exact records being retired has no boundary to land on, and stays
+  right through an undo, an import and a second new game later.
+  **The guard is a forced backup** (Kimia's choice over a typed
+  confirmation): "start a new game" is disabled until a backup has been
+  exported IN THIS VISIT — not "today", not "recently", because only a
+  file saved just now holds the world about to be discarded. Then it
+  still asks, naming exactly what goes and what stays. Quiet register
+  throughout: no alarm colour, no tally of what is about to be lost.
+  **The cameo needed splitting.** `cameoWin` counted one list for two
+  different kinds of win; a lived-day milestone is game progress and
+  now reads the played list, while a record streak is a fact about
+  Kimia's real life and must see the whole record — otherwise a fresh
+  start would hand out a bogus "record" on day one. It takes `played`
+  as an optional last argument, defaulting to the full list.
+  _Found while doing it, and fixed here:_ `upgradeV7toV8` stamped
+  `SCHEMA_VERSION` instead of the literal `8`, so it silently skipped
+  every later upgrade step in the chain. Harmless until v9 → v10 gave
+  it something to skip; the storage tests failed the moment it did.
+  Both it and `upgradeV8toV9` now stamp their own number.
+  _Tests:_ new `src/game/newgame.test.js` (24 tests, including the
+  frozen-clock case that killed the timestamp design and a second
+  start-over) and `src/storage/storage.test.js`'s v9 → v10 block; six
+  App tests drive the real button — the guard, the cancel path, the
+  wipe, marks counting again afterwards, and a reload. Full suite 1026
+  and oxlint pass.
 
 ## spec.md version history (formerly its preamble)
 

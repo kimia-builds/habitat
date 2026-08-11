@@ -1228,6 +1228,7 @@ body {
 .symbol-picker,
 .weekday-boxes,
 .backup-controls,
+.new-game-control,
 .archived-row {
   display: flex;
   align-items: center;
@@ -1239,6 +1240,13 @@ body {
    row: it is there to be found when looked for, never to demand
    attention. No alarm colour at any age — Habitat does not nag. */
 .backup-age {
+  font-size: 0.8rem;
+  opacity: 0.55;
+}
+
+/* Why "start a new game" is disabled (T6.6). Same dim register as the
+   backup age above: an explanation for whoever looks, never a warning. */
+.new-game-note {
   font-size: 0.8rem;
   opacity: 0.55;
 }

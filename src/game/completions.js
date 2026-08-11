@@ -9,6 +9,13 @@
 //                 records (see game/drops.js), usually empty. Stored at
 //                 tap time, so undoing a completion takes its drops
 //                 with it, and no other tap's stored luck ever changes.
+//     pastGame:   true on a mark that belongs to a game Kimia has since
+//                 started over from (T6.6, optional — absent means the
+//                 current game). It changes NOTHING about the habit
+//                 record: the mark still has its habit, its day and its
+//                 moment, and the grid, streaks, graphs and field notes
+//                 never look at it. Only the game side does, through
+//                 game/newgame.js.
 //   }
 //
 // recordedAt and dayKey are two deliberately separate facts (spec §4.2):
@@ -48,6 +55,12 @@ export function validateCompletion(completion) {
     )
   }
   completion.drops.forEach(validateDrop)
+  // Optional (T6.6) — and only ever true: a mark in the current game
+  // simply has no stamp at all, so `false` would be a shape we never
+  // write and never want to start reading.
+  if (completion.pastGame !== undefined && completion.pastGame !== true) {
+    throw new Error('Completion pastGame must be true or absent.')
+  }
 }
 
 // A live completion — the user taps "done" right now. Which day it

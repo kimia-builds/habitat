@@ -54,6 +54,7 @@ import {
 } from './game/market.js'
 import { discoveredRegionCount } from './game/map.js'
 import { expeditionSteps } from './game/meters.js'
+import { gameCompletions, startNewGame } from './game/newgame.js'
 import {
   activeHabits,
   addHabit,
@@ -104,6 +105,7 @@ import IconRail from './ui/IconRail.jsx'
 import MapPage from './ui/MapPage.jsx'
 import MarketPage from './ui/MarketPage.jsx'
 import Meters from './ui/Meters.jsx'
+import NewGameControl from './ui/NewGameControl.jsx'
 import SpreadPopup from './ui/SpreadPopup.jsx'
 import StartupFade from './ui/StartupFade.jsx'
 import SymbolPicker from './ui/SymbolPicker.jsx'
@@ -145,6 +147,12 @@ function App() {
   // nothing about it may ever reach storage.
   const [readingItem, setReadingItem] = useState(null)
 
+  // Whether a backup has been exported in THIS visit (T6.6). It is the
+  // gate on "start a new game": only a file saved just now is a promise
+  // that the world about to be discarded is recoverable. Deliberately
+  // not stored — a fresh visit means a fresh export.
+  const [exportedThisVisit, setExportedThisVisit] = useState(false)
+
   // Drag-to-reorder (T5.1c): while a habit row is being dragged, this
   // holds { id, offsetY } — which row is lifted and how far it has moved
   // vertically from where the press began — so the row can follow the
@@ -182,6 +190,24 @@ function App() {
   const active = activeHabits(data.habits)
   const visible = filterBySymbols(active, filter)
   const archived = archivedHabits(data.habits)
+
+  // The completions THE GAME may count (T6.6): everything except the
+  // marks stamped as belonging to a game Kimia has started over from.
+  // Before any fresh start that is simply all of them. Two lists, one
+  // rule to keep them straight:
+  //
+  //   data.completions — the habit record. Everything that describes
+  //     Kimia's real life reads this: the grid, streaks, graphs, field
+  //     notes, the check-in, per-habit history. It is NEVER filtered.
+  //   played — the world. Everything that counts taps toward game
+  //     progress reads this instead: the meters, the map, the Market's
+  //     rotation, the cameo's lived-day milestone, and the priors a new
+  //     tap's drops are rolled against.
+  //
+  // Drop-derived things (bookcase, guest book, flora, wallet) need no
+  // filter of their own: a new game empties every old completion's
+  // drops, so there is nothing left in them to show.
+  const played = gameCompletions(data.completions)
 
   // The check-in (T1.4). Decided once, on load: if yesterday (or an
   // older still-editable day) was missed and never answered, the app
@@ -270,6 +296,7 @@ function App() {
         data.worldSeed,
         now,
         data.settings.dayCutoffHour,
+        played,
       )
 
   // Every change goes through here: validate-and-persist, then render.
@@ -401,7 +428,7 @@ function App() {
       purchases: buyObject(
         data.purchases,
         object,
-        walletBalance(data.completions, data.purchases),
+        walletBalance(played, data.purchases),
       ),
     })
   }
@@ -533,10 +560,10 @@ function App() {
       deliverDrops(
         recordCompletion(habit.id, data.settings.dayCutoffHour),
         habit,
-        data.completions,
+        played,
         data.worldSeed,
       ),
-      data.completions,
+      played,
       data.worldSeed,
     )
     const next = { ...data, completions: [...data.completions, completion] }
@@ -547,7 +574,7 @@ function App() {
       )
     }
     save(next)
-    announceDrops(completion, data.completions, false)
+    announceDrops(completion, played, false)
   }
 
   // Undo an accidentally checked-off one-time to-do (today only): the
@@ -581,10 +608,10 @@ function App() {
       deliverDrops(
         recordRetroCompletion(habit.id, dayKey, data.settings.dayCutoffHour),
         habit,
-        data.completions,
+        played,
         data.worldSeed,
       ),
-      data.completions,
+      played,
       data.worldSeed,
     )
     const next = { ...data, completions: [...data.completions, completion] }
@@ -594,7 +621,7 @@ function App() {
       )
     }
     save(next)
-    announceDrops(completion, data.completions, true)
+    announceDrops(completion, played, true)
   }
 
   function handleRetroUndo(habit, dayKey) {
@@ -715,6 +742,22 @@ function App() {
     // backup-age line beside the button says "backed up today" straight
     // away, rather than waiting for the next thing that reloads state.
     setData(loadData())
+    setExportedThisVisit(true)
+  }
+
+  // Start a new game (T6.6): the world begins again, the habit record
+  // survives whole. The confirmation and the "export a backup first"
+  // guard both live in NewGameControl; by the time this runs, the
+  // decision is made. Everything on screen from the old world goes with
+  // it — the announcements and the open reading spread describe a
+  // planet that no longer exists.
+  function handleStartNewGame() {
+    save(startNewGame(data))
+    setArrivals([])
+    setPendingArrivals([])
+    setSeenRevealIds(new Set())
+    setReadingItem(null)
+    setPage(null)
   }
 
   function handleImport(text) {
@@ -925,6 +968,11 @@ function App() {
         todayKey={today}
       />
 
+      <NewGameControl
+        backedUp={exportedThisVisit}
+        onStartNewGame={handleStartNewGame}
+      />
+
       {/* TEMPORARY (T5 prep): the door to the design-assets workbench
           (2026-07-21) — an empty shelf until the M5 design pass fills
           it. Not a world page, so no rail icon; the door leaves when
@@ -984,9 +1032,9 @@ function App() {
     <>
       <IconRail onOpen={setPage} />
       <Meters
-        completions={data.completions}
-        readingItems={readingItemsFrom(data.completions)}
-        fungusTrueBalance={walletTrueBalance(data.completions, data.purchases)}
+        completions={played}
+        readingItems={readingItemsFrom(played)}
+        fungusTrueBalance={walletTrueBalance(played, data.purchases)}
         onOpen={setPage}
       />
       <ArrivalShelf
@@ -1076,14 +1124,14 @@ function App() {
         {header}
         {meters}
         <AbodePage
-          finds={floraFinds(data.completions, data.floraDecisions)}
+          finds={floraFinds(played, data.floraDecisions)}
           items={abodeItems(
-            data.completions,
+            played,
             data.floraDecisions,
             data.abodeLayout,
             data.purchases,
           )}
-          friends={friendsFrom(data.completions)}
+          friends={friendsFrom(played)}
           worldSeed={data.worldSeed}
           onDecide={handleFloraDecision}
           onMove={handleItemMove}
@@ -1105,7 +1153,7 @@ function App() {
         {header}
         {meters}
         <GuestBookPage
-          friends={friendsFrom(data.completions)}
+          friends={friendsFrom(played)}
           worldSeed={data.worldSeed}
           onBack={() => setPage(null)}
         />
@@ -1123,7 +1171,7 @@ function App() {
         {header}
         {meters}
         <BookcasePage
-          items={bookcaseItems(data.completions, data.bookcaseLayout)}
+          items={bookcaseItems(played, data.bookcaseLayout)}
           onMove={handleBookMove}
           onFace={handleBookFace}
           onRead={setReadingItem}
@@ -1142,7 +1190,7 @@ function App() {
         {header}
         {meters}
         <MapPage
-          completions={data.completions}
+          completions={played}
           worldSeed={data.worldSeed}
           onBack={() => setPage(null)}
         />
@@ -1156,10 +1204,8 @@ function App() {
   // with history, undo and all. Only the purchases list remembers what
   // Kimia owns; the wallet is the same derivation, drops minus owned.
   if (page === 'market') {
-    const rotation = rotationIndex(livedDayCount(data.completions))
-    const pool = marketPool(
-      discoveredRegionCount(expeditionSteps(data.completions)),
-    )
+    const rotation = rotationIndex(livedDayCount(played))
+    const pool = marketPool(discoveredRegionCount(expeditionSteps(played)))
     return (
       <main className="app">
         {header}
@@ -1167,7 +1213,7 @@ function App() {
         <MarketPage
           stall={stallObjects(pool, rotation)}
           purchases={data.purchases}
-          wallet={walletBalance(data.completions, data.purchases)}
+          wallet={walletBalance(played, data.purchases)}
           worldSeed={data.worldSeed}
           onBuy={handleBuy}
           onBack={() => setPage(null)}

@@ -194,12 +194,28 @@ export function streakStatus(habit, completions, now, cutoffHour) {
 // Returns { type, friend } — plus habitId for a record streak — or
 // null when there is no win, or no friend has arrived yet to celebrate
 // it ("only when a friend exists", plan T4.6).
-export function cameoWin(habits, completions, worldSeed, now, cutoffHour) {
-  const friends = friendsFrom(completions)
+//
+// `played` (T6.6) is the slice of `completions` the CURRENT game may
+// count — see game/newgame.js. The two wins differ in what they are
+// about, so they read different lists: a lived-day milestone is game
+// progress and counts only played days, while a record streak is a
+// fact about Kimia's real life and must see the whole record, or a
+// fresh start would hand out a bogus "record" on day one. It defaults
+// to `completions`, which is exactly right for a world that has never
+// been restarted.
+export function cameoWin(
+  habits,
+  completions,
+  worldSeed,
+  now,
+  cutoffHour,
+  played = completions,
+) {
+  const friends = friendsFrom(played)
   if (friends.length === 0) return null
   const today = dayKeyFromTimestamp(now, cutoffHour)
   const win =
-    livedDayWin(completions, today) ??
+    livedDayWin(played, today) ??
     streakRecordWin(habits, countMap(completions), today, cutoffHour) ??
     bigDayWin(completions, today)
   if (win === null) return null

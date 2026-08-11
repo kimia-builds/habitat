@@ -75,7 +75,11 @@ src/game/             ALL game logic — pure functions, no React, no
   schedule.js           which days a habit is due, fulfilment, streaks
   habits.js             the habit model (6 schedule types, symbol 1–6,
                         scheduleHistory so edits are never retroactive)
-  completions.js        "I did this" records; each stores its drops
+  completions.js        "I did this" records; each stores its drops,
+                        and may be stamped pastGame (see newgame.js)
+  newgame.js            starting over: wipes the world, keeps every
+                        habit and completion — the game side counts
+                        only gameCompletions(), never the raw list
   checkin.js            morning check-in: which past days are editable
   meters.js             the three meters, always computed fresh from
                         history, never stored as running numbers
@@ -128,7 +132,7 @@ src/content/          KIMIA'S FILES — she edits these directly on
 src/storage/storage.js  the ONE module that touches localStorage.
                       Everything lives under the single key
                       'habitat-data' in a versioned envelope
-                      (schemaVersion 8) with upgrade path for old backups
+                      (schemaVersion 10) with upgrade path for old backups
 src/ui/               React components, kept thin (HabitRow, HabitForm,
                       CheckInPanel, Meters, FieldNotes, HabitGraphs,
                       ArrivalShelf, DropGlyph, ObjectGlyph, FirstReveal,

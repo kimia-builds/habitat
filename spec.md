@@ -363,7 +363,8 @@ region discovery expands what the Market can offer.
   foot of the habit list, and opens by itself on the first visit of each
   Sunday (after any check-in _and_ after the startup animation). Has a
   "back to habits" link.
-- **Settings:** day cutoff, data export/import.
+- **Settings:** day cutoff, data export/import, and **start a new game**
+  (§8) — the one door that wipes the world.
 - **Design assets (TEMPORARY, T5 prep — 2026-07-21):** a workbench page
   holding one empty shelf per image-asset family the M5 design pass
   will fill (charms, friends, map regions, flora, fungi, market
@@ -504,6 +505,24 @@ design-notes §12f.
     thing that says whether it still counts. The line states a fact and
     stops there: no colour change, no urgency, no counting of neglect
     (§ no punishment mechanics applies to chores too).
+- **Starting a new game (2026-08-11).** The world can be wiped and begun
+  again, and doing so **keeps the whole habit record**: every habit and
+  every completion survives, so the grid, the streaks, the graphs, the
+  field notes and the check-in are untouched. What goes is the planet —
+  every flora, book, friend and fungus, everything bought at the Market,
+  the abode and bookcase arrangements, the expedition trail, and the
+  world seed itself (a kept seed would make the new game a replay, not a
+  new planet). Mechanically it is two moves, because the world hangs off
+  history in two ways: drops are stored on completions, so they are
+  emptied; and the meters that COUNT completions read only the marks not
+  stamped as belonging to a past game. The stamp is on the record, never
+  a date — the morning check-in always asks about yesterday, so days
+  before the fresh start go on being marked inside it, and those marks
+  must earn their steps.
+  The one guard is a **forced backup**: the button stays disabled until
+  a backup has been exported in that visit, then asks once, naming what
+  goes and what stays. So the discarded world is always recoverable by
+  importing the file.
 - Deployed via GitHub Pages from the public repo.
 
 ## 9. Testing strategy

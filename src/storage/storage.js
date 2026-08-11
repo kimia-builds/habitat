@@ -3,7 +3,7 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 8,
+//     schemaVersion: 10,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — since v3 each
@@ -45,6 +45,12 @@
 //                              // — see game/market.js, added in T4.3b
 //   }
 //
+// Since v10 (T6.6) a completion may also carry `pastGame: true` —
+// see game/completions.js and game/newgame.js. Nothing else in the
+// envelope changed; the bump exists so a v10 backup, in which some
+// marks are meant not to count, is never loaded by an older app that
+// would count them all.
+//
 // The schemaVersion lets a future Habitat recognise and upgrade old
 // backups — upgradeData below does exactly that for v1.
 
@@ -65,7 +71,7 @@ const STORAGE_KEY = 'habitat-data'
 // Exported so tests can assert "the upgrade chain reaches the CURRENT
 // version" rather than hard-coding a number that has to be edited in
 // nine places on every schema bump.
-export const SCHEMA_VERSION = 9
+export const SCHEMA_VERSION = 10
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -104,11 +110,15 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV8toV9(
-    upgradeV7toV8(
-      upgradeV6toV7(
-        upgradeV5toV6(
-          upgradeV4toV5(upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now)))),
+  return upgradeV9toV10(
+    upgradeV8toV9(
+      upgradeV7toV8(
+        upgradeV6toV7(
+          upgradeV5toV6(
+            upgradeV4toV5(
+              upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))),
+            ),
+          ),
         ),
       ),
     ),
@@ -235,7 +245,7 @@ function upgradeV6toV7(data) {
 function upgradeV7toV8(data) {
   if (typeof data !== 'object' || data === null) return data
   if (data.schemaVersion !== 7) return data
-  return { ...data, schemaVersion: SCHEMA_VERSION }
+  return { ...data, schemaVersion: 8 }
 }
 
 // v8 → v9 (T6.4a): settings gain lastExportedOn — the Habitat day a
@@ -250,7 +260,20 @@ function upgradeV8toV9(data) {
     typeof data.settings === 'object' && data.settings !== null
       ? { lastExportedOn: null, ...data.settings }
       : data.settings
-  return { ...data, schemaVersion: SCHEMA_VERSION, settings }
+  return { ...data, schemaVersion: 9, settings }
+}
+
+// v9 → v10 (T6.6): completions may now carry `pastGame: true` — a mark
+// left over from a game Kimia has started over from (game/newgame.js).
+// No field moves and nothing is renumbered: the bump exists so a
+// backup in which some marks are meant NOT to count is never loaded by
+// an older app that would count them all. A v9 save has never been
+// started over, so every mark it holds counts — which is exactly what
+// carrying no stamp already means.
+function upgradeV9toV10(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 9) return data
+  return { ...data, schemaVersion: SCHEMA_VERSION }
 }
 
 // Older saves and backups predate completions, settings and (from

@@ -25,7 +25,11 @@ import { backupAgeLabel } from './game/backup.js'
 import { addDays, dayKeyFromTimestamp } from './game/days.js'
 import { SCHEMA_VERSION } from './storage/storage.js'
 import { narrationSlot } from './content/narration.js'
-import { restoreNames, setSpeciesName } from './test/nameFixture.js'
+import {
+  blankAllNames,
+  restoreNames,
+  setSpeciesName,
+} from './test/nameFixture.js'
 
 // The Habitat day these tests are running in, on the default 3am
 // cutoff — so backup-age expectations never go stale.
@@ -1639,7 +1643,13 @@ describe('friendships (T4.4)', () => {
   // A FIXTURE species name — Kimia's real slots stay out of the suite
   // (src/test/nameFixture.js explains why).
   const DRIFTER_NAME = 'test species name'
-  beforeEach(() => setSpeciesName('drifter', DRIFTER_NAME))
+  beforeEach(() => {
+    // Wipe every slot first: the arriving friend is drifter 1, who has
+    // an individual name in Kimia's file, and an individual name
+    // outranks a species one (2026-08-11).
+    blankAllNames()
+    setSpeciesName('drifter', DRIFTER_NAME)
+  })
   afterEach(restoreNames)
 
   // The friend reveal's dialog name is Kimia's slot when she writes it
@@ -2003,5 +2013,118 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
     render(<App />)
     settleStartup()
     expect(screen.queryByRole('status')).toBeNull()
+  })
+})
+
+describe('start a new game (T6.6)', () => {
+  const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
+  const meters = () => within(screen.getByRole('region', { name: 'meters' }))
+  const stepsBar = () =>
+    meters().getByRole('progressbar', { name: 'steps taken progress' })
+  const newGameButton = () =>
+    screen.getByRole('button', { name: 'start a new game' })
+
+  // jsdom has no real download, so the export click needs these stubs;
+  // what matters is that it flips the guard, not that a file lands.
+  function exportBackup() {
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:fake')
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+    fireEvent.click(screen.getByRole('button', { name: 'export backup' }))
+  }
+
+  it('is disabled until a backup has been exported in this visit', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    expect(newGameButton().disabled).toBe(true)
+
+    exportBackup()
+    expect(newGameButton().disabled).toBe(false)
+  })
+
+  it('a fresh visit disables it again — an old export is no promise', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    exportBackup()
+    expect(newGameButton().disabled).toBe(false)
+
+    cleanup()
+    render(<App />)
+    expect(newGameButton().disabled).toBe(true)
+  })
+
+  it('asks before starting, and changes nothing when the answer is no', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    exportBackup()
+    const before = stored()
+
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    fireEvent.click(newGameButton())
+
+    expect(confirm).toHaveBeenCalled()
+    expect(stored()).toEqual(before)
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
+  })
+
+  it('wipes the world but keeps every habit and every completion', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    for (let i = 0; i < 3; i++) {
+      fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    }
+    exportBackup()
+    const before = stored()
+    expect(before.completions).toHaveLength(3)
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('3')
+
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    fireEvent.click(newGameButton())
+
+    const after = stored()
+    // The habit record survives whole, mark for mark and day for day.
+    expect(after.habits).toEqual(before.habits)
+    expect(after.completions).toHaveLength(3)
+    expect(after.completions.map((c) => c.dayKey)).toEqual(
+      before.completions.map((c) => c.dayKey),
+    )
+    // The world does not: no drops, nothing owned, a new seed, and the
+    // counted meter back at zero on screen.
+    expect(after.completions.every((c) => c.drops.length === 0)).toBe(true)
+    expect(after.purchases).toEqual([])
+    expect(after.floraDecisions).toEqual({})
+    expect(after.worldSeed).not.toBe(before.worldSeed)
+    expect(after.completions.every((c) => c.pastGame === true)).toBe(true)
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+  })
+
+  it('the habit list is still there, and marks made after it count again', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    exportBackup()
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    fireEvent.click(newGameButton())
+
+    expect(screen.getByText('walk')).toBeDefined()
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
+    expect(stored().completions).toHaveLength(2)
+  })
+
+  it('survives a reload — the new game is remembered, not just on screen', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    exportBackup()
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    fireEvent.click(newGameButton())
+
+    cleanup()
+    render(<App />)
+    expect(screen.getByText('walk')).toBeDefined()
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
   })
 })

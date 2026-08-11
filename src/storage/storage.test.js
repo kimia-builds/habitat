@@ -883,3 +883,92 @@ describe('asking the browser to keep our storage (T6.4a)', () => {
     )
   })
 })
+
+describe('the v9 → v10 upgrade (T6.6)', () => {
+  it('a v9 save loads unchanged — the bump only gates the past-game stamp', () => {
+    // A hand-written v9 record, exactly as T6.4a-era Habitat stored it.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 9,
+        habits: [habit('a', 'Read')],
+        completions: [
+          {
+            id: 'c1',
+            habitId: 'a',
+            recordedAt: 2000,
+            dayKey: '2026-08-10',
+            drops: [{ kind: 'fungi', amount: 2 }],
+          },
+        ],
+        settings: {
+          dayCutoffHour: 3,
+          fieldNotesShownOn: null,
+          startupShownOn: null,
+          lastExportedOn: '2026-08-10',
+        },
+        checkedInThrough: null,
+        worldSeed: 'seed',
+        floraDecisions: {},
+        bookcaseLayout: {},
+        abodeLayout: {},
+        purchases: [],
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
+    // Carrying no stamp already means "counts", which is right for a
+    // save that has never been started over.
+    expect(data.completions[0].pastGame).toBeUndefined()
+    expect(data.completions[0].drops).toEqual([{ kind: 'fungi', amount: 2 }])
+    // And the upgraded shape passes full validation on the next save.
+    saveData(data)
+    expect(loadData()).toEqual(data)
+  })
+
+  it('the past-game stamp survives the save → reload and backup round trips', () => {
+    const data = {
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      completions: [
+        {
+          id: 'c1',
+          habitId: 'a',
+          recordedAt: 2000,
+          dayKey: '2026-08-10',
+          drops: [],
+          pastGame: true,
+        },
+      ],
+    }
+    saveData(data)
+    expect(loadData()).toEqual(data)
+
+    const backup = exportData()
+    clearData()
+    expect(importData(backup).completions[0].pastGame).toBe(true)
+  })
+
+  it('rejects a broken past-game stamp, like any corruption', () => {
+    const withStamp = (pastGame) => ({
+      ...emptyData(),
+      habits: [habit('a', 'Read')],
+      completions: [
+        {
+          id: 'c1',
+          habitId: 'a',
+          recordedAt: 2000,
+          dayKey: '2026-08-10',
+          drops: [],
+          pastGame,
+        },
+      ],
+    })
+    expect(() => saveData(withStamp('yes'))).toThrow(/pastGame/)
+    // false is a shape Habitat never writes, so it is never accepted.
+    expect(() => importData(JSON.stringify(withStamp(false)))).toThrow(
+      /pastGame/,
+    )
+  })
+})
