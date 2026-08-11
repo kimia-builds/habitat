@@ -1,6 +1,15 @@
 // The create/edit habit form. It only COLLECTS fields; all the rules
 // live in game/habits.js — onSave runs the real validation and this
 // form just shows any complaint it throws.
+//
+// Layout (Kimia's call 2026-08-11): the charms sit at the TOP of the
+// draft tile and centred, because picking the charm is the first thing
+// she does; each field's prompt sits above its own baguette; save and
+// cancel are centred at the foot with a wide gap between them.
+//
+// Every field carries a plain `name` attribute. Nothing on screen uses
+// it — it is the stable handle the tests grab, so that rewording a
+// prompt is a copy change and never a test change (CLAUDE.md).
 
 import { useState } from 'react'
 import { DIFFICULTIES } from '../game/constants.js'
@@ -29,10 +38,13 @@ function buildSchedule(type, weekdayFlags, n) {
   return { type }
 }
 
-function HabitForm({ initial, onSave, onCancel }) {
+function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
   const [name, setName] = useState(initial?.name ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
-  const [symbol, setSymbol] = useState(initial?.symbol ?? 1)
+  // Editing shows the habit's own charm. A brand-new draft starts on
+  // whatever App handed down — which is the filtered charm when exactly
+  // one is on, and charm 1 otherwise (Kimia's call 2026-08-11).
+  const [symbol, setSymbol] = useState(initial?.symbol ?? defaultSymbol)
   const [difficulty, setDifficulty] = useState(initial?.difficulty ?? 'medium')
   const [scheduleType, setScheduleType] = useState(
     initial?.schedule.type ?? 'daily',
@@ -62,25 +74,28 @@ function HabitForm({ initial, onSave, onCancel }) {
 
   return (
     <form className="habit-form" onSubmit={handleSubmit}>
+      <SymbolPicker selected={[symbol]} onToggle={setSymbol} />
       <label>
-        name
+        write a good habit or task:
         <input
+          name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoFocus
         />
       </label>
       <label>
-        description
+        add any details or specifications:
         <input
+          name="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
       </label>
-      <SymbolPicker selected={[symbol]} onToggle={setSymbol} />
       <label>
-        difficulty
+        pick a difficulty per unit:
         <select
+          name="difficulty"
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         >
@@ -92,8 +107,9 @@ function HabitForm({ initial, onSave, onCancel }) {
         </select>
       </label>
       <label>
-        schedule
+        specify the desired schedule or frequency:
         <select
+          name="schedule"
           value={scheduleType}
           onChange={(e) => setScheduleType(e.target.value)}
         >
@@ -129,6 +145,7 @@ function HabitForm({ initial, onSave, onCancel }) {
           how many
           <input
             type="number"
+            name="n"
             min={scheduleType === 'nPerDay' ? 2 : 1}
             max={scheduleType === 'nPerWeek' ? 7 : undefined}
             value={n}
@@ -137,9 +154,11 @@ function HabitForm({ initial, onSave, onCancel }) {
         </label>
       )}
       {error && <p role="alert">{error}</p>}
-      <div>
-        <button type="submit">save</button>
-        <button type="button" onClick={onCancel}>
+      <div className="form-actions">
+        <button className="pill-button" type="submit">
+          save
+        </button>
+        <button className="pill-button" type="button" onClick={onCancel}>
           cancel
         </button>
       </div>

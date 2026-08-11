@@ -127,7 +127,9 @@ function CheckInPanel({
           ))}
         </>
       )}
-      <button onClick={onDone}>done</button>
+      <button className="pill-button" onClick={onDone}>
+        done
+      </button>
     </section>
   )
 }

@@ -36,7 +36,11 @@ function NewGameControl({ backedUp, onStartNewGame }) {
 
   return (
     <div className="new-game-control">
-      <button onClick={handleClick} disabled={!backedUp}>
+      <button
+        className="pill-button"
+        onClick={handleClick}
+        disabled={!backedUp}
+      >
         start a new game
       </button>
       {!backedUp && (

@@ -234,7 +234,9 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
           )
         })}
       </svg>
-      <button onClick={onBack}>← back to the habits</button>
+      <button className="pill-button" onClick={onBack}>
+        ← back to the habits
+      </button>
     </section>
   )
 }

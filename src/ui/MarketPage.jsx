@@ -53,7 +53,7 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
                   <span className="market-owned">×{owned} at home</span>
                 )}
                 <button
-                  className="market-buy"
+                  className="market-buy pill-button"
                   aria-label={`buy a curiosity for ${object.price} fungi`}
                   disabled={!affordable}
                   onClick={() => onBuy(object)}
@@ -66,7 +66,9 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
         </ul>
       )}
 
-      <button onClick={onBack}>← back to the habits</button>
+      <button className="pill-button" onClick={onBack}>
+        ← back to the habits
+      </button>
     </section>
   )
 }

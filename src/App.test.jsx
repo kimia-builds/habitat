@@ -60,12 +60,20 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
+// The form's fields, found by their stable `name` attribute rather than
+// their visible prompt (2026-08-11). The prompts are Kimia's copy and she
+// rewrites them — "name" became "write a good habit or task:" the day this
+// helper was written — so a test that hunts for the words breaks on every
+// copy pass. The attribute is the handle; the words are hers.
+const field = (which) =>
+  document.querySelector(`form.habit-form [name="${which}"]`)
+
 // Drive the real form the way a user would. Options beyond a name are
 // optional; the form's defaults (symbol 1, medium, daily) fill the rest.
 function createHabitViaUI(name, { symbol, scheduleType, n, days } = {}) {
   fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
   const form = within(document.querySelector('form.habit-form'))
-  fireEvent.change(form.getByLabelText('name'), { target: { value: name } })
+  fireEvent.change(field('name'), { target: { value: name } })
   if (symbol) {
     // The tags are the six charms (T5.1); each button's accessible name
     // is the charm's shape name (design-notes §11a). Still wordless on
@@ -81,12 +89,12 @@ function createHabitViaUI(name, { symbol, scheduleType, n, days } = {}) {
     fireEvent.click(form.getByRole('button', { name: charms[symbol] }))
   }
   if (scheduleType) {
-    fireEvent.change(form.getByLabelText('schedule'), {
+    fireEvent.change(field('schedule'), {
       target: { value: scheduleType },
     })
   }
   if (n) {
-    fireEvent.change(form.getByLabelText('how many'), {
+    fireEvent.change(field('n'), {
       target: { value: String(n) },
     })
   }
@@ -253,6 +261,35 @@ describe('the symbol filter (a temporary lens)', () => {
 
     fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // toggle off
     expect(screen.getByText('stretch')).toBeDefined()
+  })
+
+  // Kimia's call 2026-08-11: filtering to ONE charm and then adding a
+  // habit almost always means "another one of these", so the draft opens
+  // already wearing it. Two charms filtered is no longer a hint, so the
+  // draft falls back to the form's own default (charm 1).
+  it('a new draft opens on the filtered charm when exactly one is on', () => {
+    render(<App />)
+    const filter = () =>
+      within(screen.getByRole('region', { name: 'filter view' }))
+    // Exactly one charm is pressed in the draft; report which by the
+    // accessible name of the charm drawn on it.
+    const draftCharm = () =>
+      within(document.querySelector('form.habit-form'))
+        .getAllByRole('button', { pressed: true })
+        .map((button) => button.querySelector('svg').getAttribute('aria-label'))
+
+    fireEvent.click(filter().getByRole('button', { name: 'shield' })) // 5
+    fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
+    expect(draftCharm()).toEqual(['shield'])
+    fireEvent.click(
+      within(document.querySelector('form.habit-form')).getByRole('button', {
+        name: 'cancel',
+      }),
+    )
+
+    fireEvent.click(filter().getByRole('button', { name: 'key' })) // now two
+    fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
+    expect(draftCharm()).toEqual(['crown'])
   })
 })
 
@@ -442,7 +479,7 @@ describe('editing', () => {
     createHabitViaUI('jurnal')
     fireEvent.click(row('jurnal').getByRole('button', { name: 'edit' }))
     const form = within(document.querySelector('form.habit-form'))
-    fireEvent.change(form.getByLabelText('name'), {
+    fireEvent.change(field('name'), {
       target: { value: 'journal' },
     })
     fireEvent.click(form.getByRole('button', { name: 'save' }))
@@ -1166,10 +1203,10 @@ describe('field notes (T2.3)', () => {
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
     fireEvent.click(row('walk').getByRole('button', { name: 'edit' }))
     const form = () => within(document.querySelector('form.habit-form'))
-    fireEvent.change(form().getByLabelText('schedule'), {
+    fireEvent.change(field('schedule'), {
       target: { value: 'nPerWeek' },
     })
-    fireEvent.change(form().getByLabelText('how many'), {
+    fireEvent.change(field('n'), {
       target: { value: '3' },
     })
     fireEvent.click(form().getByRole('button', { name: 'save' }))

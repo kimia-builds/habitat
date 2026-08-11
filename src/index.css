@@ -1378,27 +1378,127 @@ body {
   opacity: 0.55;
 }
 
-/* One-time to-do tick-box: an empty box until done, larger than the
-   browser default so it reads as a deliberate control and is easy to hit. */
-.todo-check {
-  width: 1.15rem;
-  height: 1.15rem;
+/* ─────────────── THE BUTTON SHAPES (Kimia's call 2026-08-11) ───────────────
+   Habitat's named actions are ovals and circles — never rectangles. "Named
+   actions" is a closed list she drew herself: save and cancel, the +1, -1
+   and tick on a habit tile, export/import/start-a-new-game, the field
+   notes' earlier and later, "back to the habits" wherever it appears, the
+   market's buy, the check-in's done, and the close on the reading and
+   friend cards. Everything else — the icon-only furniture (grip, pencil,
+   archive, the foot-of-list trio, the left rail) and the charms — keeps
+   its bare, boxless look: those are drawings, not buttons with words.
+   Two shapes only: a long oval for anything with a word on it, and a
+   circle for the counters. */
+.pill-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 1px solid var(--button-edge);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 1.4rem;
   cursor: pointer;
-  accent-color: var(--tick);
 }
 
+.pill-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* The counters on a habit tile: +1, -1 and the one-time tick are ONE
+   control in three moods, so they are one size and one shape — circles of
+   identical diameter, in a row. They take their outline from the tile
+   they sit on: a saved habit tile hands down its own charm colour
+   (`--charm-here`), and anywhere without a charm falls back to plain
+   white. The check-in's rows are the same rows wearing the same charms,
+   so they inherit all of this for free. */
+.completion-controls button,
+.completion-controls .todo-check {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  color: inherit;
+  background: none;
+  border: 1px solid var(--charm-here, var(--button-edge));
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.completion-controls button:disabled {
+  opacity: 0.35;
+}
+
+/* One-time to-do tick-box: the same empty circle as its +1 neighbours
+   (`appearance: none` is what strips the browser's own square box), and
+   filling with the charm is how it says "done" — no glyph needed. On the
+   home list it is never ticked (ticking finishes and archives the to-do);
+   in the check-in it can be, and un-ticked again. */
+.todo-check {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.todo-check:checked {
+  background: var(--charm-here, var(--button-edge));
+}
+
+/* The draft tile (Kimia's call 2026-08-11): corners rounded off to sit in
+   the same family as the saved tiles above it — see --radius-form in
+   tokens.css for why it is not the tiles' full pill. Each field is a
+   prompt with its own baguette underneath, so the prompts can be whole
+   sentences without squeezing the field beside them. */
 .habit-form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   border: 1px solid var(--border);
-  padding: 0.75rem;
+  border-radius: var(--radius-form);
+  padding: 1rem 1.25rem;
 }
 
 .habit-form label {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* The charms sit at the top of the draft and centred — picking the charm
+   is the first thing she does, and one centred row of six reads as a
+   choice rather than a field. */
+.habit-form .symbol-picker {
+  justify-content: center;
+  gap: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Open fields as baguettes: fully rounded, transparent, a white hairline.
+   The weekday tick-boxes are deliberately not in this list — they are
+   tick-boxes, not fields. */
+.habit-form input:not([type='checkbox']),
+.habit-form select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 1px solid var(--button-edge);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 1rem;
+}
+
+/* Save and cancel: centred at the foot of the draft, and far enough
+   apart that neither is ever hit by accident. */
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 0.5rem;
 }
 
 .archived summary {

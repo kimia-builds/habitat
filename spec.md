@@ -322,7 +322,11 @@ region discovery expands what the Market can offer.
   The list is manually re-orderable by dragging a habit's tile anywhere
   but its buttons (order persists; disabled while a symbol filter is on
   — design-notes §12a) and filterable by symbols (multi-select; a temporary lens that
-  resets each visit). Habits can be archived (history kept) or permanently
+  resets each visit). **While the lens shows exactly one charm, a new
+  habit's draft opens already wearing it** (2026-08-11) — filtering to
+  one charm and then adding a habit almost always means "another one of
+  these"; two or more filtered is no longer a hint, so the draft falls
+  back to the first charm. Habits can be archived (history kept) or permanently
   deleted (with confirmation). Every action on the home screen is an
   **icon with a hover label** (T4.5) — no action words on the page. On
   a big-win day a **cameo** visits between the date and the list

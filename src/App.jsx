@@ -835,7 +835,16 @@ function App() {
       {visible.length === 0 && <p>nothing here yet</p>}
 
       {editing === 'new' ? (
-        <HabitForm onSave={handleCreate} onCancel={() => setEditing(null)} />
+        // A new draft opens on the filtered charm when the lens is showing
+        // exactly one (Kimia's call 2026-08-11): with one charm on screen,
+        // the habit you are about to write is almost always that charm.
+        // Two or more charms filtered is no longer a hint, so the draft
+        // falls back to the form's own default.
+        <HabitForm
+          defaultSymbol={filter.length === 1 ? filter[0] : undefined}
+          onSave={handleCreate}
+          onCancel={() => setEditing(null)}
+        />
       ) : (
         <div className="list-actions">
           <button

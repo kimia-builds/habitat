@@ -1508,6 +1508,50 @@ return 0` right after the era is worked out, so a moment before the
   _Tests:_ two added — dragging a row by its NAME re-orders it, and a
   press on +1 that drifts down the list counts the habit without moving
   it. Full suite 1028 and oxlint pass.
+- 2026-08-11 (Kimia's calls, second spontaneous pass the same day):
+  **the draft tile and the button shapes.** Six decisions, all hers:
+  1. **A new draft opens on the filtered charm** when the filter is
+     showing exactly one. Filtering to one charm and then adding a habit
+     almost always means "another one of these". Two or more charms
+     filtered is no longer a hint, so the draft falls back to charm 1;
+     editing an existing habit always shows that habit's own charm.
+  2. **The charms move to the top of the draft tile and centre** — the
+     charm is the first thing she picks, and a centred row of six reads
+     as a choice rather than as a field.
+  3. **The draft tile's corners are rounded.** NOT the saved tiles' full
+     pill: asked directly, she chose the softly-rounded rectangle
+     (`--radius-form`, 1.5rem) once it was clear that a 999px radius on
+     a tall box curves its whole sides inward and squeezes the fields.
+  4. **The form's prompts are sentences, not nouns** — "write a good
+     habit or task:", "add any details or specifications:", "pick a
+     difficulty per unit:", "specify the desired schedule or
+     frequency:". Each sits above its own field (the old side-by-side
+     row cannot hold a sentence), and **save and cancel are centred at
+     the foot with a wide gap** between them.
+  5. **Every named button is an oval; the counters are circles.** The
+     list of "named buttons" is hers, drawn deliberately: save, cancel,
+     +1, -1, the to-do tick, export/import/start-a-new-game, the field
+     notes' earlier/later, "back to the habits" everywhere it appears,
+     the market's buy, the check-in's done, and the close on the reading
+     and friend cards. Everything else — the icon-only furniture (grip,
+     pencil, archive, the foot-of-list trio, the left rail) and the
+     charms themselves — keeps its bare, boxless look. +1, -1 and the
+     tick are one control in three moods, so they are one diameter and
+     one shape; the tick stopped being the browser's square box and
+     became a circle that FILLS with its charm when ticked (which
+     retired the `--tick` blue).
+  6. **A button borrows its outline colour from the tile it sits on:**
+     the charm on a saved habit tile, plain white everywhere else
+     (`--button-edge`). Open text fields are rounded "like baguettes" —
+     the same full pill, which also took in the two dropdowns, since a
+     square select beside a pill field would have looked like an
+     oversight.
+  _Tests:_ one added (a draft opens on the filtered charm when exactly
+  one is on, and on charm 1 when two are). The form's fields are now
+  found in tests by a stable `name` attribute instead of their visible
+  prompt — this copy pass rewrote every prompt, and a test that hunts
+  for Kimia's words breaks on every one. Full suite 1029 and oxlint
+  pass.
 
 ## spec.md version history (formerly its preamble)
 

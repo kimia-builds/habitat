@@ -43,7 +43,9 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
     return (
       <section className="field-notes" aria-label="field notes">
         <p>Nothing recorded yet — notes begin with the first habit.</p>
-        <button onClick={onBack}>← back to the habits</button>
+        <button className="pill-button" onClick={onBack}>
+          ← back to the habits
+        </button>
       </section>
     )
   }
@@ -54,6 +56,7 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
     <section className="field-notes" aria-label="field notes">
       <div className="week-nav">
         <button
+          className="pill-button"
           onClick={() => setWeek(addDays(week, -7))}
           disabled={week <= firstWeek}
         >
@@ -66,6 +69,7 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
           )}
         </span>
         <button
+          className="pill-button"
           onClick={() => setWeek(addDays(week, +7))}
           disabled={week >= thisWeek}
         >
@@ -131,7 +135,9 @@ function FieldNotes({ habits, completions, cutoffHour, now, onBack }) {
         cutoffHour={cutoffHour}
       />
 
-      <button onClick={onBack}>← back to the habits</button>
+      <button className="pill-button" onClick={onBack}>
+        ← back to the habits
+      </button>
     </section>
   )
 }

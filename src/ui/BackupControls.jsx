@@ -31,8 +31,12 @@ function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
 
   return (
     <div className="backup-controls">
-      <button onClick={onExport}>export backup</button>
-      <button onClick={() => fileInput.current.click()}>import backup</button>
+      <button className="pill-button" onClick={onExport}>
+        export backup
+      </button>
+      <button className="pill-button" onClick={() => fileInput.current.click()}>
+        import backup
+      </button>
       <input
         ref={fileInput}
         type="file"

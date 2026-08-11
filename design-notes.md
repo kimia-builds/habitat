@@ -441,6 +441,32 @@ The exact paths (drop into the shared SVG attributes above):
   is larger than vertical, because at that radius the ends curve inward
   and the charm would otherwise sit in the curve. The check-in's rows
   are the same rows and get the same treatment.
+- **Two button shapes, and nothing else (Kimia's call 2026-08-11):**
+  a long oval for every button with a word on it, and a circle for the
+  counters. The buttons that get a shape are a closed list she drew
+  herself — save, cancel, +1, -1, the to-do tick, export / import /
+  start a new game, the field notes' earlier and later, "back to the
+  habits" wherever it appears, the market's buy, the check-in's done,
+  and the close on the reading and friend cards. Everything else stays
+  bare and boxless: the icon-only furniture (grip, pencil, archive, the
+  foot-of-list trio, the left rail) and the charms, which are drawings
+  rather than buttons with words. +1, -1 and the tick are one control
+  in three moods, so they share one diameter and one shape; the tick
+  fills with its charm to say done, rather than drawing a mark. An
+  outline takes its colour from the tile beneath it — the charm on a
+  saved habit tile, plain white (`--button-edge`) everywhere else,
+  which is the accent rule above applied to buttons. Open text fields
+  are baguettes: the same full pill, dropdowns included.
+- **The draft tile is a softly-rounded box, not a pill (same call).**
+  It shares the tiles' family — `--radius-form`, corners rounded off
+  generously — but stays a box, because a 999px radius on something
+  tall curves its whole sides inward and squeezes the fields. Inside
+  it: the charms first and centred (the charm is the first choice, and
+  a centred row of six reads as a choice rather than a field), then
+  each prompt sitting ABOVE its own field, because the prompts are
+  sentences now and a sentence cannot share a line with the field it
+  introduces. Save and cancel are centred at the foot with a wide gap
+  between them.
 - **The charms themselves wear no box (same revision).** They are
   drawings, and a drawing does not need a frame; the filter row is
   centred under the date. The box used to carry the on/off state, so
