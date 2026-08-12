@@ -533,7 +533,7 @@ The exact paths (drop into the shared SVG attributes above):
   screen. They are not part of the palette question — they need a type
   and control pass, which is T5.2c/T5.2d.
 
-### 11c. Typography (T5.2)
+### 11c. Typography **[BUILT — T5.2c, 2026-08-12]**
 
 Two families, **bundled with the app** (no external font loading —
 self-contained, works offline):
@@ -546,17 +546,64 @@ self-contained, works offline):
 Case & spacing convention:
 
 - **Display names/titles:** Cormorant Garamond 700, UPPERCASE,
-  wide letterspacing (~4px at 21px size), in the accent colour.
+  wide letterspacing (~4px at 21px size).
 - **Section labels:** DM Sans 500, UPPERCASE, very wide letterspacing
-  (~6px at 11px size), accent colour at ~0.85 opacity, thin
-  faint-colour rules above and below.
+  (~6px at 11px size), thin faint rules above and below.
 - **Body text:** DM Sans 300/400, lowercase, generous line-height
-  (~2), dim white.
+  (~2).
 - **Quiet secondary lines:** DM Sans 300 italic, lowercase, the
   dimmest tier.
 - Habitat's existing all-lowercase voice (habit rows, buttons,
   captions) already matches — lowercase stays the default; uppercase
   is reserved for display and section labels.
+
+**What T5.2c actually built (2026-08-12).** Both families ship inside
+the app as four files in `src/fonts/` — the latin cut of each, roman
+and italic, ~150 KB all told, declared in `src/fonts.css`. They are
+variable fonts, so one file carries every weight as a dial and the
+four weights above cost nothing extra. Nothing is fetched from Google
+or anywhere else at load time: Habitat looks the same offline, and no
+outside server learns when it is opened. The files came from the
+Fontsource packages of the Google Fonts originals (both SIL Open Font
+License, copies beside them), but those packages are not a dependency
+— four files and four rules are easier to keep than a build step.
+
+Three decisions the convention needed before it could be applied:
+
+- **UPPERCASE is for names, not sentences.** The display voice is worn
+  by the wordmark, the date and the five page titles — things that are
+  called something. A question or a message stays lowercase however
+  large it is set, because uppercasing a sentence turns it into a
+  shout, and this app doesn't shout (§5). So the pop-up titles — a
+  reveal, the new-game card, the check-in's question — wear the
+  display FACE at a step down the ladder, without the uppercasing.
+  (That question was, until this pass, the last thing in Habitat still
+  wearing the browser's own bold heading.)
+- **Colour was left exactly as T5.2b set it.** The two bullets above
+  used to specify the accent colour for display and section labels.
+  They were written before Kimia's 2026-08-11 accent rule (§11b: a
+  charm colour only where there is a charm — and a page title has
+  none) and before she kept the existing text brightness. Colour is
+  settled; T5.2c changed the lettering and nothing else, and the two
+  bullets no longer ask for what §11b forbids.
+- **The generous line-height belongs to prose, not to everything.**
+  ~2 is a reading measure. It went to the blocks of text you actually
+  read — messages, card texts, the empty-spread line — and not to
+  rows, controls and single-line captions, where it would only push
+  the list apart.
+
+One knock-on worth remembering: at the section-label tracking, "wallet
+balance" needs two lines where the other two meter names need one. The
+meters' bars are now pushed to the bottom of their own meter, so they
+line up whatever their names do above them — which holds for any name
+a meter is given later.
+
+The type scale itself lives in `src/tokens.css` alongside the colours
+(§11d): six steps, the two families, four weights, five tracking
+values and two line-heights, each with a plain-English note. Nine
+near-identical sizes in the skeleton collapsed onto those six steps —
+`tokens.test.js` now fails the suite if a raw font size or a font name
+is written into index.css, the same guard colour has had since T5.2a.
 
 ### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10; SPENT — T5.2b, 2026-08-11]**
 
@@ -619,7 +666,9 @@ index.css. Two things the file learned in the process:
   ugly-on-purpose skeleton — four near-identical glow radii, paddings
   the §13 layout pass will rewrite. They join the file in the slices
   that actually decide them, rather than being named now and renamed
-  later.
+  later. _(Type kept that promise on 2026-08-12: T5.2c is the slice
+  that decided it, and the ladder moved in there — see §11c. Glow and
+  spacing are still waiting for T5.2d and T5.2e.)_
 - **The tokens file holds the colours the _stylesheet_ wears; artwork
   keeps its own paints.** `friendPalettes.js` (the friends' 24 pastels),
   `textures.jsx` (surface tints fed to SVG filters) and the Abode sky

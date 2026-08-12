@@ -11,7 +11,7 @@
 // Paths resolve from the project root (where `npm test` runs), not from
 // this file — the same reason docs.test.js does it: tests run in a jsdom
 // sandbox where `import.meta.url` is an http:// address node:fs can't read.
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
@@ -67,6 +67,61 @@ describe('the design tokens (T5.2a)', () => {
     )
     const missing = [...used].filter((name) => !defined.has(name))
     expect(missing).toEqual([])
+  })
+
+  it('index.css names every type size instead of spelling one out', () => {
+    // The same promise as the colour check above, now for type (T5.2c): the
+    // ladder of sizes in tokens.css is only a ladder while every rule
+    // stands on one of its steps. The skeleton had nine sizes within a
+    // hair of each other because each rule picked its own; this is what
+    // stops them growing back.
+    const found = (read('index.css').match(/font-size:\s*([^;]+);/g) ?? [])
+      .map((line) =>
+        line
+          .replace(/font-size:\s*/, '')
+          .replace(';', '')
+          .trim(),
+      )
+      .filter((value) => !value.startsWith('var('))
+    expect(found).toEqual([])
+  })
+
+  it('index.css asks for a font by name, never by family', () => {
+    // Which typefaces Habitat is written in is a design decision, so it
+    // lives in the design list — not halfway down a stylesheet. `font:
+    // inherit`, which a button uses to refuse the browser's own font, is
+    // not a family and is left alone.
+    const found = (read('index.css').match(/font-family:\s*([^;]+);/g) ?? [])
+      .map((line) =>
+        line
+          .replace(/font-family:\s*/, '')
+          .replace(';', '')
+          .trim(),
+      )
+      .filter((value) => !value.startsWith('var(') && value !== 'inherit')
+    expect(found).toEqual([])
+  })
+
+  it('bundles the fonts with the app instead of fetching them', () => {
+    // design-notes §11c: no external font loading — Habitat must look the
+    // same offline, and no outside server should learn when it is opened.
+    // A stray @import url(...) or an https: source in fonts.css would undo
+    // that silently, since it would look perfectly fine online.
+    const fonts = read('fonts.css')
+    expect(fonts).not.toMatch(/https?:/)
+    expect(fonts.match(/@font-face/g) ?? []).toHaveLength(4)
+    for (const file of [
+      './fonts/cormorant-garamond-latin-normal.woff2',
+      './fonts/cormorant-garamond-latin-italic.woff2',
+      './fonts/dm-sans-latin-normal.woff2',
+      './fonts/dm-sans-latin-italic.woff2',
+    ]) {
+      expect(fonts, `fonts.css carries ${file}`).toContain(file)
+      expect(
+        existsSync(join(process.cwd(), 'src', file.replace('./', ''))),
+        `${file} is in the repo`,
+      ).toBe(true)
+    }
   })
 
   it('keeps symbols.js in step with the canonical charm colours', () => {
