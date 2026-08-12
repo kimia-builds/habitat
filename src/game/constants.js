@@ -60,6 +60,16 @@ export const STARTUP_FADE_MS = 1500
 // then, so nothing depends on this number but the eye.
 export const ARCHIVE_FAREWELL_MS = 420
 
+// How long a just-dropped habit tile stays lit where it landed (Kimia's
+// call 2026-08-11). Releasing a drag used to snap the tile into place
+// and drop its highlight in the same instant, which made a re-order hard
+// to follow. Now the tile glides into its new slot and KEEPS the raised,
+// charm-lit look it had in hand for this long afterwards — long enough
+// to see where it went — before easing back to its resting colour. The
+// glide and the fade-back are CSS (index.css, .habit-row--settling);
+// keep this number in step with them.
+export const DROP_SETTLE_MS = 1000
+
 // Weekday numbers use the ISO convention: 1 = Monday … 7 = Sunday.
 // (Chosen over JavaScript's own 0=Sunday counting because ISO weeks are
 // what the schedule engine in T1.2 will reason about.)

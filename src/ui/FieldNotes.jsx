@@ -70,9 +70,11 @@ function FieldNotes({
       : thisWeek,
   )
 
-  // The same row of charms the habit list carries, so the lens can be
-  // seen and changed without going back — and so a lens that empties the
-  // page always has a way out of itself.
+  // The same row of charms the habit list carries — the SAME element in
+  // the same place, too (Kimia, 2026-08-11): it sits above the page's
+  // box rather than inside it, so it is centred and sized exactly as it
+  // is on the home screen. The charms are the page's lens, not part of
+  // its notes, and the outline starts below them.
   const lens = (
     <section
       className="filter-view"
@@ -83,15 +85,21 @@ function FieldNotes({
     </section>
   )
 
+  const back = (
+    <button className="pill-button" onClick={onBack}>
+      ← back to the habits
+    </button>
+  )
+
   if (firstWeek === null) {
     return (
-      <section className="field-notes" aria-label="field notes">
+      <>
         {lens}
-        <p>Nothing recorded yet — notes begin with the first habit.</p>
-        <button className="pill-button" onClick={onBack}>
-          ← back to the habits
-        </button>
-      </section>
+        <section className="field-notes" aria-label="field notes">
+          <p>Nothing recorded yet — notes begin with the first habit.</p>
+        </section>
+        {back}
+      </>
     )
   }
 
@@ -109,88 +117,95 @@ function FieldNotes({
   const notes = weekNotes(shownHabits, shownCompletions, week, now, cutoffHour)
 
   return (
-    <section className="field-notes" aria-label="field notes">
+    <>
       {lens}
-      <div className="week-nav">
-        <button
-          className="pill-button"
-          onClick={() => setWeek(addDays(week, -7))}
-          disabled={week <= firstWeek}
-        >
-          ‹ earlier
-        </button>
-        {/* The week range, and — on its own line under it — the note that
+      <section className="field-notes" aria-label="field notes">
+        <div className="week-nav">
+          <button
+            className="pill-button"
+            onClick={() => setWeek(addDays(week, -7))}
+            disabled={week <= firstWeek}
+          >
+            ‹ earlier
+          </button>
+          {/* The week range, and — on its own line under it — the note that
             this week is not finished yet (Kimia, 2026-08-11). It used to
             sit inline, where it lengthened the middle of the row enough
             to push "later" onto a second line and out of its corner. */}
-        <span className="week-range">
-          {shortDate(notes.weekStartKey)} – {shortDate(notes.weekEnd)}
-          {notes.isCurrent && (
-            <em className="week-unfolding">still unfolding</em>
-          )}
-        </span>
-        <button
-          className="pill-button"
-          onClick={() => setWeek(addDays(week, +7))}
-          disabled={week >= thisWeek}
-        >
-          later ›
-        </button>
-      </div>
+          <span className="week-range">
+            {shortDate(notes.weekStartKey)} – {shortDate(notes.weekEnd)}
+            {notes.isCurrent && (
+              <em className="week-unfolding">still unfolding</em>
+            )}
+          </span>
+          <button
+            className="pill-button"
+            onClick={() => setWeek(addDays(week, +7))}
+            disabled={week >= thisWeek}
+          >
+            later ›
+          </button>
+        </div>
 
-      {notes.rows.length > 0 ? (
-        <table className="week-grid">
-          <thead>
-            <tr>
-              <th></th>
-              {DAY_HEADINGS.map((d) => (
-                <th key={d}>{d}</th>
-              ))}
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {notes.rows.map(({ habit, days, streak, streakUnit }) => (
-              <tr key={habit.id}>
-                <th scope="row">
-                  <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
-                  {habit.name}
-                  {habit.archived && (
-                    <span className="habit-meta"> (archived)</span>
-                  )}
-                </th>
-                {days.map((day) => (
-                  <td key={day.dayKey}>{cellText(day)}</td>
+        {notes.rows.length > 0 ? (
+          <table className="week-grid">
+            <thead>
+              <tr>
+                <th></th>
+                {DAY_HEADINGS.map((d) => (
+                  <th key={d}>{d}</th>
                 ))}
-                <td className="streak-cell">
-                  {streak !== null && `${streak}-${streakUnit} streak`}
-                </td>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No habits existed during this week.</p>
-      )}
+            </thead>
+            <tbody>
+              {notes.rows.map(({ habit, days, streak, streakUnit }) => (
+                <tr key={habit.id}>
+                  <th scope="row">
+                    <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
+                    {habit.name}
+                    {habit.archived && (
+                      <span className="habit-meta"> (archived)</span>
+                    )}
+                  </th>
+                  {days.map((day) => (
+                    <td key={day.dayKey}>{cellText(day)}</td>
+                  ))}
+                  <td className="streak-cell">
+                    {streak !== null && `${streak}-${streakUnit} streak`}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No habits existed during this week.</p>
+        )}
 
-      {notes.tasksCompleted.length > 0 && (
-        <>
-          <h3>tasks completed</h3>
-          <ul className="tasks-completed">
-            {notes.tasksCompleted.map(({ habit, dayKey }) => (
-              <li key={habit.id}>
-                <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
-                {habit.name} — {dayKey}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+        {notes.tasksCompleted.length > 0 && (
+          <>
+            <h3>tasks completed</h3>
+            <ul className="tasks-completed">
+              {notes.tasksCompleted.map(({ habit, dayKey }) => (
+                <li key={habit.id}>
+                  <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
+                  {habit.name} — {dayKey}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
 
       {/* T2.4: whole-life graphs — deliberately below the weekly grid
           and unaffected by which week is on show. They do answer to the
           charm lens, though (2026-08-11): the whole page shows one set
-          of habits at a time. */}
+          of habits at a time.
+          Their own outlined section since 2026-08-11 (Kimia's call): the
+          week and the graphs are two different ways of looking, so they
+          are two boxes rather than one long one. HabitGraphs draws its
+          own outline, which means a page with nothing graphable yet
+          simply has no second box — never an empty frame. */}
       <HabitGraphs
         habits={shownHabits}
         completions={shownCompletions}
@@ -198,10 +213,8 @@ function FieldNotes({
         cutoffHour={cutoffHour}
       />
 
-      <button className="pill-button" onClick={onBack}>
-        ← back to the habits
-      </button>
-    </section>
+      {back}
+    </>
   )
 }
 

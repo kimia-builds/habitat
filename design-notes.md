@@ -694,10 +694,21 @@ to rather than arriving there instantly, so it drifts after the hand,
 trails a little behind a quick pull, and glides into place whenever the
 hand stops. It lifts while it travels — a touch larger, a deeper shadow
 under it, its charm edge lit — so it reads as picked up and held above
-the list rather than shoved along inside it. Where it LANDS is still
-decided by the pointer, not by the drifting tile: the hand is the truth,
-the float is only how it looks. Reduced-motion keeps the old instant
-follow.
+the list rather than shoved along inside it.
+
+**The drop follows the tile, not the hand**, and it is not over the
+moment it happens. Both are Kimia's calls the same day, and both come
+from the same principle: once the tile lags behind the pointer, the tile
+is what the eye believes, so it is what everything else must agree with.
+So the landing slot is the row the TILE has come to rest nearest — its
+own empty slot included, which is what lets a small nudge stay put — and
+on release the tile **glides** from where it was let go into that slot
+rather than snapping there. It keeps its lifted, lit look for a beat
+after landing (`DROP_SETTLE_MS`) so the eye can find where it went, then
+eases back down to its resting colour rather than switching off.
+Reduced-motion keeps the instant follow and the instant landing; the
+highlight still holds and still fades, because that is information
+rather than movement.
 
 ### 12b. The date display
 

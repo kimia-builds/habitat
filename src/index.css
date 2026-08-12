@@ -453,8 +453,14 @@ body {
   font-size: 0.9rem;
 }
 
-/* T2.3: the field notes — the weekly view. Quiet by design. */
-.field-notes {
+/* T2.3: the field notes — the weekly view. Quiet by design.
+   The page is TWO outlined sections (Kimia's call 2026-08-11), not one:
+   this box, which holds the week being browsed, and the graphs box
+   below it — two different ways of looking, so two frames. The charm
+   lens sits above both, outside any box, exactly as it does on the home
+   screen, and the "back to the habits" button below both. */
+.field-notes,
+.habit-graphs {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -464,11 +470,12 @@ body {
   align-items: flex-start;
 }
 
-.field-notes h3 {
+.field-notes h3,
+.habit-graphs h3 {
   font-weight: 300;
   letter-spacing: 0.2em;
   /* "tasks completed" and "graphs" headings sit centred (Kimia,
-     2026-07-22) — the section is otherwise left-aligned. */
+     2026-07-22) — the sections are otherwise left-aligned. */
   align-self: center;
 }
 
@@ -496,9 +503,14 @@ body {
   text-align: center;
 }
 
+/* "still unfolding" — a footnote, not an announcement (Kimia,
+   2026-08-11): its own line under the dates, small and quiet. It only
+   names something already obvious (this week isn't over), so it is
+   there for whoever missed it and invisible to whoever didn't. */
 .week-unfolding {
   display: block;
   color: var(--text-quiet);
+  font-size: 0.75rem;
 }
 
 .week-grid {
@@ -539,12 +551,11 @@ body {
   padding-left: 0;
 }
 
-/* T2.4: the habit graphs — quiet lines in each habit's symbol colour. */
-.habit-graphs {
+/* T2.4: the habit graphs — quiet lines in each habit's symbol colour.
+   Its outline and padding are shared with .field-notes above; what is
+   its own is that each graph inside it stretches the full width. */
+.habit-graphs > .habit-graph {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 
 .habit-graph {
@@ -1238,6 +1249,15 @@ body {
     transparent
   );
   padding: 0.5rem 1.25rem;
+  /* How a tile comes DOWN off its lift. Nothing about the resting tile
+     animates on its own — this only has anything to do once a drag ends
+     and the raised look is taken away (see --settling below), and it is
+     what turns that into a slow fade back to the resting colour rather
+     than a light being switched off. */
+  transition:
+    background-color 600ms ease,
+    border-color 600ms ease,
+    box-shadow 600ms ease;
 }
 
 /* Drag-to-reorder (T5.1c; whole-tile since 2026-08-11, and the grip that
@@ -1278,8 +1298,9 @@ body {
    to instead of arriving there instantly — it drifts after the hand,
    lagging a little, settling into place whenever the hand stops. The
    easing curve is what does the floating; the duration is what makes it
-   slow. Nothing about WHERE it lands changes: the drop still reads the
-   real pointer position, so the lag is purely how it looks.
+   slow. Where it lands follows the TILE rather than the hand (App's
+   rowUnderTile) — now that the two can part company, the eye is the one
+   to believe.
 
    It also lifts while it travels — a touch larger, with a deeper shadow
    under it — so it reads as picked up and held above the list rather
@@ -1294,10 +1315,21 @@ body {
    opaque one in a single `background:` shorthand, which CSS reads as
    invalid and throws away wholesale — leaving the dragged tile with no
    background at all. That was the transparent tile Kimia was seeing.) */
-.habit-row--dragging {
+/* …and the moment after it is let go (Kimia's call 2026-08-11). Letting
+   go used to snap the tile into place and switch its highlight off in
+   the same instant, so a re-order was over before it could be followed.
+   A dropped tile now keeps everything it had in hand — the lift, the
+   solid charm fill, the lit edge — and GLIDES into its new slot on the
+   same easing it drifted with. App puts it back where the hand left it
+   and lets go (the FLIP in its layout effect); this rule is what turns
+   that into a movement instead of a jump. The lit look then holds for
+   DROP_SETTLE_MS in constants.js — long enough to see where the tile
+   went — and when the class comes off, the resting transition above
+   fades the colour back down over 600ms rather than snapping it. */
+.habit-row--dragging,
+.habit-row--settling {
   position: relative;
   z-index: 2;
-  cursor: grabbing;
   background-color: color-mix(
     in srgb,
     var(--charm-here, var(--surface-lifted)) var(--charm-fill-strength-lifted),
@@ -1308,10 +1340,17 @@ body {
   transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+.habit-row--dragging {
+  cursor: grabbing;
+}
+
 /* Whoever asked not to be moved at keeps the old instant follow: the
-   tile still goes exactly where it is dragged, it just doesn't drift. */
+   tile still goes exactly where it is dragged and lands exactly where it
+   was dropped, it simply doesn't drift or glide. The highlight still
+   holds and still fades — that is information, not movement. */
 @media (prefers-reduced-motion: reduce) {
-  .habit-row--dragging {
+  .habit-row--dragging,
+  .habit-row--settling {
     transition: none;
   }
 }

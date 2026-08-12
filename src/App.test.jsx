@@ -16,6 +16,7 @@ import App from './App'
 import {
   ARCHIVE_FAREWELL_MS,
   CAMEO_LINGER_MS,
+  DROP_SETTLE_MS,
   FRIEND_CATEGORIES,
   MAP_REGION_COUNT,
   STARTUP_FADE_MS,
@@ -122,6 +123,38 @@ function row(name) {
 // (2026-08-11): pressing the tile anywhere but on a control starts one.
 function tile(name) {
   return screen.getByText(name).closest('li')
+}
+
+// jsdom has no layout, so a drag test has to hand the rows their boxes:
+// a stack of 40px-tall rows at y 0 / 50 / 100 / …. The dragged row's box
+// FOLLOWS the drag, because the real one does — since 2026-08-11 the
+// landing slot is read off the tile's own drawn position rather than the
+// pointer's, so a test that parked the dragged row would be describing a
+// tile that never moved. `drag.offset` is the live handle: set it before
+// firing the pointer event that should see the tile there.
+function layOutRows(draggedName = null, drag = { offset: 0 }) {
+  const draggedId = draggedName
+    ? tile(draggedName).getAttribute('data-habit-id')
+    : null
+  const rows = [...document.querySelectorAll('[data-habit-id]')]
+  rows.forEach((el, i) => {
+    el.getBoundingClientRect = () => {
+      const moved = el.getAttribute('data-habit-id') === draggedId
+      const top = i * 50 + (moved ? drag.offset : 0)
+      return {
+        top,
+        bottom: top + 40,
+        height: 40,
+        left: 0,
+        right: 100,
+        width: 100,
+        x: 0,
+        y: top,
+        toJSON: () => {},
+      }
+    }
+  })
+  return drag
 }
 
 describe('creating habits', () => {
@@ -368,27 +401,15 @@ describe('re-ordering', () => {
     createHabitViaUI('two')
     createHabitViaUI('three')
 
-    // jsdom has no layout, so hand each row a fixed vertical position:
-    // one at top 0, two at 50, three at 100. The drag reads these to work
-    // out which slot the pointer is over.
-    const rows = [...document.querySelectorAll('[data-habit-id]')]
-    rows.forEach((el, i) => {
-      el.getBoundingClientRect = () => ({
-        top: i * 50,
-        bottom: i * 50 + 40,
-        height: 40,
-        left: 0,
-        right: 100,
-        width: 100,
-        x: 0,
-        y: i * 50,
-        toJSON: () => {},
-      })
-    })
+    // Rows at 0 / 50 / 100; 'one' is the one being dragged, so its box
+    // travels with the drag.
+    const drag = layOutRows('one')
 
-    // Grab 'one' and drag it down past 'three' (pointer ends at y 105,
-    // below the third row's top of 100). It should land last.
+    // Grab 'one' and pull it down 100px, which leaves the tile lying over
+    // 'three' (its middle at 120, inside three's 100–140 box). It lands
+    // last.
     fireEvent.pointerDown(tile('one'), { button: 0, clientX: 0, clientY: 5 })
+    drag.offset = 100
     fireEvent.pointerMove(window, { clientX: 0, clientY: 105 })
     fireEvent.pointerUp(window, { clientX: 0, clientY: 105 })
 
@@ -401,48 +422,24 @@ describe('re-ordering', () => {
     expect(names()).toEqual(['two', 'three', 'one'])
   })
 
-  it('dragging a row UP lands it higher — its own shifted box is ignored', () => {
+  it('dragging a row UP lands it higher — over the row, not under the hand', () => {
     const first = render(<App />)
     createHabitViaUI('one')
     createHabitViaUI('two')
     createHabitViaUI('three')
 
-    // Rows sit at 0 / 50 / 100. The dragged row carries a transform that
-    // follows the pointer, so its real box shifts UP as it is dragged up —
-    // model that, because ignoring the dragged row's own box is exactly
-    // what this guards: an upward drag used to keep "landing" back on the
-    // row it started on and so never moved.
-    const rows = [...document.querySelectorAll('[data-habit-id]')]
-    const draggedId = rows[2].getAttribute('data-habit-id')
-    let pointerY = 110
-    rows.forEach((el, i) => {
-      el.getBoundingClientRect = () => {
-        const top =
-          el.getAttribute('data-habit-id') === draggedId
-            ? pointerY - 20
-            : i * 50
-        return {
-          top,
-          bottom: top + 40,
-          height: 40,
-          left: 0,
-          right: 100,
-          width: 100,
-          x: 0,
-          y: top,
-          toJSON: () => {},
-        }
-      }
-    })
+    // Rows at 0 / 50 / 100, 'three' being dragged upward by 105px — which
+    // leaves its tile lying over 'one' (middle at 15, inside one's 0–40
+    // box). An upward drag used to keep "landing" back on the row it
+    // started from and so never moved at all.
+    const drag = layOutRows('three')
 
-    // Grab 'three' and drag it up above 'one' (pointer to y 5, over the
-    // first row, whose top is 0).
     fireEvent.pointerDown(tile('three'), {
       button: 0,
       clientX: 0,
       clientY: 110,
     })
-    pointerY = 5
+    drag.offset = -105
     fireEvent.pointerMove(window, { clientX: 0, clientY: 5 })
     fireEvent.pointerUp(window, { clientX: 0, clientY: 5 })
 
@@ -461,28 +458,17 @@ describe('re-ordering', () => {
     createHabitViaUI('two')
     createHabitViaUI('three')
 
-    // Same fixed geometry as above: rows at 0 / 50 / 100.
-    const rows = [...document.querySelectorAll('[data-habit-id]')]
-    rows.forEach((el, i) => {
-      el.getBoundingClientRect = () => ({
-        top: i * 50,
-        bottom: i * 50 + 40,
-        height: 40,
-        left: 0,
-        right: 100,
-        width: 100,
-        x: 0,
-        y: i * 50,
-        toJSON: () => {},
-      })
-    })
+    // Same geometry as above: rows at 0 / 50 / 100, 'one' dragged.
+    const drag = layOutRows('one')
 
-    // Grab 'one' by its NAME — not the grip — and pull it below 'three'.
+    // Grab 'one' by its NAME — not the tile's empty space — and pull it
+    // down over 'three'.
     fireEvent.pointerDown(row('one').getByText('one'), {
       button: 0,
       clientX: 0,
       clientY: 5,
     })
+    drag.offset = 100
     fireEvent.pointerMove(window, { clientX: 0, clientY: 105 })
     fireEvent.pointerUp(window, { clientX: 0, clientY: 105 })
 
@@ -497,20 +483,7 @@ describe('re-ordering', () => {
     createHabitViaUI('one')
     createHabitViaUI('two')
 
-    const rows = [...document.querySelectorAll('[data-habit-id]')]
-    rows.forEach((el, i) => {
-      el.getBoundingClientRect = () => ({
-        top: i * 50,
-        bottom: i * 50 + 40,
-        height: 40,
-        left: 0,
-        right: 100,
-        width: 100,
-        x: 0,
-        y: i * 50,
-        toJSON: () => {},
-      })
-    })
+    layOutRows()
 
     // A press on +1 that drifts down the list must count the habit and
     // leave the order alone — otherwise every tap risks moving a row.
@@ -525,6 +498,55 @@ describe('re-ordering', () => {
     )
     expect(names).toEqual(['one', 'two'])
     expect(row('one').getByText(/1\/1/)).toBeDefined()
+  })
+
+  // The other half of "the drop follows the tile" (2026-08-11): a tile
+  // that never leaves its own slot stays where it is. Under the old
+  // pointer rule a nudge of a few pixels sent the middle row to the top
+  // of the list, because the rule only ever asked which OTHER row the
+  // pointer had passed — the row's own seat was not in the running.
+  it('a small nudge inside its own slot moves nothing', () => {
+    render(<App />)
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+    createHabitViaUI('three')
+    const drag = layOutRows('two')
+
+    fireEvent.pointerDown(tile('two'), { button: 0, clientX: 0, clientY: 70 })
+    drag.offset = 8
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 78 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 78 })
+
+    const names = [...document.querySelectorAll('.habit-name')].map(
+      (el) => el.textContent,
+    )
+    expect(names).toEqual(['one', 'two', 'three'])
+  })
+
+  // Kimia's call 2026-08-11: a drop used to be over the instant it
+  // happened. The dropped tile now stays lifted and lit where it landed
+  // — long enough to see where that was — and only then eases back.
+  it('a dropped tile stays lit where it landed, then settles back', () => {
+    render(<App />)
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+    createHabitViaUI('three')
+    const drag = layOutRows('one')
+
+    fireEvent.pointerDown(tile('one'), { button: 0, clientX: 0, clientY: 5 })
+    drag.offset = 100
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 105 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 105 })
+
+    // Landed last, and still wearing the lifted look it had in hand.
+    expect(tile('one').className).toContain('habit-row--settling')
+    expect(tile('one').className).not.toContain('habit-row--dragging')
+
+    // Still lit a moment later; back to its resting self after the hold.
+    act(() => vi.advanceTimersByTime(DROP_SETTLE_MS - 50))
+    expect(tile('one').className).toContain('habit-row--settling')
+    act(() => vi.advanceTimersByTime(100))
+    expect(tile('one').className).not.toContain('habit-row--settling')
   })
 
   it('a press that never travels is not a drag — the order is untouched', () => {

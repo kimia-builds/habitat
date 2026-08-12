@@ -1647,6 +1647,54 @@ return 0` right after the era is worked out, so a moment before the
   and oxlint pass; the drag, the lens and the header were also checked
   in a real browser against seeded history.
 
+- 2026-08-11 (Kimia's review of the pass above): **three of the five
+  landed as asked; two needed more.**
+  1. **The field notes are two boxes with the lens outside both.** The
+     charms had been dropped inside the page's single outline, where the
+     section's `align-items: flex-start` left them small and hard against
+     the left edge — nothing like the home screen's centred row. They now
+     sit ABOVE the outline as a sibling of it, which is not a styling fix
+     but a structural one: as a direct child of the page column they
+     inherit the identical layout the home screen gives them (measured
+     the same to the pixel — same left, same width, same charm size).
+     The outline now begins just above the earlier / later buttons, and
+     the graphs have an outline of their OWN: two ways of looking, two
+     boxes, with "back to the habits" below both. The graphs box draws
+     its own frame from inside `HabitGraphs`, so a page with nothing
+     graphable yet shows no empty second frame.
+  2. **"still unfolding" is smaller** (0.75rem): it names something
+     already obvious, so it is a footnote for whoever missed it.
+  3. **The drop needed all three things it was missing.** (a) There was
+     no glide — the tile snapped into its slot, because nothing animated
+     the gap between where it was let go and where it landed. It is a
+     FLIP now: the list re-orders, then the tile is put back visually
+     where the hand left it and released, so the existing 420ms easing
+     carries it home. (b) The highlight is HELD after the landing for
+     `DROP_SETTLE_MS` (1000ms, constants.js) and then fades back over
+     600ms rather than being switched off, so the landing can be found
+     by eye. (c) **The landing slot now follows the tile, not the
+     pointer** — this reverses the note in the entry above, which was
+     written when the float was new and the lag looked harmless. It
+     isn't: on a quick drag the tile is visibly elsewhere, and dropping
+     it where the hand happens to be reads as the app disagreeing with
+     its own screen. The rule is now "the row whose middle the tile's
+     middle came to rest nearest", with the dragged row's OWN empty slot
+     (measured at the press, since nothing around it moves during a
+     drag) standing in for it in that comparison. That last part also
+     fixes a bug the pointer rule had all along: because it only ever
+     asked which OTHER row the pointer had passed, a nudge of a few
+     pixels sent the middle row of a list to the top.
+  _Tests:_ two added (a nudge inside a tile's own slot moves nothing; a
+  dropped tile stays lit where it landed, then settles back). The three
+  drag tests share one `layOutRows` helper whose dragged row's box
+  TRAVELS with the drag — under the new rule a parked box would be
+  describing a tile that never moved. Full suite 1042 and oxlint pass.
+  Browser-checked: the two pickers measure identically, the drop lands
+  where the tile is, and `getAnimations()` shows the glide running on the
+  settling tile. (The glide's motion itself can't be watched in the
+  in-Claude pane — hidden tabs freeze CSS transitions, see the note in
+  CLAUDE.md.)
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

@@ -33,6 +33,7 @@ function HabitRow({
   reorderDisabled,
   dragging,
   dragOffsetY,
+  settling,
   leaving,
   onComplete,
   onUndo,
@@ -74,6 +75,10 @@ function HabitRow({
       className={
         `habit-row charm-${habit.symbol}` +
         (dragging ? ' habit-row--dragging' : '') +
+        // Just dropped: still lit, still lifted, gliding into its new
+        // slot (2026-08-11). App decides how long this lasts and drives
+        // the glide itself; the class is only the look.
+        (settling ? ' habit-row--settling' : '') +
         (reorderDisabled ? ' habit-row--fixed' : '') +
         // On its way to the archive: the stylesheet sinks and fades it
         // (2026-08-11). App keeps it on screen for exactly as long as

@@ -374,12 +374,16 @@ region discovery expands what the Market can offer.
   foot of the habit list, and opens by itself on the first visit of each
   Sunday (after any check-in _and_ after the startup animation). Has a
   "back to habits" link. It carries the **charm lens** (above): the same
-  row of charms sits at the top of the page, narrowing the grid and the
-  graphs, and adjustable without going back. The week is headed by its
-  dates alone in **DD-MM-YY** — `03-08-26 – 09-08-26`, no "week of"
-  (2026-08-11) — with "still unfolding" on its own line underneath when
-  the week on show is the current one, so the earlier / later buttons
-  keep the two ends of the row.
+  row of charms, in the same place and at the same size as the home
+  screen's, sits **above the page's outline** — a lens over the notes,
+  not part of them — narrowing the grid and the graphs, and adjustable
+  without going back. Below it the page is **two outlined sections**
+  (2026-08-11): the week being browsed, then the graphs, with the back
+  button below both. The week is headed by its dates alone in
+  **DD-MM-YY** — `03-08-26 – 09-08-26`, no "week of" — with a small,
+  quiet "still unfolding" on its own line underneath when the week on
+  show is the current one, so the earlier / later buttons keep the two
+  ends of the row.
 - **Settings:** day cutoff, data export/import, and **start a new game**
   (§8) — the one door that wipes the world.
 - **Design assets (TEMPORARY, T5 prep — 2026-07-21):** a workbench page

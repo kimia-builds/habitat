@@ -3,7 +3,13 @@
 // habits, days and completions is delegated to the game modules, and
 // all saving goes through the storage module.
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import {
   abodeItems,
   placeFlora,
@@ -17,7 +23,11 @@ import {
   seenDropKeys,
 } from './game/arrivals.js'
 import { editablePastDays, habitsOn, isCheckInDue } from './game/checkin.js'
-import { ARCHIVE_FAREWELL_MS, CLOCK_CHECK_MS } from './game/constants.js'
+import {
+  ARCHIVE_FAREWELL_MS,
+  CLOCK_CHECK_MS,
+  DROP_SETTLE_MS,
+} from './game/constants.js'
 import {
   bookcaseItems,
   faceBook,
@@ -165,6 +175,14 @@ function App() {
   // and work out which slot the pointer is over.
   const [reorderDrag, setReorderDrag] = useState(null)
   const listRef = useRef(null)
+
+  // The moment AFTER a drop (2026-08-11): { id, fromTop } — which tile
+  // was just let go of, and the screen position it was let go at. The
+  // list has already re-ordered by the time this is set, so the tile is
+  // standing in its new slot; the layout effect below starts it back at
+  // `fromTop` and lets it glide from there, and the tile keeps its
+  // lifted, charm-lit look for DROP_SETTLE_MS so the landing can be seen.
+  const [settling, setSettling] = useState(null)
 
   // The countdown that ends a tile's farewell (see startFarewell). Held
   // in a ref so a second archive can cancel the first, and so leaving the
@@ -718,48 +736,114 @@ function App() {
     save({ ...data, habits: moveHabit(data.habits, habit.id, target) })
   }
 
+  // Which row a dragged tile has landed on — decided by where the TILE
+  // is on screen, not by where the hand is (Kimia's call 2026-08-11).
+  // The two used to be the same thing; now that the tile floats after
+  // the pointer instead of being welded to it they part company on a
+  // quick drag, and dropping a tile somewhere it visibly isn't reads as
+  // a bug. `getBoundingClientRect` returns a row's real drawn box —
+  // transform and all — so the dragged tile's middle IS what the eye
+  // sees, and the landing is simply the row whose middle it has come to
+  // rest nearest.
+  //
+  // Every row is measured where it sits. The dragged one is the
+  // exception: it is in mid-air, so the empty SLOT it left behind stands
+  // in for it (`slot`, measured at the moment of the press, since the
+  // rows around it never move during a drag). Without that, a tile
+  // nudged a few pixels inside its own row would have no slot of its own
+  // to be nearest to and would jump to a neighbour — which is exactly
+  // what the old pointer-based rule did.
+  function landingRowFor(tile, slot) {
+    const rows = listRef.current
+      ? [...listRef.current.querySelectorAll('[data-habit-id]')]
+      : []
+    const box = tile.getBoundingClientRect()
+    const middle = (box.top + box.bottom) / 2
+    let landing = null
+    let nearest = Infinity
+    rows.forEach((row) => {
+      const seat = row === tile ? slot : row.getBoundingClientRect()
+      const gap = Math.abs((seat.top + seat.bottom) / 2 - middle)
+      if (gap < nearest) {
+        nearest = gap
+        landing = row
+      }
+    })
+    return landing ? landing.getAttribute('data-habit-id') : null
+  }
+
   // Begin a drag-to-reorder from a press on a habit row (T5.1c; the whole
   // tile is the grab area since 2026-08-11 — HabitRow decides which
   // presses count, letting the row's own buttons through). We watch the
   // pointer on the WINDOW so the drag keeps tracking even when it leaves
-  // the row, and decide at release which row it landed on — the last
-  // row whose top edge the pointer has passed. The dragged row itself is
-  // skipped: it follows the pointer (an inline transform), so its own
-  // shifted position must never count, or an upward drag would keep
-  // "landing" back on itself. A press that never travels far enough stays
-  // a press and reorders nothing. Reordering is off while a symbol filter
-  // is on (the list is a partial lens), so no press starts a drag then.
-  // Desktop-only (T5.1b), so a single primary-button pointer press is all
-  // we handle.
+  // the row, and read the landing slot off the TILE at the moment of
+  // release (landingRowFor above). A press that never travels far enough
+  // stays a press and reorders nothing. Reordering is off while a symbol
+  // filter is on (the list is a partial lens), so no press starts a drag
+  // then. Desktop-only (T5.1b), so a single primary-button pointer press
+  // is all we handle.
   function handleReorderStart(habit, event) {
     if (event.button) return // left / primary only
     event.preventDefault()
     const startY = event.clientY
+    // The row's own element and the slot it is standing in, both taken
+    // now, before anything has moved: the element because the drag has
+    // to keep measuring it, the slot because it is what the tile will be
+    // compared against when it comes back down.
+    const tile = event.currentTarget
+    const slot = tile.getBoundingClientRect()
     let dragging = false
-    let targetId = habit.id
     function move(moveEvent) {
       const offsetY = moveEvent.clientY - startY
       if (!dragging && Math.abs(offsetY) < REORDER_DRAG_THRESHOLD_PX) return
       dragging = true
-      const rows = listRef.current
-        ? [...listRef.current.querySelectorAll('[data-habit-id]')]
-        : []
-      rows.forEach((row) => {
-        const id = row.getAttribute('data-habit-id')
-        if (id === habit.id) return // never the dragged row itself
-        if (moveEvent.clientY >= row.getBoundingClientRect().top) targetId = id
-      })
       setReorderDrag({ id: habit.id, offsetY })
     }
     function up() {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', up)
+      if (!dragging) {
+        setReorderDrag(null)
+        return
+      }
+      // Both readings are taken BEFORE the tile is put down, while it is
+      // still drawn where it was let go: which row it came to rest over,
+      // and the exact height it was let go at — where its glide begins.
+      const landedOn = landingRowFor(tile, slot)
+      const fromTop = tile.getBoundingClientRect().top
       setReorderDrag(null)
-      if (dragging) handleMoveTo(habit, targetId)
+      handleMoveTo(habit, landedOn)
+      setSettling({ id: habit.id, fromTop })
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)
   }
+
+  // The glide, once the list has re-ordered around the dropped tile.
+  // Straight FLIP: the tile is standing in its new slot, so we put it
+  // visually back where the hand left it and immediately let go — the
+  // stylesheet's transition carries it the rest of the way. The nudge to
+  // the browser between the two is what stops it treating them as one
+  // instant jump. Both inline styles are cleared here, so nothing of
+  // this survives the animation; the lit look is the CSS class alone,
+  // and it lasts until the timer below drops `settling` and lets the
+  // colours ease back.
+  useLayoutEffect(() => {
+    if (!settling) return
+    const tile = listRef.current?.querySelector(
+      `[data-habit-id="${settling.id}"]`,
+    )
+    if (tile) {
+      const drift = settling.fromTop - tile.getBoundingClientRect().top
+      tile.style.transition = 'none'
+      tile.style.transform = `translateY(${drift}px) scale(1.02)`
+      void tile.offsetHeight // let the browser take that in…
+      tile.style.transition = ''
+      tile.style.transform = '' // …before it eases back to nothing
+    }
+    const timer = setTimeout(() => setSettling(null), DROP_SETTLE_MS)
+    return () => clearTimeout(timer)
+  }, [settling])
 
   function handleDelete(habit) {
     const sure = window.confirm(
@@ -876,6 +960,7 @@ function App() {
               fulfilled={isDayFulfilled(habit, data.completions, today)}
               reorderDisabled={filter.length > 0}
               dragging={reorderDrag?.id === habit.id}
+              settling={settling?.id === habit.id}
               dragOffsetY={
                 reorderDrag?.id === habit.id ? reorderDrag.offsetY : 0
               }
