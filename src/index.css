@@ -42,19 +42,30 @@ body {
 }
 
 /* The night sky (§13c, T5.2d): the app's background, mounted once in
-   main.jsx and fixed to the viewport so it neither scrolls nor re-rolls
-   its stars as pages change. Two layers below the content — the §11b
-   wash sits between them at -1, which is what "the wash is what the
-   stars sit in" meant. NightSky itself is absolute/inset-0, so this box
-   is all it needs to fill the screen.
+   main.jsx. Two layers below the content — the §11b wash sits between
+   them at -1, which is what "the wash is what the stars sit in" meant.
+   NightSky itself is absolute/inset-0, so this box is all it needs.
+
+   It SCROLLS WITH THE PAGE (Kimia's call 2026-08-12). Held fixed to the
+   viewport the stars slid under the content as it moved, and a sky that
+   does not move while everything in front of it does reads as painted-on
+   rather than as a place. So the layer is absolute and spans the whole
+   document — `#root` below is what gives it that height — and the stars,
+   positioned in percentages, spread across the full scroll rather than
+   one screen of it.
 
    It is atmosphere and never the POP (spec §7): faint, low-contrast, and
    quite unable to compete with a drop or a reveal, which draw far above
    it. The twinkle is rare and unsynchronised by construction, and it
    stops entirely under prefers-reduced-motion — both handled inside
    sky.jsx. */
+#root {
+  position: relative; /* the sky's containing block: as tall as the page */
+  min-height: 100vh; /* …and never shorter than the screen */
+}
+
 .sky-layer {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: -2;
   pointer-events: none;
@@ -584,11 +595,17 @@ body {
    below it — two different ways of looking, so two frames. The charm
    lens sits above both, outside any box, exactly as it does on the home
    screen, and the "back to the habits" button below both. */
+/* The field notes' two panels are OPAQUE (Kimia's call 2026-08-12): this
+   is the densest reading in the app — a week grid of small type — and
+   with the night sky behind it, a washed, see-through panel put stars
+   under the numbers. The ground colour itself, so the panel reads as a
+   quiet hole cut in the sky rather than a second surface. */
 .field-notes,
 .habit-graphs {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   padding: 1rem;

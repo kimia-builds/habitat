@@ -1158,15 +1158,33 @@ the startup animation §12f, which is wide-screen-only).
   stops the twinkle entirely.
 - It is **atmosphere, never the POP** (spec §7): faint and low-contrast,
   it must never compete with a drop, a reveal, or the meters.
+- **Dense reading gets an opaque panel over it** (Kimia's call
+  2026-08-12). `--surface` is a white wash, so the stars come through it
+  — fine behind a habit row, not fine behind the field notes' week grid,
+  where small type sat on a starfield. The field notes' two panels use
+  `--surface-solid` instead, which is the ground colour itself, so an
+  opaque panel reads as a quiet hole cut in the sky rather than as a
+  second, competing surface. Any future panel carrying dense reading
+  should do the same.
 
 **It was already built — this slice only mounted it.** `NightSky` has
 lived in `src/ui/sky.jsx` since 2026-07-24 (design-bible §11a), shown on
 the workbench for the eyeball pass. T5.2d mounts it **once**, in
-`main.jsx`, inside the width gate, on a fixed full-bleed `.sky-layer` at
-`z-index: -2` — so it does not scroll, does not re-roll its star field
-as pages change, and leaves the blocked screen its own plain ground. The
-§11b ambient wash sits between sky and content at `-1`, which is what
-"the wash is what the stars sit in" always meant.
+`main.jsx`, inside the width gate, on a full-bleed `.sky-layer` at
+`z-index: -2` — so it does not re-roll its star field as pages change,
+and leaves the blocked screen its own plain ground. The §11b ambient
+wash sits between sky and content at `-1`, which is what "the wash is
+what the stars sit in" always meant.
+
+**The sky scrolls with the page (Kimia's call 2026-08-12).** It was
+first mounted fixed to the viewport, and that was wrong in a way only
+motion shows: the content slid over a sky that never moved, so the stars
+read as printed on the glass rather than as a place the app sits in. The
+layer is therefore **absolute and as tall as the whole document** —
+`#root` carries `position: relative` and `min-height: 100vh` to give it
+that height and to keep the field full-screen on short pages — and the
+stars, positioned in percentages, spread across the entire scroll rather
+than one screen of it.
 
 **Its three ground colours moved into tokens.css with it** (per §11d's
 schedule: artwork paints stay beside their drawings, but a colour the

@@ -152,6 +152,14 @@
   --sky-night-mid: #0a0c14;
   --sky-night-bottom: #080910;
 
+  /* A panel that must be OPAQUE, not washed (Kimia's call 2026-08-12,
+     once the stars were up): --surface is a white wash, which lets the
+     sky through, and dense reading — the field notes' week grid — needs
+     the stars to stop behind it. Deliberately the ground colour itself
+     rather than a new black, so an opaque panel reads as a hole cut in
+     the sky rather than as a second, competing surface. */
+  --surface-solid: #080910;
+
   /* Veils: full-screen washes that dim what is behind them. */
   --veil-reveal: rgba(4, 6, 10, 0.88); /* behind a first-occurrence reveal */
   --veil-checkin: rgba(4, 6, 10, 0.72); /* behind the morning check-in */

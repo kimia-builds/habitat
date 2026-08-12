@@ -2075,6 +2075,23 @@ return 0` right after the era is worked out, so a moment before the
   it. If the bolder July sky turns out to be wanted, it is a three-value
   edit in tokens.css and nothing else.
 
+  **Then two corrections from Kimia, on seeing it live.** First: the sky
+  was mounted FIXED to the viewport, and held still while the content
+  scrolled over it — which she read immediately as artificial. A sky
+  that does not move when everything in front of it does is printed on
+  the glass, not a place. So the layer became absolute and
+  document-tall (`#root` gained `position: relative` and
+  `min-height: 100vh` to give it that height and keep the field
+  full-screen on short pages), and the stars now travel with the page.
+  Second: **dense reading needs an opaque panel.** `--surface` is a
+  white wash, which was fine over bare ground and is not fine over
+  stars — the field notes' week grid had a starfield behind its
+  numbers. Both field-notes panels now use a new `--surface-solid`,
+  deliberately set to the ground colour itself so an opaque panel reads
+  as a hole cut in the sky rather than a second surface. The standing
+  rule, recorded in §13c: any panel carrying dense reading does the
+  same.
+
   _Build notes:_ `.app-header` is a grid with named areas, a sibling
   ABOVE `<main class="app">` rather than inside it, so the 40rem column
   is untouched. The `meters` fragment in App.jsx no longer carries the
