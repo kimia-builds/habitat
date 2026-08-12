@@ -140,7 +140,10 @@ tracker. Everything after this is delight, informed by real use.
             (the T5.2c lesson):_
             - [x] promoted page titles (§13b) _(2026-08-12)_
             - [x] the top header bar (§13a) _(2026-08-12)_
-            - [ ] the night-sky background (§13c)
+            - [x] the night-sky background (§13c) _(2026-08-12 — the
+                  workbench NightSky mounted as the app background; its
+                  ground colours into tokens.css, re-tuned to sink into
+                  the settled §11b ground)_
             - [ ] the spacing scale into the tokens file
       - [ ] **T5.2e Glow, feel & the startup animation** — the §4–§5 feel
             enhancements and the §12f rolling planet; the glow scale joins

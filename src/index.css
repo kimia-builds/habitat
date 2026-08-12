@@ -41,12 +41,30 @@ body {
   gap: 1rem;
 }
 
+/* The night sky (§13c, T5.2d): the app's background, mounted once in
+   main.jsx and fixed to the viewport so it neither scrolls nor re-rolls
+   its stars as pages change. Two layers below the content — the §11b
+   wash sits between them at -1, which is what "the wash is what the
+   stars sit in" meant. NightSky itself is absolute/inset-0, so this box
+   is all it needs to fill the screen.
+
+   It is atmosphere and never the POP (spec §7): faint, low-contrast, and
+   quite unable to compete with a drop or a reveal, which draw far above
+   it. The twinkle is rare and unsynchronised by construction, and it
+   stops entirely under prefers-reduced-motion — both handled inside
+   sky.jsx. */
+.sky-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
 /* §11b's ambient depth (T5.2b): a barely-there pool of light behind the
    content column, so the page reads as a lit space rather than a flat
    sheet of black. It fades out well before the column edges, which is
-   what keeps it from drawing a visible seam down the page.
-   §13c mounts the night sky as the app background in T5.2d — this wash
-   is what the stars will sit in. */
+   what keeps it from drawing a visible seam down the page. Since T5.2d
+   it pools over the night sky rather than over bare ground. */
 .app::before {
   content: '';
   position: fixed;

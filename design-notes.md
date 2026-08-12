@@ -1036,7 +1036,7 @@ Soundless, as ever.
 
 ---
 
-## 13. Layout & atmosphere — the M5 layout pass **[§13a, §13b BUILT (T5.2d, 2026-08-12) · §13c TO-BUILD · §13d is T5.2e]**
+## 13. Layout & atmosphere — the M5 layout pass **[§13a, §13b, §13c BUILT (T5.2d, 2026-08-12) · §13d is T5.2e]**
 
 _Kimia's M5 layout spec, merged 2026-07-21. Net-new structural pieces
 for this design pass; they sit on top of the home screen §12 already
@@ -1141,21 +1141,47 @@ the title is the column's first child, outside that frame. The
 included — keeps working. Padding stays per-page (2rem 1rem for the
 stub pages, 1rem for Map and Bookcase) as an override on `.page-box`.
 
-### 13c. The night-sky background
+### 13c. The night-sky background **[BUILT — T5.2d, 2026-08-12]**
 
-No background art exists yet — `body` is a flat near-black. This pass
-adds a **full-bleed sky layer behind all content, on every device**
-(unlike the startup animation §12f, which is desktop-only).
+`body` used to be a flat near-black. There is now a **full-bleed sky
+layer behind all content, on every screen the app renders on** (unlike
+the startup animation §12f, which is wide-screen-only).
 
-- Mostly still, with an **occasional, unsynchronised twinkle** —
-  roughly once per 30 seconds per star, never a visible pulse rippling
-  across the field.
-- **How:** a handful of small star elements, each with its own
-  randomised long `animation-duration` / `animation-delay`, so
-  individually each blinks rarely and the aggregate reads as sparse and
-  organic rather than a pattern. Pure CSS — no JS, no canvas.
+- Mostly still, with an **occasional, unsynchronised twinkle** — never a
+  visible pulse rippling across the field.
+- **How:** small star elements, each with its own randomised long
+  `animation-duration` / `animation-delay`, so individually each blinks
+  rarely and the aggregate reads as sparse and organic rather than a
+  pattern. Pure CSS — no JS, no canvas. As built: 265 stars in three
+  sizes, of which the 7 largest twinkle, on an 8–14s cycle each with a
+  negative delay so they start out of step. `prefers-reduced-motion`
+  stops the twinkle entirely.
 - It is **atmosphere, never the POP** (spec §7): faint and low-contrast,
   it must never compete with a drop, a reveal, or the meters.
+
+**It was already built — this slice only mounted it.** `NightSky` has
+lived in `src/ui/sky.jsx` since 2026-07-24 (design-bible §11a), shown on
+the workbench for the eyeball pass. T5.2d mounts it **once**, in
+`main.jsx`, inside the width gate, on a fixed full-bleed `.sky-layer` at
+`z-index: -2` — so it does not scroll, does not re-roll its star field
+as pages change, and leaves the blocked screen its own plain ground. The
+§11b ambient wash sits between sky and content at `-1`, which is what
+"the wash is what the stars sit in" always meant.
+
+**Its three ground colours moved into tokens.css with it** (per §11d's
+schedule: artwork paints stay beside their drawings, but a colour the
+stylesheet wears becomes a token the moment it is worn) — as
+`--sky-night-top` / `-mid` / `-bottom`.
+
+**And they were re-tuned on the way, deliberately.** The workbench
+stand-ins (`#10151f → #05070a`) were painted in July, before §11b
+settled the ground at `#080910` on 2026-08-11. Mounting them unchanged
+would have repainted the whole app — bluer and lighter up top, darker at
+the foot — which is a change to the settled identity, not the addition
+of atmosphere §13c asks for. So the gradient now **sinks to `--bg` at
+the bottom** and lifts only faintly above it. If the bolder July sky is
+wanted after all, it is a three-value edit in tokens.css and nothing
+else — which is the tokens file doing its job.
 
 ### 13d. The startup "rolling planet" — desktop only
 

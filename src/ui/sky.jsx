@@ -1,12 +1,14 @@
 /*
  * sky.jsx — N-Z-D environment sky assets (design-bible §11a)
  * =============================================================================
- * Sibling of textures.jsx: built in an asset session, merged in this T5.3
- * coding session. Both skies land on the DesignPage workbench first (spec §5b,
- * design-bible §11a step d) for the eyeball pass; wiring them into the real
- * screens comes AFTER Kimia has tuned them there:
- *   • the shared NightSky as the app-shell background is part of the M5 layout
- *     pass (T5.2, design-notes §13c) — not this session;
+ * Sibling of textures.jsx: built in an asset session, merged in a T5.3 coding
+ * session. Both skies landed on the DesignPage workbench first (spec §5b,
+ * design-bible §11a step d) for the eyeball pass, then moved to the real
+ * screens:
+ *   • NightSky IS the app background as of 2026-08-12 (T5.2d, design-notes
+ *     §13c) — mounted once in main.jsx, inside the width gate, on a fixed
+ *     full-bleed layer. It still renders on the workbench too, in its own
+ *     bounded box.
  *   • AbodeSky moves onto the real Abode screen in a later T5.3 step.
  *
  * TWO assets live here, and the design bible treats them differently:
@@ -34,10 +36,10 @@
  * split is a schedule, not an argument:
  *   • the ABODE palettes are artwork — four painted skies, read only as JS
  *     strings. They stay here for good, like textures.jsx's tints.
- *   • the NIGHT SKY's three ground colours become real stylesheet colours the
- *     moment §13c mounts it as the app background (a later T5.2 slice). They
- *     move into tokens.css in that slice, with the rules that use them — not
- *     before, because a token nothing reads is just a colour in a lonelier file.
+ *   • the NIGHT SKY's three ground colours became real stylesheet colours the
+ *     moment §13c mounted it as the app background. DONE 2026-08-12: they now
+ *     live in tokens.css as --sky-night-top / -mid / -bottom, and the gradient
+ *     below asks for them by name.
  * =============================================================================
  */
 
@@ -48,10 +50,13 @@ import { useMemo, Fragment } from 'react'
  * tokens.css (the night-sky ground, in the §13c slice) and which never do.
  * --------------------------------------------------------------------------- */
 export const SKY_TOKENS = {
-  // shared night sky
-  nightTop: '#10151f', // TODO token: faint upper-middle brightness
-  nightMid: '#0a0e16', // TODO token
-  nightBot: '#05070a', // TODO token: near-black base
+  // The night sky's three ground colours USED to sit here as stand-ins
+  // (#10151f / #0a0e16 / #05070a). They moved into tokens.css on
+  // 2026-08-12 as --sky-night-top / -mid / -bottom when §13c mounted the
+  // sky as the app background, exactly as the header above scheduled —
+  // and were re-tuned much fainter on the way, because the stand-ins
+  // were painted before §11b settled the ground and would otherwise have
+  // repainted the whole app. Change them there, not here.
   starWhite: '#ffffff', // stars are white ONLY
   twinkleMinS: 8, // slowest-safe blink (seconds)
   twinkleMaxS: 14,
@@ -126,7 +131,7 @@ export function NightSky({
     <div className="nzd-night-sky" aria-hidden="true">
       <style>{`
         .nzd-night-sky { position: absolute; inset: 0; overflow: hidden;
-          background: radial-gradient(140% 100% at 50% 22%, ${t.nightTop} 0%, ${t.nightMid} 46%, ${t.nightBot} 100%); }
+          background: radial-gradient(140% 100% at 50% 22%, var(--sky-night-top) 0%, var(--sky-night-mid) 46%, var(--sky-night-bottom) 100%); }
         .nzd-night-sky .s { position: absolute; border-radius: 50%; background: ${t.starWhite}; }
         .nzd-night-sky .gem { box-shadow: 0 0 4px rgba(255,255,255,.85), 0 0 9px rgba(255,255,255,.45); }
         @keyframes nzd-twinkle { 0%,100% { opacity: 1; } 50% { opacity: .22; } }
@@ -146,7 +151,10 @@ export function NightSky({
             height: s.size.toFixed(2) + 'px',
             opacity: s.op.toFixed(2),
             ...(s.dur
-              ? { '--dur': s.dur.toFixed(1) + 's', '--delay': s.delay.toFixed(1) + 's' }
+              ? {
+                  '--dur': s.dur.toFixed(1) + 's',
+                  '--delay': s.delay.toFixed(1) + 's',
+                }
               : {}),
           }}
         />
@@ -246,11 +254,22 @@ export function AbodeSky({ palette = 'ember', seed = 99 }) {
           <stop offset="60%" stopColor="#000" stopOpacity="0" />
           <stop offset="100%" stopColor="#000" stopOpacity="0.5" />
         </radialGradient>
-        <filter id={`${uid}-gem`} x="-300%" y="-300%" width="700%" height="700%">
+        <filter
+          id={`${uid}-gem`}
+          x="-300%"
+          y="-300%"
+          width="700%"
+          height="700%"
+        >
           <feGaussianBlur stdDeviation="1.6" />
         </filter>
         {ABODE_NEB.map((p, i) => (
-          <NebulaFilter key={i} id={`${uid}-neb${i}`} params={p} tint={tints[i]} />
+          <NebulaFilter
+            key={i}
+            id={`${uid}-neb${i}`}
+            params={p}
+            tint={tints[i]}
+          />
         ))}
         <NebulaFilter id={`${uid}-cloud`} params={ABODE_CLOUD} tint={cloud} />
       </defs>

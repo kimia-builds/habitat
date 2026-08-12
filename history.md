@@ -2057,6 +2057,24 @@ return 0` right after the era is worked out, so a moment before the
   nothing collapses in between. Recorded in §13a as the standing note
   for the rest of this pass: below 1024px is dead CSS in this app.
 
+  **The night sky is mounted (§13c), and its ground was re-tuned rather
+  than transplanted.** `NightSky` had been sitting in `src/ui/sky.jsx`
+  since 2026-07-24, approved on the workbench; this slice only had to
+  mount it — once, in `main.jsx`, inside the width gate, on a fixed
+  `.sky-layer` at `z-index: -2`, so it neither scrolls nor re-rolls its
+  star field as pages change, and the blocked screen keeps its own plain
+  ground. Its three ground colours moved into tokens.css as
+  `--sky-night-top` / `-mid` / `-bottom`, exactly as §11d had scheduled
+  them to when the sky stopped being a swatch.
+  **The judgement call, worth recording:** the July stand-ins
+  (`#10151f → #05070a`) predate §11b settling the ground at `#080910` on
+  2026-08-11, so mounting them unchanged would have repainted the whole
+  app bluer up top and darker at the foot. That is a change to a settled
+  identity, not the atmosphere §13c asks for, so the gradient was
+  re-tuned to sink into `--bg` at the bottom and lift only faintly above
+  it. If the bolder July sky turns out to be wanted, it is a three-value
+  edit in tokens.css and nothing else.
+
   _Build notes:_ `.app-header` is a grid with named areas, a sibling
   ABOVE `<main class="app">` rather than inside it, so the 40rem column
   is untouched. The `meters` fragment in App.jsx no longer carries the

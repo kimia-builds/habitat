@@ -137,6 +137,21 @@
      pooled behind the content column. */
   --wash-ambient: rgba(255, 255, 255, 0.025);
 
+  /* The night sky's ground (§13c, T5.2d — the three colours sky.jsx had
+     been holding as stand-ins since 2026-07-24, arriving here now that
+     the sky is mounted as the app background rather than a workbench
+     swatch). It is a gradient, brightest just above the middle where the
+     §11b wash also pools, sinking to the settled ground at the foot.
+     Deliberately much fainter than the workbench stand-ins were: those
+     were painted (#10151f → #05070a) before §11b settled the ground at
+     #080910 on 2026-08-11, and mounting them unchanged would have
+     repainted the whole app bluer rather than adding atmosphere to it.
+     The bottom IS --bg, so the sky sinks into the ground Kimia chose;
+     the lift above it is small enough to read as light. */
+  --sky-night-top: #0e1119;
+  --sky-night-mid: #0a0c14;
+  --sky-night-bottom: #080910;
+
   /* Veils: full-screen washes that dim what is behind them. */
   --veil-reveal: rgba(4, 6, 10, 0.88); /* behind a first-occurrence reveal */
   --veil-checkin: rgba(4, 6, 10, 0.72); /* behind the morning check-in */
