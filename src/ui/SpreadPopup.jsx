@@ -33,7 +33,7 @@ function SpreadPopup({ item, onClose }) {
             {emptyLine && <p className="spread-empty-line">{emptyLine}</p>}
           </>
         )}
-        <button className="reveal-button pill-button" onClick={onClose}>
+        <button className="reveal-button pebble" onClick={onClose}>
           close
         </button>
       </div>

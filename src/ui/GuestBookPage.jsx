@@ -44,7 +44,7 @@ function FriendCard({ friend, worldSeed, onClose }) {
         />
         {name && <p className="arrival-caption">{name}</p>}
         {cardText && <p className="friend-card-text">{cardText}</p>}
-        <button className="reveal-button pill-button" onClick={onClose}>
+        <button className="reveal-button pebble" onClick={onClose}>
           close
         </button>
       </div>
@@ -88,7 +88,7 @@ function GuestBookPage({ friends, worldSeed, onBack }) {
           onClose={() => setSelected(null)}
         />
       )}
-      <button className="pill-button" onClick={onBack}>
+      <button className="pebble" onClick={onBack}>
         ← back to the habits
       </button>
     </section>

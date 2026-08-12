@@ -368,7 +368,7 @@ function DesignPage({ onBack }) {
         </section>
       ))}
 
-      <button className="pill-button" onClick={onBack}>
+      <button className="pebble" onClick={onBack}>
         ← back to the habits
       </button>
     </section>

@@ -95,21 +95,23 @@
      Turn it up for softer corners, down toward 0 for square ones. */
   --radius-form: 1.5rem;
 
-  /* Fully round: the shape every named button and every open text field
-     wears (Kimia's call 2026-08-11 — "ovals, and fields like baguettes").
+  /* Fully round: the shape every pebble and every open text field wears
+     (Kimia's call 2026-08-11 — "ovals, and fields like baguettes").
      Any number this large rounds the short sides into half-circles, so it
      is a switch more than a dial: lower it only to un-round them. */
   --radius-pill: 999px;
 
-  /* The outline every named button wears (Kimia's call 2026-08-11) — save,
-     cancel, +1, -1, the tick, buy, done, close, back to the habits, the
-     backup buttons. Plain white, except on a saved habit tile, where the
-     button borrows that tile's own charm colour instead. */
+  /* The outline every PEBBLE wears (Kimia's call 2026-08-11; named
+     2026-08-12) — the controls that say what they do in words or numbers:
+     save, cancel, +1, -1, the tick, gather, buy, done, close, back to the
+     habits. Plain white, except on a saved habit tile, where the pebble
+     borrows that tile's own charm colour instead. The family, and what is
+     deliberately outside it, is design-notes §11e. */
   --button-edge: #ffffff;
 
   /* …and how much of it actually shows. Full-strength outlines were too
      loud on the dark ground (Kimia, an hour after they landed), so every
-     button edge is diluted by this ONE number — the white ones and all
+     pebble's edge is diluted by this ONE number — the white ones and all
      six charm ones alike, mixed live like the tile fill above. Turn it up
      for a firmer outline, down for a fainter one. */
   --button-edge-strength: 38%;

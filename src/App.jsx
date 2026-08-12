@@ -1137,7 +1137,7 @@ function App() {
                   {doneForGood ? (
                     countOn(data.completions, habit.id, today) > 0 ? (
                       <button
-                        className="circle-button"
+                        className="pebble pebble-counter"
                         onClick={() => handleUndoOneTime(habit)}
                       >
                         -1
@@ -1205,7 +1205,7 @@ function App() {
           are a pair, one at the foot of each page, pointing at each
           other. Being a direct child of the app column is what makes it
           full width — exactly how the back button gets its width. */}
-      <button className="pill-button" onClick={() => setPage('fieldnotes')}>
+      <button className="pebble" onClick={() => setPage('fieldnotes')}>
         view historical data →
       </button>
 
@@ -1216,7 +1216,9 @@ function App() {
           it. Not a world page, so no rail icon; the door leaves when
           the design pass lands. */}
       <div className="design-door">
-        <button onClick={() => setPage('design')}>design assets</button>
+        <button className="door-link" onClick={() => setPage('design')}>
+          design assets
+        </button>
       </div>
     </>
   )

@@ -37,13 +37,13 @@ function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
   return (
     <div className="backup-controls">
       <button
-        className="pill-button"
+        className="pebble"
         onClick={onExport}
         title={backupAgeLabel(lastExportedOn, todayKey)}
       >
         export backup
       </button>
-      <button className="pill-button" onClick={() => fileInput.current.click()}>
+      <button className="pebble" onClick={() => fileInput.current.click()}>
         import backup
       </button>
       <input

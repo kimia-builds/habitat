@@ -503,7 +503,7 @@ body {
   flex-wrap: nowrap;
 }
 
-.week-nav .pill-button {
+.week-nav .pebble {
   flex-shrink: 0;
 }
 
@@ -708,15 +708,19 @@ body {
   cursor: pointer;
 }
 
-.arrival-choice {
-  font: inherit;
+/* The choices a held drop offers — gather / leave it, read now / read
+   later — are pebbles (§11e, 2026-08-12): they say what they do in
+   words, so they wear the family's oval and edge. This rule only makes
+   them SMALL, because they sit beside a drop on the shelf rather than at
+   the foot of a page. The abode's waiting-to-decide list offers the same
+   choice and so wears the same pair.
+   Written as `.pebble.arrival-choice` on purpose: `.pebble` sets both
+   `font` and `padding`, and it is defined further down this file, so a
+   plain `.arrival-choice` would lose to it and these would come out
+   full-sized. */
+.pebble.arrival-choice {
   font-size: 0.75rem;
-  background: none;
-  color: inherit;
-  border: 1px solid var(--border);
-  border-radius: 0.3rem;
-  padding: 0.2rem 0.5rem;
-  cursor: pointer;
+  padding: 0.2rem 0.7rem;
 }
 
 .arrival-caption {
@@ -1563,23 +1567,22 @@ body {
   color: var(--text-quiet);
 }
 
-/* ─────────────── THE BUTTON SHAPES (Kimia's call 2026-08-11) ───────────────
-   Habitat's named actions are ovals and circles — never rectangles. "Named
-   actions" is a closed list she drew herself: save and cancel, the +1, -1
-   and tick on a habit tile, export/import/start-a-new-game, the field
-   notes' earlier and later, "back to the habits" wherever it appears, the
-   market's buy, the check-in's done, and the close on the reading and
-   friend cards. Everything else — the icon-only furniture (grip, pencil,
-   archive, the foot-of-list trio, the left rail) and the charms — keeps
-   its bare, boxless look: those are drawings, not buttons with words.
-   Two shapes only: a long oval for anything with a word on it, and a
-   circle for the counters.
-   Every one of these outlines is DILUTED by --button-edge-strength
-   (Kimia, an hour after the shapes landed: the shapes were right, the
-   outlines too loud). One number softens the white edges and all six
-   charm edges together, so there is no palette of near-whites to keep
-   in step — just a dial. */
-.pill-button {
+/* ──────────────────────── THE PEBBLES (2026-08-12) ────────────────────────
+   Habitat's pressable things are mostly DRAWINGS — charms, drops, meters,
+   friend cards, the wordmark, the icon furniture. The ones that instead
+   SAY what they do, in words or in numbers, are the pebbles: smooth,
+   outlined, transparent, and never rectangular. `.pebble` is the whole
+   family and the one selector to reach for when they all change; the
+   canonical definition — what is a pebble, what deliberately is not, and
+   why — is design-notes §11e, and a guard test (src/test/pebbles.test.js)
+   fails the suite if a new button appears that nobody has classified.
+   Two shapes: the oval is the default, and `.pebble-counter` is the
+   circle worn by the +1 / -1 / tick trio.
+   Every pebble's outline is DILUTED by --button-edge-strength (Kimia, an
+   hour after the shapes landed: the shapes were right, the outlines too
+   loud). One number softens the white edges and all six charm edges
+   together, so there is no palette of near-whites to keep in step. */
+.pebble {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1597,43 +1600,32 @@ body {
   cursor: pointer;
 }
 
-.pill-button:disabled {
+.pebble:disabled {
   opacity: 0.35;
   cursor: default;
 }
 
-/* The counters on a habit tile: +1, -1 and the one-time tick are ONE
-   control in three moods, so they are one size and one shape — circles of
-   identical diameter, in a row. They take their outline from the tile
-   they sit on: a saved habit tile hands down its own charm colour
-   (`--charm-here`), and anywhere without a charm falls back to plain
-   white. The check-in's rows are the same rows wearing the same charms,
-   so they inherit all of this for free — and so does the archived list's
-   own `-1`, the undo on a to-do ticked off today (2026-08-11). */
-.circle-button {
+/* The counter pebbles: +1, -1 and the one-time tick are ONE control in
+   three moods, so they are one size and one shape — circles of identical
+   diameter, in a row. They take their outline from the tile they sit on:
+   a saved habit tile hands down its own charm colour (`--charm-here`),
+   and anywhere without a charm falls back to plain white. The check-in's
+   rows are the same rows wearing the same charms, so they inherit all of
+   this for free — and so does the archived list's own `-1`, the undo on a
+   to-do ticked off today (2026-08-11). */
+.pebble-counter {
   width: 2rem;
   height: 2rem;
   flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font: inherit;
   font-size: 0.9rem;
   line-height: 1;
-  color: inherit;
-  background: none;
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--charm-here, var(--button-edge)) var(--button-edge-strength),
-      transparent
-    );
+  padding: 0;
+  border-color: color-mix(
+    in srgb,
+    var(--charm-here, var(--button-edge)) var(--button-edge-strength),
+    transparent
+  );
   border-radius: 50%;
-  cursor: pointer;
-}
-
-.circle-button:disabled {
-  opacity: 0.35;
 }
 
 /* One-time to-do tick-box: the same empty circle as its +1 neighbours
@@ -1995,7 +1987,11 @@ body {
   padding: 0.5rem 0 1rem;
 }
 
-.design-door button {
+/* Deliberately not a pebble (§11e): a door, kept fainter than anything
+   it stands beside — it is the one link that leaves when the design pass
+   lands. `.door-link` names it so the pebble guard can tell it apart
+   from an unclassified button. */
+.design-door .door-link {
   background: none;
   border: none;
   cursor: pointer;
@@ -2004,7 +2000,7 @@ body {
   color: var(--text-faint);
 }
 
-.design-door button:hover {
+.design-door .door-link:hover {
   color: var(--text-quiet);
 }
 

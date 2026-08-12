@@ -296,10 +296,16 @@ function AbodePage({
               <li key={find.completionId} className="abode-row arrival-flora">
                 <DropGlyph kind="flora" />
                 <span className="abode-name">a flora find</span>
-                <button onClick={() => onDecide(find.completionId, 'gathered')}>
+                <button
+                  className="pebble arrival-choice"
+                  onClick={() => onDecide(find.completionId, 'gathered')}
+                >
                   gather
                 </button>
-                <button onClick={() => onDecide(find.completionId, 'left')}>
+                <button
+                  className="pebble arrival-choice"
+                  onClick={() => onDecide(find.completionId, 'left')}
+                >
                   leave it
                 </button>
               </li>
@@ -436,7 +442,7 @@ function AbodePage({
           })}
       </svg>
 
-      <button className="pill-button" onClick={onBack}>
+      <button className="pebble" onClick={onBack}>
         ← back to the habits
       </button>
     </section>

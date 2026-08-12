@@ -68,7 +68,7 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
   return (
     <div className="new-game-control">
       <button
-        className="pill-button"
+        className="pebble"
         onClick={() => {
           setMessage('')
           setStep('choose')
@@ -102,14 +102,14 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
                 </p>
                 <div className="new-game-choices">
                   <button
-                    className="pill-button"
+                    className="pebble"
                     onClick={() => setStep('refresh')}
                   >
                     total refresh
                   </button>
                   <span title={backedUp ? undefined : 'export a backup first'}>
                     <button
-                      className="pill-button"
+                      className="pebble"
                       onClick={() => setStep('keep')}
                       disabled={!backedUp}
                     >
@@ -121,7 +121,7 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
                     choices; this is the third door every popup needs, so
                     opening the question is never a commitment. */}
                 <button
-                  className="pill-button new-game-dismiss"
+                  className="pebble new-game-dismiss"
                   onClick={() => setStep(null)}
                 >
                   not now
@@ -133,13 +133,13 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
                 <p className="new-game-detail">{CONSEQUENCE[step]}</p>
                 <div className="new-game-choices">
                   <button
-                    className="pill-button"
+                    className="pebble"
                     onClick={() => confirmed(step)}
                   >
                     yes
                   </button>
                   <button
-                    className="pill-button"
+                    className="pebble"
                     onClick={() => setStep('choose')}
                   >
                     no, take me back

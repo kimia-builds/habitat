@@ -153,6 +153,16 @@ Kimia is a non-coder. Therefore:
   animations are momentary and settle back to a calm resting state.
 - Weird > cute. Undo is persistent where the spec allows it but
   always quiet — never an alarm colour or a shake.
+- **"Button" is not a word this project uses on its own (2026-08-12).**
+  Nearly everything on screen is pressable — charms, meters, drops,
+  friend cards, the wordmark, every rail icon — so the request "change
+  the buttons" is always ambiguous. The controls that SPEAK, in words or
+  numbers (save, cancel, `+1`, `-1`, the tick, buy, done, close, back to
+  the habits, …) are the **pebbles**: defined, rostered and bounded in
+  design-notes **§11e**, styled as one family through `.pebble`, and
+  guarded by `src/test/pebbles.test.js`, which fails the suite if a new
+  button appears that nobody has classified. Read §11e before changing
+  any control's look, and say "pebble" when you mean one.
 
 ## Technical conventions
 

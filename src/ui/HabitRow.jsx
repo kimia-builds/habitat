@@ -126,7 +126,7 @@ function HabitRow({
               finishes and archives them. Hover reads "mark done". */}
           <input
             type="checkbox"
-            className="todo-check circle-button"
+            className="todo-check pebble pebble-counter"
             checked={false}
             onChange={onComplete}
             title="mark done"
@@ -139,11 +139,11 @@ function HabitRow({
             {fulfilled && hasDayGoal ? '✓ ' : ''}
             {hasDayGoal ? `${todayCount}/${required}` : todayCount}
           </span>
-          <button className="circle-button" onClick={onComplete}>
+          <button className="pebble pebble-counter" onClick={onComplete}>
             +1
           </button>
           <button
-            className="circle-button"
+            className="pebble pebble-counter"
             onClick={onUndo}
             disabled={todayCount === 0}
           >

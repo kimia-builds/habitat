@@ -1935,6 +1935,44 @@ return 0` right after the era is worked out, so a moment before the
   If it is ever reopened, it is reopened in front of Kimia, one visible
   change at a time.
 
+- 2026-08-12 (Kimia's call): **"button" is retired as a project word;
+  the family is called the PEBBLES.** She asked whether what we mean by
+  "buttons" is written down anywhere she could point a future session
+  at — and it was not: the rule had been living as one bullet inside
+  §11b, the PALETTE section, where two later sessions had already
+  appended to it. The word itself was the problem. Nearly everything on
+  screen is a `<button>` — charms, meters, drops, friend cards, the
+  wordmark, every rail icon — so "change all the buttons" could mean any
+  of five different things.
+  **The definition, now design-notes §11e:** a pebble is a control that
+  says what it does, in words or numbers, and does it when pressed.
+  Everything else pressable is a drawing (it shows rather than speaks), a
+  switch (it holds a state rather than performing an act), or a moment's
+  own control (it belongs to a reveal and wears that reveal's colour).
+  §11e carries the full roster AND the deliberately-not list with
+  reasons, which is the half that stops the family swallowing the app.
+  **An audit came with it:** all 53 pressable things in the app were
+  classified. Six had slipped the original roster by omission rather
+  than by rule — gather / leave it / read now / read later on a held
+  drop, and the same pair in the abode's waiting-to-decide list — and
+  Kimia brought them in; `.arrival-choice` now only makes them small.
+  She left "onward" out (it belongs to the reveal's neon, §5) and party
+  mode out (a switch).
+  **Naming in the code followed the naming in the docs:** `.pill-button`
+  → `.pebble` (the family, and the one selector to change them all) and
+  `.circle-button` → `.pebble-counter` (a modifier, always worn
+  alongside `.pebble`, never instead of it).
+  **And the definition is now enforced, not just recorded:**
+  `src/test/pebbles.test.js` reads every component as text and fails the
+  suite if a `<button>` appears that is neither a pebble nor on the
+  not-a-pebble list — the drift this prevents is otherwise silent
+  (someone adds a control, hand-styles it, nothing looks broken, and the
+  family has quietly stopped being one). It also checks that the tick-box
+  — the one pebble that is not a `<button>` — still wears both classes,
+  and that the stylesheet still dresses the family from one place.
+  _Tests:_ five added, all in the new guard file. Full suite 1073 and
+  oxlint pass.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

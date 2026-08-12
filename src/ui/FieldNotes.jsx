@@ -86,7 +86,7 @@ function FieldNotes({
   )
 
   const back = (
-    <button className="pill-button" onClick={onBack}>
+    <button className="pebble" onClick={onBack}>
       ← back to the habits
     </button>
   )
@@ -122,7 +122,7 @@ function FieldNotes({
       <section className="field-notes" aria-label="field notes">
         <div className="week-nav">
           <button
-            className="pill-button"
+            className="pebble"
             onClick={() => setWeek(addDays(week, -7))}
             disabled={week <= firstWeek}
           >
@@ -139,7 +139,7 @@ function FieldNotes({
             )}
           </span>
           <button
-            className="pill-button"
+            className="pebble"
             onClick={() => setWeek(addDays(week, +7))}
             disabled={week >= thisWeek}
           >

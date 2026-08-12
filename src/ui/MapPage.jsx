@@ -68,7 +68,7 @@ function MapPage({
       <p className="map-caption">
         {known} of {MAP_REGION_COUNT} regions known
       </p>
-      <button className="pill-button" onClick={onBack}>
+      <button className="pebble" onClick={onBack}>
         ← back to the habits
       </button>
     </section>

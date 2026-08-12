@@ -64,7 +64,7 @@ function DayRows({
                     un-marks it. Hover reads "mark done" while still open. */}
                 <input
                   type="checkbox"
-                  className="todo-check circle-button"
+                  className="todo-check pebble pebble-counter"
                   checked={count > 0}
                   onChange={() =>
                     count > 0 ? onUnmark(habit, dayKey) : onMark(habit, dayKey)
@@ -80,13 +80,13 @@ function DayRows({
                   {hasDayGoal ? `${count}/${required}` : count}
                 </span>
                 <button
-                  className="circle-button"
+                  className="pebble pebble-counter"
                   onClick={() => onMark(habit, dayKey)}
                 >
                   +1
                 </button>
                 <button
-                  className="circle-button"
+                  className="pebble pebble-counter"
                   onClick={() => onUnmark(habit, dayKey)}
                   disabled={count === 0}
                 >
@@ -136,7 +136,7 @@ function CheckInPanel({
           ))}
         </>
       )}
-      <button className="pill-button" onClick={onDone}>
+      <button className="pebble" onClick={onDone}>
         done
       </button>
     </section>

@@ -446,34 +446,13 @@ The exact paths (drop into the shared SVG attributes above):
   is larger than vertical, because at that radius the ends curve inward
   and the charm would otherwise sit in the curve. The check-in's rows
   are the same rows and get the same treatment.
-- **Two button shapes, and nothing else (Kimia's call 2026-08-11):**
-  a long oval for every button with a word on it, and a circle for the
-  counters. The buttons that get a shape are a closed list she drew
-  herself — save, cancel, +1, -1, the to-do tick, export / import /
-  start a new game, the field notes' earlier and later, "back to the
-  habits" wherever it appears, "view historical data" (its twin, added
-  2026-08-12), the new-game popup's own answers (total refresh, keep
-  habit data, not now, yes, no-take-me-back), the market's buy, the
-  check-in's done,
-  and the close on the reading and friend cards. Everything else stays
-  bare and boxless: the icon-only furniture (grip, pencil, archive and
-  the left rail, which since 2026-08-12 carries the doers too) and the
-  charms, which are drawings
-  rather than buttons with words. +1, -1 and the tick are one control
-  in three moods, so they share one diameter and one shape; the tick
-  fills with its charm to say done, rather than drawing a mark. An
-  outline takes its colour from the tile beneath it — the charm on a
-  saved habit tile, plain white (`--button-edge`) everywhere else,
-  which is the accent rule above applied to buttons — including the
-  archived list's own `-1`, which borrows the charm of the habit it
-  belongs to. Open text fields are baguettes: the same full pill,
-  dropdowns included.
-  **Every one of those outlines is diluted by one number** —
-  `--button-edge-strength`, 38% to start (Kimia, an hour later: the
-  shapes were right, the edges too loud). White and all six charms are
-  softened together, mixed live like the tile fill, so there is a dial
-  rather than a second palette of near-whites to keep in step. The
-  tick-box's FILL keeps full strength: it is a mark, not an edge.
+- **The pebbles wear this accent rule too (2026-08-11).** The controls
+  that speak in words or numbers — save, cancel, `+1`, `-1`, buy, done,
+  back to the habits and their kin — are ovals and circles outlined in
+  the charm of the tile beneath them, or plain white where there is no
+  charm, every edge diluted by one dial. **They are named, defined and
+  rostered in §11e**; that is the section to read before changing any of
+  them, and the only place the rule is written down.
 - **The draft tile is a softly-rounded box, not a pill (same call).**
   It shares the tiles' family — `--radius-form`, corners rounded off
   generously — but stays a box, because a 999px radius on something
@@ -657,6 +636,82 @@ index.css. Two things the file learned in the process:
   charm colours are the reverse case and the reason the mirror rule
   exists: CSS _and_ JS both need them, so they are canonical here and
   duplicated in symbols.js under test.
+
+---
+
+### 11e. The pebbles — Habitat's word-bearing controls **[BUILT — 2026-08-11/12]**
+
+**The word "button" is useless here, and naming this set is the whole
+point of this section (Kimia's call 2026-08-12).** Almost everything on
+screen is technically a button: the charms, the meters, a drop on the
+shelf, a friend's card, the HABITAT wordmark, every icon in the rail.
+So "change all the buttons" could mean any of five different things.
+**The pebbles** are one of them, and the one that gets changed as a
+family.
+
+**The definition.** A pebble is a control that **says what it does, in
+words or in numbers**, and does it when pressed. Everything else you can
+press is a **drawing** (it shows rather than speaks), a **switch** (it
+holds a state rather than performing an act), or **a moment's own
+control** (it belongs to a reveal and wears that reveal's colour).
+
+**The shape.** Two, and only two: an **oval** for the ordinary pebble,
+and a **circle** for the counter trio. Never a rectangle, never a
+square corner. Outlined, transparent, no fill — with one exception, the
+to-do tick, which fills with its charm to say done, because that fill is
+a mark rather than an edge.
+
+**The colour rule** is §11b's accent rule applied to controls: a pebble
+sitting on a saved habit tile borrows **that tile's charm**; everywhere
+else it is **plain white** (`--button-edge`). Every pebble's outline —
+white and all six charms alike — is diluted by the single dial
+`--button-edge-strength` (38%), so softening or firming the whole family
+is one number in `src/tokens.css`.
+
+**The roster** (2026-08-12 — every pebble in the app):
+
+| Where | Pebbles |
+| --- | --- |
+| Habit tile, check-in row, archived row | `+1`, `-1`, the to-do tick (the counter trio — one diameter, one shape, three moods) |
+| The draft tile | save, cancel |
+| Foot of the home screen | export backup, import backup, start a new game, view historical data |
+| The new-game pop-up | total refresh, keep habit data, not now, yes, no take me back |
+| A held drop, and the abode's waiting-to-decide list | gather, leave it, read now, read later |
+| Field notes | ‹ earlier, later › |
+| Market | buy |
+| Check-in | done |
+| Reading spread, friend card | close |
+| Every secondary page | ← back to the habits |
+
+**Deliberately NOT pebbles**, and why — this half of the list matters as
+much as the other, because it is what stops the family swallowing the
+app:
+
+- **Drawings you press.** The six charms, the icon-only furniture (edit,
+  archive, unarchive, delete forever), the left rail, the three meters, a
+  drop on the arrival shelf, a friend's card in the Guest Book, the
+  HABITAT wordmark, the tile-shaped "add a habit or task…" invitation.
+  They show instead of speaking, and §12a's rule already covers them: an
+  icon with a hover label, never a box.
+- **Switches.** The graph zooms (day / week / 4 weeks) and party mode
+  hold a state; a pebble does a thing and settles. They keep their own
+  pressed-state look.
+- **The reveal's own control.** "Onward", dismissing a first-occurrence
+  reveal or a friend arrival, belongs to the one moment Habitat is
+  allowed to shout (§5) and wears the reveal's neon, not the everyday
+  chrome's white.
+- **The workbench door** ("design assets") is kept fainter than anything
+  it stands beside, and leaves when the design pass lands.
+
+**In the code.** `.pebble` is the family — the one selector to reach for
+when they all change — and `.pebble-counter` is the circle modifier,
+always worn alongside `.pebble`, never instead of it. Both live in
+`src/index.css` under a header pointing back here.
+**`src/test/pebbles.test.js` keeps this section honest:** it reads every
+component as text and fails the suite if a `<button>` appears that is
+neither a pebble nor on the not-a-pebble list, so a new control cannot
+quietly join the app unclassified. The fix when it fails is a one-line
+decision — make it a pebble, or name it in the list with its reason.
 
 ---
 

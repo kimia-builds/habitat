@@ -155,10 +155,10 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
       )}
       {error && <p role="alert">{error}</p>}
       <div className="form-actions">
-        <button className="pill-button" type="submit">
+        <button className="pebble" type="submit">
           save
         </button>
-        <button className="pill-button" type="button" onClick={onCancel}>
+        <button className="pebble" type="button" onClick={onCancel}>
           cancel
         </button>
       </div>

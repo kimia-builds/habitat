@@ -84,13 +84,13 @@ function ShelfItem({ arrival, worldSeed, onExpire, onDecide, onRead }) {
       {deciding && (
         <>
           <button
-            className="arrival-choice"
+            className="pebble arrival-choice"
             onClick={() => onDecide(arrival.completionId, 'gathered')}
           >
             gather
           </button>
           <button
-            className="arrival-choice"
+            className="pebble arrival-choice"
             onClick={() => onDecide(arrival.completionId, 'left')}
           >
             leave it
@@ -99,11 +99,14 @@ function ShelfItem({ arrival, worldSeed, onExpire, onDecide, onRead }) {
       )}
       {reading && (
         <>
-          <button className="arrival-choice" onClick={() => onRead(arrival)}>
+          <button
+            className="pebble arrival-choice"
+            onClick={() => onRead(arrival)}
+          >
             read now
           </button>
           <button
-            className="arrival-choice"
+            className="pebble arrival-choice"
             onClick={() => onExpire(arrival.id)}
           >
             read later
