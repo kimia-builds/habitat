@@ -1695,6 +1695,35 @@ return 0` right after the era is worked out, so a moment before the
   in-Claude pane — hidden tabs freeze CSS transitions, see the note in
   CLAUDE.md.)
 
+- 2026-08-12 (Kimia's bug report): **the glide started from the wrong
+  place, and only an upward drop showed it.** She saw a tile dropped
+  higher up the list fly from its OLD slot rather than from where she
+  had been holding it. One line was to blame, and it was the
+  measurement, not the maths: by the time the glide is set up, React has
+  already taken the drag's inline transform off the tile — but removing
+  a transform from something carrying a 420ms transition does not put it
+  back instantly, it starts it travelling back. So measuring the tile
+  right then does not give its new slot; it gives roughly where the hand
+  was still holding it. Both readings then carried the same offset, it
+  cancelled out of the subtraction, and the glide ran between the two
+  SLOTS instead of from the hand. Downward drops were wrong in exactly
+  the same way — a tile flying from its old slot down to its new one
+  merely happens to look like a row sliding into place, which is why
+  only the upward case read as a fault. The fix is two lines before the
+  measurement: turn transitions off and the transform off outright, so
+  the tile is measured at its real resting place.
+  _Not unit-tested, deliberately:_ the bug only exists where CSS
+  transitions run, and faking one in jsdom would mean hand-writing the
+  very assumption under test. Verified in the browser instead, by
+  measuring where the glide begins with the fix in and with it out
+  (upward drop: 203 held → starts at 202 with the fix, 401 without,
+  against an old slot of 402), and re-checked downward. The technique —
+  suspend only the DRAG transition so the tile really travels, and read
+  the result from a `setTimeout`, since React does not commit inside
+  `dispatchEvent` — is now written down in `.claude/skills/verify`,
+  along with a correction to that file's re-order line, which still
+  described the ▲▼ buttons retired in T5.1c.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

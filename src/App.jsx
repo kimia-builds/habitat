@@ -828,14 +828,30 @@ function App() {
   // this survives the animation; the lit look is the CSS class alone,
   // and it lasts until the timer below drops `settling` and lets the
   // colours ease back.
+  //
+  // The first two lines are the whole reason an upward drop used to
+  // start its glide from the tile's OLD slot instead of from the hand
+  // (Kimia, 2026-08-12). By the time this runs, React has taken the
+  // drag's inline transform off the tile — but taking a transform off
+  // something with a 420ms transition on it does not put it back
+  // instantly, it starts it travelling back. So measuring the tile right
+  // then does not give its new slot: it gives roughly where the hand was
+  // still holding it. Both readings then carried the same offset, it
+  // cancelled out of the subtraction, and the glide was left running
+  // between the two SLOTS — which looks like a slide into place when the
+  // tile is heading down the list, and like a jump backwards before
+  // flying up when it is heading up. Turning the transform off outright,
+  // with transitions suspended, is what makes the measurement the tile's
+  // real resting place.
   useLayoutEffect(() => {
     if (!settling) return
     const tile = listRef.current?.querySelector(
       `[data-habit-id="${settling.id}"]`,
     )
     if (tile) {
-      const drift = settling.fromTop - tile.getBoundingClientRect().top
       tile.style.transition = 'none'
+      tile.style.transform = 'none'
+      const drift = settling.fromTop - tile.getBoundingClientRect().top
       tile.style.transform = `translateY(${drift}px) scale(1.02)`
       void tile.offsetHeight // let the browser take that in…
       tile.style.transition = ''
