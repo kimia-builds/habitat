@@ -1036,24 +1036,23 @@ Soundless, as ever.
 
 ---
 
-## 13. Layout & atmosphere — the M5 layout pass **[§13b BUILT (T5.2d, 2026-08-12) · §13a, §13c TO-BUILD · §13d is T5.2e]**
+## 13. Layout & atmosphere — the M5 layout pass **[§13a, §13b BUILT (T5.2d, 2026-08-12) · §13c TO-BUILD · §13d is T5.2e]**
 
 _Kimia's M5 layout spec, merged 2026-07-21. Net-new structural pieces
 for this design pass; they sit on top of the home screen §12 already
 describes and change nothing about the habit list itself (spec §5b's
 "explicitly unchanged")._
 
-### 13a. The top header bar
+### 13a. The top header bar **[BUILT — T5.2d, 2026-08-12]**
 
-Today the wordmark, the three meters, the date display and the symbol
-filter all stack inside the same 40rem `.app` column. This pass lifts
-them into a **dedicated full-width header** above that column.
+The wordmark, the three meters, the date display and the symbol filter
+used to stack inside the same 40rem `.app` column. They now sit in a
+**dedicated full-width header** (`.app-header`) above that column.
 
 - **Wide viewport:** one row, left to right — wordmark · meters · date ·
   charm filter.
-- **Narrow viewport:** folds to **two deliberately-arranged rows** (a
-  suggested split: row 1 = wordmark + date, row 2 = meters + filter —
-  whichever pairing reads most balanced in practice), never a
+- **Narrow viewport:** folds to **two deliberately-arranged rows** —
+  row 1 = wordmark + date, row 2 = meters + filter — never a
   document-order wrap that clumps.
 - **How:** CSS Grid with named `grid-template-areas` — one area map for
   the wide breakpoint, a second for the narrow one, swapped by a single
@@ -1065,6 +1064,24 @@ them into a **dedicated full-width header** above that column.
 
 The wordmark keeps its standing job as the **home link back to the
 habit list** (spec §5b).
+
+**What the bar carries where (Kimia's call 2026-08-12).** The date and
+the charm filter belong to the habit list, so they ride the bar **only
+at home**. On the Map, Bookcase, Abode, Market and Guest Book it is
+wordmark + meters — exactly what those pages showed before this pass,
+merely re-laid-out. An `at-home` class on `.app-header` swaps between
+the two grids, rather than leaving two empty columns' worth of gap on
+every world page. The check-in keeps its own plain wordmark and no bar
+at all: its done button stays the only way out.
+
+**The breakpoint is 84rem, and it is measured.** All four abreast need
+about 1330px before the meters start being crushed into a sliver, so
+below that the two-row map takes over; the meters' column also carries
+an 18rem floor so nothing collapses in between. Note that "narrow" here
+**never means a phone**: `ViewportGate` replaces the whole app below
+1024px (T5.1b), so this query only ever governs the 1024px–84rem
+small-laptop window. A breakpoint under 1024px would be dead CSS —
+worth remembering for §13c and anything else this pass adds.
 
 ### 13b. Page titles, promoted out of their boxes **[BUILT — T5.2d, 2026-08-12]**
 

@@ -139,7 +139,7 @@ tracker. Everything after this is delight, informed by real use.
             _Built one visible slice at a time, Kimia's eye between each
             (the T5.2c lesson):_
             - [x] promoted page titles (§13b) _(2026-08-12)_
-            - [ ] the top header bar (§13a)
+            - [x] the top header bar (§13a) _(2026-08-12)_
             - [ ] the night-sky background (§13c)
             - [ ] the spacing scale into the tokens file
       - [ ] **T5.2e Glow, feel & the startup animation** — the §4–§5 feel

@@ -1973,6 +1973,43 @@ return 0` right after the era is worked out, so a moment before the
   _Tests:_ five added, all in the new guard file. Full suite 1073 and
   oxlint pass.
 
+- 2026-08-12 (T5.2d, layout session — session 49): **the world pages'
+  header keeps the wordmark and the meters, and nothing else.** §13a
+  named the four things the header bar carries but never said what
+  happens on the pages where two of them do not exist: the date and the
+  charm filter have only ever been home-screen furniture. Kimia's
+  answer: **the bar is on every page, but the date and the filter ride
+  it only at home.** So the Map, Bookcase, Abode, Market and Guest Book
+  show exactly what they showed before the pass, merely re-laid-out —
+  no date on a page with no day to speak of, no filter on a page with
+  nothing to filter. An `at-home` class swaps between the two grids,
+  which also keeps the world pages from carrying two empty columns'
+  worth of gap. The alternatives — all four everywhere, and the date
+  everywhere with the filter at home — were both set aside as putting
+  furniture where nothing uses it. Folded into spec §5b and §13a.
+
+  **The breakpoint had to be measured, and the first one was dead
+  CSS.** §13a's two-row fold was written for a "narrow viewport", so it
+  was first built at 62rem — the reflex mobile number. But `ViewportGate`
+  (T5.1b) replaces the whole app below **1024px**, so a query at 992px
+  can never fire: the four-abreast row would simply have crushed the
+  meters to a 77px sliver on every small laptop and never folded. The
+  real number is where the row stops fitting — about 1330px — so the
+  fold is at **84rem**, with an 18rem floor under the meters' column so
+  nothing collapses in between. Recorded in §13a as the standing note
+  for the rest of this pass: below 1024px is dead CSS in this app.
+
+  _Build notes:_ `.app-header` is a grid with named areas, a sibling
+  ABOVE `<main class="app">` rather than inside it, so the 40rem column
+  is untouched. The `meters` fragment in App.jsx no longer carries the
+  meters (they moved into the bar) and was renamed `overlays`, which is
+  what it always actually held — rail, arrival shelf, reveals, reading
+  popup, startup fade. The date and the filter section moved out of the
+  home column into the bar unchanged, keeping their markup and labels,
+  which is why the suite needed no edits: 1073 tests passed before and
+  after. Verified in a browser at 1024px, 1400px and 1500px, plus a
+  world page at each shape.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

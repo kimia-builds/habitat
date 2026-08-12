@@ -97,11 +97,77 @@ body {
   --charm-here-faint: var(--charm-key-faint);
 }
 
-.app h1 {
+.app h1,
+.app-header h1 {
   font-weight: 300;
   letter-spacing: 0.5em;
   font-size: 1.5rem;
   color: var(--text-title);
+  margin: 0;
+}
+
+/* T5.2d/§13a: the header bar — a full-width band ABOVE the 40rem
+   content column, so the wordmark, meters, date and charm filter read
+   as one standing row rather than four things stacked in the column.
+   The column below keeps its 40rem exactly as it was.
+
+   Grid with named areas, never flex-wrap: wrapping follows source
+   order with no say in what pairs with what, which is the clumped look
+   this pass exists to avoid. Two shapes, one media query apart, and a
+   second pair for `at-home` — the date and the filter only ride the
+   bar on the habit list, so the world pages get the short template
+   instead of two empty columns' worth of gap. */
+.app-header {
+  display: grid;
+  align-items: center;
+  gap: 0.9rem 1.75rem;
+  padding: 1.25rem 1.5rem 0.5rem;
+  grid-template-areas: 'wordmark meters';
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.app-header.at-home {
+  grid-template-areas: 'wordmark meters date filter';
+  /* The meters get a floor, not just a share: squeezed to a sliver they
+     stop being readable bars at all. */
+  grid-template-columns: auto minmax(18rem, 1fr) auto auto;
+}
+
+.app-header h1 {
+  grid-area: wordmark;
+}
+
+.app-header .meters {
+  grid-area: meters;
+  /* The meters filled the 40rem column before this pass; left to fill a
+     full-width bar they stretch into three long troughs, so they keep a
+     column's worth of width and no more. */
+  max-width: 34rem;
+}
+
+.app-header .date-display-block {
+  grid-area: date;
+}
+
+.app-header .filter-view {
+  grid-area: filter;
+}
+
+/* Narrow: two deliberately-arranged rows — wordmark with the date, the
+   meters with the filter — not whatever order a wrap would produce.
+
+   84rem is measured, not chosen for roundness: all four abreast need
+   about 1330px before the meters start being crushed. And "narrow" here
+   never means a phone — ViewportGate replaces the whole app below
+   1024px (T5.1b), so this query only ever governs 1024px up to 84rem,
+   the small-laptop window. A breakpoint below 1024 would be dead CSS. */
+@media (max-width: 84rem) {
+  .app-header.at-home {
+    grid-template-areas:
+      'wordmark date'
+      'meters filter';
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
 }
 
 /* The header as the home link (2026-07-16): a button dressed as the

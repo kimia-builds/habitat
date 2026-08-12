@@ -1007,9 +1007,10 @@ function App() {
     </div>
   )
 
-  // The home screen's contents below the meters (T4.5 rearranged them;
-  // 2026-08-12 emptied the foot again): the symbol filter, the habit
-  // list, the archive drawer, and the three footer buttons. The + /
+  // The home screen's contents below the header (T4.5 rearranged them;
+  // 2026-08-12 emptied the foot again): the habit list, the archive
+  // drawer, and the three footer buttons — the symbol filter moved up
+  // into the header bar with T5.2d/§13a. The + /
   // pencil / graph trio that used to sit under the list has moved into
   // the left rail, above the five page icons — same order, same hover
   // labels, the rail's look. Every action is still an icon with a hover
@@ -1018,14 +1019,6 @@ function App() {
   // pop-up (below) dims this exact content behind itself.
   const listContent = (
     <>
-      <section
-        className="filter-view"
-        aria-label="filter view"
-        title="filter view"
-      >
-        <SymbolPicker selected={filter} onToggle={toggleFilter} />
-      </section>
-
       <ul className="habit-list" ref={listRef}>
         {visible.map((habit) =>
           // The tile saying goodbye: the same row, drawn one last time,
@@ -1252,35 +1245,26 @@ function App() {
     )
   }
 
-  // The three meters (T2.2), all computed live from completion history
-  // — since T3.2 that includes each completion's stored drops, so the
-  // literacy meter and the fungus wallet finally move; since T4.3b the
-  // wallet also counts what the owned market objects cost (its bar and
-  // hover use the TRUE balance, debt included — T4.5). Below them,
-  // the arrival shelf and (topmost of all) any reveal still owed: one
-  // at a time, dismissed by its own button. Two kinds owe a reveal —
-  // a drop family's FIRST occurrence (T3.2) and EVERY friend (T4.4).
-  // The fragment also carries the daily startup fade (T4.5) and the
-  // left icon rail: every page but the check-in renders this fragment,
-  // so the fade plays over whichever screen the new day opens on, and
-  // the rail persists on every screen but the check-in (Kimia's call
-  // 2026-07-21) — the check-in's done button stays the only exit there.
+  // Everything that floats above whichever page is showing: the left
+  // icon rail, the arrival shelf, any reveal still owed (one at a time,
+  // dismissed by its own button — a drop family's FIRST occurrence
+  // (T3.2) and EVERY friend (T4.4) both owe one), the reading popup and
+  // the daily startup fade (T4.5). Every page but the check-in renders
+  // this fragment, so the fade plays over whichever screen the new day
+  // opens on and the rail persists everywhere but the check-in (Kimia's
+  // call 2026-07-21) — there the done button stays the only exit.
+  // The three meters used to lead this fragment; since T5.2d/§13a they
+  // live in the header bar instead.
   const revealing = arrivals.find(
     (a) => (a.first || a.reveal) && !seenRevealIds.has(a.id),
   )
-  const meters = (
+  const overlays = (
     <>
       <IconRail
         onOpen={setPage}
         onAddHabit={() => startNewHabit()}
         onEditPastDays={() => setCheckInOpen(true)}
         pastDaysEditable={pastDaysEditable}
-      />
-      <Meters
-        completions={played}
-        readingItems={readingItemsFrom(played)}
-        fungusTrueBalance={walletTrueBalance(played, data.purchases)}
-        onOpen={setPage}
       />
       <ArrivalShelf
         worldSeed={data.worldSeed}
@@ -1325,41 +1309,75 @@ function App() {
     </>
   )
 
-  // The HABITAT header doubles as the home link (Kimia's request
-  // 2026-07-16): from the Map, Bookcase or Market it always leads back
-  // to the habit list. The check-in pop-up deliberately keeps a plain
-  // header — its done button stays the only way out, so yesterday
-  // always gets answered.
-  const header = (
-    <h1>
-      <button className="home-link" onClick={() => setPage(null)}>
-        HABITAT
-      </button>
-    </h1>
+  // The header bar (T5.2d/§13a): a full-width band ABOVE the 40rem
+  // content column — wordmark · meters · date · charm filter, left to
+  // right on a wide screen, folding to two deliberately-arranged rows on
+  // a narrow one (the CSS owns that; grid areas, never a wrap).
+  //
+  // The date and the charm filter belong to the habit list, so they ride
+  // the header only at home (Kimia's call 2026-08-12) — on the Map,
+  // Bookcase, Abode, Market and Guest Book the bar is wordmark + meters,
+  // exactly what those pages showed before this pass. The `at-home`
+  // class is what swaps the grid between the two shapes.
+  //
+  // The HABITAT wordmark doubles as the home link (Kimia's request
+  // 2026-07-16): from any page it always leads back to the habit list.
+  // The check-in pop-up deliberately keeps a plain header of its own —
+  // its done button stays the only way out, so yesterday always gets
+  // answered.
+  const atHome = page === null
+  const appHeader = (
+    <header className={atHome ? 'app-header at-home' : 'app-header'}>
+      <h1>
+        <button className="home-link" onClick={() => setPage(null)}>
+          HABITAT
+        </button>
+      </h1>
+      <Meters
+        completions={played}
+        readingItems={readingItemsFrom(played)}
+        fungusTrueBalance={walletTrueBalance(played, data.purchases)}
+        onOpen={setPage}
+      />
+      {atHome && (
+        <DateDisplay now={now} cutoffHour={data.settings.dayCutoffHour} />
+      )}
+      {atHome && (
+        <section
+          className="filter-view"
+          aria-label="filter view"
+          title="filter view"
+        >
+          <SymbolPicker selected={filter} onToggle={toggleFilter} />
+        </section>
+      )}
+    </header>
   )
 
   // The field notes (T2.3): the weekly view, with the meters still up
   // top — like every page reached from the list (spec §5).
   if (page === 'fieldnotes') {
     return (
-      <main className="app">
-        {header}
-        {meters}
-        <FieldNotes
-          habits={data.habits}
-          completions={data.completions}
-          cutoffHour={data.settings.dayCutoffHour}
-          now={now}
-          filter={filter}
-          onToggleFilter={toggleFilter}
-          onBack={() => setPage(null)}
-        />
-        {/* The same three buttons the home screen ends with (Kimia's
+      <>
+        {appHeader}
+        <main className="app">
+          {overlays}
+          <FieldNotes
+            habits={data.habits}
+            completions={data.completions}
+            cutoffHour={data.settings.dayCutoffHour}
+            now={now}
+            filter={filter}
+            onToggleFilter={toggleFilter}
+            onBack={() => setPage(null)}
+          />
+          {/* The same three buttons the home screen ends with (Kimia's
             call 2026-08-12), directly under "back to the habits" — so
             export, import and start-a-new-game are reachable from
             either page without a trip home. */}
-        {footer}
-      </main>
+          {footer}
+        </main>
+      </>
     )
   }
 
@@ -1372,25 +1390,27 @@ function App() {
   // flora, in a formation that is never stored.
   if (page === 'abode') {
     return (
-      <main className="app">
-        {header}
-        {meters}
-        <AbodePage
-          finds={floraFinds(played, data.floraDecisions)}
-          items={abodeItems(
-            played,
-            data.floraDecisions,
-            data.abodeLayout,
-            data.purchases,
-          )}
-          friends={friendsFrom(played)}
-          worldSeed={data.worldSeed}
-          onDecide={handleFloraDecision}
-          onMove={handleItemMove}
-          onSell={handleSell}
-          onBack={() => setPage(null)}
-        />
-      </main>
+      <>
+        {appHeader}
+        <main className="app">
+          {overlays}
+          <AbodePage
+            finds={floraFinds(played, data.floraDecisions)}
+            items={abodeItems(
+              played,
+              data.floraDecisions,
+              data.abodeLayout,
+              data.purchases,
+            )}
+            friends={friendsFrom(played)}
+            worldSeed={data.worldSeed}
+            onDecide={handleFloraDecision}
+            onMove={handleItemMove}
+            onSell={handleSell}
+            onBack={() => setPage(null)}
+          />
+        </main>
+      </>
     )
   }
 
@@ -1401,15 +1421,17 @@ function App() {
   // (T4.5).
   if (page === 'guestbook') {
     return (
-      <main className="app">
-        {header}
-        {meters}
-        <GuestBookPage
-          friends={friendsFrom(played)}
-          worldSeed={data.worldSeed}
-          onBack={() => setPage(null)}
-        />
-      </main>
+      <>
+        {appHeader}
+        <main className="app">
+          {overlays}
+          <GuestBookPage
+            friends={friendsFrom(played)}
+            worldSeed={data.worldSeed}
+            onBack={() => setPage(null)}
+          />
+        </main>
+      </>
     )
   }
 
@@ -1419,17 +1441,19 @@ function App() {
   // above, so it opens over this page too — and is tracked nowhere.
   if (page === 'bookcase') {
     return (
-      <main className="app">
-        {header}
-        {meters}
-        <BookcasePage
-          items={bookcaseItems(played, data.bookcaseLayout)}
-          onMove={handleBookMove}
-          onFace={handleBookFace}
-          onRead={setReadingItem}
-          onBack={() => setPage(null)}
-        />
-      </main>
+      <>
+        {appHeader}
+        <main className="app">
+          {overlays}
+          <BookcasePage
+            items={bookcaseItems(played, data.bookcaseLayout)}
+            onMove={handleBookMove}
+            onFace={handleBookFace}
+            onRead={setReadingItem}
+            onBack={() => setPage(null)}
+          />
+        </main>
+      </>
     )
   }
 
@@ -1438,15 +1462,17 @@ function App() {
   // the frontier back by itself.
   if (page === 'map') {
     return (
-      <main className="app">
-        {header}
-        {meters}
-        <MapPage
-          completions={played}
-          worldSeed={data.worldSeed}
-          onBack={() => setPage(null)}
-        />
-      </main>
+      <>
+        {appHeader}
+        <main className="app">
+          {overlays}
+          <MapPage
+            completions={played}
+            worldSeed={data.worldSeed}
+            onBack={() => setPage(null)}
+          />
+        </main>
+      </>
     )
   }
 
@@ -1459,18 +1485,20 @@ function App() {
     const rotation = rotationIndex(livedDayCount(played))
     const pool = marketPool(discoveredRegionCount(expeditionSteps(played)))
     return (
-      <main className="app">
-        {header}
-        {meters}
-        <MarketPage
-          stall={stallObjects(pool, rotation)}
-          purchases={data.purchases}
-          wallet={walletBalance(played, data.purchases)}
-          worldSeed={data.worldSeed}
-          onBuy={handleBuy}
-          onBack={() => setPage(null)}
-        />
-      </main>
+      <>
+        {appHeader}
+        <main className="app">
+          {overlays}
+          <MarketPage
+            stall={stallObjects(pool, rotation)}
+            purchases={data.purchases}
+            wallet={walletBalance(played, data.purchases)}
+            worldSeed={data.worldSeed}
+            onBuy={handleBuy}
+            onBack={() => setPage(null)}
+          />
+        </main>
+      </>
     )
   }
 
@@ -1480,30 +1508,38 @@ function App() {
   // like every screen but the check-in.
   if (page === 'design') {
     return (
-      <main className="app">
-        {header}
-        {meters}
-        <DesignPage onBack={() => setPage(null)} />
-      </main>
+      <>
+        {appHeader}
+        <main className="app">
+          {overlays}
+          <DesignPage onBack={() => setPage(null)} />
+        </main>
+      </>
     )
   }
 
-  // The home screen (T4.5): header and meters up top (the meters
-  // fragment carries the left rail, which persists on every screen but
-  // the check-in), then the large letterspaced date display and the
-  // list content shared with the check-in pop-up's dimmed backdrop.
-  // The cameo (T4.6) visits between the date and the list — but never
-  // behind the startup fade, which takes the screen first.
+  // The home screen (T4.5): the header bar up top carries wordmark,
+  // meters, date and charm filter (T5.2d/§13a — the date and filter
+  // moved up there from this column); the overlays fragment carries the
+  // left rail, which persists on every screen but the check-in. Below
+  // sits the list content shared with the check-in pop-up's dimmed
+  // backdrop. The cameo (T4.6) visits above the list — but never behind
+  // the startup fade, which takes the screen first.
   return (
-    <main className="app">
-      {header}
-      {meters}
-      <DateDisplay now={now} cutoffHour={data.settings.dayCutoffHour} />
-      {!startupDue && cameo && (
-        <Cameo win={cameo} worldSeed={data.worldSeed} onExpire={expireCameo} />
-      )}
-      {listContent}
-    </main>
+    <>
+      {appHeader}
+      <main className="app">
+        {overlays}
+        {!startupDue && cameo && (
+          <Cameo
+            win={cameo}
+            worldSeed={data.worldSeed}
+            onExpire={expireCameo}
+          />
+        )}
+        {listContent}
+      </main>
+    </>
   )
 }
 

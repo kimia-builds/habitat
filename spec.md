@@ -311,12 +311,15 @@ region discovery expands what the Market can offer.
 
 - The **HABITAT header** on every page is the home link back to the
   habit list (2026-07-16) — except during the morning check-in, whose
-  done button stays the only exit. Since the M5 layout pass (T5.2,
-  2026-07-21) the home screen carries a **full-width header region**
-  (wordmark · meters · date · charm filter) above the 40rem content
-  column, and every secondary page renders its title in a shared
-  **page-header region above its box** rather than inside it — layout
-  in design-notes §13.
+  done button stays the only exit. Since the M5 layout pass (T5.2d,
+  built 2026-08-12) every page carries a **full-width header region**
+  above the 40rem content column. At home it holds all four of
+  wordmark · meters · date · charm filter; on the world pages (Map,
+  Bookcase, Abode, Market, Guest Book) it holds **wordmark + meters
+  only** — the date and the filter belong to the habit list and stay
+  with it (Kimia's call 2026-08-12). Every secondary page renders its
+  title in a shared **page-header region above its box** rather than
+  inside it — layout in design-notes §13.
 - **Home screen:** the habit list, with the three meters and the **date
   display** (below) fixed in the full-width header (design-notes §13a).
   The list is manually re-orderable by dragging a habit's tile anywhere
