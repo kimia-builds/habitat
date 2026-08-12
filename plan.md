@@ -239,6 +239,13 @@ tracker. Everything after this is delight, informed by real use.
 - [x] **T6.6 Start a new game.** _(done 2026-08-11, unplanned — Kimia
       asked for a way to wipe the world and go again while keeping every
       habit and every completion; build notes in history.md)_
+- [x] **T6.9 UI pass — the rail takes the doers, an empty list
+      invites.** _(done 2026-08-12, unplanned — Kimia's five calls in
+      one go: hover labels on the party toggle, the + / pencil / graph
+      trio moved into the left rail, the "add a habit or task…" tile
+      for an empty list, three clean buttons at the foot of the home
+      screen, and the check-in's copy + the "mon DD-MM-YY" date
+      convention; build notes in history.md)_
 - [ ] **T6.7 The first hour — storytelling & narration for a new
       player** (Kimia's call 2026-08-11) — revisit what arriving on
       N-Z-D actually feels like for someone who has never opened

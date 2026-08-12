@@ -6,7 +6,12 @@
 //     visit. Not "today", not "recently": the point of the guard is
 //     that the file on disk holds the world about to be discarded, and
 //     only an export made just now can promise that. Until then the
-//     button is disabled and says plainly why.
+//     button is disabled and says plainly why — on hover, since
+//     2026-08-12, so the foot of the home screen stays three clean
+//     buttons. The title sits on a SPAN around the button rather than on
+//     the button itself, because browsers fire no hover events on a
+//     disabled control and a tooltip there would never appear — which is
+//     precisely when this explanation is needed.
 //   - pressing it still asks, naming exactly what goes and exactly
 //     what stays, so nothing about the outcome is a surprise.
 //
@@ -36,16 +41,15 @@ function NewGameControl({ backedUp, onStartNewGame }) {
 
   return (
     <div className="new-game-control">
-      <button
-        className="pill-button"
-        onClick={handleClick}
-        disabled={!backedUp}
-      >
-        start a new game
-      </button>
-      {!backedUp && (
-        <span className="new-game-note">export a backup first</span>
-      )}
+      <span title={backedUp ? undefined : 'export a backup first'}>
+        <button
+          className="pill-button"
+          onClick={handleClick}
+          disabled={!backedUp}
+        >
+          start a new game
+        </button>
+      </span>
       {message && <p role="status">{message}</p>}
     </div>
   )

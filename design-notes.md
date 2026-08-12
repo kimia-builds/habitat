@@ -311,8 +311,10 @@ design-bible.md §9c.)
     the Habitat day (§12b).
 11. **The check-in becomes a pop-up** over a dimmed habit list — quiet
     framing, unchanged mechanic (§12c).
-12. **The left rail** → five icons, map · abode · community · library ·
-    market; meters stay clickable alongside it (§12d).
+12. **The left rail** → eight icons in two groups since 2026-08-12: the
+    three doers (+ · pencil · graph) above the five places (map · abode
+    · community · library · market); meters stay clickable alongside it
+    (§12d).
 13. **Party mode** → friends present but **not performing**; your flora
     arrangement never disturbed; greyed out until a friend exists
     (§12e).
@@ -448,8 +450,9 @@ The exact paths (drop into the shared SVG attributes above):
   start a new game, the field notes' earlier and later, "back to the
   habits" wherever it appears, the market's buy, the check-in's done,
   and the close on the reading and friend cards. Everything else stays
-  bare and boxless: the icon-only furniture (grip, pencil, archive, the
-  foot-of-list trio, the left rail) and the charms, which are drawings
+  bare and boxless: the icon-only furniture (grip, pencil, archive and
+  the left rail, which since 2026-08-12 carries the doers too) and the
+  charms, which are drawings
   rather than buttons with words. +1, -1 and the tick are one control
   in three moods, so they share one diameter and one shape; the tick
   fills with its charm to say done, rather than drawing a mark. An
@@ -640,6 +643,16 @@ edit (pencil), archive (box), delete forever (trash), add new habit
 (**+**), edit past days (pencil), view historical data (graph). The
 label appears on hover and nowhere else.
 
+The rule outgrew the icons on 2026-08-12: **anything that needs
+explaining explains itself on hover**, icon or not. The two grey lines
+at the foot of the home screen — how old the backup is, and why "start
+a new game" is dimmed — became the titles of the buttons they described,
+and the Abode's quiet/party toggle gained a label for each of its three
+parts (§12e). Two implementation notes, both learned the hard way: a
+`title` on a **disabled** button never appears, because a disabled
+control fires no hover events — put it on a wrapper; and `title` is an
+HTML attribute, so an `<svg>` needs a wrapper too.
+
 The reason is the same one behind the six wordless symbols: **the page
 should look like a place, not a form**. Words are instructions; icons
 are furniture. A screen you visit every morning for five years should
@@ -648,24 +661,44 @@ get quieter over time, not keep explaining itself.
 Two cautions this creates, both real:
 
 - **The two pencils.** A habit row's pencil edits _that habit_; the
-  pencil at the foot of the list edits _past days_. Same glyph, two
-  meanings — so they are separated by **size and colour** (Kimia's
-  call, 2026-07-20), not by position alone: the row pencil is small,
-  inline and in the dim text tier; the foot pencil is larger, sits in
-  the three-button group, and carries an accent colour that marks it as
-  a page-level action. Watch this one in real use — if size and colour
-  don't do the job, the foot pencil gains a distinguishing mark (a
-  small clock or calendar), not a word.
+  rail's pencil edits _past days_. Same glyph, two meanings — so they
+  are separated by **size and colour** (Kimia's call, 2026-07-20), not
+  by position alone: the row pencil is small, inline and in the dim
+  text tier; the other is larger and carries the gold that marks a
+  page-level action. Since 2026-08-12 they are also in different
+  furniture entirely — one on a tile, one in the rail — which does most
+  of the work by itself. Watch this one in real use anyway; if size,
+  colour and place don't do the job, the rail pencil gains a
+  distinguishing mark (a small clock or calendar), not a word.
 - **Delete forever.** The only destructive control in Habitat. Its
   hover says "delete forever" in full — never just "delete" — and its
   confirmation stays (spec §5b). Being wordless on the surface is fine;
   being _vague at the moment of pressing_ is not. The trash icon is the
   one icon allowed to look slightly colder than its neighbours.
 
-The three foot-of-list buttons sit **together, below the habits and
-above the archived list** — discreet, evenly weighted, none of them
-shouting. "Add new habit" is not a call to action here; it's one of
-three equal doors.
+The three doers (+ · pencil · graph) sat **together at the foot of the
+list** until 2026-08-12, when they moved into the left rail (§12d). The
+principle survived the move: discreet, evenly weighted, none of them
+shouting. "Add new habit" is not a call to action; it is one of eight
+equal doors now instead of one of three.
+
+What replaced them at the foot is nothing at all — and where the list
+itself is empty, an **invitation tile** (Kimia's call 2026-08-12): a
+tile of the same baguette shape reading "add a habit or task…", which
+opens the draft form. It is the answer to the same question the icons
+answer, in the one place a beginner is actually looking. Neutral with
+no lens on; in filter view, one tile per chosen charm, each in that
+charm's colour, and clicking one starts the draft already on it — the
+colour is not decoration, it is the answer being carried forward. The
+old "nothing here yet" is gone: an empty screen should hold a door, not
+a status report.
+
+The **foot of the home screen** is now three clean buttons on one
+centred line — export · import · start a new game — and no text beside
+any of them. The two explanations that used to live there (how old the
+backup is, and why the new-game button is dimmed) became hover labels,
+which is where every other explanation in Habitat lives. Nothing was
+dropped; the line just stopped talking.
 
 **Reordering is a drag of the whole tile** (T5.1c, 2026-07-23; the grip
 alone until 2026-08-11), not a pair of ▲▼ arrows. Press anywhere on a
@@ -754,18 +787,33 @@ framing, firm mechanic — the same combination as undo.
 
 ### 12d. The left rail
 
-Five icons descending the left edge — **map · abode · community ·
-library · market** — each revealing its name on hover, set **away from
-the habit list** so the list keeps the eye. The rail **persists on
-every screen but the check-in** (Kimia's call 2026-07-21) — the world
-pages stay one tap away from anywhere; the check-in keeps its done
-button as the only exit.
+Eight icons descending the left edge, each revealing its name on hover,
+set **away from the habit list** so the list keeps the eye. Two groups,
+in this order (Kimia's call 2026-08-12):
+
+- **the three doers** — **+** (add a habit) · **pencil** (edit past
+  days) · **graph** (field notes). They were a row at the foot of the
+  habit list until 2026-08-12 and moved here whole, order intact.
+- **the five places** — **map · abode · community · library · market**.
+
+The rail **persists on every screen but the check-in** (Kimia's call
+2026-07-21) — the world pages stay one tap away from anywhere; the
+check-in keeps its done button as the only exit. Which is also why the
++ carries us **home** before opening the draft: the form is only ever
+drawn in the habit list, so pressing + from the Market has to be a
+journey, not a no-op.
 
 They are a **rail, not a navbar**: no background, no dividers, no
 active-state highlight competing with the content. Think of marks in
 the margin of a page. Faint at rest; each brightens to its own charm
 colour on hover (the §11a glow, `14px` → `24px`), which is also how the
-name arrives.
+name arrives. **One look for all eight** — same glyph size, same stroke
+weight, same rest colour, same glow, and no press animation on any of
+them; the doers earn their place by joining the rail's language, not by
+keeping the one they had at the foot of the list. Their hover colours:
+sky for the **+** (the one charm the five places never used), the
+pencil's own gold (see the two-pencils note in §12a), teal for the
+graph.
 
 The meters at the top remain clickable (Kimia's call), so Map,
 Bookcase and Market each have two doors. That redundancy is fine and
@@ -788,6 +836,15 @@ A toggle on the Abode, an icon on either side. The feel divide:
 Your flora and objects are **never disturbed** (spec §5b): the
 arrangement you built is the stage, and party mode only adds people to
 it.
+
+**Every part of the toggle names itself on hover** (Kimia's call
+2026-08-12), like every other control in Habitat: the switch says
+"pick your mood", the stone side "quietude", the gathering side "party
+mode". Its ACCESSIBLE name stays "party mode" — a switch has to say
+what it turns on — so this is the one place title and aria-label
+deliberately differ. While no friend exists the whole thing says
+**"not yet"** and nothing else: one honest answer beats three labels
+for something that cannot be done.
 
 **Friends do not perform here (decided 2026-07-20).** The §8 signature
 category animations stay reserved for their three moments — the

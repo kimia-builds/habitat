@@ -207,67 +207,85 @@ function AbodePage({
       <h2>your abode</h2>
 
       {/* The quiet / party toggle (T4.4): a switch with an icon either
-          side. Greyed — "not yet" — until the first friend exists. */}
+          side. Greyed — "not yet" — until the first friend exists.
+          Every part of it names itself on hover (Kimia's call
+          2026-08-12): the switch is "pick your mood", the stone side is
+          "quietude", the gathering side is "party mode". Until a friend
+          exists the whole thing says "not yet" instead — one honest
+          answer beats three labels for something that cannot be done.
+          The titles sit on SPANS wrapping the two glyphs, because the
+          title attribute is HTML's and an <svg> is not obliged to
+          honour it.
+          The switch keeps "party mode" as its ACCESSIBLE name while its
+          hover label reads "pick your mood": a switch has to say what it
+          turns on, and on/off is what aria-checked reports. */}
       <div
         className={`abode-mode${partyAvailable ? '' : ' abode-mode-off'}`}
+        // The disabled switch fires no hover events of its own, so the
+        // "not yet" it should be saying has to live on this wrapper.
         title={partyAvailable ? undefined : 'not yet'}
       >
-        <svg
-          className={`abode-mode-icon${party ? '' : ' active'}`}
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          {/* quiet: a single resting stone */}
-          <circle
-            cx="12"
-            cy="12"
-            r="4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
-        </svg>
+        <span title={partyAvailable ? 'quietude' : 'not yet'}>
+          <svg
+            className={`abode-mode-icon${party ? '' : ' active'}`}
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            {/* quiet: a single resting stone */}
+            <circle
+              cx="12"
+              cy="12"
+              r="4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+          </svg>
+        </span>
         <button
           className="abode-mode-switch"
           role="switch"
           aria-checked={party}
           aria-label="party mode"
+          title={partyAvailable ? 'pick your mood' : 'not yet'}
           disabled={!partyAvailable}
           onClick={handlePartyToggle}
         >
           <span className="abode-mode-knob" />
         </button>
-        <svg
-          className={`abode-mode-icon${party ? ' active' : ''}`}
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          {/* party: a little gathering */}
-          <circle
-            cx="7"
-            cy="14"
-            r="3"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
-          <circle
-            cx="16.5"
-            cy="8.5"
-            r="3"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
-          <circle
-            cx="17"
-            cy="16.5"
-            r="3"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
-        </svg>
+        <span title={partyAvailable ? 'party mode' : 'not yet'}>
+          <svg
+            className={`abode-mode-icon${party ? ' active' : ''}`}
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            {/* party: a little gathering */}
+            <circle
+              cx="7"
+              cy="14"
+              r="3"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <circle
+              cx="16.5"
+              cy="8.5"
+              r="3"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <circle
+              cx="17"
+              cy="16.5"
+              r="3"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+          </svg>
+        </span>
       </div>
 
       {pending.length > 0 && (

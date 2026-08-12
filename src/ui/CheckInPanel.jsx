@@ -8,14 +8,17 @@
 
 import { editablePastDays, habitsOn } from '../game/checkin.js'
 import { countOn } from '../game/completions.js'
-import { addDays, isoWeekday } from '../game/days.js'
+import { addDays, isoWeekday, shortDate } from '../game/days.js'
 import { requiredPerDay, scheduleOn } from '../game/schedule.js'
 import CharmSymbol from './CharmSymbol.jsx'
 
-const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+// Kimia's date convention (2026-08-12): "mon DD-MM-YY" — the weekday
+// lowercase like the rest of the interface, then the same day-first
+// short date the field notes already use (days.js shortDate).
+const WEEKDAY_NAMES = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
 const dayLabel = (dayKey) =>
-  `${WEEKDAY_NAMES[isoWeekday(dayKey) - 1]} ${dayKey}`
+  `${WEEKDAY_NAMES[isoWeekday(dayKey) - 1]} ${shortDate(dayKey)}`
 
 // The habits of one past day, each with its mark/undo controls —
 // a slimmer cousin of HabitRow, acting on that day instead of today.
@@ -123,7 +126,7 @@ function CheckInPanel({
       {older.length > 0 && (
         <>
           <p className="habit-meta">
-            Earlier this week — optional, editable until the week ends:
+            update earlier days of this week before they freeze forever:
           </p>
           {older.map((day) => (
             <details key={day}>

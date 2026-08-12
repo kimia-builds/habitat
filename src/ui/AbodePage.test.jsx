@@ -278,6 +278,44 @@ describe('party mode (T4.4)', () => {
     dayKey: '2026-07-20',
   })
 
+  // Kimia's call 2026-08-12: all three parts of the toggle name
+  // themselves on hover. The switch's ACCESSIBLE name stays "party
+  // mode" — a switch has to say what it turns on — while its hover
+  // label is the friendlier "pick your mood".
+  it('every part of the toggle names itself on hover', () => {
+    const { container } = render(
+      <AbodePage
+        finds={[]}
+        items={[]}
+        friends={[friend(0, 1, 'f1')]}
+        worldSeed="seed"
+        {...handlers()}
+      />,
+    )
+    const mode = container.querySelector('.abode-mode')
+    const [quiet, gathering] = [...mode.children].filter(
+      (child) => child.tagName === 'SPAN',
+    )
+    expect(quiet.title).toBe('quietude')
+    expect(gathering.title).toBe('party mode')
+    expect(screen.getByRole('switch', { name: 'party mode' }).title).toBe(
+      'pick your mood',
+    )
+  })
+
+  it('says only "not yet" everywhere while no friend exists', () => {
+    const { container } = render(
+      <AbodePage finds={[]} items={[]} friends={[]} {...handlers()} />,
+    )
+    const mode = container.querySelector('.abode-mode')
+    expect(mode.title).toBe('not yet')
+    for (const child of [...mode.children].filter(
+      (c) => c.tagName === 'SPAN',
+    )) {
+      expect(child.title).toBe('not yet')
+    }
+  })
+
   it('the toggle is greyed out — "not yet" — while no friend exists', () => {
     const { container } = render(
       <AbodePage finds={[]} items={[]} friends={[]} {...handlers()} />,

@@ -342,13 +342,40 @@ region discovery expands what the Market can offer.
   milestone (every 50, the crossing day only). It performs its
   animation once beside Kimia's message slot, then settles back to the
   calm list — once per visit, nothing stored (design-notes §8).
-- **The left rail (T4.5):** five icon buttons down the left edge in
-  descending order **map · abode · community · library · market**, each
-  revealing its name on hover. These are the five world pages. The
-  three meters stay clickable as well — meter and rail are two ways to
-  the same page. Since 2026-07-21 the rail **persists on every screen
-  but the check-in** (Kimia's call) — the check-in's done button stays
-  the only exit there.
+- **The left rail (T4.5):** icon buttons down the left edge, each
+  revealing its name on hover, in two groups (2026-08-12):
+  - **the three doers**, on top — **+ (add a habit) · pencil (edit past
+    days) · graph (field notes)**. They sat in a row at the foot of the
+    habit list until 2026-08-12 and moved here whole: same order, same
+    hover labels, same conditions (the pencil appears only when a past
+    day is editable). Because the rail is on every screen, the + carries
+    us home before opening the draft — the form is only ever drawn in
+    the habit list.
+  - **the five places**, below — **map · abode · community · library ·
+    market**, the five world pages. The three meters stay clickable as
+    well — meter and rail are two ways to the same page.
+
+  Since 2026-07-21 the rail **persists on every screen but the
+  check-in** (Kimia's call) — the check-in's done button stays the only
+  exit there.
+- **An empty habit list invites (2026-08-12):** where the list would be
+  blank it holds a tile of the same shape reading **"add a habit or
+  task…"**, which opens the draft form — the same door as the rail's +.
+  Neutral with no lens on. **In filter view, one tile per chosen charm**,
+  each wearing that charm's colour; clicking one opens the draft already
+  on that charm. (The 2026-08-11 rule still applies underneath: with no
+  tile clicked, a lens showing exactly one charm is the hint, and two or
+  more falls back to the form's own default.)
+- **The foot of the home screen (2026-08-12):** three clean buttons on
+  one centred line — **export backup · import backup · start a new
+  game** — with no text beside any of them. The explanations they used to
+  carry are hover labels (the backup's age on export; "export a backup
+  first" on the dimmed new-game button).
+- **Dates read "mon DD-MM-YY" (2026-08-12):** lowercase weekday, then
+  the day-first short date. One convention everywhere a dated day is
+  named — the field notes' week range and the check-in's day summaries
+  alike. (The home screen's own large date display is the exception it
+  always was: it spells the calendar date out in full.)
 - **Map** (via expedition meter or the rail): the discovered planet so
   far. Titled **map of N-Z-D**.
 - **Bookcase** (via literacy meter or the rail's _library_): one
@@ -523,12 +550,14 @@ design-notes §12f.
     asks. A refusal changes nothing and is never surfaced. It is asked
     only when there is something to protect, so a first-time visitor is
     never prompted to keep nothing.
-  - the export row carries a **backup-age line** ("backed up 12 days
-    ago"). Persistence is a request, not a guarantee, and it does
+  - the export button carries the **backup's age** ("backed up 12 days
+    ago") as its hover label — a line of text beside it until
+    2026-08-12, when the foot of the home screen became three clean
+    buttons. Persistence is a request, not a guarantee, and it does
     nothing against WebKit's rule that clears script-writable storage
     after seven days without a visit — so an exported file kept
     elsewhere remains the only real safety net, and its age is the only
-    thing that says whether it still counts. The line states a fact and
+    thing that says whether it still counts. It states a fact and
     stops there: no colour change, no urgency, no counting of neglect
     (§ no punishment mechanics applies to chores too).
 - **Starting a new game (2026-08-11).** The world can be wiped and begun
@@ -548,7 +577,8 @@ design-notes §12f.
   The one guard is a **forced backup**: the button stays disabled until
   a backup has been exported in that visit, then asks once, naming what
   goes and what stays. So the discarded world is always recoverable by
-  importing the file.
+  importing the file. While it is disabled it says why — **"export a
+  backup first"**, as a hover label since 2026-08-12.
 - Deployed via GitHub Pages from the public repo.
 
 ## 9. Testing strategy

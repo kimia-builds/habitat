@@ -772,19 +772,17 @@ describe('the morning check-in (T1.4)', () => {
     // Tuesday only. Wednesday's absence from that list is what proves
     // it is the question, and the frozen previous week is not offered
     // at all. Where the marks actually land is asserted further down.
-    expect(screen.getByText('Mon 2026-07-13')).toBeDefined()
-    expect(screen.getByText('Tue 2026-07-14')).toBeDefined()
-    expect(screen.queryByText(/2026-07-15/)).toBeNull()
-    expect(screen.queryByText(/2026-07-12/)).toBeNull()
+    expect(screen.getByText('mon 13-07-26')).toBeDefined()
+    expect(screen.getByText('tue 14-07-26')).toBeDefined()
+    expect(screen.queryByText(/15-07-26/)).toBeNull()
+    expect(screen.queryByText(/12-07-26/)).toBeNull()
 
     // Mark yesterday's walk (the first row is yesterday's; the
     // optional days are listed after it)…
     fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
 
     // …and backfill Tuesday from the optional section.
-    const tuesday = within(
-      screen.getByText('Tue 2026-07-14').closest('details'),
-    )
+    const tuesday = within(screen.getByText('tue 14-07-26').closest('details'))
     fireEvent.click(tuesday.getByRole('button', { name: '+1' }))
 
     fireEvent.click(screen.getByRole('button', { name: 'done' }))
@@ -847,7 +845,7 @@ describe('the morning check-in (T1.4)', () => {
 
     // But the week's earlier days can still be opened and edited.
     fireEvent.click(screen.getByRole('button', { name: 'edit past days' }))
-    const monday = within(screen.getByText('Mon 2026-07-13').closest('details'))
+    const monday = within(screen.getByText('mon 13-07-26').closest('details'))
     fireEvent.click(monday.getByRole('button', { name: '+1' }))
     fireEvent.click(screen.getByRole('button', { name: 'done' }))
     expect(
@@ -915,8 +913,8 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
     // the 15th, which can only mean Thursday has been promoted to the
     // unnamed question at the top.
     expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
-    expect(screen.getByText('Wed 2026-07-15')).toBeDefined()
-    expect(screen.queryByText(/2026-07-16/)).toBeNull()
+    expect(screen.getByText('wed 15-07-26')).toBeDefined()
+    expect(screen.queryByText(/16-07-26/)).toBeNull()
   })
 
   it('even without focusing, the minute-tick notices the rollover', () => {
@@ -933,8 +931,8 @@ describe('an open page notices the new day by itself (added 2026-07-15)', () => 
     // Same proof as above: Wed the 15th has dropped into the optional
     // list, so Thursday is now the question the header asks unnamed.
     expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
-    expect(screen.getByText('Wed 2026-07-15')).toBeDefined()
-    expect(screen.queryByText(/2026-07-16/)).toBeNull()
+    expect(screen.getByText('wed 15-07-26')).toBeDefined()
+    expect(screen.queryByText(/16-07-26/)).toBeNull()
   })
 
   it('a quiet rollover (nothing missed) just moves the list to the new day', () => {
@@ -1084,9 +1082,13 @@ describe('the three meters (T2.2)', () => {
   })
 })
 
-describe('the backup-age line (T6.4a)', () => {
+// The backup's age (T6.4a). It was a line of text beside the export
+// button until 2026-08-12, when the foot of the home screen became three
+// clean buttons and it moved onto the button's own hover label.
+describe('the backup age (T6.4a)', () => {
   const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
-  const ageLine = () => document.querySelector('.backup-age').textContent
+  const ageLine = () =>
+    screen.getByRole('button', { name: 'export backup' }).title
   // The exact words are pinned and tested in game/backup.test.js; here
   // we only check the wiring, so the label is derived, never quoted.
   const expected = (lastExportedOn) =>
@@ -2359,5 +2361,197 @@ describe('start a new game (T6.6)', () => {
     render(<App />)
     expect(screen.getByText('walk')).toBeDefined()
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+  })
+})
+
+// The rail took the three doers in (Kimia's call 2026-08-12): + , the
+// pencil and the graph left the foot of the habit list and joined the
+// left rail above the five world pages, keeping their order, their hover
+// labels and their conditions.
+describe('the rail carries the doers too (2026-08-12)', () => {
+  const railNames = () =>
+    [
+      ...screen
+        .getByRole('navigation', { name: 'pages' })
+        .querySelectorAll('button'),
+    ].map((button) => button.getAttribute('aria-label'))
+
+  const settleStartup = () =>
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
+
+  it('lists the three doers first, in the order they had at the foot', () => {
+    seedWorld('rail-doers')
+    render(<App />)
+    settleStartup()
+    expect(railNames()).toEqual([
+      'add new habit',
+      'edit past days',
+      'view historical data',
+      'map of N-Z-D',
+      'your abode',
+      'local community',
+      'readers library',
+      'local market',
+    ])
+  })
+
+  it('leaves the pencil out while no past day is editable', () => {
+    render(<App />)
+    createHabitViaUI('walk') // created today: no past day it existed on
+    expect(railNames()).not.toContain('edit past days')
+    expect(railNames()).toContain('add new habit')
+  })
+
+  it('nothing is left in a row at the foot of the list', () => {
+    seedWorld('rail-doers')
+    render(<App />)
+    settleStartup()
+    expect(document.querySelector('.list-actions')).toBeNull()
+  })
+
+  it('+ from a world page carries us home with a draft open', () => {
+    seedWorld('rail-doers')
+    render(<App />)
+    settleStartup()
+    const rail = () => within(screen.getByRole('navigation', { name: 'pages' }))
+    fireEvent.click(rail().getByRole('button', { name: 'local market' }))
+    expect(screen.getByRole('heading', { name: 'local market' })).toBeDefined()
+
+    fireEvent.click(rail().getByRole('button', { name: 'add new habit' }))
+    // Home, with the form standing where the market page was.
+    expect(screen.queryByRole('heading', { name: 'local market' })).toBeNull()
+    expect(document.querySelector('form.habit-form')).not.toBeNull()
+  })
+
+  it('the graph icon still opens the field notes', () => {
+    seedWorld('rail-doers')
+    render(<App />)
+    settleStartup()
+    fireEvent.click(
+      screen.getByRole('button', { name: 'view historical data' }),
+    )
+    expect(screen.getByRole('region', { name: 'filter view' })).toBeDefined()
+    expect(screen.getByRole('button', { name: /back to the habits/ }))
+  })
+
+  it('the pencil still opens the past-days check-in', () => {
+    seedWorld('rail-doers')
+    render(<App />)
+    settleStartup()
+    fireEvent.click(screen.getByRole('button', { name: 'edit past days' }))
+    expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
+  })
+})
+
+// The invitation tile (Kimia's call 2026-08-12): an empty habit list
+// holds a tile reading "add a habit or task…" rather than nothing, and
+// clicking it is the same door as the rail's +.
+describe('the empty-list invitation tile (2026-08-12)', () => {
+  const tiles = () => screen.getAllByRole('button', { name: /add a habit/ })
+  const charmOf = (button) => button.closest('li').className
+  const filterView = () =>
+    within(screen.getByRole('region', { name: 'filter view' }))
+  // The charm the open draft is standing on, by the shape drawn on the
+  // one pressed button in its picker (the charm names are §11a's, and
+  // screen-reader/test only — nothing on screen says them).
+  const draftCharm = () =>
+    within(document.querySelector('form.habit-form'))
+      .getAllByRole('button', { pressed: true })
+      .map((button) => button.querySelector('svg').getAttribute('aria-label'))
+
+  it('offers one neutral tile when there is nothing at all', () => {
+    render(<App />)
+    expect(tiles()).toHaveLength(1)
+    // Neutral means no charm class on the row it sits in.
+    expect(charmOf(tiles()[0])).not.toMatch(/charm-\d/)
+  })
+
+  it('clicking it opens the same draft form the + opens', () => {
+    render(<App />)
+    fireEvent.click(tiles()[0])
+    expect(document.querySelector('form.habit-form')).not.toBeNull()
+  })
+
+  it('goes away as soon as a habit exists, and comes back when none do', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    expect(screen.queryByRole('button', { name: /add a habit/ })).toBeNull()
+
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    fireEvent.click(row('walk').getByRole('button', { name: 'archive' }))
+    settleFarewell()
+    // Archived, so the live list is empty again — the invitation returns.
+    expect(tiles()).toHaveLength(1)
+  })
+
+  it('wears one tile per chosen charm while a lens is on', () => {
+    render(<App />)
+    createHabitViaUI('walk', { symbol: 1 }) // crown
+    // Two charms neither of which any habit wears: the list is empty.
+    fireEvent.click(filterView().getByRole('button', { name: 'cherry' })) // 2
+    fireEvent.click(filterView().getByRole('button', { name: 'key' })) // 6
+
+    expect(tiles()).toHaveLength(2)
+    expect(tiles().map(charmOf).join(' ')).toMatch(/charm-2/)
+    expect(tiles().map(charmOf).join(' ')).toMatch(/charm-6/)
+  })
+
+  it('opens the draft on the charm of the tile that was clicked', () => {
+    render(<App />)
+    createHabitViaUI('walk', { symbol: 1 })
+    fireEvent.click(filterView().getByRole('button', { name: 'cherry' })) // 2
+    fireEvent.click(filterView().getByRole('button', { name: 'key' })) // 6
+
+    // Two charms on, so the lens itself is no hint — the TILE is.
+    const keyTile = tiles().find((t) => charmOf(t).includes('charm-6'))
+    fireEvent.click(keyTile)
+    expect(draftCharm()).toEqual(['key'])
+  })
+
+  it('a neutral tile leaves the form on its own default', () => {
+    render(<App />)
+    fireEvent.click(tiles()[0])
+    expect(draftCharm()).toEqual(['crown']) // charm 1, the form's default
+  })
+})
+
+// The foot of the home screen is three clean buttons (Kimia's call
+// 2026-08-12): the two explanations that used to sit beside them as
+// small grey text are hover labels now.
+describe('the home screen foot (2026-08-12)', () => {
+  it('says why "start a new game" is dimmed on hover, not in text', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    expect(screen.queryByText('export a backup first')).toBeNull()
+    // The title sits on the wrapper: a disabled button shows none.
+    const button = screen.getByRole('button', { name: 'start a new game' })
+    expect(button.disabled).toBe(true)
+    expect(button.parentElement.title).toBe('export a backup first')
+  })
+
+  it('drops the explanation once the export has happened', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:fake')
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+    fireEvent.click(screen.getByRole('button', { name: 'export backup' }))
+
+    const button = screen.getByRole('button', { name: 'start a new game' })
+    expect(button.disabled).toBe(false)
+    expect(button.parentElement.title).toBe('')
+  })
+
+  it('keeps the three buttons on one line of their own', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    const foot = document.querySelector('.list-footer')
+    const named = [...foot.querySelectorAll('button')].map((b) => b.textContent)
+    expect(named).toEqual([
+      'export backup',
+      'import backup',
+      'start a new game',
+    ])
   })
 })

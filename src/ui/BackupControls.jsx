@@ -3,11 +3,16 @@
 // App to handle the file's text (App owns the overwrite warning —
 // plan.md T1.3: warn via storage's hasData() before replacing).
 //
-// Since T6.4a a quiet line sits beside the buttons saying how old the
-// backup is. It is the whole point of the feature: browser storage can
-// be evicted, so an exported file is the only real safety net, and an
-// unseen age is no safety net at all. It states a fact and stops there
-// — no colour change, no urgency, no counting up of neglect.
+// Since T6.4a the age of the last backup is told too. It is the whole
+// point of the feature: browser storage can be evicted, so an exported
+// file is the only real safety net, and an unseen age is no safety net
+// at all. It states a fact and stops there — no colour change, no
+// urgency, no counting up of neglect.
+//
+// Kimia's call 2026-08-12: it stopped being a line of text BESIDE the
+// button and became the button's own hover label, so the foot of the
+// home screen is three clean buttons and nothing else. The fact is not
+// gone — it is exactly where every other explanation in Habitat lives.
 
 import { useRef, useState } from 'react'
 
@@ -31,7 +36,11 @@ function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
 
   return (
     <div className="backup-controls">
-      <button className="pill-button" onClick={onExport}>
+      <button
+        className="pill-button"
+        onClick={onExport}
+        title={backupAgeLabel(lastExportedOn, todayKey)}
+      >
         export backup
       </button>
       <button className="pill-button" onClick={() => fileInput.current.click()}>
@@ -45,9 +54,6 @@ function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
         onChange={handleFile}
         aria-label="backup file"
       />
-      <span className="backup-age">
-        {backupAgeLabel(lastExportedOn, todayKey)}
-      </span>
       {message && <p role="status">{message}</p>}
     </div>
   )

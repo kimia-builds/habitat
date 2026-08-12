@@ -107,7 +107,7 @@ built on top of a live, in-use app.
   animation) and the creature, flora and object art are being built now.
 - **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
   The error-boundary safety net is already in, and so is the first half
-  of the backup habit — persistent-storage groundwork and a line saying
-  how old your last export is.
+  of the backup habit — persistent-storage groundwork, and the export
+  button tells you how old your last backup is.
 
 See [plan.md](plan.md) for the task-level truth.

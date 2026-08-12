@@ -132,6 +132,11 @@ function App() {
   const [filter, setFilter] = useState([])
   // What the form area is doing: null (closed), 'new', or a habit id.
   const [editing, setEditing] = useState(null)
+  // Which charm a brand-new draft should open on, when something on
+  // screen has already implied one (2026-08-12): clicking a coloured
+  // "add a habit or task…" tile in filter view means "one of these".
+  // null = nothing implied, so the form falls back to its own rule.
+  const [draftSymbol, setDraftSymbol] = useState(null)
   // The tile currently sinking into the archive, if any: { habit, index }
   // — a copy of the habit and the slot it held in the visible list. See
   // the farewell note further down.
@@ -538,6 +543,22 @@ function App() {
     setReadingItem({ type: arrival.key, publicationId: null })
   }
 
+  // Open a fresh draft (2026-08-12). Two doors lead here — the rail's +
+  // and the "add a habit or task…" tile — and the tile may bring a charm
+  // with it. The rail lives on every screen but the check-in, so this
+  // also carries us home: the draft opens in the habit list, which is
+  // the only place it is drawn.
+  function startNewHabit(symbol = null) {
+    setPage(null)
+    setDraftSymbol(symbol)
+    setEditing('new')
+  }
+
+  function closeForm() {
+    setEditing(null)
+    setDraftSymbol(null)
+  }
+
   function toggleFilter(symbol) {
     setFilter(
       filter.includes(symbol)
@@ -548,7 +569,7 @@ function App() {
 
   function handleCreate(fields) {
     save({ ...data, habits: addHabit(data.habits, createHabit(fields)) })
-    setEditing(null)
+    closeForm()
   }
 
   // Saving an edit (reworked in T2.3): schedule changes go through
@@ -913,23 +934,33 @@ function App() {
       if (!sure) return 'import cancelled — nothing was changed'
     }
     setData(importData(text))
-    setEditing(null)
+    closeForm()
     // A whole new world state: announcements from the old one are moot.
     setArrivals([])
     setPendingArrivals([])
     return 'backup imported'
   }
 
-  // The home screen's contents below the meters (T4.5 rearranged them):
-  // the symbol filter, the habit list, then THREE discreet icon buttons
-  // at the foot of the list — + (add new habit), a larger accent pencil
-  // (edit past days) and a graph (view historical data) — above the
-  // archived list. Every action is an icon with a hover label
-  // (2026-07-20): title + aria-label carry the words, the page carries
-  // no action text. The interim "the abode" / "the guest book" links
-  // are gone — the rail is now their only door. Kept as one fragment
-  // because the check-in pop-up (below) dims this exact content behind
-  // itself.
+  // What an empty list offers instead of nothing (Kimia's call
+  // 2026-08-12): a tile that reads "add a habit or task…" and opens the
+  // draft form when clicked — the same door as the rail's +. With no
+  // lens on, one neutral tile. In filter view, one tile per chosen charm,
+  // each wearing that charm's colour — so an empty cherry-and-key screen
+  // offers a cherry tile and a key tile, and clicking one opens a draft
+  // already on that charm. `null` here means "no charm": the neutral
+  // tile.
+  const emptyTiles =
+    visible.length > 0 ? [] : filter.length > 0 ? filter : [null]
+
+  // The home screen's contents below the meters (T4.5 rearranged them;
+  // 2026-08-12 emptied the foot again): the symbol filter, the habit
+  // list, the archive drawer, and the three footer buttons. The + /
+  // pencil / graph trio that used to sit under the list has moved into
+  // the left rail, above the five page icons — same order, same hover
+  // labels, the rail's look. Every action is still an icon with a hover
+  // label (2026-07-20): title + aria-label carry the words, the page
+  // carries no action text. Kept as one fragment because the check-in
+  // pop-up (below) dims this exact content behind itself.
   const listContent = (
     <>
       <section
@@ -991,70 +1022,40 @@ function App() {
             />
           ),
         )}
-      </ul>
-      {visible.length === 0 && <p>nothing here yet</p>}
-
-      {editing === 'new' ? (
-        // A new draft opens on the filtered charm when the lens is showing
-        // exactly one (Kimia's call 2026-08-11): with one charm on screen,
-        // the habit you are about to write is almost always that charm.
-        // Two or more charms filtered is no longer a hint, so the draft
-        // falls back to the form's own default.
-        <HabitForm
-          defaultSymbol={filter.length === 1 ? filter[0] : undefined}
-          onSave={handleCreate}
-          onCancel={() => setEditing(null)}
-        />
-      ) : (
-        <div className="list-actions">
-          <button
-            className="icon-button"
-            onClick={() => setEditing('new')}
-            title="add new habit"
-            aria-label="add new habit"
+        {/* An empty list is never blank (2026-08-12) — it holds the
+            invitation instead, as a tile of the same shape. It lives
+            inside the list so it stands exactly where a first habit
+            would; it carries no data-habit-id, so the reorder drag
+            never sees it. */}
+        {emptyTiles.map((symbol) => (
+          <li
+            key={symbol ?? 'none'}
+            className={`habit-row habit-row--empty${symbol ? ` charm-${symbol}` : ''}`}
           >
-            +
-          </button>
-          {pastDaysEditable && (
             <button
-              className="icon-button icon-button-accent"
-              onClick={() => setCheckInOpen(true)}
-              title="edit past days"
-              aria-label="edit past days"
+              className="empty-tile"
+              onClick={() => startNewHabit(symbol)}
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1z" />
-              </svg>
+              add a habit or task…
             </button>
-          )}
-          <button
-            className="icon-button"
-            onClick={() => setPage('fieldnotes')}
-            title="view historical data"
-            aria-label="view historical data"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M4 4v16h16" />
-              <path d="M7 15l4-5 3 3 4-6" />
-            </svg>
-          </button>
-        </div>
+          </li>
+        ))}
+      </ul>
+
+      {editing === 'new' && (
+        // A new draft opens on the charm it was started from. Clicking a
+        // coloured empty tile says which one outright (2026-08-12);
+        // failing that, a lens showing exactly one charm is the hint
+        // (Kimia's call 2026-08-11) — with one charm on screen, the habit
+        // you are about to write is almost always that charm. Two or more
+        // charms and nothing implied, and the form uses its own default.
+        <HabitForm
+          defaultSymbol={
+            draftSymbol ?? (filter.length === 1 ? filter[0] : undefined)
+          }
+          onSave={handleCreate}
+          onCancel={closeForm}
+        />
       )}
 
       {archived.length > 0 && (
@@ -1144,17 +1145,24 @@ function App() {
         </details>
       )}
 
-      <BackupControls
-        onExport={handleExport}
-        onImport={handleImport}
-        lastExportedOn={data.settings.lastExportedOn}
-        todayKey={today}
-      />
+      {/* The foot of the home screen (Kimia's call 2026-08-12): three
+          clean buttons on one centred line — export, import, start a new
+          game — and no explanatory text beside any of them. What that
+          text used to say now arrives on hover, the way every other
+          explanation in Habitat does. */}
+      <div className="list-footer">
+        <BackupControls
+          onExport={handleExport}
+          onImport={handleImport}
+          lastExportedOn={data.settings.lastExportedOn}
+          todayKey={today}
+        />
 
-      <NewGameControl
-        backedUp={exportedThisVisit}
-        onStartNewGame={handleStartNewGame}
-      />
+        <NewGameControl
+          backedUp={exportedThisVisit}
+          onStartNewGame={handleStartNewGame}
+        />
+      </div>
 
       {/* TEMPORARY (T5 prep): the door to the design-assets workbench
           (2026-07-21) — an empty shelf until the M5 design pass fills
@@ -1213,7 +1221,12 @@ function App() {
   )
   const meters = (
     <>
-      <IconRail onOpen={setPage} />
+      <IconRail
+        onOpen={setPage}
+        onAddHabit={() => startNewHabit()}
+        onEditPastDays={() => setCheckInOpen(true)}
+        pastDaysEditable={pastDaysEditable}
+      />
       <Meters
         completions={played}
         readingItems={readingItemsFrom(played)}

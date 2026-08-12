@@ -1724,6 +1724,79 @@ return 0` right after the era is worked out, so a moment before the
   along with a correction to that file's re-order line, which still
   described the ▲▼ buttons retired in T5.1c.
 
+- 2026-08-12 (Kimia's calls, second pass the same day): **five UI
+  changes — the rail takes the doers in, an empty list invites instead
+  of apologising, the home screen's foot becomes three clean buttons,
+  and two bits of copy change.** All of it one session's work, tests and
+  docs included.
+
+  1. **The party toggle names its parts on hover.** The switch says
+     "pick your mood", the stone side "quietude", the gathering side
+     "party mode". The switch's ACCESSIBLE name stays "party mode" —
+     a switch has to say what it turns on, and on/off is what
+     `aria-checked` reports — so for once title and aria-label differ
+     on purpose. While no friend exists the whole thing still says
+     "not yet" and nothing else: one honest answer beats three labels
+     for something that cannot be done. Two implementation notes worth
+     keeping: the two glyphs needed SPAN wrappers, because `title` is
+     an HTML attribute and an `<svg>` is not obliged to honour it; and
+     the "not yet" has to sit on the outer wrapper, because a disabled
+     button fires no hover events and would never show a tooltip of
+     its own.
+  2. **The three doers moved from the foot of the habit list into the
+     left rail**, above the five places, in the order they already had:
+     + (add a habit) · pencil (edit past days) · graph (field notes).
+     They took the rail's look wholesale — 1.5rem glyph, 1.4 stroke,
+     dim-white at rest, brighten-and-glow on hover, no press animation
+     (the rail never had one) — so the rail now reads as eight icons in
+     two groups. The + became a drawn glyph rather than a typed "+" so
+     its line weight could match. Hover colours: sky for +, the only
+     charm the five places never used; the pencil keeps the gold it
+     carried at the foot (2026-07-20's "two pencils, told apart by
+     colour" still holds — the small dim one on a habit row is the
+     other); teal for the graph. The pencil still appears only when a
+     past day is editable. **Because the rail is on every screen but the
+     check-in**, the + now carries us home before opening the draft —
+     the form is only ever drawn in the habit list.
+  3. **An empty habit list holds an invitation, not an apology.** The
+     old "nothing here yet" is gone; in its place a tile of the same
+     baguette shape reading "add a habit or task…", which opens the
+     draft form — the same door as the +. With no lens on it is
+     neutral. **In filter view there is one tile per chosen charm**,
+     each wearing that charm's fill and edge, and clicking one opens
+     the draft already on THAT charm. That last part supersedes nothing
+     from 2026-08-11's "one charm filtered is a hint" rule — it sits
+     above it: the tile says the charm outright, the single-charm lens
+     is still the fallback hint, and two-or-more charms with no tile
+     clicked still lands on the form's own default.
+  4. **The foot of the home screen is three clean buttons** — export,
+     import, start a new game — centred on one line, with no text
+     beside any of them. The two explanations that used to sit there as
+     small grey text became hover labels: the backup's age (T6.4a) is
+     now the export button's title, and "export a backup first" is the
+     title on a SPAN around the dimmed new-game button. Nothing was
+     dropped; both facts simply moved to where every other explanation
+     in Habitat lives.
+  5. **Two copy changes.** The check-in's optional section reads
+     "update earlier days of this week before they freeze forever:",
+     and **dates follow one convention from here on: "mon DD-MM-YY"** —
+     lowercase weekday, then the day-first short date the field notes
+     already used (`days.js` shortDate). The check-in's day summaries
+     were the last place still printing a raw `2026-07-13`.
+
+  Tests: 1042 → 1059, all passing, oxlint clean. The new ones assert
+  the rail's full order, the pencil's condition, that the + from a
+  world page lands home with a draft, the tile's count and charm in
+  every state, the charm a clicked tile opens on, and that the two
+  hover explanations are titles rather than text. The backup-age test
+  moved from reading a `.backup-age` element to reading the export
+  button's title, and the check-in date assertions were rewritten to
+  the new convention. Browser-checked: the rail's eight labels in
+  order, the foot centred on 640 of a 1280 window, two coloured tiles
+  under a two-charm lens, a shield tile opening a shield draft, the
+  toggle's layout unchanged by its new span wrappers, and the
+  check-in's "mon 10-08-26".
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

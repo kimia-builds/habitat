@@ -325,6 +325,14 @@ body {
   opacity: 0.35;
 }
 
+/* Each glyph is wrapped in a span so it can carry a hover label of its
+   own (2026-08-12) — "quietude" on the left, "party mode" on the right.
+   The wrapper must not change the layout, so it lays out like the svg
+   it holds. */
+.abode-mode > span {
+  display: inline-flex;
+}
+
 .abode-mode-icon {
   width: 1.15rem;
   height: 1.15rem;
@@ -1488,19 +1496,19 @@ body {
   flex-wrap: wrap;
 }
 
-/* How old the backup is (T6.4a). Deliberately the dimmest thing in the
-   row: it is there to be found when looked for, never to demand
-   attention. No alarm colour at any age — Habitat does not nag. */
-.backup-age {
-  font-size: 0.8rem;
-  opacity: 0.55;
-}
-
-/* Why "start a new game" is disabled (T6.6). Same dim register as the
-   backup age above: an explanation for whoever looks, never a warning. */
-.new-game-note {
-  font-size: 0.8rem;
-  opacity: 0.55;
+/* The foot of the home screen (Kimia's call 2026-08-12): export, import
+   and start-a-new-game on one centred line, and nothing else. The two
+   explanations that used to sit beside them as small grey text — how old
+   the backup is (T6.4a) and why "start a new game" is dimmed (T6.6) —
+   are hover labels now, so the line reads as three clean buttons. Both
+   groups are already flex rows of their own, so this only has to centre
+   them and let them wrap on a narrow window. */
+.list-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
 }
 
 /* ─────────────── THE BUTTON SHAPES (Kimia's call 2026-08-11) ───────────────
@@ -1685,9 +1693,13 @@ body {
   color: var(--text-faint);
 }
 
-/* The left rail (§12d): five icons descending the left edge, away from
-   the list. Faint at rest; each brightens to its own charm colour on
-   hover — which is also how its name arrives (the native title). */
+/* The left rail (§12d): eight icons descending the left edge, away from
+   the list — the three doers on top, the five places below (Kimia's call
+   2026-08-12; before that the doers sat in a row at the foot of the
+   habit list). Faint at rest; each brightens to its own charm colour on
+   hover — which is also how its name arrives (the native title). One
+   look for all eight: same 1.5rem glyph, same 1.4 stroke, same rest
+   colour, same glow, and no press animation on any of them. */
 .icon-rail {
   position: fixed;
   left: 1rem;
@@ -1717,6 +1729,23 @@ body {
 
 .rail-icon:hover {
   filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* The three doers. Sky blue was the one charm the five places never
+   used, so "add a habit" gets it; the pencil keeps the gold it carried at
+   the foot of the list (Kimia's call 2026-07-20 — the two pencils are
+   told apart by colour, and the small dim one on a habit row is the
+   other); the graph takes teal, the colour of a ledger. */
+.rail-add:hover {
+  color: var(--charm-shield); /* shield sky — a new thing beginning */
+}
+
+.rail-past:hover {
+  color: var(--charm-crown-bright); /* the foot pencil's gold, kept */
+}
+
+.rail-notes:hover {
+  color: var(--charm-key); /* key teal — the record */
 }
 
 .rail-map:hover {
@@ -1764,34 +1793,32 @@ body {
   height: 1rem;
 }
 
-/* The three foot-of-list buttons (§12a): together, discreet, evenly
-   weighted — none of them shouting; "add new habit" is one of three
-   equal doors. */
-.list-actions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  padding: 0.25rem 0;
+/* The invitation tile (Kimia's call 2026-08-12): what an empty habit
+   list holds instead of nothing. It IS a habit row — same baguette, same
+   charm classes — so it stands exactly where the first real habit will,
+   and its whole face is the button that opens the draft form. Neutral
+   with no lens on; in filter view one tile per chosen charm, each
+   wearing that charm's fill and edge, which the `.habit-row` rules
+   already hand down. Dimmer than a real tile and not grabbable: there is
+   nothing here to re-order yet. */
+.habit-row--empty {
+  cursor: pointer;
+  padding: 0;
 }
 
-.list-actions .icon-button {
-  font-size: 1.3rem;
+.empty-tile {
+  flex: 1;
+  text-align: left;
+  font: inherit;
+  color: var(--text-quiet);
+  background: none;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
 }
 
-.list-actions .icon-button svg {
-  width: 1.3rem;
-  height: 1.3rem;
-}
-
-/* The two pencils are told apart by size and colour (Kimia's call
-   2026-07-20): the row pencil is small, inline and dim; this foot
-   pencil is larger and carries the gold page-level accent. */
-.icon-button-accent {
-  color: var(--charm-crown);
-}
-
-.icon-button-accent:hover {
-  color: var(--charm-crown-bright);
+.empty-tile:hover {
+  color: var(--text);
 }
 
 /* The check-in as a pop-up (§12c): the list stays visible behind,
