@@ -729,9 +729,14 @@ Both of its steps are built to one shape (Kimia's call, the same day):
 under it** — "which type of restart?" then "are you sure?". The question
 is what you answer; the explanation is fine print you read once. Because
 the two steps look identical, the second reads as the same card asking
-again rather than a new one arriving. The explanations themselves say
-plainly what will be wiped and what will remain, in Kimia's words —
-never a GOES/STAYS ledger, which read like terms and conditions.
+again rather than a new one arriving. Everything on the card is
+**centred**, explanation included (Kimia, same day): a card this small
+holds a question, not a document, and a left-ragged block inside it read
+as a paste-in. The explanations themselves say plainly what will be
+wiped and what will remain, in Kimia's words — never a GOES/STAYS
+ledger, which read like terms and conditions. Where one of them asks two
+things, a **blank line** separates them, so they read as two questions
+rather than one long one.
 
 **Reordering is a drag of the whole tile** (T5.1c, 2026-07-23; the grip
 alone until 2026-08-11), not a pair of ▲▼ arrows. Press anywhere on a

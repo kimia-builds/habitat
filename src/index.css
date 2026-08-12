@@ -1555,7 +1555,6 @@ body {
 .new-game-detail {
   color: var(--text-quiet);
   font-size: 0.9rem;
-  text-align: left;
 }
 
 /* "not now" — the way out that changes nothing. Quieter than the two

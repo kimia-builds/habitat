@@ -1877,6 +1877,18 @@ return 0` right after the era is worked out, so a moment before the
   verify skill's standing gotcha), and a screenshot can resize the
   viewport, which remounts the tree past the viewport gate and closes
   the popup. Click, then read in a separate call.
+
+- 2026-08-12 (Kimia, two tweaks on the same popup): **the explanations
+  are centred like everything else on the card**, and the two questions
+  on step one are separated by a **blank line** rather than a single
+  break. The explanation had been left-aligned on the theory that fine
+  print reads better ragged-right; on a card this small it just looked
+  pasted in. Committed alongside an in-flight T5.2c typography session
+  working in the same tree, so only the one CSS line and the one JSX
+  line were staged — `git show HEAD:file` into a scratch copy, patch
+  the single hunk, `hash-object -w` + `update-index --cacheinfo`. Worth
+  remembering: two sessions in one working tree means `git add <file>`
+  can quietly commit somebody else's half-finished work.
 - 2026-08-12 (Kimia's call, later the same day): **the charm lens will
   be remembered — and gets a persistence tier no other Habitat data
   has.** It becomes plan task T6.11 rather than a note. The lens is to

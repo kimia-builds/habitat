@@ -92,6 +92,10 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
                 <p className="new-game-detail">
                   do you want to wipe all your habit history and play habitat
                   from total scratch?
+                  {/* Two breaks, not one (Kimia, 2026-08-12): a blank
+                      line between the two choices, so they read as two
+                      questions rather than one long one. */}
+                  <br />
                   <br />
                   or do you want to keep your habit history and restart the
                   game? (requires you to export a backup)
