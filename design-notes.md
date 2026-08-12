@@ -1111,9 +1111,10 @@ where the bar can no longer hold three abreast.
 line each) + date 399, plus gaps and padding — so the fold sits just
 above that at 1184px, rather than at the point where the row already
 looks jammed. Note that "narrow" here **never means a phone**:
-`ViewportGate` replaces the whole app below 1024px (T5.1b), so this
-query only ever governs the 1024px–74rem window. A breakpoint under
-1024px would be dead CSS — worth remembering for §13c and anything else
+`ViewportGate` replaces the whole app below `MIN_APP_WIDTH` — 740px
+since 2026-08-12 (T5.1b) — so this query only ever governs the
+740px–74rem window. A breakpoint under that would be dead CSS — worth
+remembering for §13c and anything else
 this pass adds.
 
 ### 13b. Page titles, promoted out of their boxes **[BUILT — T5.2d, 2026-08-12]**

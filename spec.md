@@ -38,16 +38,24 @@ battles.
   loss. They simply appear in weekly data.
 - Non-goals for v1: mobile app, sync across devices, social features,
   seasonal events (candidate for v2).
-- **Device stance — desktop/laptop only (2026-07-23).** Habitat is
-  designed for wide screens; **mobile and tablet are parked
-  indefinitely**. Below **1024px** viewport width (phones, and tablets
-  held sideways) the whole app is replaced by a single full-screen
-  message — Kimia-written copy in a content slot — and at 1024px and
-  wider the app runs unchanged. This is a **reversible gate**, not a
-  teardown: every existing feature stays built, so a future responsive
-  pass simply removes/softens the gate and adds small-screen layouts.
-  The desktop-only startup animation (§5) is one moment _inside_ this
-  block, no longer a special case on its own.
+- **Device stance — wide screens, by width (2026-07-23; threshold
+  lowered 2026-08-12).** Habitat is designed for wide screens and
+  **small-screen layouts are parked indefinitely**. Below **740px**
+  viewport width the whole app is replaced by a single full-screen
+  message — Kimia-written copy in a content slot — and at 740px and
+  wider the app runs unchanged. The gate is a **width rule, not a device
+  rule** (Kimia's call 2026-08-12): it began at 1024px, which also kept
+  phones and tablets out, but that was cutting a desktop window off long
+  before the layout gave way. At 740px a portrait tablet renders the
+  real app; that trade was made knowingly. The floor is where the layout
+  actually breaks — the wordmark and the widest possible date need 656px
+  side by side, and the left icon rail begins overlapping the habit
+  tiles at about 704px, so 740 is the first width at which both still
+  hold. This is a **reversible gate**, not a teardown: every existing
+  feature stays built, so a future responsive pass simply
+  removes/softens the gate and adds small-screen layouts. The
+  desktop-only startup animation (§5) is one moment _inside_ this block,
+  no longer a special case on its own.
 - **Safety net (2026-07-27).** If any screen ever fails to draw, one
   calm full-screen message replaces it — Kimia-written copy in a
   content slot — instead of the blank black page React otherwise
@@ -486,12 +494,12 @@ The order of the daily sequence is fixed:
 3. the **field notes** (Sundays only).
 
 It plays every Habitat day, whether or not a check-in was owed. It runs
-on **desktop/laptop only**: on mobile and tablet it is skipped entirely
-and the screen plain-fades in instead. (Since 2026-07-23 the whole app
-is desktop/laptop only — see §3 device stance — so this animation
-simply lives on the desktop side of that block; the plain fade is the
-resting behaviour just below the 1024px line.) Full visual treatment in
-design-notes §12f.
+on **wide screens only**: anywhere narrower it is skipped entirely and
+the screen plain-fades in instead. (Since 2026-07-23 the whole app sits
+behind the width gate — see §3 device stance — so this animation simply
+lives on the wide side of that block; the plain fade is the resting
+behaviour just below the line, which has been 740px since 2026-08-12.)
+Full visual treatment in design-notes §12f.
 
 ## 6. Data & reflection
 

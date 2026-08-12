@@ -2011,6 +2011,32 @@ return 0` right after the era is worked out, so a moment before the
   Kimia's eye is the acceptance criterion in this pass; an assumption
   spends a whole build to find that out.
 
+  **The width gate drops from 1024px to 740px, and stops being a device
+  rule.** Kimia, narrowing her browser: the screen was being cut off
+  long before anything actually broke. Her rule for the floor — the app
+  should keep rendering for as long as the wordmark and the longest
+  possible date still sit on one row. Measured, that pair needs 656px
+  (24 + 175 + 28 + 405 + 24, the widest date being
+  "WEDNESDAY 30 MAR 2026" — WEDNESDAY is the longest weekday and MAR the
+  widest three-letter month). But a second thing gives way first: the
+  left icon rail is fixed to the window's edge while the content column
+  is centred, so below about 704px the rail starts sitting on the habit
+  tiles. **740px** is the first width where both hold, with 18px of
+  daylight between rail and tiles, and it is verified on every page.
+
+  **The consequence, chosen deliberately:** 740 sits below a portrait
+  tablet's 768px, so a tablet now renders the real app instead of the
+  block screen. Kimia was asked and took that trade (the alternative
+  offered was 769px, which would have kept the tablet block for the sake
+  of 29 pixels). So spec §3's stance changes shape: the gate is a
+  **width rule, not a device rule** — 740px is where the layout gives
+  way, and whatever device happens to be that wide gets the app. The
+  ViewportGate test that asserted "blocks a tablet held sideways" is
+  replaced by one asserting a 768px tablet now renders, so the
+  consequence stays pinned and deliberate rather than drifting.
+  Reaching the full 656px means moving the rail — a design change, not a
+  number — and is left unbuilt.
+
   **Two one-line caps, and neither is a pixel number.** Kimia asked for
   the meters' shrink to be capped so "wallet balance" stops spilling
   onto a second line; `white-space: nowrap` on the label does it by

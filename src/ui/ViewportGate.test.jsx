@@ -1,6 +1,9 @@
-// UI tests for the T5.1b device gate. The rule (spec §3): below 1024px
-// the whole app is replaced by one full-screen message; at 1024px and
-// wider the app renders unchanged. These tests assert that structure —
+// UI tests for the T5.1b device gate. The rule (spec §3): below
+// MIN_APP_WIDTH the whole app is replaced by one full-screen message; at
+// that width and wider the app renders unchanged. The threshold itself
+// moved once (1024 → 740, 2026-08-12), so these tests read it from the
+// module rather than hard-coding it — except where a specific device
+// width is the point. These tests assert structure —
 // which side of the gate renders, and that the gate faithfully reflects
 // the content slot — never the message's actual wording (that copy is
 // Kimia's, edited in content/blocked.js, and must never break the suite
@@ -33,14 +36,14 @@ const realMessage = BLOCKED.message
 afterEach(() => {
   cleanup()
   BLOCKED.message = realMessage
-  setViewportWidth(1024) // restore jsdom's default for the next test
+  setViewportWidth(MIN_APP_WIDTH) // restore a passing width for the next test
 })
 
 // A stand-in for <App /> — the gate only cares whether children mount.
 const CHILD = <div data-testid="app-child">the app</div>
 
 describe('ViewportGate (T5.1b device gate)', () => {
-  it('renders the app at exactly the 1024px threshold', () => {
+  it('renders the app at exactly the threshold', () => {
     setViewportWidth(MIN_APP_WIDTH)
     render(<ViewportGate>{CHILD}</ViewportGate>)
     expect(screen.queryByTestId('app-child')).toBeTruthy()
@@ -61,11 +64,23 @@ describe('ViewportGate (T5.1b device gate)', () => {
     expect(document.querySelector('.viewport-block')).toBeTruthy()
   })
 
-  it('blocks a tablet held sideways (768px)', () => {
-    setViewportWidth(768)
+  it('blocks a phone (430px)', () => {
+    setViewportWidth(430)
     render(<ViewportGate>{CHILD}</ViewportGate>)
     expect(screen.queryByTestId('app-child')).toBeNull()
     expect(document.querySelector('.viewport-block')).toBeTruthy()
+  })
+
+  // Kimia's call 2026-08-12: the gate is a WIDTH rule, not a device
+  // rule. Lowering it to 740 so a desktop window can be narrowed
+  // further necessarily lets a 768px tablet through, and she chose that
+  // trade knowingly. Pinned here so the consequence stays deliberate
+  // rather than becoming a surprise later.
+  it('renders on a 768px tablet, now that the gate sits below it', () => {
+    setViewportWidth(768)
+    render(<ViewportGate>{CHILD}</ViewportGate>)
+    expect(screen.queryByTestId('app-child')).toBeTruthy()
+    expect(document.querySelector('.viewport-block')).toBeNull()
   })
 
   it('swaps live when the window crosses the threshold both ways', () => {
@@ -73,7 +88,7 @@ describe('ViewportGate (T5.1b device gate)', () => {
     render(<ViewportGate>{CHILD}</ViewportGate>)
     expect(screen.queryByTestId('app-child')).toBeTruthy()
 
-    setViewportWidth(800) // shrink below the gate
+    setViewportWidth(700) // shrink below the gate
     expect(screen.queryByTestId('app-child')).toBeNull()
     expect(document.querySelector('.viewport-block')).toBeTruthy()
 

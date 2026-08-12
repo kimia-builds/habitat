@@ -12,8 +12,9 @@ import ViewportGate from './ui/ViewportGate.jsx'
 //   nothing React leaves behind. Outside the gate so it catches the
 //   gate too.
 //
-//   ViewportGate (T5.1b) — the device gate: below 1024px it replaces
-//   App with a single full-screen message; at 1024px and wider App runs
+//   ViewportGate (T5.1b) — the width gate: below MIN_APP_WIDTH (740px
+//   since 2026-08-12) it replaces App with a single full-screen
+//   message; at that width and wider App runs
 //   exactly as before. See ViewportGate.jsx for why it swaps the tree
 //   rather than hiding it with CSS.
 createRoot(document.getElementById('root')).render(

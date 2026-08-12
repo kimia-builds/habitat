@@ -1,7 +1,13 @@
-// ViewportGate — the app-root device gate (T5.1b, spec §3, decided
-// 2026-07-23). Habitat is desktop/laptop only: below a threshold
-// viewport width the WHOLE app is replaced by one full-screen message;
-// at that width and wider it renders exactly as today.
+// ViewportGate — the app-root width gate (T5.1b, spec §3, decided
+// 2026-07-23; threshold lowered 2026-08-12). Below a threshold viewport
+// width the WHOLE app is replaced by one full-screen message; at that
+// width and wider it renders exactly as today.
+//
+// It is a WIDTH rule, not a device rule (Kimia's call 2026-08-12). It
+// began as a desktop-only gate at 1024px, which also happened to keep
+// phones and tablets out; at 740px a portrait tablet renders the real
+// app. That trade was made knowingly, to stop a desktop window being
+// cut off long before the layout gives way.
 //
 // Why a JS gate that swaps the tree, not a CSS media query that hides
 // it: below the threshold `children` (the App) never mounts, so nothing
@@ -17,11 +23,23 @@
 import { useEffect, useState } from 'react'
 import { blockedMessage } from '../content/blocked.js'
 
-// The exact threshold from the decision: the gate opens AT 1024px, so
-// phones and sideways tablets (narrower) are blocked and 1024-and-wider
-// render. Named here, next to its only use, rather than as a magic
-// number in the check below.
-export const MIN_APP_WIDTH = 1024
+// The threshold, lowered from 1024px to 740px on 2026-08-12 (Kimia's
+// call, T5.2d): the window was being cut off long before the layout
+// actually gave way. Her rule is that the app should keep rendering for
+// as long as the wordmark and the longest possible date still sit on one
+// row — that pair needs 656px (24 + 175 + 28 + 405 + 24), the date at its
+// widest being "WEDNESDAY 30 MAR 2026".
+//
+// 740 rather than 656 because a second thing gives way first: the left
+// icon rail is fixed at the window's edge while the content column is
+// centred, so below about 704px the rail starts sitting on top of the
+// habit tiles. 740 keeps 18px of daylight between them. Widening the
+// gate further means moving the rail, which is a design change, not a
+// number.
+//
+// Named here, next to its only use, rather than as a magic number in the
+// check below.
+export const MIN_APP_WIDTH = 740
 
 // Current viewport width, guarded so the module is safe to import in a
 // non-browser environment (it just reports "wide enough" there).

@@ -7,7 +7,7 @@ for curiosities, learning the local language, and earning friendships in
 the community. Habit by habit, we build a habitat.
 
 **Live:** https://kimia-builds.github.io/habitat
-_(desktop or laptop — see [Device stance](#device-stance) below)_
+_(a wide screen — see [Device stance](#device-stance) below)_
 
 ## The idea
 
@@ -60,9 +60,11 @@ at a time (working agreements in [CLAUDE.md](CLAUDE.md)).
 
 ### Device stance
 
-Habitat is **desktop/laptop only**, deliberately. Below 1024px the whole
-app is replaced by a single full-screen message. It's a reversible gate,
-not a teardown — every feature stays built, and a future responsive pass
+Habitat is built for **wide screens**, deliberately. Below 740px the
+whole app is replaced by a single full-screen message. It is a width
+rule rather than a device rule — 740px is simply where the layout gives
+way — so a tablet held sideways does render it. It's a reversible gate,
+not a teardown: every feature stays built, and a future responsive pass
 would remove it.
 
 ### The documents

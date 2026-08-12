@@ -166,9 +166,9 @@ body {
    just above that, at 1184px, rather than letting the row reach the
    point of looking jammed before it gives way.
    And "narrow" here never means a phone — ViewportGate replaces the
-   whole app below 1024px (T5.1b), so this query only ever governs
-   1024px up to 74rem, the small-laptop window. A breakpoint below
-   1024px would be dead CSS. */
+   whole app below MIN_APP_WIDTH — 740px since 2026-08-12 (T5.1b) — so
+   this query only ever governs 740px up to 74rem. A breakpoint below
+   740px would be dead CSS. */
 @media (max-width: 74rem) {
   .app-header {
     grid-template-areas:
@@ -2033,7 +2033,7 @@ body {
   }
 }
 
-/* The device gate (T5.1b, spec §3): below 1024px the whole app is
+/* The width gate (T5.1b, spec §3): below MIN_APP_WIDTH the whole app is
    replaced by this single full-screen message. Same deep-space
    near-black as the body; the message sits centred and quiet — calm,
    never an alarm. The exact colours/spacing move into the design-tokens

@@ -1,6 +1,7 @@
 // blocked.js — the one message shown when Habitat is opened on a screen
-// narrower than desktop (spec §3, the T5.1b device gate). Habitat is
-// desktop/laptop only; below 1024px the whole app is replaced by this.
+// too narrow for its layout (spec §3, the T5.1b width gate). Habitat is
+// built for wide screens; below MIN_APP_WIDTH (740px since 2026-08-12)
+// the whole app is replaced by this.
 //
 // THIS FILE IS KIMIA'S (design-notes §7): Claude Code builds the slot
 // and the plumbing; the words are human-written. Put your message
@@ -9,7 +10,8 @@
 
 export const BLOCKED = {
   // TODO: written by Kimia — the message a phone/tablet visitor sees.
-  message: 'N-Z-D is currently only a habitat that can be experienced on a big browser, like a laptop or desktop computer. check back in on the big screen!',
+  message:
+    'N-Z-D is currently only a habitat that can be experienced on a big browser, like a laptop or desktop computer. check back in on the big screen!',
 }
 
 // The message text, trimmed, or null when the slot is still blank — so
