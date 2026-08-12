@@ -35,10 +35,10 @@ body {
 .app {
   max-width: 40rem;
   margin: 0 auto;
-  padding: 1rem;
+  padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
 /* The night sky (§13c, T5.2d): the app's background, mounted once in
@@ -160,8 +160,8 @@ body {
 .app-header {
   display: grid;
   align-items: center;
-  gap: 0.9rem 1.75rem;
-  padding: 1.25rem 1.5rem 0.5rem;
+  gap: var(--space-4) var(--space-7);
+  padding: var(--space-5) var(--space-6) var(--space-2);
   grid-template-areas: 'wordmark meters date';
   grid-template-columns: auto 1fr auto;
 }
@@ -189,16 +189,19 @@ body {
    full width, so the two-storey form is as snug as the one-storey one:
    however many storeys the bar ends up being, no slack in any of them.
 
-   74rem is measured, not chosen for roundness. Three abreast need
-   1154px at their tightest — wordmark 174 + meters 477 (their labels,
+   76rem is measured, not chosen for roundness. Three abreast need
+   1183px at their tightest — wordmark 174 + meters 498 (their labels,
    one line each) + date 399, plus gaps and padding — so the fold sits
-   just above that, at 1184px, rather than letting the row reach the
-   point of looking jammed before it gives way.
+   above that, at 1216px, rather than letting the row reach the point of
+   looking jammed before it gives way. (It was 74rem until the spacing
+   scale landed later the same day: bigger gaps cost the row 29px, which
+   left one pixel of slack. Re-measure this if the header's spacing
+   changes again — it is a consequence, not a constant.)
    And "narrow" here never means a phone — ViewportGate replaces the
    whole app below MIN_APP_WIDTH — 740px since 2026-08-12 (T5.1b) — so
    this query only ever governs 740px up to 74rem. A breakpoint below
    740px would be dead CSS. */
-@media (max-width: 74rem) {
+@media (max-width: 76rem) {
   .app-header {
     grid-template-areas:
       'wordmark date'
@@ -225,7 +228,7 @@ body {
 
 .meters {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .meter {
@@ -233,8 +236,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.4rem;
-  padding: 0.6rem 0.7rem;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
@@ -302,7 +305,7 @@ body {
 .page-box {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   align-items: flex-start;
@@ -315,11 +318,11 @@ body {
 .stub-page {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .stub-page .page-box {
-  padding: 2rem 1rem;
+  padding: var(--space-7) var(--space-4);
 }
 
 .stub-page p {
@@ -332,7 +335,7 @@ body {
 .market-stall {
   list-style: none;
   display: flex;
-  gap: 0.8rem;
+  gap: var(--space-3);
   padding: 0;
   margin: 0;
   width: 100%;
@@ -343,10 +346,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.45rem;
+  gap: var(--space-2);
   border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
-  padding: 0.9rem 0.6rem;
+  padding: var(--space-4) var(--space-2);
 }
 
 .market-glyph {
@@ -358,7 +361,7 @@ body {
 .market-price {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: var(--space-1);
   color: var(--fungi); /* soft amber — the glow of fungi */
   font-size: 0.85rem;
 }
@@ -445,7 +448,7 @@ body {
 .abode-mode {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: var(--space-2);
   color: var(--text-quiet);
 }
 
@@ -515,7 +518,7 @@ body {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: var(--space-3);
   padding: 0;
   margin: 0;
 }
@@ -524,10 +527,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.45rem;
+  gap: var(--space-2);
   border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
-  padding: 0.9rem 0.8rem;
+  padding: var(--space-4) var(--space-3);
   background: none;
   font: inherit;
   cursor: pointer;
@@ -570,17 +573,17 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
   width: 100%;
 }
 
 .abode-row {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: var(--space-2);
   border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
-  padding: 0.4rem 0.6rem;
+  padding: var(--space-2) var(--space-2);
 }
 
 .abode-name {
@@ -604,11 +607,11 @@ body {
 .habit-graphs {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
   background: var(--surface-solid);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: var(--space-4);
   align-items: flex-start;
 }
 
@@ -631,7 +634,7 @@ body {
 .week-nav {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-3);
   justify-content: space-between;
   width: 100%;
   flex-wrap: nowrap;
@@ -662,7 +665,7 @@ body {
 
 .week-grid th,
 .week-grid td {
-  padding: 0.3rem 0.35rem;
+  padding: var(--space-1) var(--space-1);
   text-align: center;
   font-weight: 400;
   font-size: 0.85rem;
@@ -703,7 +706,7 @@ body {
 .habit-graph {
   border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
-  padding: 0.4rem 0.6rem;
+  padding: var(--space-2) var(--space-2);
 }
 
 .habit-graph summary {
@@ -712,7 +715,7 @@ body {
 }
 
 .habit-graph[open] summary {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
 }
 
 .habit-graph-svg {
@@ -733,9 +736,9 @@ body {
 
 .graph-zooms {
   display: flex;
-  gap: 0.4rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
 }
 
 .zoom-button {
@@ -745,7 +748,7 @@ body {
   color: var(--text-quiet);
   border: 1px solid var(--border);
   border-radius: 0.3rem;
-  padding: 0.2rem 0.5rem;
+  padding: var(--space-1) var(--space-2);
   cursor: pointer;
 }
 
@@ -763,15 +766,15 @@ body {
 .arrival-shelf {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
 .arrival {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0.5rem;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
@@ -833,7 +836,7 @@ body {
 .arrival-hold {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
   background: none;
   border: none;
   padding: 0;
@@ -854,7 +857,7 @@ body {
    full-sized. */
 .pebble.arrival-choice {
   font-size: 0.75rem;
-  padding: 0.2rem 0.7rem;
+  padding: var(--space-1) var(--space-3);
 }
 
 .arrival-caption {
@@ -877,7 +880,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: var(--space-4);
   z-index: 10;
 }
 
@@ -896,10 +899,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
+  gap: var(--space-4);
   text-align: center;
   max-width: 22rem;
-  padding: 2rem 1.5rem;
+  padding: var(--space-7) var(--space-6);
   background: var(--bg);
   border: 1px solid currentColor;
   border-radius: 0.75rem;
@@ -1129,8 +1132,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.5rem 0 0.25rem;
+  gap: var(--space-1);
+  padding: var(--space-2) 0 var(--space-1);
   animation-name: cameo-visit;
   animation-timing-function: ease;
   animation-fill-mode: forwards;
@@ -1179,7 +1182,7 @@ body {
   background: none;
   border: 1px solid currentColor;
   border-radius: 0.4rem;
-  padding: 0.4rem 1.2rem;
+  padding: var(--space-2) var(--space-5);
   cursor: pointer;
 }
 
@@ -1191,11 +1194,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
+  gap: var(--space-4);
   text-align: center;
   width: 100%;
   max-width: 30rem;
-  padding: 1.5rem;
+  padding: var(--space-6);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -1221,11 +1224,11 @@ body {
 .map-page {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .map-page .page-box {
-  padding: 1rem;
+  padding: var(--space-4);
 }
 
 .map-svg {
@@ -1280,11 +1283,11 @@ body {
 .bookcase-page {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .bookcase-page .page-box {
-  padding: 1rem;
+  padding: var(--space-4);
 }
 
 .bookshelf-svg {
@@ -1357,7 +1360,7 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 /* Each row is a long baguette of its OWN charm (Kimia's call
@@ -1376,7 +1379,7 @@ body {
 .habit-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-3);
   border: 1px solid var(--charm-here-faint, var(--border));
   border-radius: var(--radius-tile);
   background: color-mix(
@@ -1384,7 +1387,7 @@ body {
     var(--charm-here, transparent) var(--charm-fill-strength),
     transparent
   );
-  padding: 0.5rem 1.25rem;
+  padding: var(--space-2) var(--space-5);
   /* How a tile comes DOWN off its lift. Nothing about the resting tile
      animates on its own — this only has anything to do once a drag ends
      and the raised look is taken away (see --settling below), and it is
@@ -1566,7 +1569,7 @@ body {
   display: inline-flex;
   background: none;
   border: none;
-  padding: 0.3rem;
+  padding: var(--space-1);
   cursor: pointer;
   transition: opacity 0.18s ease;
 }
@@ -1596,7 +1599,7 @@ body {
    and roomier now that nothing boxes the charms apart. */
 .filter-view .symbol-picker {
   justify-content: center;
-  gap: 0.9rem;
+  gap: var(--space-4);
 }
 
 .habit-main {
@@ -1620,7 +1623,7 @@ body {
 .archived-row {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
@@ -1635,7 +1638,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.4rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
@@ -1650,11 +1653,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
+  gap: var(--space-4);
   text-align: center;
   width: 100%;
   max-width: 30rem;
-  padding: 1.5rem;
+  padding: var(--space-6);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -1665,7 +1668,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
@@ -1720,7 +1723,7 @@ body {
       transparent
     );
   border-radius: var(--radius-pill);
-  padding: 0.4rem 1.4rem;
+  padding: var(--space-2) var(--space-6);
   cursor: pointer;
 }
 
@@ -1776,16 +1779,16 @@ body {
 .habit-form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-form);
-  padding: 1rem 1.25rem;
+  padding: var(--space-4) var(--space-5);
 }
 
 .habit-form label {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: var(--space-1);
 }
 
 /* The charms sit at the top of the draft and centred — picking the charm
@@ -1793,8 +1796,8 @@ body {
    choice rather than a field. */
 .habit-form .symbol-picker {
   justify-content: center;
-  gap: 0.9rem;
-  margin-bottom: 0.25rem;
+  gap: var(--space-4);
+  margin-bottom: var(--space-1);
 }
 
 /* Open fields as baguettes: fully rounded, transparent, a white hairline.
@@ -1807,7 +1810,7 @@ body {
   background: none;
   border: 1px solid var(--button-edge);
   border-radius: var(--radius-pill);
-  padding: 0.4rem 1rem;
+  padding: var(--space-2) var(--space-4);
 }
 
 /* Save and cancel: centred at the foot of the draft, and far enough
@@ -1815,8 +1818,8 @@ body {
 .form-actions {
   display: flex;
   justify-content: center;
-  gap: 2.5rem;
-  margin-top: 0.5rem;
+  gap: var(--space-8);
+  margin-top: var(--space-2);
 }
 
 .archived summary {
@@ -1826,10 +1829,10 @@ body {
 
 .archived ul {
   list-style: none;
-  padding: 0.5rem 0;
+  padding: var(--space-2) 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 /* ──────────────── T4.5: the home screen's quiet furniture ────────────────
@@ -1862,7 +1865,7 @@ body {
 /* The honest line, only between midnight and the cutoff: the dimmest
    tier, lowercase, a statement of fact — never a warning (§12b). */
 .date-cutoff-note {
-  margin: 0.25rem 0 0;
+  margin: var(--space-1) 0 0;
   font-size: 0.8rem;
   color: var(--text-faint);
 }
@@ -1881,13 +1884,13 @@ body {
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: var(--space-4);
 }
 
 .rail-icon {
   background: none;
   border: none;
-  padding: 0.25rem;
+  padding: var(--space-1);
   cursor: pointer;
   color: var(--text-dim-white);
   transition:
@@ -1951,7 +1954,7 @@ body {
   justify-content: center;
   background: none;
   border: none;
-  padding: 0.15rem;
+  padding: var(--space-1);
   cursor: pointer;
   color: var(--text-quiet);
   font: inherit;
@@ -1987,7 +1990,7 @@ body {
   color: var(--text-quiet);
   background: none;
   border: none;
-  padding: 0.5rem 1.25rem;
+  padding: var(--space-2) var(--space-5);
   cursor: pointer;
 }
 
@@ -2011,14 +2014,14 @@ body {
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
-  padding: 2rem 1rem;
+  padding: var(--space-7) var(--space-4);
   background: var(--veil-checkin);
 }
 
 .check-in {
   width: 100%;
   max-width: 32rem;
-  padding: 1.25rem;
+  padding: var(--space-5);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
@@ -2038,13 +2041,13 @@ body {
    the real scale.) */
 .check-in > h2 {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .check-in > button {
   display: block;
   margin-inline: auto;
-  margin-top: 1.25rem;
+  margin-top: var(--space-5);
 }
 
 /* The daily startup fade (T4.5's placeholder for T5.2's animation):
@@ -2078,7 +2081,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: var(--space-7);
   text-align: center;
 }
 
@@ -2098,7 +2101,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: var(--space-7);
   text-align: center;
 }
 
@@ -2114,7 +2117,7 @@ body {
    home screen, quieter than the backup buttons it stands beside. */
 .design-door {
   text-align: center;
-  padding: 0.5rem 0 1rem;
+  padding: var(--space-2) 0 var(--space-4);
 }
 
 /* Deliberately not a pebble (§11e): a door, kept fainter than anything
@@ -2135,7 +2138,7 @@ body {
 }
 
 .design-family {
-  margin: 1.25rem 0;
+  margin: var(--space-5) 0;
 }
 
 .design-family h3 {
@@ -2151,7 +2154,7 @@ body {
 .texture-swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
+  gap: var(--space-4);
   list-style: none;
   padding: 0;
 }
@@ -2160,7 +2163,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: var(--space-1);
   width: 5.5rem;
 }
 
@@ -2184,7 +2187,7 @@ body {
 .eye-swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
+  gap: var(--space-4);
   list-style: none;
   padding: 0;
 }
@@ -2193,7 +2196,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: var(--space-1);
   width: 7rem;
 }
 
@@ -2217,7 +2220,7 @@ body {
 .signer-swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.4rem;
+  gap: var(--space-6);
   list-style: none;
   padding: 0;
 }
@@ -2226,7 +2229,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: var(--space-1);
   width: 9rem;
   max-width: 100%;
 }
@@ -2238,7 +2241,7 @@ body {
   aspect-ratio: 174 / 343.49;
   border-radius: 0.75rem;
   background: var(--surface-workbench);
-  padding: 0.6rem;
+  padding: var(--space-2);
   box-sizing: border-box;
 }
 
@@ -2280,7 +2283,7 @@ body {
 .friend10-swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.4rem;
+  gap: var(--space-6);
   list-style: none;
   padding: 0;
 }
@@ -2289,7 +2292,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: var(--space-1);
   width: 11rem;
   max-width: 100%;
 }
@@ -2326,7 +2329,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 1.4rem;
+  gap: var(--space-6);
   list-style: none;
   padding: 0;
 }
@@ -2338,7 +2341,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: var(--space-1);
   min-width: 4rem;
   max-width: 100%;
 }
@@ -2393,7 +2396,7 @@ body {
 .sky-swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
+  gap: var(--space-4);
   list-style: none;
   padding: 0;
 }
@@ -2402,7 +2405,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: var(--space-1);
   width: 9rem;
   height: auto;
 }

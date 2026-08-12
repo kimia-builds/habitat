@@ -559,7 +559,7 @@ built that day followed this section as it was then written, and she
 disliked all of it. Type is not a thing to be specified and then
 implemented in one go.
 
-### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10; SPENT — T5.2b, 2026-08-11]**
+### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10; SPENT — T5.2b, 2026-08-11; SPACING BUILT — T5.2d, 2026-08-12]**
 
 Everything §11b and §11c name — every colour, every glow strength,
 every font size, every spacing number — lives in **one CSS file of
@@ -570,10 +570,28 @@ short, legible list, not a hunt through ~1,400 lines of stylesheet, and
 nothing a non-coder can't follow.
 
 - **Named, commented, single-file.** Each token is a CSS custom
-  property (`--bg`, `--text-primary`, `--glow-soft`, `--space-frame`,
+  property (`--bg`, `--text-primary`, `--glow-soft`, `--space-4`,
   …) with a comment saying in plain English what it is and where it
   came from (e.g. "the shell charm's pink — also the daily startup
   planet"). No raw hex codes or magic px scattered through the rules.
+
+- **The spacing scale — eight steps, one grid (T5.2d, 2026-08-12).**
+  The stylesheet had grown **twenty-two** different spacing numbers, one
+  component at a time: 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55,
+  0.6, 0.7, 0.75, 0.8, 0.9, 1, 1.2, 1.25, 1.4, 1.5, 1.75, 2, 2.5rem.
+  That is not a scale, it is an accident — differences under a pixel
+  that do no design work and guarantee nothing lines up with anything
+  else. They are now **eight steps on a 4px grid** (`--space-1` …
+  `--space-8`: 0.25 / 0.5 / 0.75 / 1 / 1.25 / 1.5 / 2 / 2.5rem), with
+  every old value snapped to its nearest step. Nothing moved by more
+  than 2.4px, and things meant to match now do. The rule going forward:
+  reach for the nearest step and stop — a layout that seems to need a
+  value between two steps almost always wants a different step, and a
+  ninth value is how the last twenty-two began.
+
+  **Positions are not spacing** and stay raw: the icon rail's `left`, an
+  inset, a fixed offset. Those place one thing on the screen; the scale
+  is for holding two things apart.
 - **The charm colours are canonical here (Kimia's call 2026-07-21).**
   The six colours in §11a currently live in `src/ui/symbols.js` because
   the glow drop-shadows are built in JavaScript. The tokens file becomes

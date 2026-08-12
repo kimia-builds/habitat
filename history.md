@@ -2092,6 +2092,28 @@ return 0` right after the era is worked out, so a moment before the
   rule, recorded in §13c: any panel carrying dense reading does the
   same.
 
+  **The spacing scale lands, and T5.2d is finished.** The stylesheet had
+  grown twenty-two different spacing numbers — 0.15 through 2.5rem, one
+  component at a time — which is not a scale but an accident: gaps
+  differing by under a pixel, doing no design work, guaranteeing nothing
+  lines up. They became **eight steps on a 4px grid** (`--space-1` …
+  `--space-8`), every old value snapped to its nearest, 117 declarations
+  now asking by name and no raw rem left in any padding, margin or gap.
+  Nothing moved more than 2.4px. This is the slice tokens.css had been
+  waiting for since 2026-08-10, when it declined to name the paddings on
+  the grounds that "§13 is about to rewrite them" — it did, so they were
+  named after being decided rather than before.
+
+  **One consequence, caught by measuring rather than by looking:** the
+  bigger gaps cost the header's one-row form 29px, which left the 74rem
+  fold with a single pixel of slack — the jammed-before-folding state
+  that breakpoint had been chosen to avoid. Moved to 76rem and recorded
+  in the CSS as a consequence to re-measure, not a constant.
+
+  What is now in tokens.css: all colour, all spacing. What is not: glow
+  (T5.2e decides it), type (never — §11c is settled), and positions,
+  which place one thing rather than hold two apart.
+
   _Build notes:_ `.app-header` is a grid with named areas, a sibling
   ABOVE `<main class="app">` rather than inside it, so the 40rem column
   is untouched. The `meters` fragment in App.jsx no longer carries the

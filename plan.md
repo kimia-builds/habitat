@@ -132,19 +132,20 @@ tracker. Everything after this is delight, informed by real use.
             nothing left to build. design-notes §11c now describes the
             lettering instead of proposing it, and the slice is kept
             here, struck through, so nobody proposes it again.)_
-      - [ ] **T5.2d Layout & atmosphere (§13)** — the top header bar,
-            promoted page titles, and the night sky mounted as the app
-            background (its ground colours move into the tokens file with
-            it, per §11d); the spacing scale joins the tokens file here.
-            _Built one visible slice at a time, Kimia's eye between each
-            (the T5.2c lesson):_
+      - [x] **T5.2d Layout & atmosphere (§13)** _(done 2026-08-12 —
+            build notes in history.md)_ — the header bar, promoted page
+            titles, the night sky as the app background, and the spacing
+            scale into the tokens file. Built one visible slice at a
+            time with Kimia's eye between each (the T5.2c lesson), and
+            three of the four came back with corrections:_
             - [x] promoted page titles (§13b) _(2026-08-12)_
             - [x] the top header bar (§13a) _(2026-08-12)_
             - [x] the night-sky background (§13c) _(2026-08-12 — the
                   workbench NightSky mounted as the app background; its
                   ground colours into tokens.css, re-tuned to sink into
                   the settled §11b ground)_
-            - [ ] the spacing scale into the tokens file
+            - [x] the spacing scale into the tokens file _(2026-08-12 —
+                  22 ad-hoc values become 8 steps on a 4px grid)_
       - [ ] **T5.2e Glow, feel & the startup animation** — the §4–§5 feel
             enhancements and the §12f rolling planet; the glow scale joins
             the tokens file here, once there is a real one to name.

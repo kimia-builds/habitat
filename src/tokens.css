@@ -11,13 +11,21 @@
  * these by name — `color: var(--text-quiet)` — so one edit moves every place
  * that colour appears, and nowhere else needs touching.
  *
- * WHAT IS AND ISN'T HERE (2026-08-10):
+ * WHAT IS AND ISN'T HERE (2026-08-10, updated 2026-08-12):
  *   - COLOUR is here, all of it. index.css holds no raw hex or rgba any more.
- *   - Glow strengths, font sizes and spacing are NOT here yet, on purpose.
- *     Today's values are ad-hoc leftovers of the ugly-on-purpose skeleton (four
- *     near-identical glow radii; paddings the §13 layout pass is about to
- *     rewrite). Naming them now would be naming numbers that are about to be
- *     replaced — they arrive in the T5.2 slices that actually decide them.
+ *   - SPACING is here as of T5.2d: eight steps on a 4px grid, and every
+ *     padding, margin and gap in index.css asks for one by name.
+ *   - GLOW is still not here. Today's four near-identical radii are leftovers
+ *     of the ugly-on-purpose skeleton, and naming them would be naming numbers
+ *     about to be replaced; they arrive with T5.2e, the slice that decides them.
+ *   - TYPE never joins (Kimia's call 2026-08-12). Font sizes stay raw in
+ *     index.css because typography stopped being a thing to build: the
+ *     two-typeface pass was built, seen and rejected, and the system font
+ *     Habitat already wore is its settled typography (design-notes §11c).
+ *     There is no scale to name, only leftovers.
+ *   - POSITIONS are not spacing and stay raw: the icon rail's `left`, an
+ *     inset, a fixed offset. They place a thing on the screen rather than
+ *     hold two things apart.
  *
  * THE §11b IDENTITY LANDED HERE ON 2026-08-11 (T5.2b), and it was an edit to
  * this file plus about a dozen lines of index.css — which was the whole point
@@ -151,6 +159,35 @@
   --sky-night-top: #0e1119;
   --sky-night-mid: #0a0c14;
   --sky-night-bottom: #080910;
+
+  /* =========================================================================
+   * SPACING — the scale (T5.2d, 2026-08-12)
+   * -------------------------------------------------------------------------
+   * Every padding, margin and gap in index.css comes from this list. Before
+   * today there were TWENTY-TWO different spacing numbers in the stylesheet,
+   * grown one component at a time — 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45,
+   * 0.5, 0.55, 0.6, 0.7, 0.75, 0.8, 0.9, 1, 1.2, 1.25, 1.4, 1.5, 1.75, 2,
+   * 2.5rem — which is not a scale, it is an accident. Differences that small
+   * (0.35 vs 0.4 is under a pixel) do no design work; they just guarantee
+   * that nothing lines up with anything else.
+   *
+   * So: EIGHT steps on a 4px grid, and every old value snapped to its nearest
+   * one. Nothing moved by more than 2.4px, and things that were meant to
+   * match now actually do.
+   *
+   * HOW TO USE: reach for the nearest step and stop. If a layout seems to
+   * need a value between two steps, the honest fix is almost always a
+   * different step, not a new number — a ninth value is how the last
+   * twenty-two started.
+   * ========================================================================= */
+  --space-1: 0.25rem; /*  4px — hairline gaps: a glyph beside its number */
+  --space-2: 0.5rem; /*   8px — inside a small control; label to its bar */
+  --space-3: 0.75rem; /* 12px — between siblings in a list or a row */
+  --space-4: 1rem; /*    16px — the standard: a panel's padding, a page's gutter */
+  --space-5: 1.25rem; /* 20px — a panel that wants more air than standard */
+  --space-6: 1.5rem; /*  24px — between distinct groups on a screen */
+  --space-7: 2rem; /*    32px — a generous panel; the space around a page title */
+  --space-8: 2.5rem; /* 40px — the biggest room we ask for */
 
   /* A panel that must be OPAQUE, not washed (Kimia's call 2026-08-12,
      once the stars were up): --surface is a white wash, which lets the
