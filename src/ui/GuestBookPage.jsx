@@ -58,39 +58,41 @@ function GuestBookPage({ friends, worldSeed, onBack }) {
   const [selected, setSelected] = useState(null)
   return (
     <section className="stub-page guestbook">
-      <h2>local community</h2>
-      <ul className="guestbook-list" aria-label="friends">
-        {friends.map((friend) => {
-          const key = FRIEND_CATEGORIES[friend.category].key
-          const name = friendDisplayName(key, friend.individual)
-          return (
-            <li key={friend.completionId}>
-              <button
-                className="guestbook-friend"
-                onClick={() => setSelected(friend)}
-                aria-label={name ?? UNNAMED}
-              >
-                <FriendGlyph
-                  category={friend.category}
-                  individual={friend.individual}
-                  worldSeed={worldSeed}
-                />
-                {name && <span className="guestbook-name">{name}</span>}
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-      {selected && (
-        <FriendCard
-          friend={selected}
-          worldSeed={worldSeed}
-          onClose={() => setSelected(null)}
-        />
-      )}
-      <button className="pebble" onClick={onBack}>
-        ← back to the habits
-      </button>
+      <h2 className="page-title">local community</h2>
+      <div className="page-box">
+        <ul className="guestbook-list" aria-label="friends">
+          {friends.map((friend) => {
+            const key = FRIEND_CATEGORIES[friend.category].key
+            const name = friendDisplayName(key, friend.individual)
+            return (
+              <li key={friend.completionId}>
+                <button
+                  className="guestbook-friend"
+                  onClick={() => setSelected(friend)}
+                  aria-label={name ?? UNNAMED}
+                >
+                  <FriendGlyph
+                    category={friend.category}
+                    individual={friend.individual}
+                    worldSeed={worldSeed}
+                  />
+                  {name && <span className="guestbook-name">{name}</span>}
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+        {selected && (
+          <FriendCard
+            friend={selected}
+            worldSeed={worldSeed}
+            onClose={() => setSelected(null)}
+          />
+        )}
+        <button className="pebble" onClick={onBack}>
+          ← back to the habits
+        </button>
+      </div>
     </section>
   )
 }

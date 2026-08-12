@@ -1036,7 +1036,7 @@ Soundless, as ever.
 
 ---
 
-## 13. Layout & atmosphere — the M5 layout pass **[TO-BUILD · T5.2]**
+## 13. Layout & atmosphere — the M5 layout pass **[§13b BUILT (T5.2d, 2026-08-12) · §13a, §13c TO-BUILD · §13d is T5.2e]**
 
 _Kimia's M5 layout spec, merged 2026-07-21. Net-new structural pieces
 for this design pass; they sit on top of the home screen §12 already
@@ -1066,20 +1066,29 @@ them into a **dedicated full-width header** above that column.
 The wordmark keeps its standing job as the **home link back to the
 habit list** (spec §5b).
 
-### 13b. Page titles, promoted out of their boxes
+### 13b. Page titles, promoted out of their boxes **[BUILT — T5.2d, 2026-08-12]**
 
-Every secondary page (Map, Bookcase, Abode, Market, Guest Book) renders
-its title _inside_ its bordered content box today, so the title reads
-as furniture squeezed into the frame. This pass pulls each title **out
-into a shared page-header region above the box**, echoing the quiet,
-letterspaced, centred treatment the date display already uses at home
-(§11c's display register, §12b's ceremony).
+Every secondary page (Map, Bookcase, Abode, Market, Guest Book) used to
+render its title _inside_ its bordered content box, so the title read
+as furniture squeezed into the frame. Each title now stands **above the
+box**, in the quiet, letterspaced, centred treatment the date display
+already uses at home (§11c's display register, §12b's ceremony) — the
+same 1.3rem / 0.35em / weight-300 / `--text-title` register, so the two
+speak in one voice.
 
 One shared class (`.page-title`), reused across all of them rather than
 each page hand-rolling its own heading — so they read as one system and
 a copy change touches one place. The page names themselves stay pinned
 by spec §5b (map of N-Z-D, readers library, local market, your abode,
 local community).
+
+**How it is built:** the page's own class (`.stub-page`, `.map-page`,
+`.bookcase-page`) is now just the outer column; the border, radius and
+padding it used to carry moved onto an inner `.page-box` wrapper, and
+the title is the column's first child, outside that frame. The
+`<section>` still contains both, so anything scoped to the page — tests
+included — keeps working. Padding stays per-page (2rem 1rem for the
+stub pages, 1rem for Map and Bookcase) as an override on `.page-box`.
 
 ### 13c. The night-sky background
 

@@ -204,9 +204,9 @@ function AbodePage({
 
   return (
     <section className="stub-page abode">
-      <h2>your abode</h2>
-
-      {/* The quiet / party toggle (T4.4): a switch with an icon either
+      <h2 className="page-title">your abode</h2>
+      <div className="page-box">
+        {/* The quiet / party toggle (T4.4): a switch with an icon either
           side. Greyed — "not yet" — until the first friend exists.
           Every part of it names itself on hover (Kimia's call
           2026-08-12): the switch is "pick your mood", the stone side is
@@ -219,232 +219,233 @@ function AbodePage({
           The switch keeps "party mode" as its ACCESSIBLE name while its
           hover label reads "pick your mood": a switch has to say what it
           turns on, and on/off is what aria-checked reports. */}
-      <div
-        className={`abode-mode${partyAvailable ? '' : ' abode-mode-off'}`}
-        // The disabled switch fires no hover events of its own, so the
-        // "not yet" it should be saying has to live on this wrapper.
-        title={partyAvailable ? undefined : 'not yet'}
-      >
-        <span title={partyAvailable ? 'quietude' : 'not yet'}>
-          <svg
-            className={`abode-mode-icon${party ? '' : ' active'}`}
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            {/* quiet: a single resting stone */}
-            <circle
-              cx="12"
-              cy="12"
-              r="4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-          </svg>
-        </span>
-        <button
-          className="abode-mode-switch"
-          role="switch"
-          aria-checked={party}
-          aria-label="party mode"
-          title={partyAvailable ? 'pick your mood' : 'not yet'}
-          disabled={!partyAvailable}
-          onClick={handlePartyToggle}
+        <div
+          className={`abode-mode${partyAvailable ? '' : ' abode-mode-off'}`}
+          // The disabled switch fires no hover events of its own, so the
+          // "not yet" it should be saying has to live on this wrapper.
+          title={partyAvailable ? undefined : 'not yet'}
         >
-          <span className="abode-mode-knob" />
-        </button>
-        <span title={partyAvailable ? 'party mode' : 'not yet'}>
-          <svg
-            className={`abode-mode-icon${party ? ' active' : ''}`}
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+          <span title={partyAvailable ? 'quietude' : 'not yet'}>
+            <svg
+              className={`abode-mode-icon${party ? '' : ' active'}`}
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              {/* quiet: a single resting stone */}
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+            </svg>
+          </span>
+          <button
+            className="abode-mode-switch"
+            role="switch"
+            aria-checked={party}
+            aria-label="party mode"
+            title={partyAvailable ? 'pick your mood' : 'not yet'}
+            disabled={!partyAvailable}
+            onClick={handlePartyToggle}
           >
-            {/* party: a little gathering */}
-            <circle
-              cx="7"
-              cy="14"
-              r="3"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-            <circle
-              cx="16.5"
-              cy="8.5"
-              r="3"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-            <circle
-              cx="17"
-              cy="16.5"
-              r="3"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-          </svg>
-        </span>
-      </div>
+            <span className="abode-mode-knob" />
+          </button>
+          <span title={partyAvailable ? 'party mode' : 'not yet'}>
+            <svg
+              className={`abode-mode-icon${party ? ' active' : ''}`}
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              {/* party: a little gathering */}
+              <circle
+                cx="7"
+                cy="14"
+                r="3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <circle
+                cx="16.5"
+                cy="8.5"
+                r="3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <circle
+                cx="17"
+                cy="16.5"
+                r="3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+            </svg>
+          </span>
+        </div>
 
-      {pending.length > 0 && (
-        <>
-          <h3>waiting to decide</h3>
-          <ul className="abode-list" aria-label="waiting to decide">
-            {pending.map((find) => (
-              <li key={find.completionId} className="abode-row arrival-flora">
-                <DropGlyph kind="flora" />
-                <span className="abode-name">a flora find</span>
-                <button
-                  className="pebble arrival-choice"
-                  onClick={() => onDecide(find.completionId, 'gathered')}
-                >
-                  gather
-                </button>
-                <button
-                  className="pebble arrival-choice"
-                  onClick={() => onDecide(find.completionId, 'left')}
-                >
-                  leave it
-                </button>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
-      <svg
-        ref={svgRef}
-        className="abode-ground-svg"
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-        role="group"
-        aria-label="the ground"
-        onPointerDown={() => setHeldId(null)}
-      >
-        {/* The constant scene: sky above, ground below the horizon. */}
-        <rect
-          className="abode-soil"
-          x="0"
-          y={HORIZON_Y}
-          width={WIDTH}
-          height={HEIGHT - HORIZON_Y}
-        />
-        <line
-          className="abode-horizon"
-          x1="0"
-          y1={HORIZON_Y}
-          x2={WIDTH}
-          y2={HORIZON_Y}
-        />
-        {ordered.map((item) => {
-          const isObject = item.kind === 'object'
-          const name = isObject ? 'a curiosity' : 'a flora find'
-          const isHeld = item.id === heldId
-          const size = isHeld ? HELD_SIZE : FLORA_SIZE
-          const place = placeOf(item)
-          const cx = place.x * WIDTH
-          const base = place.y * HEIGHT
-          // The held item's name and its quiet way back stack above it,
-          // clamped so they stay readable at the scene's edges.
-          const textX = Math.min(WIDTH - 26, Math.max(26, cx))
-          const nameY = Math.max(8, base - size - 7)
-          const glyphClass = isHeld
-            ? 'abode-flora-glyph held'
-            : 'abode-flora-glyph'
-          return (
-            <g key={item.id} className="abode-flora">
-              <g
-                role="button"
-                tabIndex={0}
-                aria-label={name}
-                aria-pressed={isHeld}
-                className="abode-flora-hold"
-                onPointerDown={(event) => handlePointerDown(item, event)}
-                onKeyDown={(event) => handleKeyDown(item, event)}
-              >
-                {isObject ? (
-                  <ObjectGlyph
-                    objectKey={item.objectKey}
-                    worldSeed={worldSeed}
-                    className={glyphClass}
-                    x={cx - size / 2}
-                    y={base - size}
-                    width={size}
-                    height={size}
-                  />
-                ) : (
-                  <DropGlyph
-                    kind="flora"
-                    className={glyphClass}
-                    x={cx - size / 2}
-                    y={base - size}
-                    width={size}
-                    height={size}
-                  />
-                )}
-              </g>
-              {isHeld && (
-                <>
-                  <text className="abode-flora-name" x={textX} y={nameY}>
-                    {name}
-                  </text>
-                  <text
-                    className="abode-compost"
-                    role="button"
-                    tabIndex={0}
-                    aria-label={isObject ? 'sell' : 'compost'}
-                    x={textX}
-                    y={nameY + 9}
-                    onPointerDown={(event) => event.stopPropagation()}
-                    onClick={() => {
-                      if (isObject) handleSell(item)
-                      else handleCompost(item)
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key !== 'Enter' && event.key !== ' ') return
-                      event.preventDefault()
-                      if (isObject) handleSell(item)
-                      else handleCompost(item)
-                    }}
+        {pending.length > 0 && (
+          <>
+            <h3>waiting to decide</h3>
+            <ul className="abode-list" aria-label="waiting to decide">
+              {pending.map((find) => (
+                <li key={find.completionId} className="abode-row arrival-flora">
+                  <DropGlyph kind="flora" />
+                  <span className="abode-name">a flora find</span>
+                  <button
+                    className="pebble arrival-choice"
+                    onClick={() => onDecide(find.completionId, 'gathered')}
                   >
-                    {isObject ? 'sell' : 'compost'}
-                  </text>
-                </>
-              )}
-            </g>
-          )
-        })}
-        {/* Party mode: the friends, simply present among the flora —
-            not draggable, not performing, never stored. */}
-        {party &&
-          formation.map(({ friend, x, y }) => {
-            const cx = x * WIDTH
-            const base = y * HEIGHT
+                    gather
+                  </button>
+                  <button
+                    className="pebble arrival-choice"
+                    onClick={() => onDecide(find.completionId, 'left')}
+                  >
+                    leave it
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <svg
+          ref={svgRef}
+          className="abode-ground-svg"
+          viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+          role="group"
+          aria-label="the ground"
+          onPointerDown={() => setHeldId(null)}
+        >
+          {/* The constant scene: sky above, ground below the horizon. */}
+          <rect
+            className="abode-soil"
+            x="0"
+            y={HORIZON_Y}
+            width={WIDTH}
+            height={HEIGHT - HORIZON_Y}
+          />
+          <line
+            className="abode-horizon"
+            x1="0"
+            y1={HORIZON_Y}
+            x2={WIDTH}
+            y2={HORIZON_Y}
+          />
+          {ordered.map((item) => {
+            const isObject = item.kind === 'object'
+            const name = isObject ? 'a curiosity' : 'a flora find'
+            const isHeld = item.id === heldId
+            const size = isHeld ? HELD_SIZE : FLORA_SIZE
+            const place = placeOf(item)
+            const cx = place.x * WIDTH
+            const base = place.y * HEIGHT
+            // The held item's name and its quiet way back stack above it,
+            // clamped so they stay readable at the scene's edges.
+            const textX = Math.min(WIDTH - 26, Math.max(26, cx))
+            const nameY = Math.max(8, base - size - 7)
+            const glyphClass = isHeld
+              ? 'abode-flora-glyph held'
+              : 'abode-flora-glyph'
             return (
-              <g
-                key={friend.completionId}
-                className="abode-party-friend"
-                role="img"
-                aria-label="a visiting friend"
-              >
-                <FriendGlyph
-                  category={friend.category}
-                  individual={friend.individual}
-                  worldSeed={worldSeed}
-                  x={cx - PARTY_FRIEND_SIZE / 2}
-                  y={base - PARTY_FRIEND_SIZE}
-                  width={PARTY_FRIEND_SIZE}
-                  height={PARTY_FRIEND_SIZE}
-                />
+              <g key={item.id} className="abode-flora">
+                <g
+                  role="button"
+                  tabIndex={0}
+                  aria-label={name}
+                  aria-pressed={isHeld}
+                  className="abode-flora-hold"
+                  onPointerDown={(event) => handlePointerDown(item, event)}
+                  onKeyDown={(event) => handleKeyDown(item, event)}
+                >
+                  {isObject ? (
+                    <ObjectGlyph
+                      objectKey={item.objectKey}
+                      worldSeed={worldSeed}
+                      className={glyphClass}
+                      x={cx - size / 2}
+                      y={base - size}
+                      width={size}
+                      height={size}
+                    />
+                  ) : (
+                    <DropGlyph
+                      kind="flora"
+                      className={glyphClass}
+                      x={cx - size / 2}
+                      y={base - size}
+                      width={size}
+                      height={size}
+                    />
+                  )}
+                </g>
+                {isHeld && (
+                  <>
+                    <text className="abode-flora-name" x={textX} y={nameY}>
+                      {name}
+                    </text>
+                    <text
+                      className="abode-compost"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={isObject ? 'sell' : 'compost'}
+                      x={textX}
+                      y={nameY + 9}
+                      onPointerDown={(event) => event.stopPropagation()}
+                      onClick={() => {
+                        if (isObject) handleSell(item)
+                        else handleCompost(item)
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key !== 'Enter' && event.key !== ' ') return
+                        event.preventDefault()
+                        if (isObject) handleSell(item)
+                        else handleCompost(item)
+                      }}
+                    >
+                      {isObject ? 'sell' : 'compost'}
+                    </text>
+                  </>
+                )}
               </g>
             )
           })}
-      </svg>
+          {/* Party mode: the friends, simply present among the flora —
+            not draggable, not performing, never stored. */}
+          {party &&
+            formation.map(({ friend, x, y }) => {
+              const cx = x * WIDTH
+              const base = y * HEIGHT
+              return (
+                <g
+                  key={friend.completionId}
+                  className="abode-party-friend"
+                  role="img"
+                  aria-label="a visiting friend"
+                >
+                  <FriendGlyph
+                    category={friend.category}
+                    individual={friend.individual}
+                    worldSeed={worldSeed}
+                    x={cx - PARTY_FRIEND_SIZE / 2}
+                    y={base - PARTY_FRIEND_SIZE}
+                    width={PARTY_FRIEND_SIZE}
+                    height={PARTY_FRIEND_SIZE}
+                  />
+                </g>
+              )
+            })}
+        </svg>
 
-      <button className="pebble" onClick={onBack}>
-        ← back to the habits
-      </button>
+        <button className="pebble" onClick={onBack}>
+          ← back to the habits
+        </button>
+      </div>
     </section>
   )
 }

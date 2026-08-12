@@ -31,46 +31,48 @@ function MapPage({
 
   return (
     <section className="map-page">
-      <h2>map of N-Z-D</h2>
-      <svg
-        className="map-svg"
-        viewBox={`0 0 ${layout.size} ${layout.size}`}
-        role="img"
-        aria-label="the planet, region by region"
-      >
-        <path className="map-silhouette" d={layout.silhouettePath} />
-        {layout.regions.slice(0, known).map(({ region, path, hue }) => (
-          <path
-            key={region}
-            className={
-              region === known - 1
-                ? 'map-region map-region-frontier'
-                : 'map-region'
-            }
-            style={{ color: `hsl(${hue} 65% 62%)` }}
-            d={path}
-          />
-        ))}
-        {markers.map((marker) => {
-          const { x, y } = landmarkPoint(worldSeed, layout, marker)
-          return (
-            <g
-              key={marker.completionId}
-              className="map-landmark"
-              transform={`translate(${x} ${y})`}
-            >
-              <line x1="0" y1="7" x2="0" y2="-1" />
-              <circle cx="0" cy="-4" r="3.5" />
-            </g>
-          )
-        })}
-      </svg>
-      <p className="map-caption">
-        {known} of {MAP_REGION_COUNT} regions known
-      </p>
-      <button className="pebble" onClick={onBack}>
-        ← back to the habits
-      </button>
+      <h2 className="page-title">map of N-Z-D</h2>
+      <div className="page-box">
+        <svg
+          className="map-svg"
+          viewBox={`0 0 ${layout.size} ${layout.size}`}
+          role="img"
+          aria-label="the planet, region by region"
+        >
+          <path className="map-silhouette" d={layout.silhouettePath} />
+          {layout.regions.slice(0, known).map(({ region, path, hue }) => (
+            <path
+              key={region}
+              className={
+                region === known - 1
+                  ? 'map-region map-region-frontier'
+                  : 'map-region'
+              }
+              style={{ color: `hsl(${hue} 65% 62%)` }}
+              d={path}
+            />
+          ))}
+          {markers.map((marker) => {
+            const { x, y } = landmarkPoint(worldSeed, layout, marker)
+            return (
+              <g
+                key={marker.completionId}
+                className="map-landmark"
+                transform={`translate(${x} ${y})`}
+              >
+                <line x1="0" y1="7" x2="0" y2="-1" />
+                <circle cx="0" cy="-4" r="3.5" />
+              </g>
+            )
+          })}
+        </svg>
+        <p className="map-caption">
+          {known} of {MAP_REGION_COUNT} regions known
+        </p>
+        <button className="pebble" onClick={onBack}>
+          ← back to the habits
+        </button>
+      </div>
     </section>
   )
 }

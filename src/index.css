@@ -176,22 +176,41 @@ body {
   background: var(--fungi); /* soft amber — the glow of fungi */
 }
 
-/* The shared frame of the world pages (the class predates the real
-   pages, when they were T2.2 stubs — the name stayed, the pages are
-   real now). */
-.stub-page {
+/* T5.2d/§13b: every secondary page is a title standing ABOVE its
+   bordered box, not a heading squeezed inside the frame. The page is
+   the column; .page-box is the frame; .page-title is the same quiet,
+   letterspaced, centred register the date display wears at home
+   (§12b), so the two read as one voice. */
+.page-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 300;
+  letter-spacing: 0.35em;
+  color: var(--text-title);
+  text-align: center;
+}
+
+.page-box {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 2rem 1rem;
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   align-items: flex-start;
 }
 
-.stub-page h2 {
-  font-weight: 300;
-  letter-spacing: 0.2em;
+/* The shared frame of the world pages (the class predates the real
+   pages, when they were T2.2 stubs — the name stayed, the pages are
+   real now). Since §13b it is the outer column, and the border it used
+   to carry lives on .page-box above. */
+.stub-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stub-page .page-box {
+  padding: 2rem 1rem;
 }
 
 .stub-page p {
@@ -1088,15 +1107,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  align-items: flex-start;
 }
 
-.map-page h2 {
-  font-weight: 300;
-  letter-spacing: 0.2em;
+.map-page .page-box {
+  padding: 1rem;
 }
 
 .map-svg {
@@ -1152,15 +1166,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  align-items: flex-start;
 }
 
-.bookcase-page h2 {
-  font-weight: 300;
-  letter-spacing: 0.2em;
+.bookcase-page .page-box {
+  padding: 1rem;
 }
 
 .bookshelf-svg {

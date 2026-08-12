@@ -134,109 +134,111 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
 
   return (
     <section className="bookcase-page">
-      <h2>readers library</h2>
-      <svg
-        ref={svgRef}
-        className="bookshelf-svg"
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-        role="group"
-        aria-label="the bookshelf"
-      >
-        {/* The constant bookshelf: one frame, three planks. */}
-        <rect
-          className="bookshelf-frame"
-          x="4"
-          y="4"
-          width={WIDTH - 8}
-          height={HEIGHT * 0.99 - 4}
-          rx="3"
-        />
-        {PLANKS.map((y) => (
-          <line
-            key={y}
-            className="bookshelf-plank"
-            x1="4"
-            y1={y}
-            x2={WIDTH - 4}
-            y2={y}
+      <h2 className="page-title">readers library</h2>
+      <div className="page-box">
+        <svg
+          ref={svgRef}
+          className="bookshelf-svg"
+          viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+          role="group"
+          aria-label="the bookshelf"
+        >
+          {/* The constant bookshelf: one frame, three planks. */}
+          <rect
+            className="bookshelf-frame"
+            x="4"
+            y="4"
+            width={WIDTH - 8}
+            height={HEIGHT * 0.99 - 4}
+            rx="3"
           />
-        ))}
-        {ordered.map((item) => {
-          const shape = BOOK_SHAPES[item.type]
-          const label = arrivalLabel({ key: item.type })
-          const place = placeOf(item)
-          const cx = place.x * WIDTH
-          const base = place.y * HEIGHT
-          const width =
-            item.facing === 'front'
-              ? shape.height * COVER_RATIO
-              : shape.spineWidth
-          return (
-            <g
-              key={item.id}
-              className={`book book-${item.type}`}
-              style={{ color: shape.color }}
-              role="button"
-              tabIndex={0}
-              aria-label={label}
-              onPointerDown={(event) => handlePointerDown(item, event)}
-              onKeyDown={(event) => handleKeyDown(item, event)}
-            >
-              <rect
-                className="book-body"
-                x={cx - width / 2}
-                y={base - shape.height}
-                width={width}
-                height={shape.height}
-                rx="1.5"
-              />
-              {item.facing === 'front' && (
-                <>
-                  <DropGlyph
-                    kind={item.type}
-                    className="book-glyph"
-                    x={cx - 7}
-                    y={base - shape.height + 5}
-                    width={14}
-                    height={14}
-                  />
-                  <g
-                    className="book-eye"
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`read ${label}`}
-                    onPointerDown={(event) => event.stopPropagation()}
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      onRead(item)
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key !== 'Enter' && event.key !== ' ') return
-                      event.preventDefault()
-                      event.stopPropagation()
-                      onRead(item)
-                    }}
-                  >
-                    <circle cx={cx} cy={base - 12} r="7" />
-                    <path
-                      d={`M ${cx - 3.6} ${base - 12} Q ${cx} ${base - 15.4} ${cx + 3.6} ${base - 12} Q ${cx} ${base - 8.6} ${cx - 3.6} ${base - 12} Z`}
+          {PLANKS.map((y) => (
+            <line
+              key={y}
+              className="bookshelf-plank"
+              x1="4"
+              y1={y}
+              x2={WIDTH - 4}
+              y2={y}
+            />
+          ))}
+          {ordered.map((item) => {
+            const shape = BOOK_SHAPES[item.type]
+            const label = arrivalLabel({ key: item.type })
+            const place = placeOf(item)
+            const cx = place.x * WIDTH
+            const base = place.y * HEIGHT
+            const width =
+              item.facing === 'front'
+                ? shape.height * COVER_RATIO
+                : shape.spineWidth
+            return (
+              <g
+                key={item.id}
+                className={`book book-${item.type}`}
+                style={{ color: shape.color }}
+                role="button"
+                tabIndex={0}
+                aria-label={label}
+                onPointerDown={(event) => handlePointerDown(item, event)}
+                onKeyDown={(event) => handleKeyDown(item, event)}
+              >
+                <rect
+                  className="book-body"
+                  x={cx - width / 2}
+                  y={base - shape.height}
+                  width={width}
+                  height={shape.height}
+                  rx="1.5"
+                />
+                {item.facing === 'front' && (
+                  <>
+                    <DropGlyph
+                      kind={item.type}
+                      className="book-glyph"
+                      x={cx - 7}
+                      y={base - shape.height + 5}
+                      width={14}
+                      height={14}
                     />
-                    <circle
-                      className="book-eye-pupil"
-                      cx={cx}
-                      cy={base - 12}
-                      r="1.2"
-                    />
-                  </g>
-                </>
-              )}
-            </g>
-          )
-        })}
-      </svg>
-      <button className="pebble" onClick={onBack}>
-        ← back to the habits
-      </button>
+                    <g
+                      className="book-eye"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`read ${label}`}
+                      onPointerDown={(event) => event.stopPropagation()}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        onRead(item)
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key !== 'Enter' && event.key !== ' ') return
+                        event.preventDefault()
+                        event.stopPropagation()
+                        onRead(item)
+                      }}
+                    >
+                      <circle cx={cx} cy={base - 12} r="7" />
+                      <path
+                        d={`M ${cx - 3.6} ${base - 12} Q ${cx} ${base - 15.4} ${cx + 3.6} ${base - 12} Q ${cx} ${base - 8.6} ${cx - 3.6} ${base - 12} Z`}
+                      />
+                      <circle
+                        className="book-eye-pupil"
+                        cx={cx}
+                        cy={base - 12}
+                        r="1.2"
+                      />
+                    </g>
+                  </>
+                )}
+              </g>
+            )
+          })}
+        </svg>
+        <button className="pebble" onClick={onBack}>
+          ← back to the habits
+        </button>
+      </div>
     </section>
   )
 }

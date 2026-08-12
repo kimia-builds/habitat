@@ -31,44 +31,45 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
 
   return (
     <section className="stub-page market">
-      <h2>local market</h2>
+      <h2 className="page-title">local market</h2>
+      <div className="page-box">
+        {stall.length > 0 && (
+          <ul className="market-stall" aria-label="the stall">
+            {stall.map((object) => {
+              const owned = ownedCounts.get(object.key) ?? 0
+              const affordable = wallet >= object.price
+              return (
+                <li key={object.key} className="market-item">
+                  <ObjectGlyph
+                    objectKey={object.key}
+                    worldSeed={worldSeed}
+                    className="market-glyph"
+                  />
+                  <span className="market-price">
+                    <DropGlyph kind="fungi" className="market-price-glyph" />
+                    {object.price}
+                  </span>
+                  {owned > 0 && (
+                    <span className="market-owned">×{owned} at home</span>
+                  )}
+                  <button
+                    className="market-buy pebble"
+                    aria-label={`buy a curiosity for ${object.price} fungi`}
+                    disabled={!affordable}
+                    onClick={() => onBuy(object)}
+                  >
+                    buy
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        )}
 
-      {stall.length > 0 && (
-        <ul className="market-stall" aria-label="the stall">
-          {stall.map((object) => {
-            const owned = ownedCounts.get(object.key) ?? 0
-            const affordable = wallet >= object.price
-            return (
-              <li key={object.key} className="market-item">
-                <ObjectGlyph
-                  objectKey={object.key}
-                  worldSeed={worldSeed}
-                  className="market-glyph"
-                />
-                <span className="market-price">
-                  <DropGlyph kind="fungi" className="market-price-glyph" />
-                  {object.price}
-                </span>
-                {owned > 0 && (
-                  <span className="market-owned">×{owned} at home</span>
-                )}
-                <button
-                  className="market-buy pebble"
-                  aria-label={`buy a curiosity for ${object.price} fungi`}
-                  disabled={!affordable}
-                  onClick={() => onBuy(object)}
-                >
-                  buy
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      )}
-
-      <button className="pebble" onClick={onBack}>
-        ← back to the habits
-      </button>
+        <button className="pebble" onClick={onBack}>
+          ← back to the habits
+        </button>
+      </div>
     </section>
   )
 }

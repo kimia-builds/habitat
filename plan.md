@@ -136,6 +136,12 @@ tracker. Everything after this is delight, informed by real use.
             promoted page titles, and the night sky mounted as the app
             background (its ground colours move into the tokens file with
             it, per §11d); the spacing scale joins the tokens file here.
+            _Built one visible slice at a time, Kimia's eye between each
+            (the T5.2c lesson):_
+            - [x] promoted page titles (§13b) _(2026-08-12)_
+            - [ ] the top header bar (§13a)
+            - [ ] the night-sky background (§13c)
+            - [ ] the spacing scale into the tokens file
       - [ ] **T5.2e Glow, feel & the startup animation** — the §4–§5 feel
             enhancements and the §12f rolling planet; the glow scale joins
             the tokens file here, once there is a real one to name.
