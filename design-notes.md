@@ -721,9 +721,17 @@ box: which kind of fresh start, then "are you sure?". It borrows the
 reading spread's card exactly — same dark panel, soft edge, gentle pop —
 because it is the same kind of thing: a card that takes the screen,
 answers a question and leaves. No alarm colour, no shake, no red; the
-words carry the weight, and the fine print of what goes and what stays
-is dim and small beneath the question. "not now" is quieter than the two
-real choices, so the eye lands on them first.
+words carry the weight. "not now" is quieter than the two real choices,
+so the eye lands on them first.
+
+Both of its steps are built to one shape (Kimia's call, the same day):
+**a bright, larger question at the top and a dim, smaller explanation
+under it** — "which type of restart?" then "are you sure?". The question
+is what you answer; the explanation is fine print you read once. Because
+the two steps look identical, the second reads as the same card asking
+again rather than a new one arriving. The explanations themselves say
+plainly what will be wiped and what will remain, in Kimia's words —
+never a GOES/STAYS ledger, which read like terms and conditions.
 
 **Reordering is a drag of the whole tile** (T5.1c, 2026-07-23; the grip
 alone until 2026-08-11), not a pair of ▲▼ arrows. Press anywhere on a

@@ -1541,8 +1541,17 @@ body {
   flex-wrap: wrap;
 }
 
-/* What the chosen door actually does, on the "are you sure?" step. Dim
-   and small — it is the fine print you read once, not the question. */
+/* Both of the popup's steps are built the same way (Kimia's call
+   2026-08-12): one bright, larger question at the top — "which type of
+   restart?", then "are you sure?" — and one dim, smaller explanation
+   under it. The question is what you answer; the explanation is the
+   fine print you read once. Same two shapes on both steps, so the
+   second reads as the same card asking again rather than a new one. */
+.new-game-title {
+  color: var(--text);
+  font-size: 1.15rem;
+}
+
 .new-game-detail {
   color: var(--text-quiet);
   font-size: 0.9rem;

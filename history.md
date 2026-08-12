@@ -1856,6 +1856,28 @@ return 0` right after the era is worked out, so a moment before the
   card's `reveal-pop` fade means a screenshot taken mid-animation shows
   the page through it — finish the animation before judging it).
 
+- 2026-08-12 (Kimia's copy pass on the popup, same day): **both steps
+  get one shape — a bright, larger question and a dim, smaller
+  explanation.** Step one gained the title **"which type of restart?"**
+  and its question dropped to the same quiet size the fine print
+  already used, with a line break between the two choices it describes.
+  The two consequence texts lost their GOES/STAYS ledgers, which read
+  like terms and conditions, for her own plainer sentences: a total
+  refresh "will be wiped: habits, completions, and game progress",
+  a kept-data restart wipes "gameplay … your historical habit data,
+  streaks and graphs will remain". No test changed — the suite asserts
+  the buttons and the journey, never her prose (CLAUDE.md's standing
+  rule), which is exactly why a copy pass like this one costs nothing.
+  Browser-checked at 1280: 18.4 px in `--text` for both titles, 14.4 px
+  in `--text-quiet` for both explanations.
+
+  Two notes for the next session that drives this popup in the pane:
+  reading the DOM in the same JS call as the click that changed it
+  returns the PREVIOUS step (React commits after the call — the
+  verify skill's standing gotcha), and a screenshot can resize the
+  viewport, which remounts the tree past the viewport gate and closes
+  the popup. Click, then read in a separate call.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

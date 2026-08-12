@@ -38,17 +38,13 @@ import { useState } from 'react'
 // sure?" step — the moment where being surprised would be worst.
 const CONSEQUENCE = {
   refresh:
-    'GOES: everything. Every habit, every completion you have ever ' +
-    'logged, the whole world, and every setting — Habitat starts as it ' +
-    'did on its very first day. STAYS: nothing. Only a backup file you ' +
-    'have already exported can bring any of it back.',
+    'everything will be wiped: habits, completions, and game progress. ' +
+    'habitat will restart from day one. only a backup file you have ' +
+    'already exported can bring any of it back.',
   keep:
-    'GOES: the whole world — every flora, book, friend and fungus, ' +
-    'everything bought at the market, your abode and bookcase ' +
-    'arrangements, and the expedition trail. The world seed is replaced ' +
-    'too, so the planet ahead is genuinely a different one. ' +
-    'STAYS: every habit, and every completion you have ever logged. ' +
-    'Your grid, your streaks and your field notes are untouched.',
+    'your gameplay will be wiped: flora, books, friends, fungi and ' +
+    'expedition progress. your historical habit data, streaks and graphs ' +
+    'will remain.',
 }
 
 const DONE_MESSAGE = {
@@ -92,11 +88,13 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
           >
             {step === 'choose' ? (
               <>
-                <p>
+                <p className="new-game-title">which type of restart?</p>
+                <p className="new-game-detail">
                   do you want to wipe all your habit history and play habitat
-                  again? or do you want to keep your habit history and just
-                  restart the game from the start? (requires you to export a
-                  backup)
+                  from total scratch?
+                  <br />
+                  or do you want to keep your habit history and restart the
+                  game? (requires you to export a backup)
                 </p>
                 <div className="new-game-choices">
                   <button
@@ -127,7 +125,7 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
               </>
             ) : (
               <>
-                <p>are you sure?</p>
+                <p className="new-game-title">are you sure?</p>
                 <p className="new-game-detail">{CONSEQUENCE[step]}</p>
                 <div className="new-game-choices">
                   <button
