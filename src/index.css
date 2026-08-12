@@ -1,4 +1,3 @@
-@import './fonts.css';
 @import './tokens.css';
 
 /* Base look per spec.md §7: dark mode only, deep-space near-blacks,
@@ -8,14 +7,7 @@
    never a raw hex (T5.2a, design-notes §11d). The names and their values
    live in tokens.css, which is the one place to change how Habitat looks.
    A colour literal appearing in this file again is a bug; tokens.test.js
-   fails the suite if one does.
-
-   Since T5.2c the same is true of TYPE: no font size and no font name is
-   spelled out here either. Every rule below stands on one of the six steps
-   of the size ladder and one of the two families, both named in tokens.css.
-   The four voices those combine into — display, label, body and quiet —
-   are described there too, and applied in the four blocks marked "§11c"
-   further down. */
+   fails the suite if one does. */
 
 :root {
   color-scheme: dark;
@@ -27,14 +19,14 @@
   box-sizing: border-box;
 }
 
-/* §11c, the BODY voice: DM Sans, lowercase, at the page's own size. This is
-   what everything wears unless a rule below gives it another voice. */
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: var(--font-body);
-  font-weight: var(--weight-body);
-  font-size: var(--type-base);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
 }
 
 /* T1.3: ugly on purpose — just enough spacing to be usable on a phone.
@@ -105,118 +97,11 @@ body {
   --charm-here-faint: var(--charm-key-faint);
 }
 
-/* ─────────────── §11c, the DISPLAY voice (T5.2c, 2026-08-12) ───────────────
-   Cormorant Garamond, bold, UPPERCASE, widely spaced. It is worn by the
-   NAMES of things and by nothing else: the wordmark, the date, and the five
-   page titles. Sentences — questions, messages, captions — stay in the body
-   voice however large they are, because uppercasing a sentence turns it into
-   a shout, and Habitat's voice is lowercase (§11c).
-
-   The uppercasing is done HERE, in the stylesheet, never in the words
-   themselves — the same rule the letterspacing has always followed. A screen
-   reader still reads "map of N-Z-D", and a test still finds the title it was
-   written as.
-
-   Colour is deliberately untouched by this pass: T5.2b settled what each
-   piece of text is coloured (§11b's accent rule — a charm colour only where
-   there is a charm, and page titles have none), so T5.2c changes the
-   lettering and leaves the palette alone. */
 .app h1 {
-  font-family: var(--font-display);
-  font-weight: var(--weight-display);
-  letter-spacing: var(--track-wordmark);
-  font-size: var(--type-display);
+  font-weight: 300;
+  letter-spacing: 0.5em;
+  font-size: 1.5rem;
   color: var(--text-title);
-}
-
-/* The five page titles — map of N-Z-D, readers library, local market, your
-   abode, local community — plus the workbench's own. One rule for all of
-   them, so a new page cannot arrive wearing a different face. */
-.stub-page h2,
-.map-page h2,
-.bookcase-page h2 {
-  font-family: var(--font-display);
-  font-weight: var(--weight-display);
-  font-size: var(--type-title);
-  letter-spacing: var(--track-display);
-  text-transform: uppercase;
-}
-
-/* The titles inside a pop-up — a first-occurrence reveal, the new-game
-   card, the morning check-in's question. They wear the display FACE, so a
-   pop-up reads as part of the same app, but they are not uppercased and
-   they sit a step down the ladder: each of these is a sentence addressed to
-   you, and the page titles above are names. (Before T5.2c the check-in's
-   question was the browser's own bold 24px heading — the last piece of
-   Habitat still wearing a default.) */
-.reveal-title,
-.new-game-title,
-.check-in > h2 {
-  font-family: var(--font-display);
-  font-weight: var(--weight-display);
-  font-size: var(--type-subtitle);
-  letter-spacing: var(--track-display);
-}
-
-/* ─────────────── §11c, the LABEL voice (T5.2c, 2026-08-12) ───────────────
-   DM Sans, medium, UPPERCASE, spaced wider than anything else and set small.
-   These are the little headings that say what a section IS — "graphs",
-   "tasks completed", "waiting to decide", the meters' names. They are not
-   titles: a title names a page, a label introduces a part of one, and at
-   this size the difference is obvious at a glance.
-
-   Uppercased in the stylesheet, as ever — the words stay lowercase. */
-.meter-name,
-.abode h3,
-.field-notes h3,
-.habit-graphs h3,
-.design-family h3 {
-  font-family: var(--font-body);
-  font-weight: var(--weight-label);
-  font-size: var(--type-label);
-  letter-spacing: var(--track-label);
-  text-transform: uppercase;
-}
-
-/* Letterspacing adds a gap AFTER the last letter too, which shunts a CENTRED
-   label half a gap to the left. Indenting by the same amount gives the front
-   edge the space the back edge already has. Only the centred labels want
-   this: on a left-aligned one it would be a dent, and on the meters' names
-   it cost exactly the few pixels that made "wallet balance" wrap. */
-.field-notes h3,
-.habit-graphs h3 {
-  text-indent: var(--track-label);
-}
-
-/* §11c's "thin faint rules above and below" — the standalone labels only.
-   The meters' names are already inside a bordered button, where another
-   line would just be a second border. */
-.abode h3,
-.field-notes h3,
-.habit-graphs h3,
-.design-family h3 {
-  border-top: 1px solid var(--border-quiet);
-  border-bottom: 1px solid var(--border-quiet);
-  padding: 0.4rem 0;
-}
-
-/* ─────────────── §11c, the QUIET voice (T5.2c, 2026-08-12) ───────────────
-   DM Sans, light, ITALIC, lowercase. The one-line asides that explain what
-   you are looking at without asking to be read: the cutoff note under the
-   date, "still unfolding" under a week that has not ended, "not enough days
-   yet" under a young graph, the map's caption. They already sat in the
-   dimmest colours; the italic is what finally makes them read as an aside
-   rather than as more of the page.
-
-   Sizes and colours stay each rule's own — a quiet line is small print in
-   some places and body-sized in others. This block sets only the voice. */
-.date-cutoff-note,
-.week-unfolding,
-.habit-graph-young,
-.map-caption {
-  font-family: var(--font-body);
-  font-weight: var(--weight-quiet);
-  font-style: italic;
 }
 
 /* The header as the home link (2026-07-16): a button dressed as the
@@ -260,18 +145,12 @@ body {
 }
 
 .meter-name {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
   color: var(--text-quiet);
 }
 
 .meter-bar {
-  /* The three bars line up with each other whatever their names do above
-     them (T5.2c): at the label voice's very wide letterspacing "wallet
-     balance" needs two lines where the other two need one, and without
-     this its bar would sit a line lower than its neighbours. The meters
-     are already the same height as each other, so pushing every bar to
-     the bottom of its own meter is all it takes — and it holds for any
-     name we give a meter later. */
-  margin-top: auto;
   height: 0.45rem;
   background: var(--border-quiet);
   border-radius: 0.25rem;
@@ -310,9 +189,13 @@ body {
   align-items: flex-start;
 }
 
+.stub-page h2 {
+  font-weight: 300;
+  letter-spacing: 0.2em;
+}
+
 .stub-page p {
   color: var(--text-quiet);
-  line-height: var(--leading-prose);
 }
 
 /* T4.3b: the Market — the rotating stall. Quiet like the bookshelf and
@@ -349,7 +232,7 @@ body {
   align-items: center;
   gap: 0.3rem;
   color: var(--fungi); /* soft amber — the glow of fungi */
-  font-size: var(--type-meta);
+  font-size: 0.85rem;
 }
 
 .market-price-glyph {
@@ -360,7 +243,7 @@ body {
 /* How many copies already live at home — quiet, neutral data. */
 .market-owned {
   color: var(--text-quiet);
-  font-size: var(--type-small);
+  font-size: 0.75rem;
 }
 
 /* What the wallet can't reach simply dims — no alarm, no debt. */
@@ -408,7 +291,7 @@ body {
 
 .abode-flora-name {
   fill: var(--text);
-  font-size: var(--type-drawn-name);
+  font-size: 7px;
   text-anchor: middle;
 }
 
@@ -418,7 +301,7 @@ body {
   cursor: pointer;
   outline: none;
   fill: var(--text-quiet);
-  font-size: var(--type-drawn-action);
+  font-size: 6px;
   text-anchor: middle;
   text-decoration: underline;
 }
@@ -534,7 +417,7 @@ body {
 
 .guestbook-name {
   color: var(--text-quiet);
-  font-size: var(--type-small);
+  font-size: 0.75rem;
 }
 
 /* The popup card: quiet pastel (summonable at will — an everyday
@@ -542,13 +425,16 @@ body {
    text renders nothing — art, name and animation carry the card. */
 .friend-card-text {
   color: var(--text);
-  font-size: var(--type-body);
-  line-height: var(--leading-prose);
+  font-size: 0.9rem;
+  line-height: 1.5;
   max-width: 24rem;
 }
 
 /* T3.3: the early Abode — flora waiting to decide, and the gathered. */
 .abode h3 {
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  font-size: 0.9rem;
   color: var(--text-quiet);
 }
 
@@ -572,7 +458,7 @@ body {
 .abode-name {
   flex: 1;
   color: var(--text);
-  font-size: var(--type-body);
+  font-size: 0.9rem;
 }
 
 /* T2.3: the field notes — the weekly view. Quiet by design.
@@ -594,6 +480,8 @@ body {
 
 .field-notes h3,
 .habit-graphs h3 {
+  font-weight: 300;
+  letter-spacing: 0.2em;
   /* "tasks completed" and "graphs" headings sit centred (Kimia,
      2026-07-22) — the sections are otherwise left-aligned. */
   align-self: center;
@@ -630,7 +518,7 @@ body {
 .week-unfolding {
   display: block;
   color: var(--text-quiet);
-  font-size: var(--type-small);
+  font-size: 0.75rem;
 }
 
 .week-grid {
@@ -642,8 +530,8 @@ body {
 .week-grid td {
   padding: 0.3rem 0.35rem;
   text-align: center;
-  font-weight: var(--weight-body);
-  font-size: var(--type-meta);
+  font-weight: 400;
+  font-size: 0.85rem;
   border-bottom: 1px solid var(--border-quiet);
 }
 
@@ -653,19 +541,19 @@ body {
 
 .week-grid thead th {
   color: var(--text-quiet);
-  font-size: var(--type-small);
+  font-size: 0.75rem;
 }
 
 .streak-cell {
   color: var(--expedition);
   white-space: nowrap;
-  font-size: var(--type-small);
+  font-size: 0.75rem;
 }
 
 .tasks-completed {
   list-style: none;
   color: var(--text-quiet);
-  font-size: var(--type-meta);
+  font-size: 0.85rem;
   align-self: center;
   text-align: center;
   padding-left: 0;
@@ -686,7 +574,7 @@ body {
 
 .habit-graph summary {
   cursor: pointer;
-  font-size: var(--type-body);
+  font-size: 0.9rem;
 }
 
 .habit-graph[open] summary {
@@ -701,12 +589,12 @@ body {
 
 .graph-label {
   fill: var(--text-quiet);
-  font-size: var(--type-drawn-label);
+  font-size: 10px;
 }
 
 .habit-graph-young {
   color: var(--text-quiet);
-  font-size: var(--type-meta);
+  font-size: 0.85rem;
 }
 
 .graph-zooms {
@@ -718,7 +606,7 @@ body {
 
 .zoom-button {
   font: inherit;
-  font-size: var(--type-small);
+  font-size: 0.75rem;
   background: none;
   color: var(--text-quiet);
   border: 1px solid var(--border);
@@ -822,7 +710,7 @@ body {
 
 .arrival-choice {
   font: inherit;
-  font-size: var(--type-small);
+  font-size: 0.75rem;
   background: none;
   color: inherit;
   border: 1px solid var(--border);
@@ -832,12 +720,12 @@ body {
 }
 
 .arrival-caption {
-  font-size: var(--type-meta);
+  font-size: 0.8rem;
   color: var(--text);
 }
 
 .arrival-note {
-  font-size: var(--type-meta);
+  font-size: 0.8rem;
   color: var(--expedition);
 }
 
@@ -902,8 +790,8 @@ body {
 
 .reveal-friend-name {
   color: var(--text);
-  font-size: var(--type-meta);
-  letter-spacing: var(--track-name);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
 }
 
 /* The ten signature category animations (T4.4, design-notes §8): one
@@ -1118,14 +1006,13 @@ body {
 
 .cameo-name {
   color: var(--text-quiet);
-  font-size: var(--type-meta);
-  letter-spacing: var(--track-name);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
 }
 
 .cameo-message {
   color: var(--text);
-  font-size: var(--type-body);
-  line-height: var(--leading-prose);
+  font-size: 0.9rem;
   margin: 0;
 }
 
@@ -1136,13 +1023,16 @@ body {
 }
 
 .reveal-title {
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  font-size: 1.1rem;
   text-shadow: 0 0 1rem currentColor;
 }
 
 .reveal-line {
   color: var(--text);
-  font-size: var(--type-body);
-  line-height: var(--leading-prose);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .reveal-button {
@@ -1182,8 +1072,8 @@ body {
 
 .spread-empty-line {
   color: var(--text-quiet);
-  font-size: var(--type-body);
-  line-height: var(--leading-prose);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 /* T4.1: the Map — dark, bioluminescent, quietly glowing. The whole
@@ -1198,6 +1088,11 @@ body {
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   align-items: flex-start;
+}
+
+.map-page h2 {
+  font-weight: 300;
+  letter-spacing: 0.2em;
 }
 
 .map-svg {
@@ -1243,7 +1138,7 @@ body {
 
 .map-caption {
   color: var(--text-quiet);
-  font-size: var(--type-meta);
+  font-size: 0.85rem;
 }
 
 /* T4.2: the Bookcase — one constant bookshelf, bare when empty (no
@@ -1257,6 +1152,11 @@ body {
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   align-items: flex-start;
+}
+
+.bookcase-page h2 {
+  font-weight: 300;
+  letter-spacing: 0.2em;
 }
 
 .bookshelf-svg {
@@ -1579,7 +1479,7 @@ body {
 
 .habit-description,
 .habit-meta {
-  font-size: var(--type-meta);
+  font-size: 0.8rem;
   color: var(--text-quiet);
 }
 
@@ -1649,12 +1549,12 @@ body {
    second reads as the same card asking again rather than a new one. */
 .new-game-title {
   color: var(--text);
+  font-size: 1.15rem;
 }
 
 .new-game-detail {
   color: var(--text-quiet);
-  font-size: var(--type-body);
-  line-height: var(--leading-prose);
+  font-size: 0.9rem;
 }
 
 /* "not now" — the way out that changes nothing. Quieter than the two
@@ -1718,8 +1618,8 @@ body {
   align-items: center;
   justify-content: center;
   font: inherit;
-  font-size: var(--type-body);
-  line-height: var(--leading-tight);
+  font-size: 0.9rem;
+  line-height: 1;
   color: inherit;
   background: none;
   border: 1px solid
@@ -1831,11 +1731,9 @@ body {
 
 .date-display {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: var(--type-title);
-  font-weight: var(--weight-display);
-  letter-spacing: var(--track-date);
-  text-transform: uppercase;
+  font-size: 1.3rem;
+  font-weight: 300;
+  letter-spacing: 0.35em;
   color: var(--text-title);
 }
 
@@ -1843,7 +1741,7 @@ body {
    tier, lowercase, a statement of fact — never a warning (§12b). */
 .date-cutoff-note {
   margin: 0.25rem 0 0;
-  font-size: var(--type-meta);
+  font-size: 0.8rem;
   color: var(--text-faint);
 }
 
@@ -2064,8 +1962,8 @@ body {
 
 .viewport-block-message {
   max-width: 28rem;
-  font-weight: var(--weight-quiet);
-  line-height: var(--leading-prose);
+  font-weight: 300;
+  line-height: 1.6;
   color: var(--text-title);
 }
 
@@ -2084,8 +1982,8 @@ body {
 
 .mishap-message {
   max-width: 28rem;
-  font-weight: var(--weight-quiet);
-  line-height: var(--leading-prose);
+  font-weight: 300;
+  line-height: 1.6;
   color: var(--text-title);
 }
 
@@ -2102,7 +2000,7 @@ body {
   border: none;
   cursor: pointer;
   font: inherit;
-  font-size: var(--type-meta);
+  font-size: 0.8rem;
   color: var(--text-faint);
 }
 
@@ -2115,6 +2013,8 @@ body {
 }
 
 .design-family h3 {
+  font-weight: 400;
+  letter-spacing: 0.12em;
   color: var(--text-quiet);
 }
 
@@ -2145,8 +2045,8 @@ body {
 }
 
 .texture-swatch-name {
-  font-size: var(--type-label);
-  letter-spacing: var(--track-name);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   color: var(--text-quieter);
   text-align: center;
 }
@@ -2178,8 +2078,8 @@ body {
 }
 
 .eye-swatch-name {
-  font-size: var(--type-label);
-  letter-spacing: var(--track-name);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   color: var(--text-quieter);
   text-align: center;
 }
@@ -2217,8 +2117,8 @@ body {
 }
 
 .signer-swatch-name {
-  font-size: var(--type-label);
-  letter-spacing: var(--track-name);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   color: var(--text-quieter);
   text-align: center;
 }
@@ -2285,8 +2185,8 @@ body {
 }
 
 .friend10-swatch-name {
-  font-size: var(--type-label);
-  letter-spacing: var(--track-name);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   color: var(--text-quieter);
   text-align: center;
 }
@@ -2339,8 +2239,8 @@ body {
 }
 
 .traced-swatch-name {
-  font-size: var(--type-label);
-  letter-spacing: var(--track-name);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   color: var(--text-quieter);
   text-align: center;
 }
@@ -2388,8 +2288,8 @@ body {
 }
 
 .sky-swatch-name {
-  font-size: var(--type-label);
-  letter-spacing: var(--track-name);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   color: var(--text-quieter);
   text-align: center;
 }

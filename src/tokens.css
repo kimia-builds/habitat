@@ -11,15 +11,13 @@
  * these by name — `color: var(--text-quiet)` — so one edit moves every place
  * that colour appears, and nowhere else needs touching.
  *
- * WHAT IS AND ISN'T HERE (2026-08-10; TYPE joined 2026-08-12):
+ * WHAT IS AND ISN'T HERE (2026-08-10):
  *   - COLOUR is here, all of it. index.css holds no raw hex or rgba any more.
- *   - TYPE is here too, since T5.2c: the two families, the four voices and the
- *     ladder of sizes. index.css holds no raw font size or font name either.
- *   - Glow strengths and spacing are NOT here yet, on purpose. Today's values
- *     are ad-hoc leftovers of the ugly-on-purpose skeleton (four near-identical
- *     glow radii; paddings the §13 layout pass is about to rewrite). Naming
- *     them now would be naming numbers that are about to be replaced — they
- *     arrive in the T5.2 slices that actually decide them.
+ *   - Glow strengths, font sizes and spacing are NOT here yet, on purpose.
+ *     Today's values are ad-hoc leftovers of the ugly-on-purpose skeleton (four
+ *     near-identical glow radii; paddings the §13 layout pass is about to
+ *     rewrite). Naming them now would be naming numbers that are about to be
+ *     replaced — they arrive in the T5.2 slices that actually decide them.
  *
  * THE §11b IDENTITY LANDED HERE ON 2026-08-11 (T5.2b), and it was an edit to
  * this file plus about a dozen lines of index.css — which was the whole point
@@ -201,73 +199,6 @@
   --pop-reading: #b47bff;
   --pop-fungi: #ffd24d;
   --pop-friend: #ff9ec7; /* the brightest of all — kept for friends alone */
-
-  /* ===========================================================================
-   * TYPE — the two families, four voices and one ladder of sizes (T5.2c,
-   * design-notes §11c). The colour list above says what Habitat is painted
-   * in; this says what it is written in.
-   *
-   * The four voices, and where each is used:
-   *   DISPLAY  — Cormorant Garamond, bold, UPPERCASE, widely spaced. The
-   *              wordmark, the date, and the five page titles. Names of
-   *              things, never sentences.
-   *   LABEL    — DM Sans, medium, UPPERCASE, spaced wider still, small. The
-   *              little headings that introduce a section ("graphs",
-   *              "waiting to decide") and the meters' names.
-   *   BODY     — DM Sans, lowercase, the default. Everything you read.
-   *   QUIET    — DM Sans, light italic. The one-line asides that explain a
-   *              view without asking to be read.
-   * ========================================================================= */
-  /* The families. Both are bundled with the app — see fonts.css. The names
-     after each are the stand-ins a browser uses for the instant before the
-     real file is ready. */
-  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-
-  /* Weights. Both families are variable fonts, so these are dials, not a
-     fixed set — any number in between works if a voice wants adjusting. */
-  --weight-display: 700; /* the display voice: bold enough to hold a page */
-  --weight-label: 500; /* the small uppercase section labels */
-  --weight-body: 400; /* everything you read */
-  --weight-quiet: 300; /* the light italic asides */
-
-  /* The ladder of sizes, biggest first. Six steps, and every rule in
-     index.css stands on one of them — which is what stops the nine
-     slightly-different sizes the skeleton had from growing back. */
-  --type-display: 1.5rem; /* the HABITAT wordmark alone */
-  --type-title: 1.3rem; /* page titles and the date — §11c's "21px" */
-  --type-subtitle: 1.15rem; /* the titles inside a pop-up or a reveal */
-  --type-body: 0.9rem; /* the reading size for anything set in a block */
-  --type-meta: 0.8rem; /* a second line under something: dates, prices */
-  --type-small: 0.75rem; /* small print — captions, counts, day headings */
-  --type-label: 0.7rem; /* the uppercase section labels, §11c's "11px" */
-  /* Anything NOT sized by the ladder — habit names, buttons, prose — simply
-     inherits this from the page. It is deliberately the browser's own
-     default: the habit list is what Kimia scans each morning, and it stays
-     the most readable thing on the screen. */
-  --type-base: 1rem;
-
-  /* Letterspacing. Habitat's display voice is spaced out — the wider the
-     tracking, the more the words read as an inscription rather than a
-     sentence. §11c: ~4px at the title size, ~6px at the label size. */
-  --track-wordmark: 0.5em; /* HABITAT — the widest thing on the screen */
-  --track-date: 0.35em; /* the big date under the meters */
-  --track-display: 0.2em; /* page titles and pop-up titles */
-  --track-label: 0.5em; /* the small uppercase section labels */
-  --track-name: 0.08em; /* a friend's or a swatch's name, barely opened */
-
-  /* Line spacing. Prose gets §11c's generous ~2 — Habitat's blocks of text
-     are short, and air is what makes them calm to read. */
-  --leading-prose: 2;
-  --leading-tight: 1; /* a glyph centred in a round button */
-
-  /* Type INSIDE a drawing (the abode's flora names, a graph's axis labels).
-     These are measured in the drawing's own units, not in rem, so they scale
-     with the picture rather than with the page — which is why they are not
-     steps on the ladder above. */
-  --type-drawn-name: 7px; /* a flora's name on the abode ground */
-  --type-drawn-action: 6px; /* its quiet "compost" link underneath */
-  --type-drawn-label: 10px; /* a habit graph's axis labels */
 
   /* ===========================================================================
    * ODDS AND ENDS

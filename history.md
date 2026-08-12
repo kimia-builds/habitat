@@ -1908,31 +1908,6 @@ return 0` right after the era is worked out, so a moment before the
   built this session; spec §5b still describes the temporary lens,
   correctly, until T6.11 lands.
 
-- 2026-08-12 (T5.2c, typography session): **three calls the convention
-  needed before it could be applied.** (1) **UPPERCASE is for names,
-  not sentences** — the display voice goes on the wordmark, the date
-  and the five page titles, while a question or a message stays
-  lowercase however large it is set, because uppercasing a sentence
-  turns it into a shout. The pop-up titles (a reveal, the new-game
-  card, the check-in's question) therefore wear the display FACE one
-  step down the ladder, without the uppercasing. (2) **Colour was left
-  exactly as T5.2b set it** — §11c's two bullets used to ask for the
-  accent colour on display text and section labels, which was written
-  before Kimia's accent rule (a charm colour only where there is a
-  charm; a page title has none) and before she kept the existing text
-  brightness. The bullets were corrected rather than obeyed: colour is
-  settled, and this slice changed the lettering only. (3) **The
-  generous line-height (~2) belongs to prose** — the blocks of text you
-  actually read — and not to rows, controls and single-line captions,
-  where it would only push the list apart.
-  Two smaller notes: the fonts are BUNDLED as four files in
-  `src/fonts/` rather than pulled from a package at build time, so
-  nothing can change them underneath us; and at the label tracking
-  "wallet balance" wraps to two lines where the other meter names do
-  not, which was fixed by pushing every meter's bar to the bottom of
-  its own meter — they line up now whatever their names do, and that
-  holds for any name a meter is given later.
-
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
@@ -2913,46 +2888,3 @@ and recorded in spec.md's decisions log._
       and no display word creeping back into the game layer. Verified in
       a real browser too: the app boots and the Guest Book opens with no
       console errors.
-
-- [x] **T5.2c Typography** _(done 2026-08-12, design-notes §11c/§11d)_
-      The third slice of the design pass, and the first that changes how
-      Habitat is WRITTEN rather than how it is coloured.
-      **The fonts ship with the app.** Four files in `src/fonts/` — the
-      latin cut of Cormorant Garamond and DM Sans, roman and italic,
-      ~150 KB in total — declared in a new `src/fonts.css` with a comment
-      block explaining each part of an `@font-face` rule. They are
-      variable fonts, so one file per style carries every weight as a
-      continuous dial. Nothing is fetched at load time: Habitat looks the
-      same offline and no outside server learns when it is opened. The
-      files came out of the Fontsource packages of the Google originals
-      (SIL Open Font License, copies kept beside them); the packages were
-      installed, the four files copied, and the packages then removed —
-      four files and four rules are easier to keep than a build step.
-      **The type scale joined tokens.css.** Six steps, two families, four
-      weights, five tracking values, two line-heights and three sizes for
-      type drawn INSIDE an SVG, each with a plain-English note. The
-      stylesheet's nine near-identical sizes (0.7 … 0.9rem within a hair
-      of each other) collapsed onto the six steps; only the 0.85rem group
-      moved, down one step to 0.8rem.
-      **Four voices, applied in four commented blocks at the top of
-      index.css:** DISPLAY (Cormorant, bold, uppercase, wide) for the
-      wordmark, the date and the five page titles; LABEL (DM Sans 500,
-      uppercase, wider still, 11px, with §11c's thin rules above and
-      below) for the meters' names and the section headings; BODY, the
-      default; and QUIET (DM Sans 300 italic) for the asides — the cutoff
-      note, "still unfolding", "not enough days yet", the map's caption.
-      Three judgement calls are recorded in §11c and the decisions log:
-      uppercase is for names and not for sentences (so the pop-up titles
-      wear the display face without it), colour was left exactly as T5.2b
-      set it, and the generous line-height went to prose only.
-      One knock-on fixed here: at the label tracking "wallet balance"
-      needs two lines where the other meter names need one, so the meter
-      bars are now pushed to the bottom of their own meter and line up
-      whatever their names do.
-      _Tests:_ 1071 pass (three new in tokens.test.js — no raw font size
-      in index.css, no font family spelled out there, and the four font
-      files are present and referenced with no `http` anywhere). Verified
-      in a real browser at 1280px: every voice resolves to the right
-      family, size, weight, case and tracking; both roman fonts report
-      `loaded`; the three meter bars share one top edge; and the map
-      page's title and italic caption render as drawn.

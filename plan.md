@@ -124,8 +124,9 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **T5.2b The §11b palette** _(done 2026-08-11 — build notes in
             history.md; the dim-white text tiers were dropped on Kimia's
             eyeball test, design-notes §11b)_
-      - [x] **T5.2c Typography (§11c)** _(done 2026-08-12 — build notes
-            in history.md)_
+      - [ ] **T5.2c Typography (§11c)** — bundle Cormorant Garamond and
+            DM Sans (no external loading), then the case and letterspacing
+            convention; the type scale joins the tokens file here.
       - [ ] **T5.2d Layout & atmosphere (§13)** — the top header bar,
             promoted page titles, and the night sky mounted as the app
             background (its ground colours move into the tokens file with
