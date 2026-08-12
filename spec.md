@@ -526,11 +526,12 @@ design-notes §12f.
 - **Visual identity (2026-07-19, design-notes §11):** background
   `#080910`; the six charm colours as the accent palette with
   0.18-alpha faint variants for borders; dim-white text tiers.
-  Typography: **Cormorant Garamond** (display, UPPERCASE, wide
-  letterspacing) + **DM Sans** (body, lowercase), both bundled with
-  the app — no external font loading. Lowercase stays Habitat's
-  default voice; uppercase is reserved for display and section
-  labels. Every colour, glow strength, font size and spacing number
+  Typography: **the reader's own system font, settled as-is
+  (2026-08-12)** — a two-typeface plan was built that day and rejected
+  on sight, so the lettering Habitat already had became the final
+  answer (design-notes §11c). Lowercase is Habitat's voice throughout;
+  size and letterspacing, never boldness, mark a display moment.
+  Every colour, glow strength and spacing number
   lives in one **CSS design-tokens file** of named, commented values —
   the visual twin of `constants.js` (T5.2, design-notes §11d).
 - **The world-art language and full asset catalogue** (every family's

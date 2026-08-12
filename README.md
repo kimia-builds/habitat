@@ -102,9 +102,10 @@ built on top of a live, in-use app.
   its reveals; and the full world of N-Z-D — map, bookcase, abode,
   market and guest book.
 - **M5 — in progress.** The design pass: the six charm symbols, the
-  device gate, drag-to-reorder and the colour design-tokens file are in;
-  the rest of the visual identity (palette, type, layout, the startup
-  animation) and the creature, flora and object art are being built now.
+  device gate, drag-to-reorder, the colour design-tokens file and the
+  palette it paid for are in, and the typography is settled as it
+  stands; the layout pass, the startup animation and the creature,
+  flora and object art are being built now.
 - **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
   The error-boundary safety net is already in, and so is the first half
   of the backup habit — persistent-storage groundwork, and the export

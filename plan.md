@@ -82,10 +82,12 @@ tracker. Everything after this is delight, informed by real use.
 - [x] **T5.1c Habit-card drag-to-reorder** _(done 2026-07-23, spec §4.1,
       design-notes §12a — build notes in history.md)_
 - [ ] **T5.2 Visual identity** — decided 2026-07-19 (docs, design-notes
-      §11b/§11c): background #080910, charm-colour accent palette with
-      faint variants, dim-white text tiers; Cormorant Garamond display +
-      DM Sans body (bundled, no external loading), UPPERCASE display /
-      lowercase body. Plus glow effects and animations. Includes the feel
+      §11b): background #080910, charm-colour accent palette with
+      faint variants, dim-white text tiers. Plus glow effects and
+      animations. (**The two-typeface plan left this task on
+      2026-08-12** — Kimia saw it built and rejected it; the build was
+      reverted and the system font became Habitat's settled typography,
+      design-notes §11c.) Includes the feel
       enhancements decided 2026-07-19 (design-notes §4–§5): momentary
       glow/thicken on meter advance and roll-over (layered on the built
       bar), star-shimmer on regular drop arrivals, full firework for
@@ -124,9 +126,12 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **T5.2b The §11b palette** _(done 2026-08-11 — build notes in
             history.md; the dim-white text tiers were dropped on Kimia's
             eyeball test, design-notes §11b)_
-      - [ ] **T5.2c Typography (§11c)** — bundle Cormorant Garamond and
-            DM Sans (no external loading), then the case and letterspacing
-            convention; the type scale joins the tokens file here.
+      - [~] ~~**T5.2c Typography**~~ _(dropped 2026-08-12 — built, rejected
+            on sight, reverted the same day. Kimia's call: the system
+            font Habitat already wore IS its typography, so there is
+            nothing left to build. design-notes §11c now describes the
+            lettering instead of proposing it, and the slice is kept
+            here, struck through, so nobody proposes it again.)_
       - [ ] **T5.2d Layout & atmosphere (§13)** — the top header bar,
             promoted page titles, and the night sky mounted as the app
             background (its ground colours move into the tokens file with

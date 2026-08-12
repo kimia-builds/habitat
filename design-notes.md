@@ -299,7 +299,10 @@ design-bible.md §9c.)
    exemption from "weird > cute"; still no words anywhere.
 8. **Typography** (fifth session) → the full reference type system:
    Cormorant Garamond display + DM Sans body, uppercase display /
-   lowercase body, fonts bundled with the app (§11c).
+   lowercase body, fonts bundled with the app (§11c). _(Retired
+   2026-08-12: built, rejected on sight, reverted. The system font
+   Habitat already wore is the settled typography — §11c describes it
+   now rather than proposing anything.)_
 
 ## 10a. Decisions resolved (2026-07-20, twelfth session, with Kimia)
 
@@ -533,30 +536,49 @@ The exact paths (drop into the shared SVG attributes above):
   screen. They are not part of the palette question — they need a type
   and control pass, which is T5.2c/T5.2d.
 
-### 11c. Typography (T5.2)
+### 11c. Typography **[SETTLED — Kimia's call 2026-08-12: what is on screen IS the typography]**
 
-Two families, **bundled with the app** (no external font loading —
-self-contained, works offline):
+**Habitat is set in the reader's own system font, and that is the
+final answer.** This section used to be a plan for two bundled
+typefaces — Cormorant Garamond for display, DM Sans for everything
+else, with an uppercase-and-widely-spaced convention over the top. That
+was built on 2026-08-12 and Kimia rejected all of it on sight; the
+build was reverted the same day and the plan retired with it. What
+follows is not an aspiration, it is a description of the app.
 
-- **Cormorant Garamond** (serif) — display only: weights 600/700 +
-  italic 400.
-- **DM Sans** (sans) — everything else: weights 300/400/500 +
-  italic 300.
+- **One family: the system font stack** —
+  `system-ui, -apple-system, 'Segoe UI', sans-serif`, set on `body` and
+  inherited everywhere. Nothing is downloaded, which was the one thing
+  the two-typeface plan and this have in common: Habitat looks the same
+  offline and no outside server learns when it is opened.
+- **Lowercase throughout.** Not a rule that needed enforcing — the
+  words are simply written lowercase, and no stylesheet rule uppercases
+  anything. The one uppercase thing on screen is the **HABITAT**
+  wordmark, which is uppercase in the text itself.
+- **Light weights carry the display moments.** The wordmark, the page
+  titles, the section headings and the big date are all weight 300 —
+  they are made distinct by SIZE and by LETTERSPACING, never by
+  boldness. Habitat has no bold text.
+- **Letterspacing is the display device.** The wordmark opens widest
+  (0.5em), the date next (0.35em), page titles and section headings sit
+  at 0.2em, the meters' names and a friend's name barely open at all
+  (0.15em / 0.08em). Everything else is set normally.
+- **Sizes are ad-hoc and staying that way.** Roughly 0.7–0.9rem for the
+  small print, the browser's own sizes for headings, 1.1–1.5rem for the
+  reveal titles, the date and the wordmark. There is no ladder and no
+  named scale; see §11d for why type stays out of the tokens file.
+- **Quiet lines are quiet by COLOUR, not by style.** The cutoff note,
+  "still unfolding", a young graph's note and the map's caption are
+  upright and dim. Nothing in Habitat is italic.
+- **Prose breathes at 1.5–1.6**, controls and rows at the browser's
+  own line spacing.
 
-Case & spacing convention:
-
-- **Display names/titles:** Cormorant Garamond 700, UPPERCASE,
-  wide letterspacing (~4px at 21px size), in the accent colour.
-- **Section labels:** DM Sans 500, UPPERCASE, very wide letterspacing
-  (~6px at 11px size), accent colour at ~0.85 opacity, thin
-  faint-colour rules above and below.
-- **Body text:** DM Sans 300/400, lowercase, generous line-height
-  (~2), dim white.
-- **Quiet secondary lines:** DM Sans 300 italic, lowercase, the
-  dimmest tier.
-- Habitat's existing all-lowercase voice (habit rows, buttons,
-  captions) already matches — lowercase stays the default; uppercase
-  is reserved for display and section labels.
+**If typography is ever revisited, revisit it in front of Kimia.** The
+lesson of 2026-08-12 is that a typographic system reads completely
+differently in a specification than it does on the screen: everything
+built that day followed this section as it was then written, and she
+disliked all of it. Type is not a thing to be specified and then
+implemented in one go.
 
 ### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10; SPENT — T5.2b, 2026-08-11]**
 
@@ -619,7 +641,11 @@ index.css. Two things the file learned in the process:
   ugly-on-purpose skeleton — four near-identical glow radii, paddings
   the §13 layout pass will rewrite. They join the file in the slices
   that actually decide them, rather than being named now and renamed
-  later.
+  later. _(Amended 2026-08-12: **font sizes are now never joining.**
+  Type was settled as-is that day — §11c — so there is no slice left to
+  decide it, and naming the sizes it already has would be filing
+  leftovers rather than building a scale. Glow and spacing still
+  arrive with T5.2e and T5.2d.)_
 - **The tokens file holds the colours the _stylesheet_ wears; artwork
   keeps its own paints.** `friendPalettes.js` (the friends' 24 pastels),
   `textures.jsx` (surface tints fed to SVG filters) and the Abode sky
@@ -787,8 +813,10 @@ rather than movement.
 above the charms.
 
 This is the **one uppercase, letterspaced display moment on the home
-screen** — §11c's display register (Cormorant Garamond 700, uppercase,
-wide tracking) used where it earns its keep. The spacing is the point:
+screen** — and the uppercase is in the words themselves
+(`calendarDateLine` spells the weekday and month out in capitals), not
+a stylesheet rule. Weight 300, tracked at 0.35em. The spacing is the
+point:
 it should read as _engraved_, an inscription over the day, closer to a
 title card than a clock. It is not information the user needs — they
 know what day it is. It is **ceremony**: the day is a thing worth
@@ -799,8 +827,9 @@ weather, no counters. It never animates on its own; it simply is.
 
 **The 3am note.** Between midnight and the cutoff, a quiet line sits
 beneath it: _"your habits will switch to a new day at 3 a.m."_ — the
-dimmest text tier, lowercase, DM Sans 300 italic (§11c's quiet
-secondary). This is the app being **honest at the one moment it would
+dimmest text tier, lowercase, upright and small (§11c: Habitat's quiet
+lines are quiet by COLOUR, never by italic). This is the app being
+**honest at the one moment it would
 otherwise contradict itself**, and it is deliberately phrased as a
 statement of fact, not a warning. Nothing is expiring. Nothing is
 owed. Outside that window it does not exist.

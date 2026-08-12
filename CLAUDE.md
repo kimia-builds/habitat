@@ -170,9 +170,15 @@ Kimia is a non-coder. Therefore:
   **Built for colour as `src/tokens.css` (T5.2a, 2026-08-10)** and
   guarded by `src/test/tokens.test.js`: a raw colour in index.css, a
   `var(--…)` with no definition, or a drifted symbols.js mirror fails
-  the suite. Glow, type and spacing join it in the slices that decide
-  them; artwork palettes consumed only by JavaScript (textures, skies,
+  the suite. Glow and spacing join it in the slices that decide them;
+  artwork palettes consumed only by JavaScript (textures, skies,
   friend pastels) stay beside their drawings — see §11d.
+  **Type never joins it (2026-08-12).** Font sizes stay raw in
+  index.css, because typography stopped being a thing to build: Kimia
+  saw the two-typeface pass built, rejected it, and settled the system
+  font Habitat already wore as its final typography (design-notes
+  §11c). There is no scale to name, only leftovers, and §11c now
+  describes the lettering rather than proposing any.
 - **Never run Prettier on the `.md` documents (2026-08-10).** They are
   hand-wrapped, and Prettier's markdown formatter collapses plan.md's
   nested sub-tasks into run-on paragraphs — it silently ate nine

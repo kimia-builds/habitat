@@ -1908,6 +1908,33 @@ return 0` right after the era is worked out, so a moment before the
   built this session; spec §5b still describes the temporary lens,
   correctly, until T6.11 lands.
 
+- 2026-08-12 (Kimia's call, same day, after seeing T5.2c live):
+  **the typography is reverted, and the font Habitat already wore
+  becomes its settled typography.** She disliked the whole pass on
+  sight — the two bundled typefaces, the uppercase display voice, the
+  small wide-spaced section labels with their hairline rules, the
+  italic asides, the collapsed size ladder — and asked for the
+  pre-session state back. `git revert` on the T5.2c commit (the plan
+  task added earlier the same session was kept, on her call), the suite
+  back to 1068 green, and the live site back within the minute.
+  The important half is the second half: this is **not** a to-build item
+  waiting for a better attempt. T5.2c is struck out of plan.md, the
+  two-typeface clause is gone from T5.2's own description, and §11c has
+  been rewritten from a proposal into a DESCRIPTION of what is on
+  screen — the system font stack, lowercase throughout, weight 300 for
+  every display moment, letterspacing rather than boldness as the
+  device, ad-hoc sizes, quiet-by-colour rather than by italic. Two
+  promises made elsewhere had to be retired with it: §11d's "font sizes
+  join the tokens file in the slice that decides them" (there is no
+  such slice now) and the same clause in CLAUDE.md's tokens rule.
+  What this cost, recorded so it is not repeated: a full session
+  building a system that had been specified in §11c since 2026-07-19 and
+  agreed on paper. The specification was followed faithfully and the
+  result was still wrong, because a typographic system reads nothing
+  like its own description. **Type is not specify-then-implement work.**
+  If it is ever reopened, it is reopened in front of Kimia, one visible
+  change at a time.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
