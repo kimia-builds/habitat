@@ -1046,14 +1046,16 @@ describes and change nothing about the habit list itself (spec §5b's
 ### 13a. The top header bar **[BUILT — T5.2d, 2026-08-12]**
 
 The wordmark, the three meters, the date display and the symbol filter
-used to stack inside the same 40rem `.app` column. They now sit in a
-**dedicated full-width header** (`.app-header`) above that column.
+used to stack inside the same 40rem `.app` column. Three of them now sit
+in a **dedicated full-width header** (`.app-header`) above that column;
+the charm filter stayed behind (see below).
 
-- **Wide viewport:** one row, left to right — wordmark · meters · date ·
-  charm filter.
+- **Wide viewport:** one row — wordmark hard left, meters **centred on
+  the page**, date hard right.
 - **Narrow viewport:** folds to **two deliberately-arranged rows** —
-  row 1 = wordmark + date, row 2 = meters + filter — never a
-  document-order wrap that clumps.
+  the wordmark and the date hold the top row, the meters drop to a
+  second line and stay centred there — never a document-order wrap that
+  clumps.
 - **How:** CSS Grid with named `grid-template-areas` — one area map for
   the wide breakpoint, a second for the narrow one, swapped by a single
   media query. Flex-wrap was considered and **rejected**: it wraps in
@@ -1065,23 +1067,46 @@ used to stack inside the same 40rem `.app` column. They now sit in a
 The wordmark keeps its standing job as the **home link back to the
 habit list** (spec §5b).
 
-**What the bar carries where (Kimia's call 2026-08-12).** The date and
-the charm filter belong to the habit list, so they ride the bar **only
-at home**. On the Map, Bookcase, Abode, Market and Guest Book it is
-wordmark + meters — exactly what those pages showed before this pass,
-merely re-laid-out. An `at-home` class on `.app-header` swaps between
-the two grids, rather than leaving two empty columns' worth of gap on
-every world page. The check-in keeps its own plain wordmark and no bar
-at all: its done button stays the only way out.
+**The bar is the same on every page (Kimia's call 2026-08-12).** Home,
+the five world pages, the field notes: the same three things in the
+same three places, so nothing shifts underfoot as you move around. The
+first build made the world pages carry a shorter bar (wordmark +
+meters, no date); she asked for one bar everywhere instead. Only the
+check-in opts out, keeping its own plain wordmark and no bar at all —
+its done button stays the only way out.
 
-**The breakpoint is 84rem, and it is measured.** All four abreast need
-about 1330px before the meters start being crushed into a sliver, so
-below that the two-row map takes over; the meters' column also carries
-an 18rem floor so nothing collapses in between. Note that "narrow" here
-**never means a phone**: `ViewportGate` replaces the whole app below
-1024px (T5.1b), so this query only ever governs the 1024px–84rem
-small-laptop window. A breakpoint under 1024px would be dead CSS —
-worth remembering for §13c and anything else this pass adds.
+**The charm filter is NOT in the bar (same call).** It is the habit
+list's own lens, not standing furniture, so it sits **centred directly
+beneath the bar** on the pages that have something to filter — which is
+exactly where the field notes had always kept theirs. One arrangement,
+now used in both places.
+
+**Centred means centred on the page.** Not merely centred in the gap
+between its neighbours: the side columns are pinned to an equal 25rem
+floor, because `1fr` each is only equal while there is slack to share,
+and the moment the bar tightens the wordmark's 174px and the date's
+399px pull the middle off the centre line. The meters still breathe with
+the window (Kimia likes that they do) — between their own floor and a
+44rem ceiling.
+
+**Two things are kept to one line, and between them they set the fold.**
+The meters' labels (`white-space: nowrap` on `.meter-name`) — "wallet
+balance" used to spill onto a second line as the window narrowed, and
+Kimia asked for the shrink to be capped there. And the date itself,
+which otherwise breaks after "WEDNESDAY" and makes the whole bar two
+storeys tall. Neither cap is a pixel number to keep in step with the
+words: the words set their own floors, and those floors are what decide
+where the bar can no longer hold three abreast.
+
+**The breakpoint is 88rem, and it is measured.** Centred-on-the-page
+costs width: two 25rem side columns plus the meters at their 477px
+floor need 1381px, so the fold sits a little above that at 1408px
+rather than at the point where the bar already looks jammed. Note that
+"narrow" here **never means a phone**: `ViewportGate` replaces the whole
+app below 1024px (T5.1b), so this query only ever governs the
+1024px–88rem window, which is most laptops. A breakpoint under 1024px
+would be dead CSS — worth remembering for §13c and anything else this
+pass adds.
 
 ### 13b. Page titles, promoted out of their boxes **[BUILT — T5.2d, 2026-08-12]**
 

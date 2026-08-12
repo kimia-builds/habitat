@@ -107,66 +107,85 @@ body {
 }
 
 /* T5.2d/§13a: the header bar — a full-width band ABOVE the 40rem
-   content column, so the wordmark, meters, date and charm filter read
-   as one standing row rather than four things stacked in the column.
-   The column below keeps its 40rem exactly as it was.
+   content column, so the wordmark, meters and date read as one standing
+   row rather than three things stacked in the column. The column below
+   keeps its 40rem exactly as it was.
 
-   Grid with named areas, never flex-wrap: wrapping follows source
-   order with no say in what pairs with what, which is the clumped look
-   this pass exists to avoid. Two shapes, one media query apart, and a
-   second pair for `at-home` — the date and the filter only ride the
-   bar on the habit list, so the world pages get the short template
-   instead of two empty columns' worth of gap. */
+   The bar is THE SAME ON EVERY PAGE (Kimia's call 2026-08-12): home,
+   the five world pages, the field notes — the same three things in the
+   same three places, so nothing shifts as you move around. Only the
+   check-in opts out, with its own plain wordmark and no bar.
+
+   Three things, three places: wordmark hard left, meters CENTRED, date
+   hard right. The centring is on the PAGE's centre, not merely the gap
+   between its neighbours, and that is what fixes the side columns at an
+   equal 25rem floor: 1fr each is only equal while there is slack to
+   share, and the moment the bar tightens the wordmark's 174px and the
+   date's 399px pull the middle off-centre. Equal floors keep the meters
+   on the centre line at every width the one-row form is used at — and
+   the width where those floors stop fitting is exactly where it folds.
+
+   Grid with named areas, never flex-wrap: wrapping follows source order
+   with no say in what pairs with what, which is the clumped look this
+   pass exists to avoid. */
 .app-header {
   display: grid;
   align-items: center;
   gap: 0.9rem 1.75rem;
   padding: 1.25rem 1.5rem 0.5rem;
-  grid-template-areas: 'wordmark meters';
-  grid-template-columns: auto minmax(0, 1fr);
-}
-
-.app-header.at-home {
-  grid-template-areas: 'wordmark meters date filter';
-  /* The meters get a floor, not just a share: squeezed to a sliver they
-     stop being readable bars at all. */
-  grid-template-columns: auto minmax(18rem, 1fr) auto auto;
+  grid-template-areas: 'wordmark meters date';
+  /* The middle track breathes between the meters' own floor (their
+     labels, one line each — see .meter-name) and a 44rem ceiling that
+     stops them stretching into three long troughs on a wide screen. */
+  grid-template-columns:
+    minmax(25rem, 1fr)
+    minmax(min-content, 44rem)
+    minmax(25rem, 1fr);
 }
 
 .app-header h1 {
   grid-area: wordmark;
 }
 
+/* The meters keep flexing with the window (Kimia likes that they
+   breathe) — the 34rem ceiling above stops them stretching into three
+   long troughs on a wide screen, and their own labels set the floor:
+   see .meter-name's nowrap. */
 .app-header .meters {
   grid-area: meters;
-  /* The meters filled the 40rem column before this pass; left to fill a
-     full-width bar they stretch into three long troughs, so they keep a
-     column's worth of width and no more. */
-  max-width: 34rem;
 }
 
 .app-header .date-display-block {
   grid-area: date;
+  justify-self: end;
 }
 
-.app-header .filter-view {
-  grid-area: filter;
-}
+/* Narrow: the meters drop to a second line and stay centred there, while
+   the wordmark and the date hold the top row — the two fixed corners of
+   the bar never move (Kimia's call 2026-08-12).
 
-/* Narrow: two deliberately-arranged rows — wordmark with the date, the
-   meters with the filter — not whatever order a wrap would produce.
-
-   84rem is measured, not chosen for roundness: all four abreast need
-   about 1330px before the meters start being crushed. And "narrow" here
-   never means a phone — ViewportGate replaces the whole app below
-   1024px (T5.1b), so this query only ever governs 1024px up to 84rem,
-   the small-laptop window. A breakpoint below 1024 would be dead CSS. */
-@media (max-width: 84rem) {
-  .app-header.at-home {
+   88rem is measured, not chosen for roundness. Centred-on-the-page
+   costs width: the two 25rem side columns plus the meters at their
+   477px floor, plus gaps and padding, need 1381px. Below that the
+   meters would be pushed off the centre line, so that is where the bar
+   gives way instead — 88rem (1408px), a little above the true minimum
+   rather than at the point where it already looks jammed.
+   And "narrow" here never means a phone — ViewportGate replaces the
+   whole app below 1024px (T5.1b), so this query only ever governs
+   1024px up to 88rem, which is most laptop windows. A breakpoint below
+   1024px would be dead CSS. */
+@media (max-width: 88rem) {
+  .app-header {
     grid-template-areas:
       'wordmark date'
-      'meters filter';
-    grid-template-columns: minmax(0, 1fr) auto;
+      'meters meters';
+    grid-template-columns: minmax(auto, 1fr) auto;
+  }
+
+  .app-header .meters {
+    justify-self: center;
+    width: 100%;
+    max-width: 34rem;
   }
 }
 
@@ -210,10 +229,16 @@ body {
   border-color: var(--border-hover);
 }
 
+/* The label is also the meter's floor (Kimia's call 2026-08-12): kept
+   on one line, its width becomes the tile's min-content, and a flex item
+   never shrinks past that — so "wallet balance" can no longer spill onto
+   a second line as the window narrows. No magic pixel number to keep in
+   step with the words; the words themselves set the limit. */
 .meter-name {
   font-size: 0.75rem;
   letter-spacing: 0.15em;
   color: var(--text-quiet);
+  white-space: nowrap;
 }
 
 .meter-bar {
@@ -1796,12 +1821,18 @@ body {
   text-align: center;
 }
 
+/* One line, always (2026-08-12): in the header bar the date sits in a
+   flexible column, and left to wrap it breaks after "WEDNESDAY" and
+   makes the whole bar two-storeys tall. Kept unbreakable, its width
+   becomes the column's floor instead — the same trick the meter labels
+   use, and what sets where the bar folds. */
 .date-display {
   margin: 0;
   font-size: 1.3rem;
   font-weight: 300;
   letter-spacing: 0.35em;
   color: var(--text-title);
+  white-space: nowrap;
 }
 
 /* The honest line, only between midnight and the cutoff: the dimmest

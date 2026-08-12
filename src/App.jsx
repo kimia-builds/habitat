@@ -1007,10 +1007,11 @@ function App() {
     </div>
   )
 
-  // The home screen's contents below the header (T4.5 rearranged them;
-  // 2026-08-12 emptied the foot again): the habit list, the archive
-  // drawer, and the three footer buttons — the symbol filter moved up
-  // into the header bar with T5.2d/§13a. The + /
+  // The home screen's contents below the header bar (T4.5 rearranged
+  // them; 2026-08-12 emptied the foot again): the charm filter centred
+  // directly under the bar — the field notes' own arrangement, and
+  // Kimia's call for here too — then the habit list, the archive drawer,
+  // and the three footer buttons. The + /
   // pencil / graph trio that used to sit under the list has moved into
   // the left rail, above the five page icons — same order, same hover
   // labels, the rail's look. Every action is still an icon with a hover
@@ -1019,6 +1020,14 @@ function App() {
   // pop-up (below) dims this exact content behind itself.
   const listContent = (
     <>
+      <section
+        className="filter-view"
+        aria-label="filter view"
+        title="filter view"
+      >
+        <SymbolPicker selected={filter} onToggle={toggleFilter} />
+      </section>
+
       <ul className="habit-list" ref={listRef}>
         {visible.map((habit) =>
           // The tile saying goodbye: the same row, drawn one last time,
@@ -1314,20 +1323,21 @@ function App() {
   // right on a wide screen, folding to two deliberately-arranged rows on
   // a narrow one (the CSS owns that; grid areas, never a wrap).
   //
-  // The date and the charm filter belong to the habit list, so they ride
-  // the header only at home (Kimia's call 2026-08-12) — on the Map,
-  // Bookcase, Abode, Market and Guest Book the bar is wordmark + meters,
-  // exactly what those pages showed before this pass. The `at-home`
-  // class is what swaps the grid between the two shapes.
+  // The bar is IDENTICAL on every page (Kimia's call 2026-08-12): the
+  // same wordmark, meters and date in the same three places at home, on
+  // the five world pages and in the field notes, so nothing shifts
+  // underfoot as you move around. The charm filter is deliberately NOT
+  // here — it is the habit list's own lens, and sits centred beneath the
+  // bar on the pages that have something to filter (home and the field
+  // notes), which is where the field notes already kept theirs.
   //
   // The HABITAT wordmark doubles as the home link (Kimia's request
   // 2026-07-16): from any page it always leads back to the habit list.
   // The check-in pop-up deliberately keeps a plain header of its own —
   // its done button stays the only way out, so yesterday always gets
   // answered.
-  const atHome = page === null
   const appHeader = (
-    <header className={atHome ? 'app-header at-home' : 'app-header'}>
+    <header className="app-header">
       <h1>
         <button className="home-link" onClick={() => setPage(null)}>
           HABITAT
@@ -1339,18 +1349,7 @@ function App() {
         fungusTrueBalance={walletTrueBalance(played, data.purchases)}
         onOpen={setPage}
       />
-      {atHome && (
-        <DateDisplay now={now} cutoffHour={data.settings.dayCutoffHour} />
-      )}
-      {atHome && (
-        <section
-          className="filter-view"
-          aria-label="filter view"
-          title="filter view"
-        >
-          <SymbolPicker selected={filter} onToggle={toggleFilter} />
-        </section>
-      )}
+      <DateDisplay now={now} cutoffHour={data.settings.dayCutoffHour} />
     </header>
   )
 
@@ -1519,11 +1518,11 @@ function App() {
   }
 
   // The home screen (T4.5): the header bar up top carries wordmark,
-  // meters, date and charm filter (T5.2d/§13a — the date and filter
-  // moved up there from this column); the overlays fragment carries the
-  // left rail, which persists on every screen but the check-in. Below
-  // sits the list content shared with the check-in pop-up's dimmed
-  // backdrop. The cameo (T4.6) visits above the list — but never behind
+  // meters and date (T5.2d/§13a — the date moved up there from this
+  // column); the overlays fragment carries the left rail, which persists
+  // on every screen but the check-in. Below sits the list content shared
+  // with the check-in pop-up's dimmed backdrop, starting with the charm
+  // filter. The cameo (T4.6) visits above the list — but never behind
   // the startup fade, which takes the screen first.
   return (
     <>

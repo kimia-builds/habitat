@@ -1973,20 +1973,40 @@ return 0` right after the era is worked out, so a moment before the
   _Tests:_ five added, all in the new guard file. Full suite 1073 and
   oxlint pass.
 
-- 2026-08-12 (T5.2d, layout session — session 49): **the world pages'
-  header keeps the wordmark and the meters, and nothing else.** §13a
-  named the four things the header bar carries but never said what
-  happens on the pages where two of them do not exist: the date and the
-  charm filter have only ever been home-screen furniture. Kimia's
-  answer: **the bar is on every page, but the date and the filter ride
-  it only at home.** So the Map, Bookcase, Abode, Market and Guest Book
-  show exactly what they showed before the pass, merely re-laid-out —
-  no date on a page with no day to speak of, no filter on a page with
-  nothing to filter. An `at-home` class swaps between the two grids,
-  which also keeps the world pages from carrying two empty columns'
-  worth of gap. The alternatives — all four everywhere, and the date
-  everywhere with the filter at home — were both set aside as putting
-  furniture where nothing uses it. Folded into spec §5b and §13a.
+- 2026-08-12 (T5.2d, layout session — session 49): **one bar, the same
+  on every page — and the charm filter is not in it.** §13a named the
+  four things the header carries but never said what happens on the
+  pages where two of them do not exist. The first build asked and
+  followed the safe answer: keep the date and the filter at home, give
+  the world pages a shorter bar. Kimia saw it live and went the other
+  way. **Her call: the header persists everywhere, identical** — the
+  wordmark hard left, the meters centred, the date hard right, on home,
+  the five world pages and the field notes alike, so nothing shifts
+  underfoot as you move around. **The charm filter comes out of the bar
+  altogether**: it is the habit list's lens, not standing furniture, so
+  it sits centred directly beneath the bar — which is exactly where the
+  field notes had always kept theirs, so the two arrangements became
+  one. Folded into spec §5b, the date section, and §13a.
+
+  **"Centrally" turned out to cost a breakpoint.** The meters centred
+  in the gap between their neighbours is not the same as centred on the
+  page, and the difference shows the moment the bar tightens: with `1fr`
+  side columns the wordmark's 174px and the date's 399px pull the middle
+  off the centre line. Pinning both sides to an equal 25rem floor fixes
+  the centring at every width the one-row form is used at — and moves
+  the fold out to 88rem, because that pinning needs 1381px to hold. Most
+  laptop windows therefore wear the two-row form, which is the shape
+  Kimia asked for anyway: meters drop to the second line, wordmark and
+  date stay up top.
+
+  **Two one-line caps, and neither is a pixel number.** Kimia asked for
+  the meters' shrink to be capped so "wallet balance" stops spilling
+  onto a second line; `white-space: nowrap` on the label does it by
+  making the words their own floor, with nothing to keep in step when
+  the words change. Verifying that turned up the same fault in the date
+  — at 1160px it broke after "WEDNESDAY" and made the bar two storeys
+  tall — so it got the same treatment. Between them those two floors are
+  what decide where the bar folds.
 
   **The breakpoint had to be measured, and the first one was dead
   CSS.** §13a's two-row fold was written for a "narrow viewport", so it
@@ -2004,11 +2024,13 @@ return 0` right after the era is worked out, so a moment before the
   is untouched. The `meters` fragment in App.jsx no longer carries the
   meters (they moved into the bar) and was renamed `overlays`, which is
   what it always actually held — rail, arrival shelf, reveals, reading
-  popup, startup fade. The date and the filter section moved out of the
-  home column into the bar unchanged, keeping their markup and labels,
-  which is why the suite needed no edits: 1073 tests passed before and
-  after. Verified in a browser at 1024px, 1400px and 1500px, plus a
-  world page at each shape.
+  popup, startup fade. The date moved out of the home column into the
+  bar unchanged, and the filter section moved out and back again across
+  the two builds, keeping its markup and labels throughout — which is
+  why the suite needed no edits at any point: 1073 tests passed before,
+  between and after. Verified in a browser at 1024, 1160, 1230, 1300,
+  1440 and 1800px — both bar shapes, the centring measured against the
+  page centre at each, and a world page checked at each shape.
 
 ## spec.md version history (formerly its preamble)
 
