@@ -1877,6 +1877,24 @@ return 0` right after the era is worked out, so a moment before the
   verify skill's standing gotcha), and a screenshot can resize the
   viewport, which remounts the tree past the viewport gate and closes
   the popup. Click, then read in a separate call.
+- 2026-08-12 (Kimia's call, later the same day): **the charm lens will
+  be remembered — and gets a persistence tier no other Habitat data
+  has.** It becomes plan task T6.11 rather than a note. The lens is to
+  survive refreshes and carry across days, but stay a property of the
+  browser it was chosen in: its own localStorage key outside the
+  versioned envelope, absent from backup files, unaffected by an
+  import, and never synced to a phone if syncing ever happens. She
+  asked for "the same persist logic as the bookshelf and abode
+  arrangements" — but those live INSIDE the envelope
+  (`bookcaseLayout`, `abodeLayout`), so they do travel in backups and
+  would sync. Told her; she chose the behaviour she had described over
+  the mechanism she had named, and left the arrangements alone. Second
+  call in the same breath: **both new-game doors clear the lens**,
+  which retires the 2026-08-12 exception where only a total refresh
+  did (its reasoning — that the keep-habit-data door leaves habits for
+  a lens to narrow — loses to one rule being easier to hold). Nothing
+  built this session; spec §5b still describes the temporary lens,
+  correctly, until T6.11 lands.
 
 ## spec.md version history (formerly its preamble)
 

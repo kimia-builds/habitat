@@ -280,6 +280,36 @@ tracker. Everything after this is delight, informed by real use.
       fixed spec. Reads history only; the no-punishment rule binds
       here as hard as anywhere (a sparse month is neutral data, never
       a red patch).
+- [ ] **T6.11 The charm lens remembers itself** (Kimia's call
+      2026-08-12) — today the lens is plain screen state: choose two
+      charms, reload, and the whole list is back (spec §5b calls it "a
+      temporary lens that resets each visit"). It should instead
+      survive a refresh and carry across days, so the charms Kimia
+      lives in are the ones Habitat opens on.
+      **Its persistence tier is its own, and narrower than everything
+      else Habitat keeps:** the lens describes THIS browser, not the
+      record. So it lives under its own localStorage key, OUTSIDE the
+      versioned envelope — never written into a backup file, never
+      restored by an import, and never carried to another device if
+      Habitat ever reaches a phone. Kimia asked for "the same as the
+      bookshelf and abode arrangements"; those sit INSIDE the envelope
+      and so do ride along in backups, which means this task
+      deliberately does not copy them (decision logged 2026-08-12).
+      **Both new-game doors clear it** — total refresh and keep-habit-
+      data alike — replacing today's documented exception, where only
+      a total refresh does.
+      Still exactly one storage module: `src/storage/` gains the
+      second key and components go on touching localStorage never
+      (CLAUDE.md). A missing or junk value must read as "no lens",
+      never as a crash — nothing here is worth losing a launch over.
+      Two knock-ons to settle with Kimia before building, because both
+      now happen on days she never touched the filter: dragging a
+      habit to re-order is disabled while a lens is on (design-notes
+      §12a), so Habitat can open in a state where tiles will not move;
+      and a lens showing exactly one charm makes a new habit's draft
+      open already wearing it (spec §5b). Both are correct as built —
+      the question is only whether either wants softening. Fold the
+      new rule into spec §5b when it lands.
 
 ---
 
