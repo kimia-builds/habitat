@@ -1050,12 +1050,12 @@ used to stack inside the same 40rem `.app` column. Three of them now sit
 in a **dedicated full-width header** (`.app-header`) above that column;
 the charm filter stayed behind (see below).
 
-- **Wide viewport:** one row — wordmark hard left, meters **centred on
-  the page**, date hard right.
+- **Wide viewport:** one row — wordmark hard left, date hard right, the
+  meters **filling everything between them**.
 - **Narrow viewport:** folds to **two deliberately-arranged rows** —
   the wordmark and the date hold the top row, the meters drop to a
-  second line and stay centred there — never a document-order wrap that
-  clumps.
+  second line and span the bar's full width there — never a
+  document-order wrap that clumps.
 - **How:** CSS Grid with named `grid-template-areas` — one area map for
   the wide breakpoint, a second for the narrow one, swapped by a single
   media query. Flex-wrap was considered and **rejected**: it wraps in
@@ -1081,13 +1081,21 @@ beneath the bar** on the pages that have something to filter — which is
 exactly where the field notes had always kept theirs. One arrangement,
 now used in both places.
 
-**Centred means centred on the page.** Not merely centred in the gap
-between its neighbours: the side columns are pinned to an equal 25rem
-floor, because `1fr` each is only equal while there is slack to share,
-and the moment the bar tightens the wordmark's 174px and the date's
-399px pull the middle off the centre line. The meters still breathe with
-the window (Kimia likes that they do) — between their own floor and a
-44rem ceiling.
+**The meters fill the gap; they are not centred on the page (Kimia's
+call 2026-08-12).** The two word-shaped things take exactly the width
+their letters need, and the meters take the whole remainder — no
+ceiling, so on a wide screen they simply grow. The bar is snug at every
+width, and however many storeys it ends up being there is no slack in
+any of them: on the folded form the meters span the full width of the
+bar rather than sitting centred with air either side.
+
+This was got wrong once, worth recording so it is not re-proposed.
+Centring the meters on the PAGE (pinning the side columns to an equal
+floor) looks tidy in the abstract but leaves a pool of empty space
+beside the wordmark, because the date is more than twice its width. It
+also pushes the fold out past most laptop windows, since the pinning
+needs 1381px to hold. Kimia's breathing is the meters' breathing — the
+gap growing and shrinking around them is the opposite of the ask.
 
 **Two things are kept to one line, and between them they set the fold.**
 The meters' labels (`white-space: nowrap` on `.meter-name`) — "wallet
@@ -1098,15 +1106,15 @@ storeys tall. Neither cap is a pixel number to keep in step with the
 words: the words set their own floors, and those floors are what decide
 where the bar can no longer hold three abreast.
 
-**The breakpoint is 88rem, and it is measured.** Centred-on-the-page
-costs width: two 25rem side columns plus the meters at their 477px
-floor need 1381px, so the fold sits a little above that at 1408px
-rather than at the point where the bar already looks jammed. Note that
-"narrow" here **never means a phone**: `ViewportGate` replaces the whole
-app below 1024px (T5.1b), so this query only ever governs the
-1024px–88rem window, which is most laptops. A breakpoint under 1024px
-would be dead CSS — worth remembering for §13c and anything else this
-pass adds.
+**The breakpoint is 74rem, and it is measured.** Three abreast need
+1154px at their tightest — wordmark 174 + meters 477 (their labels, one
+line each) + date 399, plus gaps and padding — so the fold sits just
+above that at 1184px, rather than at the point where the row already
+looks jammed. Note that "narrow" here **never means a phone**:
+`ViewportGate` replaces the whole app below 1024px (T5.1b), so this
+query only ever governs the 1024px–74rem window. A breakpoint under
+1024px would be dead CSS — worth remembering for §13c and anything else
+this pass adds.
 
 ### 13b. Page titles, promoted out of their boxes **[BUILT — T5.2d, 2026-08-12]**
 

@@ -313,9 +313,10 @@ region discovery expands what the Market can offer.
   habit list (2026-07-16) — except during the morning check-in, whose
   done button stays the only exit. Since the M5 layout pass (T5.2d,
   built 2026-08-12) every page carries the same **full-width header
-  region** above the 40rem content column: wordmark left, meters
-  centred, date right, identical everywhere so nothing shifts as you
-  move between pages (Kimia's call 2026-08-12). The **charm filter is
+  region** above the 40rem content column: wordmark left, date right,
+  and the meters filling everything between them — identical everywhere
+  so nothing shifts as you move between pages (Kimia's call
+  2026-08-12). The **charm filter is
   not part of it** — it is the habit list's own lens, and sits centred
   beneath the header on the pages that have something to filter (the
   home screen and the field notes). Every secondary page renders its

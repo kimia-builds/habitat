@@ -1988,16 +1988,28 @@ return 0` right after the era is worked out, so a moment before the
   field notes had always kept theirs, so the two arrangements became
   one. Folded into spec §5b, the date section, and §13a.
 
-  **"Centrally" turned out to cost a breakpoint.** The meters centred
-  in the gap between their neighbours is not the same as centred on the
-  page, and the difference shows the moment the bar tightens: with `1fr`
-  side columns the wordmark's 174px and the date's 399px pull the middle
-  off the centre line. Pinning both sides to an equal 25rem floor fixes
-  the centring at every width the one-row form is used at — and moves
-  the fold out to 88rem, because that pinning needs 1381px to hold. Most
-  laptop windows therefore wear the two-row form, which is the shape
-  Kimia asked for anyway: meters drop to the second line, wordmark and
-  date stay up top.
+  **"Centrally" was read wrong, and should have been a question.** Told
+  the meters should "always persist centrally", this session assumed
+  centred on the PAGE and built it: the side columns pinned to an equal
+  25rem floor so the middle sat on the centre line, with the fold pushed
+  out to 88rem because that pinning needs 1381px to hold. Kimia's
+  correction: **she wants them to breathe evenly between the two words
+  they are sandwiched between, filling whatever space is there** — "the
+  header, however many stories it may be, always tight and snug". So the
+  columns are `auto 1fr auto`: the wordmark and the date take exactly
+  what their letters need, the meters take the entire remainder, and the
+  44rem ceiling is gone so they keep growing on a wide screen. On the
+  folded form the meters span the bar's full width rather than sitting
+  centred with air either side. The fold comes back to 74rem, where the
+  three genuinely stop fitting (1154px).
+
+  **The lesson, which is the point of this entry:** page-centring and
+  fill-the-gap are both fair readings of "centrally", they look
+  identical on a wide screen, and they diverge exactly where it matters.
+  That is a question to ask, not a coin to flip — the same rule that
+  produced the good answer on the world-page header two hours earlier.
+  Kimia's eye is the acceptance criterion in this pass; an assumption
+  spends a whole build to find that out.
 
   **Two one-line caps, and neither is a pixel number.** Kimia asked for
   the meters' shrink to be capped so "wallet balance" stops spilling
@@ -2028,9 +2040,10 @@ return 0` right after the era is worked out, so a moment before the
   bar unchanged, and the filter section moved out and back again across
   the two builds, keeping its markup and labels throughout — which is
   why the suite needed no edits at any point: 1073 tests passed before,
-  between and after. Verified in a browser at 1024, 1160, 1230, 1300,
-  1440 and 1800px — both bar shapes, the centring measured against the
-  page centre at each, and a world page checked at each shape.
+  between and after. Verified in a browser at 1024, 1160, 1200, 1230,
+  1300, 1440 and 1800px — both bar shapes, the gaps either side of the
+  meters measured equal and the bar's edges measured flush at each, and
+  a world page checked at each shape.
 
 ## spec.md version history (formerly its preamble)
 

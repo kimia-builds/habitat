@@ -116,14 +116,14 @@ body {
    same three places, so nothing shifts as you move around. Only the
    check-in opts out, with its own plain wordmark and no bar.
 
-   Three things, three places: wordmark hard left, meters CENTRED, date
-   hard right. The centring is on the PAGE's centre, not merely the gap
-   between its neighbours, and that is what fixes the side columns at an
-   equal 25rem floor: 1fr each is only equal while there is slack to
-   share, and the moment the bar tightens the wordmark's 174px and the
-   date's 399px pull the middle off-centre. Equal floors keep the meters
-   on the centre line at every width the one-row form is used at — and
-   the width where those floors stop fitting is exactly where it folds.
+   Three things, three places: wordmark hard left, date hard right, and
+   the meters filling **everything left between them** (Kimia's call
+   2026-08-12). The two words take exactly the width their letters need
+   and not a pixel more; the meters take the whole remainder, so the bar
+   is snug at every width and the breathing is the meters', not the
+   gaps'. This is deliberately NOT page-centring: pinning the sides equal
+   would centre the meters on the page but leave slack beside the
+   wordmark, and slack is the thing being designed out.
 
    Grid with named areas, never flex-wrap: wrapping follows source order
    with no say in what pairs with what, which is the clumped look this
@@ -134,23 +134,17 @@ body {
   gap: 0.9rem 1.75rem;
   padding: 1.25rem 1.5rem 0.5rem;
   grid-template-areas: 'wordmark meters date';
-  /* The middle track breathes between the meters' own floor (their
-     labels, one line each — see .meter-name) and a 44rem ceiling that
-     stops them stretching into three long troughs on a wide screen. */
-  grid-template-columns:
-    minmax(25rem, 1fr)
-    minmax(min-content, 44rem)
-    minmax(25rem, 1fr);
+  grid-template-columns: auto 1fr auto;
 }
 
 .app-header h1 {
   grid-area: wordmark;
 }
 
-/* The meters keep flexing with the window (Kimia likes that they
-   breathe) — the 34rem ceiling above stops them stretching into three
-   long troughs on a wide screen, and their own labels set the floor:
-   see .meter-name's nowrap. */
+/* No ceiling: the meters take whatever the row gives them, wide screen
+   included. Their floor is their own labels, one line each — see
+   .meter-name's nowrap — and that floor is what decides where the bar
+   folds rather than any number written here. */
 .app-header .meters {
   grid-area: meters;
 }
@@ -160,32 +154,27 @@ body {
   justify-self: end;
 }
 
-/* Narrow: the meters drop to a second line and stay centred there, while
-   the wordmark and the date hold the top row — the two fixed corners of
-   the bar never move (Kimia's call 2026-08-12).
+/* Narrow: the meters drop to a second line, while the wordmark and the
+   date hold the top row — the two fixed corners of the bar never move
+   (Kimia's call 2026-08-12). On that second line they span the bar's
+   full width, so the two-storey form is as snug as the one-storey one:
+   however many storeys the bar ends up being, no slack in any of them.
 
-   88rem is measured, not chosen for roundness. Centred-on-the-page
-   costs width: the two 25rem side columns plus the meters at their
-   477px floor, plus gaps and padding, need 1381px. Below that the
-   meters would be pushed off the centre line, so that is where the bar
-   gives way instead — 88rem (1408px), a little above the true minimum
-   rather than at the point where it already looks jammed.
+   74rem is measured, not chosen for roundness. Three abreast need
+   1154px at their tightest — wordmark 174 + meters 477 (their labels,
+   one line each) + date 399, plus gaps and padding — so the fold sits
+   just above that, at 1184px, rather than letting the row reach the
+   point of looking jammed before it gives way.
    And "narrow" here never means a phone — ViewportGate replaces the
    whole app below 1024px (T5.1b), so this query only ever governs
-   1024px up to 88rem, which is most laptop windows. A breakpoint below
+   1024px up to 74rem, the small-laptop window. A breakpoint below
    1024px would be dead CSS. */
-@media (max-width: 88rem) {
+@media (max-width: 74rem) {
   .app-header {
     grid-template-areas:
       'wordmark date'
       'meters meters';
-    grid-template-columns: minmax(auto, 1fr) auto;
-  }
-
-  .app-header .meters {
-    justify-self: center;
-    width: 100%;
-    max-width: 34rem;
+    grid-template-columns: auto 1fr;
   }
 }
 
