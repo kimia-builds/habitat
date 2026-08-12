@@ -1,56 +1,153 @@
-// "start a new game" (T6.6) — the door to a fresh planet that keeps
-// every habit and every completion. Two guards, both Kimia's call
-// (2026-08-11):
+// "start a new game" (T6.6) — the door to starting over. Since
+// 2026-08-12 (Kimia's call) there are TWO ways through it, so the door
+// asks which one before it does anything:
 //
-//   - it cannot be pressed until a backup has been exported IN THIS
-//     visit. Not "today", not "recently": the point of the guard is
-//     that the file on disk holds the world about to be discarded, and
-//     only an export made just now can promise that. Until then the
-//     button is disabled and says plainly why — on hover, since
-//     2026-08-12, so the foot of the home screen stays three clean
-//     buttons. The title sits on a SPAN around the button rather than on
+//   TOTAL REFRESH  — everything goes. Habits, every completion ever
+//                    logged, the whole world, every setting. Habitat
+//                    begins exactly as it did on its first ever day.
+//   KEEP HABIT DATA — the world begins again and the habit record
+//                    survives whole (game/newgame.js): old marks keep
+//                    their days and simply stop counting for the game.
+//
+// Two guards, both Kimia's calls:
+//
+//   - "keep habit data" cannot be pressed until a backup has been
+//     exported IN THIS visit. Not "today", not "recently": the point of
+//     the guard is that the file on disk holds the world about to be
+//     discarded, and only an export made just now can promise that.
+//     Until then that one button is dimmed and says plainly why, on
+//     hover. The title sits on a SPAN around the button rather than on
 //     the button itself, because browsers fire no hover events on a
-//     disabled control and a tooltip there would never appear — which is
-//     precisely when this explanation is needed.
-//   - pressing it still asks, naming exactly what goes and exactly
-//     what stays, so nothing about the outcome is a surprise.
+//     disabled control and a tooltip there would never appear — which
+//     is precisely when this explanation is needed.
+//     "total refresh" carries no such guard (Kimia, 2026-08-12): it is
+//     the deliberate throw-it-all-away door, and its own "are you sure?"
+//     says so in as many words.
+//   - whichever is chosen, a second step asks "are you sure?" and names
+//     exactly what goes and exactly what stays, so nothing about the
+//     outcome is a surprise. "no, take me back" returns to the choice
+//     rather than closing — nobody is dropped out of the door they were
+//     still standing in.
 //
 // Quiet by design (design-notes): no alarm colour, no shake, no
 // tallying of what is about to be lost. It states the facts and waits.
 
 import { useState } from 'react'
 
-function NewGameControl({ backedUp, onStartNewGame }) {
+// What each door actually does, in plain words. Shown on the "are you
+// sure?" step — the moment where being surprised would be worst.
+const CONSEQUENCE = {
+  refresh:
+    'GOES: everything. Every habit, every completion you have ever ' +
+    'logged, the whole world, and every setting — Habitat starts as it ' +
+    'did on its very first day. STAYS: nothing. Only a backup file you ' +
+    'have already exported can bring any of it back.',
+  keep:
+    'GOES: the whole world — every flora, book, friend and fungus, ' +
+    'everything bought at the market, your abode and bookcase ' +
+    'arrangements, and the expedition trail. The world seed is replaced ' +
+    'too, so the planet ahead is genuinely a different one. ' +
+    'STAYS: every habit, and every completion you have ever logged. ' +
+    'Your grid, your streaks and your field notes are untouched.',
+}
+
+const DONE_MESSAGE = {
+  refresh: 'a new habitat has begun — everything starts from here',
+  keep: 'a new game has begun — your habits and history are untouched',
+}
+
+function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
+  // Where in the door we are: null (closed), 'choose' (which way?), or
+  // 'refresh' / 'keep' (are you sure?).
+  const [step, setStep] = useState(null)
   const [message, setMessage] = useState('')
 
-  function handleClick() {
-    const sure = window.confirm(
-      'Start a new game?\n\n' +
-        'GOES: the whole world — every flora, book, friend and fungus, ' +
-        'everything bought at the market, your abode and bookcase ' +
-        'arrangements, and the expedition trail. The world seed is ' +
-        'replaced too, so the planet ahead is genuinely a different one.\n\n' +
-        'STAYS: every habit, and every completion you have ever logged. ' +
-        'Your grid, your streaks and your field notes are untouched.\n\n' +
-        'The backup you just exported can put all of it back.',
-    )
-    if (!sure) return
-    onStartNewGame()
-    setMessage('a new game has begun — your habits and history are untouched')
+  function confirmed(choice) {
+    setStep(null)
+    if (choice === 'refresh') onTotalRefresh()
+    else onStartNewGame()
+    setMessage(DONE_MESSAGE[choice])
   }
 
   return (
     <div className="new-game-control">
-      <span title={backedUp ? undefined : 'export a backup first'}>
-        <button
-          className="pill-button"
-          onClick={handleClick}
-          disabled={!backedUp}
-        >
-          start a new game
-        </button>
-      </span>
+      <button
+        className="pill-button"
+        onClick={() => {
+          setMessage('')
+          setStep('choose')
+        }}
+      >
+        start a new game
+      </button>
       {message && <p role="status">{message}</p>}
+
+      {step !== null && (
+        <div className="reveal-overlay">
+          <div
+            className="new-game-popup"
+            role="dialog"
+            aria-modal="true"
+            aria-label="start a new game"
+          >
+            {step === 'choose' ? (
+              <>
+                <p>
+                  do you want to wipe all your habit history and play habitat
+                  again? or do you want to keep your habit history and just
+                  restart the game from the start? (requires you to export a
+                  backup)
+                </p>
+                <div className="new-game-choices">
+                  <button
+                    className="pill-button"
+                    onClick={() => setStep('refresh')}
+                  >
+                    total refresh
+                  </button>
+                  <span title={backedUp ? undefined : 'export a backup first'}>
+                    <button
+                      className="pill-button"
+                      onClick={() => setStep('keep')}
+                      disabled={!backedUp}
+                    >
+                      keep habit data
+                    </button>
+                  </span>
+                </div>
+                {/* A way out that changes nothing. Kimia asked for the two
+                    choices; this is the third door every popup needs, so
+                    opening the question is never a commitment. */}
+                <button
+                  className="pill-button new-game-dismiss"
+                  onClick={() => setStep(null)}
+                >
+                  not now
+                </button>
+              </>
+            ) : (
+              <>
+                <p>are you sure?</p>
+                <p className="new-game-detail">{CONSEQUENCE[step]}</p>
+                <div className="new-game-choices">
+                  <button
+                    className="pill-button"
+                    onClick={() => confirmed(step)}
+                  >
+                    yes
+                  </button>
+                  <button
+                    className="pill-button"
+                    onClick={() => setStep('choose')}
+                  >
+                    no, take me back
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

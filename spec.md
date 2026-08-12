@@ -406,7 +406,12 @@ region discovery expands what the Market can offer.
   not part of them — narrowing the grid and the graphs, and adjustable
   without going back. Below it the page is **two outlined sections**
   (2026-08-11): the week being browsed, then the graphs, with the back
-  button below both. The week is headed by its dates alone in
+  button below both — and, under it, the **same three footer buttons the
+  home screen ends with** (export · import · start a new game,
+  2026-08-12), so backing up is possible from either page. The home
+  screen's own door here is its twin: a wide **"view historical data →"**
+  in the same shape, just above those three buttons. The week is headed
+  by its dates alone in
   **DD-MM-YY** — `03-08-26 – 09-08-26`, no "week of" — with a small,
   quiet "still unfolding" on its own line underneath when the week on
   show is the current one, so the earlier / later buttons keep the two
@@ -560,7 +565,21 @@ design-notes §12f.
     thing that says whether it still counts. It states a fact and
     stops there: no colour change, no urgency, no counting of neglect
     (§ no punishment mechanics applies to chores too).
-- **Starting a new game (2026-08-11).** The world can be wiped and begun
+- **Starting a new game (2026-08-11; two doors since 2026-08-12).**
+  "start a new game" opens a popup that asks WHICH kind of fresh start,
+  then asks "are you sure?" and names exactly what goes and what stays
+  for the door chosen. "no, take me back" returns to the choice; "not
+  now" closes and changes nothing. The two doors:
+  - **total refresh** — a brand-new Habitat. Habits, every completion,
+    the whole world and every setting go; it starts exactly as it did on
+    its very first day. Only an exported backup can bring any of it
+    back, and it carries no forced-backup guard: it is the deliberate
+    throw-it-all-away choice and its confirmation says so.
+  - **keep habit data** — the world begins again and the habit record
+    survives whole (described in full below). This is the door the
+    forced backup guards.
+- **Keeping the habit record while the world restarts (2026-08-11).**
+  The world can be wiped and begun
   again, and doing so **keeps the whole habit record**: every habit and
   every completion survives, so the grid, the streaks, the graphs, the
   field notes and the check-in are untouched. What goes is the planet —
@@ -574,11 +593,11 @@ design-notes §12f.
   a date — the morning check-in always asks about yesterday, so days
   before the fresh start go on being marked inside it, and those marks
   must earn their steps.
-  The one guard is a **forced backup**: the button stays disabled until
-  a backup has been exported in that visit, then asks once, naming what
-  goes and what stays. So the discarded world is always recoverable by
-  importing the file. While it is disabled it says why — **"export a
-  backup first"**, as a hover label since 2026-08-12.
+  The one guard is a **forced backup**: since 2026-08-12 it sits on the
+  **"keep habit data"** choice inside the popup, which stays disabled
+  until a backup has been exported in that visit. So the discarded world
+  is always recoverable by importing the file. While it is disabled it
+  says why — **"export a backup first"**, as a hover label.
 - Deployed via GitHub Pages from the public repo.
 
 ## 9. Testing strategy

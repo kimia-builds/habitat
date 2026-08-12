@@ -2251,6 +2251,11 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
   })
 })
 
+// Starting over (T6.6) — since 2026-08-12 the button opens a popup that
+// asks WHICH kind of fresh start, then asks "are you sure?". Two doors:
+// "total refresh" empties Habitat completely, "keep habit data" wipes
+// only the world. The words below are pinned by Kimia's spec decision,
+// so the tests may name them.
 describe('start a new game (T6.6)', () => {
   const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
   const meters = () => within(screen.getByRole('region', { name: 'meters' }))
@@ -2258,6 +2263,9 @@ describe('start a new game (T6.6)', () => {
     meters().getByRole('progressbar', { name: 'steps taken progress' })
   const newGameButton = () =>
     screen.getByRole('button', { name: 'start a new game' })
+  const dialog = () =>
+    screen.queryByRole('dialog', { name: 'start a new game' })
+  const press = (name) => fireEvent.click(screen.getByRole('button', { name }))
 
   // jsdom has no real download, so the export click needs these stubs;
   // what matters is that it flips the guard, not that a file lands.
@@ -2267,42 +2275,95 @@ describe('start a new game (T6.6)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'export backup' }))
   }
 
-  it('is disabled until a backup has been exported in this visit', () => {
+  // The whole journey through the door, both steps.
+  function startNewGame(choice) {
+    fireEvent.click(newGameButton())
+    press(choice)
+    press('yes')
+  }
+
+  it('opens a popup offering both kinds of fresh start', () => {
     render(<App />)
     createHabitViaUI('walk')
-    expect(newGameButton().disabled).toBe(true)
+    expect(dialog()).toBeNull()
 
+    fireEvent.click(newGameButton())
+    const asked = within(dialog())
+    expect(asked.getByRole('button', { name: 'total refresh' })).toBeDefined()
+    expect(asked.getByRole('button', { name: 'keep habit data' })).toBeDefined()
+  })
+
+  it('"keep habit data" waits for a backup exported in this visit', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(newGameButton())
+    const keep = () => screen.getByRole('button', { name: 'keep habit data' })
+    expect(keep().disabled).toBe(true)
+    // A disabled button fires no hover events, so the explanation sits
+    // on the span around it.
+    expect(keep().parentElement.title).toBe('export a backup first')
+    // The other door carries no such guard.
+    expect(screen.getByRole('button', { name: 'total refresh' }).disabled).toBe(
+      false,
+    )
+
+    press('not now')
     exportBackup()
-    expect(newGameButton().disabled).toBe(false)
+    fireEvent.click(newGameButton())
+    expect(keep().disabled).toBe(false)
+    expect(keep().parentElement.title).toBe('')
   })
 
   it('a fresh visit disables it again — an old export is no promise', () => {
     render(<App />)
     createHabitViaUI('walk')
     exportBackup()
-    expect(newGameButton().disabled).toBe(false)
+    fireEvent.click(newGameButton())
+    expect(
+      screen.getByRole('button', { name: 'keep habit data' }).disabled,
+    ).toBe(false)
 
     cleanup()
     render(<App />)
-    expect(newGameButton().disabled).toBe(true)
+    fireEvent.click(newGameButton())
+    expect(
+      screen.getByRole('button', { name: 'keep habit data' }).disabled,
+    ).toBe(true)
   })
 
-  it('asks before starting, and changes nothing when the answer is no', () => {
+  it('"not now" closes the popup and changes nothing', () => {
     render(<App />)
     createHabitViaUI('walk')
     fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
-    exportBackup()
     const before = stored()
 
-    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
     fireEvent.click(newGameButton())
+    press('not now')
 
-    expect(confirm).toHaveBeenCalled()
+    expect(dialog()).toBeNull()
     expect(stored()).toEqual(before)
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
   })
 
-  it('wipes the world but keeps every habit and every completion', () => {
+  it('"no, take me back" returns to the choice and changes nothing', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    const before = stored()
+
+    fireEvent.click(newGameButton())
+    press('total refresh')
+    press('no, take me back')
+
+    // Back on the first step, still inside the popup.
+    expect(
+      within(dialog()).getByRole('button', { name: 'total refresh' }),
+    ).toBeDefined()
+    expect(stored()).toEqual(before)
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
+  })
+
+  it('keeping habit data wipes the world but keeps every habit and mark', () => {
     render(<App />)
     createHabitViaUI('walk')
     for (let i = 0; i < 3; i++) {
@@ -2313,8 +2374,7 @@ describe('start a new game (T6.6)', () => {
     expect(before.completions).toHaveLength(3)
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('3')
 
-    vi.spyOn(window, 'confirm').mockReturnValue(true)
-    fireEvent.click(newGameButton())
+    startNewGame('keep habit data')
 
     const after = stored()
     // The habit record survives whole, mark for mark and day for day.
@@ -2338,8 +2398,7 @@ describe('start a new game (T6.6)', () => {
     createHabitViaUI('walk')
     fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
     exportBackup()
-    vi.spyOn(window, 'confirm').mockReturnValue(true)
-    fireEvent.click(newGameButton())
+    startNewGame('keep habit data')
 
     expect(screen.getByText('walk')).toBeDefined()
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
@@ -2354,13 +2413,107 @@ describe('start a new game (T6.6)', () => {
     createHabitViaUI('walk')
     fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
     exportBackup()
-    vi.spyOn(window, 'confirm').mockReturnValue(true)
-    fireEvent.click(newGameButton())
+    startNewGame('keep habit data')
 
     cleanup()
     render(<App />)
     expect(screen.getByText('walk')).toBeDefined()
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+  })
+
+  // The second door (Kimia's call 2026-08-12): a total refresh leaves
+  // nothing behind at all — habits included — so Habitat starts exactly
+  // as it did on its very first day.
+  it('a total refresh empties Habitat completely', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
+    expect(stored().habits).toHaveLength(1)
+
+    startNewGame('total refresh')
+
+    // Nothing stored, nothing on screen, no history to count.
+    expect(localStorage.getItem('habitat-data')).toBeNull()
+    expect(screen.queryByText('walk')).toBeNull()
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+
+    // And it stays gone across a reload.
+    cleanup()
+    render(<App />)
+    expect(screen.queryByText('walk')).toBeNull()
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+  })
+
+  it('a total refresh needs no export first', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    startNewGame('total refresh')
+    expect(screen.queryByText('walk')).toBeNull()
+  })
+
+  it('a habit made after a total refresh saves cleanly', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    startNewGame('total refresh')
+
+    createHabitViaUI('swim')
+    const after = stored()
+    expect(after.habits.map((h) => h.name)).toEqual(['swim'])
+    expect(after.completions).toEqual([])
+  })
+})
+
+// The home screen and the field notes are a pair (Kimia's call
+// 2026-08-12): each ends with the wide door to the other, and then with
+// the same three buttons.
+describe('the two pages point at each other (2026-08-12)', () => {
+  const footerNames = () =>
+    [...document.querySelector('.list-footer').querySelectorAll('button')].map(
+      (button) => button.textContent,
+    )
+
+  it('the home screen has a wide door to the field notes', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(
+      screen.getByRole('button', { name: 'view historical data →' }),
+    )
+    expect(screen.getByRole('region', { name: 'field notes' })).toBeDefined()
+  })
+
+  it('that door sits directly above the three footer buttons', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    const door = screen.getByRole('button', { name: 'view historical data →' })
+    expect(door.nextElementSibling.className).toBe('list-footer')
+  })
+
+  it('the field notes carry the same three buttons under the back button', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(
+      screen.getByRole('button', { name: 'view historical data →' }),
+    )
+
+    const back = screen.getByRole('button', { name: '← back to the habits' })
+    expect(back.nextElementSibling.className).toBe('list-footer')
+    expect(footerNames()).toEqual([
+      'export backup',
+      'import backup',
+      'start a new game',
+    ])
+  })
+
+  it('the back button returns to the habits', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    fireEvent.click(
+      screen.getByRole('button', { name: 'view historical data →' }),
+    )
+    fireEvent.click(
+      screen.getByRole('button', { name: '← back to the habits' }),
+    )
+    expect(screen.getByText('walk')).toBeDefined()
   })
 })
 
@@ -2521,26 +2674,24 @@ describe('the empty-list invitation tile (2026-08-12)', () => {
 // 2026-08-12): the two explanations that used to sit beside them as
 // small grey text are hover labels now.
 describe('the home screen foot (2026-08-12)', () => {
-  it('says why "start a new game" is dimmed on hover, not in text', () => {
+  // The backup guard moved INSIDE the popup on 2026-08-12: "start a new
+  // game" always opens, and it is the "keep habit data" choice that
+  // waits for an export (tested in the T6.6 block above).
+  it('the foot itself explains nothing in text', () => {
     render(<App />)
     createHabitViaUI('walk')
     expect(screen.queryByText('export a backup first')).toBeNull()
-    // The title sits on the wrapper: a disabled button shows none.
-    const button = screen.getByRole('button', { name: 'start a new game' })
-    expect(button.disabled).toBe(true)
-    expect(button.parentElement.title).toBe('export a backup first')
+    expect(
+      screen.getByRole('button', { name: 'start a new game' }).disabled,
+    ).toBe(false)
   })
 
-  it('drops the explanation once the export has happened', () => {
+  it('tells the age of the backup on hover, not in text', () => {
     render(<App />)
     createHabitViaUI('walk')
-    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:fake')
-    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
-    fireEvent.click(screen.getByRole('button', { name: 'export backup' }))
-
-    const button = screen.getByRole('button', { name: 'start a new game' })
-    expect(button.disabled).toBe(false)
-    expect(button.parentElement.title).toBe('')
+    const button = screen.getByRole('button', { name: 'export backup' })
+    expect(button.title).toBe(backupAgeLabel(null, todayKey()))
+    expect(screen.queryByText(button.title)).toBeNull()
   })
 
   it('keeps the three buttons on one line of their own', () => {

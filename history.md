@@ -1797,6 +1797,65 @@ return 0` right after the era is worked out, so a moment before the
   toggle's layout unchanged by its new span wrappers, and the
   check-in's "mon 10-08-26".
 
+- 2026-08-12 (Kimia's calls, third pass the same day): **the two pages
+  become a pair, and starting over becomes a choice of two.**
+
+  1. **The home screen and the field notes point at each other.** The
+     field notes already ended with a wide, plain "← back to the
+     habits"; the home screen now ends with its twin, **"view
+     historical data →"**, in the same shape and the same place (above
+     the three footer buttons). Both are wide only because they are
+     direct children of the app's column — no new rule, just the
+     column's own stretch.
+  2. **The three footer buttons appear on the field notes too**, right
+     under the back button. Export, import and start-a-new-game are
+     the actions you might want _while looking at the record_, and
+     making a backup should never need a trip home first. One shared
+     fragment in App, rendered on both pages, so they can never drift
+     apart.
+  3. **Starting over is now TWO doors, asked in a popup** rather than
+     one `window.confirm`. Step one asks Kimia's own question — wipe
+     the habit history and play again, or keep the history and restart
+     the game — and offers **"total refresh"** and **"keep habit
+     data"**, plus a "not now" that changes nothing (her two choices
+     plus the way out every popup needs). Step two asks **"are you
+     sure?"**, names exactly what goes and what stays for the door
+     chosen, and answers **"yes"** / **"no, take me back"** — the
+     latter returning to the choice rather than closing, so nobody is
+     dropped out of a door they were still standing in.
+  4. **Total refresh is new behaviour**: not a new game inside the same
+     Habitat but a brand-new Habitat — habits, every completion, the
+     whole world and every setting gone, exactly as on the first ever
+     launch. It needed no new game logic and deliberately got none:
+     nothing is carried over, so there is no decision for a pure
+     function to make. `clearData()` then `loadData()` — which returns
+     the empty, freshly-seeded envelope a first visit gets — is the
+     whole of it, with the two-step confirmation as the only guard.
+  5. **The backup guard moved inside the popup, and onto the other
+     door.** "start a new game" now always opens; it is **"keep habit
+     data"** that stays dimmed (hover: "export a backup first") until a
+     backup has been exported in this visit. Kimia's call, and it is
+     the door she asked to guard: a total refresh is the deliberate
+     throw-it-all-away choice, and its own "are you sure?" says so in
+     as many words. The disabled-button tooltip still rides on a
+     wrapping span — a disabled control fires no hover events.
+
+  A total refresh also clears the charm lens, which the keep-data door
+  does not: with no habits left, a screen wearing yesterday's filter
+  reads as a fault.
+
+  Tests: 1059 → 1068, all passing, oxlint clean. The old T6.6 tests
+  drove `window.confirm`; they were rewritten to drive the popup, and
+  joined by new ones for the two-step journey, "not now", "no, take me
+  back", a total refresh emptying storage and surviving a reload, and a
+  habit created afterwards saving cleanly. The two-pages-point-at-each-
+  other block asserts each door's position by DOM sibling rather than
+  by pixel width. Browser-checked at 1280: "view historical data →" 608
+  px wide against the back button's identical 608, the footer as the
+  next sibling of both, and both popup steps opaque and centred (the
+  card's `reveal-pop` fade means a screenshot taken mid-animation shows
+  the page through it — finish the animation before judging it).
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and

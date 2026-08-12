@@ -88,6 +88,7 @@ import {
 } from './game/schedule.js'
 import { shouldShowStartup } from './game/startup.js'
 import {
+  clearData,
   exportData,
   hasData,
   importData,
@@ -918,6 +919,34 @@ function App() {
   // planet that no longer exists.
   function handleStartNewGame() {
     save(startNewGame(data))
+    forgetTheOldWorld()
+  }
+
+  // A total refresh (2026-08-12, Kimia's second new-game door): not a
+  // new game inside the same Habitat but a brand-new Habitat. There is
+  // no pure function for it in game/newgame.js because there is no
+  // decision to make and nothing to carry over — forgetting the stored
+  // envelope entirely is the whole of it, and loadData() then hands
+  // back the same empty, freshly-seeded world a first-ever visit gets.
+  // The only guard is the two-step confirmation in NewGameControl; by
+  // the time this runs, the decision is made.
+  function handleTotalRefresh() {
+    clearData()
+    setData(loadData())
+    closeForm()
+    // The charm lens goes too — only here. After a total refresh there
+    // are no habits left for a lens to narrow, and an empty screen
+    // wearing yesterday's filter reads as a fault. The other door keeps
+    // every habit, so its lens still means something.
+    setFilter([])
+    forgetTheOldWorld()
+  }
+
+  // Everything on screen from the world just discarded — the
+  // announcements, the reveals still owed, the open reading spread —
+  // describes a planet that no longer exists, so none of it may outlive
+  // a new game of either kind.
+  function forgetTheOldWorld() {
     setArrivals([])
     setPendingArrivals([])
     setSeenRevealIds(new Set())
@@ -951,6 +980,32 @@ function App() {
   // tile.
   const emptyTiles =
     visible.length > 0 ? [] : filter.length > 0 ? filter : [null]
+
+  // The foot of the page (Kimia's call 2026-08-12): three clean buttons
+  // on one centred line — export, import, start a new game — and no
+  // explanatory text beside any of them. What that text used to say now
+  // arrives on hover, the way every other explanation in Habitat does.
+  //
+  // It is a shared fragment because the same three buttons now stand at
+  // the foot of the FIELD NOTES too (2026-08-12): the two pages are a
+  // pair, each ending with the door to the other and then the same
+  // three actions, so backing up from wherever you are is one trip.
+  const footer = (
+    <div className="list-footer">
+      <BackupControls
+        onExport={handleExport}
+        onImport={handleImport}
+        lastExportedOn={data.settings.lastExportedOn}
+        todayKey={today}
+      />
+
+      <NewGameControl
+        backedUp={exportedThisVisit}
+        onStartNewGame={handleStartNewGame}
+        onTotalRefresh={handleTotalRefresh}
+      />
+    </div>
+  )
 
   // The home screen's contents below the meters (T4.5 rearranged them;
   // 2026-08-12 emptied the foot again): the symbol filter, the habit
@@ -1145,24 +1200,16 @@ function App() {
         </details>
       )}
 
-      {/* The foot of the home screen (Kimia's call 2026-08-12): three
-          clean buttons on one centred line — export, import, start a new
-          game — and no explanatory text beside any of them. What that
-          text used to say now arrives on hover, the way every other
-          explanation in Habitat does. */}
-      <div className="list-footer">
-        <BackupControls
-          onExport={handleExport}
-          onImport={handleImport}
-          lastExportedOn={data.settings.lastExportedOn}
-          todayKey={today}
-        />
+      {/* The door to the field notes, in the same wide, plain shape as
+          their "← back to the habits" (Kimia's call 2026-08-12): the two
+          are a pair, one at the foot of each page, pointing at each
+          other. Being a direct child of the app column is what makes it
+          full width — exactly how the back button gets its width. */}
+      <button className="pill-button" onClick={() => setPage('fieldnotes')}>
+        view historical data →
+      </button>
 
-        <NewGameControl
-          backedUp={exportedThisVisit}
-          onStartNewGame={handleStartNewGame}
-        />
-      </div>
+      {footer}
 
       {/* TEMPORARY (T5 prep): the door to the design-assets workbench
           (2026-07-21) — an empty shelf until the M5 design pass fills
@@ -1305,6 +1352,11 @@ function App() {
           onToggleFilter={toggleFilter}
           onBack={() => setPage(null)}
         />
+        {/* The same three buttons the home screen ends with (Kimia's
+            call 2026-08-12), directly under "back to the habits" — so
+            export, import and start-a-new-game are reachable from
+            either page without a trip home. */}
+        {footer}
       </main>
     )
   }

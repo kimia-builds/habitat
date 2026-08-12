@@ -246,6 +246,13 @@ tracker. Everything after this is delight, informed by real use.
       for an empty list, three clean buttons at the foot of the home
       screen, and the check-in's copy + the "mon DD-MM-YY" date
       convention; build notes in history.md)_
+- [x] **T6.10 The two pages pair up, and starting over becomes a
+      choice.** _(done 2026-08-12, unplanned — Kimia's calls: "view
+      historical data →" at the foot of the home screen as the twin of
+      the field notes' back button, the three footer buttons mirrored
+      onto the field notes, and "start a new game" replaced by a
+      two-step popup offering total refresh or keep habit data; build
+      notes in history.md)_
 - [ ] **T6.7 The first hour — storytelling & narration for a new
       player** (Kimia's call 2026-08-11) — revisit what arriving on
       N-Z-D actually feels like for someone who has never opened

@@ -448,7 +448,10 @@ The exact paths (drop into the shared SVG attributes above):
   counters. The buttons that get a shape are a closed list she drew
   herself — save, cancel, +1, -1, the to-do tick, export / import /
   start a new game, the field notes' earlier and later, "back to the
-  habits" wherever it appears, the market's buy, the check-in's done,
+  habits" wherever it appears, "view historical data" (its twin, added
+  2026-08-12), the new-game popup's own answers (total refresh, keep
+  habit data, not now, yes, no-take-me-back), the market's buy, the
+  check-in's done,
   and the close on the reading and friend cards. Everything else stays
   bare and boxless: the icon-only furniture (grip, pencil, archive and
   the left rail, which since 2026-08-12 carries the doers too) and the
@@ -645,8 +648,10 @@ label appears on hover and nowhere else.
 
 The rule outgrew the icons on 2026-08-12: **anything that needs
 explaining explains itself on hover**, icon or not. The two grey lines
-at the foot of the home screen — how old the backup is, and why "start
-a new game" is dimmed — became the titles of the buttons they described,
+at the foot of the home screen — how old the backup is, and why the
+new-game path is dimmed (a title that moved into the popup with its
+guard later the same day) — became the titles of the buttons they
+described,
 and the Abode's quiet/party toggle gained a label for each of its three
 parts (§12e). Two implementation notes, both learned the hard way: a
 `title` on a **disabled** button never appears, because a disabled
@@ -695,10 +700,30 @@ a status report.
 
 The **foot of the home screen** is now three clean buttons on one
 centred line — export · import · start a new game — and no text beside
-any of them. The two explanations that used to live there (how old the
-backup is, and why the new-game button is dimmed) became hover labels,
-which is where every other explanation in Habitat lives. Nothing was
-dropped; the line just stopped talking.
+any of them. The explanation that used to live there (how old the backup
+is) became a hover label, which is where every other explanation in
+Habitat lives. Nothing was dropped; the line just stopped talking. The
+second one, why the new-game button was dimmed, moved further still: the
+guard itself moved inside the new-game popup, onto its "keep habit data"
+choice (spec §8).
+
+Above that line sits **"view historical data →"**, the twin of the field
+notes' "← back to the habits" (Kimia's call 2026-08-12): same wide plain
+shape, same place at the foot of the page, pointing back at each other.
+Width is not a style here — both are simply direct children of the app's
+column, which stretches them. And the three footer buttons now end the
+**field notes** too, under the back button: export, import and
+start-a-new-game are what you reach for while looking at the record, and
+a backup should never need a trip home first.
+
+**Starting over asks in a popup** (2026-08-12), not a browser confirm
+box: which kind of fresh start, then "are you sure?". It borrows the
+reading spread's card exactly — same dark panel, soft edge, gentle pop —
+because it is the same kind of thing: a card that takes the screen,
+answers a question and leaves. No alarm colour, no shake, no red; the
+words carry the weight, and the fine print of what goes and what stays
+is dim and small beneath the question. "not now" is quieter than the two
+real choices, so the eye lands on them first.
 
 **Reordering is a drag of the whole tile** (T5.1c, 2026-07-23; the grip
 alone until 2026-08-11), not a pair of ▲▼ arrows. Press anywhere on a

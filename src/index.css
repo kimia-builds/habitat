@@ -1511,6 +1511,50 @@ body {
   flex-wrap: wrap;
 }
 
+/* "start a new game" asks in a popup now (Kimia's call 2026-08-12): which
+   kind of fresh start, then "are you sure?". It borrows the reading
+   spread's card exactly — same dark panel, same soft edge, same gentle
+   pop as it appears — because it is the same kind of thing: a card that
+   takes the screen, answers a question and leaves. Nothing here raises
+   its voice: no alarm colour, no shake, no red (design-notes: no
+   punishment FEEL, ever). The words carry the weight. */
+.new-game-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  width: 100%;
+  max-width: 30rem;
+  padding: 1.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  animation: reveal-pop 0.45s ease;
+}
+
+.new-game-choices {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+/* What the chosen door actually does, on the "are you sure?" step. Dim
+   and small — it is the fine print you read once, not the question. */
+.new-game-detail {
+  color: var(--text-quiet);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+/* "not now" — the way out that changes nothing. Quieter than the two
+   real choices, so the eye lands on them first. */
+.new-game-dismiss {
+  color: var(--text-quiet);
+}
+
 /* ─────────────── THE BUTTON SHAPES (Kimia's call 2026-08-11) ───────────────
    Habitat's named actions are ovals and circles — never rectangles. "Named
    actions" is a closed list she drew herself: save and cancel, the +1, -1
