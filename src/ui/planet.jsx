@@ -10,36 +10,60 @@
  * is wired into the real startup moment (the T5.2c lesson: show the smallest
  * visible thing first).
  *
- * HOW IT IS DRAWN (four layers, bottom to top — plain CSS, no images):
+ * HOW IT IS DRAWN (plain CSS + the shared texture library, no images):
  *
- *   1. the sphere      a circle three times wider than the screen, sunk almost
- *                      entirely below the bottom edge so only its crown shows.
- *                      Being that big is what makes the curve gentle: it reads
- *                      as a planet rather than a bubble.
- *   2. the surface     soft blurred blotches drifting sideways inside the
- *                      sphere. They are drawn TWICE, side by side, and slid by
- *                      exactly one copy's width — so the loop is seamless and
- *                      the planet appears to turn forever.
- *   3. the shade       a top-to-bottom gradient over the surface: bright at the
- *                      limb, into darkness a little way down. Curvature, cheaply.
- *   4. the light       one glow blooming OUTWARD off the arc (the atmosphere)
- *                      and one glowing INWARD along it (the lit edge).
+ *   THE SKY (behind everything)
+ *     A near-black ground with four dark colours washed faintly across it, so
+ *     it is not one flat field, and the same white star layer the home screen
+ *     wears — <NightSky/>, at rest, no twinkle (Kimia, 2026-08-13). Same
+ *     asset, same seed: the startup is showing you the app's own sky, and the
+ *     app then fades in over it.
  *
- * EVERYTHING IS SIZED IN `cqw` — 1% of the container's own WIDTH (that is what
- * `container-type: inline-size` on the wrapper buys us). So the composition is
+ *   THE SPHERE
+ *     A circle three times wider than the screen, sunk almost entirely below
+ *     the bottom edge so only its crown shows. Being that big is what makes
+ *     the curve gentle: it reads as a planet rather than a bubble.
+ *
+ *   THE SURFACE — and this is what makes it a SPHERE and not a stripe
+ *     Ground receding toward a horizon does two things at once: it gets
+ *     SMALLER and it moves SLOWER. So the surface is not one moving layer but
+ *     three DEPTH BANDS stacked between the limb and the viewer:
+ *
+ *       far   a hairline at the very limb — tiny, squashed flat, slowest
+ *       mid   the middle distance
+ *       near  the ground closest to us — biggest features, fastest
+ *
+ *     Each band wears one of the shared rock textures from the library
+ *     (design-bible §8): CRATERED STONE at the limb and up close, WEATHERED
+ *     ROCK in between. Each drifts sideways at its own pace, and the three
+ *     paces disagreeing is the whole trick — that parallax is what the eye
+ *     reads as a ball turning rather than a belt scrolling. Under them all, a
+ *     slow field of soft blotches gives continent-scale colour variation.
+ *
+ *     Every band is drawn TWICE, side by side, and slid by exactly one copy's
+ *     width, so each loop is seamless and the planet turns forever.
+ *
+ *   THE LIGHT
+ *     One glow blooming OUTWARD off the arc (the atmosphere) and a thin bright
+ *     line hugging it (the lit edge), with the face darkening away from it.
+ *
+ * EVERYTHING IS SIZED IN cqw — 1% of the container's own WIDTH (that is what
+ * container-type: inline-size on the wrapper buys us). So the composition is
  * identical in a small workbench box and on a full 27" screen, and it never
  * changes shape when a window gets taller. One rule, no breakpoints.
  *
  * WHERE THE COLOURS LIVE (design-notes §11d). The planet's colour is a CHARM
  * colour — shell pink by default, §12f — so it comes from SYMBOL_COLORS, the
- * existing tokens.css mirror, and is never re-typed here. The numbers below are
- * artwork (how big, how bright, how slow), so they stay beside the drawing like
- * textures.jsx's tints and sky.jsx's palettes do.
+ * existing tokens.css mirror, and is never re-typed here. The rest below is
+ * artwork (how big, how bright, how slow, the four sky tints), so it stays
+ * beside the drawing like textures.jsx's tints and sky.jsx's palettes do.
  * =============================================================================
  */
 
 import { useMemo } from 'react'
 import { SYMBOL_COLORS } from './symbols.js'
+import { NightSky } from './sky.jsx'
+import TextureDefs from './textures.jsx'
 
 /* -----------------------------------------------------------------------------
  * THE DIALS — every number Kimia's eye might want moved, in one list.
@@ -48,19 +72,72 @@ import { SYMBOL_COLORS } from './symbols.js'
 export const PLANET_TOKENS = {
   sphereWidth: 300, // sphere diameter — 3× the screen's width
   crest: 13, // how high the arc rises above the bottom edge at its centre
-  bandDepth: 40, // how far down the sphere the surface + shade are painted
-  spinSeconds: 90, // one full turn of the surface (slow — §12f: "spinning slowly")
+  bandDepth: 40, // how far down the sphere the surface is painted
+  spinSeconds: 90, // the FAR band's loop — every other pace is a fraction of it
   bloom: 4, // how far the atmosphere glows OUT past the arc
   bloomWide: 14, // the second, fainter halo beyond it
   rim: 0.5, // how far the lit edge glows IN from the arc (a thin bright line)
   rimWide: 4, // the softer inner falloff behind it
-  blotches: 26, // surface features in one copy of the loop
-  blur: 12, // how soft each blotch is (SVG units of the 1000×260 loop tile)
+  rockStrength: 0.8, // how hard the rock texture bites into the colour
+  blotches: 26, // continent-scale features in one copy of the loop
+  blur: 12, // how soft each of those is (units of the 1000×260 blotch tile)
+
+  // The four dark colours washed across the sky (Kimia, 2026-08-13) so it is
+  // not one flat black field. Deliberately DARK and muted: §7 keeps bright
+  // colour for drops and reveals, and nothing here may compete with the limb.
+  skyTints: [
+    ['#1b2340', '18% 20%', 0.55], // deep indigo, upper left
+    ['#122a2e', '80% 12%', 0.5], // dark teal, upper right
+    ['#2a1b2e', '52% 42%', 0.45], // plum, centre
+    ['#241c14', '93% 58%', 0.4], // warm umber, low right
+  ],
 }
 
-// One copy of the drifting surface, in its own little coordinate space. The
-// SVG is stretched to fit (preserveAspectRatio="none") — these are organic
-// blobs, so stretching them is free.
+/* -----------------------------------------------------------------------------
+ * THE THREE DEPTH BANDS. `top`/`depth` are cqw down from the sphere's crown.
+ * `pace` multiplies spinSeconds — a SMALLER pace is a FASTER band, so near
+ * ground outruns the horizon, which is the parallax the whole effect rests on.
+ * `tile` is the coordinate box one copy is drawn in: it is what sets the
+ * texture's apparent size, because the shared filters have a fixed grain and a
+ * big box shrinks it. Wide-and-short boxes squash the rock the way distance
+ * squashes real ground.
+ * --------------------------------------------------------------------------- */
+export const DEPTH_BANDS = [
+  {
+    key: 'far',
+    texture: 'tex-cratered',
+    top: 0,
+    depth: 4.5,
+    pace: 1,
+    tile: [9000, 340],
+    opacity: 0.55,
+    fade: 'black 0%, black 40%, transparent 100%',
+  },
+  {
+    key: 'mid',
+    texture: 'tex-weathered',
+    top: 2.4,
+    depth: 8.5,
+    pace: 0.62,
+    tile: [3000, 170],
+    opacity: 0.8,
+    fade: 'transparent 0%, black 34%, black 66%, transparent 100%',
+  },
+  {
+    key: 'near',
+    texture: 'tex-cratered',
+    top: 7,
+    depth: 20,
+    pace: 0.38,
+    tile: [1100, 150],
+    opacity: 0.9,
+    fade: 'transparent 0%, black 30%, black 100%',
+  },
+]
+
+// One copy of the continent field, in its own little coordinate space. The SVG
+// is stretched to fit (preserveAspectRatio="none") — these are organic blobs,
+// so stretching them is free.
 const TILE_W = 1000
 const TILE_H = 260
 
@@ -83,16 +160,55 @@ function withAlpha(hex, alpha) {
   return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`
 }
 
+// One depth band's rock, drawn twice side by side so its drift loops without a
+// seam. Two separate <svg>s rather than one drawn twice: an SVG's filter grain
+// is generated in its OWN coordinate box, so two identical boxes are
+// guaranteed to come out identical — which is exactly what a seamless loop
+// needs, and is not guaranteed if you translate one copy of a filtered shape.
+function RockBand({ band, seconds }) {
+  const [tileW, tileH] = band.tile
+  const copy = (
+    <svg
+      className="p-rock-copy"
+      viewBox={`0 0 ${tileW} ${tileH}`}
+      preserveAspectRatio="none"
+    >
+      <rect
+        width={tileW}
+        height={tileH}
+        fill="#ffffff"
+        filter={`url(#${band.texture})`}
+      />
+    </svg>
+  )
+  return (
+    <div
+      className={`p-rock p-rock-${band.key}`}
+      style={{
+        top: `${band.top}cqw`,
+        height: `${band.depth}cqw`,
+        opacity: band.opacity * PLANET_TOKENS.rockStrength,
+        animationDuration: `${seconds}s`,
+        maskImage: `linear-gradient(to bottom, ${band.fade})`,
+        WebkitMaskImage: `linear-gradient(to bottom, ${band.fade})`,
+      }}
+    >
+      {copy}
+      {copy}
+    </div>
+  )
+}
+
 /**
- * <RollingPlanet /> — fills its positioned parent; the parent supplies the
- * black. `color` is a charm hex (shell pink by default, §12f).
+ * <RollingPlanet /> — fills its positioned parent. `color` is a charm hex
+ * (shell pink by default, §12f).
  */
 export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
   const t = PLANET_TOKENS
 
-  // The surface features: lighter patches catching the light and darker
-  // patches in shadow, scattered across one loop tile. Weighted toward the
-  // top of the tile, because that is the strip actually on screen.
+  // The continent field: lighter patches catching the light and darker patches
+  // in shadow, scattered across one loop tile. Weighted toward the top of the
+  // tile, because that is the strip actually on screen.
   const blotches = useMemo(() => {
     const rng = mulberry32(seed)
     const U = (a, b) => a + rng() * (b - a)
@@ -113,7 +229,7 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seed])
 
-  const surface = (
+  const continents = (
     <g>
       {blotches.map((b, i) => (
         <ellipse
@@ -141,15 +257,30 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
     '--p-rim-wide': withAlpha(color, 0.22),
     '--p-face': withAlpha(color, 0.42),
     '--p-face-dim': withAlpha(color, 0.16),
+    '--p-sky': t.skyTints
+      .map(
+        ([tint, at, alpha]) =>
+          `radial-gradient(60% 55% at ${at}, ${withAlpha(tint, alpha)} 0%, transparent 100%)`,
+      )
+      .join(', '),
   }
 
   return (
     <div className="nzd-planet" style={paint} aria-hidden="true">
       <style>{`
         .nzd-planet { position: absolute; inset: 0; overflow: hidden;
-          container-type: inline-size; background: #000; }
+          container-type: inline-size; background: #05070a; }
 
-        /* 1. the sphere — mostly below the bottom edge, only its crown showing */
+        /* THE SKY — four dark washes over the ground, then the home screen's
+           own star layer at rest. NightSky paints its own background; here the
+           washes are the ground, so its gradient is turned off. */
+        .nzd-planet .p-sky { position: absolute; inset: 0; }
+        .nzd-planet .p-sky-wash {
+          position: absolute; inset: 0; background-image: var(--p-sky);
+        }
+        .nzd-planet .nzd-night-sky { background: none; }
+
+        /* THE SPHERE — mostly below the bottom edge, only its crown showing */
         .nzd-planet .p-sphere {
           position: absolute; left: 50%;
           width: ${t.sphereWidth}cqw; height: ${t.sphereWidth}cqw;
@@ -162,33 +293,54 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
             0 0 ${t.bloomWide}cqw var(--p-bloom-wide);
         }
 
-        /* 2 + 3. the painted band across the sphere's crown. The band's own
-           background is the LIT FACE — the daylight side, brightest at the
-           limb and gone a little way down. The blotches sit ON it (not under
-           a wash, which is what made the first attempt read as fog), and the
-           shade only darkens what is below them. */
+        /* THE SURFACE. The band's own background is the LIT FACE — the
+           daylight side, brightest at the limb and gone a little way down.
+           Everything else sits ON it, so the band isolates its blending. */
         .nzd-planet .p-band {
           position: absolute; top: 0; left: 0;
           width: 100%; height: ${t.bandDepth}cqw; overflow: hidden;
+          isolation: isolate;
           background: linear-gradient(to bottom,
             var(--p-face) 0%,
             var(--p-face-dim) 10%,
             transparent 26%);
         }
-        /* height MUST be stated. An SVG is a replaced element with an
-           intrinsic ratio from its viewBox, so pinning top and bottom alone
-           left it twice the band's height and slid every blotch below the
-           visible strip — the surface was there all along, just off the
-           bottom of the screen. */
-        .nzd-planet .p-surface {
-          position: absolute; top: 0; left: 0;
-          width: 200%; height: 100%;
-          animation: nzd-planet-spin ${t.spinSeconds}s linear infinite;
+
+        /* Every drifting layer is 200% wide, holds two identical copies, and
+           slides by exactly one copy — so the loop never shows a seam.
+           height MUST be stated on the SVG copies: an SVG is a replaced
+           element with an intrinsic ratio from its viewBox, so pinning top and
+           bottom alone left one twice its band's height and slid the whole
+           surface below the visible strip. */
+        .nzd-planet .p-continents, .nzd-planet .p-rock {
+          position: absolute; left: 0; width: 200%;
+          animation-name: nzd-planet-spin;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
         }
+        .nzd-planet .p-continents {
+          top: 0; height: 100%;
+          animation-duration: ${(t.spinSeconds * DEPTH_BANDS[1].pace).toFixed(0)}s;
+        }
+        /* The blend belongs on the BAND, not on the two copies inside it. A
+           copy blending with its own parent has nothing to blend with — the
+           parent's opacity and mask already sealed it into its own group — so
+           the rock simply lay on top as pale grey and bleached the planet
+           white. Blended here, the group meets the coloured face beneath it.
+           The library lights its rock in a pale cool grey (textures.jsx), so
+           it is pulled down to mid-grey and its contrast pushed up first;
+           overlay then adds relief without touching hue. */
+        .nzd-planet .p-rock {
+          display: flex;
+          mix-blend-mode: overlay;
+          filter: brightness(0.5) contrast(2);
+        }
+        .nzd-planet .p-rock-copy { width: 50%; height: 100%; flex: none; }
         @keyframes nzd-planet-spin {
           from { transform: translateX(0); }
           to   { transform: translateX(-50%); }
         }
+
         .nzd-planet .p-shade {
           position: absolute; inset: 0;
           background: linear-gradient(to bottom,
@@ -197,7 +349,7 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
             #000 30%);
         }
 
-        /* 4. the lit edge, glowing inward along the arc */
+        /* THE LIT EDGE, glowing inward along the arc */
         .nzd-planet .p-rim {
           position: absolute; inset: 0; border-radius: 50%;
           box-shadow:
@@ -207,14 +359,25 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
 
         /* §9: motion is never compulsory. Still planet, same picture. */
         @media (prefers-reduced-motion: reduce) {
-          .nzd-planet .p-surface { animation: none; }
+          .nzd-planet .p-continents, .nzd-planet .p-rock { animation: none; }
         }
       `}</style>
+
+      {/* The shared texture library's filter defs (design-bible §8), so the
+          rock ids resolve wherever a planet is mounted. */}
+      <svg width="0" height="0" aria-hidden="true">
+        <TextureDefs />
+      </svg>
+
+      <div className="p-sky">
+        <div className="p-sky-wash" />
+        <NightSky twinklers={0} />
+      </div>
 
       <div className="p-sphere">
         <div className="p-band">
           <svg
-            className="p-surface"
+            className="p-continents"
             viewBox={`0 0 ${TILE_W * 2} ${TILE_H}`}
             preserveAspectRatio="none"
           >
@@ -223,13 +386,18 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
                 <feGaussianBlur stdDeviation={t.blur} />
               </filter>
             </defs>
-            {/* the tile, then the same tile again one width along, so the
-                sideways slide loops without a seam */}
             <g filter="url(#nzd-planet-blur)">
-              {surface}
-              <g transform={`translate(${TILE_W} 0)`}>{surface}</g>
+              {continents}
+              <g transform={`translate(${TILE_W} 0)`}>{continents}</g>
             </g>
           </svg>
+          {DEPTH_BANDS.map((band) => (
+            <RockBand
+              key={band.key}
+              band={band}
+              seconds={(t.spinSeconds * band.pace).toFixed(1)}
+            />
+          ))}
           <div className="p-shade" />
         </div>
         <div className="p-rim" />

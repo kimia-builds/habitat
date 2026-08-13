@@ -9,6 +9,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
 import { ABODE_PALETTES } from './sky.jsx'
+import { DEPTH_BANDS } from './planet.jsx'
 import { TRACED_FRIENDS } from './tracedFriends.js'
 
 afterEach(cleanup)
@@ -159,14 +160,33 @@ describe('DesignPage workbench', () => {
   it('surfaces the startup planet in two colours for the eyeball pass', () => {
     render(<DesignPage onBack={vi.fn()} />)
     // The planet is decorative (aria-hidden), so the labelled shelf is the
-    // handle: two planets, and the surface texture drawn TWICE inside each,
-    // which is what makes the sideways drift loop without a seam.
+    // handle. Two planets, each carrying its sky and the three depth bands
+    // that make the surface read as a sphere rather than a scrolling belt.
     const shelf = screen.getByLabelText('rolling planet')
     const planets = shelf.querySelectorAll('.nzd-planet')
     expect(planets).toHaveLength(2)
     for (const planet of planets) {
-      expect(planet.querySelectorAll('.p-surface > g > g')).toHaveLength(2)
+      expect(planet.querySelectorAll('.nzd-night-sky')).toHaveLength(1)
+      const bands = planet.querySelectorAll('.p-rock')
+      expect(bands).toHaveLength(DEPTH_BANDS.length)
+      // Every drifting layer is drawn TWICE, side by side, and slid by
+      // exactly one copy — that is what makes each loop seamless.
+      for (const band of bands) {
+        expect(band.querySelectorAll('.p-rock-copy')).toHaveLength(2)
+      }
+      expect(planet.querySelectorAll('.p-continents > g > g')).toHaveLength(2)
     }
+  })
+
+  it('gives the startup planet no twinkling stars', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    // §12f's sky is the home screen's star layer AT REST (Kimia, 2026-08-13):
+    // same asset, same seed, but nothing blinking during the ceremony.
+    const shelf = screen.getByLabelText('rolling planet')
+    expect(shelf.querySelectorAll('.nzd-night-sky .tw')).toHaveLength(0)
+    expect(shelf.querySelectorAll('.nzd-night-sky .s').length).toBeGreaterThan(
+      0,
+    )
   })
 
   it('leads back to the habits', async () => {
