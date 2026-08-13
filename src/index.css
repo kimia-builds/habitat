@@ -882,9 +882,48 @@ body {
   color: var(--text);
 }
 
+/* The by-the-habit note, moved OUT of the tile (T5.2e, Kimia's call
+   2026-08-13). It was a line inside the tile, so a landing drop made
+   that tile taller on the spot and shunted every tile below it — the
+   list shifting under a finger already on its way to the next habit.
+   Absolutely positioned in the margin beside the tile, it is out of the
+   layout altogether: nothing about the tile or the list moves, ever.
+   The row is the thing it hangs off, hence position: relative here. */
+.habit-row {
+  position: relative;
+}
+
 .arrival-note {
+  position: absolute;
+  left: 100%;
+  margin-left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  /* max-content, not the default. An absolutely-positioned box pinned
+     at `left: 100%` is offered the room LEFT of that edge, which is
+     nothing — so it shrinks to its longest word and the note comes out
+     one word wide. max-content asks for the sentence, and max-width is
+     what stops it. */
+  width: max-content;
+  max-width: 14rem;
   font-size: 0.8rem;
   color: var(--expedition);
+}
+
+/* No margin, no note (the other half of Kimia's call). The content
+   column is 40rem wide and centred, so each margin is half of whatever
+   the window has spare: the note needs its own 14rem plus the gap, so
+   it takes a 70rem window before there is anywhere to put it — 640px of
+   column plus 2 × 236px of margin is 1112px, and 70rem is 1120px.
+   Below that the note simply doesn't appear. It is an echo: the same
+   words always arrive on the shelf, which is pinned to the window and
+   never runs out of room. Re-measure this if the column width or the
+   note's max-width changes — it is a consequence of those two, not a
+   number chosen for its own sake. */
+@media (max-width: 70rem) {
+  .arrival-note {
+    display: none;
+  }
 }
 
 /* The first-occurrence reveals: the neon POP (spec §7) — the one place

@@ -114,11 +114,6 @@ function HabitRow({
         <span className="habit-meta">
           {scheduleSummary(habit.schedule)} · {habit.difficulty}
         </span>
-        {/* The quiet by-the-habit note (T3.2): while this habit's
-            drops are still on the arrival shelf, a soft line here
-            says what the tap turned up. No neon — that's reserved
-            for the first-occurrence reveals. */}
-        {arrivalNote && <span className="arrival-note">{arrivalNote}</span>}
       </span>
       {oneTime ? (
         <span className="completion-controls">
@@ -193,6 +188,20 @@ function HabitRow({
           </svg>
         </button>
       </span>
+      {/* The quiet by-the-habit note (T3.2): while this habit's drops
+          are still on the arrival shelf, a soft line says what the tap
+          turned up. No neon — that's reserved for the reveals.
+
+          It sits OUTSIDE the tile, in the margin to its right, and is
+          taken out of the layout entirely (Kimia's call 2026-08-13).
+          It used to be a line inside the tile, which made the tile grow
+          taller the instant a drop landed and shunted every tile below
+          it — the list moving under a finger already reaching for the
+          next habit. Nothing about the tile changes now. Where the
+          window is too narrow to have a margin, the note simply doesn't
+          show: the same words always arrive on the shelf, so this one
+          is an echo, and an echo is worth losing before a mis-tap is. */}
+      {arrivalNote && <span className="arrival-note">{arrivalNote}</span>}
     </li>
   )
 }
