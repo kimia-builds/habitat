@@ -2166,6 +2166,64 @@ return 0` right after the era is worked out, so a moment before the
   just for the startup would reintroduce exactly the device thinking
   the gate deliberately dropped. Folded into §12f. If it ever looks
   wrong on a tablet, it is one number, not a new mechanism.
+- 2026-08-13 (T5.2e, feel session — session 51): **drops arrive at the
+  top right of the WINDOW, not the top of the page.** §5 was written
+  when the meters and the shelf sat together at the top of the habit
+  list; since §13a the meters live in the header and the list can run
+  well past a screen, so a drop from a habit low down the list arrived
+  somewhere Kimia never saw. The shelf is now fixed to the window's top
+  right and follows the scroll. It clears the header at both its
+  one-storey and two-storey heights, because App measures the real
+  header and hands the height down rather than naming a number that
+  would drift. Each arrival also wears its NAME from the moment it
+  lands — holding is no longer how you learn what something is, only
+  how you stop it fading — so an object and its words are unmistakably
+  paired when several land at once. Newest sits on top and pushes the
+  others down, and the markup is built in that order so a screen reader
+  hears what the screen shows. Folded into §5.
+- 2026-08-13 (T5.2e, same session): **the by-the-habit note leaves the
+  tile.** It was a line INSIDE the tile, so a landing drop made that
+  tile taller on the spot and shunted every tile below it — the list
+  moving under a finger already reaching for the next habit. It now
+  sits absolutely positioned in the margin to the tile's right, out of
+  the layout altogether; every row measured identical to the pixel
+  before and after a tap. Kimia weighed the alternative of softening
+  the growth with a slow animation and it was rejected on the reasoning
+  that a tile which jumps has finished moving before your finger
+  arrives, while a tile that grows slowly is still travelling while you
+  aim at it. Below 70rem there is no margin to put it in and the note
+  simply does not show — cheap, because the same words always arrive on
+  the shelf, which is pinned to the window and never runs out of room.
+  The note is an echo now, not the announcement. Folded into §5.
+- 2026-08-13 (T5.2e, same session): **an arrival is a blob, and it is
+  opaque.** Kimia asked for the Map's shape language rather than a
+  clean card. `border-radius` was tried first and cannot do it: a wide,
+  short box rounds into a lozenge whatever the eight percentages say.
+  So the outline is drawn — three of them, authored once in a 120×44
+  frame and stretched to whatever size an arrival turns out to be,
+  chosen by the arrival's own id so two side by side rarely match. No
+  geometry is generated at render time, and the stroke is told not to
+  stretch with the shape. The fill is `--surface-solid`, the ground
+  colour itself: the white-wash surface was fine while the shelf sat in
+  the page and wrong the moment it floated over the habit list, where
+  the tiles read straight through the words. Edge and glow are
+  `currentColor`, so a blob is lit in its own stream's colour exactly
+  as a known map region is. Folded into §5.
+- 2026-08-13 (T5.2e, same session): **§3's live-vs-retro tonal shift is
+  dropped entirely** — Kimia's call, asked directly and answered
+  directly. Live taps were to play full neon and retro marks a cooler,
+  dimmer "past" tone. It is retired the way T5.2c's typography was:
+  struck through where it stood rather than deleted, so nobody proposes
+  it again. Nothing was built, so nothing was reverted.
+- 2026-08-13 (T5.2e, same session): **where the meter movement plays,
+  decided but NOT yet built.** §4's glow-and-thicken was written when
+  the meters sat beside the habits; they are up in the header now.
+  Kimia's call: the header meter does its glow AND the tapped habit
+  gives a small matching spark, so the movement starts where the finger
+  is and finishes where the meter lives. And because the check-in
+  deliberately carries no header bar, a retro mark has no visible meter
+  to move: the movement is held and plays once when the check-in
+  closes, exactly as its drops already do. Folded into §4.
 
 ## spec.md version history (formerly its preamble)
 

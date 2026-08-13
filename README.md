@@ -108,8 +108,11 @@ built on top of a live, in-use app.
   spacing) and the palette it paid for are in, the typography is settled
   as it stands, and the layout pass is done — a header bar across the
   top, page titles standing above their boxes, and a night sky behind
-  everything. The startup animation and the creature, flora and object
-  art are being built now.
+  everything. The daily startup ceremony is in — a planet rolling along
+  the bottom of a black screen before the day opens — and drops now
+  arrive as glowing blobs pinned to the corner of the window. The feel
+  pass (glow, shimmer, fireworks) and the creature, flora and object art
+  are being built now.
 - **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
   The error-boundary safety net is already in, and so is the first half
   of the backup habit — persistent-storage groundwork, and the export

@@ -91,8 +91,10 @@ tracker. Everything after this is delight, informed by real use.
       enhancements decided 2026-07-19 (design-notes §4–§5): momentary
       glow/thicken on meter advance and roll-over (layered on the built
       bar), star-shimmer on regular drop arrivals, full firework for
-      first-occurrence reveals and friend arrivals, live-vs-retro tonal
-      palette shift.
+      first-occurrence reveals and friend arrivals. (The ~~live-vs-retro
+      tonal palette shift~~ **left this task on 2026-08-13** — Kimia's
+      call to drop §3 outright rather than build or defer it; nothing
+      had been built.)
       Also includes the **daily startup animation** (decided 2026-07-20,
       design-notes §12f) in the slot T4.5 built for it: a black screen with
       a slither of glowing planet across the bottom edge, spinning slowly
@@ -154,7 +156,26 @@ tracker. Everything after this is delight, informed by real use.
                   daily startup: hold, fade, tap-to-skip, Sunday colour.
                   Build notes in history.md)_
             - [ ] the §4–§5 feel enhancements + the glow scale into the
-                  tokens file
+                  tokens file. Built in front of Kimia, smallest visible
+                  change first (the T5.2c lesson); she redirected twice
+                  on the first step alone. Order agreed 2026-08-13:
+                  - [x] where an arrival appears (§5) _(2026-08-13 — the
+                        shelf pinned to the window's top right below the
+                        header, names always shown, newest on top; the
+                        by-the-habit note moved out of its tile so the
+                        list stops shifting under a finger; arrivals
+                        became opaque drawn blobs in the Map's shape
+                        language. Build notes in history.md)_
+                  - [ ] the star-shimmer on regular drop arrivals — on
+                        the arriving blob AND on the note in the task
+                        (Kimia's call: both places)
+                  - [ ] the §4 meter glow — the header meter glows and
+                        thickens, the tapped habit sparks with it, and
+                        a check-in's movement plays once on done
+                  - [ ] the full firework — first-occurrence reveals and
+                        friend arrivals
+                  - [ ] the glow scale into the tokens file, last, once
+                        there are real glows to name
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
       categories), flora, fungi, market objects, planet regions. Several
       sessions of creative iteration; Kimia art-directs. Language and

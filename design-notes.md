@@ -74,20 +74,25 @@ is as ordinary as taking one forward.
 
 ---
 
-## 3. Live vs. retroactive completions **[TO-BUILD · T3.2b / check-in]**
+## 3. Live vs. retroactive completions **[DROPPED — Kimia's call 2026-08-13]**
 
-Keep the satisfaction of checking off retroactively, but make
-**same-day taps more satisfying**.
+~~Keep the satisfaction of checking off retroactively, but make
+**same-day taps more satisfying**.~~
 
-**Decision — tonal palette shift, same shape.** Live and retro play
+~~**Decision — tonal palette shift, same shape.** Live and retro play
 the **same animation shape** in different light: **live = full neon
 POP** (the peak moment); **retro = a cooler, dimmer "past" tone** (a
-memory being logged). Consistent with the built check-in, where retro
-marks earn drops but their **arrivals wait for the done button** (spec
-T3.2) — the past-tone treatment rides on top of that.
+memory being logged).~~
 
-Correctness reminder (spec §4.2): retro marks attribute to the day
-they were _done_. Tone is cosmetic; the date logic stays strict.
+**Dropped entirely (2026-08-13), and kept here struck through so nobody
+proposes it again** — the same treatment §11c's typography plan got.
+Asked directly, Kimia's answer was to retire it rather than build it or
+defer it. Nothing had been built, so nothing was reverted.
+
+What survives is not cosmetic and still stands: retro marks earn drops,
+but their **arrivals wait for the done button** (spec T3.2), and retro
+marks attribute to the day they were _done_ (spec §4.2). The date logic
+was never the part in question.
 
 ---
 
@@ -117,16 +122,76 @@ straight back. The resting state of the bar never changes; the
 persistent running total remains the accumulating proof of work. This
 **layers onto** the built T2.2 bar — no rebuild.
 
+**Where it plays, now that the meters have moved (Kimia's call
+2026-08-13; decided, not yet built).** This was written while the
+meters sat at the top of the habit list, an inch from the habit being
+tapped. Since §13a they live in the **header bar**, on every page,
+which is a long way from a habit near the foot of the list. So the
+movement plays in **both places**: the header meter does its glow and
+thicken, and the **tapped habit gives a small matching spark** — the
+movement starts where the finger is and finishes where the meter lives.
+Neither half is the whole gesture.
+
+**And the check-in has no header bar** (§13a: it opts out, keeping its
+own plain wordmark, so its done button stays the only way out). A retro
+mark therefore has no visible meter to move. The movement is **held and
+plays once when the check-in closes**, which is exactly what that
+screen's drops already do (spec T3.2) — one arrival of everything the
+session earned, rather than a ceremony against a bar nobody can see.
+
 ---
 
-## 5. Drops — star-shimmer & firework **[CHANGE to built T3.2, decided]**
+## 5. Drops — star-shimmer & firework **[arrival placement BUILT — T5.2e, 2026-08-13 · shimmer and firework still to build]**
 
 Drop arrival as built (T3.2): a regular drop shows a **quiet pastel
 note** beside the tapped habit ("you came across …") plus the **SVG
-drop object at the top of the page**, lingering a few seconds before
-fading (click to hold; the drop's name shows). The **five
-first-occurrence reveals** (first flora / magazine / novel /
+drop object**, lingering a few seconds before fading (click to hold).
+The **five first-occurrence reveals** (first flora / magazine / novel /
 dictionary / fungi) are **full-screen neon POP**.
+
+### Where an arrival appears **[BUILT — T5.2e, 2026-08-13]**
+
+Written for a screen where the meters and the shelf sat together above
+a short habit list. Neither is true now — §13a moved the meters into
+the header, and a real list runs well past one screen — so a drop from
+a habit low down arrived somewhere it was never seen. Kimia's calls:
+
+- **The shelf is pinned to the top right of the WINDOW**, not the top
+  of the page, and follows the scroll. It **never covers the header**:
+  the app measures the real header bar and the shelf clears it at both
+  its one-storey (wide) and two-storey (narrow) heights, so there is no
+  number to keep in step by hand. Below it, the shelf is free to float
+  over the habit list and the charm filter.
+- **Every arrival wears its name from the moment it lands** — "a flora
+  find", "3 fungi". Holding is no longer how you learn what something
+  is; it is only how you stop it fading and reach its choices. With
+  several drops on screen, each object and its words are one blob and
+  cannot be mismatched.
+- **Newest on top**, pushing earlier arrivals down; the markup is built
+  in that order so a screen reader hears the order the screen shows.
+- **An arrival is a blob, not a card** — the shape language the Map's
+  regions already speak: an uneven drawn outline with a lit edge and a
+  little glow, in its own stream's colour. Three outlines, authored
+  once and stretched to whatever size an arrival turns out to be,
+  chosen by the arrival's id. `border-radius` cannot do this and was
+  tried: a wide, short box rounds into a clean lozenge whatever the
+  eight percentages say.
+- **The blob is opaque** — filled with the ground colour itself, so it
+  reads as a hole cut in the sky rather than a second surface. The
+  white-wash surface was fine while the shelf sat inside the page, and
+  wrong the moment it began floating over the tiles, which read
+  straight through the words on a narrow window.
+- **The by-the-habit note sits OUTSIDE its tile**, in the margin to its
+  right, out of the layout altogether. It used to be a line inside the
+  tile, so a landing drop made that tile taller and shunted every tile
+  below it — the list moving under a finger already reaching for the
+  next habit. Softening that growth with a slow animation was weighed
+  and rejected: a tile that jumps has finished moving before your
+  finger arrives, while a tile that grows slowly is still travelling
+  while you aim at it. **Where the window is too narrow to have a
+  margin, the note simply does not show** — it is an echo now, not the
+  announcement, and the same words always arrive on the shelf, which is
+  pinned to the window and never runs out of room.
 
 **Decision (2026-07-19) — the middle path.** Regular drops gain a
 **small, brief star-shimmer** on arrival (a light touch over the
