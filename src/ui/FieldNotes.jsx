@@ -96,7 +96,7 @@ function FieldNotes({
       <>
         {lens}
         <section className="field-notes" aria-label="field notes">
-          <p>Nothing recorded yet — notes begin with the first habit.</p>
+          <p>nothing recorded yet</p>
         </section>
         {back}
       </>
