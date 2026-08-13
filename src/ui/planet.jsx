@@ -15,9 +15,10 @@
  *   THE SKY (behind everything)
  *     A near-black ground with four dark colours washed faintly across it, so
  *     it is not one flat field, and the same white star layer the home screen
- *     wears — <NightSky/>, at rest, no twinkle (Kimia, 2026-08-13). Same
- *     asset, same seed: the startup is showing you the app's own sky, and the
- *     app then fades in over it.
+ *     wears — <NightSky/>, untouched, rare unsynchronised twinkle and all.
+ *     Same asset, same seed: the startup is showing you the app's own sky, and
+ *     the app then fades in over it. The whole layer creeps slowly toward the
+ *     top right and back, so the scene is never quite still (Kimia, 2026-08-13).
  *
  *   THE SPHERE
  *     A circle three times wider than the screen, sunk almost entirely below
@@ -78,7 +79,18 @@ export const PLANET_TOKENS = {
   bloomWide: 14, // the second, fainter halo beyond it
   rim: 0.5, // how far the lit edge glows IN from the arc (a thin bright line)
   rimWide: 4, // the softer inner falloff behind it
-  rockStrength: 0.8, // how hard the rock texture bites into the colour
+  rockStrength: 1, // how hard the rock texture bites into the colour
+  rockRelief: 2.3, // how deep the craters read (contrast pushed into the rock)
+
+  // The sky's own drift (Kimia, 2026-08-13): the whole star layer creeps
+  // toward the TOP RIGHT, then back again, so the scene breathes instead of
+  // sitting still. `skyDrift` is how far it travels each way, in cqw;
+  // `skyDriftSeconds` is ONE of those crossings, not the round trip. At these
+  // values it moves about a pixel and a half a second: you notice it only if
+  // you watch for it, which is the point. Too much slower and the ceremony —
+  // a few seconds long — would be over before the sky had visibly moved.
+  skyDrift: 5,
+  skyDriftSeconds: 90,
   blotches: 26, // continent-scale features in one copy of the loop
   blur: 12, // how soft each of those is (units of the 1000×260 blotch tile)
 
@@ -274,7 +286,19 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
         /* THE SKY — four dark washes over the ground, then the home screen's
            own star layer at rest. NightSky paints its own background; here the
            washes are the ground, so its gradient is turned off. */
-        .nzd-planet .p-sky { position: absolute; inset: 0; }
+        /* The sky sits OVERSIZED — bigger than the box by more than it ever
+           travels — so drifting it never drags an edge into view. It creeps
+           up and to the right, then back, for ever. Alternating rather than
+           looping because a star field cannot wrap: at this pace the turn is
+           far too slow to read as a reversal. */
+        .nzd-planet .p-sky {
+          position: absolute; inset: -${t.skyDrift + 1}cqw;
+          animation: nzd-planet-sky ${t.skyDriftSeconds}s ease-in-out infinite alternate;
+        }
+        @keyframes nzd-planet-sky {
+          from { transform: translate(-${t.skyDrift}cqw, ${t.skyDrift}cqw); }
+          to   { transform: translate(${t.skyDrift}cqw, -${t.skyDrift}cqw); }
+        }
         .nzd-planet .p-sky-wash {
           position: absolute; inset: 0; background-image: var(--p-sky);
         }
@@ -327,13 +351,15 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
            parent's opacity and mask already sealed it into its own group — so
            the rock simply lay on top as pale grey and bleached the planet
            white. Blended here, the group meets the coloured face beneath it.
-           The library lights its rock in a pale cool grey (textures.jsx), so
-           it is pulled down to mid-grey and its contrast pushed up first;
-           overlay then adds relief without touching hue. */
+           The library lights its rock in a pale COOL grey (textures.jsx), and
+           at full strength that blue-grey bleeds into the planet. Draining its
+           colour first leaves pure light and shade, so overlay can only carve
+           relief and never argues with the charm colour; it is then pulled
+           down to mid-grey and its contrast pushed up, so the craters bite. */
         .nzd-planet .p-rock {
           display: flex;
           mix-blend-mode: overlay;
-          filter: brightness(0.5) contrast(2);
+          filter: grayscale(1) brightness(0.5) contrast(${t.rockRelief});
         }
         .nzd-planet .p-rock-copy { width: 50%; height: 100%; flex: none; }
         @keyframes nzd-planet-spin {
@@ -359,7 +385,9 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
 
         /* §9: motion is never compulsory. Still planet, same picture. */
         @media (prefers-reduced-motion: reduce) {
-          .nzd-planet .p-continents, .nzd-planet .p-rock { animation: none; }
+          .nzd-planet .p-continents,
+          .nzd-planet .p-rock,
+          .nzd-planet .p-sky { animation: none; }
         }
       `}</style>
 
@@ -371,7 +399,7 @@ export function RollingPlanet({ color = SYMBOL_COLORS[3], seed = 20260812 }) {
 
       <div className="p-sky">
         <div className="p-sky-wash" />
-        <NightSky twinklers={0} />
+        <NightSky />
       </div>
 
       <div className="p-sphere">

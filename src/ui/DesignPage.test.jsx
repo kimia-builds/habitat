@@ -178,12 +178,16 @@ describe('DesignPage workbench', () => {
     }
   })
 
-  it('gives the startup planet no twinkling stars', () => {
+  it('gives the startup planet the home screen sky, twinkle and all', () => {
     render(<DesignPage onBack={vi.fn()} />)
-    // §12f's sky is the home screen's star layer AT REST (Kimia, 2026-08-13):
-    // same asset, same seed, but nothing blinking during the ceremony.
+    // §12f's sky IS the home screen's star layer, unchanged — same asset,
+    // same seed, the same rare unsynchronised twinkle (Kimia, 2026-08-13,
+    // reversing the same day's "at rest"). Some stars must be twinklers, or
+    // the planet has quietly been handed a different sky.
     const shelf = screen.getByLabelText('rolling planet')
-    expect(shelf.querySelectorAll('.nzd-night-sky .tw')).toHaveLength(0)
+    expect(shelf.querySelectorAll('.nzd-night-sky .tw').length).toBeGreaterThan(
+      0,
+    )
     expect(shelf.querySelectorAll('.nzd-night-sky .s').length).toBeGreaterThan(
       0,
     )
