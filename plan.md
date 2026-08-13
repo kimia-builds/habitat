@@ -168,7 +168,13 @@ tracker. Everything after this is delight, informed by real use.
                         language. Build notes in history.md)_
                   - [ ] the star-shimmer on regular drop arrivals — on
                         the arriving blob AND on the note in the task
-                        (Kimia's call: both places)
+                        (Kimia's call: both places). _Built and live
+                        2026-08-13 — stars around the blob's edge, a
+                        glint across the note's words, several at once
+                        cascading; awaiting Kimia's eye, and her pick
+                        between white stars and each stream's own
+                        colour (both on the workbench). Build notes in
+                        history.md._
                   - [ ] the §4 meter glow — the header meter glows and
                         thickens, the tapped habit sparks with it, and
                         a check-in's movement plays once on done

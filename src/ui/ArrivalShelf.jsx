@@ -39,6 +39,7 @@ import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import { arrivalLabel } from './arrivalText.js'
 import DropGlyph from './DropGlyph.jsx'
 import FriendGlyph from './FriendGlyph.jsx'
+import StarShimmer, { SHIMMER_STAGGER_MS } from './shimmer.jsx'
 
 // The blob an arrival sits on (T5.2e, Kimia's call 2026-08-13). A drop
 // is not a clean rectangular card — it is a blob, the shape language
@@ -80,8 +81,25 @@ const STREAM_OF = {
   friend: 'friend',
 }
 
-function ShelfItem({ arrival, worldSeed, onExpire, onDecide, onRead }) {
+function ShelfItem({
+  arrival,
+  worldSeed,
+  shimmerDelay,
+  onExpire,
+  onDecide,
+  onRead,
+}) {
   const [held, setHeld] = useState(false)
+  // Whether this arrival shimmers, decided ONCE at the moment it lands
+  // (T5.2e, design-notes §5). The shimmer belongs to an everyday drop;
+  // a friend and a first-occurrence find owe a reveal, and the firework
+  // is theirs. Decided on landing rather than re-read every render,
+  // because `awaitingReveal` turns false the moment the reveal is
+  // dismissed — which would otherwise set a shimmer off right after the
+  // firework it was meant to stay out of the way of.
+  const [shimmering] = useState(
+    () => arrival.key !== 'friend' && !arrival.awaitingReveal,
+  )
   const fading = !held && !arrival.awaitingReveal
   // The choice belongs to a held, still-undecided flora find only.
   const deciding =
@@ -113,6 +131,11 @@ function ShelfItem({ arrival, worldSeed, onExpire, onDecide, onRead }) {
       >
         <path d={blobFor(arrival.id)} vectorEffect="non-scaling-stroke" />
       </svg>
+      {/* The star-shimmer (T5.2e, §5): stars pop around the blob's edge
+          as it lands and are gone in under a second. Laid over the
+          whole arrival, so what sparkles is the arrival, not the little
+          object inside it (Kimia's call 2026-08-13). */}
+      {shimmering && <StarShimmer delayMs={shimmerDelay} />}
       <button
         className="arrival-hold"
         onClick={() => setHeld(!held)}
@@ -194,11 +217,16 @@ function ArrivalShelf({
       {/* Newest on top, older pushed down (Kimia's call 2026-08-13).
           Reversed here rather than with CSS so the reading order a
           screen reader hears matches the order on screen. */}
-      {[...arrivals].reverse().map((arrival) => (
+      {[...arrivals].reverse().map((arrival, index) => (
         <ShelfItem
           key={arrival.id}
           arrival={arrival}
           worldSeed={worldSeed}
+          // Drops that land together shimmer one after another, top
+          // down (Kimia's call 2026-08-13). A drop landing on its own
+          // is always the newest, so its delay is 0 and it sparkles at
+          // once; only a batch — a check-in closing — cascades.
+          shimmerDelay={index * SHIMMER_STAGGER_MS}
           onExpire={onExpire}
           onDecide={onDecide}
           onRead={onRead}

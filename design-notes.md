@@ -141,7 +141,7 @@ session earned, rather than a ceremony against a bar nobody can see.
 
 ---
 
-## 5. Drops — star-shimmer & firework **[arrival placement BUILT — T5.2e, 2026-08-13 · shimmer and firework still to build]**
+## 5. Drops — star-shimmer & firework **[arrival placement + star-shimmer BUILT — T5.2e, 2026-08-13 · the firework still to build]**
 
 Drop arrival as built (T3.2): a regular drop shows a **quiet pastel
 note** beside the tapped habit ("you came across …") plus the **SVG
@@ -199,6 +199,43 @@ quiet pastel, not a takeover). The **full firework** — a burst of
 confetti-like stars around the drop that slowly fade — is **reserved
 for first-occurrence reveals and friend arrivals**. This honours both
 the quiet, patient pacing and "drops should feel special."
+
+### The shimmer, as built **[BUILT — T5.2e, 2026-08-13]**
+
+Written for a screen where a drop was one thing in one place. It is two
+now — the blob on the shelf and the note out in the margin — so Kimia
+was asked where the sparkle belongs and answered **both places**. Her
+calls, and what they mean:
+
+- **On the blob: stars around its EDGE**, not on the little object
+  inside it. What sparkles is the arrival, so a find reads as one thing
+  arriving rather than an object with an effect on it. Nine points
+  authored once as percentages of whatever box they are laid over — the
+  same reasoning the blob outlines follow, and the reason nothing is
+  measured per arrival.
+- **On the note: the WORDS themselves shimmer.** A line of text has no
+  outline to put stars around, so its half of the gesture is a **glint**
+  — one band of light travelling across the sentence as it appears, then
+  gone. A second drop from the same habit rewrites that one sentence
+  rather than adding a line, and the rewritten sentence glints again.
+- **Several at once cascade** — each blob a tenth of a second behind the
+  one above it, newest first. A morning check-in closes with everything
+  the session earned arriving together, and a single flash would read as
+  one event rather than several finds.
+- **Whether an arrival shimmers is decided when it LANDS.** A friend and
+  a first-occurrence find owe a reveal, and the firework is theirs — so
+  neither sparkles, then or later. Deciding it on landing is what stops
+  a shimmer going off the instant a reveal is dismissed, immediately
+  after the firework it was meant to stay out of the way of.
+- **The stars are white** (design-bible §3: every star in Habitat's sky
+  is white), lit by the arrival's own stream colour so a white star
+  still belongs to the drop it came with. The alternative — each stream
+  sparkling in its own pastel — is one token away and shown beside it on
+  the workbench.
+- **Both halves are decoration**, and a reader who has asked for less
+  movement gets neither. The drop still lands, still wears its name,
+  still fades on its own clock: that fade is how an arrival leaves, not
+  an ornament.
 
 Anticipation-first stays true at the top of the hierarchy: **friends
 arrive as delayed surprise drops** days after a literacy milestone

@@ -200,8 +200,21 @@ function HabitRow({
           next habit. Nothing about the tile changes now. Where the
           window is too narrow to have a margin, the note simply doesn't
           show: the same words always arrive on the shelf, so this one
-          is an echo, and an echo is worth losing before a mis-tap is. */}
-      {arrivalNote && <span className="arrival-note">{arrivalNote}</span>}
+          is an echo, and an echo is worth losing before a mis-tap is.
+
+          The note's half of the star-shimmer (T5.2e, §5) is a GLINT —
+          one band of light travelling across the words, in index.css.
+          `key` is what makes it play again: a second drop from the same
+          habit REWRITES this one sentence ("… a flora find and 2
+          fungi") rather than adding a line, and React would otherwise
+          quietly swap the words inside an element whose animation has
+          already finished. Keyed on the sentence, new words mean a new
+          element, and a new element glints. */}
+      {arrivalNote && (
+        <span className="arrival-note" key={arrivalNote}>
+          {arrivalNote}
+        </span>
+      )}
     </li>
   )
 }

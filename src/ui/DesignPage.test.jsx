@@ -4,7 +4,7 @@
 // page as they are made (2026-07-26 — the empty placeholder tiles are
 // gone), so each shelf's test asserts its live swatches.
 
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
@@ -191,6 +191,34 @@ describe('DesignPage workbench', () => {
     expect(shelf.querySelectorAll('.nzd-night-sky .s').length).toBeGreaterThan(
       0,
     )
+  })
+
+  it('replays the star-shimmer on the real arrival shelf', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    // Two rows (white stars / each stream's own colour), each holding
+    // the REAL shelf with the same three demo drops — so what is being
+    // eyeballed is the game's own arrival, not a picture of one. Every
+    // drop carries a shimmer, since none of them owes a reveal.
+    const shelf = screen.getByLabelText('drop arrival')
+    const rows = shelf.querySelectorAll('.shimmer-swatch')
+    expect(rows).toHaveLength(2)
+    for (const row of rows) {
+      expect(row.querySelectorAll('.arrival')).toHaveLength(3)
+      expect(row.querySelectorAll('.shimmer')).toHaveLength(3)
+    }
+    // The note's half of the shimmer is here too (Kimia: both places).
+    expect(
+      shelf.querySelectorAll('.shimmer-note-swatch .arrival-note'),
+    ).toHaveLength(1)
+
+    // Replay re-mounts them, which is how an on-arrival animation is
+    // made to arrive again. The proof it re-mounted is a new element.
+    // fireEvent rather than a bare .click(): this press changes state,
+    // and only fireEvent lets React finish re-rendering before the next
+    // line looks. The other presses on this page just call a spy.
+    const before = shelf.querySelector('.arrival')
+    fireEvent.click(screen.getByRole('button', { name: /replay/i }))
+    expect(shelf.querySelector('.arrival')).not.toBe(before)
   })
 
   it('leads back to the habits', async () => {

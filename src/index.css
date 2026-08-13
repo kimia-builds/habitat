@@ -837,6 +837,60 @@ body {
   filter: drop-shadow(0 0 6px currentColor);
 }
 
+/* The star-shimmer (T5.2e, design-notes §5): a small, brief sparkle as
+   a regular drop lands — never on a friend or a first find, whose
+   moment is the firework. The stars are authored points around the
+   box's edge (shimmer.jsx holds the table and the timings); this rule
+   only places and animates them.
+
+   overflow stays visible because the stars sit ON the outline and a
+   little outside it, exactly like the blob's own bulges. Nothing here
+   is pressable: the shimmer must never come between a finger and the
+   drop it is trying to hold. */
+.shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.shimmer-star {
+  position: absolute;
+  /* The table's x/y place each star's CENTRE, so it reads as a point on
+     the outline rather than the corner of a little box. Every keyframe
+     below repeats this shift, because a transform replaces the one it
+     inherits rather than adding to it. */
+  transform: translate(-50%, -50%);
+  fill: var(--shimmer-star);
+  /* Lit in the arrival's own stream colour, so a white star still
+     belongs to the drop it came with. */
+  filter: drop-shadow(0 0 3px currentColor);
+  /* Starts invisible: each star waits for its own delay, and without
+     this the whole set would show for the first frame. */
+  opacity: 0;
+  animation: shimmer-pop 700ms ease-out forwards;
+}
+
+/* Pops open, holds for an instant, shrinks away — the whole life of one
+   star, with a little rotation so a burst never reads as mechanical. */
+@keyframes shimmer-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(-25deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  60% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.45) rotate(20deg);
+  }
+}
+
 @keyframes arrival-fade {
   0% {
     opacity: 0;
@@ -946,6 +1000,65 @@ body {
   max-width: 14rem;
   font-size: 0.8rem;
   color: var(--expedition);
+}
+
+/* The note's half of the star-shimmer (T5.2e, §5 — Kimia's call: both
+   places). The blob gets stars around its edge; the note has no shape
+   to put stars around, so its shimmer is a GLINT: one band of light
+   travelling across the words as they appear, then gone.
+
+   How it works: the text is painted by a background image instead of by
+   `color` (`background-clip: text`), and that image is a wide gradient
+   which is the note's own colour everywhere except one bright band.
+   Sliding the image across the words once carries the band across them.
+   `-webkit-text-fill-color` rather than `color: transparent` is what
+   hands the painting over, and it matters — `currentColor` in the
+   gradient still has to resolve to the note's real colour, and it
+   couldn't if we had made the colour itself transparent.
+
+   The whole thing lives inside @supports, because a browser that can't
+   clip a background to text would paint a gradient BOX over the tile
+   instead. Without it, the note simply shows plainly, which is what it
+   did before this animation existed. */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .arrival-note {
+    background-image: linear-gradient(
+      100deg,
+      currentColor 42%,
+      var(--shimmer-star) 50%,
+      currentColor 58%
+    );
+    /* Three times the width of the words, so the band can start off one
+       side and finish off the other — and at rest (0%) only the flat
+       first third is over the text. */
+    background-size: 300% 100%;
+    background-position: 0% 0;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: note-glint 900ms ease-out;
+  }
+
+  @keyframes note-glint {
+    to {
+      background-position: 100% 0;
+    }
+  }
+}
+
+/* Both halves of the shimmer are decoration, so a reader who has asked
+   for less movement simply doesn't get them: the drop still lands, still
+   wears its name, still fades on its own clock (that fade stays — it is
+   how an arrival leaves, not an ornament). The same call the night sky's
+   twinkle makes. */
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    display: none;
+  }
+
+  .arrival-note {
+    animation: none;
+  }
 }
 
 /* No margin, no note (the other half of Kimia's call). The content
@@ -2256,6 +2369,56 @@ body {
   font-weight: 400;
   letter-spacing: 0.12em;
   color: var(--text-quiet);
+}
+
+/* TEMPORARY (T5.2e, 2026-08-13): the star-shimmer's workbench shelf.
+   The drops here are the real arrival shelf, so the only thing this has
+   to do is UNDO its pinning — in the game the shelf is fixed to the
+   window's top right, and two of those would sit on top of each other in
+   the same corner. Everything else about them is left exactly as the
+   game has it. Leaves with the workbench. */
+.shimmer-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  list-style: none;
+  padding: 0;
+}
+
+.shimmer-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.shimmer-swatch .arrival-shelf {
+  position: static;
+  max-width: none;
+  align-items: flex-start;
+}
+
+/* The second row's one difference: the stars take the arrival's own
+   stream colour instead of white. `currentColor` is resolved where the
+   star is painted, so each blob's stars come out in its own pastel. */
+.shimmer-tinted {
+  --shimmer-star: currentColor;
+}
+
+.shimmer-swatch-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--text-quieter);
+}
+
+/* The note, put back in the flow. In the game it hangs in the margin
+   beside a habit tile, out of the layout and hidden on a narrow window —
+   neither of which lets it be looked at here. */
+.shimmer-note-swatch .arrival-note {
+  position: static;
+  display: inline-block;
+  margin-left: 0;
+  transform: none;
+  max-width: none;
 }
 
 /* TEMPORARY (T5.3, 2026-07-24): the texture-library swatches — the §8

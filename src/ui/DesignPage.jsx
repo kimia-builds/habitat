@@ -20,7 +20,11 @@
 // candidate glows the same living-thing green — they differ only in
 // form (§3) — and each is drawn at one clear size so its shape reads.
 
+import { useState } from 'react'
+
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
+import ArrivalShelf from './ArrivalShelf.jsx'
+import { arrivalNote } from './arrivalText.js'
 import { Eye, EyeDefs } from './eye.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
 import { RollingPlanet } from './planet.jsx'
@@ -266,10 +270,85 @@ function TracedFriendSwatch({ friend, tint }) {
   )
 }
 
+// The star-shimmer's workbench shelf (T5.2e, design-notes §5). It lands
+// here first because the real thing lasts under a second and only when a
+// habit happens to give something — this shelf replays it on demand.
+//
+// The drops below are the REAL <ArrivalShelf/> with three made-up
+// arrivals, not a picture of one: same blobs, same names, same fade, and
+// clicking one holds it exactly as in the game. Only the shelf's pinning
+// is undone (see .shimmer-swatch in index.css), because a shelf fixed to
+// the window's corner cannot be lined up beside a second one.
+//
+// Two rows, so the star COLOUR can be chosen by eye — Habitat's white,
+// and the alternative where each stream sparkles in its own pastel.
+const SHIMMER_DEMO = [
+  { id: 'demo-flora', key: 'flora', status: 'pending' },
+  { id: 'demo-novel', key: 'novel' },
+  { id: 'demo-fungi', key: 'fungi', amount: 3 },
+]
+
+const SHIMMER_ROWS = [
+  { key: 'white', name: 'white stars', className: '' },
+  {
+    key: 'stream',
+    name: "each stream's own colour",
+    className: 'shimmer-tinted',
+  },
+]
+
+const ignore = () => {}
+
+function ShimmerFamily() {
+  // Bumping this re-mounts everything below it, and an animation that
+  // plays on arrival plays again on a fresh element — which is all
+  // "replay" has to mean here.
+  const [run, setRun] = useState(0)
+  return (
+    <section className="design-family" aria-label="drop arrival">
+      <h3>drop arrival</h3>
+      <ul className="shimmer-swatches">
+        {SHIMMER_ROWS.map((row) => (
+          <li key={row.key} className={`shimmer-swatch ${row.className}`}>
+            <ArrivalShelf
+              key={run}
+              arrivals={SHIMMER_DEMO}
+              worldSeed={1}
+              headerHeight={0}
+              onExpire={ignore}
+              onDecide={ignore}
+              onRead={ignore}
+            />
+            <span className="shimmer-swatch-name">{row.name}</span>
+          </li>
+        ))}
+      </ul>
+      {/* The other half (Kimia's call: both places) — the by-the-habit
+          note and its travelling glint. Its words come from the same
+          function the real note uses, so this can never drift into
+          showing a sentence the game doesn't say. In the game it sits
+          out in the margin beside a tile, and only on a wide window; here
+          it is put back in the flow so it can be looked at at all. */}
+      <p className="shimmer-note-swatch">
+        <span className="arrival-note" key={run}>
+          {arrivalNote(SHIMMER_DEMO)}
+        </span>
+      </p>
+      <button className="pebble" onClick={() => setRun(run + 1)}>
+        replay
+      </button>
+    </section>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
       <h2>design assets</h2>
+
+      {/* The family being worked on right now sits FIRST, so it needs no
+          scrolling past the whole cast to reach. */}
+      <ShimmerFamily />
 
       {/* The shared texture library (T5.3, design-bible §8). One <defs>
           for the whole page, then a shelf of live swatches per family. */}

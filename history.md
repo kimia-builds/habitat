@@ -2224,6 +2224,68 @@ return 0` right after the era is worked out, so a moment before the
   deliberately carries no header bar, a retro mark has no visible meter
   to move: the movement is held and plays once when the check-in
   closes, exactly as its drops already do. Folded into §4.
+- 2026-08-13 (T5.2e, shimmer session — session 52): **the star-shimmer
+  lands in both places, and each place gets the gesture its shape can
+  hold.** §5 promised "a small, brief star-shimmer" when a drop was one
+  thing in one place; it is two now, so Kimia was asked and chose both.
+  On the blob the stars pop around its EDGE rather than on the object
+  inside it — what sparkles is the arrival. The note has no outline to
+  put stars around, so its half is a GLINT: one band of light crossing
+  the sentence. Drops landing together cascade a tenth of a second
+  apart, newest first, because a check-in closes with everything at once
+  and a single flash would read as one event rather than several finds.
+  Star colour went to the workbench rather than to a decision: white
+  (design-bible §3) beside each stream's own pastel, one token apart.
+  Folded into §5.
+- 2026-08-13 (T5.2e, same session): **who does NOT shimmer, and when
+  that is decided.** A friend and a first-occurrence find owe a reveal
+  and the firework is theirs. The gate had to be read ONCE, when the
+  arrival lands, rather than every render: `awaitingReveal` turns false
+  the moment a reveal is dismissed, so a live gate would have set a
+  sparkle off immediately after the firework it was meant to stay out of
+  the way of. Folded into §5.
+
+## T5.2e (part 2) build notes — the star-shimmer (2026-08-13)
+
+- `src/ui/shimmer.jsx` holds the whole drawing: one four-pointed sparkle
+  path, and a table of nine points around a box's perimeter written as
+  PERCENTAGES with a px size and its own offset. Percentages are what
+  let one table dress every arrival at every size — the same trick the
+  blob outlines use — so nothing is measured and no geometry runs at
+  render time.
+- The shelf hands each arrival its start delay from its position in the
+  list (`index × SHIMMER_STAGGER_MS`), which is the cascade. A drop
+  landing alone is always newest, so its delay is 0 and it sparkles at
+  once; only a batch staggers.
+- The note's glint is CSS: the words are painted by a wide gradient
+  instead of by `color` (`background-clip: text`), and sliding that
+  gradient across them once carries a bright band over the sentence.
+  `-webkit-text-fill-color: transparent` rather than `color:
+  transparent` is what hands the painting over, and it matters —
+  `currentColor` in the gradient still has to resolve to the note's real
+  colour. The whole rule sits inside `@supports`, because a browser that
+  cannot clip a background to text would paint a gradient BOX over the
+  tile; without support the note simply shows plainly, as it did before.
+- Replaying it is `key`: a second drop from the same habit rewrites the
+  one sentence, and React would otherwise swap the words inside an
+  element whose animation had already finished. Keyed on the sentence,
+  new words mean a new element, and a new element glints.
+- The workbench shelf renders the REAL `<ArrivalShelf/>` with three
+  made-up drops rather than a picture of one — same blobs, same fade,
+  clicking one holds it. The only thing the workbench CSS does is undo
+  the shelf's pinning, since two shelves fixed to the window's corner
+  would sit on top of each other. Replay is a state bump used as a
+  `key`, which is all "play it again" has to mean for an animation that
+  plays on arrival.
+- Verified in the browser pane before pushing, on the workbench and in
+  the real app. Two notes for next time: a `.click()` from the console
+  does not flush React's state before the next line, so the workbench
+  test uses `fireEvent` and the browser checks read the DOM in a second
+  call; and freezing an on-arrival animation for a screenshot is best
+  done by injecting `animation-delay: -Nms !important; animation-play-
+  state: paused !important`, which holds it at frame N for as long as
+  the style is in the page — `pause()` on `getAnimations()` cannot catch
+  an element that has not mounted yet.
 
 ## spec.md version history (formerly its preamble)
 
