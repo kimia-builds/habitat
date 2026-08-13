@@ -156,6 +156,19 @@ describe('DesignPage workbench', () => {
     expect(labels).toHaveLength(4)
   })
 
+  it('surfaces the startup planet in two colours for the eyeball pass', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    // The planet is decorative (aria-hidden), so the labelled shelf is the
+    // handle: two planets, and the surface texture drawn TWICE inside each,
+    // which is what makes the sideways drift loop without a seam.
+    const shelf = screen.getByLabelText('rolling planet')
+    const planets = shelf.querySelectorAll('.nzd-planet')
+    expect(planets).toHaveLength(2)
+    for (const planet of planets) {
+      expect(planet.querySelectorAll('.p-surface > g > g')).toHaveLength(2)
+    }
+  })
+
   it('leads back to the habits', async () => {
     const onBack = vi.fn()
     render(<DesignPage onBack={onBack} />)

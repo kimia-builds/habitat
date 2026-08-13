@@ -23,6 +23,8 @@
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
 import { Eye, EyeDefs } from './eye.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
+import { RollingPlanet } from './planet.jsx'
+import { SYMBOL_COLORS } from './symbols.js'
 import { Signer, SIGNER_VIEWBOX, SIGNER_PALETTES } from './signer.jsx'
 import {
   Friend10Body,
@@ -323,6 +325,22 @@ function DesignPage({ onBack }) {
             </li>
           ))}
         </ul>
+      </section>
+
+      {/* The daily startup's rolling planet (T5.2e, design-notes §12f). It
+          lands here first because the real thing plays once per Habitat day
+          and then hides for 24 hours — this box replays it forever. The
+          composition is sized off the box's WIDTH, so what is here is what a
+          full screen gets, only smaller. Shown in shell pink (the everyday
+          colour) and in one of the five Sunday alternatives beside it. */}
+      <section className="design-family" aria-label="rolling planet">
+        <h3>rolling planet</h3>
+        <div className="planet-swatch">
+          <RollingPlanet />
+        </div>
+        <div className="planet-swatch">
+          <RollingPlanet color={SYMBOL_COLORS[6]} />
+        </div>
       </section>
 
       {/* The signer illustration (signer.jsx) — an imported drawing shown in
