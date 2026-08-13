@@ -1,7 +1,18 @@
 // The arrival shelf (T3.2): arriving drops sit at the top of the page
 // for a few seconds before fading away (Kimia's decision 2026-07-19).
-// Clicking an object HOLDS it — it stops fading and says what it is;
-// clicking again lets it go.
+// Clicking an object HOLDS it — it stops fading; clicking again lets it
+// go.
+//
+// Since T5.2e (Kimia's call 2026-08-13) the shelf is pinned to the
+// TOP RIGHT OF THE WINDOW rather than sitting at the top of the page:
+// tap a habit low down a long list and the drop still arrives where you
+// are looking, not somewhere above the fold. It never covers the header
+// — App measures the header and passes its height down as headerHeight,
+// so the shelf starts just below it whatever the window's width (the
+// header is one storey wide, two storeys narrow). Each object now also
+// wears its NAME at all times, so an object and its words arrive
+// together and it is clear which name belongs to which object; newest
+// sits on top, pushing earlier arrivals down.
 //
 // Since T3.3, a held FLORA find also offers its decision: gather (it
 // goes home to the Abode) or leave it (it stays where it grows). No
@@ -77,9 +88,11 @@ function ShelfItem({ arrival, worldSeed, onExpire, onDecide, onRead }) {
         ) : (
           <DropGlyph kind={arrival.key} />
         )}
-        {held && (
-          <span className="arrival-caption">{arrivalLabel(arrival)}</span>
-        )}
+        {/* The name is no longer something you have to hold the object
+            to hear (T5.2e): it arrives with the object and stays as
+            long as it does. Inside the same pressable group, so the
+            two read as one thing. */}
+        <span className="arrival-caption">{arrivalLabel(arrival)}</span>
       </button>
       {deciding && (
         <>
@@ -120,11 +133,28 @@ function ShelfItem({ arrival, worldSeed, onExpire, onDecide, onRead }) {
   )
 }
 
-function ArrivalShelf({ arrivals, worldSeed, onExpire, onDecide, onRead }) {
+function ArrivalShelf({
+  arrivals,
+  worldSeed,
+  headerHeight,
+  onExpire,
+  onDecide,
+  onRead,
+}) {
   if (arrivals.length === 0) return null
   return (
-    <section className="arrival-shelf" aria-label="arrivals">
-      {arrivals.map((arrival) => (
+    <section
+      className="arrival-shelf"
+      aria-label="arrivals"
+      // How far down the window the shelf starts. Measured from the
+      // real header rather than written as a number here, so the two
+      // cannot drift apart when the bar folds or its spacing changes.
+      style={{ '--header-height': `${headerHeight}px` }}
+    >
+      {/* Newest on top, older pushed down (Kimia's call 2026-08-13).
+          Reversed here rather than with CSS so the reading order a
+          screen reader hears matches the order on screen. */}
+      {[...arrivals].reverse().map((arrival) => (
         <ShelfItem
           key={arrival.id}
           arrival={arrival}

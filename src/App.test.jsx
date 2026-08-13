@@ -1963,7 +1963,11 @@ describe('friendships (T4.4)', () => {
     expect(
       screen.getByRole('heading', { name: 'local community' }),
     ).toBeDefined()
-    fireEvent.click(screen.getByRole('button', { name: DRIFTER_NAME }))
+    // Scoped to the friends list: since T5.2e the arrival on the shelf
+    // wears the friend's name too, so the page-wide query would find
+    // both of them.
+    const friends = within(screen.getByRole('list', { name: 'friends' }))
+    fireEvent.click(friends.getByRole('button', { name: DRIFTER_NAME }))
     expect(screen.getByRole('dialog', { name: DRIFTER_NAME })).toBeDefined()
   })
 })

@@ -329,6 +329,25 @@ function App() {
         .length > 0,
   )
 
+  // How tall the header bar currently is (T5.2e). The arrival shelf is
+  // pinned to the top right of the WINDOW, and Kimia's rule is that it
+  // must never cover the header — so it needs to know where the header
+  // ends. The bar is one storey on a wide screen and two on a narrow
+  // one, and its height follows the words inside it, so the app measures
+  // the real element instead of hard-coding a number that would quietly
+  // go wrong. The observer watches for the fold happening as the window
+  // is resized; where the browser has no ResizeObserver (our test
+  // environment), the one-off measurement still stands.
+  const [headerHeight, setHeaderHeight] = useState(0)
+  const measureHeader = useCallback((node) => {
+    if (!node) return undefined
+    setHeaderHeight(node.offsetHeight)
+    if (typeof ResizeObserver === 'undefined') return undefined
+    const watcher = new ResizeObserver(() => setHeaderHeight(node.offsetHeight))
+    watcher.observe(node)
+    return () => watcher.disconnect()
+  }, [])
+
   // The home-screen cameo (T4.6): a friend celebrating today's big win
   // — derived fresh from history like everything else, so undo quietly
   // takes the win (and the visit) back. It visits once per visit: after
@@ -1277,6 +1296,7 @@ function App() {
       />
       <ArrivalShelf
         worldSeed={data.worldSeed}
+        headerHeight={headerHeight}
         arrivals={arrivals.map((a) => ({
           ...a,
           awaitingReveal: (a.first || a.reveal) && !seenRevealIds.has(a.id),
@@ -1337,7 +1357,7 @@ function App() {
   // its done button stays the only way out, so yesterday always gets
   // answered.
   const appHeader = (
-    <header className="app-header">
+    <header className="app-header" ref={measureHeader}>
       <h1>
         <button className="home-link" onClick={() => setPage(null)}>
           HABITAT

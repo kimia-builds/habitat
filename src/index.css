@@ -758,21 +758,38 @@ body {
   background: var(--border-quiet);
 }
 
-/* T3.2: drop arrivals. The shelf sits under the meters; each arriving
-   object lingers (the fade animation's duration comes from
-   ARRIVAL_LINGER_MS, set inline), unless clicked and held. Streams
-   keep their pastel colours — neon belongs to the reveals below. */
+/* T3.2: drop arrivals. Each arriving object lingers (the fade
+   animation's duration comes from ARRIVAL_LINGER_MS, set inline),
+   unless clicked and held. Streams keep their pastel colours — neon
+   belongs to the reveals below.
+
+   T5.2e (Kimia's call 2026-08-13): the shelf is pinned to the top right
+   of the WINDOW, not to the top of the page — tap a habit at the bottom
+   of a long list and the drop still arrives in view. --header-height is
+   measured and handed down by App, so the shelf clears the real header
+   at both its one-storey and two-storey heights and never covers it.
+   The column is built newest-first in the markup and grows downward, so
+   a fresh arrival takes the top spot and earlier ones move down. */
 
 .arrival-shelf {
+  position: fixed;
+  top: calc(var(--header-height, 0px) + var(--space-3));
+  right: var(--space-6);
+  z-index: 4; /* over the page, under the check-in's 5 and reveals' 10 */
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   gap: var(--space-2);
-  flex-wrap: wrap;
+  max-width: min(20rem, 45vw);
 }
 
 .arrival {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  /* The held choices (gather / leave it) drop to a second line rather
+     than stretching the card out across the window. */
+  flex-wrap: wrap;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-2);
   background: var(--surface);
