@@ -149,6 +149,12 @@ tracker. Everything after this is delight, informed by real use.
       - [ ] **T5.2e Glow, feel & the startup animation** — the §4–§5 feel
             enhancements and the §12f rolling planet; the glow scale joins
             the tokens file here, once there is a real one to name.
+            - [x] the §12f rolling planet _(2026-08-13 — built in front of
+                  Kimia on the design workbench, then wired into the real
+                  daily startup: hold, fade, tap-to-skip, Sunday colour.
+                  Build notes in history.md)_
+            - [ ] the §4–§5 feel enhancements + the glow scale into the
+                  tokens file
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
       categories), flora, fungi, market objects, planet regions. Several
       sessions of creative iteration; Kimia art-directs. Language and

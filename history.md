@@ -2128,6 +2128,45 @@ return 0` right after the era is worked out, so a moment before the
   meters measured equal and the bar's edges measured flush at each, and
   a world page checked at each shape.
 
+- 2026-08-13 (T5.2e, Kimia art-directing live — session 50): **the
+  §12f rolling planet, decided by eye over four passes.** Built on the
+  design workbench first, because the real thing plays once per Habitat
+  day and then hides for 24 hours; the workbench box replays it for
+  ever, and the whole composition is sized off the box's WIDTH (`cqw`),
+  so a small box shows exactly what a full screen gets. Her calls, in
+  order: (1) the first pass had "really nice dimensions" but **not
+  enough texture** — use the shared library's **weathered rock and
+  cratered stone**, and make the movement suggest a sphere, not a
+  stripe; (2) **texture up again**, **bring the home-screen twinkle
+  back** (reversing her own "no twinkle" of the same morning), and add
+  a **super-slow drift of the sky toward the top right**. The answer to
+  "suggest a sphere" is that receding ground gets smaller AND slower,
+  so the surface is three depth bands at 1×, 1.6× and 2.6× — the
+  parallax is what reads as a ball turning. Full drawing notes in
+  design-notes §13d.
+- 2026-08-13 (T5.2e, same session): **the startup ceremony's shape.**
+  The planet holds the screen for 3.2s, then fades over 1.5s and hands
+  the day over. A tap ends the hold early and goes straight to the
+  fade; **the fade itself is never skippable**, because it is the
+  handover to the app rather than a wait before one. While it holds it
+  deliberately takes taps — that is how you dismiss it — and stops the
+  instant it starts leaving, so a click during the fade lands on the
+  app instead of on a ghost. The Sunday rule is `startupCharm()` in
+  `game/startup.js`: shell pink every ordinary day, a random pick from
+  the other five on Sundays, drawn once on mount so it can never change
+  mid-ceremony.
+- 2026-08-13 (T5.2e, same session): **"desktop only" is now just "wide
+  enough for Habitat".** §12f asked for a `min-width` check so mobile
+  AND tablet skip the animation. It gets that for free from
+  `ViewportGate`, which does not mount the app at all below
+  `MIN_APP_WIDTH` — but that gate dropped to 740px on 2026-08-12 and
+  became a width rule rather than a device rule, so a portrait tablet
+  that the old 1024px gate would have turned away now sees the
+  ceremony. Accepted rather than fought: a separate higher threshold
+  just for the startup would reintroduce exactly the device thinking
+  the gate deliberately dropped. Folded into §12f. If it ever looks
+  wrong on a tablet, it is one number, not a new mechanism.
+
 ## spec.md version history (formerly its preamble)
 
 _v1.27 — 2026-07-21 (fifteenth session). T4.5 built: the UX, copy and
@@ -3108,3 +3147,72 @@ and recorded in spec.md's decisions log._
       and no display word creeping back into the game layer. Verified in
       a real browser too: the app boots and the Guest Book opens with no
       console errors.
+- [x] **T5.2e (part 1) The §12f rolling planet + the startup ceremony.**
+      _(done 2026-08-13)_
+      The daily startup stops being a placeholder. T4.5 held the slot
+      with a plain black fade; it is now the rolling planet, held for
+      3.2s and faded out over 1.5s.
+
+      **Built in front of Kimia, one visible change at a time** — the
+      T5.2c lesson applied deliberately. The planet landed on the design
+      workbench FIRST, not in the real slot, because the real one plays
+      once per Habitat day and then hides for 24 hours. Four passes, each
+      pushed to the live site for her eye: dimensions → rock texture and
+      sphere-suggesting movement → texture again, twinkle back, sky
+      drift → wired into the app. She approved the look before any of
+      the ceremony was written.
+
+      **The drawing** (`src/ui/planet.jsx`) is written up in
+      design-notes §13d — the enormous sphere, the three depth bands,
+      the greyscaled rock, the app's own sky. Everything is sized in
+      `cqw` so the workbench box and a full screen show the same
+      composition. `PLANET_TOKENS` at the top of the file is the dial
+      board.
+
+      **The ceremony** (`src/ui/Startup.jsx`, renamed from
+      StartupFade.jsx) is two phases and nothing else: hold, then
+      leaving. `startupCharm()` in `game/startup.js` is the Sunday rule
+      — shell pink every ordinary day, a random pick from the other five
+      on Sundays — drawn once on mount so it cannot change mid-ceremony.
+      `--veil-startup` left tokens.css: the startup was a black veil
+      only while it was a placeholder, and the planet paints its own sky
+      beside its own drawing.
+
+      **Four bugs found and fixed on the way**, all invisible until
+      looked at properly:
+      - two planets on the workbench rendered the SAME colour — the
+        colours were baked into a `<style>` block both instances shared,
+        so the second repainted the first. They travel as custom
+        properties now.
+      - the surface texture was invisible: an `<svg>` is a replaced
+        element with an intrinsic ratio from its viewBox, so pinning top
+        and bottom alone left it at twice its band's height and slid
+        every feature below the visible strip.
+      - the rock never blended at all, and lay on top as pale grey. The
+        blend was on the two copies, but their parent's opacity and mask
+        had already sealed them into their own group, so they were
+        blending against nothing. It belongs on the band that holds them.
+      - at full strength the rock bleached the planet, then tinted it
+        blue-grey: the library lights rock in a pale COOL grey. It is
+        greyscaled before it blends, so it can only carve light and shade.
+
+      **Tests:** 1085 pass (was 1076). `game/startup.test.js` covers the
+      Sunday rule including the out-of-range draw and the fact that an
+      ordinary day ignores the draw entirely; `App.test.jsx` covers the
+      two phases, tap-to-skip, that the fade is never skipped, and that
+      the ceremony offers nothing to read. Every existing "settle the
+      startup" advance became `settleStartup()`, which advances the hold
+      and the fade SEPARATELY — one combined advance leaves the fade
+      still to run, because its timer does not exist until React has
+      committed the state change the hold's timer made. That caught a
+      real trap rather than a cosmetic one.
+
+      **Verified in a real browser** at 1280×860: the ceremony covers
+      the viewport at z-index 20, wears shell pink on a Thursday, takes
+      a tap while holding and stops taking them the instant it leaves,
+      runs the fade for exactly STARTUP_FADE_MS, writes
+      `startupShownOn` only at the end, and unmounts. The handover was
+      screenshotted mid-fade: the app emerges through it with both star
+      fields overlapping, which is why it reads as one continuous sky.
+      (The hold was temporarily raised to 60s to catch it — browser
+      round-trips are slower than a 3.2s ceremony — and put back.)

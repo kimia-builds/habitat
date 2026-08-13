@@ -200,7 +200,11 @@
   /* Veils: full-screen washes that dim what is behind them. */
   --veil-reveal: rgba(4, 6, 10, 0.88); /* behind a first-occurrence reveal */
   --veil-checkin: rgba(4, 6, 10, 0.72); /* behind the morning check-in */
-  --veil-startup: #000; /* the daily startup fade — true black, then gone */
+  /* There is no --veil-startup any more (T5.2e, 2026-08-13). The startup
+     was a black veil only while it was a placeholder; it is now the
+     rolling planet, which paints its own sky beside its own drawing
+     (§11d: artwork keeps its paints), so the stylesheet has no colour
+     left to name here. */
 
   /* ===========================================================================
    * BORDERS — three weights, quietest first

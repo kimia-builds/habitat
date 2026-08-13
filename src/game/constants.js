@@ -46,11 +46,17 @@ export const DEFAULT_DAY_CUTOFF_HOUR = 3
 // into view, since browsers throttle timers in background tabs.)
 export const CLOCK_CHECK_MS = 60 * 1000
 
-// The daily startup moment (T4.5, spec §5b): once per Habitat day the
-// screen fades in from black. This is the plain-fade PLACEHOLDER — the
-// real animation is T5.2 and lasts "a few seconds"; a second and a
-// half is short on purpose, so the placeholder never overstays its
-// welcome.
+// The daily startup moment (T4.5's slot, filled for real in T5.2e,
+// design-notes §12f): once per Habitat day the rolling planet takes the
+// screen, then the app fades in over it. Two numbers, and §12f is strict
+// about the first one — "a few seconds. Anything long enough to want to
+// skip is too long. If it ever feels like a wait, it has failed."
+//
+// The hold is how long the planet has the screen to itself; the fade is
+// how long it then takes to give it back. A tap during the hold ends it
+// early and goes straight to the fade — the fade itself is never
+// skipped, because it IS the handover, not a delay before one.
+export const STARTUP_HOLD_MS = 3200
 export const STARTUP_FADE_MS = 1500
 
 // The farewell an archived tile gets before it leaves the list (Kimia's

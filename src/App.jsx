@@ -118,7 +118,7 @@ import MarketPage from './ui/MarketPage.jsx'
 import Meters from './ui/Meters.jsx'
 import NewGameControl from './ui/NewGameControl.jsx'
 import SpreadPopup from './ui/SpreadPopup.jsx'
-import StartupFade from './ui/StartupFade.jsx'
+import Startup from './ui/Startup.jsx'
 import SymbolPicker from './ui/SymbolPicker.jsx'
 
 // A press on a row's drag handle becomes a reorder drag once the pointer
@@ -219,7 +219,7 @@ function App() {
   // Habitat day — the day key already carries the 3am cutoff, so a tab
   // left open overnight becomes due the moment `today` flips. It plays
   // whether or not a check-in was owed; the morning's fixed order is
-  // check-in pop-up → startup fade → (Sundays) field notes.
+  // check-in pop-up → startup ceremony → (Sundays) field notes.
   const startupDue = shouldShowStartup(today, data.settings.startupShownOn)
   const active = activeHabits(data.habits)
   const filtered = filterBySymbols(active, filter)
@@ -294,7 +294,7 @@ function App() {
   }, [today])
   // The Sunday ritual (T2.3, Kimia's decision 2026-07-16): on the
   // first visit of each Sunday — once any check-in is answered AND the
-  // startup fade has played (T4.5's fixed morning order) — the field
+  // startup ceremony has played (the fixed morning order) — the field
   // notes open by themselves. Settings remember the day it last
   // happened, so later visits that Sunday go straight to the list.
   useEffect(() => {
@@ -729,7 +729,7 @@ function App() {
     setPendingArrivals([])
   }
 
-  // The startup fade has played (T4.5): remember the day so no second
+  // The startup ceremony has played: remember the day so no second
   // visit today replays it — and, the moment it's saved, the Sunday
   // effect above is free to take its turn in the morning's order.
   // The save reads the LATEST data (the fade's timer fires 1.5s after
@@ -1258,7 +1258,7 @@ function App() {
   // icon rail, the arrival shelf, any reveal still owed (one at a time,
   // dismissed by its own button — a drop family's FIRST occurrence
   // (T3.2) and EVERY friend (T4.4) both owe one), the reading popup and
-  // the daily startup fade (T4.5). Every page but the check-in renders
+  // the daily startup ceremony (§12f). Every page but the check-in renders
   // this fragment, so the fade plays over whichever screen the new day
   // opens on and the rail persists everywhere but the check-in (Kimia's
   // call 2026-07-21) — there the done button stays the only exit.
@@ -1314,7 +1314,7 @@ function App() {
       {readingItem && (
         <SpreadPopup item={readingItem} onClose={() => setReadingItem(null)} />
       )}
-      {startupDue && <StartupFade onDone={handleStartupDone} />}
+      {startupDue && <Startup todayKey={today} onDone={handleStartupDone} />}
     </>
   )
 
@@ -1523,7 +1523,7 @@ function App() {
   // on every screen but the check-in. Below sits the list content shared
   // with the check-in pop-up's dimmed backdrop, starting with the charm
   // filter. The cameo (T4.6) visits above the list — but never behind
-  // the startup fade, which takes the screen first.
+  // the startup ceremony, which takes the screen first.
   return (
     <>
       {appHeader}

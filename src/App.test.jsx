@@ -20,6 +20,7 @@ import {
   FRIEND_CATEGORIES,
   MAP_REGION_COUNT,
   STARTUP_FADE_MS,
+  STARTUP_HOLD_MS,
   SYMBOL_COUNT,
 } from './game/constants.js'
 import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
@@ -36,6 +37,21 @@ import {
 // The Habitat day these tests are running in, on the default 3am
 // cutoff — so backup-age expectations never go stale.
 const todayKey = () => dayKeyFromTimestamp(Date.now(), 3)
+
+// The daily startup is two phases now (T5.2e): the planet HOLDS the
+// screen, then FADES away. Tests that only want it out of the way call
+// this. It must advance the two SEPARATELY — the fade's timer does not
+// exist until React has committed the state change the hold's timer
+// made, so one combined advance leaves the fade still to run and the
+// ceremony still on screen.
+function settleStartup() {
+  act(() => {
+    vi.advanceTimersByTime(STARTUP_HOLD_MS)
+  })
+  act(() => {
+    vi.advanceTimersByTime(STARTUP_FADE_MS)
+  })
+}
 
 // The reveal dialogs are named by Kimia's words in narration.js —
 // never hard-code them here, or editing her file breaks the tests
@@ -1276,13 +1292,11 @@ describe('field notes (T2.3)', () => {
     const first = render(<App />)
     // The startup fade plays first — the field notes wait behind it
     // (T4.5's morning order: check-in → startup → field notes).
-    expect(document.querySelector('.startup-fade')).not.toBeNull()
+    expect(document.querySelector('.startup')).not.toBeNull()
     expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
 
     // Once the fade has lifted, the field notes take their turn.
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
+    settleStartup()
     expect(screen.getByRole('region', { name: 'field notes' })).toBeDefined()
     expect(stored().settings.startupShownOn).toBe('2026-07-19')
     expect(stored().settings.fieldNotesShownOn).toBe('2026-07-19')
@@ -1291,7 +1305,7 @@ describe('field notes (T2.3)', () => {
     first.unmount()
     render(<App />)
     expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
-    expect(document.querySelector('.startup-fade')).toBeNull()
+    expect(document.querySelector('.startup')).toBeNull()
   })
 
   it('the Sunday opening waits its turn behind the check-in AND the startup', () => {
@@ -1303,19 +1317,17 @@ describe('field notes (T2.3)', () => {
     expect(screen.getByRole('region', { name: 'check-in' })).toBeDefined()
     expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
     // No fade while the check-in is up — it waits its turn too.
-    expect(document.querySelector('.startup-fade')).toBeNull()
+    expect(document.querySelector('.startup')).toBeNull()
 
     // The check-in answered, the startup fade takes the next turn —
     // and the field notes still wait.
     fireEvent.click(screen.getByRole('button', { name: 'done' }))
-    expect(document.querySelector('.startup-fade')).not.toBeNull()
+    expect(document.querySelector('.startup')).not.toBeNull()
     expect(screen.queryByRole('region', { name: 'field notes' })).toBeNull()
 
     // Only once the fade has played do the field notes open — the full
     // morning order was check-in → startup → field notes.
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
+    settleStartup()
     expect(screen.getByRole('region', { name: 'field notes' })).toBeDefined()
     expect(stored().settings.startupShownOn).toBe('2026-07-19')
   })
@@ -1508,9 +1520,7 @@ describe('read now / read later + the spread popup (T3.5)', () => {
     // Settle the startup fade before anything else: these tests assert
     // the stored bytes stay unchanged, and the fade saves when its
     // timer fires.
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
+    settleStartup()
     fireEvent.click(row('walk').getByRole('button', { name: '+1' }))
     fireEvent.click(screen.getByRole('button', { name: 'onward' }))
   }
@@ -1972,7 +1982,7 @@ describe('the daily startup (T4.5)', () => {
   })
 
   // The fade says nothing and has no role — only its class marks it.
-  const fade = () => document.querySelector('.startup-fade')
+  const fade = () => document.querySelector('.startup')
   const stored = () => JSON.parse(localStorage.getItem('habitat-data'))
 
   // A quiet world: one daily habit since Monday, yesterday's check-in
@@ -2007,9 +2017,7 @@ describe('the daily startup (T4.5)', () => {
     render(<App />)
     expect(fade()).not.toBeNull()
 
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
+    settleStartup()
     expect(fade()).toBeNull()
     expect(stored().settings.startupShownOn).toBe('2026-07-16')
   })
@@ -2017,9 +2025,7 @@ describe('the daily startup (T4.5)', () => {
   it('does not play twice on the same Habitat day', () => {
     seed()
     const first = render(<App />)
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
+    settleStartup()
     first.unmount()
 
     render(<App />)
@@ -2035,9 +2041,7 @@ describe('the daily startup (T4.5)', () => {
       ],
     })
     const first = render(<App />)
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
+    settleStartup()
     first.unmount()
 
     vi.setSystemTime(new Date(2026, 6, 17, 9)) // Friday the 17th
@@ -2061,9 +2065,7 @@ describe('the daily startup (T4.5)', () => {
     vi.setSystemTime(new Date(2026, 6, 16, 1))
     const first = render(<App />)
     expect(fade()).not.toBeNull()
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
+    settleStartup()
     expect(stored().settings.startupShownOn).toBe('2026-07-15')
     first.unmount()
 
@@ -2072,6 +2074,78 @@ describe('the daily startup (T4.5)', () => {
     vi.setSystemTime(new Date(2026, 6, 16, 4))
     render(<App />)
     expect(fade()).not.toBeNull()
+  })
+
+  // The ceremony's own two phases (T5.2e, §12f). `.startup--leaving` is
+  // the fade; its absence means the planet still has the screen.
+  const leaving = () => document.querySelector('.startup--leaving')
+
+  it('holds the screen, then fades, then hands the day over', () => {
+    seed()
+    render(<App />)
+    expect(leaving()).toBeNull() // holding
+
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_HOLD_MS)
+    })
+    expect(leaving()).not.toBeNull() // fading
+    expect(stored().settings.startupShownOn).toBeUndefined() // not yet
+
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
+    expect(fade()).toBeNull()
+    expect(stored().settings.startupShownOn).toBe('2026-07-16')
+  })
+
+  it('a tap goes straight to the fade, and never skips it', () => {
+    // §12f: "a tap during it should go straight to the fade" — the
+    // ceremony is offered, never enforced. The FADE is not skippable,
+    // because it is the handover to the app rather than a wait before one.
+    seed()
+    render(<App />)
+    fireEvent.pointerDown(fade())
+    expect(leaving()).not.toBeNull()
+    expect(stored().settings.startupShownOn).toBeUndefined()
+
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS)
+    })
+    expect(fade()).toBeNull()
+    expect(stored().settings.startupShownOn).toBe('2026-07-16')
+  })
+
+  it('a second tap during the fade changes nothing', () => {
+    // Once it is leaving it must stay leaving on the same clock. (The
+    // stylesheet also stops it catching taps at all — `pointer-events:
+    // none` on .startup--leaving — but jsdom loads no CSS, so that half
+    // is verified in a real browser, not here.)
+    seed()
+    render(<App />)
+    fireEvent.pointerDown(fade())
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS / 2)
+    })
+    fireEvent.pointerDown(fade())
+    act(() => {
+      vi.advanceTimersByTime(STARTUP_FADE_MS / 2)
+    })
+    // The second tap did not restart the fade: the moment still ends on
+    // the first tap's schedule.
+    expect(fade()).toBeNull()
+  })
+
+  it('says nothing and offers nothing to read', () => {
+    // §12f: no text, no numbers, no narration slot, no achievement —
+    // nothing to read means nothing to miss.
+    seed()
+    render(<App />)
+    // The planet carries its own <style> block, which is text in the DOM
+    // but not text on the screen — drop those, and nothing should be left.
+    const onScreen = fade().cloneNode(true)
+    onScreen.querySelectorAll('style').forEach((tag) => tag.remove())
+    expect(onScreen.textContent.trim()).toBe('')
+    expect(fade().getAttribute('aria-hidden')).toBe('true')
   })
 })
 
@@ -2113,9 +2187,7 @@ describe('the icon-only home screen (T4.5)', () => {
       }),
     )
     render(<App />)
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS) // settle the startup fade
-    })
+    settleStartup()
 
     // The left rail: the five world pages' other door.
     const rail = within(screen.getByRole('navigation', { name: 'pages' }))
@@ -2145,11 +2217,6 @@ describe('the icon-only home screen (T4.5)', () => {
 // the check-in (Kimia's call), the TEMPORARY design-assets page waits
 // for T5, and the home-screen cameo (T4.6) celebrates big wins.
 describe('the persistent rail, the design page and the cameo (2026-07-21)', () => {
-  const settleStartup = () =>
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
-
   it('the rail stays on every page it opens', () => {
     seedWorld('rail-seed')
     render(<App />)
@@ -2528,11 +2595,6 @@ describe('the rail carries the doers too (2026-08-12)', () => {
         .getByRole('navigation', { name: 'pages' })
         .querySelectorAll('button'),
     ].map((button) => button.getAttribute('aria-label'))
-
-  const settleStartup = () =>
-    act(() => {
-      vi.advanceTimersByTime(STARTUP_FADE_MS)
-    })
 
   it('lists the three doers first, in the order they had at the foot', () => {
     seedWorld('rail-doers')

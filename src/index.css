@@ -2050,19 +2050,36 @@ body {
   margin-top: var(--space-5);
 }
 
-/* The daily startup fade (T4.5's placeholder for T5.2's animation):
-   a black veil that lifts over STARTUP_FADE_MS and is gone. It never
-   intercepts a tap — §12f's "never blocking" holds even here. */
-.startup-fade {
+/* The daily startup ceremony (T5.2e, design-notes §12f): the rolling
+   planet over the whole screen, then gone. The planet paints its own
+   sky, so this layer carries no colour of its own — only position, and
+   the fade.
+
+   It DOES take taps while it holds, because a tap is how you dismiss it
+   (§12f's "never blocking" — the ceremony is offered, never enforced).
+   The instant it starts leaving it stops taking them, so a click during
+   the fade lands on the app underneath instead of on a ghost.
+
+   The fade is a keyframe animation rather than a transition on purpose:
+   `forwards` pins it at fully transparent, so there is no frame where a
+   finished ceremony snaps back into view before React unmounts it. Its
+   duration is set inline from STARTUP_FADE_MS, so the CSS and the timer
+   that ends the moment cannot drift apart — which is why no length is
+   named here. */
+.startup {
   position: fixed;
   inset: 0;
   z-index: 20;
-  pointer-events: none;
-  background: var(--veil-startup);
-  animation: startup-fade 1.5s ease forwards;
 }
 
-@keyframes startup-fade {
+.startup--leaving {
+  pointer-events: none;
+  animation-name: startup-leave;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes startup-leave {
   from {
     opacity: 1;
   }

@@ -733,7 +733,7 @@ decision — make it a pebble, or name it in the list with its reason.
 
 ---
 
-## 12. The home screen & the daily startup **[TO-BUILD · T4.5, T5.2]**
+## 12. The home screen & the daily startup **[BUILT — T4.5; the startup ceremony T5.2e, 2026-08-13]**
 
 _Decided with Kimia 2026-07-20 (twelfth session). Spec §5b carries the
 rules; this section carries the feel._
@@ -1005,7 +1005,7 @@ never as **broken** — dimmed, not crossed out, and its hover says so.
 _(Built 2026-07-20 in T4.4: the toggle shipped whole — greyed state
 and live party mode alike — because T4.4 landed before T4.5.)_
 
-### 12f. The daily startup animation
+### 12f. The daily startup animation **[BUILT — T5.2e, 2026-08-13]**
 
 The first visit of each Habitat day: a **complete black background**
 with a **slither of globe along the bottom edge**, stretching the full
@@ -1041,20 +1041,40 @@ check-in pop-up → startup → Sunday field notes. Coming _after_ the
 check-in is deliberate: yesterday gets closed, then the new day
 begins.
 
-**Desktop/laptop only (Kimia, 2026-07-21).** The animation is gated
-behind a `min-width` check (or a viewport check at mount); on mobile
-and tablet it is **skipped entirely — not shrunk** — and the screen
-simply plain-fades in as `StartupFade` does today. Kimia's real use is
-laptop-only, so this one asset is built epic for the screen that will
-see it rather than stretched responsive down to a phone. This is the
-**only device-conditional moment** in Habitat; the night-sky background
-(§13c) and everything else render everywhere.
+**Desktop/laptop only (Kimia, 2026-07-21).** The animation never plays
+on a screen too narrow for Habitat: it is **skipped entirely — not
+shrunk**. It needs no check of its own to manage that. The whole app
+lives inside `ViewportGate`, which does not mount its children below
+`MIN_APP_WIDTH`, so a screen that cannot have Habitat cannot have the
+ceremony either. Kimia's real use is laptop-only, and this one asset is
+built epic for the screen that will see it rather than stretched
+responsive down to a phone.
+
+**What "desktop only" now means in practice (2026-08-13).** The gate
+dropped from 1024px to 740px on 2026-08-12, and it became a WIDTH rule
+rather than a device rule (§13a). So the honest statement is: the
+ceremony plays wherever Habitat plays. A phone still never sees it; a
+portrait tablet at 740px+ now would, where the 1024px gate would have
+turned it away. That is a consequence of the width rule, accepted here
+rather than fought — a separate, higher threshold just for the startup
+would reintroduce the device thinking the gate deliberately dropped.
+If a tablet opening on the planet ever looks wrong, the fix is one
+number, not a new mechanism.
+
+**How long it lasts (T5.2e, 2026-08-13).** Two numbers, both in
+`constants.js`: the planet HOLDS the screen for `STARTUP_HOLD_MS`
+(3.2s), then FADES over `STARTUP_FADE_MS` (1.5s) and hands the day
+over. A tap ends the hold early and goes straight to the fade; the fade
+itself is never skipped, because it is the handover rather than a wait
+before one. While it holds it deliberately DOES take taps — that is how
+you dismiss it — and the instant it starts leaving it stops, so a click
+during the fade lands on the app underneath instead of on a ghost.
 
 Soundless, as ever.
 
 ---
 
-## 13. Layout & atmosphere — the M5 layout pass **[§13a, §13b, §13c BUILT (T5.2d, 2026-08-12) · §13d is T5.2e]**
+## 13. Layout & atmosphere — the M5 layout pass **[§13a, §13b, §13c BUILT (T5.2d, 2026-08-12) · §13d BUILT (T5.2e, 2026-08-13)]**
 
 _Kimia's M5 layout spec, merged 2026-07-21. Net-new structural pieces
 for this design pass; they sit on top of the home screen §12 already
@@ -1219,12 +1239,46 @@ the bottom** and lifts only faintly above it. If the bolder July sky is
 wanted after all, it is a three-value edit in tokens.css and nothing
 else — which is the tokens file doing its job.
 
-### 13d. The startup "rolling planet" — desktop only
+### 13d. The startup "rolling planet" **[BUILT — T5.2e, 2026-08-13]**
 
-The full "rolling planet" startup animation is built for the first time
-in this pass (its slot was scaffolded in T4.5 as a plain fade). **New
-this pass:** it plays on **desktop/laptop only** — mobile and tablet
-skip it entirely and keep the plain fade. The colour, timing and the
-four standing rules all live in §12f, which now carries the
-desktop-only clause; this note only flags that the layout pass is where
-it gets built.
+The full "rolling planet" startup animation was built in this pass (its
+slot was scaffolded in T4.5 as a plain fade). The colour, timing, the
+four standing rules and what "desktop only" now means all live in §12f;
+this note records how the planet is actually drawn, because none of
+that is a design decision anyone would guess from the picture.
+
+It is `src/ui/planet.jsx`, plain CSS and the shared texture library —
+no images. Four ideas hold it up:
+
+- **The sphere is enormous.** A circle three times wider than the
+  screen, sunk almost entirely below the bottom edge so only its crown
+  shows. Being that big is what makes the curve gentle enough to read
+  as a planet rather than a bubble.
+- **The surface is banded by DISTANCE, not laid on flat.** Ground
+  receding toward a horizon gets smaller AND slower, so there are three
+  depth bands between the limb and the viewer — cratered stone at the
+  limb and up close, weathered rock between (design-bible §8) — each
+  drifting at its own pace. The near ground runs 2.6× the horizon's
+  speed, and that disagreement is what the eye reads as a ball turning
+  rather than a belt scrolling. Every band is drawn twice and slid by
+  exactly one copy, so each loop is seamless.
+- **The rock is drained of its own colour before it blends.** The
+  library lights its rock in a pale COOL grey, which bleaches a charm
+  colour it is laid over. Greyscaled first, it can only carve light and
+  shade. Anything else that puts library rock over a charm colour will
+  hit this.
+- **The sky is the app's own.** Four dark colours (indigo, teal, plum,
+  umber) wash faintly across a near-black ground, and the star layer is
+  `NightSky` unchanged — same asset, same seed, same rare twinkle. The
+  whole layer creeps toward the top right and back, one crossing every
+  90 seconds, so the scene is never quite still. The app then fades in
+  over that same sky, which is what makes the handover invisible.
+
+Every number worth an opinion is a named dial in `PLANET_TOKENS` at the
+top of the file. Sizes are in `cqw` — percentages of the container's own
+WIDTH — so the composition is identical in a small workbench box and on
+a full screen, and never reshapes when a window gets taller.
+
+Kimia art-directed it live over 2026-08-13, one visible change at a
+time; the workbench swatch on the design page is where she looked, and
+it stays there until the workbench itself goes.
