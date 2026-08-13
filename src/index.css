@@ -791,12 +791,50 @@ body {
      than stretching the card out across the window. */
   flex-wrap: wrap;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-2);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
+  /* Generous at the ends, because the blob's curve eats into them. */
+  padding: var(--space-2) var(--space-5);
+  /* No background, no border, no radius: an arrival is a BLOB, and the
+     blob is drawn (ArrivalShelf's three outlines) rather than styled.
+     This box only holds the contents up; position: relative is what the
+     drawing hangs off. */
+  position: relative;
   cursor: pointer;
   font: inherit;
+}
+
+/* The drawn blob behind one arrival (T5.2e, Kimia's call 2026-08-13) —
+   the shape language the Map's regions already speak, rather than a
+   clean card. Stretched to fill whatever the arrival turned out to be;
+   overflow stays visible because the outlines bulge a little past their
+   own frame on purpose.
+
+   z-index: -1 puts it behind the glyph and the words. It cannot escape
+   the shelf and slide behind the page, because .arrival-shelf's own
+   z-index makes a stacking context for it to stay inside. */
+.arrival-blob {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: visible;
+}
+
+/* OPAQUE, not the usual white wash (Kimia 2026-08-13). The shelf floats
+   over the habit tiles now, and a washed fill let them read straight
+   through it — worst on a narrow window, where the blob sits right over
+   the list. --surface-solid is the ground colour itself, so a blob
+   reads as a hole cut in the sky rather than a second, competing
+   surface (the same call the field notes made).
+
+   The edge and the glow are currentColor, so each blob is lit in its
+   own stream's colour — exactly how a known map region is drawn. */
+.arrival-blob path {
+  fill: var(--surface-solid);
+  stroke: currentColor;
+  stroke-opacity: 0.5;
+  stroke-width: 1;
+  filter: drop-shadow(0 0 6px currentColor);
 }
 
 @keyframes arrival-fade {
