@@ -80,6 +80,13 @@ function HabitRow({
   const [taps, setTaps] = useState(0)
 
   function handleComplete(event) {
+    // A tile on its way to the archive is drawn one last time with
+    // NOTHING wired up (App) — it is already archived, and this is only
+    // its exit. Pressing it has always been a no-op and stays one: the
+    // controls used to be handed a missing handler and simply do
+    // nothing, and going through this function must not turn that into
+    // a crash.
+    if (!onComplete) return
     setTaps((count) => count + 1)
     onComplete(event)
   }

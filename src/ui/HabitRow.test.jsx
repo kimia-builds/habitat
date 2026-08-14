@@ -176,4 +176,27 @@ describe('the tap spark (§4)', () => {
     fireEvent.click(container.querySelector('.todo-check'))
     expect(container.querySelector('.tap-spark')).not.toBeNull()
   })
+
+  it('a tile on its way to the archive presses into silence', () => {
+    // App draws the farewell row with nothing wired up. Pressing it has
+    // always done nothing, and must not start throwing now that the
+    // press goes through a function of our own.
+    const { container } = render(
+      <ul>
+        <HabitRow
+          habit={habit}
+          arrivalNote={null}
+          todayCount={0}
+          required={1}
+          fulfilled={false}
+          leaving
+          reorderDisabled
+          onReorderStart={vi.fn()}
+        />
+      </ul>,
+    )
+    const { plus, spark } = controls(container)
+    expect(() => fireEvent.click(plus)).not.toThrow()
+    expect(spark()).toBeNull()
+  })
 })
