@@ -1067,8 +1067,19 @@ body {
     opacity: 1;
     transform: none;
   }
+  /* The last quarter of the linger is the going: 1.5s of the 6s
+     ARRIVAL_LINGER_MS (Kimia's call 2026-08-14 — the two move together
+     if the linger is ever retuned).
+
+     LINEAR, and that is the whole point of this rule. The fade was
+     already 1.5s long on paper, but under `ease` it spent the first
+     600ms falling to a fifth of its brightness and the last 600ms
+     creeping around invisibly — so what you saw was a half-second snuff
+     and a long nothing. Linear spends the light evenly, and the drop
+     takes the whole second and a half to leave. */
   75% {
     opacity: 1;
+    animation-timing-function: linear;
   }
   100% {
     opacity: 0;
@@ -1167,6 +1178,26 @@ body {
   max-width: 14rem;
   font-size: 0.8rem;
   color: var(--expedition);
+  /* The note leaves the way its drop does (Kimia's call 2026-08-14). It
+     used to be cut dead: the words sat at full strength for six seconds
+     and then the element simply stopped existing, which beside a blob
+     dissolving gently read as a glitch. Now it holds, then dissolves
+     over the same last 1.5 seconds.
+
+     The duration is handed down by HabitRow as --arrival-linger, so it
+     is ARRIVAL_LINGER_MS in constants.js and nowhere else; the fallback
+     only matters if the note is ever drawn without it. */
+  animation: arrival-note-fade var(--arrival-linger, 6000ms) linear forwards;
+}
+
+@keyframes arrival-note-fade {
+  0%,
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* The note's half of the star-shimmer (T5.2e, §5 — Kimia's call: both
@@ -1204,8 +1235,13 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     /* Paced with the stars, which slowed on the same call: the two
-       halves are one gesture and must not run at different speeds. */
-    animation: note-glint 1400ms ease-in-out;
+       halves are one gesture and must not run at different speeds. The
+       going is a second animation on the same words, and has to be
+       repeated here — naming one animation replaces the list, it does
+       not add to it. */
+    animation:
+      note-glint 1400ms ease-in-out,
+      arrival-note-fade var(--arrival-linger, 6000ms) linear forwards;
   }
 
   @keyframes note-glint {
@@ -1225,8 +1261,12 @@ body {
     display: none;
   }
 
+  /* The glint goes; the going stays. Fading out is how the note leaves,
+     the same way the fade is how the drop leaves — neither is an
+     ornament, and a note that vanished mid-sentence would be a harder
+     thing to watch than one that dissolves. */
   .arrival-note {
-    animation: none;
+    animation: arrival-note-fade var(--arrival-linger, 6000ms) linear forwards;
   }
 }
 

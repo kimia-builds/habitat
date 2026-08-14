@@ -17,6 +17,7 @@
 import { cleanup, fireEvent, render } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import HabitRow from './HabitRow.jsx'
 
 afterEach(cleanup)
@@ -59,6 +60,19 @@ describe('the by-the-habit note (§5)', () => {
     // A different element, not the same one with its words swapped —
     // which is the whole point: only a fresh element plays the glint.
     expect(second).not.toBe(first)
+  })
+
+  it('leaves with its drop — one linger, handed down, never a second copy', () => {
+    // The note dissolves over the same last 1.5s the blob does (Kimia's
+    // call 2026-08-14). The stylesheet does the fading but does NOT
+    // know how long an arrival lives: that number is ARRIVAL_LINGER_MS
+    // and arrives as a custom property, so the two can never drift.
+    const { container } = render(row('you came across a flora find'))
+    expect(
+      container
+        .querySelector('.arrival-note')
+        .style.getPropertyValue('--arrival-linger'),
+    ).toBe(`${ARRIVAL_LINGER_MS}ms`)
   })
 
   it('leaves the note alone when the sentence has not changed', () => {

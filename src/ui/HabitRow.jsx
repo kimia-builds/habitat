@@ -5,6 +5,7 @@
 
 import { useState } from 'react'
 
+import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import CharmSymbol from './CharmSymbol.jsx'
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -248,7 +249,14 @@ function HabitRow({
           already finished. Keyed on the sentence, new words mean a new
           element, and a new element glints. */}
       {arrivalNote && (
-        <span className="arrival-note" key={arrivalNote}>
+        <span
+          className="arrival-note"
+          key={arrivalNote}
+          // The note dissolves on the same clock its drop does (Kimia's
+          // call 2026-08-14), so it is handed the one linger everything
+          // else uses rather than the stylesheet keeping a copy.
+          style={{ '--arrival-linger': `${ARRIVAL_LINGER_MS}ms` }}
+        >
           {arrivalNote}
         </span>
       )}
