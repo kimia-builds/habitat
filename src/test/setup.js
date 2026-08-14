@@ -47,3 +47,11 @@ if (
     })
   }
 }
+
+// jsdom has no layout, so window.scrollTo() does nothing but complain
+// ("Not implemented: Window's scrollTo()") every time the app asks the
+// page to jump back to the top. Swap in a quiet no-op that tests can
+// still watch with vi.spyOn.
+if (typeof window !== 'undefined') {
+  window.scrollTo = () => {}
+}

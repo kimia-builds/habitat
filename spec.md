@@ -118,6 +118,21 @@ dailies/habits/to-dos distinction. Each habit has:
   unresolved yesterday triggers the check-in: older editable days never
   nag (optional means optional), they're simply reachable from it —
   or any time via "edit past days".
+- **Owed vs asked for (Kimia's call 2026-08-14).** The two ways into the
+  check-in leave by different doors. The one you are **owed** — the
+  morning's, or a day rolling over while the page is open — keeps every
+  rule above: yesterday must be answered, and **done is the only exit**.
+  One you **asked for**, from the rail's "edit past days", is a visit,
+  and a visit can be left: a press outside the panel closes it. Marks
+  are saved as they are made either way, so nothing is lost by leaving;
+  what a click-away does not do is record yesterday as answered.
+- **Done lands you at the top (Kimia's call 2026-08-14).** Pressing done
+  returns you to the top of the habit list however far down the page you
+  were when the check-in opened, because the meters sit in the header
+  bar and the movement they held through the check-in (design-notes §4)
+  plays the moment it closes — the answer's whole payoff is up there.
+  Clicking away from a check-in you asked for does **not** jump: nothing
+  was held, so the page stays where it stood.
 - **The backfill window (2026-07-14, replaces the earlier "no data"
   idea):** a past day can be filled in or corrected only while its week
   is still the current one. Every day of the current Mon–Sun week stays

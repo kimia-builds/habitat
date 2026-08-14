@@ -2,15 +2,25 @@
 // plus optional backfill for the other still-editable days of the
 // current week. Pure display + callbacks — which days are editable and
 // which habits appear come from the game modules; recording happens in
-// App. Answering is saving: the only way out is the done button, which
-// tells App to remember the check-in happened. Nothing here punishes —
-// leaving everything unmarked is a perfectly fine answer.
+// App. Answering is saving; nothing here punishes — leaving everything
+// unmarked is a perfectly fine answer.
+//
+// The check-in is meant to be QUICK (Kimia's call 2026-08-14): a glance,
+// a few taps, gone. So it stays as close to one screenful as it can —
+// tight rows in a smaller type, an optional charm lens at the top to
+// narrow the list by tag, and a `…` that folds a long list down to its
+// first few rows. Everything that folds is folded so that the earlier-
+// days offer, and the way out, stay within reach of the question.
 
 import { editablePastDays, habitsOn } from '../game/checkin.js'
 import { countOn } from '../game/completions.js'
 import { addDays, isoWeekday, shortDate } from '../game/days.js'
+import { CHECKIN_ROWS_BEFORE_MORE } from '../game/constants.js'
+import { filterBySymbols } from '../game/habits.js'
 import { requiredPerDay, scheduleOn } from '../game/schedule.js'
+import { useState } from 'react'
 import CharmSymbol from './CharmSymbol.jsx'
+import SymbolPicker from './SymbolPicker.jsx'
 
 // Kimia's date convention (2026-08-12): "mon DD-MM-YY" — the weekday
 // lowercase like the rest of the interface, then the same day-first
@@ -20,19 +30,17 @@ const WEEKDAY_NAMES = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 const dayLabel = (dayKey) =>
   `${WEEKDAY_NAMES[isoWeekday(dayKey) - 1]} ${shortDate(dayKey)}`
 
+// Which habits a given past day offers, seen through the charm lens.
+// The lens is a view, never a filter on what counts: a hidden habit is
+// simply not on screen, and anything already marked on it stays marked.
+const listedOn = (habits, completions, dayKey, cutoffHour, symbols) =>
+  filterBySymbols(habitsOn(habits, completions, dayKey, cutoffHour), symbols)
+
 // The habits of one past day, each with its mark/undo controls —
 // a slimmer cousin of HabitRow, acting on that day instead of today.
-function DayRows({
-  habits,
-  completions,
-  dayKey,
-  cutoffHour,
-  onMark,
-  onUnmark,
-}) {
-  const listed = habitsOn(habits, completions, dayKey, cutoffHour)
+function DayRows({ listed, completions, dayKey, onMark, onUnmark }) {
   if (listed.length === 0) {
-    return <p className="habit-meta">no habits existed yet on this day</p>
+    return <p className="habit-meta">no habits to show for this day</p>
   }
   return (
     <ul className="habit-list">
@@ -110,9 +118,39 @@ function CheckInPanel({
   onUnmark,
   onDone,
 }) {
+  // The charm lens, and whether a long yesterday is showing in full.
+  // Both are plain component state: a check-in is one sitting, and the
+  // next one starts fresh with everything shown.
+  const [filter, setFilter] = useState([])
+  const [expanded, setExpanded] = useState(false)
+
+  const toggleFilter = (symbol) =>
+    setFilter((chosen) =>
+      chosen.includes(symbol)
+        ? chosen.filter((s) => s !== symbol)
+        : [...chosen, symbol],
+    )
+
   const yesterday = addDays(todayKey, -1)
   const older = editablePastDays(todayKey).filter((day) => day !== yesterday)
-  const rowProps = { habits, completions, cutoffHour, onMark, onUnmark }
+
+  const yesterdayRows = listedOn(
+    habits,
+    completions,
+    yesterday,
+    cutoffHour,
+    filter,
+  )
+  // Fold a long list down to its first few rows. The hidden ones are
+  // only hidden: nothing about them changes, and one press brings them
+  // back. Folding is what keeps the earlier-days offer and the done
+  // pebble near the question instead of a scroll away.
+  const overflowing = yesterdayRows.length > CHECKIN_ROWS_BEFORE_MORE
+  const folded = overflowing && !expanded
+  const hidden = folded ? yesterdayRows.length - CHECKIN_ROWS_BEFORE_MORE : 0
+  const shown = folded
+    ? yesterdayRows.slice(0, CHECKIN_ROWS_BEFORE_MORE)
+    : yesterdayRows
 
   // The question IS the heading (Kimia's call 2026-08-11): the old
   // "check-in" title and its dated "Mark what you completed yesterday,
@@ -122,7 +160,34 @@ function CheckInPanel({
   return (
     <section className="check-in" aria-label="check-in">
       <h2>what did you do yesterday?</h2>
-      <DayRows {...rowProps} dayKey={yesterday} />
+
+      {/* The same charm lens the home screen wears, in the same place:
+          centred, directly under the heading. Optional — with nothing
+          chosen the whole day is listed, exactly as before. */}
+      <div className="filter-view">
+        <SymbolPicker selected={filter} onToggle={toggleFilter} />
+      </div>
+
+      <DayRows
+        listed={shown}
+        completions={completions}
+        dayKey={yesterday}
+        onMark={onMark}
+        onUnmark={onUnmark}
+      />
+
+      {overflowing && (
+        <button
+          className="pebble pebble-more"
+          onClick={() => setExpanded((open) => !open)}
+          title={expanded ? 'show fewer' : `show ${hidden} more`}
+          aria-label={expanded ? 'show fewer' : `show ${hidden} more`}
+          aria-expanded={expanded}
+        >
+          …
+        </button>
+      )}
+
       {older.length > 0 && (
         <>
           <p className="habit-meta">
@@ -131,11 +196,18 @@ function CheckInPanel({
           {older.map((day) => (
             <details key={day}>
               <summary>{dayLabel(day)}</summary>
-              <DayRows {...rowProps} dayKey={day} />
+              <DayRows
+                listed={listedOn(habits, completions, day, cutoffHour, filter)}
+                completions={completions}
+                dayKey={day}
+                onMark={onMark}
+                onUnmark={onUnmark}
+              />
             </details>
           ))}
         </>
       )}
+
       <button className="pebble" onClick={onDone}>
         done
       </button>

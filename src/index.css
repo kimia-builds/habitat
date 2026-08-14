@@ -2466,6 +2466,65 @@ body {
   margin-top: var(--space-5);
 }
 
+/* The check-in's own charm lens (2026-08-14): the same row of charms the
+   home screen wears, in the same centred place under the heading, so
+   answering "just the reading ones" is one tap away. It sits closer to
+   its list than the home screen's does — everything in here is trying to
+   stay near everything else. */
+.check-in .filter-view {
+  margin-bottom: var(--space-3);
+}
+
+/* COMPRESSED ROWS (Kimia's call 2026-08-14). The check-in is a glance
+   and a few taps, not a page to read: the same baguettes as the home
+   list, squeezed so as many as possible fit without scrolling. Smaller
+   type, a hairline between rows instead of a gap, and much less padding
+   inside each one — the radius keeps the ends round, so the horizontal
+   padding stays generous while the vertical goes almost to nothing.
+   Only measurements change here; the charm fill, the edge and every
+   control are the list's own, untouched. */
+.check-in .habit-list {
+  gap: var(--space-1);
+}
+
+.check-in .habit-row {
+  font-size: 0.8rem;
+  gap: var(--space-2);
+  padding: 0.05rem var(--space-4);
+  /* Nothing in the check-in is draggable, so the list's grab cursor —
+     which it inherits from .habit-row — would be a lie here. */
+  cursor: default;
+}
+
+/* The counter pebbles set the floor on how short a row can be — at their
+   home size they are taller than the squeezed tile around them, so the
+   squeeze does nothing until they come down too. This is the one place
+   the +1 / -1 / tick trio wears a smaller size than everywhere else
+   (design-notes §11e): same circle, same shape, same family — a
+   compressed row simply asks for a compressed one. */
+.check-in .pebble-counter {
+  width: 1.6rem;
+  height: 1.6rem;
+  font-size: 0.75rem;
+}
+
+/* The earlier-days offer keeps a small breath above it — with the rows
+   this tight it would otherwise butt straight onto the last one. */
+.check-in > .habit-meta {
+  margin-top: var(--space-3);
+}
+
+/* The `…` that folds a long day (2026-08-14): centred under the rows it
+   is hiding, and deliberately quiet — it is an offer to see more, not
+   an instruction. Pressing it again folds the list back up. */
+.check-in .pebble-more {
+  display: block;
+  margin-inline: auto;
+  margin-top: var(--space-2);
+  letter-spacing: 0.15em;
+  line-height: 1;
+}
+
 /* The daily startup ceremony (T5.2e, design-notes §12f): the rolling
    planet over the whole screen, then gone. The planet paints its own
    sky, so this layer carries no colour of its own — only position, and

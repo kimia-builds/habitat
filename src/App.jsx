@@ -126,6 +126,16 @@ import SymbolPicker from './ui/SymbolPicker.jsx'
 // reorders nothing (mirrors the abode/bookcase drag threshold).
 const REORDER_DRAG_THRESHOLD_PX = 4
 
+// Put the page back at its top. Instant, not smooth: the meters play
+// their held movement the moment the check-in closes, and a glide would
+// still be travelling while it happened. Guarded because the test
+// browser (jsdom) has no real scrolling to do.
+function scrollToTop() {
+  if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+    window.scrollTo(0, 0)
+  }
+}
+
 function App() {
   const [data, setData] = useState(loadData)
   // The symbol filter is a temporary lens: plain component state, so it
@@ -281,6 +291,14 @@ function App() {
     ),
   )
 
+  // Was this check-in ASKED FOR, or was it owed? (Kimia's call
+  // 2026-08-14.) The owed one is the morning's: yesterday must be
+  // answered, so its done pebble stays the only exit. One opened by hand
+  // from the rail is a visit — it can be clicked away from, and clicking
+  // away leaves the page exactly where it stood. Marks made either way
+  // are already saved; the difference is only how you leave.
+  const [checkInByChoice, setCheckInByChoice] = useState(false)
+
   // When the day rolls over while the page is open, ask again — exactly
   // as if this were a fresh visit. Keyed on the day, not the data, so
   // marking habits mid-answer can never re-trigger or close the panel;
@@ -295,6 +313,9 @@ function App() {
         data.settings.dayCutoffHour,
       )
     ) {
+      // A day that rolls over while the page is open owes its check-in
+      // exactly like a fresh visit — so this one is not a visit by choice.
+      setCheckInByChoice(false)
       setCheckInOpen(true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -772,6 +793,24 @@ function App() {
     save({ ...data, checkedInThrough: addDays(today, -1) })
     setCheckInOpen(false)
     // Anything the check-in marks earned arrives now, together.
+    setArrivals((list) => [...list, ...pendingArrivals])
+    setPendingArrivals([])
+    // Answering ALWAYS lands you at the top of the habit list (Kimia's
+    // call 2026-08-14), wherever the page was scrolled to when the
+    // check-in opened. The meters are in the header bar, and the held
+    // movement they have been saving up (§4) plays the instant this
+    // closes — landing halfway down the page would mean missing the one
+    // moment the whole check-in was building to.
+    scrollToTop()
+  }
+
+  // Clicked away from a check-in that was opened by choice: nothing is
+  // recorded as ANSWERED (that word belongs to the morning's question
+  // alone), but marks already made are already saved, and anything they
+  // earned still arrives. The page stays where it was — no jump to the
+  // top, because nothing was being built to.
+  function handleCheckInDismiss() {
+    setCheckInOpen(false)
     setArrivals((list) => [...list, ...pendingArrivals])
     setPendingArrivals([])
   }
@@ -1286,7 +1325,22 @@ function App() {
         <div className="behind-checkin" aria-hidden="true" inert>
           {listContent}
         </div>
-        <div className="checkin-overlay">
+        {/* A check-in opened by hand can be clicked away from: a press
+            on the veil AROUND the panel (never inside it) closes the
+            visit. The morning's owed check-in gets no such handler —
+            there, done stays the only way out. */}
+        <div
+          className="checkin-overlay"
+          onClick={
+            checkInByChoice
+              ? (event) => {
+                  if (event.target === event.currentTarget) {
+                    handleCheckInDismiss()
+                  }
+                }
+              : undefined
+          }
+        >
           <CheckInPanel
             habits={data.habits}
             completions={data.completions}
@@ -1319,7 +1373,10 @@ function App() {
       <IconRail
         onOpen={setPage}
         onAddHabit={() => startNewHabit()}
-        onEditPastDays={() => setCheckInOpen(true)}
+        onEditPastDays={() => {
+          setCheckInByChoice(true)
+          setCheckInOpen(true)
+        }}
         pastDaysEditable={pastDaysEditable}
       />
       <ArrivalShelf

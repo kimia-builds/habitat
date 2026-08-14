@@ -425,3 +425,11 @@ export const CAMEO_LIVED_DAY_STEP = 50
 // the message, plus the fade. Then it's gone until the next visit that
 // still qualifies — no persistence, no nagging.
 export const CAMEO_LINGER_MS = 9000
+
+// How many of yesterday's habit rows the check-in shows before it folds
+// the rest behind a `…` (Kimia's call 2026-08-14). The check-in is meant
+// to be a glance and a few taps, so the offer to update earlier days —
+// and the done pebble — must stay near the question rather than a scroll
+// below a long list. At the compressed row height 8 rows still leave
+// both within one screenful on a laptop; press the `…` to see the rest.
+export const CHECKIN_ROWS_BEFORE_MORE = 8

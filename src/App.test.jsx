@@ -16,6 +16,7 @@ import App from './App'
 import {
   ARCHIVE_FAREWELL_MS,
   CAMEO_LINGER_MS,
+  CHECKIN_ROWS_BEFORE_MORE,
   DROP_SETTLE_MS,
   FRIEND_CATEGORIES,
   MAP_REGION_COUNT,
@@ -929,6 +930,135 @@ describe('the morning check-in (T1.4)', () => {
         .completions.map((c) => c.dayKey)
         .sort(),
     ).toEqual(['2026-07-13', '2026-07-15'])
+  })
+
+  // The quick check-in (Kimia's calls 2026-08-14). It is a glance and a
+  // few taps: the rows are compressed (CSS, nothing to assert), a charm
+  // lens narrows the list, a long day folds behind a `…`, and answering
+  // always lands you back at the top of the page so the meters' held
+  // movement is on screen when it plays.
+  describe('quick and short (2026-08-14)', () => {
+    // A week-old habit per charm, so the list is long enough to fold and
+    // varied enough to filter. One habit for charm 1, two for charm 2,
+    // and enough others to push past CHECKIN_ROWS_BEFORE_MORE.
+    function seedMany(count = CHECKIN_ROWS_BEFORE_MORE + 3) {
+      localStorage.setItem(
+        'habitat-data',
+        JSON.stringify({
+          schemaVersion: 1,
+          habits: Array.from({ length: count }, (_, i) => ({
+            id: `h${i}`,
+            name: `habit ${i}`,
+            description: '',
+            // First habit charm 1, next two charm 2, rest spread over
+            // the remaining charms.
+            symbol: i === 0 ? 1 : i <= 2 ? 2 : (i % 4) + 3,
+            difficulty: 'easy',
+            schedule: { type: 'daily' },
+            archived: false,
+            createdAt: new Date(2026, 6, 13, 9).getTime(),
+          })),
+          completions: [],
+          settings: { dayCutoffHour: 3 },
+          checkedInThrough: null,
+        }),
+      )
+    }
+
+    // Yesterday's rows only — the optional earlier days sit inside
+    // <details> elements, which these queries deliberately skip.
+    const yesterdayRowCount = () => {
+      const panel = screen.getByRole('region', { name: 'check-in' })
+      return [...panel.querySelectorAll(':scope > ul.habit-list > li')].length
+    }
+
+    it('folds a long yesterday behind one control, and unfolds it again', () => {
+      seedMany()
+      render(<App />)
+      expect(yesterdayRowCount()).toBe(CHECKIN_ROWS_BEFORE_MORE)
+
+      // The fold's control says how many it is holding back, and the
+      // earlier-days offer is already on screen above it — that is the
+      // point of folding at all.
+      const more = screen.getByRole('button', { name: /^show 3 more$/ })
+      expect(more.getAttribute('aria-expanded')).toBe('false')
+      expect(screen.getByText('mon 13-07-26')).toBeDefined()
+
+      fireEvent.click(more)
+      expect(yesterdayRowCount()).toBe(CHECKIN_ROWS_BEFORE_MORE + 3)
+      expect(more.getAttribute('aria-expanded')).toBe('true')
+
+      // And it folds back up.
+      fireEvent.click(more)
+      expect(yesterdayRowCount()).toBe(CHECKIN_ROWS_BEFORE_MORE)
+    })
+
+    it('a short yesterday is never folded', () => {
+      seedMany(CHECKIN_ROWS_BEFORE_MORE)
+      render(<App />)
+      expect(yesterdayRowCount()).toBe(CHECKIN_ROWS_BEFORE_MORE)
+      expect(screen.queryByRole('button', { name: /more$/ })).toBeNull()
+    })
+
+    it('the charm lens narrows the check-in without folding what it leaves', () => {
+      seedMany()
+      render(<App />)
+      const panel = screen.getByRole('region', { name: 'check-in' })
+      // The check-in's own lens — the dimmed home list behind carries
+      // one too, so scope the query to the panel.
+      const charms = within(panel).getAllByRole('button', { pressed: false })
+
+      // Charm 2 is worn by exactly two habits: choosing it leaves two
+      // rows, and with two rows there is nothing left to fold.
+      fireEvent.click(charms[1])
+      expect(yesterdayRowCount()).toBe(2)
+      expect(screen.queryByRole('button', { name: /more$/ })).toBeNull()
+
+      // Un-choosing gives the whole day back, folded as before.
+      fireEvent.click(charms[1])
+      expect(yesterdayRowCount()).toBe(CHECKIN_ROWS_BEFORE_MORE)
+    })
+
+    it('done lands you back at the top of the page', () => {
+      seed()
+      const jumped = vi.spyOn(window, 'scrollTo')
+      render(<App />)
+      fireEvent.click(screen.getByRole('button', { name: 'done' }))
+      expect(jumped).toHaveBeenCalledWith(0, 0)
+      jumped.mockRestore()
+    })
+
+    it('a check-in opened by hand can be clicked away from — and does not jump', () => {
+      seed({
+        completions: [
+          { id: 'c1', habitId: 'walk', recordedAt: 5, dayKey: '2026-07-15' },
+        ],
+      })
+      render(<App />)
+      fireEvent.click(screen.getByRole('button', { name: 'edit past days' }))
+      const panel = screen.getByRole('region', { name: 'check-in' })
+
+      const jumped = vi.spyOn(window, 'scrollTo')
+      // A press on the panel itself changes nothing…
+      fireEvent.click(panel)
+      expect(screen.queryByRole('region', { name: 'check-in' })).not.toBeNull()
+
+      // …a press on the veil around it closes the visit, leaves the page
+      // where it stood, and records no answer.
+      fireEvent.click(panel.parentElement)
+      expect(screen.queryByRole('region', { name: 'check-in' })).toBeNull()
+      expect(jumped).not.toHaveBeenCalled()
+      expect(stored().checkedInThrough).toBeNull()
+      jumped.mockRestore()
+    })
+
+    it('the morning check-in cannot be clicked away from', () => {
+      seed()
+      render(<App />)
+      const panel = screen.getByRole('region', { name: 'check-in' })
+      fireEvent.click(panel.parentElement)
+      expect(screen.queryByRole('region', { name: 'check-in' })).not.toBeNull()
+    })
   })
 })
 

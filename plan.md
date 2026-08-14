@@ -301,6 +301,14 @@ tracker. Everything after this is delight, informed by real use.
       onto the field notes, and "start a new game" replaced by a
       two-step popup offering total refresh or keep habit data; build
       notes in history.md)_
+- [x] **T6.12 The check-in gets quick.** _(done 2026-08-14, unplanned —
+      Kimia's calls: yesterday's rows compressed so as many as possible
+      fit without scrolling, the charm lens added at the top of the
+      panel, a `…` that folds a long day and unfolds it again, done
+      always landing you at the top of the page so the held meter
+      movement is on screen when it plays, and a check-in you opened
+      yourself becoming click-away-able — the morning's owed one still
+      exits only through done; build notes in history.md)_
 - [ ] **T6.7 The first hour — storytelling & narration for a new
       player** (Kimia's call 2026-08-11) — revisit what arriving on
       N-Z-D actually feels like for someone who has never opened

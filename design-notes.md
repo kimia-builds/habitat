@@ -856,6 +856,16 @@ square corner. Outlined, transparent, no fill — with one exception, the
 to-do tick, which fills with its charm to say done, because that fill is
 a mark rather than an edge.
 
+**One size, with one exception (2026-08-14).** The counter trio is one
+diameter everywhere it appears — except inside the check-in, where the
+rows are deliberately compressed (§12c). At their standard 2rem the
+counters were TALLER than the squeezed tile around them and set the
+floor on the whole row, so the squeeze did nothing until they came down
+too. Same circle, same shape, same family, one size smaller: a
+compressed row asks for a compressed pebble. This is the only scoped
+size in the family, and it stays that way unless a section here says
+otherwise.
+
 **The colour rule** is §11b's accent rule applied to controls: a pebble
 sitting on a saved habit tile borrows **that tile's charm**; everywhere
 else it is **plain white** (`--button-edge`). Every pebble's outline —
@@ -874,7 +884,7 @@ is one number in `src/tokens.css`.
 | A held drop, and the abode's waiting-to-decide list | gather, leave it, read now, read later |
 | Field notes | ‹ earlier, later › |
 | Market | buy |
-| Check-in | done |
+| Check-in | done, `…` (the fold — 2026-08-14) |
 | Reading spread, friend card | close |
 | Every secondary page | ← back to the habits |
 
@@ -1101,6 +1111,39 @@ border, generous internal space.
 This does not soften the rule (spec §4.2): yesterday must still be
 answered, and the done button is still the only way out. Quiet
 framing, firm mechanic — the same combination as undo.
+
+**Except when you asked for it (Kimia's call 2026-08-14).** A check-in
+opened by hand from the rail's pencil is not owed — it is a visit, and
+the pop-up's own logic says so: you are standing in your own room, and
+you may simply step back into it. A press on the veil around the panel
+closes the visit. The morning's owed check-in has no such press to
+find: there is no dismiss handler on the veil at all, rather than one
+that refuses.
+
+#### The check-in is a glance (Kimia's calls 2026-08-14)
+
+The panel had grown into something you scroll, and a check-in you
+scroll is a check-in you put off. Everything below serves one rule:
+**the offer to update earlier days, and the way out, are never far from
+the question.**
+
+- **Compressed rows.** The same baguettes as the habit list (§11b),
+  squeezed: smaller type, almost no vertical padding, a hairline gap
+  between them instead of a full one. Only measurements change — the
+  charm fill, the edge and every control are the list's own. The
+  counter pebbles come down with them; see §11e for why they had to.
+- **The charm lens at the top**, centred under the question, the same
+  row of charms in the same place as on the home screen. Answering "the
+  reading ones" first is one tap away. It is a VIEW, never a filter on
+  what counts: what a hidden habit already carries stays carried.
+- **A long day folds behind a `…`.** Past a set number of rows
+  (`CHECKIN_ROWS_BEFORE_MORE`) the rest are held back; one press shows
+  them, another folds them again. Quiet, not instructive — an offer to
+  see more, not a demand to.
+- **Done lands you at the top of the page** (spec §4.2), because the
+  held meter movement (§4) plays the instant the panel closes, and it
+  plays in the header bar. A jump, not a glide: a glide would still be
+  travelling while the bars moved.
 
 ### 12d. The left rail
 

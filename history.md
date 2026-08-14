@@ -2321,6 +2321,77 @@ return 0` right after the era is worked out, so a moment before the
   is unverified. The settle-back now runs on a timer with its duration
   in constants.js, which is testable, rather than on the animation's own
   end, which is not.
+- 2026-08-14 (Kimia's calls, session 54): **the check-in is a glance, not
+  a page.** Five calls in one go, all pulling the same way — the panel
+  had grown into something you scroll. (a) Yesterday's rows **compress**:
+  smaller type, almost no vertical padding, a hairline gap instead of a
+  full one, and the +1 / -1 / tick pebbles come down with them (the one
+  place in Habitat they are not their standard size — at 2rem they were
+  taller than the squeezed tile and set the floor on the whole row).
+  37px → 29px a row. (b) The **charm lens** joins the check-in, centred
+  under the question exactly as it sits on the home screen, so a day can
+  be answered one tag at a time. (c) A long yesterday **folds behind a
+  `…`** after `CHECKIN_ROWS_BEFORE_MORE` rows — press to see the rest,
+  press again to fold back. (d) All of which exists to serve one rule:
+  **"update earlier days…" is never far from the question**, and neither
+  is the done pebble. Folded into design-notes §12c and §11e.
+- 2026-08-14 (Kimia's call, same session): **answering always lands you
+  at the top.** Press done and the page jumps to the top of the habit
+  list, wherever it was scrolled to when the check-in opened — because
+  the meters live in the header bar and the movement they have been
+  holding (§4) plays the instant the check-in closes. Landing halfway
+  down the page means missing the one moment the whole check-in was
+  building toward. Instant, never smooth: a glide would still be
+  travelling while the bars moved. Folded into spec §4.2.
+- 2026-08-14 (Kimia's call, same session): **a check-in you asked for can
+  be clicked away from; one you were owed cannot.** The morning's
+  check-in is unchanged — yesterday must be answered and done is still
+  the only exit (spec §4.2, design-notes §12c). But one opened by hand
+  from the rail's pencil is a **visit**, and a visit can be left: a press
+  on the veil around the panel closes it. Marks made are already saved
+  either way, and anything they earned still arrives; what a click-away
+  does NOT do is record yesterday as answered, or jump to the top —
+  nothing was being built toward, so the page stays where it stood.
+  Folded into spec §4.2 and design-notes §12c.
+
+## T6.12 build notes — the quick check-in (2026-08-14)
+
+- `CheckInPanel.jsx` gained two pieces of its own state, both plain
+  component state that resets with each sitting: the charm lens
+  (`filter`) and whether a folded day is showing in full (`expanded`).
+  A check-in is one sitting; the next one starts fresh with everything
+  shown. (Whether the lens should REMEMBER itself is T6.11's question,
+  for the home screen's lens — deliberately not answered here.)
+- `DayRows` no longer works out its own list. It is handed one, which is
+  what lets the panel fold yesterday (slice the list) and filter every
+  day (`listedOn` = `habitsOn` seen through `filterBySymbols`) without
+  the fold and the lens knowing about each other. The lens is a VIEW,
+  never a filter on what counts: a habit the lens hides keeps whatever
+  was marked on it.
+- `CHECKIN_ROWS_BEFORE_MORE = 8` in `constants.js`. At the compressed
+  row height, 8 rows leave both the earlier-days offer and the done
+  pebble inside one laptop screenful (measured: 557px of panel in an
+  860px window, 657px with all 11 rows unfolded).
+- The compression is CSS only, all of it scoped under `.check-in` — the
+  home list is untouched. Nothing about the rows changes but their
+  measurements: same charm fill, same edge, same controls.
+- `checkInByChoice` in App tells the two check-ins apart. It is set true
+  only by the rail's pencil, and false again by the day-rollover effect
+  (a day that turns over while the page is open owes its check-in like a
+  fresh visit). The veil's click handler is `undefined` when the
+  check-in was owed, so there is no dismiss path to reach at all rather
+  than a handler that declines — and the handler that does exist fires
+  only when the press landed on the veil itself, never inside the panel.
+- `scrollToTop()` is guarded for jsdom, which has no layout and answers
+  `window.scrollTo()` with "Not implemented" on the console. `setup.js`
+  now stubs it to a quiet no-op that `vi.spyOn` can still watch, which
+  is how the two scroll rules are tested in both directions.
+- Browser-verified (the fold, the lens, the jump and the click-away all
+  need a real layout): rows 37px → 29px, the fold and unfold, the lens
+  narrowing to two rows and the `…` correctly vanishing with nothing
+  left to hide, done jumping from scrollY 492 to 0 and STAYING there
+  through the re-render, and a hand-opened check-in closing on a veil
+  press with the page still at 400.
 
 ## T5.2e (part 3) build notes — the meter glow, the spark, the arrival's going (2026-08-14)
 
