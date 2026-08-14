@@ -171,9 +171,11 @@ tracker. Everything after this is delight, informed by real use.
                         (Kimia's call: both places). _Built and live
                         2026-08-13 — stars around the blob's edge, a
                         glint across the note's words, several at once
-                        cascading; awaiting Kimia's eye, and her pick
-                        between white stars and each stream's own
-                        colour (both on the workbench). Build notes in
+                        cascading. Re-cut the same day on Kimia's
+                        redirect ("it's giving Las Vegas"): the sky's
+                        dots instead of sparkles, half white and half
+                        charm-coloured, slower and set wider. Awaiting
+                        her eye on the second version. Build notes in
                         history.md._
                   - [ ] the §4 meter glow — the header meter glows and
                         thickens, the tapped habit sparks with it, and

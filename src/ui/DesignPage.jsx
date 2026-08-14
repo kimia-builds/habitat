@@ -271,30 +271,24 @@ function TracedFriendSwatch({ friend, tint }) {
 }
 
 // The star-shimmer's workbench shelf (T5.2e, design-notes §5). It lands
-// here first because the real thing lasts under a second and only when a
-// habit happens to give something — this shelf replays it on demand.
+// here first because the real thing plays for a couple of seconds and
+// only when a habit happens to give something — this shelf replays it on
+// demand.
 //
 // The drops below are the REAL <ArrivalShelf/> with three made-up
 // arrivals, not a picture of one: same blobs, same names, same fade, and
 // clicking one holds it exactly as in the game. Only the shelf's pinning
 // is undone (see .shimmer-swatch in index.css), because a shelf fixed to
-// the window's corner cannot be lined up beside a second one.
+// the window's corner has nowhere to sit on a page.
 //
-// Two rows, so the star COLOUR can be chosen by eye — Habitat's white,
-// and the alternative where each stream sparkles in its own pastel.
+// It was TWO rows for one day, while the star colour was a question
+// (white / each stream's own pastel). Kimia answered neither
+// (2026-08-13): the stars became the night sky's dots, half white and
+// half charm-coloured, and one row is the answer.
 const SHIMMER_DEMO = [
   { id: 'demo-flora', key: 'flora', status: 'pending' },
   { id: 'demo-novel', key: 'novel' },
   { id: 'demo-fungi', key: 'fungi', amount: 3 },
-]
-
-const SHIMMER_ROWS = [
-  { key: 'white', name: 'white stars', className: '' },
-  {
-    key: 'stream',
-    name: "each stream's own colour",
-    className: 'shimmer-tinted',
-  },
 ]
 
 const ignore = () => {}
@@ -308,20 +302,17 @@ function ShimmerFamily() {
     <section className="design-family" aria-label="drop arrival">
       <h3>drop arrival</h3>
       <ul className="shimmer-swatches">
-        {SHIMMER_ROWS.map((row) => (
-          <li key={row.key} className={`shimmer-swatch ${row.className}`}>
-            <ArrivalShelf
-              key={run}
-              arrivals={SHIMMER_DEMO}
-              worldSeed={1}
-              headerHeight={0}
-              onExpire={ignore}
-              onDecide={ignore}
-              onRead={ignore}
-            />
-            <span className="shimmer-swatch-name">{row.name}</span>
-          </li>
-        ))}
+        <li className="shimmer-swatch">
+          <ArrivalShelf
+            key={run}
+            arrivals={SHIMMER_DEMO}
+            worldSeed={1}
+            headerHeight={0}
+            onExpire={ignore}
+            onDecide={ignore}
+            onRead={ignore}
+          />
+        </li>
       </ul>
       {/* The other half (Kimia's call: both places) — the by-the-habit
           note and its travelling glint. Its words come from the same

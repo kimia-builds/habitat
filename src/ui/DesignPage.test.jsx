@@ -195,17 +195,12 @@ describe('DesignPage workbench', () => {
 
   it('replays the star-shimmer on the real arrival shelf', () => {
     render(<DesignPage onBack={vi.fn()} />)
-    // Two rows (white stars / each stream's own colour), each holding
-    // the REAL shelf with the same three demo drops — so what is being
-    // eyeballed is the game's own arrival, not a picture of one. Every
-    // drop carries a shimmer, since none of them owes a reveal.
+    // The REAL shelf with three demo drops — so what is being eyeballed
+    // is the game's own arrival, not a picture of one. Every drop
+    // carries a shimmer, since none of them owes a reveal.
     const shelf = screen.getByLabelText('drop arrival')
-    const rows = shelf.querySelectorAll('.shimmer-swatch')
-    expect(rows).toHaveLength(2)
-    for (const row of rows) {
-      expect(row.querySelectorAll('.arrival')).toHaveLength(3)
-      expect(row.querySelectorAll('.shimmer')).toHaveLength(3)
-    }
+    expect(shelf.querySelectorAll('.arrival')).toHaveLength(3)
+    expect(shelf.querySelectorAll('.shimmer')).toHaveLength(3)
     // The note's half of the shimmer is here too (Kimia: both places).
     expect(
       shelf.querySelectorAll('.shimmer-note-swatch .arrival-note'),

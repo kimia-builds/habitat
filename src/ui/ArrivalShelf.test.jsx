@@ -49,6 +49,28 @@ describe('the star-shimmer on a landing drop (§5)', () => {
     ).toBe('true')
   })
 
+  it('wears the night sky rather than a fairground', () => {
+    // Kimia's call after seeing the first build (2026-08-13): the ring
+    // is mostly the sky's DOTS with a couple of four-pointed sparkles
+    // left as accents, and it is half white, half charm-coloured. Both
+    // halves are pinned decisions, so both are worth failing over.
+    const { container } = shelf([{ id: 'a1', key: 'flora', status: 'pending' }])
+    const stars = [...container.querySelectorAll('.shimmer-star')]
+    const dots = stars.filter((s) => s.querySelector('circle'))
+    const sparkles = stars.filter((s) => s.querySelector('path'))
+    expect(sparkles.length).toBeGreaterThan(0)
+    expect(dots.length).toBeGreaterThan(sparkles.length * 2)
+
+    // Read off the style ATTRIBUTE rather than the parsed style: these
+    // are var() references to tokens.css, and no stylesheet is loaded
+    // here to resolve them into colours.
+    const styles = stars.map((s) => s.getAttribute('style') ?? '')
+    const white = styles.filter((s) => s.includes('--shimmer-star')).length
+    const charm = styles.filter((s) => s.includes('--charm-')).length
+    expect(white).toBe(charm)
+    expect(white + charm).toBe(stars.length)
+  })
+
   it('leaves a first-occurrence find to its reveal', () => {
     // A drop that still owes a reveal gets the firework, not a shimmer.
     const { container } = shelf([

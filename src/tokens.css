@@ -267,14 +267,13 @@
   --pop-friend: #ff9ec7; /* the brightest of all — kept for friends alone */
 
   /* The star-shimmer on a landing drop (T5.2e, design-notes §5) — the
-     stars that pop around a blob's edge, and the band of light that
-     crosses the by-the-habit note. White, because every star in
-     Habitat's sky is white (design-bible §3), and because a shimmer is
-     LIGHT rather than another colour: pastels belong to the streams and
-     neon to the reveals, so a glint has to be neither.
-     Swap this for `currentColor` to see the alternative — each stream
-     sparkling in its own colour — which is what the workbench's second
-     row does. */
+     WHITE half of the ring of stars that opens around a blob's edge,
+     and the band of light that crosses the by-the-habit note. The other
+     half of the ring is charm-coloured and asks for --charm-… above by
+     name (Kimia's call 2026-08-13: half white, half a mix of the six).
+     White, because every star in Habitat's sky is white
+     (design-bible §3) — that rule governs the sky, and the shimmer
+     borrows its dots rather than replacing them. */
   --shimmer-star: #ffffff;
 
   /* ===========================================================================

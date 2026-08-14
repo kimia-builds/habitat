@@ -773,7 +773,11 @@ body {
 
 .arrival-shelf {
   position: fixed;
-  top: calc(var(--header-height, 0px) + var(--space-3));
+  /* The clearance grew from space-3 to space-6 when the shimmer's ring
+     went wide (2026-08-13): the stars stand about 30px off the blob, and
+     the promise that the shelf never covers the header has to hold for
+     what the arrival THROWS as well as for the arrival itself. */
+  top: calc(var(--header-height, 0px) + var(--space-6));
   right: var(--space-6);
   z-index: 4; /* over the page, under the check-in's 5 and reveals' 10 */
   display: flex;
@@ -856,38 +860,41 @@ body {
 
 .shimmer-star {
   position: absolute;
-  /* The table's x/y place each star's CENTRE, so it reads as a point on
-     the outline rather than the corner of a little box. Every keyframe
+  /* The table's x/y place each star's CENTRE, so it reads as a point in
+     the ring rather than the corner of a little box. Every keyframe
      below repeats this shift, because a transform replaces the one it
      inherits rather than adding to it. */
   transform: translate(-50%, -50%);
-  fill: var(--shimmer-star);
-  /* Lit in the arrival's own stream colour, so a white star still
-     belongs to the drop it came with. */
+  /* Each star carries its own colour inline (shimmer.jsx: half white,
+     half charm) and glows with the same one, the way the night sky's
+     gems carry their own halo. */
+  fill: currentColor;
   filter: drop-shadow(0 0 3px currentColor);
   /* Starts invisible: each star waits for its own delay, and without
      this the whole set would show for the first frame. */
   opacity: 0;
-  animation: shimmer-pop 700ms ease-out forwards;
+  animation: shimmer-pop 1500ms ease-in-out forwards;
 }
 
-/* Pops open, holds for an instant, shrinks away — the whole life of one
-   star, with a little rotation so a burst never reads as mechanical. */
+/* One star's whole life: breathes open, holds, fades out. Slow on
+   purpose (Kimia, 2026-08-13 — the first build "dazzled"), and eased at
+   both ends so nothing snaps. The little rotation shows only on the two
+   sparkles; a dot turning is a dot. */
 @keyframes shimmer-pop {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2) rotate(-25deg);
+    transform: translate(-50%, -50%) scale(0.4) rotate(-18deg);
   }
-  35% {
+  25% {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1) rotate(0deg);
   }
-  60% {
-    opacity: 0.9;
+  55% {
+    opacity: 0.85;
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.45) rotate(20deg);
+    transform: translate(-50%, -50%) scale(0.75) rotate(14deg);
   }
 }
 
@@ -1036,7 +1043,9 @@ body {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: note-glint 900ms ease-out;
+    /* Paced with the stars, which slowed on the same call: the two
+       halves are one gesture and must not run at different speeds. */
+    animation: note-glint 1400ms ease-in-out;
   }
 
   @keyframes note-glint {
@@ -2385,29 +2394,21 @@ body {
   padding: 0;
 }
 
+/* The ring of stars stands well outside the blob, so the swatch is
+   given room for it — otherwise the shelf's own drops sit as close
+   together here as they do in the game, and the rings overlap the
+   heading. */
 .shimmer-swatch {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  padding: var(--space-6) var(--space-8);
 }
 
 .shimmer-swatch .arrival-shelf {
   position: static;
   max-width: none;
   align-items: flex-start;
-}
-
-/* The second row's one difference: the stars take the arrival's own
-   stream colour instead of white. `currentColor` is resolved where the
-   star is painted, so each blob's stars come out in its own pastel. */
-.shimmer-tinted {
-  --shimmer-star: currentColor;
-}
-
-.shimmer-swatch-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  color: var(--text-quieter);
+  gap: var(--space-7);
 }
 
 /* The note, put back in the flow. In the game it hangs in the margin

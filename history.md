@@ -2245,14 +2245,41 @@ return 0` right after the era is worked out, so a moment before the
   sparkle off immediately after the firework it was meant to stay out of
   the way of. Folded into §5.
 
+- 2026-08-13 (T5.2e, same session): **"it's giving Las Vegas" — the
+  shimmer becomes the night sky.** Kimia's redirect on seeing the first
+  build, and the fourth time this project has been right to put a
+  design slice in front of her before calling it done. Four changes,
+  all hers: mostly DOTS at the sky's own sizes with only a couple of the
+  four-pointed sparkles kept as accents; half white and half a mix of
+  the six charm colours; SLOWER (a star now takes 1.5s to breathe in and
+  out, and the ring swells and settles over ~3s where it used to dazzle
+  in one); and WIDER, standing well off the blob for a spacious,
+  ethereal feel. The star-colour question this session opened —
+  white or each stream's own pastel — was answered by neither, so the
+  workbench went back to one row. Folded into §5.
+- 2026-08-13 (T5.2e, same session): **the sky's white-only rule keeps
+  its scope.** Design-bible §3 says stars are white, never coloured; the
+  shimmer is now half charm-coloured. Not a reversal: §3 governs the SKY
+  — a permanent field behind everything — and the shimmer is a momentary
+  event on a lit blob that borrows the sky's dot FORM. The sky itself
+  stays white-only. Folded into §5; §3 is untouched on purpose.
+
 ## T5.2e (part 2) build notes — the star-shimmer (2026-08-13)
 
 - `src/ui/shimmer.jsx` holds the whole drawing: one four-pointed sparkle
-  path, and a table of nine points around a box's perimeter written as
-  PERCENTAGES with a px size and its own offset. Percentages are what
-  let one table dress every arrival at every size — the same trick the
-  blob outlines use — so nothing is measured and no geometry runs at
-  render time.
+  path, and a table of twelve points around a box's perimeter written as
+  PERCENTAGES with a px size, a colour and its own offset. Percentages
+  are what let one table dress every arrival at every size — the same
+  trick the blob outlines use — so nothing is measured and no geometry
+  runs at render time. The colours are `var(--charm-…)` / `var(--shimmer-
+  star)` references handed to the element inline, so the palette stays
+  canonical in tokens.css even though a star is drawn by JavaScript.
+- The ring stands about 30px off the blob, which is why the shelf's
+  clearance under the header went from `--space-3` to `--space-6`: §5's
+  promise that the shelf never covers the header has to cover what an
+  arrival throws, not just the arrival. Measured in the browser rather
+  than guessed — the ring reaches ~15px past the blob's right edge and
+  the shelf sits 24px off the window, so nothing is clipped there.
 - The shelf hands each arrival its start delay from its position in the
   list (`index × SHIMMER_STAGGER_MS`), which is the cascade. A drop
   landing alone is always newest, so its delay is 0 and it sparkles at

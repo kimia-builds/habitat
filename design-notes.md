@@ -209,10 +209,22 @@ calls, and what they mean:
 
 - **On the blob: stars around its EDGE**, not on the little object
   inside it. What sparkles is the arrival, so a find reads as one thing
-  arriving rather than an object with an effect on it. Nine points
+  arriving rather than an object with an effect on it. Twelve points
   authored once as percentages of whatever box they are laid over — the
   same reasoning the blob outlines follow, and the reason nothing is
   measured per arrival.
+- **The stars are the NIGHT SKY's, not a fairground's** (Kimia on
+  seeing the first build: "it's giving Las Vegas"). Mostly **dots** at
+  the sky's own range of sizes, with **two** four-pointed sparkles left
+  as accents; **half white, half across the six charm colours**, each
+  glowing its own colour rather than the arrival's; **slow** — a star
+  takes a second and a half to breathe in and out, and the ring swells
+  and settles over about three seconds rather than flashing; and set
+  **wide**, standing well off the blob, which is what makes it read as
+  spacious and ethereal instead of a fringe on a card. The clearance
+  under the header grew with it: the promise that the shelf never
+  covers the header has to hold for what an arrival throws as well as
+  for the arrival itself.
 - **On the note: the WORDS themselves shimmer.** A line of text has no
   outline to put stars around, so its half of the gesture is a **glint**
   — one band of light travelling across the sentence as it appears, then
@@ -227,11 +239,13 @@ calls, and what they mean:
   neither sparkles, then or later. Deciding it on landing is what stops
   a shimmer going off the instant a reveal is dismissed, immediately
   after the firework it was meant to stay out of the way of.
-- **The stars are white** (design-bible §3: every star in Habitat's sky
-  is white), lit by the arrival's own stream colour so a white star
-  still belongs to the drop it came with. The alternative — each stream
-  sparkling in its own pastel — is one token away and shown beside it on
-  the workbench.
+- **Colour, and the sky's white-only rule.** Design-bible §3 keeps
+  Habitat's stars white; that rule governs the SKY, and the shimmer
+  borrows its dots rather than replacing them — a momentary event on a
+  lit blob, where the charms are already where Habitat's colour lives.
+  So the sky stays white-only and the shimmer is half and half. The
+  white half asks for `--shimmer-star`, the other half for the six
+  `--charm-…` tokens by name.
 - **Both halves are decoration**, and a reader who has asked for less
   movement gets neither. The drop still lands, still wears its name,
   still fades on its own clock: that fade is how an arrival leaves, not
