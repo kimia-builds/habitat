@@ -354,11 +354,71 @@ body {
   }
 }
 
+/* The other half of the same movement (T5.2e/§4): a ring of light
+   opening out of the control that was just pressed, and gone in half a
+   second. It exists because the meters moved into the header in §13a —
+   a habit near the foot of a real list is a long way from the bar it
+   feeds, so the movement starts at the finger and finishes at the meter.
+
+   It wears the EXPEDITION colour rather than the row's own charm,
+   because the point is that the two halves are one gesture: what leaves
+   your finger is what arrives at the bar. (Every tap moves that meter;
+   the other two move only when a drop says so.)
+
+   `.tap-target` is nothing but a frame to hang the ring on — it wraps
+   the ONE control that completes, never -1. */
+.tap-target {
+  position: relative;
+  display: inline-flex;
+}
+
+.tap-spark {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--expedition);
+  border-radius: 50%;
+  pointer-events: none;
+  --tap-spark-glow: color-mix(in srgb, var(--expedition) 55%, transparent);
+  /* `forwards` is load-bearing: the ring stays in the page after it
+     plays, and without it the element would snap back to the visible
+     first frame and sit there as a permanent circle. */
+  animation: tap-spark 500ms ease-out forwards;
+}
+
+@keyframes tap-spark {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+    box-shadow: 0 0 0.35rem var(--tap-spark-glow);
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+    box-shadow: 0 0 0.6rem transparent;
+  }
+}
+
 /* Whoever asked not to be moved at keeps the light and loses the
    movement: the bar still glows to say it moved — that is information —
-   it simply doesn't swell (the same line the drag and the archive
-   farewell draw). */
+   it simply doesn't swell, and the spark fades where it stands instead
+   of opening out (the same line the drag and the archive farewell
+   draw). */
 @media (prefers-reduced-motion: reduce) {
+  .tap-spark {
+    animation: tap-spark-quiet 500ms ease-out forwards;
+  }
+
+  @keyframes tap-spark-quiet {
+    0% {
+      opacity: 0.9;
+      box-shadow: 0 0 0.35rem var(--tap-spark-glow);
+    }
+    100% {
+      opacity: 0;
+      box-shadow: 0 0 0.6rem transparent;
+    }
+  }
+
   .meter-bar--step {
     animation: meter-move-quiet 700ms ease-out;
   }

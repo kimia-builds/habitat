@@ -3,6 +3,8 @@
 // Pure display + callbacks — every decision is made in App via the game
 // modules.
 
+import { useState } from 'react'
+
 import CharmSymbol from './CharmSymbol.jsx'
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -66,6 +68,28 @@ function HabitRow({
     onReorderStart(event)
   }
 
+  // The finger's half of a meter movement (T5.2e, design-notes §4). The
+  // meters moved into the header in §13a, which is a long way from a
+  // habit near the foot of a real list — so the movement starts where
+  // the finger is and finishes where the meter lives, and neither half
+  // is the whole gesture. Counting the taps is what makes it play
+  // again: a fresh count is a fresh element, and a fresh element
+  // animates (the same reason the arrival note below is keyed on its
+  // sentence). Only completing sparks — -1 takes a step back and stays
+  // quiet, as undo always does.
+  const [taps, setTaps] = useState(0)
+
+  function handleComplete(event) {
+    setTaps((count) => count + 1)
+    onComplete(event)
+  }
+
+  // The spark itself carries no words and answers to nothing: it is
+  // light, and it is hidden from screen readers.
+  const spark = taps > 0 && (
+    <span className="tap-spark" key={taps} aria-hidden="true" />
+  )
+
   return (
     <li
       // `charm-N` tells the stylesheet which of the six this row wears,
@@ -119,14 +143,17 @@ function HabitRow({
         <span className="completion-controls">
           {/* One-time to-dos are an empty checkbox until done; ticking it
               finishes and archives them. Hover reads "mark done". */}
-          <input
-            type="checkbox"
-            className="todo-check pebble pebble-counter"
-            checked={false}
-            onChange={onComplete}
-            title="mark done"
-            aria-label="mark done"
-          />
+          <span className="tap-target">
+            <input
+              type="checkbox"
+              className="todo-check pebble pebble-counter"
+              checked={false}
+              onChange={handleComplete}
+              title="mark done"
+              aria-label="mark done"
+            />
+            {spark}
+          </span>
         </span>
       ) : (
         <span className="completion-controls">
@@ -134,9 +161,12 @@ function HabitRow({
             {fulfilled && hasDayGoal ? '✓ ' : ''}
             {hasDayGoal ? `${todayCount}/${required}` : todayCount}
           </span>
-          <button className="pebble pebble-counter" onClick={onComplete}>
-            +1
-          </button>
+          <span className="tap-target">
+            <button className="pebble pebble-counter" onClick={handleComplete}>
+              +1
+            </button>
+            {spark}
+          </span>
           <button
             className="pebble pebble-counter"
             onClick={onUndo}
