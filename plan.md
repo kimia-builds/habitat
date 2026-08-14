@@ -172,9 +172,12 @@ tracker. Everything after this is delight, informed by real use.
                         the blob, a glint across the note's words, drops
                         landing together cascading; approved on the
                         second cut. Build notes in history.md)_
-                  - [ ] the §4 meter glow — the header meter glows and
+                  - [x] the §4 meter glow — the header meter glows and
                         thickens, the tapped habit sparks with it, and
                         a check-in's movement plays once on done
+                        _(done 2026-08-14 — plus the arrival fade Kimia
+                        called for the same day, and the shelf bug that
+                        was really behind it. Build notes in history.md)_
                   - [ ] the full firework — first-occurrence reveals and
                         friend arrivals
                   - [ ] the glow scale into the tokens file, last, once

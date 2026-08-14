@@ -96,7 +96,7 @@ was never the part in question.
 
 ---
 
-## 4. The meters — growth you can see **[enhancement to built T2.2; amended 2026-07-21]**
+## 4. The meters — growth you can see **[BUILT — T5.2e, 2026-08-14]**
 
 The meter UI is **already built** (T2.2). Since T4.5 (Kimia's call
 2026-07-21) **all three are bars**: the expedition meter is the
@@ -122,8 +122,29 @@ straight back. The resting state of the bar never changes; the
 persistent running total remains the accumulating proof of work. This
 **layers onto** the built T2.2 bar — no rebuild.
 
+**Which bars light up (Kimia's call 2026-08-14): every bar that
+moved.** A tap always moves steps; that same tap moves literacy or the
+wallet only when a drop says so, and when it does, that bar glows too.
+The thicken is painted rather than real — the bar scales instead of
+growing — so a movement never pushes the header's contents around.
+
+**Forward only.** A `-1` and a purchase both take a bar down, and
+neither plays anything: undo is quiet by design (§2), and spending is a
+choice the user made rather than news. **Both roll-overs celebrate** —
+an expedition segment completed and a new literacy level — while the
+wallet has none to give, since its bar clamps at the top instead of
+emptying and starting again.
+
+The bars are watched by their **lifetime totals**, never by their own
+fill: steps and literacy both empty themselves at their best moment,
+and a fill reading would call that going backwards. The wallet is the
+opposite case and is watched by its **bar**, because it is the one
+meter whose face can sit still while its true number moves (hidden debt
+below zero, a balance past the top) — a glow for a change nobody can
+see would be worse than no glow.
+
 **Where it plays, now that the meters have moved (Kimia's call
-2026-08-13; decided, not yet built).** This was written while the
+2026-08-13).** This was written while the
 meters sat at the top of the habit list, an inch from the habit being
 tapped. Since §13a they live in the **header bar**, on every page,
 which is a long way from a habit near the foot of the list. So the
@@ -132,16 +153,29 @@ thicken, and the **tapped habit gives a small matching spark** — the
 movement starts where the finger is and finishes where the meter lives.
 Neither half is the whole gesture.
 
+**The spark, as built (Kimia's call 2026-08-14):** a ring of light
+opening out of the control that was pressed — the `+1` pebble, or a
+to-do's tick — and gone in half a second. It wears the **expedition
+colour** rather than the row's own charm, because the two halves are
+meant to read as one gesture: what leaves the finger is what arrives at
+the bar. Only completing sparks; `-1` stays quiet like everything else
+that goes backwards.
+
 **And the check-in has no header bar** (§13a: it opts out, keeping its
 own plain wordmark, so its done button stays the only way out). A retro
 mark therefore has no visible meter to move. The movement is **held and
 plays once when the check-in closes**, which is exactly what that
 screen's drops already do (spec T3.2) — one arrival of everything the
 session earned, rather than a ceremony against a bar nobody can see.
+**One movement for the whole session** (Kimia's call 2026-08-14), not
+one per mark: five habits marked across three days land as a single
+beat. Nothing marked holds nothing, and marking then unmarking leaves
+nothing to celebrate. The check-in's own rows do **not** spark — there
+is no meter on that screen for a spark to travel to.
 
 ---
 
-## 5. Drops — star-shimmer & firework **[arrival placement + star-shimmer BUILT — T5.2e, 2026-08-13 · the firework still to build]**
+## 5. Drops — star-shimmer & firework **[arrival placement + star-shimmer + the going BUILT — T5.2e, 2026-08-13/14 · the firework still to build]**
 
 Drop arrival as built (T3.2): a regular drop shows a **quiet pastel
 note** beside the tapped habit ("you came across …") plus the **SVG
@@ -250,6 +284,33 @@ calls, and what they mean:
   movement gets neither. The drop still lands, still wears its name,
   still fades on its own clock: that fade is how an arrival leaves, not
   an ornament.
+
+### How an arrival leaves **[BUILT — T5.2e, 2026-08-14]**
+
+An arrival holds for about four and a half seconds and then **dissolves
+over a second and a half** (Kimia's call 2026-08-14), evenly, so the
+whole going is watched rather than guessed at. The **note in the margin
+dissolves on the same clock**: it used to hold at full strength and
+then simply stop existing, which beside a dissolving blob read as a
+glitch. Holding a drop stops the blob's fade but not the note's — the
+held object keeps its own name, so nothing becomes unreadable.
+
+Two things this pass found, and neither was the pacing:
+
+- **An eased fade is not a slow fade.** The 1.5 seconds had been there
+  all along, but on an ease curve it spent its first third falling to a
+  fifth of full brightness and its last third drifting about below the
+  eye's floor — a half-second snuff with a long invisible tail. Spent
+  evenly, the same 1.5 seconds reads as the slow dissolve it was always
+  meant to be.
+- **A drop must only be ended by its OWN fade.** An animation's end
+  travels up the page like a click does, and the shimmer gave every
+  arrival twelve star children with 1.5-second lives of their own. The
+  first star to finish was taking the whole drop off the shelf at a
+  second and a half, at full brightness, so nothing ever reached the
+  fade at all. Worth remembering as a shape, not just a fix: **an
+  element that ends its own life on an animation has to ask which
+  animation ended.**
 
 Anticipation-first stays true at the top of the hierarchy: **friends
 arrive as delayed surprise drops** days after a literacy milestone

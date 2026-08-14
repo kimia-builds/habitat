@@ -110,9 +110,11 @@ built on top of a live, in-use app.
   top, page titles standing above their boxes, and a night sky behind
   everything. The daily startup ceremony is in — a planet rolling along
   the bottom of a black screen before the day opens — and drops now
-  arrive as glowing blobs pinned to the corner of the window. The feel
-  pass (glow, shimmer, fireworks) and the creature, flora and object art
-  are being built now.
+  arrive as glowing blobs pinned to the corner of the window, sparkling
+  as they land and dissolving slowly when they go. The meters answer a
+  tap too: the bar that moved glows and swells while a ring of light
+  opens under your finger. Still to come in the feel pass are the
+  fireworks, and beside it the creature, flora and object art.
 - **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
   The error-boundary safety net is already in, and so is the first half
   of the backup habit — persistent-storage groundwork, and the export

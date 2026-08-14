@@ -2265,6 +2265,104 @@ return 0` right after the era is worked out, so a moment before the
   event on a lit blob that borrows the sky's dot FORM. The sky itself
   stays white-only. Folded into §5; §3 is untouched on purpose.
 
+- 2026-08-14 (T5.2e, meter-glow session — session 53): **every bar that
+  moved lights up, not just steps.** A tap always moves steps; the same
+  tap moves literacy or the wallet only when a drop says so, and when it
+  does, that bar glows too. Kimia weighed the busyness (a fungi tap now
+  shows the blob, its shimmer, the note's glint, the finger's spark and
+  two bars at once) and chose honesty: the glow means "this went up".
+  Folded into §4.
+- 2026-08-14 (T5.2e, same session): **forward only, and both roll-overs
+  celebrate.** A `-1` and a purchase each take a bar down and play
+  nothing — undo is quiet by design (§2) and spending is a choice, not
+  news. An expedition segment completed and a new literacy level both
+  get the brighter beat; the wallet has none to give, since its bar
+  clamps at the top rather than emptying. Folded into §4.
+- 2026-08-14 (T5.2e, same session): **what a movement is measured by.**
+  Steps and literacy are watched by their LIFETIME totals and the wallet
+  by its BAR — opposite choices for opposite reasons. The first two bars
+  empty themselves at their best moment, so a fill reading would call a
+  roll-over "going backwards"; the wallet is the one meter whose face
+  can sit still while its true number moves (debt below zero, a balance
+  past the top), and a glow for a change nobody can see is worse than no
+  glow. Folded into §4.
+- 2026-08-14 (T5.2e, same session): **the spark is a ring at the control
+  you pressed, in the EXPEDITION colour.** §4 asked for "a small
+  matching spark" and left it open. Kimia chose the burst at the finger
+  over the tile's charm edge or the charm symbol. The colour is the
+  steps bar's, not the row's own charm, because the two halves are one
+  gesture: what leaves the finger is what arrives at the bar. Folded
+  into §4.
+- 2026-08-14 (T5.2e, same session): **the check-in moves once for the
+  whole session.** Five habits marked across three days land as a single
+  beat when done is pressed, not five in succession — the same shape its
+  drops already take. Nothing marked holds nothing; marking then
+  unmarking leaves nothing to celebrate; and the check-in's own rows do
+  not spark, there being no meter on that screen to spark toward.
+  Folded into §4.
+- 2026-08-14 (Kimia's call, same session): **a drop dissolves over a
+  second and a half, and its words go with it.** Two findings behind
+  one complaint, and neither was the pacing. First, **an eased fade is
+  not a slow fade**: the 1.5s had been there since T3.2, but the ease
+  curve spent its first third falling to a fifth of full brightness and
+  its last third below the eye's floor. Second, and the real one, **a
+  drop must only be ended by its OWN fade** — animation ends travel up
+  the page, and the shimmer (2026-08-13) had given every arrival twelve
+  star children with 1.5-second lives, so the first star to finish was
+  taking the whole drop off the shelf at full brightness before the fade
+  began. The by-the-habit note also had no fade at all and now leaves on
+  the same clock. Folded into §5.
+- 2026-08-14 (working note, same session): **the test environment cannot
+  see an animation end, and this is the second timing bug it missed.**
+  React never registers `animationend` under jsdom, so neither the star
+  bug above nor a bar's settle could be caught by a test — both were
+  proven in a real browser instead, in both directions. Anything whose
+  correctness depends on an animation ENDING is browser-verified or it
+  is unverified. The settle-back now runs on a timer with its duration
+  in constants.js, which is testable, rather than on the animation's own
+  end, which is not.
+
+## T5.2e (part 3) build notes — the meter glow, the spark, the arrival's going (2026-08-14)
+
+- `meterMovement(before, after)` in `game/meters.js` is the whole
+  decision: three numbers in, `null` / `'step'` / `'rollover'` per bar
+  out. Pure, so the rules above are tested without a screen.
+  `meterReading()` beside it is what takes those three numbers from a
+  history, and is the single place the lifetime-vs-bar choice lives —
+  both `Meters` and `App` read a meter through it.
+- Replaying a CSS animation is the fiddly bit twice over, and the two
+  places solved it differently on purpose. The tap spark and the note
+  are **keyed elements**: a fresh key is a fresh element, and a fresh
+  element animates (the arrival note's own trick since 2026-08-13). The
+  bar cannot use that — remounting it would kill the fill's width
+  transition, which is the growth itself — so it keeps its element and
+  forces the replay by taking the animation off, reading a layout number
+  to make the browser act on that, and putting it back. Without that
+  read the two changes collapse into no change and a second tap inside
+  one glow goes unanswered.
+- The thicken is `scaleY`, never a real height: a height change would
+  push the header's contents around on every `+1`. `box-shadow: 0 0 0
+  <colour>` is the invisible end of a glow — no blur, no spread, drawn
+  exactly behind the bar — because animating from `none` jumps.
+- The check-in unmounts the header, so the meters genuinely remount when
+  it closes and their "previous reading" would be the post-mark one.
+  `App` holds the reading from before the check-in's FIRST mark and
+  hands it down as `heldFrom`; the meters take it as their starting
+  point at mount. It is spent immediately afterwards — left set, it
+  would replay the ceremony on every later trip to the Map, since
+  leaving the habit list rebuilds the header.
+- One defect introduced and fixed the same session: routing `+1` through
+  a handler of our own turned the farewell row — drawn one last time
+  with nothing wired up — from a no-op into a crash. It failed CI (all
+  tests passing, one unhandled error, non-zero exit) and blocked two
+  deploys before it was caught. The local run had said the same thing in
+  the exit code, which had been skipped by grepping the output for the
+  pass counts. **Read the exit status, not the summary lines.**
+- The note's fade duration is handed down as `--arrival-linger` inline
+  from `HabitRow`, so `ARRIVAL_LINGER_MS` stays the only copy. A `var()`
+  with a fallback is invisible to tokens.test.js's "every name is
+  defined" check, which is how `--header-height` already does it.
+
 ## T5.2e (part 2) build notes — the star-shimmer (2026-08-13)
 
 - `src/ui/shimmer.jsx` holds the whole drawing: one four-pointed sparkle
