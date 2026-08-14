@@ -2256,7 +2256,8 @@ return 0` right after the era is worked out, so a moment before the
   in one); and WIDER, standing well off the blob for a spacious,
   ethereal feel. The star-colour question this session opened —
   white or each stream's own pastel — was answered by neither, so the
-  workbench went back to one row. Folded into §5.
+  workbench went back to one row. Approved on this second cut. Folded
+  into §5.
 - 2026-08-13 (T5.2e, same session): **the sky's white-only rule keeps
   its scope.** Design-bible §3 says stars are white, never coloured; the
   shimmer is now half charm-coloured. Not a reversal: §3 governs the SKY

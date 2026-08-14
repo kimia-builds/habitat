@@ -166,17 +166,12 @@ tracker. Everything after this is delight, informed by real use.
                         list stops shifting under a finger; arrivals
                         became opaque drawn blobs in the Map's shape
                         language. Build notes in history.md)_
-                  - [ ] the star-shimmer on regular drop arrivals — on
+                  - [x] the star-shimmer on regular drop arrivals — on
                         the arriving blob AND on the note in the task
-                        (Kimia's call: both places). _Built and live
-                        2026-08-13 — stars around the blob's edge, a
-                        glint across the note's words, several at once
-                        cascading. Re-cut the same day on Kimia's
-                        redirect ("it's giving Las Vegas"): the sky's
-                        dots instead of sparkles, half white and half
-                        charm-coloured, slower and set wider. Awaiting
-                        her eye on the second version. Build notes in
-                        history.md._
+                        _(done 2026-08-13 — the night sky's dots around
+                        the blob, a glint across the note's words, drops
+                        landing together cascading; approved on the
+                        second cut. Build notes in history.md)_
                   - [ ] the §4 meter glow — the header meter glows and
                         thickens, the tapped habit sparks with it, and
                         a check-in's movement plays once on done
