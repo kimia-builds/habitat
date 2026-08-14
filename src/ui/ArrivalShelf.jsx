@@ -119,7 +119,19 @@ function ShelfItem({
           ? { animation: `arrival-fade ${ARRIVAL_LINGER_MS}ms ease forwards` }
           : undefined
       }
-      onAnimationEnd={() => fading && onExpire(arrival.id)}
+      // ONLY this arrival's own fade ends its life. An animation's end
+      // travels up the tree like a click does, and since the shimmer
+      // landed (T5.2e, 2026-08-13) this element has twelve star children
+      // each finishing a 1.5s pop of its own — so without this check the
+      // FIRST star to finish took the whole drop off the shelf at a
+      // second and a half, at full brightness, before the fade it was
+      // supposed to leave by had even begun. That is what made drops
+      // "disappear suddenly" (Kimia, 2026-08-14), and why lengthening
+      // the fade changed nothing: nothing ever reached it.
+      onAnimationEnd={(event) => {
+        if (event.target !== event.currentTarget) return
+        if (fading) onExpire(arrival.id)
+      }}
     >
       {/* The blob the arrival sits on. Decoration only — it carries no
           words, so it is hidden from screen readers. */}
