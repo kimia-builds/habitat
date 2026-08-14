@@ -63,7 +63,7 @@ import {
   walletTrueBalance,
 } from './game/market.js'
 import { discoveredRegionCount } from './game/map.js'
-import { expeditionSteps } from './game/meters.js'
+import { expeditionSteps, meterReading } from './game/meters.js'
 import { gameCompletions, startNewGame } from './game/newgame.js'
 import {
   activeHabits,
@@ -161,6 +161,13 @@ function App() {
   const [arrivals, setArrivals] = useState([])
   const [pendingArrivals, setPendingArrivals] = useState([])
   const [seenRevealIds, setSeenRevealIds] = useState(() => new Set())
+  // The meters as they stood before the check-in's FIRST mark (T5.2e,
+  // design-notes §4). The check-in keeps a plain header of its own, so a
+  // retro mark has no visible meter to move; this holds the movement so
+  // it can play once when the check-in closes — the same beat its drops
+  // already take. Null means nothing is being held: a check-in where
+  // nothing was marked earns nothing, so nothing plays.
+  const [heldMeters, setHeldMeters] = useState(null)
   // The publication being read right now (T3.5) — the spread popup is
   // open while this is set. Screen state only, and deliberately so:
   // reading is tracked nowhere (Kimia's decision 2026-07-19), so
@@ -292,6 +299,15 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today])
+  // The held movement is spent as soon as it is handed over (§4). By
+  // the time this runs, the meters have mounted with it and taken their
+  // starting point from it; letting it linger would mean replaying the
+  // check-in's ceremony on every later trip to the Map or the Bookcase,
+  // since leaving the habit list rebuilds the header.
+  useEffect(() => {
+    if (!heldMeters || checkInOpen) return
+    setHeldMeters(null)
+  }, [heldMeters, checkInOpen])
   // The Sunday ritual (T2.3, Kimia's decision 2026-07-16): on the
   // first visit of each Sunday — once any check-in is answered AND the
   // startup ceremony has played (the fixed morning order) — the field
@@ -702,6 +718,18 @@ function App() {
   // module refuses days outside the backfill window). A one-time to-do
   // marked here is finished for good, exactly as if tapped live.
   function handleRetroMark(habit, dayKey) {
+    // Where the meters stood before this check-in touched them (§4).
+    // Taken at the FIRST mark rather than when the check-in opened, so
+    // the reading is only kept when there is something to remember.
+    setHeldMeters(
+      (held) =>
+        held ??
+        meterReading(
+          played,
+          readingItemsFrom(played),
+          walletTrueBalance(played, data.purchases),
+        ),
+    )
     // Retro marks roll drops exactly like live taps (Kimia's decision
     // 2026-07-19) — but their arrivals wait until the check-in's done
     // button, so answering yesterday stays distraction-free.
@@ -1367,6 +1395,7 @@ function App() {
         completions={played}
         readingItems={readingItemsFrom(played)}
         fungusTrueBalance={walletTrueBalance(played, data.purchases)}
+        heldFrom={heldMeters}
         onOpen={setPage}
       />
       <DateDisplay now={now} cutoffHour={data.settings.dayCutoffHour} />

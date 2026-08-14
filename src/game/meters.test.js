@@ -20,6 +20,7 @@ import {
   literacyPoints,
   literacySegment,
   meterMovement,
+  meterReading,
   milestonesReached,
   refundFungi,
   spendFungi,
@@ -363,5 +364,28 @@ describe('meterMovement — what just moved (T5.2e, §4)', () => {
       meterMovement(reading(0, 0, WALLET_BAR_MAX - 1), reading(0, 0, 99))
         .wallet,
     ).toBe('step')
+  })
+})
+
+describe('meterReading — one reading of all three meters (T5.2e)', () => {
+  it('reads steps and literacy as lifetime totals, not as their bars', () => {
+    // Both bars empty themselves at their best moment; the totals do not.
+    const completions = Array.from(
+      { length: EXPEDITION_SEGMENT_STEPS },
+      () => ({}),
+    )
+    const reading = meterReading(completions, [{ type: 'novel' }], 0)
+    expect(expeditionSegment(reading.steps).into).toBe(0) // the bar just rolled
+    expect(reading.steps).toBe(EXPEDITION_SEGMENT_STEPS) // the total did not
+    expect(reading.points).toBe(LITERACY_POINTS.novel)
+  })
+
+  it('reads the wallet as its BAR — the face, not the hidden truth', () => {
+    // Debt below zero and a balance past the top both leave the bar
+    // where it was, and a glow for a change nobody can see is worse
+    // than no glow.
+    expect(meterReading([], [], -8).wallet).toBe(0)
+    expect(meterReading([], [], 99).wallet).toBe(WALLET_BAR_MAX)
+    expect(meterReading([], [], 12).wallet).toBe(12)
   })
 })

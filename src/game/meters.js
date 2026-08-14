@@ -173,6 +173,24 @@ export function walletBar(trueBalance) {
 
 // ── What just moved (T5.2e, design-notes §4) ────────────────────────
 
+// The three numbers a movement is measured by — one reading of all
+// three meters, taken from the same history everything else is.
+//
+// Steps and literacy are read as LIFETIME totals rather than as their
+// bars, because both bars empty themselves at their best moment and a
+// bar reading would call that going backwards. The wallet is the
+// opposite case and is read as its BAR: it is the one meter whose face
+// can sit still while its true number moves (hidden debt below zero, a
+// balance past the top of the bar), and a glow announcing a change
+// nobody can see would be worse than no glow.
+export function meterReading(completions, readingItems, fungusTrueBalance) {
+  return {
+    steps: expeditionSteps(completions),
+    points: literacyPoints(readingItems),
+    wallet: walletBar(fungusTrueBalance).into,
+  }
+}
+
 // Each FORWARD movement of a meter plays a momentary glow-and-thicken,
 // and a boundary crossed — the expedition bar rolling over, literacy
 // reaching a new level — is the brighter "gains" beat. This is the pure

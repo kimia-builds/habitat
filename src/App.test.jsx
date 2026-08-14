@@ -19,6 +19,7 @@ import {
   DROP_SETTLE_MS,
   FRIEND_CATEGORIES,
   MAP_REGION_COUNT,
+  METER_MOVE_MS,
   STARTUP_FADE_MS,
   STARTUP_HOLD_MS,
   SYMBOL_COUNT,
@@ -846,6 +847,65 @@ describe('the morning check-in (T1.4)', () => {
     cleanup()
     render(<App />)
     expect(screen.queryByRole('region', { name: 'check-in' })).toBeNull()
+  })
+
+  // T5.2e, design-notes §4: the check-in keeps a plain header of its own,
+  // so a retro mark has no visible meter to move. The movement is held
+  // and plays ONCE when the check-in closes — the same beat its drops
+  // already take. Which bar was asked to play is all a test can honestly
+  // read; the glow itself is CSS.
+  describe('the held meter movement (T5.2e, §4)', () => {
+    const stepsBar = () =>
+      screen.getByRole('progressbar', { name: 'steps taken progress' })
+
+    it('plays once for the whole session when done is pressed', () => {
+      seed()
+      render(<App />)
+      // Two marks across two days — one movement, not two.
+      fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
+      const tuesday = within(
+        screen.getByText('tue 14-07-26').closest('details'),
+      )
+      fireEvent.click(tuesday.getByRole('button', { name: '+1' }))
+      fireEvent.click(screen.getByRole('button', { name: 'done' }))
+
+      expect(stepsBar().className).toMatch(/meter-bar--step/)
+    })
+
+    it('a check-in with nothing marked moves nothing', () => {
+      seed()
+      render(<App />)
+      fireEvent.click(screen.getByRole('button', { name: 'done' }))
+      expect(stepsBar().className).not.toMatch(/meter-bar--/)
+    })
+
+    it('marking then unmarking leaves nothing to celebrate', () => {
+      seed()
+      render(<App />)
+      fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
+      fireEvent.click(screen.getAllByRole('button', { name: '-1' })[0])
+      fireEvent.click(screen.getByRole('button', { name: 'done' }))
+      expect(stepsBar().className).not.toMatch(/meter-bar--/)
+    })
+
+    it('settles back, and does not play again on a later page', () => {
+      // The held reading is spent the moment it is handed over. Left
+      // lying about, it would replay the check-in's ceremony every time
+      // Kimia opened the Map.
+      seed()
+      render(<App />)
+      fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
+      fireEvent.click(screen.getByRole('button', { name: 'done' }))
+      expect(stepsBar().className).toMatch(/meter-bar--step/)
+
+      // The glow plays out and the bar stops claiming to be moving.
+      act(() => vi.advanceTimersByTime(METER_MOVE_MS))
+      expect(stepsBar().className).not.toMatch(/meter-bar--/)
+
+      fireEvent.click(screen.getByRole('button', { name: /steps taken/ }))
+      fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))
+      expect(stepsBar().className).not.toMatch(/meter-bar--/)
+    })
   })
 
   it('stays quiet when yesterday was already done, but past days remain editable by hand', () => {

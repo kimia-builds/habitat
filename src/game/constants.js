@@ -66,6 +66,16 @@ export const STARTUP_FADE_MS = 1500
 // then, so nothing depends on this number but the eye.
 export const ARCHIVE_FAREWELL_MS = 420
 
+// How long a meter's movement takes to play out and settle back
+// (T5.2e, design-notes §4). A plain forward step is brief; a roll-over —
+// an expedition segment completed, a new literacy level — is the
+// celebratory beat and takes its time. index.css animates the bar for
+// exactly these spans, and the two must be kept in step (the same
+// arrangement ARCHIVE_FAREWELL_MS has above). Nothing waits on either
+// number but the eye.
+export const METER_MOVE_MS = 700
+export const METER_ROLLOVER_MS = 1100
+
 // How long a just-dropped habit tile stays lit where it landed (Kimia's
 // call 2026-08-11). Releasing a drag used to snap the tile into place
 // and drop its highlight in the same instant, which made a re-order hard

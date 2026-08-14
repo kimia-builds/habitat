@@ -28,6 +28,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+import { METER_MOVE_MS, METER_ROLLOVER_MS } from '../game/constants.js'
 import {
   expeditionSegment,
   expeditionSteps,
@@ -35,6 +36,7 @@ import {
   literacyPoints,
   literacySegment,
   meterMovement,
+  meterReading,
   walletBar,
 } from '../game/meters.js'
 
@@ -80,18 +82,27 @@ function Bar({ label, into, size, className, beat, playId }) {
   )
 }
 
-// Watch the three numbers and say what each bar should play. The
-// previous reading starts as the FIRST one seen, so opening Habitat
-// never plays a movement — arriving to three bars pulsing at nothing
-// would be a ceremony for work done days ago.
-function useMovement(steps, points, wallet) {
-  const previous = useRef({ steps, points, wallet })
+// Watch the three numbers and say what each bar should play.
+//
+// The previous reading normally starts as the FIRST one seen, so opening
+// Habitat never plays a movement — arriving to three bars pulsing at
+// nothing would be a ceremony for work done days ago.
+//
+// `heldFrom` is the one exception, and it is the check-in's (§4). That
+// screen keeps a plain header of its own, so there is no meter on it to
+// move; App holds the reading from before the check-in's first mark and
+// hands it over as the starting point the moment the check-in closes.
+// The whole session then moves once, together — exactly what that
+// screen's drops already do.
+function useMovement(reading, heldFrom) {
+  const previous = useRef(heldFrom ?? reading)
   const [play, setPlay] = useState({
     id: 0,
     expedition: null,
     literacy: null,
     wallet: null,
   })
+  const { steps, points, wallet } = reading
 
   useEffect(() => {
     const moved = meterMovement(previous.current, { steps, points, wallet })
@@ -100,23 +111,54 @@ function useMovement(steps, points, wallet) {
     setPlay((last) => ({ id: last.id + 1, ...moved }))
   }, [steps, points, wallet])
 
+  // Settling back is the point of the whole gesture (§4), so the bars
+  // stop claiming to be moving when they have stopped. They all start
+  // together, so one timer for the longest of them settles the lot;
+  // nothing depends on the exact moment, and a bar left wearing the word
+  // "moving" for the rest of the session would be a small lie told to
+  // anything reading the page.
+  const beats = [play.expedition, play.literacy, play.wallet]
+  useEffect(() => {
+    if (!beats.some(Boolean)) return
+    const settleAfter = beats.includes('rollover')
+      ? METER_ROLLOVER_MS
+      : METER_MOVE_MS
+    const timer = setTimeout(
+      () =>
+        setPlay((last) => ({
+          ...last,
+          expedition: null,
+          literacy: null,
+          wallet: null,
+        })),
+      settleAfter,
+    )
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [play.id])
+
   return play
 }
 
-function Meters({ completions, readingItems, fungusTrueBalance, onOpen }) {
+function Meters({
+  completions,
+  readingItems,
+  fungusTrueBalance,
+  heldFrom,
+  onOpen,
+}) {
   const steps = expeditionSteps(completions)
   const expedition = expeditionSegment(steps)
   const points = literacyPoints(readingItems)
   const literacy = literacySegment(points)
   const wallet = walletBar(fungusTrueBalance)
 
-  // Steps and literacy are watched by their LIFETIME totals, because
-  // both bars empty themselves at their best moment and a fill reading
-  // would call that going backwards. The wallet is watched by its bar
-  // instead: it is the one meter whose bar can sit still while its true
-  // number moves (hidden debt below zero, a balance past the top), and
-  // a glow announcing an invisible change is worse than no glow.
-  const play = useMovement(steps, points, wallet.into)
+  // Which numbers a movement is measured by is the game module's call
+  // (meterReading), not this component's.
+  const play = useMovement(
+    meterReading(completions, readingItems, fungusTrueBalance),
+    heldFrom,
+  )
 
   return (
     <section className="meters" aria-label="meters">
