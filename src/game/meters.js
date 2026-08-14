@@ -170,3 +170,50 @@ export function walletBar(trueBalance) {
     size: WALLET_BAR_MAX,
   }
 }
+
+// ── What just moved (T5.2e, design-notes §4) ────────────────────────
+
+// Each FORWARD movement of a meter plays a momentary glow-and-thicken,
+// and a boundary crossed — the expedition bar rolling over, literacy
+// reaching a new level — is the brighter "gains" beat. This is the pure
+// half of that: hand it each meter's underlying number before and after
+// a change and it says what each bar should play. The drawing is
+// ui/Meters.jsx's job; the deciding is here, where it can be tested
+// without a screen.
+//
+// Backward movement plays NOTHING. An undo takes a step back and stays
+// quiet by design (design-notes §2), and a purchase takes the wallet
+// down by a choice the user made — neither is news. Kimia's calls
+// 2026-08-14: every bar that moved lights up (not just steps), and both
+// roll-overs celebrate.
+//
+// The numbers to compare are the UNDERLYING totals, never the bar's own
+// fill: the expedition fill DROPS to near-empty exactly when the meter
+// has its biggest moment, so a fill comparison would read a roll-over
+// as going backwards.
+function beat(before, after, boundaryBefore, boundaryAfter) {
+  if (!(after > before)) return null
+  return boundaryAfter > boundaryBefore ? 'rollover' : 'step'
+}
+
+export function meterMovement(before, after) {
+  return {
+    expedition: beat(
+      before.steps,
+      after.steps,
+      Math.floor(before.steps / EXPEDITION_SEGMENT_STEPS),
+      Math.floor(after.steps / EXPEDITION_SEGMENT_STEPS),
+    ),
+    literacy: beat(
+      before.points,
+      after.points,
+      milestonesReached(before.points),
+      milestonesReached(after.points),
+    ),
+    // The wallet has no roll-over to celebrate: it clamps at the top of
+    // its bar rather than emptying and starting again (T4.5), so a rise
+    // is always a plain step — the two boundary counts are the same
+    // number on purpose.
+    wallet: beat(before.wallet, after.wallet, 0, 0),
+  }
+}

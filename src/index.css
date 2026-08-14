@@ -267,25 +267,125 @@ body {
   background: var(--border-quiet);
   border-radius: 0.25rem;
   overflow: hidden;
+
+  /* The light a movement gives off (T5.2e/§4): this bar's own colour,
+     thinned so the glow reads as light rather than as a second bar. The
+     GLOW SCALE — how far the light spreads — is still spelled out in the
+     rules below rather than named in tokens.css; that is the last slice
+     of T5.2e, once every glow in the app exists to be named together. */
+  --meter-glow: color-mix(in srgb, var(--meter-tone) 60%, transparent);
+  --meter-glow-bright: color-mix(in srgb, var(--meter-tone) 85%, transparent);
 }
 
 .meter-bar-fill {
   height: 100%;
   border-radius: 0.25rem;
+  background: var(--meter-tone);
   transition: width 0.4s ease;
 }
 
-/* One pastel per stream. */
-.meter-bar-expedition .meter-bar-fill {
-  background: var(--expedition); /* soft mint — the land */
+/* One pastel per stream. Each bar hands its own colour down under one
+   name, so the fill and the glow below it ask for the same thing and
+   can never drift apart (the same trick .charm-1 … .charm-6 use for a
+   habit row). The values themselves stay in tokens.css. */
+.meter-bar-expedition {
+  --meter-tone: var(--expedition); /* soft mint — the land */
 }
 
-.meter-bar-literacy .meter-bar-fill {
-  background: var(--literacy); /* soft lavender — language */
+.meter-bar-literacy {
+  --meter-tone: var(--literacy); /* soft lavender — language */
 }
 
-.meter-bar-fungus .meter-bar-fill {
-  background: var(--fungi); /* soft amber — the glow of fungi */
+.meter-bar-fungus {
+  --meter-tone: var(--fungi); /* soft amber — the glow of fungi */
+}
+
+/* T5.2e/§4: a forward movement glows and thickens, then settles STRAIGHT
+   back — the resting bar is unchanged, and the running total stays the
+   real proof of work. Both halves are momentary by construction: the
+   animation has no fill-mode, so the bar's own styling is all that is
+   left the moment it finishes.
+
+   The thicken is a scale rather than a taller bar on purpose. A real
+   height change would push the header's contents around every time
+   Kimia tapped +1; a transform paints bigger without occupying more
+   room, so nothing beside it moves.
+
+   `0 0 0 var(--meter-tone)` at either end is an invisible glow, not a
+   missing one: a shadow with no blur and no spread sits exactly behind
+   the bar where nothing can see it. Animating from "none" would jump. */
+.meter-bar--step {
+  animation: meter-move 700ms ease-out;
+}
+
+.meter-bar--rollover {
+  animation: meter-roll 1100ms ease-out;
+}
+
+@keyframes meter-move {
+  0% {
+    transform: scaleY(1);
+    box-shadow: 0 0 0 var(--meter-tone);
+  }
+  30% {
+    transform: scaleY(1.8);
+    box-shadow: 0 0 0.4rem var(--meter-glow);
+  }
+  100% {
+    transform: scaleY(1);
+    box-shadow: 0 0 0 var(--meter-tone);
+  }
+}
+
+/* The roll-over is the "gains" beat — the same gesture, brighter, wider
+   and slower, so a segment completed reads as more than another step. */
+@keyframes meter-roll {
+  0% {
+    transform: scaleY(1);
+    box-shadow: 0 0 0 var(--meter-tone);
+  }
+  25% {
+    transform: scaleY(2.6);
+    box-shadow: 0 0 1rem var(--meter-glow-bright);
+  }
+  100% {
+    transform: scaleY(1);
+    box-shadow: 0 0 0 var(--meter-tone);
+  }
+}
+
+/* Whoever asked not to be moved at keeps the light and loses the
+   movement: the bar still glows to say it moved — that is information —
+   it simply doesn't swell (the same line the drag and the archive
+   farewell draw). */
+@media (prefers-reduced-motion: reduce) {
+  .meter-bar--step {
+    animation: meter-move-quiet 700ms ease-out;
+  }
+
+  .meter-bar--rollover {
+    animation: meter-roll-quiet 1100ms ease-out;
+  }
+
+  @keyframes meter-move-quiet {
+    0%,
+    100% {
+      box-shadow: 0 0 0 var(--meter-tone);
+    }
+    30% {
+      box-shadow: 0 0 0.4rem var(--meter-glow);
+    }
+  }
+
+  @keyframes meter-roll-quiet {
+    0%,
+    100% {
+      box-shadow: 0 0 0 var(--meter-tone);
+    }
+    25% {
+      box-shadow: 0 0 1rem var(--meter-glow-bright);
+    }
+  }
 }
 
 /* T5.2d/§13b: every secondary page is a title standing ABOVE its

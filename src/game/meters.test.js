@@ -19,6 +19,7 @@ import {
   literacyLevelNumber,
   literacyPoints,
   literacySegment,
+  meterMovement,
   milestonesReached,
   refundFungi,
   spendFungi,
@@ -295,5 +296,72 @@ describe('walletBar — the wallet shown as a bar (T4.5)', () => {
 
   it('past the top, the bar simply sits full', () => {
     expect(walletBar(99).into).toBe(WALLET_BAR_MAX)
+  })
+})
+
+describe('meterMovement — what just moved (T5.2e, §4)', () => {
+  // Shorthand: the three underlying numbers a meter reading is made of.
+  const reading = (steps, points, wallet) => ({ steps, points, wallet })
+  const still = reading(0, 0, 0)
+
+  it('nothing moving plays nothing', () => {
+    expect(meterMovement(still, still)).toEqual({
+      expedition: null,
+      literacy: null,
+      wallet: null,
+    })
+  })
+
+  it('a tap moves the steps bar, and only the steps bar', () => {
+    const moved = meterMovement(still, reading(1, 0, 0))
+    expect(moved.expedition).toBe('step')
+    expect(moved.literacy).toBeNull()
+    expect(moved.wallet).toBeNull()
+  })
+
+  it('every bar that moved lights up, together', () => {
+    // A tap that also turned up a magazine and some fungi.
+    expect(meterMovement(still, reading(1, 1, 3))).toEqual({
+      expedition: 'step',
+      literacy: 'step',
+      wallet: 'step',
+    })
+  })
+
+  it('going backwards plays nothing at all', () => {
+    // An undo (steps and literacy down) and a purchase (wallet down).
+    expect(meterMovement(reading(5, 20, 12), reading(4, 16, 5))).toEqual({
+      expedition: null,
+      literacy: null,
+      wallet: null,
+    })
+  })
+
+  it('the expedition bar rolling over is the brighter beat', () => {
+    const before = reading(EXPEDITION_SEGMENT_STEPS - 1, 0, 0)
+    const after = reading(EXPEDITION_SEGMENT_STEPS, 0, 0)
+    expect(meterMovement(before, after).expedition).toBe('rollover')
+  })
+
+  it('a step just short of the roll-over is still a plain step', () => {
+    const before = reading(EXPEDITION_SEGMENT_STEPS - 2, 0, 0)
+    const after = reading(EXPEDITION_SEGMENT_STEPS - 1, 0, 0)
+    expect(meterMovement(before, after).expedition).toBe('step')
+  })
+
+  it('reaching a new literacy level is the brighter beat too', () => {
+    const [first] = LITERACY_MILESTONES
+    expect(
+      meterMovement(reading(0, first - 1, 0), reading(0, first, 0)).literacy,
+    ).toBe('rollover')
+  })
+
+  it('a wallet that rises is always a plain step — it has no roll-over', () => {
+    // Past the top of its bar the wallet clamps rather than starting
+    // again, so there is no boundary for it to cross.
+    expect(
+      meterMovement(reading(0, 0, WALLET_BAR_MAX - 1), reading(0, 0, 99))
+        .wallet,
+    ).toBe('step')
   })
 })

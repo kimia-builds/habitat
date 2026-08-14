@@ -20,21 +20,52 @@
 // All maths comes from the meter engine (T2.1); this component only
 // draws.
 
+// Since T5.2e (2026-08-14, design-notes §4) each forward movement also
+// plays a momentary glow-and-thicken on the bar that moved, settling
+// straight back — the resting state never changes. The maths of "did
+// this move, and was it a roll-over?" is meterMovement's, in the game
+// module; everything here is the drawing.
+
+import { useEffect, useRef, useState } from 'react'
+
 import {
   expeditionSegment,
   expeditionSteps,
   literacyLevelNumber,
   literacyPoints,
   literacySegment,
+  meterMovement,
   walletBar,
 } from '../game/meters.js'
 
 // One bar. The width is the fraction of the current stretch covered;
 // the aria values let tests (and screen readers) read the real numbers.
-function Bar({ label, into, size, className }) {
+// `beat` is null at rest, or 'step' / 'rollover' while a movement plays;
+// `playId` counts the movements, and only exists so the same beat twice
+// in a row can be told apart.
+function Bar({ label, into, size, className, beat, playId }) {
+  const bar = useRef(null)
+
+  // Playing it AGAIN is the one fiddly bit. A CSS animation restarts
+  // when its NAME changes — not when a counter does — so tapping +1
+  // twice inside one glow would simply be ignored, and a habit tapped
+  // in a hurry is exactly when the bar should keep answering. Taking
+  // the animation off, making the browser act on that, and putting it
+  // back is the standard way to force a replay. Reading a layout number
+  // is what "making the browser act on it" means: without that line the
+  // two changes collapse into no change at all.
+  useEffect(() => {
+    if (!beat || !bar.current) return
+    const element = bar.current
+    element.style.animation = 'none'
+    void element.offsetHeight
+    element.style.animation = ''
+  }, [playId, beat])
+
   return (
     <div
-      className={`meter-bar ${className}`}
+      ref={bar}
+      className={`meter-bar ${className}` + (beat ? ` meter-bar--${beat}` : '')}
       role="progressbar"
       aria-label={label}
       aria-valuemin={0}
@@ -49,12 +80,43 @@ function Bar({ label, into, size, className }) {
   )
 }
 
+// Watch the three numbers and say what each bar should play. The
+// previous reading starts as the FIRST one seen, so opening Habitat
+// never plays a movement — arriving to three bars pulsing at nothing
+// would be a ceremony for work done days ago.
+function useMovement(steps, points, wallet) {
+  const previous = useRef({ steps, points, wallet })
+  const [play, setPlay] = useState({
+    id: 0,
+    expedition: null,
+    literacy: null,
+    wallet: null,
+  })
+
+  useEffect(() => {
+    const moved = meterMovement(previous.current, { steps, points, wallet })
+    previous.current = { steps, points, wallet }
+    if (!moved.expedition && !moved.literacy && !moved.wallet) return
+    setPlay((last) => ({ id: last.id + 1, ...moved }))
+  }, [steps, points, wallet])
+
+  return play
+}
+
 function Meters({ completions, readingItems, fungusTrueBalance, onOpen }) {
   const steps = expeditionSteps(completions)
   const expedition = expeditionSegment(steps)
   const points = literacyPoints(readingItems)
   const literacy = literacySegment(points)
   const wallet = walletBar(fungusTrueBalance)
+
+  // Steps and literacy are watched by their LIFETIME totals, because
+  // both bars empty themselves at their best moment and a fill reading
+  // would call that going backwards. The wallet is watched by its bar
+  // instead: it is the one meter whose bar can sit still while its true
+  // number moves (hidden debt below zero, a balance past the top), and
+  // a glow announcing an invisible change is worse than no glow.
+  const play = useMovement(steps, points, wallet.into)
 
   return (
     <section className="meters" aria-label="meters">
@@ -73,6 +135,8 @@ function Meters({ completions, readingItems, fungusTrueBalance, onOpen }) {
           into={expedition.into}
           size={expedition.size}
           className="meter-bar-expedition"
+          beat={play.expedition}
+          playId={play.id}
         />
       </button>
 
@@ -92,6 +156,8 @@ function Meters({ completions, readingItems, fungusTrueBalance, onOpen }) {
           into={literacy.into}
           size={literacy.size}
           className="meter-bar-literacy"
+          beat={play.literacy}
+          playId={play.id}
         />
       </button>
 
@@ -110,6 +176,8 @@ function Meters({ completions, readingItems, fungusTrueBalance, onOpen }) {
           into={wallet.into}
           size={wallet.size}
           className="meter-bar-fungus"
+          beat={play.wallet}
+          playId={play.id}
         />
       </button>
     </section>

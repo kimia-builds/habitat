@@ -8,6 +8,7 @@
 
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { EXPEDITION_SEGMENT_STEPS } from '../game/constants.js'
 import Meters from './Meters.jsx'
 
 afterEach(cleanup)
@@ -85,5 +86,94 @@ describe('the numbers behind the hover', () => {
     expect(screen.getByRole('button', { name: /literacy level/ }).title).toBe(
       '15',
     )
+  })
+})
+
+// T5.2e/§4: a forward movement plays a momentary glow-and-thicken on
+// the bar that moved. The animation itself is CSS; what a test can
+// honestly check is which bar was ASKED to play, and which was not.
+describe('the movement glow (T5.2e, §4)', () => {
+  const bar = (name) => screen.getByRole('progressbar', { name })
+  const steps = 'steps taken progress'
+  const money = 'wallet balance progress'
+  const reading = 'literacy level progress'
+
+  it('opening Habitat plays nothing — the bars arrive at rest', () => {
+    renderMeters({ completions: [{}, {}], fungusTrueBalance: 6 })
+    expect(bar(steps).className).not.toMatch(/meter-bar--/)
+    expect(bar(money).className).not.toMatch(/meter-bar--/)
+  })
+
+  it('a tap moves the steps bar, and leaves the others resting', () => {
+    const { rerender } = renderMeters({ completions: [{}] })
+    rerender(
+      <Meters
+        completions={[{}, {}]}
+        readingItems={[]}
+        fungusTrueBalance={0}
+        onOpen={vi.fn()}
+      />,
+    )
+    expect(bar(steps).className).toMatch(/meter-bar--step/)
+    expect(bar(money).className).not.toMatch(/meter-bar--/)
+    expect(bar(reading).className).not.toMatch(/meter-bar--/)
+  })
+
+  it('every bar that moved lights up together', () => {
+    const { rerender } = renderMeters({ completions: [{}] })
+    rerender(
+      <Meters
+        completions={[{}, {}]}
+        readingItems={[{ type: 'magazine' }]}
+        fungusTrueBalance={3}
+        onOpen={vi.fn()}
+      />,
+    )
+    expect(bar(steps).className).toMatch(/meter-bar--step/)
+    expect(bar(reading).className).toMatch(/meter-bar--step/)
+    expect(bar(money).className).toMatch(/meter-bar--step/)
+  })
+
+  it('an undo plays nothing — the movement is forward only', () => {
+    const { rerender } = renderMeters({ completions: [{}, {}] })
+    rerender(
+      <Meters
+        completions={[{}]}
+        readingItems={[]}
+        fungusTrueBalance={0}
+        onOpen={vi.fn()}
+      />,
+    )
+    expect(bar(steps).className).not.toMatch(/meter-bar--/)
+  })
+
+  it('a purchase plays nothing — the wallet only celebrates going up', () => {
+    const { rerender } = renderMeters({ fungusTrueBalance: 12 })
+    rerender(
+      <Meters
+        completions={[]}
+        readingItems={[]}
+        fungusTrueBalance={5}
+        onOpen={vi.fn()}
+      />,
+    )
+    expect(bar(money).className).not.toMatch(/meter-bar--/)
+  })
+
+  it('a full segment rolls over with the brighter beat', () => {
+    // One short of a segment, then the step that completes it.
+    const history = (n) => Array.from({ length: n }, () => ({}))
+    const { rerender } = renderMeters({
+      completions: history(EXPEDITION_SEGMENT_STEPS - 1),
+    })
+    rerender(
+      <Meters
+        completions={history(EXPEDITION_SEGMENT_STEPS)}
+        readingItems={[]}
+        fungusTrueBalance={0}
+        onOpen={vi.fn()}
+      />,
+    )
+    expect(bar(steps).className).toMatch(/meter-bar--rollover/)
   })
 })
