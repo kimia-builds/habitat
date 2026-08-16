@@ -1640,7 +1640,12 @@ body {
    Re-measure this if the column width changes — it is a consequence of
    that number, not one chosen for its own sake. */
 .cameo {
-  --cameo-min: 9rem;
+  /* The floor includes the caption's fade, which is padding rather than
+     ink — so this is wider than the readable width it protects. Raised
+     from 9rem when the backing became a spray (2026-08-16): the halo
+     needs room to reach zero, and taking that room out of the words
+     instead would wrap a three-word sentence onto three lines. */
+  --cameo-min: 11rem;
   position: fixed;
   left: var(--space-6);
   bottom: var(--space-6);
@@ -1727,9 +1732,26 @@ body {
   color: var(--text);
   font-size: 0.9rem;
   margin: 0;
-  background: var(--veil-caption);
-  padding: var(--space-2) var(--space-3);
-  border-radius: 0.4rem;
+  /* SPRAYED, not drawn (Kimia's call 2026-08-16): a rounded rectangle
+     put a hard edge across whatever tile the visit landed on, which
+     read as a black sticker rather than as words that happen to be
+     legible. A radial fade has no edge to notice — it is dark where the
+     words are and gone by the time it reaches anything else.
+
+     The plateau matters as much as the fade: full strength out to 45%
+     keeps the whole line evenly backed, and only then does it fall
+     away. Fading from the centre instead would leave the ends of the
+     sentence sitting on almost nothing. */
+  background: radial-gradient(
+    ellipse at center,
+    var(--veil-caption) 0%,
+    var(--veil-caption) 45%,
+    var(--veil-caption-fade) 80%
+  );
+  /* The padding IS the fade: it is the room the halo needs to reach
+     zero before the words do. Tighter than this and the edge comes back
+     as a visible ring around the text. */
+  padding: var(--space-4) var(--space-6);
   /* Wrapping is how it fits the margin beside the habits: the box is
      already bounded above, so this only stops a long word forcing it
      wider than the room it was given. */

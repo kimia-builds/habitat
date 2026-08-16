@@ -204,8 +204,14 @@
      that can land anywhere — the cameo's caption (2026-08-16), which is
      pinned to the window and may sit over a habit tile, a charm or the
      bare night sky. Darker than the check-in's veil because it has only
-     a couple of lines' worth of area to do its work in. */
+     a couple of lines' worth of area to do its work in.
+     It is sprayed, not drawn: the pair below are the two ends of a
+     radial fade, so the backing has no edge to read as a box. The
+     transparent end has to be the SAME colour at zero alpha — fading to
+     the keyword `transparent` fades through a different colour on the
+     way and greys the halo. */
   --veil-caption: rgba(4, 6, 10, 0.82);
+  --veil-caption-fade: rgba(4, 6, 10, 0);
   /* There is no --veil-startup any more (T5.2e, 2026-08-13). The startup
      was a black veil only while it was a placeholder; it is now the
      rolling planet, which paints its own sky beside its own drawing

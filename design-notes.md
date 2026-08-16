@@ -514,7 +514,14 @@ design-bible.md §9c.)
      - **The caption sits directly beneath it, on its own dark
        backing.** Not a card around the whole visit — the words' own
        backing, because the words are the part that has to survive
-       landing on a habit tile, a charm or the bare night sky.
+       landing on a habit tile, a charm or the bare night sky. The
+       backing is **sprayed, not drawn** (Kimia on seeing the first
+       cut): a rounded rectangle cut a hard edge across whatever tile
+       it landed on and read as a black sticker stuck over the list. It
+       is a radial fade instead — full strength under the words, gone
+       before it reaches anything else, with no edge to notice. The
+       padding around the words IS that fade, which is why the visit
+       measures wider than the ink you can see.
      - **Pinned to the bottom left of the window**, the mirror of the
        shelf's top right, so the app's two floating moments never meet.
      - **The friend's name is gone.** The friend and the caption,

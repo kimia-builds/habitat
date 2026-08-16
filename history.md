@@ -2474,6 +2474,18 @@ return 0` right after the era is worked out, so a moment before the
   words: try to fit the blank space, but allow the coverage rather than
   squeeze the words out of legibility. The backing behind the caption is
   what makes covering acceptable at all.
+- 2026-08-16 (same session, third pass — Kimia's call): **the caption's
+  backing is sprayed, not drawn.** The first cut used a rounded
+  rectangle, which cut a hard edge across whatever tile the visit landed
+  on — "it comes off looking like black spray paint" was what she wanted
+  and the box was not it. Now a radial fade: full strength under the
+  words, gone before it reaches anything else, no edge to notice. Two
+  things this needed beyond the gradient itself — a **plateau** out to
+  45% before the falloff starts, or the ends of the sentence sit on
+  almost nothing; and a transparent stop that is **the same colour at
+  zero alpha** rather than the `transparent` keyword, which fades
+  through a different colour on the way and greys the halo. Folded into
+  §8.
 - 2026-08-16 (working note, same session): **the name went, so the
   test for it had to invert, not vanish.** The two cameo tests asserting
   a name were rewritten to assert its ABSENCE — and deliberately with a
@@ -2493,10 +2505,15 @@ return 0` right after the era is worked out, so a moment before the
   re-deriving the same win brings back the same shape as well as the
   same friend — the T3.1 no-slot-machine rule, which the seeded friend
   pick already followed.
-- **`--veil-caption` joins the veil family** in tokens.css. Not a
-  full-screen wash like the other two: a small backing behind floating
-  words that can land anywhere, and darker than the check-in's veil
-  because it has only a couple of lines' area to work in.
+- **`--veil-caption` joins the veil family** in tokens.css, with
+  `--veil-caption-fade` beside it as the zero-alpha end of the spray.
+  Not a full-screen wash like the other two: a small backing behind
+  floating words that can land anywhere, and darker than the check-in's
+  veil because it has only a couple of lines' area to work in.
+- **`--cameo-min` rose from 9rem to 11rem** when the backing became a
+  spray. The floor now includes the fade, which is padding rather than
+  ink — taking that room out of the words instead would wrap a
+  three-word sentence onto three lines.
 - **The visit wears `--friendship`**, the soft rose an arriving friend
   already wears (`.arrival-friend`), rather than a colour of its own — a
   visiting friend and an arriving one should be lit the same way.
