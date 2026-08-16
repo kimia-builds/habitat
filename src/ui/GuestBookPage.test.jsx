@@ -67,7 +67,7 @@ describe('the Guest Book page', () => {
     expect(screen.getByRole('button', { name: POET })).toBeDefined()
   })
 
-  it('prefers a friend\'s own name over its species name', () => {
+  it("prefers a friend's own name over its species name", () => {
     // The T6.1a ladder: individual name first, species name second.
     setIndividualName('drifter', 2, 'a named individual')
     render(
@@ -77,7 +77,9 @@ describe('the Guest Book page', () => {
         onBack={() => {}}
       />,
     )
-    expect(screen.getByRole('button', { name: 'a named individual' })).toBeDefined()
+    expect(
+      screen.getByRole('button', { name: 'a named individual' }),
+    ).toBeDefined()
     expect(screen.getAllByRole('button', { name: DRIFTER })).toHaveLength(1)
   })
 

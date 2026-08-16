@@ -3,7 +3,7 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 10,
+//     schemaVersion: 11,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — since v3 each
@@ -12,6 +12,8 @@
 //                           // category, individual } — the one change v8
 //                           // gates (see game/friends.js)
 //     settings:    { dayCutoffHour: 3,
+//                    language: 'en',          // which language the
+//                              // interface speaks — added in T6.13
 //                    fieldNotesShownOn: null,  // the last Sunday the
 //                              // field notes auto-opened — added in T2.3
 //                    startupShownOn: null,     // the last Habitat day
@@ -45,6 +47,11 @@
 //                              // — see game/market.js, added in T4.3b
 //   }
 //
+// Since v11 (T6.13) settings carry `language` — 'en' or 'fa', which
+// interface language Habitat is speaking. It rides INSIDE the envelope,
+// and so travels in backups: restoring a backup restores the language
+// it was taken in, which is the same promise every other setting makes.
+//
 // Since v10 (T6.6) a completion may also carry `pastGame: true` —
 // see game/completions.js and game/newgame.js. Nothing else in the
 // envelope changed; the bump exists so a v10 backup, in which some
@@ -54,6 +61,7 @@
 // The schemaVersion lets a future Habitat recognise and upgrade old
 // backups — upgradeData below does exactly that for v1.
 
+import { DEFAULT_LANGUAGE, isLanguage } from '../content/ui.js'
 import { validateAbodeLayout } from '../game/abode.js'
 import { validateCompletion } from '../game/completions.js'
 import { DEFAULT_DAY_CUTOFF_HOUR } from '../game/constants.js'
@@ -71,7 +79,7 @@ const STORAGE_KEY = 'habitat-data'
 // Exported so tests can assert "the upgrade chain reaches the CURRENT
 // version" rather than hard-coding a number that has to be edited in
 // nine places on every schema bump.
-export const SCHEMA_VERSION = 10
+export const SCHEMA_VERSION = 11
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -91,6 +99,7 @@ export function emptyData() {
       fieldNotesShownOn: null,
       startupShownOn: null,
       lastExportedOn: null,
+      language: DEFAULT_LANGUAGE,
     },
     checkedInThrough: null,
     worldSeed: newWorldSeed(),
@@ -110,13 +119,15 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV9toV10(
-    upgradeV8toV9(
-      upgradeV7toV8(
-        upgradeV6toV7(
-          upgradeV5toV6(
-            upgradeV4toV5(
-              upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))),
+  return upgradeV10toV11(
+    upgradeV9toV10(
+      upgradeV8toV9(
+        upgradeV7toV8(
+          upgradeV6toV7(
+            upgradeV5toV6(
+              upgradeV4toV5(
+                upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))),
+              ),
             ),
           ),
         ),
@@ -276,6 +287,20 @@ function upgradeV9toV10(data) {
   return { ...data, schemaVersion: SCHEMA_VERSION }
 }
 
+// v10 -> v11 (T6.13): settings gain `language` — which language the
+// interface speaks. Every save that predates the switch was written by
+// an English-only Habitat, so English is not a default standing in for
+// an unknown; it is the honest answer.
+function upgradeV10toV11(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 10) return data
+  const settings =
+    typeof data.settings === 'object' && data.settings !== null
+      ? { language: DEFAULT_LANGUAGE, ...data.settings }
+      : data.settings
+  return { ...data, schemaVersion: SCHEMA_VERSION, settings }
+}
+
 // Older saves and backups predate completions, settings and (from
 // T1.4) checkedInThrough; filling ONLY those gaps with defaults lets
 // old data load cleanly. Nothing present is ever touched, and
@@ -293,12 +318,14 @@ function withDefaults(data) {
             fieldNotesShownOn: null,
             startupShownOn: null,
             lastExportedOn: null,
+            language: DEFAULT_LANGUAGE,
           }
         : typeof data.settings === 'object' && data.settings !== null
           ? {
               fieldNotesShownOn: null,
               startupShownOn: null,
               lastExportedOn: null,
+              language: DEFAULT_LANGUAGE,
               ...data.settings,
             }
           : data.settings,
@@ -346,6 +373,9 @@ function validateData(data) {
     !isValidDayKey(data.settings.lastExportedOn)
   ) {
     throw new Error('This backup has a broken backup-date marker.')
+  }
+  if (!isLanguage(data.settings.language)) {
+    throw new Error('This backup names a language Habitat does not speak.')
   }
   if (data.checkedInThrough !== null && !isValidDayKey(data.checkedInThrough)) {
     throw new Error('This backup has a broken check-in marker.')

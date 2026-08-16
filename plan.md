@@ -228,6 +228,20 @@ tracker. Everything after this is delight, informed by real use.
       movement is on screen when it plays, and a check-in you opened
       yourself becoming click-away-able — the morning's owed one still
       exits only through done; build notes in history.md)_
+- [x] **T6.13 Habitat learns to hold a second language.** _(done
+      2026-08-16, unplanned — Kimia's call: she wants to offer Habitat
+      to Farsi speakers. This is the PLUMBING ONLY: every interface word
+      moved out of the components into one keyed catalogue
+      (`src/content/ui.js`, hers like every other content file), a
+      language setting saved in the envelope (schema v11), and a switch
+      at the foot of the page. A blank Farsi slot falls back to English
+      — the one place a blank slot does NOT mean silence — so the
+      translation can be filled one word at a time and the app is never
+      half-broken. Nothing is translated yet, and nothing about LAYOUT
+      or TYPOGRAPHY changed: right-to-left, the Persian typeface, the
+      Jalali calendar and the Saturday-start week are all still ahead,
+      and the week change in particular is not a language question at
+      all — see history.md. Build notes in history.md)_
 - [ ] **T6.7 The first hour — storytelling & narration for a new
       player** (Kimia's call 2026-08-11) — revisit what arriving on
       N-Z-D actually feels like for someone who has never opened

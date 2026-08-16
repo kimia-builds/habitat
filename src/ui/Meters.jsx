@@ -41,6 +41,7 @@ import {
   meterReading,
   walletBar,
 } from '../game/meters.js'
+import { useText } from './language.jsx'
 
 // One bar. The width is the fraction of the current stretch covered;
 // the aria values let tests (and screen readers) read the real numbers.
@@ -172,6 +173,7 @@ function Meters({
   heldFrom,
   onOpen,
 }) {
+  const { t } = useText()
   // Which numbers a movement is measured by is the game module's call
   // (meterReading), not this component's.
   const live = meterReading(completions, readingItems, fungusTrueBalance)
@@ -193,7 +195,7 @@ function Meters({
   const points = live.points
 
   return (
-    <section className="meters" aria-label="meters">
+    <section className="meters" aria-label={t('meters.region')}>
       {/* Steps taken: a rolling bar (decision 2026-07-16) — fills over
           ~a month of taps, rolls over, starts again. The bar IS the
           whole story now: the lifetime total lives behind the hover
@@ -203,9 +205,9 @@ function Meters({
         title={String(steps)}
         onClick={() => onOpen('map')}
       >
-        <span className="meter-name">steps taken</span>
+        <span className="meter-name">{t('meters.steps')}</span>
         <Bar
-          label="steps taken progress"
+          label={t('meters.stepsBar')}
           into={expedition.into}
           size={expedition.size}
           className="meter-bar-expedition"
@@ -224,9 +226,9 @@ function Meters({
         title={String(Math.round(literacyLevelNumber(points)))}
         onClick={() => onOpen('bookcase')}
       >
-        <span className="meter-name">literacy level</span>
+        <span className="meter-name">{t('meters.literacy')}</span>
         <Bar
-          label="literacy level progress"
+          label={t('meters.literacyBar')}
           into={literacy.into}
           size={literacy.size}
           className="meter-bar-literacy"
@@ -244,9 +246,9 @@ function Meters({
         title={String(fungusTrueBalance)}
         onClick={() => onOpen('market')}
       >
-        <span className="meter-name">wallet balance</span>
+        <span className="meter-name">{t('meters.wallet')}</span>
         <Bar
-          label="wallet balance progress"
+          label={t('meters.walletBar')}
           into={wallet.into}
           size={wallet.size}
           className="meter-bar-fungus"

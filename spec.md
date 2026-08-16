@@ -594,6 +594,32 @@ Full visual treatment in design-notes §12f.
     thing that says whether it still counts. It states a fact and
     stops there: no colour change, no urgency, no counting of neglect
     (§ no punishment mechanics applies to chores too).
+- **Languages (2026-08-16, T6.13).** Habitat is built to speak more than
+  one language. Every INTERFACE word — buttons, page titles, hover
+  labels, screen-reader names — lives in one keyed catalogue,
+  `src/content/ui.js`, which is Kimia's file like the rest of
+  `src/content/`. Story stays in `narration.js`; the two are different
+  voices and translate on different clocks.
+  - The chosen language is a **setting inside the storage envelope**
+    (schema v11), so it survives a reload and travels in a backup.
+  - **A blank slot falls back to English.** This is the single place
+    where a blank content slot does not mean silence — a blank button is
+    a broken control, not restraint. The fallback is what lets a
+    language be filled in one word at a time without the app ever being
+    half-broken, and it means nothing is ever machine-translated: an
+    unfilled slot shows a real human's English.
+  - English is the fallback language and so is the one block that must
+    never contain a blank; `src/content/ui.test.js` enforces that, along
+    with both blocks carrying the same keys.
+  - Each language names itself **in its own script** in every block, so
+    the switch reads the same whichever language is on and there is
+    always a way back out of one you cannot read.
+  - **Scope, deliberately.** T6.13 is plumbing. It does NOT touch
+    layout direction, typography, calendars or the shape of the week —
+    right-to-left, a Persian typeface, the Jalali calendar and a
+    Saturday-start week are all separate, later, and the week in
+    particular is not a language question at all (history.md,
+    2026-08-16).
 - **Starting a new game (2026-08-11; two doors since 2026-08-12).**
   "start a new game" opens a popup that asks WHICH kind of fresh start,
   then asks "are you sure?" and names exactly what goes and what stays

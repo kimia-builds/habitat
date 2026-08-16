@@ -33,6 +33,7 @@
 // tallying of what is about to be lost. It states the facts and waits.
 
 import { useState } from 'react'
+import { useText } from './language.jsx'
 
 // What each door actually does, in plain words. Shown on the "are you
 // sure?" step — the moment where being surprised would be worst.
@@ -53,6 +54,7 @@ const DONE_MESSAGE = {
 }
 
 function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
+  const { t } = useText()
   // Where in the door we are: null (closed), 'choose' (which way?), or
   // 'refresh' / 'keep' (are you sure?).
   const [step, setStep] = useState(null)
@@ -74,7 +76,7 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
           setStep('choose')
         }}
       >
-        start a new game
+        {t('newGame.start')}
       </button>
       {message && <p role="status">{message}</p>}
 
@@ -84,11 +86,11 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
             className="new-game-popup"
             role="dialog"
             aria-modal="true"
-            aria-label="start a new game"
+            aria-label={t('newGame.start')}
           >
             {step === 'choose' ? (
               <>
-                <p className="new-game-title">which type of restart?</p>
+                <p className="new-game-title">{t('newGame.which')}</p>
                 <p className="new-game-detail">
                   do you want to wipe all your habit history and play habitat
                   from total scratch?
@@ -101,19 +103,16 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
                   game? (requires you to export a backup)
                 </p>
                 <div className="new-game-choices">
-                  <button
-                    className="pebble"
-                    onClick={() => setStep('refresh')}
-                  >
-                    total refresh
+                  <button className="pebble" onClick={() => setStep('refresh')}>
+                    {t('newGame.refresh')}
                   </button>
-                  <span title={backedUp ? undefined : 'export a backup first'}>
+                  <span title={backedUp ? undefined : t('newGame.backupFirst')}>
                     <button
                       className="pebble"
                       onClick={() => setStep('keep')}
                       disabled={!backedUp}
                     >
-                      keep habit data
+                      {t('newGame.keep')}
                     </button>
                   </span>
                 </div>
@@ -124,25 +123,19 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
                   className="pebble new-game-dismiss"
                   onClick={() => setStep(null)}
                 >
-                  not now
+                  {t('newGame.notNow')}
                 </button>
               </>
             ) : (
               <>
-                <p className="new-game-title">are you sure?</p>
+                <p className="new-game-title">{t('newGame.sure')}</p>
                 <p className="new-game-detail">{CONSEQUENCE[step]}</p>
                 <div className="new-game-choices">
-                  <button
-                    className="pebble"
-                    onClick={() => confirmed(step)}
-                  >
-                    yes
+                  <button className="pebble" onClick={() => confirmed(step)}>
+                    {t('newGame.yes')}
                   </button>
-                  <button
-                    className="pebble"
-                    onClick={() => setStep('choose')}
-                  >
-                    no, take me back
+                  <button className="pebble" onClick={() => setStep('choose')}>
+                    {t('newGame.no')}
                   </button>
                 </div>
               </>

@@ -18,6 +18,7 @@ import { LANDMARK_FLORA, MAP_REGION_COUNT } from '../game/constants.js'
 import { discoveredRegionCount, landmarkMarkers } from '../game/map.js'
 import { expeditionSteps } from '../game/meters.js'
 import { buildMapLayout, landmarkPoint } from './mapLayout.js'
+import { useText } from './language.jsx'
 
 function MapPage({
   completions,
@@ -25,19 +26,20 @@ function MapPage({
   onBack,
   landmarkSpecies = LANDMARK_FLORA,
 }) {
+  const { t } = useText()
   const layout = buildMapLayout(worldSeed)
   const known = discoveredRegionCount(expeditionSteps(completions))
   const markers = landmarkMarkers(completions, landmarkSpecies)
 
   return (
     <section className="map-page">
-      <h2 className="page-title">map of N-Z-D</h2>
+      <h2 className="page-title">{t('page.map')}</h2>
       <div className="page-box">
         <svg
           className="map-svg"
           viewBox={`0 0 ${layout.size} ${layout.size}`}
           role="img"
-          aria-label="the planet, region by region"
+          aria-label={t('map.planet')}
         >
           <path className="map-silhouette" d={layout.silhouettePath} />
           {layout.regions.slice(0, known).map(({ region, path, hue }) => (

@@ -29,7 +29,8 @@ import {
 import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
 import { backupAgeLabel } from './game/backup.js'
 import { addDays, dayKeyFromTimestamp } from './game/days.js'
-import { SCHEMA_VERSION } from './storage/storage.js'
+import { loadData, SCHEMA_VERSION } from './storage/storage.js'
+import { LANGUAGES } from './content/ui.js'
 import { narrationSlot } from './content/narration.js'
 import {
   blankAllNames,
@@ -2977,5 +2978,80 @@ describe('the home screen foot (2026-08-12)', () => {
       'import backup',
       'start a new game',
     ])
+  })
+})
+
+describe('the language switch (T6.13)', () => {
+  // These tests never assert a WORD. They assert that the choice is
+  // recorded, that it survives, and that a blank slot still shows
+  // something — the mechanism, not the copy.
+
+  const switchTo = (code) => {
+    const group = document.querySelector('.language-switch')
+    const option = [...group.querySelectorAll('button')].find(
+      (b) => b.lang === code,
+    )
+    fireEvent.click(option)
+    return option
+  }
+
+  it('offers one option per language, with the current one marked', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    const options = [...document.querySelectorAll('.language-switch button')]
+    expect(options).toHaveLength(LANGUAGES.length)
+    const pressed = options.filter(
+      (b) => b.getAttribute('aria-pressed') === 'true',
+    )
+    expect(pressed).toHaveLength(1)
+    expect(pressed[0].lang).toBe('en')
+  })
+
+  it('records the choice in settings, where a backup will carry it', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    switchTo('fa')
+    expect(loadData().settings.language).toBe('fa')
+  })
+
+  it('opens in the language it was left in', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    switchTo('fa')
+    cleanup()
+    render(<App />)
+    const pressed = document.querySelector(
+      '.language-switch button[aria-pressed="true"]',
+    )
+    expect(pressed.lang).toBe('fa')
+  })
+
+  it('names each language in its own script, whichever one is on', () => {
+    // The way back. Someone who lands in a language they cannot read
+    // must still recognise their own — so neither name is translated,
+    // and both read the same either way.
+    render(<App />)
+    createHabitViaUI('walk')
+    const before = [
+      ...document.querySelectorAll('.language-switch button'),
+    ].map((b) => b.textContent)
+    switchTo('fa')
+    const after = [...document.querySelectorAll('.language-switch button')].map(
+      (b) => b.textContent,
+    )
+    expect(after).toEqual(before)
+  })
+
+  it('keeps every control worded while the Farsi slots are blank', () => {
+    // The fallback, seen from the outside: switching to a language whose
+    // slots are empty must leave the app fully usable, not silent. The
+    // rail is the check because it is on every screen.
+    render(<App />)
+    createHabitViaUI('walk')
+    switchTo('fa')
+    const rail = document.querySelector('.icon-rail')
+    for (const icon of rail.querySelectorAll('button')) {
+      expect(icon.getAttribute('aria-label')).toBeTruthy()
+    }
   })
 })

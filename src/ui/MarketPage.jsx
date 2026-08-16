@@ -17,8 +17,10 @@
 
 import DropGlyph from './DropGlyph.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
+import { useText } from './language.jsx'
 
 function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
+  const { t } = useText()
   // How many copies of each offered object Kimia already owns — said
   // quietly, since buying another is allowed.
   const ownedCounts = new Map()
@@ -31,10 +33,10 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
 
   return (
     <section className="stub-page market">
-      <h2 className="page-title">local market</h2>
+      <h2 className="page-title">{t('page.market')}</h2>
       <div className="page-box">
         {stall.length > 0 && (
-          <ul className="market-stall" aria-label="the stall">
+          <ul className="market-stall" aria-label={t('market.stall')}>
             {stall.map((object) => {
               const owned = ownedCounts.get(object.key) ?? 0
               const affordable = wallet >= object.price
@@ -54,11 +56,11 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
                   )}
                   <button
                     className="market-buy pebble"
-                    aria-label={`buy a curiosity for ${object.price} fungi`}
+                    aria-label={t('market.buyLabel', { price: object.price })}
                     disabled={!affordable}
                     onClick={() => onBuy(object)}
                   >
-                    buy
+                    {t('market.buy')}
                   </button>
                 </li>
               )

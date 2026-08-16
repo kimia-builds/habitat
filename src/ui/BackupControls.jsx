@@ -17,8 +17,10 @@
 import { useRef, useState } from 'react'
 
 import { backupAgeLabel } from '../game/backup.js'
+import { useText } from './language.jsx'
 
 function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
+  const { t } = useText()
   const fileInput = useRef(null)
   const [message, setMessage] = useState('')
 
@@ -39,12 +41,12 @@ function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
       <button
         className="pebble"
         onClick={onExport}
-        title={backupAgeLabel(lastExportedOn, todayKey)}
+        title={backupAgeLabel(lastExportedOn, todayKey, t)}
       >
-        export backup
+        {t('backup.export')}
       </button>
       <button className="pebble" onClick={() => fileInput.current.click()}>
-        import backup
+        {t('backup.import')}
       </button>
       <input
         ref={fileInput}
@@ -52,7 +54,7 @@ function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
         accept="application/json,.json"
         style={{ display: 'none' }}
         onChange={handleFile}
-        aria-label="backup file"
+        aria-label={t('backup.file')}
       />
       {message && <p role="status">{message}</p>}
     </div>

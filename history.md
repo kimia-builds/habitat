@@ -2531,6 +2531,107 @@ return 0` right after the era is worked out, so a moment before the
   smear into one haze instead of separate glowing things. Recorded as an
   eyeball call for T5.3 rather than guessed on paper now.
 
+- 2026-08-16 (T6.13, Kimia's call — language session): **Habitat is
+  built to hold a second language, so it can be offered to Farsi
+  speakers.** Every interface word moved out of the components into one
+  keyed catalogue, `src/content/ui.js` — Kimia's file, like the rest of
+  `src/content/`. The language is a setting inside the storage envelope
+  (schema v11), so it survives a reload and rides in backups.
+- 2026-08-16 (same session): **a blank slot in `ui.js` falls back to
+  English, not to silence** — the one place in `src/content/` where that
+  is true. Silence is right for an unwritten story beat; a blank button
+  is just a broken control. The fallback is the whole reason a language
+  can be filled ONE WORD AT A TIME: fill three slots and three words are
+  Farsi, the rest keep working in English. It also means nothing is ever
+  machine-translated — an unfilled slot shows a real human's English.
+- 2026-08-16 (same session): **each language names itself in its own
+  script, in every block** ("English" / "فارسی"), so the switch reads
+  the same whichever language is on. Someone who lands in a language
+  they cannot read must still be able to find their way back; a switch
+  that renamed itself would be a trap. These are the only two Farsi
+  slots that ship pre-filled.
+- 2026-08-16 (same session): **the switch sits BELOW the three footer
+  controls, not on that line** — the three-button row is a decided shape
+  (2026-08-12) and `App.test.jsx` pins it at three. Its placement is
+  otherwise provisional: Kimia has not yet seen it, and moving it is a
+  matter of rendering it elsewhere.
+- 2026-08-16 (working note, same session): **the shape of the week is
+  NOT a language question, and must not be wired to the language
+  switch.** Kimia asked for Farsi to bring a Saturday–Friday week along
+  with the Jalali calendar. Those two are different in kind:
+  - the CALENDAR is display-only. Day keys stay `YYYY-MM-DD` Gregorian
+    and go on driving every streak; only the date line and the field
+    notes' labels would render Jalali. Contained, and safe to attach to
+    the language.
+  - the WEEK is not display. `weekStart()` in `game/days.js` is a single
+    function, and moving it moves what the DATA MEANS: which days an
+    N-per-week habit's streak is judged over, how the field notes slice
+    history, and — because "past days are editable only while their
+    Mon–Sun week is the current one" is a product guardrail — which past
+    days are still editable and which have frozen. Tying that to the
+    language switch would mean toggling to Farsi silently re-judges her
+    existing history, and toggling back re-judges it again.
+  So: if the Saturday week is wanted, it is **its own setting**, decided
+  once, independent of language — and the guardrail in CLAUDE.md and
+  spec.md §4.2 has to be reworded off "Mon–Sun" first. Left undecided
+  here on purpose; it is Kimia's call, not a detail to guess.
+- 2026-08-16 (working note, same session): **what T6.13 deliberately did
+  NOT touch.** No layout direction (right-to-left), no typography, no
+  calendar, no week. Farsi is cursive, so the 18 letterspacing rules in
+  index.css have to switch off for it; Persian has no upper/lowercase,
+  so the wordmark and date styling have no Farsi equivalent; and
+  `system-ui` does not render Persian dependably, so a real webfont
+  (~150KB, Habitat's first) would be needed. Each is a separate slice
+  with a visible result Kimia can react to, which is how design work on
+  this project goes.
+
+## T6.13 build notes — one keyed catalogue for every interface word (2026-08-16)
+
+**What changed.** About 130 interface strings — button words, page
+titles, hover labels, screen-reader names — moved out of ~20 components
+into `src/content/ui.js`, which holds an `en` block and a `fa` block.
+Components read them through `useText()`:
+
+    const { t } = useText()
+    …then t('habitForm.save') wherever the word goes.
+
+**The three pieces.** `src/content/ui.js` is the catalogue AND the pure
+translator (`translate`, `isLanguage`) — pure, because `storage.js` and
+`game/backup.js` both need it and neither may import React.
+`src/ui/language.jsx` is only the React part: a context provider and the
+`useText` hook. `src/ui/LanguageSwitch.jsx` is the control.
+
+**Why App had to split.** `App` is the component that READS the stored
+language, so it could not also sit inside the provider that supplies it.
+It is now two: `App` owns the saved data and renders
+`<LanguageProvider language={…}>`; `AppBody` takes that data as props and
+holds everything else. That way every component — `AppBody` included —
+gets its words through the same hook, with no special case.
+
+**Why hand-written and not a translation library.** ~130 words, two
+languages. A library would add a dependency, a config file and a
+vocabulary to learn, to replace about forty lines.
+
+**How we know it works.** 784 tests pass — including the 382 existing
+assertions that look controls up BY THEIR ENGLISH NAME, which is what
+proves the sweep changed no English output anywhere. New tests cover the
+mechanism only, never the words: both blocks carry the same keys, English
+has no blanks (it is what blanks fall back to), a blank Farsi slot comes
+back in English, an unknown key returns itself so a typo is loud, and
+`{holes}` fill wherever the sentence puts them (Farsi word order differs).
+`storage.test.js` covers the v10→v11 upgrade, and `App.test.jsx` covers
+the switch saving, surviving a reload, and leaving every rail label
+worded while Farsi is blank. Verified in the browser too: with one Farsi
+slot temporarily filled, that one label rendered Farsi and every other
+stayed English — partial translation working exactly as designed.
+
+**What is NOT done.** Nothing is translated. The design workbench
+(`DesignPage`) stays English on purpose — it is a working tool, not part
+of the game — though the door to it is copy. Error text thrown from
+`storage.js` on a bad import file is still English: those messages are
+thrown from a pure module with no translator to hand, and wiring them up
+is a small separate piece.
+
 ## T5.2e (part 7) build notes — the glow scale (2026-08-16)
 
 - **`src/tokens.css`** — a GLOW section beside the spacing scale: six

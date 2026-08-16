@@ -22,6 +22,7 @@
 import { useRef, useState } from 'react'
 import { arrivalLabel } from './arrivalText.js'
 import DropGlyph from './DropGlyph.jsx'
+import { useText } from './language.jsx'
 
 // The drawing frame. The bookshelf is constant — it never grows or
 // reshapes; crowding is solved by Kimia's own arranging, not by the
@@ -52,6 +53,7 @@ function clampUnit(value) {
 }
 
 function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
+  const { t } = useText()
   const svgRef = useRef(null)
   // The book currently being dragged, at its live position — plain
   // component state; the place is committed to storage on pointer-up.
@@ -134,14 +136,14 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
 
   return (
     <section className="bookcase-page">
-      <h2 className="page-title">readers library</h2>
+      <h2 className="page-title">{t('page.bookcase')}</h2>
       <div className="page-box">
         <svg
           ref={svgRef}
           className="bookshelf-svg"
           viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
           role="group"
-          aria-label="the bookshelf"
+          aria-label={t('bookcase.shelf')}
         >
           {/* The constant bookshelf: one frame, three planks. */}
           <rect
@@ -205,7 +207,7 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
                       className="book-eye"
                       role="button"
                       tabIndex={0}
-                      aria-label={`read ${label}`}
+                      aria-label={t('bookcase.read', { label })}
                       onPointerDown={(event) => event.stopPropagation()}
                       onClick={(event) => {
                         event.stopPropagation()

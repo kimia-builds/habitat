@@ -21,20 +21,25 @@ import { FRIEND_CATEGORIES } from '../game/constants.js'
 import { friendDisplayName } from '../content/names.js'
 import { narrationSlot } from '../content/narration.js'
 import FriendGlyph from './FriendGlyph.jsx'
+import { useText } from './language.jsx'
 
 // A friend with no name yet (T6.1a: blank slots until Kimia writes
 // them) shows no name on screen — the art carries it. A screen reader
 // still needs a handle on the control, so the accessible name falls
 // back to the plain functional word, never to a stand-in species name.
 // Same standing as the charms' shape names: heard, never seen.
-const UNNAMED = 'friend'
 
 function FriendCard({ friend, worldSeed, onClose }) {
+  const { t } = useText()
   const key = FRIEND_CATEGORIES[friend.category].key
   const name = friendDisplayName(key, friend.individual)
   const cardText = narrationSlot(`friendCards.${key}`)
   return (
-    <div className="reveal-overlay" role="dialog" aria-label={name ?? UNNAMED}>
+    <div
+      className="reveal-overlay"
+      role="dialog"
+      aria-label={name ?? t('guestbook.unnamedFriend')}
+    >
       <div className="spread-popup friend-card">
         <FriendGlyph
           category={friend.category}
@@ -45,7 +50,7 @@ function FriendCard({ friend, worldSeed, onClose }) {
         {name && <p className="arrival-caption">{name}</p>}
         {cardText && <p className="friend-card-text">{cardText}</p>}
         <button className="reveal-button pebble" onClick={onClose}>
-          close
+          {t('guestbook.close')}
         </button>
       </div>
     </div>
@@ -53,14 +58,15 @@ function FriendCard({ friend, worldSeed, onClose }) {
 }
 
 function GuestBookPage({ friends, worldSeed, onBack }) {
+  const { t } = useText()
   // The friend whose card is open right now — screen state only; like
   // reading, opening a card is tracked nowhere.
   const [selected, setSelected] = useState(null)
   return (
     <section className="stub-page guestbook">
-      <h2 className="page-title">local community</h2>
+      <h2 className="page-title">{t('page.guestbook')}</h2>
       <div className="page-box">
-        <ul className="guestbook-list" aria-label="friends">
+        <ul className="guestbook-list" aria-label={t('guestbook.friends')}>
           {friends.map((friend) => {
             const key = FRIEND_CATEGORIES[friend.category].key
             const name = friendDisplayName(key, friend.individual)
@@ -69,7 +75,7 @@ function GuestBookPage({ friends, worldSeed, onBack }) {
                 <button
                   className="guestbook-friend"
                   onClick={() => setSelected(friend)}
-                  aria-label={name ?? UNNAMED}
+                  aria-label={name ?? t('guestbook.unnamedFriend')}
                 >
                   <FriendGlyph
                     category={friend.category}

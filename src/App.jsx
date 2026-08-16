@@ -113,6 +113,8 @@ import GuestBookPage from './ui/GuestBookPage.jsx'
 import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import IconRail from './ui/IconRail.jsx'
+import LanguageSwitch from './ui/LanguageSwitch.jsx'
+import { LanguageProvider, useText } from './ui/language.jsx'
 import MapPage from './ui/MapPage.jsx'
 import MarketPage from './ui/MarketPage.jsx'
 import Meters from './ui/Meters.jsx'
@@ -136,8 +138,13 @@ function scrollToTop() {
   }
 }
 
-function App() {
-  const [data, setData] = useState(loadData)
+// The app proper. It takes the saved data as props rather than holding
+// it, so that App (below) can read the chosen language OUT of that data
+// and put the whole tree inside a LanguageProvider — including this
+// component, which therefore gets its own words from the ordinary hook
+// like everything else.
+function AppBody({ data, setData }) {
+  const { t } = useText()
   // The symbol filter is a temporary lens: plain component state, so it
   // resets on every visit (spec §5b).
   const [filter, setFilter] = useState([])
@@ -414,6 +421,13 @@ function App() {
   // abode layout follows the same rule (T4.3), with two more ways out:
   // a composted flora or a sold-back object (T4.3b) leaves the ground,
   // place and all.
+  // The language choice (T6.13). It is a setting like the day cutoff,
+  // so it goes through save() like every other one — no separate store,
+  // no special case, and it travels in a backup.
+  function chooseLanguage(language) {
+    save({ ...data, settings: { ...data.settings, language } })
+  }
+
   function save(next) {
     const floraDecisions = pruneFloraDecisions(
       next.floraDecisions,
@@ -1077,20 +1091,28 @@ function App() {
   // pair, each ending with the door to the other and then the same
   // three actions, so backing up from wherever you are is one trip.
   const footer = (
-    <div className="list-footer">
-      <BackupControls
-        onExport={handleExport}
-        onImport={handleImport}
-        lastExportedOn={data.settings.lastExportedOn}
-        todayKey={today}
-      />
+    <>
+      <div className="list-footer">
+        <BackupControls
+          onExport={handleExport}
+          onImport={handleImport}
+          lastExportedOn={data.settings.lastExportedOn}
+          todayKey={today}
+        />
 
-      <NewGameControl
-        backedUp={exportedThisVisit}
-        onStartNewGame={handleStartNewGame}
-        onTotalRefresh={handleTotalRefresh}
-      />
-    </div>
+        <NewGameControl
+          backedUp={exportedThisVisit}
+          onStartNewGame={handleStartNewGame}
+          onTotalRefresh={handleTotalRefresh}
+        />
+      </div>
+
+      {/* Below that line, not on it. The three-button row is a decided
+          shape (Kimia's call 2026-08-12) and a test pins it at three, so
+          the language switch gets its own quiet line underneath rather
+          than becoming a fourth. */}
+      <LanguageSwitch onChoose={chooseLanguage} />
+    </>
   )
 
   // The home screen's contents below the header bar (T4.5 rearranged
@@ -1108,8 +1130,8 @@ function App() {
     <>
       <section
         className="filter-view"
-        aria-label="filter view"
-        title="filter view"
+        aria-label={t('habits.filterView')}
+        title={t('habits.filterView')}
       >
         <SymbolPicker selected={filter} onToggle={toggleFilter} />
       </section>
@@ -1243,8 +1265,8 @@ function App() {
                     <button
                       className="icon-button"
                       onClick={() => replaceHabit(unarchiveHabit(habit))}
-                      title="unarchive"
-                      aria-label="unarchive"
+                      title={t('habits.unarchive')}
+                      aria-label={t('habits.unarchive')}
                     >
                       <svg
                         viewBox="0 0 24 24"
@@ -1264,8 +1286,8 @@ function App() {
                   <button
                     className="icon-button"
                     onClick={() => handleDelete(habit)}
-                    title="delete forever"
-                    aria-label="delete forever"
+                    title={t('habits.deleteForever')}
+                    aria-label={t('habits.deleteForever')}
                   >
                     <svg
                       viewBox="0 0 24 24"
@@ -1294,7 +1316,7 @@ function App() {
           other. Being a direct child of the app column is what makes it
           full width — exactly how the back button gets its width. */}
       <button className="pebble" onClick={() => setPage('fieldnotes')}>
-        view historical data →
+        {t('rail.fieldNotes')} →
       </button>
 
       {footer}
@@ -1305,7 +1327,7 @@ function App() {
           the design pass lands. */}
       <div className="design-door">
         <button className="door-link" onClick={() => setPage('design')}>
-          design assets
+          {t('design.door')}
         </button>
       </div>
     </>
@@ -1321,7 +1343,7 @@ function App() {
   if (checkInOpen) {
     return (
       <main className="app">
-        <h1>HABITAT</h1>
+        <h1>{t('app.wordmark')}</h1>
         <div className="behind-checkin" aria-hidden="true" inert>
           {listContent}
         </div>
@@ -1445,7 +1467,7 @@ function App() {
     <header className="app-header" ref={measureHeader}>
       <h1>
         <button className="home-link" onClick={() => setPage(null)}>
-          HABITAT
+          {t('app.wordmark')}
         </button>
       </h1>
       <Meters
@@ -1645,6 +1667,20 @@ function App() {
         {listContent}
       </main>
     </>
+  )
+}
+
+// The outermost component: it owns the saved data, and wraps everything
+// in the language that data says Habitat is speaking. Splitting it from
+// AppBody is what lets EVERY component — AppBody included — read the
+// language through the same hook, rather than one of them having to be
+// special.
+function App() {
+  const [data, setData] = useState(loadData)
+  return (
+    <LanguageProvider language={data.settings.language}>
+      <AppBody data={data} setData={setData} />
+    </LanguageProvider>
   )
 }
 

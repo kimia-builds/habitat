@@ -29,6 +29,9 @@
 // style (design-notes §11a) — one or two simple strokes in currentColor,
 // so the hover rule owns the colour. The button's aria-label names the
 // destination, so the svg itself stays hidden from screen readers.
+
+import { useText } from './language.jsx'
+
 function RailButton({ className, title, onClick, children }) {
   return (
     <button
@@ -54,12 +57,13 @@ function RailButton({ className, title, onClick, children }) {
 }
 
 function IconRail({ onOpen, onAddHabit, onEditPastDays, pastDaysEditable }) {
+  const { t } = useText()
   const openPage = (page) => () => onOpen(page)
   return (
-    <nav className="icon-rail" aria-label="pages">
+    <nav className="icon-rail" aria-label={t('rail.pages')}>
       <RailButton
         className="rail-add"
-        title="add new habit"
+        title={t('rail.addHabit')}
         onClick={onAddHabit}
       >
         {/* a plus: two crossed strokes, drawn like every other glyph */}
@@ -71,7 +75,7 @@ function IconRail({ onOpen, onAddHabit, onEditPastDays, pastDaysEditable }) {
       {pastDaysEditable && (
         <RailButton
           className="rail-past"
-          title="edit past days"
+          title={t('rail.editPastDays')}
           onClick={onEditPastDays}
         >
           {/* a pencil */}
@@ -80,7 +84,7 @@ function IconRail({ onOpen, onAddHabit, onEditPastDays, pastDaysEditable }) {
       )}
       <RailButton
         className="rail-notes"
-        title="view historical data"
+        title={t('rail.fieldNotes')}
         onClick={openPage('fieldnotes')}
       >
         {/* a graph: an axis with a line climbing across it */}
@@ -89,7 +93,7 @@ function IconRail({ onOpen, onAddHabit, onEditPastDays, pastDaysEditable }) {
       </RailButton>
       <RailButton
         className="rail-map"
-        title="map of N-Z-D"
+        title={t('page.map')}
         onClick={openPage('map')}
       >
         {/* a planet: a circle with a tilted elliptical ring around it */}
@@ -104,7 +108,7 @@ function IconRail({ onOpen, onAddHabit, onEditPastDays, pastDaysEditable }) {
       </RailButton>
       <RailButton
         className="rail-abode"
-        title="your abode"
+        title={t('page.abode')}
         onClick={openPage('abode')}
       >
         {/* open ground under sky: a ground line, a small dome on it */}
@@ -113,7 +117,7 @@ function IconRail({ onOpen, onAddHabit, onEditPastDays, pastDaysEditable }) {
       </RailButton>
       <RailButton
         className="rail-community"
-        title="local community"
+        title={t('page.guestbook')}
         onClick={openPage('guestbook')}
       >
         {/* two beings: two small overlapping circles */}
@@ -122,7 +126,7 @@ function IconRail({ onOpen, onAddHabit, onEditPastDays, pastDaysEditable }) {
       </RailButton>
       <RailButton
         className="rail-library"
-        title="readers library"
+        title={t('page.bookcase')}
         onClick={openPage('bookcase')}
       >
         {/* a standing book: the cover with its centre spine line */}
@@ -131,7 +135,7 @@ function IconRail({ onOpen, onAddHabit, onEditPastDays, pastDaysEditable }) {
       </RailButton>
       <RailButton
         className="rail-market"
-        title="local market"
+        title={t('page.market')}
         onClick={openPage('market')}
       >
         {/* a stall: a scalloped awning line over the counter line */}

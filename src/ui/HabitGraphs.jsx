@@ -1,4 +1,4 @@
-// The habit graphs (T2.4): a "graphs" section at the foot of the field
+// The habit graphs (T2.4): a t('fieldNotes.graphs') section at the foot of the field
 // notes — one collapsible line per habit, drawn in SVG in the habit's
 // symbol colour. All the counting lives in game/graphs.js; this file
 // only draws. Neutral by design: raw frequency, no targets, no misses.
@@ -13,6 +13,7 @@ import { graphSeries, hasGraph, unlockedZooms } from '../game/graphs.js'
 import CharmSymbol from './CharmSymbol.jsx'
 import { roundedPath } from './graphPath.js'
 import { SYMBOL_COLORS } from './symbols.js'
+import { useText } from './language.jsx'
 
 const ZOOM_LABELS = {
   day: 'day by day',
@@ -34,6 +35,7 @@ const PAD_BOTTOM = 20
 const GRAPH_CORNER_RADIUS = 6
 
 function GraphLine({ series, color, habitName, zoom }) {
+  const { t } = useText()
   const top = Math.max(1, ...series.map((b) => b.count))
   const lastX = W - PAD_X
   const x = (i) =>
@@ -52,7 +54,10 @@ function GraphLine({ series, color, habitName, zoom }) {
       className="habit-graph-svg"
       viewBox={`0 0 ${W} ${H}`}
       role="img"
-      aria-label={`${habitName}, completions ${ZOOM_LABELS[zoom]}`}
+      aria-label={t('fieldNotes.graphLabel', {
+        habit: habitName,
+        zoom: ZOOM_LABELS[zoom],
+      })}
     >
       {/* the floor of the graph: zero, a fine quiet line */}
       <line
@@ -91,6 +96,7 @@ function GraphLine({ series, color, habitName, zoom }) {
 }
 
 function HabitGraph({ habit, completions, now, cutoffHour }) {
+  const { t } = useText()
   const zooms = unlockedZooms(habit, now, cutoffHour)
   // Coarsest unlocked zoom first (Kimia's decision 2026-07-18): the
   // whole shape of the habit's life at a glance, zoom in from there.
@@ -103,7 +109,7 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
         {habit.archived && <span className="habit-meta"> (archived)</span>}
       </summary>
       {zoom === null ? (
-        <p className="habit-graph-young">habit is too young</p>
+        <p className="habit-graph-young">{t('fieldNotes.habitTooYoung')}</p>
       ) : (
         <>
           {zooms.length > 1 && (
@@ -133,12 +139,13 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
 }
 
 function HabitGraphs({ habits, completions, now, cutoffHour }) {
+  const { t } = useText()
   const graphable = habits.filter(hasGraph)
   if (graphable.length === 0) return null
 
   return (
     <div className="habit-graphs">
-      <h3>graphs</h3>
+      <h3>{t('fieldNotes.graphs')}</h3>
       {graphable.map((habit) => (
         <HabitGraph
           key={habit.id}

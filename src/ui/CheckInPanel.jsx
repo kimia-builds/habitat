@@ -21,6 +21,7 @@ import { requiredPerDay, scheduleOn } from '../game/schedule.js'
 import { useState } from 'react'
 import CharmSymbol from './CharmSymbol.jsx'
 import SymbolPicker from './SymbolPicker.jsx'
+import { useText } from './language.jsx'
 
 // Kimia's date convention (2026-08-12): "mon DD-MM-YY" — the weekday
 // lowercase like the rest of the interface, then the same day-first
@@ -39,8 +40,9 @@ const listedOn = (habits, completions, dayKey, cutoffHour, symbols) =>
 // The habits of one past day, each with its mark/undo controls —
 // a slimmer cousin of HabitRow, acting on that day instead of today.
 function DayRows({ listed, completions, dayKey, onMark, onUnmark }) {
+  const { t } = useText()
   if (listed.length === 0) {
-    return <p className="habit-meta">no habits to show for this day</p>
+    return <p className="habit-meta">{t('checkin.noHabits')}</p>
   }
   return (
     <ul className="habit-list">
@@ -118,6 +120,7 @@ function CheckInPanel({
   onUnmark,
   onDone,
 }) {
+  const { t } = useText()
   // The charm lens, and whether a long yesterday is showing in full.
   // Both are plain component state: a check-in is one sitting, and the
   // next one starts fresh with everything shown.
@@ -158,8 +161,8 @@ function CheckInPanel({
   // its accessible name — screen readers still need to know which
   // region this is, and nothing shows that word on screen.
   return (
-    <section className="check-in" aria-label="check-in">
-      <h2>what did you do yesterday?</h2>
+    <section className="check-in" aria-label={t('checkin.region')}>
+      <h2>{t('checkin.prompt')}</h2>
 
       {/* The same charm lens the home screen wears, in the same place:
           centred, directly under the heading. Optional — with nothing
@@ -190,9 +193,7 @@ function CheckInPanel({
 
       {older.length > 0 && (
         <>
-          <p className="habit-meta">
-            update earlier days of this week before they freeze forever:
-          </p>
+          <p className="habit-meta">{t('checkin.earlierDays')}</p>
           {older.map((day) => (
             <details key={day}>
               <summary>{dayLabel(day)}</summary>
@@ -209,7 +210,7 @@ function CheckInPanel({
       )}
 
       <button className="pebble" onClick={onDone}>
-        done
+        {t('checkin.done')}
       </button>
     </section>
   )

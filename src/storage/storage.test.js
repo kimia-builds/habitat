@@ -972,3 +972,65 @@ describe('the v9 → v10 upgrade (T6.6)', () => {
     )
   })
 })
+
+describe('the v10 → v11 upgrade (T6.13)', () => {
+  it('a v10 save loads as English — the language it was written in', () => {
+    // A hand-written v10 record, exactly as T6.6-era Habitat stored it:
+    // no language field, because Habitat spoke only one.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 10,
+        habits: [habit('a', 'Read')],
+        completions: [],
+        settings: {
+          dayCutoffHour: 3,
+          fieldNotesShownOn: null,
+          startupShownOn: null,
+          lastExportedOn: '2026-08-10',
+        },
+        checkedInThrough: null,
+        worldSeed: 'seed',
+        floraDecisions: {},
+        bookcaseLayout: {},
+        abodeLayout: {},
+        purchases: [],
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
+    // Not a default standing in for an unknown: every save that predates
+    // the switch really was written by an English-only Habitat.
+    expect(data.settings.language).toBe('en')
+    // Nothing else moved.
+    expect(data.settings.lastExportedOn).toBe('2026-08-10')
+    expect(data.habits).toHaveLength(1)
+    // And the upgraded shape passes full validation on the next save.
+    expect(() => saveData(data)).not.toThrow()
+  })
+
+  it('keeps a language that is already there', () => {
+    const data = { ...emptyData() }
+    data.settings = { ...data.settings, language: 'fa' }
+    saveData(data)
+    expect(loadData().settings.language).toBe('fa')
+  })
+
+  it('refuses a backup naming a language Habitat does not speak', () => {
+    // The failure this prevents is an app with no words in it: an
+    // unknown code would find no block to read from.
+    const broken = { ...emptyData() }
+    broken.settings = { ...broken.settings, language: 'de' }
+    expect(() => saveData(broken)).toThrow(/language/i)
+  })
+
+  it('carries the language into a backup and back out again', () => {
+    const data = { ...emptyData() }
+    data.settings = { ...data.settings, language: 'fa' }
+    saveData(data)
+    const file = exportData(Date.parse('2026-08-16T12:00:00'))
+    clearData()
+    expect(importData(file).settings.language).toBe('fa')
+  })
+})

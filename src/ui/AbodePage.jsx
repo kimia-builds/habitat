@@ -40,6 +40,7 @@ import { HORIZON } from '../game/abode.js'
 import DropGlyph from './DropGlyph.jsx'
 import FriendGlyph from './FriendGlyph.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
+import { useText } from './language.jsx'
 
 // The drawing frame. The ground is constant — it never grows or
 // reshapes; crowding is solved by Kimia's own arranging (the bookshelf
@@ -86,6 +87,7 @@ function AbodePage({
   onSell,
   onBack,
 }) {
+  const { t } = useText()
   const svgRef = useRef(null)
   // The item currently being dragged, at its live position — plain
   // component state; the place is committed to storage on pointer-up.
@@ -204,7 +206,7 @@ function AbodePage({
 
   return (
     <section className="stub-page abode">
-      <h2 className="page-title">your abode</h2>
+      <h2 className="page-title">{t('page.abode')}</h2>
       <div className="page-box">
         {/* The quiet / party toggle (T4.4): a switch with an icon either
           side. Greyed — "not yet" — until the first friend exists.
@@ -223,9 +225,11 @@ function AbodePage({
           className={`abode-mode${partyAvailable ? '' : ' abode-mode-off'}`}
           // The disabled switch fires no hover events of its own, so the
           // "not yet" it should be saying has to live on this wrapper.
-          title={partyAvailable ? undefined : 'not yet'}
+          title={partyAvailable ? undefined : t('abode.notYet')}
         >
-          <span title={partyAvailable ? 'quietude' : 'not yet'}>
+          <span
+            title={partyAvailable ? t('abode.quietude') : t('abode.notYet')}
+          >
             <svg
               className={`abode-mode-icon${party ? '' : ' active'}`}
               viewBox="0 0 24 24"
@@ -246,14 +250,16 @@ function AbodePage({
             className="abode-mode-switch"
             role="switch"
             aria-checked={party}
-            aria-label="party mode"
-            title={partyAvailable ? 'pick your mood' : 'not yet'}
+            aria-label={t('abode.partyMode')}
+            title={partyAvailable ? t('abode.pickMood') : t('abode.notYet')}
             disabled={!partyAvailable}
             onClick={handlePartyToggle}
           >
             <span className="abode-mode-knob" />
           </button>
-          <span title={partyAvailable ? 'party mode' : 'not yet'}>
+          <span
+            title={partyAvailable ? t('abode.partyMode') : t('abode.notYet')}
+          >
             <svg
               className={`abode-mode-icon${party ? ' active' : ''}`}
               viewBox="0 0 24 24"
@@ -291,11 +297,11 @@ function AbodePage({
         {pending.length > 0 && (
           <>
             <h3>waiting to decide</h3>
-            <ul className="abode-list" aria-label="waiting to decide">
+            <ul className="abode-list" aria-label={t('abode.waitingToDecide')}>
               {pending.map((find) => (
                 <li key={find.completionId} className="abode-row arrival-flora">
                   <DropGlyph kind="flora" />
-                  <span className="abode-name">a flora find</span>
+                  <span className="abode-name">{t('abode.floraFind')}</span>
                   <button
                     className="pebble arrival-choice"
                     onClick={() => onDecide(find.completionId, 'gathered')}
@@ -319,7 +325,7 @@ function AbodePage({
           className="abode-ground-svg"
           viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
           role="group"
-          aria-label="the ground"
+          aria-label={t('abode.ground')}
           onPointerDown={() => setHeldId(null)}
         >
           {/* The constant scene: sky above, ground below the horizon. */}
@@ -339,7 +345,7 @@ function AbodePage({
           />
           {ordered.map((item) => {
             const isObject = item.kind === 'object'
-            const name = isObject ? 'a curiosity' : 'a flora find'
+            const name = isObject ? t('abode.curiosity') : t('abode.floraFind')
             const isHeld = item.id === heldId
             const size = isHeld ? HELD_SIZE : FLORA_SIZE
             const place = placeOf(item)
@@ -393,7 +399,9 @@ function AbodePage({
                       className="abode-compost"
                       role="button"
                       tabIndex={0}
-                      aria-label={isObject ? 'sell' : 'compost'}
+                      aria-label={
+                        isObject ? t('abode.sell') : t('abode.compost')
+                      }
                       x={textX}
                       y={nameY + 9}
                       onPointerDown={(event) => event.stopPropagation()}
@@ -408,7 +416,7 @@ function AbodePage({
                         else handleCompost(item)
                       }}
                     >
-                      {isObject ? 'sell' : 'compost'}
+                      {isObject ? t('abode.sell') : t('abode.compost')}
                     </text>
                   </>
                 )}
@@ -426,7 +434,7 @@ function AbodePage({
                   key={friend.completionId}
                   className="abode-party-friend"
                   role="img"
-                  aria-label="a visiting friend"
+                  aria-label={t('abode.visitingFriend')}
                 >
                   <FriendGlyph
                     category={friend.category}

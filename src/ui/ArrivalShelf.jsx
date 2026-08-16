@@ -41,6 +41,7 @@ import Blob from './blob.jsx'
 import DropGlyph from './DropGlyph.jsx'
 import FriendGlyph from './FriendGlyph.jsx'
 import StarShimmer, { SHIMMER_STAGGER_MS } from './shimmer.jsx'
+import { useText } from './language.jsx'
 
 // The blob an arrival sits on (T5.2e, Kimia's call 2026-08-13) now lives
 // in blob.jsx — the cameo wears one too since 2026-08-16, and one shape
@@ -66,6 +67,7 @@ function ShelfItem({
   onDecide,
   onRead,
 }) {
+  const { t } = useText()
   const [held, setHeld] = useState(false)
   // EVERY arrival shimmers (Kimia's call 2026-08-16, T5.2e). It used to
   // be everyday drops only: a friend and a first-occurrence find owed a
@@ -126,7 +128,7 @@ function ShelfItem({
       <button
         className="arrival-hold"
         onClick={() => setHeld(!held)}
-        title={held ? '' : 'click to hold'}
+        title={held ? '' : t('arrivals.hold')}
       >
         {arrival.key === 'friend' ? (
           <FriendGlyph
@@ -150,13 +152,13 @@ function ShelfItem({
             className="pebble arrival-choice"
             onClick={() => onDecide(arrival.completionId, 'gathered')}
           >
-            gather
+            {t('arrivals.gather')}
           </button>
           <button
             className="pebble arrival-choice"
             onClick={() => onDecide(arrival.completionId, 'left')}
           >
-            leave it
+            {t('arrivals.leave')}
           </button>
         </>
       )}
@@ -166,13 +168,13 @@ function ShelfItem({
             className="pebble arrival-choice"
             onClick={() => onRead(arrival)}
           >
-            read now
+            {t('arrivals.readNow')}
           </button>
           <button
             className="pebble arrival-choice"
             onClick={() => onExpire(arrival.id)}
           >
-            read later
+            {t('arrivals.readLater')}
           </button>
         </>
       )}
@@ -191,11 +193,12 @@ function ArrivalShelf({
   onDecide,
   onRead,
 }) {
+  const { t } = useText()
   if (arrivals.length === 0) return null
   return (
     <section
       className="arrival-shelf"
-      aria-label="arrivals"
+      aria-label={t('arrivals.region')}
       // How far down the window the shelf starts. Measured from the
       // real header rather than written as a number here, so the two
       // cannot drift apart when the bar folds or its spacing changes.

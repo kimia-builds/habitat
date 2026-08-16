@@ -12,8 +12,10 @@ import { narrationSlot } from '../content/narration.js'
 import { spreadFor } from '../content/spreads.js'
 import { arrivalLabel } from './arrivalText.js'
 import DropGlyph from './DropGlyph.jsx'
+import { useText } from './language.jsx'
 
 function SpreadPopup({ item, onClose }) {
+  const { t } = useText()
   const label = arrivalLabel({ key: item.type })
   const image = spreadFor(item.publicationId)
   const emptyLine = narrationSlot('spreadPopup.emptyState')
@@ -24,7 +26,7 @@ function SpreadPopup({ item, onClose }) {
           <img
             className="spread-image"
             src={import.meta.env.BASE_URL + image}
-            alt={`the open double-page spread of ${label}`}
+            alt={t('bookcase.spread', { label })}
           />
         ) : (
           <>
@@ -34,7 +36,7 @@ function SpreadPopup({ item, onClose }) {
           </>
         )}
         <button className="reveal-button pebble" onClick={onClose}>
-          close
+          {t('bookcase.close')}
         </button>
       </div>
     </div>

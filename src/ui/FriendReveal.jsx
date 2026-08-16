@@ -16,8 +16,10 @@ import { FRIEND_CATEGORIES } from '../game/constants.js'
 import { friendDisplayName } from '../content/names.js'
 import { narrationSlot } from '../content/narration.js'
 import FriendGlyph from './FriendGlyph.jsx'
+import { useText } from './language.jsx'
 
 function FriendReveal({ arrival, worldSeed, firstOfCategory, onDismiss }) {
+  const { t } = useText()
   const key = FRIEND_CATEGORIES[arrival.friend.category].key
   // Null until Kimia names the species (T6.1a) — the reveal then carries
   // the art, her narration and the button, and no name line.
@@ -32,7 +34,7 @@ function FriendReveal({ arrival, worldSeed, firstOfCategory, onDismiss }) {
     <div
       className="reveal-overlay"
       role="dialog"
-      aria-label={title ?? 'a friend arrives'}
+      aria-label={title ?? t('reveal.friendArrives')}
     >
       <div className="reveal reveal-friend">
         <FriendGlyph
@@ -45,7 +47,7 @@ function FriendReveal({ arrival, worldSeed, firstOfCategory, onDismiss }) {
         {title && <h2 className="reveal-title">{title}</h2>}
         {line && <p className="reveal-line">{line}</p>}
         <button className="reveal-button" onClick={onDismiss}>
-          onward
+          {t('reveal.onward')}
         </button>
       </div>
     </div>

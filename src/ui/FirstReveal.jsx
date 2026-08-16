@@ -11,6 +11,7 @@
 
 import { narrationSlot } from '../content/narration.js'
 import DropGlyph from './DropGlyph.jsx'
+import { useText } from './language.jsx'
 
 const STREAMS = {
   flora: 'flora',
@@ -21,20 +22,21 @@ const STREAMS = {
 }
 
 function FirstReveal({ arrival, onDismiss }) {
+  const { t } = useText()
   const title = narrationSlot(`firstReveals.${arrival.key}.title`)
   const line = narrationSlot(`firstReveals.${arrival.key}.line`)
   return (
     <div
       className="reveal-overlay"
       role="dialog"
-      aria-label={title ?? 'a first arrival'}
+      aria-label={title ?? t('reveal.firstArrival')}
     >
       <div className={`reveal reveal-${STREAMS[arrival.key]}`}>
         <DropGlyph kind={arrival.key} className="reveal-glyph" />
         {title && <h2 className="reveal-title">{title}</h2>}
         {line && <p className="reveal-line">{line}</p>}
         <button className="reveal-button" onClick={onDismiss}>
-          onward
+          {t('reveal.onward')}
         </button>
       </div>
     </div>

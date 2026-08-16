@@ -14,6 +14,7 @@
 import { useState } from 'react'
 import { DIFFICULTIES } from '../game/constants.js'
 import SymbolPicker from './SymbolPicker.jsx'
+import { useText } from './language.jsx'
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -39,6 +40,7 @@ function buildSchedule(type, weekdayFlags, n) {
 }
 
 function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
+  const { t } = useText()
   const [name, setName] = useState(initial?.name ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
   // Editing shows the habit's own charm. A brand-new draft starts on
@@ -76,7 +78,7 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
     <form className="habit-form" onSubmit={handleSubmit}>
       <SymbolPicker selected={[symbol]} onToggle={setSymbol} />
       <label>
-        write a good habit or task:
+        {t('habitForm.name')}
         <input
           name="name"
           value={name}
@@ -85,7 +87,7 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
         />
       </label>
       <label>
-        add any details or specifications:
+        {t('habitForm.detail')}
         <input
           name="description"
           value={description}
@@ -93,7 +95,7 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
         />
       </label>
       <label>
-        pick a difficulty per unit:
+        {t('habitForm.difficulty')}
         <select
           name="difficulty"
           value={difficulty}
@@ -107,7 +109,7 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
         </select>
       </label>
       <label>
-        specify the desired schedule or frequency:
+        {t('habitForm.schedule')}
         <select
           name="schedule"
           value={scheduleType}
@@ -142,7 +144,7 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
       )}
       {(scheduleType === 'nPerWeek' || scheduleType === 'nPerDay') && (
         <label>
-          how many
+          {t('habitForm.howMany')}
           <input
             type="number"
             name="n"
@@ -156,10 +158,10 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
       {error && <p role="alert">{error}</p>}
       <div className="form-actions">
         <button className="pebble" type="submit">
-          save
+          {t('habitForm.save')}
         </button>
         <button className="pebble" type="button" onClick={onCancel}>
-          cancel
+          {t('habitForm.cancel')}
         </button>
       </div>
     </form>

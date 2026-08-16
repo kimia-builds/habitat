@@ -22,6 +22,7 @@ import { filterBySymbols } from '../game/habits.js'
 import HabitGraphs from './HabitGraphs.jsx'
 import CharmSymbol from './CharmSymbol.jsx'
 import SymbolPicker from './SymbolPicker.jsx'
+import { useText } from './language.jsx'
 
 const DAY_HEADINGS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 
@@ -50,6 +51,7 @@ function FieldNotes({
   onToggleFilter = () => {},
   onBack,
 }) {
+  const { t } = useText()
   const today = dayKeyFromTimestamp(now, cutoffHour)
   const thisWeek = weekStart(today)
   const lastCompletedWeek = addDays(thisWeek, -7)
@@ -78,8 +80,8 @@ function FieldNotes({
   const lens = (
     <section
       className="filter-view"
-      aria-label="filter view"
-      title="filter view"
+      aria-label={t('habits.filterView')}
+      title={t('habits.filterView')}
     >
       <SymbolPicker selected={filter} onToggle={onToggleFilter} />
     </section>
@@ -95,8 +97,8 @@ function FieldNotes({
     return (
       <>
         {lens}
-        <section className="field-notes" aria-label="field notes">
-          <p>nothing recorded yet</p>
+        <section className="field-notes" aria-label={t('page.fieldNotes')}>
+          <p>{t('fieldNotes.nothingYet')}</p>
         </section>
         {back}
       </>
@@ -119,7 +121,7 @@ function FieldNotes({
   return (
     <>
       {lens}
-      <section className="field-notes" aria-label="field notes">
+      <section className="field-notes" aria-label={t('page.fieldNotes')}>
         <div className="week-nav">
           <button
             className="pebble"
@@ -135,7 +137,9 @@ function FieldNotes({
           <span className="week-range">
             {shortDate(notes.weekStartKey)} – {shortDate(notes.weekEnd)}
             {notes.isCurrent && (
-              <em className="week-unfolding">still unfolding</em>
+              <em className="week-unfolding">
+                {t('fieldNotes.stillUnfolding')}
+              </em>
             )}
           </span>
           <button
@@ -179,12 +183,12 @@ function FieldNotes({
             </tbody>
           </table>
         ) : (
-          <p>No habits existed during this week.</p>
+          <p>{t('fieldNotes.noHabitsThatWeek')}</p>
         )}
 
         {notes.tasksCompleted.length > 0 && (
           <>
-            <h3>tasks completed</h3>
+            <h3>{t('fieldNotes.tasksCompleted')}</h3>
             <ul className="tasks-completed">
               {notes.tasksCompleted.map(({ habit, dayKey }) => (
                 <li key={habit.id}>

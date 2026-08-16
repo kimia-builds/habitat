@@ -393,6 +393,15 @@ are personal firsts, not world unlocks.)
 Story and narration are **written by Kimia, never generated**. Claude
 Code builds the _slots and plumbing_ only.
 
+**Interface copy is hers too, in its own file (2026-08-16, T6.13).**
+`src/content/narration.js` holds the STORY; `src/content/ui.js` holds
+the FURNITURE — every button, page title and hover label. Same rule
+(Claude Code builds the slots, Kimia writes the words), one deliberate
+difference: in `ui.js` a blank slot falls back to **English**, not to
+silence. Silence is right for a story beat nobody has written yet; a
+blank button is just broken. That fallback is what makes a second
+language fillable one word at a time.
+
 - **Authoring model.** A **keyed content file** with an empty slot per
   narrated moment (each first-occurrence reveal, each friend
   intro/welcome, each map region, each literacy era). Slots ship blank

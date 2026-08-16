@@ -7,6 +7,7 @@ import { useState } from 'react'
 
 import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import CharmSymbol from './CharmSymbol.jsx'
+import { useText } from './language.jsx'
 
 const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -44,6 +45,7 @@ function HabitRow({
   onEdit,
   onArchive,
 }) {
+  const { t } = useText()
   // Every repeating shape presents as a counter with an unlimited +1
   // and a quiet, always-available -1 (T3.2b — spec §4.1; the word
   // "undo" became "-1" in T4.5, 2026-07-20). Only one-time to-dos keep
@@ -157,8 +159,8 @@ function HabitRow({
               className="todo-check pebble pebble-counter"
               checked={false}
               onChange={handleComplete}
-              title="mark done"
-              aria-label="mark done"
+              title={t('habits.markDone')}
+              aria-label={t('habits.markDone')}
             />
             {spark}
           </span>
@@ -190,8 +192,8 @@ function HabitRow({
         <button
           className="icon-button"
           onClick={onEdit}
-          title="edit"
-          aria-label="edit"
+          title={t('habits.edit')}
+          aria-label={t('habits.edit')}
         >
           <svg
             viewBox="0 0 24 24"
@@ -208,8 +210,8 @@ function HabitRow({
         <button
           className="icon-button"
           onClick={onArchive}
-          title="archive"
-          aria-label="archive"
+          title={t('habits.archive')}
+          aria-label={t('habits.archive')}
         >
           <svg
             viewBox="0 0 24 24"
