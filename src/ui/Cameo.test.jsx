@@ -41,21 +41,24 @@ afterEach(() => {
 })
 
 describe('the cameo visit (T4.6)', () => {
-  it('shows the celebrating friend, named by whatever its slot holds', () => {
+  it('shows the celebrating friend, sitting in a blob', () => {
     render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
     const visit = screen.getByRole('status')
-    expect(visit.querySelector('svg')).not.toBeNull()
-    expect(visit.textContent).toContain(SIGNER)
+    expect(visit.querySelector('.cameo-glyph')).not.toBeNull()
+    // The blob is the drop shelf's own shape language, shared through
+    // blob.jsx (Kimia's call 2026-08-16) rather than redrawn here.
+    expect(visit.querySelector('.cameo-blob path')).not.toBeNull()
   })
 
-  it('visits without a name while the slot is blank', () => {
-    // Ships this way until Kimia writes: the friend and her message,
-    // no stand-in name (T6.1a).
-    setSpeciesName('signer', '')
+  it('never names the friend', () => {
+    // Kimia's call 2026-08-16: the friend and the caption, nothing else.
+    // A visit is a moment, not a record card — the Guest Book is where
+    // names live. Named here even when a name EXISTS, which is the only
+    // way this test can fail if the name line ever comes back.
     render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
     const visit = screen.getByRole('status')
-    expect(visit.querySelector('svg')).not.toBeNull()
     expect(visit.querySelector('.cameo-name')).toBeNull()
+    expect(visit.textContent).not.toContain(SIGNER)
   })
 
   it("reads its message from Kimia's slot — blank renders nothing", () => {

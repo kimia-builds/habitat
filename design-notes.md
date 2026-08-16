@@ -481,9 +481,9 @@ design-bible.md §9c.)
      **50-lived-day milestone**. A big day keeps the plain visit — it
      can happen again next week, and scarcity is this section's whole
      argument. How it looks, on Kimia's calls the same day:
-     - it rings the **whole visit** — the friend, their name and the
-       message together — not just the art. The friend came to
-       congratulate you; the celebration is of the moment, not of them;
+     - it rings the **whole visit** — the friend and the caption
+       together — not just the art. The friend came to congratulate you;
+       the celebration is of the moment, not of them;
      - the **same night-sky stars as the shimmer**: half white, half
        across the six charm colours, each glowing its own colour. The
        two are one family and this is the larger member — which is also
@@ -498,6 +498,40 @@ design-bible.md §9c.)
      this reason: the lower stars fly past the bottom of the visit and
      over the tiles, and a translucent tile painting over them made the
      burst look merely dim rather than wrong.
+
+     **And the visit is shaped like a drop (Kimia's calls 2026-08-16,
+     second pass).** It had been a bare column of art, name and message
+     sitting in the page flow above the habit list — which pushed the
+     whole list down the moment a friend arrived, and looked like
+     nothing else in Habitat. It now borrows the drop shelf's
+     conventions, because the two are the same kind of event: something
+     arriving over the page.
+     - **The friend sits inside a blob** — the same three outlines the
+       arrivals and the Map's regions wear, opaque, lit at the edge in
+       the friendship rose an arriving friend already wears. The
+       outlines moved to their own file when the second caller appeared;
+       one shape language cannot live in two tables.
+     - **The caption sits directly beneath it, on its own dark
+       backing.** Not a card around the whole visit — the words' own
+       backing, because the words are the part that has to survive
+       landing on a habit tile, a charm or the bare night sky.
+     - **Pinned to the bottom left of the window**, the mirror of the
+       shelf's top right, so the app's two floating moments never meet.
+     - **The friend's name is gone.** The friend and the caption,
+       nothing else. A visit is a moment, not a record card; who came is
+       something you see, and the Guest Book is where names live.
+     - **It fits the margin beside the habits, until it can't.** The
+       content column is 40rem and centred, so the visit takes whatever
+       empty margin is left of it and the caption wraps to fit — but
+       never below the width at which a short sentence stops being
+       readable. Under that it simply covers the tiles, which is the
+       call: losing the words is worse than briefly sitting over a
+       habit, and the visit is gone in nine seconds either way. Nothing
+       in it is pressable, so it never comes between a finger and the
+       habit underneath.
+     - It **rises into frame** rather than dropping into it — a thing
+       arriving from below the edge it sits on reads as coming to join
+       you. Dropping from above was right only while it sat in the flow.
      **Party mode on the Abode is deliberately excluded** (§12e): friends
      gather there but do not perform. Scarcity is what makes the gesture
      land — a greeting you can see any time you like is wallpaper.

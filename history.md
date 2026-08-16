@@ -2456,6 +2456,63 @@ return 0` right after the era is worked out, so a moment before the
   showed once a tile was forced opaque. **When a paint-order fix looks
   unnecessary, remove the translucency before believing it.**
 
+- 2026-08-16 (same session, second pass — Kimia's calls): **the cameo
+  takes the drop's conventions.** Having seen it built, she asked for
+  the visit to stop being a bare column in the page flow: the friend
+  sits **inside a blob** like an arrival's, the caption sits **directly
+  beneath it on its own dark backing**, the whole thing is **pinned to
+  the bottom left of the window** (the mirror of the shelf's top right),
+  and the **friend's name is dropped** — the friend and the caption,
+  nothing else. Reasoning recorded in §8: a cameo and a drop are the
+  same kind of event, something arriving over the page, and the old
+  layout also pushed the entire habit list down whenever a friend
+  turned up.
+- 2026-08-16 (same session): **it fits the margin beside the habits,
+  until it can't.** The visit takes whatever empty margin the 40rem
+  content column leaves and the caption wraps into it — but never below
+  a floor, under which it covers the tiles instead. Kimia's call and her
+  words: try to fit the blank space, but allow the coverage rather than
+  squeeze the words out of legibility. The backing behind the caption is
+  what makes covering acceptable at all.
+- 2026-08-16 (working note, same session): **the name went, so the
+  test for it had to invert, not vanish.** The two cameo tests asserting
+  a name were rewritten to assert its ABSENCE — and deliberately with a
+  name present in the fixture, since a test that only checks "no name
+  shows when no name exists" would pass just as happily if the name line
+  came back.
+
+## T5.2e (part 6) build notes — the cameo takes the drop's shape (2026-08-16)
+
+- **`src/ui/blob.jsx`** — the three outlines and `blobFor` lifted out of
+  ArrivalShelf.jsx, because the cameo became the second caller. Exported
+  as a `<Blob id className>`: the drawing is shared, the placing is not,
+  so each caller sizes it with its own class. `blobFor` stayed private —
+  nothing outside needed it, and exporting it only earned a fast-refresh
+  warning.
+- **The blob is picked from the win AND the visitor**, not at random, so
+  re-deriving the same win brings back the same shape as well as the
+  same friend — the T3.1 no-slot-machine rule, which the seeded friend
+  pick already followed.
+- **`--veil-caption` joins the veil family** in tokens.css. Not a
+  full-screen wash like the other two: a small backing behind floating
+  words that can land anywhere, and darker than the check-in's veil
+  because it has only a couple of lines' area to work in.
+- **The visit wears `--friendship`**, the soft rose an arriving friend
+  already wears (`.arrival-friend`), rather than a colour of its own — a
+  visiting friend and an arriving one should be lit the same way.
+- **`max-width: max(--cameo-min, calc(50vw - 20rem - …))`** is the whole
+  of the fit-the-margin rule; no measuring, no JavaScript. Verified in
+  the browser at three widths: 1440px (352px of room, comfortably
+  clear), 1000px (the floor takes over, still clear), 820px (covers the
+  edge of a tile, caption still fully readable on its backing).
+- **The entrance flipped** from `translateY(-4px)` to `+6px`: it used to
+  drop in from above, which was right while it sat in the page flow and
+  wrong the moment it was pinned to the bottom.
+- **The workbench puts the visit back in the flow** (`position: static`)
+  — two window-pinned cameos would otherwise land on the same spot. The
+  same override, for the same reason, that `.shimmer-swatch` already
+  makes for the arrival shelf.
+
 ## T5.2e (part 5) build notes — the firework finds its moment (2026-08-16)
 
 - **`src/ui/firework.jsx`**, the shimmer's sibling and built on its

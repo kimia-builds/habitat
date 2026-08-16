@@ -1598,11 +1598,16 @@ body {
    CAMEO_LINGER_MS, fed in inline from constants.js so the CSS and the
    expiry timer never disagree. The signature animation performs ONCE
    (iteration count 1 below — scarcity is the mechanic), then the
-   friend simply rests until the visit fades. */
+   friend simply rests until the visit fades.
+
+   It rises INTO frame rather than dropping into it (2026-08-16): the
+   visit is pinned to the bottom of the window now, and a thing that
+   arrives from below the edge it sits on reads as coming to join you.
+   Dropping from above was right while it sat in the page flow. */
 @keyframes cameo-visit {
   0% {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(6px);
   }
   6% {
     opacity: 1;
@@ -1616,36 +1621,95 @@ body {
   }
 }
 
+/* PINNED TO THE BOTTOM LEFT of the window (Kimia's call 2026-08-16,
+   second pass) — the mirror of the arrival shelf's top right, so the
+   two floating moments of the app never meet. It used to sit in the
+   page flow above the habit list, which pushed the whole list down the
+   moment a friend turned up.
+
+   Where it is allowed to GROW is the interesting part. The content
+   column is 40rem and centred, so the empty margin to the left of the
+   habits is `50vw - 20rem`, less this box's own offset and a gap to
+   keep off the tiles. The visit takes that room when there is any, and
+   the caption wraps to fit it — but never below --cameo-min, which is
+   the width under which a short sentence stops being readable at all.
+   Below that it simply covers the tiles, which is Kimia's call: losing
+   the words is worse than briefly sitting over a habit, and the visit
+   is gone in nine seconds either way.
+
+   Re-measure this if the column width changes — it is a consequence of
+   that number, not one chosen for its own sake. */
 .cameo {
-  /* The firework is laid over this box and rings the whole visit —
-     friend, name and message together (Kimia's call 2026-08-16). */
-  position: relative;
-  /* And it has to out-rank the habit list. The lower stars fly well
-     past the bottom of the visit, and .habit-row is ALSO
-     position: relative — so at z-index auto the tiles win on DOM order
-     alone and paint over every star that reaches them.
+  --cameo-min: 9rem;
+  position: fixed;
+  left: var(--space-6);
+  bottom: var(--space-6);
+  max-width: max(
+    var(--cameo-min),
+    calc(50vw - 20rem - var(--space-6) - var(--space-6))
+  );
+  /* Over the habit list, under the shelf's 4, the check-in's 5, the
+     reveals' 10 and the startup's 20. The firework's lower stars fly
+     past the bottom of the visit and over the tiles; .habit-row is ALSO
+     position: relative, so at z-index auto the tiles would win on DOM
+     order alone and paint over them.
 
-     Worth knowing HOW this hides, because it nearly passed: the tiles
-     are translucent, so a star behind one still glows faintly through
-     and the burst looks merely dim rather than broken. It only shows
-     as a swallowed star when a tile is opaque — a charm-filtered row,
-     a drag, or any future solid tile. The stars belong in front on
-     purpose, not by permission of how see-through a tile happens to be.
-     (The workbench cannot catch this at all: no list sits under it.)
-
-     Deliberately 1 and not more: a row being dragged (z-index 2) stays
-     above a celebration, because it is under a finger, and the shelf's
-     4, the check-in's 5, the reveals' 10 and the startup's 20 all still
-     crown. */
+     Worth knowing HOW that hid, because it nearly passed: the tiles are
+     translucent, so a star behind one still glowed faintly through and
+     the burst looked merely dim rather than broken. It only showed as a
+     swallowed star once a tile was forced opaque. The stars belong in
+     front on purpose, not by permission of how see-through a tile
+     happens to be. (The workbench cannot catch this: no list sits under
+     it.) A row being DRAGGED keeps its z-index 2 and still crowns a
+     celebration — it is under a finger. */
   z-index: 1;
+  /* Nothing here is pressable, and a celebration must never come
+     between a finger and the habit underneath it. */
+  pointer-events: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-2) 0 var(--space-1);
+  align-items: flex-start;
+  gap: var(--space-2);
   animation-name: cameo-visit;
   animation-timing-function: ease;
   animation-fill-mode: forwards;
+}
+
+/* The friend in its blob. The box only holds the friend up; the blob
+   itself is drawn behind it (blob.jsx), stretched to whatever this
+   turned out to be — the arrival's arrangement exactly. Generous at the
+   ends, because the blob's curve eats into them. */
+.cameo-figure {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-6);
+  /* The same soft rose a friend ARRIVAL wears (.arrival-friend), not a
+     colour of the cameo's own: the blob's edge and glow are
+     currentColor, exactly as an arrival's are, so a visiting friend and
+     an arriving one are lit the same way. */
+  color: var(--friendship);
+}
+
+.cameo-blob {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: visible;
+}
+
+/* Opaque, like an arrival's (2026-08-13): --surface-solid is the ground
+   colour itself, so the blob reads as a hole cut in the sky rather than
+   a second surface with the tiles showing through it. */
+.cameo-blob path {
+  fill: var(--surface-solid);
+  stroke: currentColor;
+  stroke-opacity: 0.5;
+  stroke-width: 1;
+  filter: drop-shadow(0 0 6px currentColor);
 }
 
 .cameo .cameo-glyph {
@@ -1654,16 +1718,22 @@ body {
   animation-iteration-count: 1;
 }
 
-.cameo-name {
-  color: var(--text-quiet);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-}
-
+/* The caption sits directly under the blob on its own dark backing
+   (Kimia's call 2026-08-16). The visit floats over the page now, so the
+   words can land on a habit tile, a charm or the night sky — the
+   backing is what keeps them readable in all three cases, and it is the
+   words' own, not a card around the whole visit. */
 .cameo-message {
   color: var(--text);
   font-size: 0.9rem;
   margin: 0;
+  background: var(--veil-caption);
+  padding: var(--space-2) var(--space-3);
+  border-radius: 0.4rem;
+  /* Wrapping is how it fits the margin beside the habits: the box is
+     already bounded above, so this only stops a long word forcing it
+     wider than the room it was given. */
+  overflow-wrap: anywhere;
 }
 
 .reveal-glyph {
@@ -2754,6 +2824,17 @@ body {
 .firework-swatch {
   padding: var(--space-8) var(--space-8) var(--space-7);
   min-width: 12rem;
+}
+
+/* Put the visit back in the flow. In the game it is pinned to the
+   bottom left of the WINDOW, so two of them side by side would land on
+   exactly the same spot — the same override, for the same reason, that
+   .shimmer-swatch makes for the arrival shelf. What the workbench is
+   for is the blob, the caption and the burst; where it sits on a real
+   screen is something only the real screen can show. */
+.firework-swatch .cameo {
+  position: static;
+  max-width: 14rem;
 }
 
 .shimmer-swatches {

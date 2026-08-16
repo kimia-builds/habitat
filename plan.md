@@ -186,7 +186,11 @@ tracker. Everything after this is delight, informed by real use.
                         takeover. It celebrates HER instead, on the T4.6
                         home-screen cameo, and only for the two rarest
                         wins. Every arrival now shimmers on the shelf as
-                        a result. Build notes in history.md)_
+                        a result — and on a second pass the same day she
+                        reshaped the cameo to match the drops: friend in
+                        a blob, caption beneath it on a dark backing,
+                        pinned bottom-left, no name. Build notes in
+                        history.md)_
                   - [ ] the glow scale into the tokens file, last, once
                         there are real glows to name
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10

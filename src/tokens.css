@@ -200,6 +200,12 @@
   /* Veils: full-screen washes that dim what is behind them. */
   --veil-reveal: rgba(4, 6, 10, 0.88); /* behind a first-occurrence reveal */
   --veil-checkin: rgba(4, 6, 10, 0.72); /* behind the morning check-in */
+  /* Not full-screen, this one: a small backing behind FLOATING WORDS
+     that can land anywhere — the cameo's caption (2026-08-16), which is
+     pinned to the window and may sit over a habit tile, a charm or the
+     bare night sky. Darker than the check-in's veil because it has only
+     a couple of lines' worth of area to do its work in. */
+  --veil-caption: rgba(4, 6, 10, 0.82);
   /* There is no --veil-startup any more (T5.2e, 2026-08-13). The startup
      was a black veil only while it was a placeholder; it is now the
      rolling planet, which paints its own sky beside its own drawing
