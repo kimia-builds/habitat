@@ -28,12 +28,14 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { METER_MOVE_MS, METER_ROLLOVER_MS } from '../game/constants.js'
+import {
+  CHECKIN_MOVE_HOLD_MS,
+  METER_MOVE_MS,
+  METER_ROLLOVER_MS,
+} from '../game/constants.js'
 import {
   expeditionSegment,
-  expeditionSteps,
   literacyLevelNumber,
-  literacyPoints,
   literacySegment,
   meterMovement,
   meterReading,
@@ -82,20 +84,43 @@ function Bar({ label, into, size, className, beat, playId }) {
   )
 }
 
-// Watch the three numbers and say what each bar should play.
+// Which numbers the bars are SHOWING — normally the live ones, but on
+// the render after a check-in closes, the ones from before it (§4).
 //
-// The previous reading normally starts as the FIRST one seen, so opening
-// Habitat never plays a movement — arriving to three bars pulsing at
-// nothing would be a ceremony for work done days ago.
+// The check-in screen has no header at all, so the meters are not
+// updated when it closes: they are CREATED. A brand-new bar paints
+// straight at its final length, which meant the most legible half of a
+// movement — the bar visibly crossing the distance the check-in earned —
+// never happened, and all that was left was a glow, landing in the same
+// instant the whole header appeared. Kimia looked for it on a real
+// morning and saw nothing (2026-08-16), which was fair: there was
+// nothing to see.
 //
-// `heldFrom` is the one exception, and it is the check-in's (§4). That
-// screen keeps a plain header of its own, so there is no meter on it to
-// move; App holds the reading from before the check-in's first mark and
-// hands it over as the starting point the moment the check-in closes.
-// The whole session then moves once, together — exactly what that
-// screen's drops already do.
-function useMovement(reading, heldFrom) {
-  const previous = useRef(heldFrom ?? reading)
+// So the bars arrive where they were, wait for the screen to settle,
+// and only then move. Everything downstream — the glow, the fill's own
+// width transition — follows from this one lag, because both are driven
+// by the numbers on show rather than the numbers in the data.
+function useShownReading(live, heldFrom) {
+  const [held, setHeld] = useState(heldFrom ?? null)
+
+  useEffect(() => {
+    if (!held) return
+    const timer = setTimeout(() => setHeld(null), CHECKIN_MOVE_HOLD_MS)
+    return () => clearTimeout(timer)
+  }, [held])
+
+  return held ?? live
+}
+
+// Watch the three numbers on show and say what each bar should play.
+//
+// The previous reading starts as the FIRST one seen, so opening Habitat
+// never plays a movement — arriving to three bars pulsing at nothing
+// would be a ceremony for work done days ago. After a check-in the first
+// reading seen is the pre-check-in one, so the movement fires when the
+// bars stop holding it, in the same beat they start travelling.
+function useMovement(reading) {
+  const previous = useRef(reading)
   const [play, setPlay] = useState({
     id: 0,
     expedition: null,
@@ -147,18 +172,25 @@ function Meters({
   heldFrom,
   onOpen,
 }) {
-  const steps = expeditionSteps(completions)
-  const expedition = expeditionSegment(steps)
-  const points = literacyPoints(readingItems)
-  const literacy = literacySegment(points)
-  const wallet = walletBar(fungusTrueBalance)
-
   // Which numbers a movement is measured by is the game module's call
   // (meterReading), not this component's.
-  const play = useMovement(
-    meterReading(completions, readingItems, fungusTrueBalance),
-    heldFrom,
-  )
+  const live = meterReading(completions, readingItems, fungusTrueBalance)
+  const shown = useShownReading(live, heldFrom)
+  const play = useMovement(shown)
+
+  // The bars are drawn from what is on SHOW, so after a check-in they
+  // start where they were and slide to where they are — the fill's own
+  // width transition (index.css) is what carries them, and it needs the
+  // element to persist, which it does: only the numbers change.
+  const expedition = expeditionSegment(shown.steps)
+  const literacy = literacySegment(shown.points)
+  const wallet = walletBar(shown.wallet)
+
+  // The hovers are the plain truth on demand and never lag: nobody is
+  // hovering a bar during its ceremony, and a number that lied for a
+  // moment would be worse than one that simply answers.
+  const steps = live.steps
+  const points = live.points
 
   return (
     <section className="meters" aria-label="meters">

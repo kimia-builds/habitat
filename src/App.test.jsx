@@ -16,6 +16,7 @@ import App from './App'
 import {
   ARCHIVE_FAREWELL_MS,
   CAMEO_LINGER_MS,
+  CHECKIN_MOVE_HOLD_MS,
   CHECKIN_ROWS_BEFORE_MORE,
   DROP_SETTLE_MS,
   FRIEND_CATEGORIES,
@@ -870,6 +871,15 @@ describe('the morning check-in (T1.4)', () => {
       fireEvent.click(tuesday.getByRole('button', { name: '+1' }))
       fireEvent.click(screen.getByRole('button', { name: 'done' }))
 
+      // The bars arrive holding where the week stood — two marks made,
+      // and the bar still shows none of them — so there is a distance
+      // left to travel when the screen has settled (2026-08-16).
+      expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+      expect(stepsBar().className).not.toMatch(/meter-bar--/)
+
+      // Then it travels, once, for both marks together.
+      act(() => vi.advanceTimersByTime(CHECKIN_MOVE_HOLD_MS))
+      expect(stepsBar().getAttribute('aria-valuenow')).toBe('2')
       expect(stepsBar().className).toMatch(/meter-bar--step/)
     })
 
@@ -897,6 +907,7 @@ describe('the morning check-in (T1.4)', () => {
       render(<App />)
       fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
       fireEvent.click(screen.getByRole('button', { name: 'done' }))
+      act(() => vi.advanceTimersByTime(CHECKIN_MOVE_HOLD_MS))
       expect(stepsBar().className).toMatch(/meter-bar--step/)
 
       // The glow plays out and the bar stops claiming to be moving.
@@ -1283,6 +1294,12 @@ describe('the three meters (T2.2)', () => {
     fireEvent.click(screen.getAllByRole('button', { name: '+1' })[0])
     fireEvent.click(screen.getByRole('button', { name: 'done' }))
 
+    // The bar arrives showing where the week STOOD and then travels
+    // (T5.2e/§4, 2026-08-16) — so for one held beat it still reads zero,
+    // and what it reports is honestly what it is drawing. The mark
+    // counts either way; this only decides when the bar admits it.
+    expect(stepsBar().getAttribute('aria-valuenow')).toBe('0')
+    act(() => vi.advanceTimersByTime(CHECKIN_MOVE_HOLD_MS))
     expect(stepsBar().getAttribute('aria-valuenow')).toBe('1')
     vi.useRealTimers()
   })

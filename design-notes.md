@@ -173,6 +173,22 @@ beat. Nothing marked holds nothing, and marking then unmarking leaves
 nothing to celebrate. The check-in's own rows do **not** spark — there
 is no meter on that screen for a spark to travel to.
 
+**And the bars must arrive where they WERE (Kimia's call 2026-08-16,
+after looking for this on a real morning and seeing nothing).** Closing
+the check-in does not update the meters, it **creates** them — that
+screen has no header at all — and a bar born at its new length has no
+distance left to cross. The most legible half of a movement simply
+never happened: all that was left was a glow, playing in the same
+instant the whole header appeared, which is the one moment nothing
+small can be seen. So the meters now come up showing the pre-check-in
+numbers, hold for a beat while the screen settles, and only then
+travel — the glow firing with the movement rather than before it. The
+distance is honest, so it is small for a small check-in; the glow is
+what draws the eye to it, and the travel is what makes it mean
+something. For that held beat the bars report what they are drawing
+rather than what the data says — the mark is already recorded either
+way, and a bar should never claim to be somewhere it is not.
+
 ---
 
 ## 5. Drops — star-shimmer & firework **[arrival placement + star-shimmer + the going BUILT — T5.2e, 2026-08-13/14 · the firework still to build]**

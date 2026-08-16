@@ -2393,6 +2393,55 @@ return 0` right after the era is worked out, so a moment before the
   through the re-render, and a hand-opened check-in closing on a veil
   press with the page still at 400.
 
+- 2026-08-16 (T5.2e follow-up, Kimia's call): **the check-in's bars
+  arrive where they WERE, and then travel.** She looked for the held
+  movement on a real morning and saw nothing; the code was firing
+  correctly (proved in the browser — the class appeared on `done` and
+  settled a beat later), and the fault was the design. Closing the
+  check-in does not UPDATE the meters, it CREATES them, that screen
+  having no header at all — so the bar painted straight at its new
+  length and the one legible half of a movement, the bar crossing the
+  distance the week earned, never happened. What was left was a glow, in
+  the same instant the whole header appeared and the page jumped to its
+  top: the worst moment to show something small. The meters now hold
+  their pre-check-in numbers for `CHECKIN_MOVE_HOLD_MS`, then move, and
+  the glow fires with the travel rather than ahead of it. Offered
+  alongside three cheaper options (delay the glow, borrow the brighter
+  roll-over beat, or drop the ceremony and let the drops be the news);
+  she chose the travel. Folded into §4.
+- 2026-08-16 (working note): **a passing test proved less than it
+  looked.** The held movement had a test asserting the class appears on
+  `done`, and it passed throughout — because the class DOES appear. No
+  test could have caught this, because what was wrong was that the
+  moment was invisible, and invisibility is not a property jsdom has an
+  opinion about. It took reproducing the real morning flow in a browser
+  and reading the bar's width alongside its class. **When a visual
+  moment is reported missing, measure what the eye would have had to
+  see, not whether the code ran.**
+
+## T5.2e (part 4) build notes — the bars travel (2026-08-16)
+
+- One lag does all of it. `useShownReading` decides which numbers the
+  bars are DRAWING — the live ones normally, the pre-check-in ones for
+  one held beat — and everything else already keys off that: the glow,
+  because `useMovement` now watches the shown reading rather than the
+  data, and the travel, because the fill's `transition: width` has been
+  there since T2.2 and only ever needed the number to change late. No
+  new animation was written for this.
+- The fill transitions rather than jumps because the ELEMENT persists
+  across the change: only its width prop moves. That is the same reason
+  the bar could never use a keyed remount to replay its glow (part 3).
+- The hovers deliberately do not lag — they are the plain truth on
+  demand, and nobody is hovering a bar during its ceremony. The bar's
+  `aria-valuenow` DOES lag, because it describes what the bar is
+  drawing; a progressbar reporting a length it is not showing would be
+  the actual lie. One pre-existing T2.2 test asserted the post-check-in
+  value immediately and now advances the hold first.
+- Measured in the browser, not assumed: meters appear at `steps 0 /
+  width 0%`, move to `steps 1 / width 1%` ~950ms later (the pane
+  throttles timers in a hidden tab; the constant is 700ms), the glow
+  starting in the same 3ms as the travel, settling a second after.
+
 ## T5.2e (part 3) build notes — the meter glow, the spark, the arrival's going (2026-08-14)
 
 - `meterMovement(before, after)` in `game/meters.js` is the whole

@@ -76,6 +76,15 @@ export const ARCHIVE_FAREWELL_MS = 420
 export const METER_MOVE_MS = 700
 export const METER_ROLLOVER_MS = 1100
 
+// How long the meters hold their PRE-check-in numbers before travelling
+// to the new ones (T5.2e, design-notes §4; Kimia's call 2026-08-16).
+// The check-in screen has no header, so closing it CREATES the meters
+// rather than updating them — and a bar that is born at its new length
+// has no distance left to cross. This is the pause that gives it one:
+// long enough for the header to have arrived and the eye to have found
+// the bars, short enough that nobody is waiting on it.
+export const CHECKIN_MOVE_HOLD_MS = 700
+
 // How long a just-dropped habit tile stays lit where it landed (Kimia's
 // call 2026-08-11). Releasing a drag used to snap the tile into place
 // and drop its highlight in the same instant, which made a re-order hard
