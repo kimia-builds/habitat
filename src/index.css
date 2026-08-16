@@ -329,7 +329,7 @@ body {
   }
   30% {
     transform: scaleY(1.8);
-    box-shadow: 0 0 0.4rem var(--meter-glow);
+    box-shadow: 0 0 var(--glow-lifted) var(--meter-glow);
   }
   100% {
     transform: scaleY(1);
@@ -346,7 +346,7 @@ body {
   }
   25% {
     transform: scaleY(2.6);
-    box-shadow: 0 0 1rem var(--meter-glow-bright);
+    box-shadow: 0 0 var(--glow-pop) var(--meter-glow-bright);
   }
   100% {
     transform: scaleY(1);
@@ -389,12 +389,12 @@ body {
   0% {
     transform: scale(1);
     opacity: 0.9;
-    box-shadow: 0 0 0.35rem var(--tap-spark-glow);
+    box-shadow: 0 0 var(--glow-resting) var(--tap-spark-glow);
   }
   100% {
     transform: scale(2.1);
     opacity: 0;
-    box-shadow: 0 0 0.6rem transparent;
+    box-shadow: 0 0 var(--glow-bright) transparent;
   }
 }
 
@@ -411,11 +411,11 @@ body {
   @keyframes tap-spark-quiet {
     0% {
       opacity: 0.9;
-      box-shadow: 0 0 0.35rem var(--tap-spark-glow);
+      box-shadow: 0 0 var(--glow-resting) var(--tap-spark-glow);
     }
     100% {
       opacity: 0;
-      box-shadow: 0 0 0.6rem transparent;
+      box-shadow: 0 0 var(--glow-bright) transparent;
     }
   }
 
@@ -433,7 +433,7 @@ body {
       box-shadow: 0 0 0 var(--meter-tone);
     }
     30% {
-      box-shadow: 0 0 0.4rem var(--meter-glow);
+      box-shadow: 0 0 var(--glow-lifted) var(--meter-glow);
     }
   }
 
@@ -443,7 +443,7 @@ body {
       box-shadow: 0 0 0 var(--meter-tone);
     }
     25% {
-      box-shadow: 0 0 1rem var(--meter-glow-bright);
+      box-shadow: 0 0 var(--glow-pop) var(--meter-glow-bright);
     }
   }
 }
@@ -515,7 +515,7 @@ body {
 .market-glyph {
   width: 2.4rem;
   height: 2.4rem;
-  filter: drop-shadow(0 0 4px currentColor);
+  filter: drop-shadow(0 0 var(--glow-resting) currentColor);
 }
 
 .market-price {
@@ -572,12 +572,12 @@ body {
 }
 
 .abode-flora-glyph {
-  filter: drop-shadow(0 0 3px currentColor);
+  filter: drop-shadow(0 0 var(--glow-faint) currentColor);
 }
 
 .abode-flora-glyph.held,
 .abode-flora-hold:focus-visible .abode-flora-glyph {
-  filter: drop-shadow(0 0 6px currentColor);
+  filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 
 .abode-flora-name {
@@ -632,7 +632,7 @@ body {
 
 .abode-mode-icon.active {
   color: var(--text-title);
-  filter: drop-shadow(0 0 4px currentColor);
+  filter: drop-shadow(0 0 var(--glow-resting) currentColor);
 }
 
 .abode-mode-switch {
@@ -669,7 +669,7 @@ body {
 /* A visiting friend in party mode: simply present — a soft glow, no
    signature animation, no pointer handlers (never draggable). */
 .abode-party-friend .friend-glyph {
-  filter: drop-shadow(0 0 4px currentColor);
+  filter: drop-shadow(0 0 var(--glow-resting) currentColor);
 }
 
 /* T4.4: the Guest Book — visual-first like the ground and the shelf:
@@ -703,7 +703,7 @@ body {
 .guestbook-friend .friend-glyph {
   width: 2.4rem;
   height: 2.4rem;
-  filter: drop-shadow(0 0 4px currentColor);
+  filter: drop-shadow(0 0 var(--glow-resting) currentColor);
 }
 
 .guestbook-name {
@@ -998,7 +998,7 @@ body {
   stroke: currentColor;
   stroke-opacity: 0.5;
   stroke-width: 1;
-  filter: drop-shadow(0 0 6px currentColor);
+  filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 
 /* The star-shimmer (T5.2e, design-notes §5): a small, brief sparkle as
@@ -1029,7 +1029,7 @@ body {
      half charm) and glows with the same one, the way the night sky's
      gems carry their own halo. */
   fill: currentColor;
-  filter: drop-shadow(0 0 3px currentColor);
+  filter: drop-shadow(0 0 var(--glow-faint) currentColor);
   /* Starts invisible: each star waits for its own delay, and without
      this the whole set would show for the first frame. */
   opacity: 0;
@@ -1322,7 +1322,7 @@ body {
   background: var(--bg);
   border: 1px solid currentColor;
   border-radius: 0.75rem;
-  box-shadow: 0 0 3rem -0.5rem currentColor;
+  box-shadow: 0 0 var(--glow-card) -0.5rem currentColor;
   animation: reveal-pop 0.45s ease;
 }
 
@@ -1415,16 +1415,16 @@ body {
 @keyframes friend-signal {
   0%,
   100% {
-    filter: drop-shadow(0 0 0.2rem currentColor);
+    filter: drop-shadow(0 0 var(--glow-faint) currentColor);
   }
   12% {
-    filter: drop-shadow(0 0 0.8rem currentColor);
+    filter: drop-shadow(0 0 var(--glow-pop) currentColor);
   }
   24% {
-    filter: drop-shadow(0 0 0.2rem currentColor);
+    filter: drop-shadow(0 0 var(--glow-faint) currentColor);
   }
   36% {
-    filter: drop-shadow(0 0 0.8rem currentColor);
+    filter: drop-shadow(0 0 var(--glow-pop) currentColor);
   }
 }
 
@@ -1554,7 +1554,7 @@ body {
      half charm) and glows with the same one — the shimmer's rule, and
      the night sky's before it. */
   fill: currentColor;
-  filter: drop-shadow(0 0 4px currentColor);
+  filter: drop-shadow(0 0 var(--glow-resting) currentColor);
   /* Starts invisible: each star waits for its own launch delay, and
      without this the whole burst would show for the first frame. */
   opacity: 0;
@@ -1714,7 +1714,7 @@ body {
   stroke: currentColor;
   stroke-opacity: 0.5;
   stroke-width: 1;
-  filter: drop-shadow(0 0 6px currentColor);
+  filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 
 .cameo .cameo-glyph {
@@ -1761,14 +1761,14 @@ body {
 .reveal-glyph {
   width: 4rem;
   height: 4rem;
-  filter: drop-shadow(0 0 0.6rem currentColor);
+  filter: drop-shadow(0 0 var(--glow-bright) currentColor);
 }
 
 .reveal-title {
   font-weight: 300;
   letter-spacing: 0.2em;
   font-size: 1.1rem;
-  text-shadow: 0 0 1rem currentColor;
+  text-shadow: 0 0 var(--glow-pop) currentColor;
 }
 
 .reveal-line {
@@ -1854,14 +1854,14 @@ body {
   stroke: currentColor;
   stroke-opacity: 0.5;
   stroke-width: 1.2;
-  filter: drop-shadow(0 0 5px currentColor);
+  filter: drop-shadow(0 0 var(--glow-resting) currentColor);
 }
 
 /* The frontier — where the expedition is now — sits a little brighter. */
 .map-region-frontier {
   fill-opacity: 0.16;
   stroke-opacity: 0.85;
-  filter: drop-shadow(0 0 9px currentColor);
+  filter: drop-shadow(0 0 var(--glow-bright) currentColor);
 }
 
 /* Landmark flora markers (none render until T6.1 names the species):
@@ -1870,7 +1870,7 @@ body {
   stroke: var(--landmark);
   fill: var(--landmark-fill);
   stroke-width: 1.2;
-  filter: drop-shadow(0 0 4px var(--expedition));
+  filter: drop-shadow(0 0 var(--glow-resting) var(--expedition));
 }
 
 .map-caption {
@@ -1926,7 +1926,7 @@ body {
   stroke: currentColor;
   stroke-opacity: 0.75;
   stroke-width: 1.2;
-  filter: drop-shadow(0 0 3px currentColor);
+  filter: drop-shadow(0 0 var(--glow-faint) currentColor);
 }
 
 .book-glyph {
@@ -2154,12 +2154,12 @@ body {
   height: 1.3em;
   flex-shrink: 0;
   vertical-align: -0.2em;
-  filter: drop-shadow(0 0 14px currentColor);
+  filter: drop-shadow(0 0 var(--glow-pop) currentColor);
   transition: filter 0.18s ease;
 }
 
 .charm:hover {
-  filter: drop-shadow(0 0 24px currentColor);
+  filter: drop-shadow(0 0 var(--glow-max) currentColor);
 }
 
 /* The charms lost their boxes (Kimia's call 2026-08-11) — they are
@@ -2506,7 +2506,7 @@ body {
 }
 
 .rail-icon:hover {
-  filter: drop-shadow(0 0 10px currentColor);
+  filter: drop-shadow(0 0 var(--glow-bright) currentColor);
 }
 
 /* The three doers. Sky blue was the one charm the five places never

@@ -852,7 +852,7 @@ built that day followed this section as it was then written, and she
 disliked all of it. Type is not a thing to be specified and then
 implemented in one go.
 
-### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10; SPENT — T5.2b, 2026-08-11; SPACING BUILT — T5.2d, 2026-08-12]**
+### 11d. Design tokens — the visual twin of constants.js (T5.2) **[COLOUR BUILT — T5.2a, 2026-08-10; SPENT — T5.2b, 2026-08-11; SPACING BUILT — T5.2d, 2026-08-12; GLOW BUILT — T5.2e, 2026-08-16]**
 
 Everything §11b and §11c name — every colour, every glow strength,
 every font size, every spacing number — lives in **one CSS file of
@@ -885,6 +885,42 @@ nothing a non-coder can't follow.
   **Positions are not spacing** and stay raw: the icon rail's `left`, an
   inset, a fixed offset. Those place one thing on the screen; the scale
   is for holding two things apart.
+
+- **The glow scale — six steps (T5.2e, 2026-08-16).** The same story as
+  spacing, one slice later, and the last thing the tokens file was
+  waiting for. Habitat glows constantly, and every glowing thing carried
+  its own hand-typed radius: **fifteen** of them across about forty
+  rules — 3, 4, 5, 6, 9, 10, 14, 24px, plus 0.2, 0.35, 0.4, 0.6, 0.8, 1
+  and 3rem. Nobody chose that list; each number was typed while building
+  the thing in front of it. A 3px glow and a 4px glow are a difference
+  no eye can resolve, and the two units silently drift apart — px never
+  moves when text size changes, rem does.
+
+  They are now **six steps, each about half again the last, all in rem**
+  (`--glow-faint` 0.2 · `--glow-resting` 0.3 · `--glow-lifted` 0.4 ·
+  `--glow-bright` 0.6 · `--glow-pop` 0.9 · `--glow-max` 1.5), named for
+  the JOB rather than the number, so a thing at rest asks for
+  `--glow-resting` and the same thing under a pointer asks for
+  `--glow-lifted`. Every old value snapped to its nearest step; nothing
+  moved by more than 1.6px, and the near-twins that were never meant to
+  differ stopped differing.
+
+  **A glow that lights a BOX is not on the ladder**, the same carve-out
+  positions get from spacing: `--glow-card` (3rem) is the halo around the
+  reveal/party card, several times any glyph radius because it has a
+  whole panel to surround. Its negative spread stays in the rule — spread
+  pulls the halo back off the edges and belongs to that shape, not to how
+  far light travels.
+
+  **What the scale does NOT decide is who glows how much.** That ladder
+  is already written, in design-bible §7: organic things — flora, fungi,
+  friends — glow equally and fully at the top of the scale; publications
+  glow less; curiosities may or may not. Today's placeholder art does not
+  honour it yet (flora sits at `--glow-faint`, a friend at
+  `--glow-resting`) and deliberately won't until T5.3 replaces the
+  placeholders with the real drawings — Kimia's call 2026-08-16, restating
+  §7. §7 now carries the step names so that spending is a lookup, not a
+  fresh argument.
 - **The charm colours are canonical here (Kimia's call 2026-07-21).**
   The six colours in §11a currently live in `src/ui/symbols.js` because
   the glow drop-shadows are built in JavaScript. The tokens file becomes
@@ -935,7 +971,12 @@ index.css. Two things the file learned in the process:
   Type was settled as-is that day — §11c — so there is no slice left to
   decide it, and naming the sizes it already has would be filing
   leftovers rather than building a scale. Glow and spacing still
-  arrive with T5.2e and T5.2d.)_
+  arrive with T5.2e and T5.2d.)_ _(Closed 2026-08-16: **both arrived
+  as promised** — spacing in T5.2d, glow in T5.2e — and waiting was
+  the right call both times. Each turned out to be a scale to build
+  rather than leftovers to name: 22 spacings became 8 steps, 15 glow
+  radii became 6. Naming them in T5.2a would have named the
+  accidents. Nothing is now owed to this file.)_
 - **The tokens file holds the colours the _stylesheet_ wears; artwork
   keeps its own paints.** `friendPalettes.js` (the friends' 24 pastels),
   `textures.jsx` (surface tints fed to SVG filters) and the Abode sky

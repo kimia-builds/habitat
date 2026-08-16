@@ -15,9 +15,10 @@
  *   - COLOUR is here, all of it. index.css holds no raw hex or rgba any more.
  *   - SPACING is here as of T5.2d: eight steps on a 4px grid, and every
  *     padding, margin and gap in index.css asks for one by name.
- *   - GLOW is still not here. Today's four near-identical radii are leftovers
- *     of the ugly-on-purpose skeleton, and naming them would be naming numbers
- *     about to be replaced; they arrive with T5.2e, the slice that decides them.
+ *   - GLOW is here as of T5.2e: six steps, and every drop-shadow, box-shadow
+ *     and text-shadow radius in index.css asks for one by name. It waited
+ *     until now on purpose — naming the skeleton's leftovers in T5.2a would
+ *     have been naming numbers about to be replaced.
  *   - TYPE never joins (Kimia's call 2026-08-12). Font sizes stay raw in
  *     index.css because typography stopped being a thing to build: the
  *     two-typeface pass was built, seen and rejected, and the system font
@@ -188,6 +189,43 @@
   --space-6: 1.5rem; /*  24px — between distinct groups on a screen */
   --space-7: 2rem; /*    32px — a generous panel; the space around a page title */
   --space-8: 2.5rem; /* 40px — the biggest room we ask for */
+
+  /* =========================================================================
+   * GLOW — the scale (T5.2e, 2026-08-16)
+   * -------------------------------------------------------------------------
+   * How far light spreads from a glowing thing. Habitat glows constantly —
+   * charms, map regions, flora, friend blobs, meters, reveal titles — and
+   * until today every one of those carried its own hand-typed number. There
+   * were FIFTEEN of them across about forty rules: 3, 4, 5, 6, 9, 10, 14 and
+   * 24px, plus 0.2, 0.35, 0.4, 0.6, 0.8, 1 and 3rem. Nobody chose that; each
+   * was typed while building the thing in front of it. A 3px glow and a 4px
+   * glow are a difference no eye can see, and the two units drift apart the
+   * moment text size changes — px never moves, rem does.
+   *
+   * So: SIX steps, each about half again the last, all in rem so glow scales
+   * with everything else. Every old value snapped to its nearest step;
+   * nothing moved by more than 1.6px.
+   *
+   * HOW TO USE: pick by the JOB, not the number. Something at rest takes
+   * --glow-resting; the same thing under a pointer takes --glow-lifted. A
+   * seventh value is how the last fifteen began.
+   * ========================================================================= */
+  --glow-faint: 0.2rem; /*   3.2px — a hairline of light: a shimmer star */
+  --glow-resting: 0.3rem; /* 4.8px — the everyday glyph glow, at rest */
+  --glow-lifted: 0.4rem; /*  6.4px — that glyph woken by a pointer or a hold */
+  --glow-bright: 0.6rem; /*  9.6px — a moment of attention: the frontier, a
+                                     rail icon under the cursor */
+  --glow-pop: 0.9rem; /*    14.4px — the loudest an everyday thing gets: a
+                                     charm at rest, a reveal's title */
+  --glow-max: 1.5rem; /*      24px — a charm under the pointer. The top. */
+
+  /* Not on the ladder, on purpose: this one lights a BOX, not a glyph — the
+     halo around the reveal/party card, which needs a radius several times
+     anything above to surround a whole panel. Same carve-out as positions in
+     the spacing scale: a different job, so a different name. (The card rule
+     keeps its own negative spread beside this; spread pulls the halo back
+     off the edges and is part of that shape, not of how far light goes.) */
+  --glow-card: 3rem;
 
   /* A panel that must be OPAQUE, not washed (Kimia's call 2026-08-12,
      once the stars were up): --surface is a white wash, which lets the

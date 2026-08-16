@@ -104,8 +104,8 @@ built on top of a live, in-use app.
   its reveals; and the full world of N-Z-D — map, bookcase, abode,
   market and guest book.
 - **M5 — in progress.** The design pass: the six charm symbols, the
-  width gate, drag-to-reorder, the design-tokens file (colour and
-  spacing) and the palette it paid for are in, the typography is settled
+  width gate, drag-to-reorder, the design-tokens file (colour, spacing
+  and glow) and the palette it paid for are in, the typography is settled
   as it stands, and the layout pass is done — a header bar across the
   top, page titles standing above their boxes, and a night sky behind
   everything. The daily startup ceremony is in — a planet rolling along
@@ -115,8 +115,10 @@ built on top of a live, in-use app.
   tap too: the bar that moved glows and swells while a ring of light
   opens under your finger. And the rarest wins — a record streak, every
   fiftieth lived day — bring a friend to the habit list with a firework
-  around them. Still to come in the feel pass is naming the glow scale,
-  and beside it the creature, flora and object art.
+  around them. The feel pass is finished, and with it the whole visual
+  identity: every glow in the app now comes from one named scale of six
+  steps rather than fifteen numbers typed one at a time. Still to come in
+  M5 is the creature, flora and object art.
 - **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
   The error-boundary safety net is already in, and so is the first half
   of the backup habit — persistent-storage groundwork, and the export

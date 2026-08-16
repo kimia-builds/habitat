@@ -2492,6 +2492,69 @@ return 0` right after the era is worked out, so a moment before the
   name present in the fixture, since a test that only checks "no name
   shows when no name exists" would pass just as happily if the name line
   came back.
+- 2026-08-16 (T5.2e, glow-scale session — session 57): **glow becomes a
+  scale, not fifteen opinions.** Every glowing thing in Habitat carried
+  its own hand-typed radius — 15 distinct values across ~40 rules, in two
+  units that behave differently (px never moves with text size, rem
+  does). Nobody had chosen that list; each number was typed while
+  building the thing in front of it. They are now **six named steps in
+  `tokens.css`**, each about half again the last, all in rem, named for
+  the job — faint · resting · lifted · bright · pop · max. Every old
+  value snapped to its nearest step and nothing moved by more than
+  1.6px, so this is a refactor with no visible change. Same shape as the
+  spacing pass four days earlier, and the last thing §11d was owed.
+  Folded into design-notes §11d.
+- 2026-08-16 (same session): **a glow that lights a box is not on the
+  ladder.** The reveal/party card's halo is 3rem — several times any
+  glyph radius, because it surrounds a whole panel rather than a symbol.
+  It gets its own name (`--glow-card`) instead of a seventh step, the
+  same carve-out positions get from the spacing scale: a different job,
+  so a different name rather than a step nothing else could ever reach.
+  Its negative spread stays in the rule, since spread pulls the halo back
+  off the edges and describes that shape rather than how far light goes.
+- 2026-08-16 (Kimia's call, same session): **the organic things get the
+  top of the scale — but not today.** Asked whether to lift the drop
+  items to full glow while the scale was being built, Kimia stopped it:
+  flora, fungi and friends are the ones that go to the top (**not**
+  publications, curiosities or the map), and none of those things is in
+  its final form yet — they are placeholder shapes awaiting T5.3's real
+  art. Raising a placeholder's light only tunes something about to be
+  replaced. Notable: this is **design-bible §7's glow ladder verbatim**,
+  written 2026-07-24 and unprompted here — the rule was already law, and
+  the placeholders simply never honoured it. §7 now carries the step
+  names so spending it in T5.3 is a lookup rather than a fresh argument.
+- 2026-08-16 (working note, same session): **which top step "full" means
+  is left open on purpose.** `--glow-pop` and `--glow-max` are both
+  candidates and the honest answer needs finished art to look at: the
+  charms wear pop at rest with room around them, whereas flora and
+  publications sit in packed grids where a wide glow on every tile can
+  smear into one haze instead of separate glowing things. Recorded as an
+  eyeball call for T5.3 rather than guessed on paper now.
+
+## T5.2e (part 7) build notes — the glow scale (2026-08-16)
+
+- **`src/tokens.css`** — a GLOW section beside the spacing scale: six
+  steps (`--glow-faint` 0.2rem · `--glow-resting` 0.3 · `--glow-lifted`
+  0.4 · `--glow-bright` 0.6 · `--glow-pop` 0.9 · `--glow-max` 1.5) plus
+  `--glow-card` 3rem off the ladder. The header's "GLOW is still not
+  here" note became a record that it is.
+- **`src/index.css`** — 32 declarations repointed at the steps. The
+  mapping, so the snapping is auditable: 3px and 0.2rem → faint; 4px,
+  5px and 0.35rem → resting; 6px and 0.4rem → lifted; 9px, 10px and
+  0.6rem → bright; 14px, 0.8rem and 1rem → pop; 24px → max; 3rem → card.
+  The largest move is 1.6px (0.8rem and 1rem, meeting in the middle at
+  0.9rem); most are under half a pixel.
+- **`src/test/tokens.test.js`** — a fourth check, the glow twin of the
+  raw-colour one. It pulls every `drop-shadow(…)`, `box-shadow:` and
+  `text-shadow:` out of index.css, strips the `var(--…)` calls that are
+  doing their job, and fails on any positive length left over. A
+  NEGATIVE one passes — that is a spread, which belongs to a shape, not
+  to the scale. Verified against samples that it actually bites (a raw
+  `7px`, a raw `0.45rem`) and does not false-positive on the card's
+  `-0.5rem`, on `box-shadow: var(--shadow-lifted)`, or on a `transition`
+  that merely names box-shadow as a property.
+- Nothing else changed: no component, no test besides that one, and no
+  pixel that moves more than a hair.
 
 ## T5.2e (part 6) build notes — the cameo takes the drop's shape (2026-08-16)
 
@@ -3728,3 +3791,83 @@ and recorded in spec.md's decisions log._
       fields overlapping, which is why it reads as one continuous sky.
       (The hold was temporarily raised to 60s to catch it — browser
       round-trips are slower than a 3.2s ceremony — and put back.)
+- [x] **T5.2 Visual identity** _(decided 2026-07-19, done 2026-08-16 —
+      seven sessions across 2026-08-10…16; design-notes §11b, §11c, §11d,
+      §12f, §13; per-slice build notes above)_
+      The task as it stood in plan.md, kept whole here because five weeks
+      of decisions are recorded in its wording:
+
+      Decided 2026-07-19 (docs, design-notes §11b): background #080910,
+      charm-colour accent palette with faint variants, dim-white text
+      tiers. Plus glow effects and animations. (**The two-typeface plan
+      left this task on 2026-08-12** — Kimia saw it built and rejected
+      it; the build was reverted and the system font became Habitat's
+      settled typography, design-notes §11c.) Includes the feel
+      enhancements decided 2026-07-19 (design-notes §4–§5): momentary
+      glow/thicken on meter advance and roll-over (layered on the built
+      bar), star-shimmer on regular drop arrivals, full firework for
+      first-occurrence reveals and friend arrivals. (The ~~live-vs-retro
+      tonal palette shift~~ **left this task on 2026-08-13** — Kimia's
+      call to drop §3 outright rather than build or defer it; nothing
+      had been built.)
+      Also includes the **daily startup animation** (decided 2026-07-20,
+      design-notes §12f) in the slot T4.5 built for it: a black screen
+      with a slither of glowing planet across the bottom edge, spinning
+      slowly like a satellite image, for a few seconds — then the normal
+      screen fades in. The planet glows the **shell charm's pink
+      `#E8698C`**, except on **Sundays**, when it rotates randomly
+      between the other five charm colours. No text, no numbers, no
+      narration slot; a tap skips straight to the fade; identical every
+      day regardless of streaks or milestones (design-notes §12f explains
+      why this one moment may take the screen when §6 forbids it
+      elsewhere). **Desktop/laptop only (2026-07-21):** gated behind a
+      min-width check; mobile and tablet skip it and keep the plain fade
+      — Habitat's only device-conditional moment.
+      **M5 layout & atmosphere pass (Kimia's layout spec, merged
+      2026-07-21 — design-notes §13):** a full-width top header (wordmark
+      · meters · date · charm filter) via CSS `grid-template-areas`,
+      above the unchanged 40rem content column; each secondary page's
+      title promoted into a shared `.page-title` region above its box;
+      and a full-bleed night-sky background (sparse, rarely-twinkling CSS
+      stars) on every device.
+      **Design-tokens file (Kimia's call 2026-07-21 — design-notes §11d,
+      CLAUDE.md):** every colour, glow, font size and spacing number
+      moves into one CSS file of named, commented values — the visual
+      twin of `constants.js`; the six charm colours become canonical
+      there and `src/ui/symbols.js` mirrors the hexes its JS needs.
+      **Sliced 2026-08-10** — one task was always several sessions, so it
+      said so. The tokens file went first, because every slice after it
+      was an edit to one short list instead of a tour of the stylesheet.
+
+      **The slices, as they finished:**
+      - [x] **T5.2a The tokens file — colour** _(2026-08-10)_
+      - [x] **T5.2b The §11b palette** _(2026-08-11 — the dim-white text
+            tiers were dropped on Kimia's eyeball test, design-notes
+            §11b)_
+      - [~] ~~**T5.2c Typography**~~ _(dropped 2026-08-12 — built,
+            rejected on sight, reverted the same day. Kimia's call: the
+            system font Habitat already wore IS its typography, so there
+            was nothing left to build. design-notes §11c now describes
+            the lettering instead of proposing it.)_
+      - [x] **T5.2d Layout & atmosphere (§13)** _(2026-08-12)_ — promoted
+            page titles, the top header bar, the night sky as the app
+            background, and the spacing scale (22 ad-hoc values → 8 steps
+            on a 4px grid). Built one visible slice at a time with
+            Kimia's eye between each (the T5.2c lesson), and three of the
+            four came back with corrections.
+      - [x] **T5.2e Glow, feel & the startup animation** _(2026-08-13…16,
+            seven parts)_ — the §12f rolling planet and its ceremony;
+            then the §4–§5 feel enhancements in the order agreed
+            2026-08-13, smallest visible change first: where an arrival
+            appears (§5) → the star-shimmer on drop arrivals → the §4
+            meter glow → the firework, which Kimia moved off the reveals
+            onto the home-screen cameo's two rarest wins → the glow scale
+            into the tokens file, last, once there were real glows to
+            name (15 radii → 6 steps).
+
+      **What the whole task taught, in one line each:** build it in front
+      of her (T5.2c was specced, built whole and rejected); a scale is
+      worth waiting for (spacing and glow were both accidents worth
+      naming properly, and naming them early would have named the
+      leftovers); and the spec is not sacred — she cut §3 and moved the
+      firework after reading her own words back.

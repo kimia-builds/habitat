@@ -81,118 +81,12 @@ tracker. Everything after this is delight, informed by real use.
 - [x] **T5.1b Mobile & tablet block.** _(done 2026-07-23)_
 - [x] **T5.1c Habit-card drag-to-reorder** _(done 2026-07-23, spec §4.1,
       design-notes §12a — build notes in history.md)_
-- [ ] **T5.2 Visual identity** — decided 2026-07-19 (docs, design-notes
-      §11b): background #080910, charm-colour accent palette with
-      faint variants, dim-white text tiers. Plus glow effects and
-      animations. (**The two-typeface plan left this task on
-      2026-08-12** — Kimia saw it built and rejected it; the build was
-      reverted and the system font became Habitat's settled typography,
-      design-notes §11c.) Includes the feel
-      enhancements decided 2026-07-19 (design-notes §4–§5): momentary
-      glow/thicken on meter advance and roll-over (layered on the built
-      bar), star-shimmer on regular drop arrivals, full firework for
-      first-occurrence reveals and friend arrivals. (The ~~live-vs-retro
-      tonal palette shift~~ **left this task on 2026-08-13** — Kimia's
-      call to drop §3 outright rather than build or defer it; nothing
-      had been built.)
-      Also includes the **daily startup animation** (decided 2026-07-20,
-      design-notes §12f) in the slot T4.5 built for it: a black screen with
-      a slither of glowing planet across the bottom edge, spinning slowly
-      like a satellite image, for a few seconds — then the normal screen
-      fades in. The planet glows the **shell charm's pink `#E8698C`**,
-      except on **Sundays**, when it rotates randomly between the other
-      five charm colours. No text, no numbers, no narration slot; a tap
-      skips straight to the fade; identical every day regardless of
-      streaks or milestones (design-notes §12f explains why this one moment
-      may take the screen when §6 forbids it elsewhere). **Desktop/laptop
-      only (2026-07-21):** gated behind a min-width check; mobile and tablet
-      skip it and keep the plain fade — Habitat's only device-conditional
-      moment.
-      **M5 layout & atmosphere pass (Kimia's layout spec, merged
-      2026-07-21 — design-notes §13):** a full-width top header (wordmark ·
-      meters · date · charm filter) via CSS `grid-template-areas`, above the
-      unchanged 40rem content column; each secondary page's title promoted
-      into a shared `.page-title` region above its box; and a full-bleed
-      night-sky background (sparse, rarely-twinkling CSS stars) on every
-      device.
-      **Design-tokens file (Kimia's call 2026-07-21 — design-notes §11d,
-      CLAUDE.md):** every colour, glow, font size and spacing number moves
-      into one CSS file of named, commented values — the visual twin of
-      `constants.js`; the six charm colours become canonical there and
-      `src/ui/symbols.js` mirrors the hexes its JS needs.
-      **Sliced 2026-08-10** — one task was always several sessions, so it
-      now says so. The tokens file goes first, because every slice after
-      it is an edit to one short list instead of a tour of the stylesheet:
-      - [x] **T5.2a The tokens file — colour** _(done 2026-08-10 — build
-            notes in history.md)_
-      - [x] **T5.2b The §11b palette** _(done 2026-08-11 — build notes in
-            history.md; the dim-white text tiers were dropped on Kimia's
-            eyeball test, design-notes §11b)_
-      - [~] ~~**T5.2c Typography**~~ _(dropped 2026-08-12 — built, rejected
-            on sight, reverted the same day. Kimia's call: the system
-            font Habitat already wore IS its typography, so there is
-            nothing left to build. design-notes §11c now describes the
-            lettering instead of proposing it, and the slice is kept
-            here, struck through, so nobody proposes it again.)_
-      - [x] **T5.2d Layout & atmosphere (§13)** _(done 2026-08-12 —
-            build notes in history.md)_ — the header bar, promoted page
-            titles, the night sky as the app background, and the spacing
-            scale into the tokens file. Built one visible slice at a
-            time with Kimia's eye between each (the T5.2c lesson), and
-            three of the four came back with corrections:_
-            - [x] promoted page titles (§13b) _(2026-08-12)_
-            - [x] the top header bar (§13a) _(2026-08-12)_
-            - [x] the night-sky background (§13c) _(2026-08-12 — the
-                  workbench NightSky mounted as the app background; its
-                  ground colours into tokens.css, re-tuned to sink into
-                  the settled §11b ground)_
-            - [x] the spacing scale into the tokens file _(2026-08-12 —
-                  22 ad-hoc values become 8 steps on a 4px grid)_
-      - [ ] **T5.2e Glow, feel & the startup animation** — the §4–§5 feel
-            enhancements and the §12f rolling planet; the glow scale joins
-            the tokens file here, once there is a real one to name.
-            - [x] the §12f rolling planet _(2026-08-13 — built in front of
-                  Kimia on the design workbench, then wired into the real
-                  daily startup: hold, fade, tap-to-skip, Sunday colour.
-                  Build notes in history.md)_
-            - [ ] the §4–§5 feel enhancements + the glow scale into the
-                  tokens file. Built in front of Kimia, smallest visible
-                  change first (the T5.2c lesson); she redirected twice
-                  on the first step alone. Order agreed 2026-08-13:
-                  - [x] where an arrival appears (§5) _(2026-08-13 — the
-                        shelf pinned to the window's top right below the
-                        header, names always shown, newest on top; the
-                        by-the-habit note moved out of its tile so the
-                        list stops shifting under a finger; arrivals
-                        became opaque drawn blobs in the Map's shape
-                        language. Build notes in history.md)_
-                  - [x] the star-shimmer on regular drop arrivals — on
-                        the arriving blob AND on the note in the task
-                        _(done 2026-08-13 — the night sky's dots around
-                        the blob, a glint across the note's words, drops
-                        landing together cascading; approved on the
-                        second cut. Build notes in history.md)_
-                  - [x] the §4 meter glow — the header meter glows and
-                        thickens, the tapped habit sparks with it, and
-                        a check-in's movement plays once on done
-                        _(done 2026-08-14 — plus the arrival fade Kimia
-                        called for the same day, and the shelf bug that
-                        was really behind it. Build notes in history.md)_
-                  - [x] the full firework — **moved to the cameo's big
-                        wins** _(2026-08-16 — Kimia looked at the §5 spec
-                        she wrote on 2026-07-19 and took the firework off
-                        the reveals: those already take the whole screen
-                        in neon, so a burst there was decoration on a
-                        takeover. It celebrates HER instead, on the T4.6
-                        home-screen cameo, and only for the two rarest
-                        wins. Every arrival now shimmers on the shelf as
-                        a result — and on a second pass the same day she
-                        reshaped the cameo to match the drops: friend in
-                        a blob, caption beneath it on a dark backing,
-                        pinned bottom-left, no name. Build notes in
-                        history.md)_
-                  - [ ] the glow scale into the tokens file, last, once
-                        there are real glows to name
+- [x] **T5.2 Visual identity** _(done 2026-08-16 over seven sessions from
+      2026-08-10 — design-notes §11b, §11c, §11d, §12f, §13; the palette,
+      the tokens file, the §13 layout pass, the rolling planet, the §4–§5
+      feel enhancements and the glow scale. Typography (T5.2c) was built,
+      rejected and dropped; §3's live-vs-retro shift was dropped unbuilt.
+      Full task text and per-slice build notes in history.md)_
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10
       categories), flora, fungi, market objects, planet regions. Several
       sessions of creative iteration; Kimia art-directs. Language and
@@ -204,16 +98,30 @@ tracker. Everything after this is delight, informed by real use.
       surfaces (moss · bark · pores · sponge glow green; pumice ·
       weathered · cratered non-glowing per §3/§7) and four procedural
       hair modes — and renders as live swatches on the DesignPage
-      workbench for the eyeball pass. TEX_COLORS are stand-ins until the
-      T5.2 design-tokens file exists. The **environment skies**
+      workbench for the eyeball pass. The **environment skies**
       (design-bible §11a) also landed in `src/ui/sky.jsx` — the shared
       pure-CSS `NightSky` (white stars, rare unsynchronised twinkle) and
       the static `AbodeSky` in four muted palettes — surfaced on the same
-      workbench; SKY_TOKENS are stand-ins on the same T5.2 footing.
-      Mounting NightSky as the app background (T5.2) and AbodeSky on the
-      real Abode screen are still to come. Still to come too: the actual
-      friend / flora / fungi / object / region art that composes from
-      these._
+      workbench._
+      _Updated 2026-08-16, now that T5.2 has closed: TEX_COLORS and
+      SKY_TOKENS are **no longer stand-ins waiting for the tokens file**.
+      §11d settled the boundary — the tokens file holds the colours the
+      STYLESHEET wears, and artwork keeps its own paints beside the
+      drawings they paint — so they stay where they are. The one exception
+      went as scheduled: the night sky's three ground colours moved into
+      tokens.css when §13c mounted NightSky as the app background
+      (2026-08-12), and sky.jsx says so where they used to sit.
+      **Still to come:** AbodeSky on the real Abode screen (it is still
+      workbench-only), and the actual friend / flora / fungi / object /
+      region art that composes from these._
+      **Glow, when the art lands (design-bible §7, restated by Kimia
+      2026-08-16):** the organic things — flora, fungi, friends — take the
+      TOP of the glow scale, equally; publications glow less, curiosities
+      may or may not, and the map does not. Today's placeholders do not
+      honour that yet, deliberately: T5.2e named the six steps
+      (`--glow-faint` … `--glow-max` in tokens.css) but spent none of them
+      on art about to be replaced. Which top step "full" means is an
+      eyeball call once the real drawings exist — see §7.
       **Character sub-plan (2026-07-25, Kimia's calls: characters
       before the 8 new flora silhouettes land; one canonical eye;
       hand-drawn archetypes with code-derived individuals; pilot one

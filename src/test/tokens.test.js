@@ -69,6 +69,33 @@ describe('the design tokens (T5.2a)', () => {
     expect(missing).toEqual([])
   })
 
+  it('index.css names every glow radius instead of spelling one out', () => {
+    // The same promise as the colour check above, for the glow scale
+    // (T5.2e, 2026-08-16). Fifteen hand-typed radii became six named
+    // steps; the way that unravels is one more hand-typed radius, and
+    // nothing would look wrong enough for anyone to notice.
+    //
+    // How it reads a shadow: take the value, remove the var(--…) calls
+    // that are doing their job, and see what length is left over. A
+    // NEGATIVE one is allowed — that is a spread pulling a halo back off
+    // an edge, which belongs to that shape rather than to how far the
+    // light goes (the reveal card's `-0.5rem`, tokens.css --glow-card).
+    // A positive one is a glow radius that skipped the list.
+    const shadows =
+      read('index.css').match(
+        /(?:drop-shadow\([^)]*\)|(?:box|text)-shadow:[^;]*;)/g,
+      ) ?? []
+
+    const offenders = shadows.filter((shadow) =>
+      /(?:^|[\s(])\d*\.?\d+(?:px|rem|em)\b/.test(
+        shadow.replace(/var\(--[a-z0-9-]+\)/g, ''),
+      ),
+    )
+    // A failure prints the whole declaration, so the fix is obvious:
+    // pick the nearest step in tokens.css and use var(--that-name).
+    expect(offenders).toEqual([])
+  })
+
   it('keeps symbols.js in step with the canonical charm colours', () => {
     // symbols.js is a declared MIRROR: it needs the six hexes as JS
     // strings to build its glow drop-shadows (design-notes §11d chose

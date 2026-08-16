@@ -127,6 +127,33 @@ Mushroom · rock · leaf · moss · gravel · hair.
 flora = fungi = friends (equal, full). Publications glow **less** than
 living things. Curiosities **may** glow or not.
 
+**The ladder's rungs are named as of T5.2e (2026-08-16).** "How far the
+light spreads" is now a six-step scale in `src/tokens.css` —
+`--glow-faint · --glow-resting · --glow-lifted · --glow-bright ·
+--glow-pop · --glow-max` — so this ladder can be spent in names rather
+than in numbers somebody has to re-guess per drawing:
+
+- **Organic things — flora, fungi, friends — take the TOP of the scale**
+  (Kimia restated it 2026-08-16). They are the ladder's "full", together
+  and equally, and nothing else in Habitat reaches it.
+- **Publications and curiosities do not**, nor does the map. They sit
+  lower on the scale — a publication below the organics, a curiosity
+  wherever its object wants, or nowhere.
+- **Today's glows do NOT yet honour this, and that is expected.** Every
+  organic thing on screen is a placeholder shape, not its finished
+  drawing, so flora currently glows at `--glow-faint` and a friend at
+  `--glow-resting` — the numbers each placeholder happened to be built
+  with. The ladder gets spent when the real art lands in T5.3, not
+  before: raising a placeholder's light only tunes something that is
+  about to be replaced.
+- **Which top step "full" means — `--glow-pop` or `--glow-max` — is an
+  eyeball call on the finished art**, not a decision to make on paper.
+  It depends on how big the drawings end up and how densely they sit:
+  the charms wear `--glow-pop` at rest with room around them, whereas
+  flora and publications sit in packed grids, where a wide glow on every
+  tile can smear into one haze instead of reading as separate glowing
+  things.
+
 ---
 
 ## Part II — the asset taxonomy
