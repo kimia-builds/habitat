@@ -1519,9 +1519,81 @@ body {
   animation: friend-shimmer 3.8s ease-in-out infinite;
 }
 
+/* The full firework (T5.2e, design-notes §5): the star-shimmer's big
+   sibling, and since Kimia's call of 2026-08-16 it belongs to the
+   cameo below rather than to the reveals. firework.jsx holds the
+   authored star table and works out each star's launch offset; this
+   rule only places and animates them.
+
+   overflow stays visible because the whole point is that the burst
+   clears the visit it rings. Nothing here is pressable — the firework
+   must never come between a finger and the habit list underneath. */
+.firework {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.firework-star {
+  position: absolute;
+  /* Each star is handed its own --fly-x/--fly-y inline by firework.jsx.
+     These are the fallbacks, and they are not decoration: a `calc()`
+     naming a custom property that does not exist is an INVALID value,
+     which would take the whole transform down and pile every star on
+     one spot. Defaulting to no travel means a star that never got its
+     offset simply sits still and fades — visibly duller, never broken. */
+  --fly-x: 0px;
+  --fly-y: 0px;
+  /* The table's x/y place each star's CENTRE. --fly-x/--fly-y are how
+     far back toward the middle of the visit it starts; every keyframe
+     repeats the -50% shift, because a transform replaces the one it
+     inherits rather than adding to it. */
+  transform: translate(calc(-50% + var(--fly-x)), calc(-50% + var(--fly-y)));
+  /* Each star carries its own colour inline (firework.jsx: half white,
+     half charm) and glows with the same one — the shimmer's rule, and
+     the night sky's before it. */
+  fill: currentColor;
+  filter: drop-shadow(0 0 4px currentColor);
+  /* Starts invisible: each star waits for its own launch delay, and
+     without this the whole burst would show for the first frame. */
+  opacity: 0;
+  animation: firework-fly 2200ms ease-out forwards;
+}
+
+/* One star's flight: launches from near the centre, brightens as it
+   goes, then drifts the rest of the way out and fades (Kimia's call
+   2026-08-16 — "travel outward, then fade", the one thing the shimmer
+   does not do). ease-out puts most of the travel in the first moments,
+   so it reads as a burst decelerating rather than a drift. */
+@keyframes firework-fly {
+  0% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--fly-x)), calc(-50% + var(--fly-y)))
+      scale(0.3);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(
+        calc(-50% + var(--fly-x) * 0.45),
+        calc(-50% + var(--fly-y) * 0.45)
+      )
+      scale(1);
+  }
+  60% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+
 /* The home-screen cameo (T4.6, design-notes §8): a friend visits the
    habit list to celebrate a big win. Quiet pastel, not the reveal's
-   neon — an encouragement, not a first occurrence. The visit fades in,
+   neon — an encouragement, not a first occurrence. Since 2026-08-16
+   the two rarest wins add the firework above; the everyday big day
+   keeps the plain visit. The visit fades in,
    holds, and fades back to the calm list; the whole visit's length is
    CAMEO_LINGER_MS, fed in inline from constants.js so the CSS and the
    expiry timer never disagree. The signature animation performs ONCE
@@ -1545,6 +1617,27 @@ body {
 }
 
 .cameo {
+  /* The firework is laid over this box and rings the whole visit —
+     friend, name and message together (Kimia's call 2026-08-16). */
+  position: relative;
+  /* And it has to out-rank the habit list. The lower stars fly well
+     past the bottom of the visit, and .habit-row is ALSO
+     position: relative — so at z-index auto the tiles win on DOM order
+     alone and paint over every star that reaches them.
+
+     Worth knowing HOW this hides, because it nearly passed: the tiles
+     are translucent, so a star behind one still glows faintly through
+     and the burst looks merely dim rather than broken. It only shows
+     as a swallowed star when a tile is opaque — a charm-filtered row,
+     a drag, or any future solid tile. The stars belong in front on
+     purpose, not by permission of how see-through a tile happens to be.
+     (The workbench cannot catch this at all: no list sits under it.)
+
+     Deliberately 1 and not more: a row being dragged (z-index 2) stays
+     above a celebration, because it is under a finger, and the shelf's
+     4, the check-in's 5, the reveals' 10 and the startup's 20 all still
+     crown. */
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2645,6 +2738,24 @@ body {
    window's top right, and two of those would sit on top of each other in
    the same corner. Everything else about them is left exactly as the
    game has it. Leaves with the workbench. */
+/* TEMPORARY (T5.2e, 2026-08-16): the cameo firework on the workbench.
+   The real Cameo is mounted, so the only job here is giving the burst
+   somewhere to fly — the stars end well outside the visit, and without
+   this padding the two demo cameos would throw stars over each other
+   and over the heading. Leaves with the workbench. */
+.firework-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  list-style: none;
+  padding: 0;
+}
+
+.firework-swatch {
+  padding: var(--space-8) var(--space-8) var(--space-7);
+  min-width: 12rem;
+}
+
 .shimmer-swatches {
   display: flex;
   flex-wrap: wrap;

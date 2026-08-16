@@ -77,4 +77,57 @@ describe('the cameo visit (T4.6)', () => {
     })
     expect(onExpire).toHaveBeenCalledTimes(1)
   })
+
+  // The firework (T5.2e, Kimia's call 2026-08-16). It left the reveals
+  // for this moment, and only the two RAREST wins get it — a big day can
+  // happen again next week, and a celebration you can see any time is
+  // wallpaper (design-notes §8's scarcity rule). These tests are the
+  // whole of that decision.
+  describe('the firework (§5)', () => {
+    const withType = (type) => ({ ...WIN, type })
+
+    it('bursts for a record streak', () => {
+      render(
+        <Cameo
+          win={withType('streakRecord')}
+          worldSeed="seed"
+          onExpire={() => {}}
+        />,
+      )
+      expect(document.querySelectorAll('.firework')).toHaveLength(1)
+    })
+
+    it('bursts for a lived-day milestone', () => {
+      render(
+        <Cameo
+          win={withType('livedDays')}
+          worldSeed="seed"
+          onExpire={() => {}}
+        />,
+      )
+      expect(document.querySelectorAll('.firework')).toHaveLength(1)
+    })
+
+    it('leaves a big day to its quiet visit', () => {
+      render(
+        <Cameo win={withType('bigDay')} worldSeed="seed" onExpire={() => {}} />,
+      )
+      expect(document.querySelectorAll('.firework')).toHaveLength(0)
+      // The visit itself is untouched — the friend still came.
+      expect(screen.getByRole('status').querySelector('svg')).not.toBeNull()
+    })
+
+    it('carries no words, so a reader hears the message and nothing else', () => {
+      render(
+        <Cameo
+          win={withType('livedDays')}
+          worldSeed="seed"
+          onExpire={() => {}}
+        />,
+      )
+      const burst = document.querySelector('.firework')
+      expect(burst.getAttribute('aria-hidden')).toBe('true')
+      expect(burst.textContent).toBe('')
+    })
+  })
 })

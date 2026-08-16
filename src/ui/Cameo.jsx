@@ -14,12 +14,22 @@
 // itself is derived fresh every render (game/cameos.js) and the visit
 // stores nothing — undo the win and the cameo simply doesn't fire;
 // after CAMEO_LINGER_MS it leaves by itself, once per visit.
+//
+// The one loud exception (Kimia's call 2026-08-16, T5.2e): the two
+// rarest wins bring the full firework with them. See FIREWORK_WINS.
 
 import { useEffect } from 'react'
 import { CAMEO_LINGER_MS, FRIEND_CATEGORIES } from '../game/constants.js'
 import { friendDisplayName } from '../content/names.js'
 import { narrationSlot } from '../content/narration.js'
+import Firework from './firework.jsx'
 import FriendGlyph from './FriendGlyph.jsx'
+
+// Which wins earn the firework (design-notes §5, Kimia's call
+// 2026-08-16): the two that mark something never done before. A big day
+// is left out on purpose — it can happen again next week, and a
+// celebration you can see any time is wallpaper (§8's scarcity rule).
+const FIREWORK_WINS = new Set(['streakRecord', 'livedDays'])
 
 function Cameo({ win, worldSeed, onExpire }) {
   const key = FRIEND_CATEGORIES[win.friend.category].key
@@ -39,6 +49,7 @@ function Cameo({ win, worldSeed, onExpire }) {
       role="status"
       style={{ animationDuration: `${CAMEO_LINGER_MS}ms` }}
     >
+      {FIREWORK_WINS.has(win.type) && <Firework />}
       <FriendGlyph
         category={win.friend.category}
         individual={win.friend.individual}

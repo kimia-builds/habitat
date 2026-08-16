@@ -90,16 +90,21 @@ function ShelfItem({
   onRead,
 }) {
   const [held, setHeld] = useState(false)
-  // Whether this arrival shimmers, decided ONCE at the moment it lands
-  // (T5.2e, design-notes §5). The shimmer belongs to an everyday drop;
-  // a friend and a first-occurrence find owe a reveal, and the firework
-  // is theirs. Decided on landing rather than re-read every render,
-  // because `awaitingReveal` turns false the moment the reveal is
-  // dismissed — which would otherwise set a shimmer off right after the
-  // firework it was meant to stay out of the way of.
-  const [shimmering] = useState(
-    () => arrival.key !== 'friend' && !arrival.awaitingReveal,
-  )
+  // EVERY arrival shimmers (Kimia's call 2026-08-16, T5.2e). It used to
+  // be everyday drops only: a friend and a first-occurrence find owed a
+  // reveal, and the firework was theirs, so a sparkle would have gone
+  // off right behind the moment it was meant to stay out of the way of.
+  // The firework has since left the reveals for the cameo (design-notes
+  // §5), which would have left the BIGGEST arrivals as the only ones
+  // landing on the shelf without a sparkle — so now they all get one.
+  //
+  // The timing matters and is the whole reason this is a render-time
+  // read rather than a stored one: an arrival awaiting a reveal is
+  // hidden behind a full-screen overlay, so a shimmer on landing would
+  // burn out unseen. Mounting it only once the reveal is gone means the
+  // stars play as the arrival comes into view, which is when there is
+  // somebody to see them.
+  const shimmering = !arrival.awaitingReveal
   const fading = !held && !arrival.awaitingReveal
   // The choice belongs to a held, still-undecided flora find only.
   const deciding =

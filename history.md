@@ -2418,6 +2418,78 @@ return 0` right after the era is worked out, so a moment before the
   and reading the bar's width alongside its class. **When a visual
   moment is reported missing, measure what the eye would have had to
   see, not whether the code ran.**
+- 2026-08-16 (T5.2e, session 56 — Kimia's call): **the firework leaves
+  the reveals for the cameo.** Asked to check the §5 spec before
+  building it, she read her own 2026-07-19 decision back and rejected
+  its target: first-occurrence reveals and friend arrivals already dim
+  the whole screen and put a neon card in the middle of it, so a burst
+  of stars around them would have been decoration on top of a takeover.
+  The spec sentence ("a burst of confetti-like stars around the drop")
+  dates from when a reveal was pictured as happening around a drop on
+  the page, which stopped being true when the reveals were built as
+  overlays. Her redirect: it belongs to the **home-screen cameo** (§8),
+  the one moment that celebrates HER rather than a thing arriving.
+  Folded into §5 (as an amendment, since the middle-path decision it
+  revises is load-bearing elsewhere), §8 and §10's decision 1.
+- 2026-08-16 (same session): **only the two rarest wins get it.** A
+  record streak and a 50-lived-day milestone burst; a **big day keeps
+  its quiet visit**, because it can happen again next week and §8's own
+  argument is that a greeting you can see any time is wallpaper. Chosen
+  over "all three" and over "the milestone alone".
+- 2026-08-16 (same session): **the burst rings the whole visit**, wears
+  the shimmer's night-sky mix (half white, half the six charms), and
+  **travels outward** — the one thing the shimmer does not do, and what
+  tells a firework from a sparkle at a glance.
+- 2026-08-16 (same session): **every arrival shimmers now.** A friend
+  and a first find used to be skipped on the grounds that the firework
+  was theirs; with the firework gone from the reveals, that would have
+  left the biggest arrivals as the only ones landing without a sparkle.
+  Their stars are held until the reveal is dismissed — an arrival behind
+  a full-screen overlay would otherwise spend its whole shimmer unseen.
+- 2026-08-16 (working note, same session): **a translucent tile can hide
+  a stacking bug in plain sight.** The cameo and `.habit-row` are both
+  `position: relative` at `z-index: auto`, so the tiles paint over every
+  star that flies below the visit — and because the tiles are
+  see-through, the swallowed stars still glowed faintly and the burst
+  read as merely dim. The first attempt to demonstrate the bug FAILED
+  for exactly this reason and nearly retired a correct fix. It only
+  showed once a tile was forced opaque. **When a paint-order fix looks
+  unnecessary, remove the translucency before believing it.**
+
+## T5.2e (part 5) build notes — the firework finds its moment (2026-08-16)
+
+- **`src/ui/firework.jsx`**, the shimmer's sibling and built on its
+  rules: 24 authored stars as percentages of whatever box they are laid
+  over, so one table fits a cameo at any size and nothing is measured at
+  render time. Twelve white, two per charm, three sparkles among the
+  dots. The star table gives each one's RESTING place; a module-load
+  pass turns that into a launch offset `TRAVEL_PX` back along the line
+  to the centre, which is what makes every star fly outward from the
+  middle rather than drift in a direction of its own.
+- **Travel is absolute px, not proportional** — same reasoning as star
+  sizes: the burst carries the same distance whether the message ran to
+  one line or two.
+- **`--fly-x` / `--fly-y` have CSS defaults**, and not for tidiness: a
+  `calc()` naming a custom property that does not exist is an INVALID
+  value, which would have taken the whole transform down and piled every
+  star on one spot. Defaulting to no travel means a star that never got
+  its offset sits still and fades — duller, never broken. (`tokens.test`
+  caught the missing definitions and was right to.)
+- **`.cameo` gained `z-index: 1`** — above the resting habit rows, below
+  a row being dragged (2, it is under a finger), the shelf (4), the
+  check-in (5), the reveals (10) and the startup (20). See the working
+  note above for why this nearly went unbuilt.
+- **The workbench mounts the REAL `Cameo`**, twice: a `livedDays` win
+  beside a `bigDay` one, so the whole decision — which wins burst and
+  which stay quiet — is one glance rather than a description. It could
+  not have caught the stacking bug, though: no habit list sits under it.
+- Tests: `firework.test.jsx` pins the composition and, more usefully,
+  the **sign of every launch offset** — a star resting right of centre
+  must start to its own left. Getting that backwards would implode the
+  burst instead, and no count or colour assertion would notice.
+  `Cameo.test.jsx` pins which wins burst. The four ArrivalShelf tests
+  that encoded "reveals don't shimmer" were rewritten, not deleted: two
+  still assert the hold-until-dismissed timing, which survived.
 
 ## T5.2e (part 4) build notes — the bars travel (2026-08-16)
 

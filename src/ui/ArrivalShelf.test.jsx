@@ -71,15 +71,16 @@ describe('the star-shimmer on a landing drop (§5)', () => {
     expect(white + charm).toBe(stars.length)
   })
 
-  it('leaves a first-occurrence find to its reveal', () => {
-    // A drop that still owes a reveal gets the firework, not a shimmer.
+  it('holds a first-occurrence find’s shimmer back until its reveal is gone', () => {
+    // A drop still owing a reveal is hidden behind a full-screen
+    // overlay, so a shimmer now would burn out where nobody can see it.
     const { container } = shelf([
       { id: 'a1', key: 'flora', status: 'pending', awaitingReveal: true },
     ])
     expect(container.querySelectorAll('.shimmer')).toHaveLength(0)
   })
 
-  it('leaves a friend arrival to its reveal', () => {
+  it('holds a friend arrival’s shimmer back the same way', () => {
     blankAllNames()
     const { container } = shelf([
       {
@@ -92,10 +93,10 @@ describe('the star-shimmer on a landing drop (§5)', () => {
     expect(container.querySelectorAll('.shimmer')).toHaveLength(0)
   })
 
-  it('still leaves a friend alone once their reveal has been seen', () => {
-    // `awaitingReveal` turns false the moment the reveal is dismissed.
-    // The friend keeps lingering on the shelf, and must NOT sparkle then
-    // — the firework it just had was the whole moment.
+  it('sparkles a friend once their reveal has been seen', () => {
+    // Kimia's call 2026-08-16: EVERY arrival shimmers. The firework left
+    // the reveals for the cameo, so without this the biggest arrivals
+    // would be the only ones landing on the shelf without a sparkle.
     blankAllNames()
     const { container } = shelf([
       {
@@ -105,7 +106,7 @@ describe('the star-shimmer on a landing drop (§5)', () => {
         awaitingReveal: false,
       },
     ])
-    expect(container.querySelectorAll('.shimmer')).toHaveLength(0)
+    expect(container.querySelectorAll('.shimmer')).toHaveLength(1)
   })
 
   it('cascades drops that land together, newest first', () => {
@@ -128,10 +129,10 @@ describe('the star-shimmer on a landing drop (§5)', () => {
     expect(startDelays(container)).toEqual(['0ms'])
   })
 
-  it('does not set a second shimmer off when a reveal is dismissed', () => {
-    // Same arrival, re-rendered after its reveal was seen. Whether it
-    // shimmers is decided when it LANDS, so this one never does — the
-    // alternative would fire a sparkle straight after the firework.
+  it('sets the shimmer off when a reveal is dismissed', () => {
+    // Same arrival, re-rendered after its reveal was seen. This is the
+    // exact moment the arrival becomes visible, so it is the moment the
+    // stars should play — the shimmer mounts here, not on landing.
     const first = { id: 'a1', key: 'flora', status: 'pending' }
     const { container, rerender } = shelf([{ ...first, awaitingReveal: true }])
     rerender(
@@ -144,6 +145,6 @@ describe('the star-shimmer on a landing drop (§5)', () => {
         onRead={vi.fn()}
       />,
     )
-    expect(container.querySelectorAll('.shimmer')).toHaveLength(0)
+    expect(container.querySelectorAll('.shimmer')).toHaveLength(1)
   })
 })

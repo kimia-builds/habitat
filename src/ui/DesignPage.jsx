@@ -24,6 +24,7 @@ import { useState } from 'react'
 
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
 import ArrivalShelf from './ArrivalShelf.jsx'
+import Cameo from './Cameo.jsx'
 import { arrivalNote } from './arrivalText.js'
 import { Eye, EyeDefs } from './eye.jsx'
 import { NightSky, AbodeSky, ABODE_PALETTES } from './sky.jsx'
@@ -332,6 +333,37 @@ function ShimmerFamily() {
   )
 }
 
+// The cameo's firework (T5.2e, Kimia's call 2026-08-16). The REAL
+// Cameo is mounted, so what is looked at here is exactly what the habit
+// list shows — including which wins get a burst and which stay quiet.
+// A `livedDays` win beside a `bigDay` one is the whole decision on
+// screen at once: the milestone bursts, the everyday big day does not.
+const FIREWORK_DEMO = [
+  { type: 'livedDays', friend: { category: 0, individual: 0 } },
+  { type: 'bigDay', friend: { category: 0, individual: 0 } },
+]
+
+function FireworkFamily() {
+  // Bumping this re-mounts both cameos, and an animation that plays on
+  // arrival plays again on a fresh element — all "replay" has to mean.
+  const [run, setRun] = useState(0)
+  return (
+    <section className="design-family" aria-label="cameo firework">
+      <h3>cameo firework</h3>
+      <ul className="firework-swatches">
+        {FIREWORK_DEMO.map((win) => (
+          <li className="firework-swatch" key={win.type}>
+            <Cameo key={run} win={win} worldSeed={1} onExpire={ignore} />
+          </li>
+        ))}
+      </ul>
+      <button className="pebble" onClick={() => setRun(run + 1)}>
+        replay
+      </button>
+    </section>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -339,6 +371,7 @@ function DesignPage({ onBack }) {
 
       {/* The family being worked on right now sits FIRST, so it needs no
           scrolling past the whole cast to reach. */}
+      <FireworkFamily />
       <ShimmerFamily />
 
       {/* The shared texture library (T5.3, design-bible §8). One <defs>

@@ -4,7 +4,13 @@
 // page as they are made (2026-07-26 — the empty placeholder tiles are
 // gone), so each shelf's test asserts its live swatches.
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
@@ -211,8 +217,11 @@ describe('DesignPage workbench', () => {
     // fireEvent rather than a bare .click(): this press changes state,
     // and only fireEvent lets React finish re-rendering before the next
     // line looks. The other presses on this page just call a spy.
+    //
+    // Scoped to this shelf: the firework family below has a replay of
+    // its own, so an unscoped query now finds two.
     const before = shelf.querySelector('.arrival')
-    fireEvent.click(screen.getByRole('button', { name: /replay/i }))
+    fireEvent.click(within(shelf).getByRole('button', { name: /replay/i }))
     expect(shelf.querySelector('.arrival')).not.toBe(before)
   })
 

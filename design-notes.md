@@ -191,7 +191,7 @@ way, and a bar should never claim to be somewhere it is not.
 
 ---
 
-## 5. Drops — star-shimmer & firework **[arrival placement + star-shimmer + the going BUILT — T5.2e, 2026-08-13/14 · the firework still to build]**
+## 5. Drops — star-shimmer & firework **[BUILT — T5.2e, 2026-08-13/14/16]**
 
 Drop arrival as built (T3.2): a regular drop shows a **quiet pastel
 note** beside the tapped habit ("you came across …") plus the **SVG
@@ -246,9 +246,36 @@ a habit low down arrived somewhere it was never seen. Kimia's calls:
 **Decision (2026-07-19) — the middle path.** Regular drops gain a
 **small, brief star-shimmer** on arrival (a light touch over the
 quiet pastel, not a takeover). The **full firework** — a burst of
-confetti-like stars around the drop that slowly fade — is **reserved
-for first-occurrence reveals and friend arrivals**. This honours both
-the quiet, patient pacing and "drops should feel special."
+confetti-like stars that slowly fade — is the larger register, kept
+for a rarer moment. This honours both the quiet, patient pacing and
+"drops should feel special."
+
+**Amended 2026-08-16 — the firework leaves the drops entirely.** The
+2026-07-19 decision reserved it for first-occurrence reveals and friend
+arrivals, and was written when a reveal was pictured as something
+happening around a drop on the page. It is not: a reveal dims the whole
+screen and puts a neon card in the middle of it, which already shouts
+louder than any burst of stars could. A firework there would have been
+decoration on top of a takeover.
+
+Kimia's call, on re-reading her own spec: the firework belongs to the
+one moment that celebrates **her** rather than a thing arriving — the
+**home-screen cameo** (§8, T4.6), where a friend turns up to mark a big
+win. Not every win: only a **record streak** and a **50-lived-day
+milestone**, the two that mark something never done before. A big day
+can happen again next week and keeps its quiet visit, because a
+celebration you can see any time is wallpaper — §8's scarcity rule,
+applied to the cameo's own three doors. How the burst looks is in §8.
+
+**And so every arrival shimmers now.** The shimmer used to skip a
+friend and a first-occurrence find on the grounds that the firework was
+theirs; with the firework gone from the reveals, that rule would have
+left the BIGGEST arrivals as the only ones landing without a sparkle.
+They shimmer — but their stars are held back until the reveal is
+dismissed, because an arrival sitting behind a full-screen overlay
+would otherwise burn its whole sparkle where nobody can see it. The
+stars play as it comes into view, which is when there is somebody to
+watch them.
 
 ### The shimmer, as built **[BUILT — T5.2e, 2026-08-13]**
 
@@ -284,11 +311,14 @@ calls, and what they mean:
   one above it, newest first. A morning check-in closes with everything
   the session earned arriving together, and a single flash would read as
   one event rather than several finds.
-- **Whether an arrival shimmers is decided when it LANDS.** A friend and
-  a first-occurrence find owe a reveal, and the firework is theirs — so
-  neither sparkles, then or later. Deciding it on landing is what stops
-  a shimmer going off the instant a reveal is dismissed, immediately
-  after the firework it was meant to stay out of the way of.
+- **Every arrival shimmers, but not always at once** (revised
+  2026-08-16 — see the amendment above). This bullet used to read "a
+  friend and a first-occurrence find owe a reveal, and the firework is
+  theirs, so neither sparkles"; the firework has since left the reveals
+  for the cameo. What survives of the old rule is the timing: an
+  arrival still owing a reveal is hidden behind a full-screen overlay,
+  so its stars wait until the reveal is dismissed and it comes into
+  view.
 - **Colour, and the sky's white-only rule.** Design-bible §3 keeps
   Habitat's stars white; that rule governs the SKY, and the shimmer
   borrows its dots rather than replacing them — a momentary event on a
@@ -422,8 +452,11 @@ design-bible.md §9c.)
   with the lift; `friend-drift` in index.css.)
 - **Where the signature animation is allowed to play (decided
   2026-07-20).** Exactly three moments, and nowhere else:
-  1. **The arrival reveal** — the friend-drop moment, with its full
-     firework (§5). The first time you meet them.
+  1. **The arrival reveal** — the friend-drop moment. The first time you
+     meet them. (This used to say "with its full firework (§5)"; the
+     firework moved to the cameo below on 2026-08-16 — the reveal's
+     full-screen neon was always the moment, and the burst on top of it
+     was decoration.)
   2. **The Guest Book card** — clicking a character on the _local
      community_ page opens a popup card (their art, their name, their
      card text) and the animation runs. This is the one moment you can
@@ -443,6 +476,28 @@ design-bible.md §9c.)
      _(Amended 2026-07-20, fourteenth session — Kimia's redecision,
      over the twelfth session's "rare and unpredictable". Built in
      T4.6, 2026-07-21.)_
+     **The firework lives here (2026-08-16, T5.2e — moved from §5's
+     reveals).** The two RAREST wins bring it: a **record streak** and a
+     **50-lived-day milestone**. A big day keeps the plain visit — it
+     can happen again next week, and scarcity is this section's whole
+     argument. How it looks, on Kimia's calls the same day:
+     - it rings the **whole visit** — the friend, their name and the
+       message together — not just the art. The friend came to
+       congratulate you; the celebration is of the moment, not of them;
+     - the **same night-sky stars as the shimmer**: half white, half
+       across the six charm colours, each glowing its own colour. The
+       two are one family and this is the larger member — which is also
+       what keeps the 2026-08-13 "it's giving Las Vegas" correction from
+       being quietly undone at the bigger size;
+     - the stars **travel outward from the middle and fade as they go**.
+       This is the one thing the shimmer does not do — a shimmer
+       breathes in place, a firework goes off — and it is what tells the
+       two apart at a glance. Momentary like everything else (§9): it
+       plays once as the visit opens, then the friend simply rests.
+     The visit sits **above the habit list** in the stacking order for
+     this reason: the lower stars fly past the bottom of the visit and
+     over the tiles, and a translucent tile painting over them made the
+     burst look merely dim rather than wrong.
      **Party mode on the Abode is deliberately excluded** (§12e): friends
      gather there but do not perform. Scarcity is what makes the gesture
      land — a greeting you can see any time you like is wallpaper.
@@ -471,7 +526,11 @@ design-bible.md §9c.)
 ## 10. Decisions resolved (2026-07-19, with Kimia)
 
 1. **Firework** → the middle path: brief star-shimmer on regular
-   drops; full firework reserved for firsts and friends (§5).
+   drops; the full firework kept for a rarer moment (§5). _(Amended
+   2026-08-16: that rarer moment is no longer "firsts and friends" —
+   their reveals already take the screen in neon. The firework moved to
+   the home-screen cameo's two rarest wins, and every arrival now
+   shimmers. See §5's amendment and §8.)_
 2. **Meter** → momentary glow + thicken layered onto the built T2.2
    rolling bar, fading straight back to normal; no rebuild (§4).
 3. **Names & narration** → names stay visible everywhere; narration

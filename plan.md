@@ -178,8 +178,15 @@ tracker. Everything after this is delight, informed by real use.
                         _(done 2026-08-14 — plus the arrival fade Kimia
                         called for the same day, and the shelf bug that
                         was really behind it. Build notes in history.md)_
-                  - [ ] the full firework — first-occurrence reveals and
-                        friend arrivals
+                  - [x] the full firework — **moved to the cameo's big
+                        wins** _(2026-08-16 — Kimia looked at the §5 spec
+                        she wrote on 2026-07-19 and took the firework off
+                        the reveals: those already take the whole screen
+                        in neon, so a burst there was decoration on a
+                        takeover. It celebrates HER instead, on the T4.6
+                        home-screen cameo, and only for the two rarest
+                        wins. Every arrival now shimmers on the shelf as
+                        a result. Build notes in history.md)_
                   - [ ] the glow scale into the tokens file, last, once
                         there are real glows to name
 - [ ] **T5.3 Creature, flora & object art** — SVG art for friends (10

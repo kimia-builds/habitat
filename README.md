@@ -113,8 +113,10 @@ built on top of a live, in-use app.
   arrive as glowing blobs pinned to the corner of the window, sparkling
   as they land and dissolving slowly when they go. The meters answer a
   tap too: the bar that moved glows and swells while a ring of light
-  opens under your finger. Still to come in the feel pass are the
-  fireworks, and beside it the creature, flora and object art.
+  opens under your finger. And the rarest wins — a record streak, every
+  fiftieth lived day — bring a friend to the habit list with a firework
+  around them. Still to come in the feel pass is naming the glow scale,
+  and beside it the creature, flora and object art.
 - **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
   The error-boundary safety net is already in, and so is the first half
   of the backup habit — persistent-storage groundwork, and the export
