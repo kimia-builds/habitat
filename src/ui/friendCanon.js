@@ -16,7 +16,7 @@
  * loses its scale one screen at a time. Instead a screen decides ONE base size
  * (how big the largest friend may be there) and asks for the rest:
  *
- *     friendSize('drifter', 11.5)   // → 1.6, in whatever unit the base was
+ *     friendSize('plip', 11.5)   // → 1.6, in whatever unit the base was
  *
  * The unit is the caller's business. Pass rem and you get rem; pass pixels and
  * you get pixels. The canon is unitless on purpose.
@@ -43,30 +43,32 @@ import { FRIEND_CATEGORIES } from '../game/constants.js'
 // figures were card widths in rem; here they are divided through by the
 // largest, so the scale is a set of plain ratios instead.
 //
-// SCHOLAR IS 1 because it is the largest of the ten, which makes every other
+// THE CHITU IS 1 because it is the largest of the ten, which makes every other
 // number "a fraction of the biggest friend" and a screen's base size simply
-// "how much room the biggest friend gets here". Note that the poet, though the
-// top of the literacy ladder, is very slightly smaller — sophistication climbs
+// "how much room the biggest friend gets here". Note that the hamdi bulo, though
+// the top of the literacy ladder, is very slightly smaller — sophistication climbs
 // the ladder through texture, appendages and silhouette (design-bible §9c),
 // not through size, and the sheet is the authority on size.
 //
-// The comment on each line is what Kimia calls that species (src/content/names.js).
-// The KEY is a permanent internal id that never appears on screen, and it stays
-// put even when she renames the species — so the two can safely disagree.
+// The keys are the species' own names on N-Z-D (src/content/names.js), which is
+// what the code calls them too since 2026-08-17 — Kimia should never have to
+// read a word her world does not use anywhere in Habitat. A key stays
+// put even if she rewrites the name a player sees, so the two can disagree
+// without anything breaking.
 // Six figures, not two: these are ratios, so a rounding error is multiplied by
 // whatever base size a screen chooses. Six keeps the whole cast true to the
 // sheet to within a thousandth of a percent at any size.
 export const FRIEND_CANON = {
-  drifter: 0.13913, // plip — the tiny one; Kimia: "its relative size should be tiny"
-  nester: 0.417391, // baluhm
-  mimic: 0.417391, // klupengk — the same size as the nester on the sheet
-  signer: 0.6, // zala
-  sprout: 0.817391, // liwi bi-jiji
-  chatter: 0.365217, // meuhy — tall and narrow, so it reads smaller than its height
-  neighbour: 0.86087, // rassatt
-  storyteller: 0.791304, // woigolp
-  scholar: 1, // chitu — the largest of the ten, and the scale's anchor
-  poet: 0.956522, // hamdi bulo
+  plip: 0.13913, // the tiny one; Kimia: "its relative size should be tiny"
+  baluhm: 0.417391,
+  klupengk: 0.417391, // the same size as the baluhm on the sheet
+  zala: 0.6,
+  'liwi-bi-jiji': 0.817391,
+  meuhy: 0.365217, // tall and narrow, so it reads smaller than its height
+  rassatt: 0.86087,
+  woigolp: 0.791304,
+  chitu: 1, // the largest of the ten, and the scale's anchor
+  'hamdi-bulo': 0.956522,
 }
 
 // Where this friend stands in the scale, or the anchor's 1 if the key is

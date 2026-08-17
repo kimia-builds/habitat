@@ -72,7 +72,7 @@ export function literacyPoints(readingItems) {
 }
 
 // How many friendship doors this many points has opened: 0..10,
-// counting up the milestone ladder (Drifters first, Poets last).
+// counting up the milestone ladder (plips first, hamdi bulos last).
 // Landing exactly ON a threshold reaches it.
 export function milestonesReached(points) {
   return LITERACY_MILESTONES.filter((threshold) => points >= threshold).length

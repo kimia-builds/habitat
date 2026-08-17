@@ -129,9 +129,9 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **T5.3a The eye** — canonical glowing eye chosen (the orb)
             and recorded in design-bible §9c; reusable `<Eye>` in
             `src/ui/eye.jsx`.
-      - [x] **T5.3b Pilot Drifter** — Kimia thumbnails Drifter bodies,
+      - [x] **T5.3b Pilot plip** — Kimia thumbnails plip bodies,
             draws the winner clean, Inkscape-traces to SVG; assembly
-            (texture + eyes + glow) on the workbench; then the Drifter
+            (texture + eyes + glow) on the workbench; then the plip
             signature congratulation animation (design-notes §8). The
             first finished friend, proving the whole recipe.
       - [x] **T5.3c The ladder** _(done 2026-08-10 — checkpoint passed
@@ -140,26 +140,14 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **T5.3d The size canon** _(done 2026-08-17 — `src/ui/friendCanon.js`
             + the pair-ratio test; also fixed which drawing is which
             species. design-bible §9c; build notes in history.md)_
-      - [ ] **T5.3e Individuals** _(was T5.3d before the 2026-08-10
-            insert)_ — per category, derive the remaining individuals in
-            code from the archetype; Kimia approves each. 45 across all
-            categories.
-            _Kimia's call 2026-08-17: an individual is a **COLOUR** —
-            siblings differ by body colour and nothing else, not size
-            (T5.3d fixed that per species), not texture, not eye count,
-            not appendages (which code cannot derive from a traced
-            outline). design-bible §9c rewritten to match._
-            _In progress. The **palette is settled** (2026-08-17): ten NAMED
-            colours in `src/ui/friendColours.js` — permanent, the colour twin
-            of friendCanon.js — after Kimia rejected an even sweep of the wheel
-            for spending too much on the flora's blues and greens, and then
-            chose to have all ten lifted so the cast reads as one family. A
-            colour is a hue, a strength and a lift toward white
-            (`paletteForTone()` in friendPalettes.js). **Done: the 10 drifters
-            and the 9 nesters.** The shelf is generic now, so each remaining
-            species is one entry in `INDIVIDUALS_DONE`. **Remaining: mimic,
-            signer, sprout, chatter, neighbour, storyteller, scholar, poet.**
-            Build notes in history.md._
+      - [x] **T5.3e Individuals** _(done 2026-08-17 — an individual is a
+            COLOUR, the ten-colour palette in `src/ui/friendColours.js` is
+            settled, and who wears which is dealt at random per save with no
+            sibling repeats. The species-by-species approval shelves are gone
+            with it: a random deal has no fixed roster to approve. Also this
+            session: the species keys renamed to the world's own names, and
+            the workbench cleared to what is still waiting. design-bible §9c;
+            build notes in history.md)_
       - [ ] **T5.3f Animations** _(was T5.3e)_ — the 9 remaining
             signature category animations (one per category,
             design-notes §8).
@@ -184,7 +172,7 @@ tracker. Everything after this is delight, informed by real use.
             2026-08-10 while building T6.1a) — spec §5, design-bible §9c
             and CLAUDE.md all say a category refills only until its
             roster is exhausted, but `nextFriendDue` has no ceiling: it
-            would send an eleventh drifter, for which no name slot
+            would send an eleventh plip, for which no name slot
             exists. `FRIEND_ROSTER` is now in constants.js; this makes
             the code obey it, with tests for an exhausted category and
             for every roster exhausted at once.

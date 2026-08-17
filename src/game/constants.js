@@ -152,29 +152,29 @@ export const LITERACY_POINTS = {
 }
 
 // The 10 friendship milestones — one per friend category, lowest
-// literacy first (Drifters … Poets, spec §5). Reaching a threshold
+// literacy first (plips … hamdi bulos, spec §5). Reaching a threshold
 // opens that door; the friend then arrives later as a drop (T4.4).
 // PROVISIONAL thresholds, sketched for ~5 years assuming roughly a
 // magazine a week, a novel a month and a few dictionaries a year
-// (≈ 150 points/year ≈ 730 over 5 years — so Poets land near year 5).
+// (≈ 150 points/year ≈ 730 over 5 years — so hamdi bulos land near year 5).
 // T3.1's simulation is the referee; retune there. Gaps widen as they
 // climb because later friendships should be the long, patient ones.
 export const LITERACY_MILESTONES = [
-  10, // Drifters
-  30, // Nesters
-  65, // Mimics
-  115, // Signers
-  180, // Sprouts
-  260, // Chatters
-  355, // Neighbours
-  465, // Storytellers
-  590, // Scholars
-  730, // Poets
+  10, // plips
+  30, // baluhms
+  65, // klupengks
+  115, // zalas
+  180, // liwi bi-jijis
+  260, // meuhys
+  355, // rassatts
+  465, // woigolps
+  590, // chitus
+  730, // hamdi bulos
 ]
 
 // The literacy meter's hover reveals a plain 0–100 scale (T4.5,
 // Kimia's call 2026-07-21): the 10 friendship levels × 10 each, so 10
-// means the first door (Drifters) has just opened and 100 is Poets.
+// means the first door (plips) has just opened and 100 is hamdi bulos.
 // A pure display mapping layered over the milestones above — it
 // changes nothing about pacing.
 export const LITERACY_LEVEL_SCALE = 100
@@ -231,7 +231,7 @@ export const FLORA_WINDOW_STEPS = 25
 // per tap, nothing guaranteed. Targets follow the sketch in the
 // literacy notes above (a magazine about weekly, a novel about
 // monthly, a few dictionaries a year), sized so the last friendship
-// door (Poets, 730 points) opens just inside 5 years:
+// door (hamdi bulos, 730 points) opens just inside 5 years:
 //
 //   3.5 taps/day × 365 ≈ 1,278 taps/year
 //   magazine   0.045/tap → ~57/yr × 1 pt  ≈ 57 pts
@@ -315,33 +315,43 @@ export const DIFFICULTY_DROP_MULTIPLIER = {
 // one door per LITERACY_MILESTONES threshold above, in the same order.
 //
 // KEYS ONLY, no words (T6.1a, Kimia's call 2026-08-10). These used to
-// carry drafted names ("Drifters", "a Drifter") written by Claude on
-// 2026-07-20 and classed as game data. They are words a player reads,
-// so they are copy, and copy is human-written (CLAUDE.md): the names
-// now live in `src/content/names.js`, where Kimia writes them, and a
-// species with a blank slot is simply shown without a name.
+// carry drafted names written by Claude on 2026-07-20 and classed as
+// game data. They are words a player reads, so they are copy, and copy
+// is human-written (CLAUDE.md): the names now live in
+// `src/content/names.js`, where Kimia writes them, and a species with a
+// blank slot is simply shown without a name.
 //
-// What survives here is the key — a permanent internal id that is never
+// What survives here is the key — an internal id that is never
 // displayed. It orders the ladder, names the CSS animation classes
-// (`friend-anim-drifter`) and keys the narration slots Kimia already
-// has (`friendIntros.drifter`), so it must NOT be renamed when she
-// names a species something else.
+// (`friend-anim-plip`) and keys the narration slots in narration.js.
+//
+// THE KEYS ARE THE WORLD'S OWN WORDS (Kimia, 2026-08-17). They were
+// Claude's own draft words, kept on the argument that
+// an internal id is nobody's reading material. Kimia's ruling is that
+// there is no such place in Habitat: she should never open a file and
+// read a word her world does not use. So the keys were renamed to the
+// species' names on N-Z-D, and nothing here may be given a drafted
+// English word again. Renaming them cost nothing and broke nothing,
+// because saved games store a category NUMBER, not a key — which is
+// still true, so a future rename is equally cheap if she renames a
+// species. The display name in names.js is separate and stays hers to
+// change at any time.
 export const FRIEND_CATEGORIES = [
-  { key: 'drifter' },
-  { key: 'nester' },
-  { key: 'mimic' },
-  { key: 'signer' },
-  { key: 'sprout' },
-  { key: 'chatter' },
-  { key: 'neighbour' },
-  { key: 'storyteller' },
-  { key: 'scholar' },
-  { key: 'poet' },
+  { key: 'plip' },
+  { key: 'baluhm' },
+  { key: 'klupengk' },
+  { key: 'zala' },
+  { key: 'liwi-bi-jiji' },
+  { key: 'meuhy' },
+  { key: 'rassatt' },
+  { key: 'woigolp' },
+  { key: 'chitu' },
+  { key: 'hamdi-bulo' },
 ]
 
 // How many individuals each category ever sends, lowest literacy first
-// — the fixed roster of design-bible §9c and spec §5: 10 drifters down
-// to a single poet, 55 friendships in a lifetime. Indexed like
+// — the fixed roster of design-bible §9c and spec §5: 10 plips down
+// to a single hamdi bulo, 55 friendships in a lifetime. Indexed like
 // FRIEND_CATEGORIES above. `src/content/names.js` carries exactly this
 // many name slots per species.
 export const FRIEND_ROSTER = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
@@ -356,7 +366,7 @@ export const FRIEND_ROSTER = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
 // Both waits are seeded per category + individual — pure functions of
 // the world seed, so undo/redo returns the identical friend on the
 // identical day. Rough pacing at ~150 literacy points/year: the first
-// door opens within weeks and Poets near year 5; a category refills
+// door opens within weeks and hamdi bulos near year 5; a category refills
 // roughly monthly, so the community feels alive early and busy late.
 // The T6.2 recalibration retunes these if it ever feels crowded.
 export const FRIEND_FIRST_DELAY_DAYS = { min: 1, max: 5 }

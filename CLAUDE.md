@@ -130,9 +130,11 @@ Kimia is a non-coder. Therefore:
 - Friendships (T4.4): a literacy milestone only OPENS the door — the
   friend arrives days later as a seeded drop, stored on the completion
   like every drop. Categories refill only until their fixed roster is
-  exhausted — 10 Drifters down to 1 Poet, 55 friendships lifetime max
-  (2026-07-24); names stay the draft category singulars until T6.1. Every arrival is a
-  reveal; the signature animation plays in exactly three moments —
+  exhausted — 10 plips down to 1 hamdi bulo, 55 friendships lifetime max
+  (2026-07-24); every species and individual is named by Kimia in
+  `src/content/names.js` (T6.1a), and the code's own species keys carry
+  those same names as of 2026-08-17 — never a drafted English word. Every
+  arrival is a reveal; the signature animation plays in exactly three moments —
   arrival reveal, Guest Book card, big-win home-screen cameos (T4.6) —
   never party mode. Party mode stores nothing and never disturbs the
   abode layout.

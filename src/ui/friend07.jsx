@@ -1,6 +1,6 @@
 // Friend 07 (friend-07-big.svg, added to the workbench 2026-08-10) —
 // one of Kimia's nine traced archetype drawings, imported and assembled
-// exactly like friend10.jsx and the storyteller: the traced layers are
+// exactly like friend10.jsx: the traced layers are
 // kept verbatim in their source paint order and only the shade RAMP is
 // swapped, so one drawing can be shown in any candidate body colour.
 //
@@ -22,7 +22,7 @@
 // traced eye placeholders are replaced by the canonical yellow <Eye/> at
 // their measured centres; the body glows its own colour; the eyes blink in
 // their own featherweight overlay svg — the body/eyes split is load-bearing
-// (see storyteller.jsx).
+// (see friend10.jsx).
 //
 // COLOURS ARE STAND-INS. TODO(T5.2): move the ramps into the CSS
 // design-tokens file once it exists, like every other asset here.
@@ -95,7 +95,7 @@ export function Friend07BodyDefs({ prefix = '' }) {
 
 // The heavy, static half: the glow aura (the silhouette blurred and filled
 // the body colour) → the reconstructed dark base → the seven bands.
-// No animation may ever live in this svg (see storyteller.jsx).
+// No animation may ever live in this svg (see friend10.jsx).
 export function Friend07Body({ palette = FRIEND07_GREYS, prefix = '' }) {
   return (
     <g>

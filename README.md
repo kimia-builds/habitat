@@ -20,8 +20,8 @@ else with something quieter and stranger:
   advances with every completion) gradually reveals a map of the planet,
   with flora discovered along the way; a **literacy meter** (fed by rare,
   surprising drops of reading material) unlocks friendships with the
-  locals — ten categories of being, from wordless Drifters to the rarest
-  friendship of all, the Poets; and a **fungus wallet** of glowing local
+  locals — ten categories of being, from wordless plips to the rarest
+  friendship of all, the hamdi bulos; and a **fungus wallet** of glowing local
   currency, spent (and always fully refundable) at a slowly rotating market.
 - **No punishment mechanics.** Missed habits are neutral data, never damage.
 - **No retention hooks.** Rewards are paced flat and patient — designed for
@@ -117,8 +117,11 @@ built on top of a live, in-use app.
   fiftieth lived day — bring a friend to the habit list with a firework
   around them. The feel pass is finished, and with it the whole visual
   identity: every glow in the app now comes from one named scale of six
-  steps rather than fifteen numbers typed one at a time. Still to come in
-  M5 is the creature, flora and object art.
+  steps rather than fifteen numbers typed one at a time. The friends have
+  their palette too — ten chosen colours, dealt to each friend at random
+  when a game begins and never repeating within a species, so two
+  players' guest books look different. Still to come in M5 is the
+  creature, flora and object art itself.
 - **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
   The error-boundary safety net is already in, and so is the first half
   of the backup habit — persistent-storage groundwork, and the export

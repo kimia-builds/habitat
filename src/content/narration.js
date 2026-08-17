@@ -76,16 +76,46 @@ export const NARRATION = {
   // is Kimia's; left blank, the reveal shows just the friend, its name
   // and its button. TODO: written by Kimia.
   friendIntros: {
-    drifter: { title: 'a plip!', line: 'plips are a wordless creature on N-Z-D. they are friendly, and love having company.' },
-    nester: { title: 'a baluhm!', line: 'curious and kind, baluhms gravitate towards strangers, communicating mostly through gesture.' },
-    mimic: { title: 'a krupengk!', line: 'the observant krupengk loves to gather information, saving it all for analysis later.' },
-    signer: { title: 'a zala!', line: 'although zalas can be stand-offish, you may see them often because they move too slow to escape small talk.' },
-    sprout: { title: 'a liwi bi-jiji!', line: 'the fastest creatures on N-Z-D. known for their sense of humour. fans of scavenging competitions and chit chat.' },
-    chatter: { title: 'a meuhy!', line: 'meuhys are N-Z-D"s most loyal creatures. it takes them long to trust, but when they do, it"s forever. lucky you!' },
-    neighbour: { title: 'a rassatt!', line: 'rassatts are rarely found in this layer of the atmosphere, but they are friendly and talkative. they enjoy teasing and roasting.' },
-    storyteller: { title: 'a woigolp!', line: 'moody and temperamental, woigolps rarely emerge from their quarters, but when they do it"s to fight or to eat. friendship with them is unusual.' },
-    scholar: { title: 'a chitu!', line: 'shy chitus are N-Z-D"s finest poets. they are deeply fond of their local culture and language. their introversion keeps them mostly hidden and out of sight. ' },
-    poet: { title: 'a hamdi bulo!', line: 'wow! you befriended N-Z-D"s one and only hamdi bulo. these long-living creatures are wise like oracles and have seen more than anyone else on the planet. there is no higher or more honourable friendship here on N-Z-D. congratulations! this suggests your level of literacy has reached an unbelievable standard, for a non-native. all those novels and dictionaries that you read earned you this. well done. ' },
+    plip: {
+      title: 'a plip!',
+      line: 'plips are a wordless creature on N-Z-D. they are friendly, and love having company.',
+    },
+    baluhm: {
+      title: 'a baluhm!',
+      line: 'curious and kind, baluhms gravitate towards strangers, communicating mostly through gesture.',
+    },
+    klupengk: {
+      title: 'a krupengk!',
+      line: 'the observant krupengk loves to gather information, saving it all for analysis later.',
+    },
+    zala: {
+      title: 'a zala!',
+      line: 'although zalas can be stand-offish, you may see them often because they move too slow to escape small talk.',
+    },
+    'liwi-bi-jiji': {
+      title: 'a liwi bi-jiji!',
+      line: 'the fastest creatures on N-Z-D. known for their sense of humour. fans of scavenging competitions and chit chat.',
+    },
+    meuhy: {
+      title: 'a meuhy!',
+      line: 'meuhys are N-Z-D"s most loyal creatures. it takes them long to trust, but when they do, it"s forever. lucky you!',
+    },
+    rassatt: {
+      title: 'a rassatt!',
+      line: 'rassatts are rarely found in this layer of the atmosphere, but they are friendly and talkative. they enjoy teasing and roasting.',
+    },
+    woigolp: {
+      title: 'a woigolp!',
+      line: 'moody and temperamental, woigolps rarely emerge from their quarters, but when they do it"s to fight or to eat. friendship with them is unusual.',
+    },
+    chitu: {
+      title: 'a chitu!',
+      line: 'shy chitus are N-Z-D"s finest poets. they are deeply fond of their local culture and language. their introversion keeps them mostly hidden and out of sight. ',
+    },
+    'hamdi-bulo': {
+      title: 'a hamdi bulo!',
+      line: 'wow! you befriended N-Z-D"s one and only hamdi bulo. these long-living creatures are wise like oracles and have seen more than anyone else on the planet. there is no higher or more honourable friendship here on N-Z-D. congratulations! this suggests your level of literacy has reached an unbelievable standard, for a non-native. all those novels and dictionaries that you read earned you this. well done. ',
+    },
   },
 
   // friend card texts (T4.4) — one slot per category, shown on the
@@ -95,16 +125,24 @@ export const NARRATION = {
   // Left blank, the card shows just the art, the name and the
   // animation. TODO: written by Kimia.
   friendCards: {
-    drifter: 'plips are a wordless creature on N-Z-D. they love company.',
-    nester: 'curious baluhms gravitate towards strangers, communicating mostly through gesture.',
-    mimic: 'the observant krupengk loves to gather information, saving it all for analysis later.',
-    signer: 'zalas can be stand-offish, but you may see them often because they move slowly.',
-    sprout: 'the fastest creatures on N-Z-D are liwi bi-jijis, fans of scavenging competitions and chit chat.',
-    chatter: 'meuhys are N-Z-D"s most loyal creatures. it takes them long to trust, but when they do, it"s forever.',
-    neighbour: 'rassatts live in a different layer of the atmosphere. they are friendly and talkative. they enjoy teasing and roasting.',
-    storyteller: 'woigolps rarely emerge from their quarters, but when they do it"s to fight or to eat. they are moody and aggressive.',
-    scholar: 'shy, interovered chitus are N-Z-D"s finest poets. they are deeply fond of their local culture and language, and masters of art.',
-    poet: 'N-Z-D currently hosts only one hamdi bulo. these long-living creatures are wise like oracles and have seen more than anyone else on the planet.',
+    plip: 'plips are a wordless creature on N-Z-D. they love company.',
+    baluhm:
+      'curious baluhms gravitate towards strangers, communicating mostly through gesture.',
+    klupengk:
+      'the observant krupengk loves to gather information, saving it all for analysis later.',
+    zala: 'zalas can be stand-offish, but you may see them often because they move slowly.',
+    'liwi-bi-jiji':
+      'the fastest creatures on N-Z-D are liwi bi-jijis, fans of scavenging competitions and chit chat.',
+    meuhy:
+      'meuhys are N-Z-D"s most loyal creatures. it takes them long to trust, but when they do, it"s forever.',
+    rassatt:
+      'rassatts live in a different layer of the atmosphere. they are friendly and talkative. they enjoy teasing and roasting.',
+    woigolp:
+      'woigolps rarely emerge from their quarters, but when they do it"s to fight or to eat. they are moody and aggressive.',
+    chitu:
+      'shy, interovered chitus are N-Z-D"s finest poets. they are deeply fond of their local culture and language, and masters of art.',
+    'hamdi-bulo':
+      'N-Z-D currently hosts only one hamdi bulo. these long-living creatures are wise like oracles and have seen more than anyone else on the planet.',
   },
 
   // cameo messages (T4.6) — one slot per win type, shown while a

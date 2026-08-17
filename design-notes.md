@@ -470,9 +470,9 @@ design-bible.md §9c.)
   stylised and strange, never cute. Emotion through motion and light
   within an abstract body.
 - **One signature animation per category (10).** Each of the 10 friend
-  categories (Drifters … Poets) has one signature congratulation
+  categories (plips … hamdi bulos) has one signature congratulation
   animation; individuals within a category reuse it. Bounds the art
-  scope. (First built, T5.3b 2026-07-25: the **Drifter's is a slow
+  scope. (First built, T5.3b 2026-07-25: the **plip's is a slow
   "drift-and-bob"** — floats up, hangs, settles back, its glow swelling
   with the lift; `friend-drift` in index.css.)
 - **Where the signature animation is allowed to play (decided
@@ -568,7 +568,7 @@ design-bible.md §9c.)
      gather there but do not perform. Scarcity is what makes the gesture
      land — a greeting you can see any time you like is wallpaper.
 - **Wordless greetings — visual-only until literate.** Low-literacy
-  beings (Drifters, Nesters, Mimics) communicate **visually only**
+  beings (plips, baluhms, klupengks) communicate **visually only**
   (glyphs, light, motion). **Written speech bubbles are earned** —
   they unlock only for higher-literacy friends, mirroring the ladder.
 
@@ -1682,8 +1682,10 @@ WIDTH — so the composition is identical in a small workbench box and on
 a full screen, and never reshapes when a window gets taller.
 
 Kimia art-directed it live over 2026-08-13, one visible change at a
-time; the workbench swatch on the design page is where she looked, and
-it stays there until the workbench itself goes.
+time; the workbench swatch on the design page is where she looked. That
+swatch came down on 2026-08-17 — the planet has played on the real
+startup screen since 2026-08-12, so the workbench had nothing left to
+show that the app itself does not (spec §5b: the page is a waiting room).
 
 ## 14. The phone — limited on purpose **[TO-BUILD · M8]**
 

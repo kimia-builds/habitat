@@ -24,7 +24,7 @@ describe('narration slots (T3.4)', () => {
     expect(narrationSlot('literacyEras.dawn')).toBeNull() // doesn't exist yet
     expect(narrationSlot('firstReveals.flora')).toBeNull() // an object, not text
     expect(narrationSlot('firstReveals.comet.title')).toBeNull() // no such reveal
-    expect(narrationSlot('friendIntros.drifter.welcome.extra')).toBeNull() // path past a leaf
+    expect(narrationSlot('friendIntros.plip.welcome.extra')).toBeNull() // path past a leaf
   })
 
   it('whitespace-only text counts as empty', () => {

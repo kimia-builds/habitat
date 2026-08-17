@@ -1,10 +1,17 @@
 /*
  * tracedFriends.js — the roll-call of Kimia's nine traced archetypes
  * =============================================================================
- * TEMPORARY (2026-08-10), and it leaves with the workbench. Each of the nine
- * friendNN.jsx files is self-contained and identical in shape (a static body,
- * an eyes overlay, three pastel palettes), so the workbench draws them from
- * this one list rather than repeating the same swatch nine times.
+ * Each of the nine friendNN.jsx files is self-contained and identical in shape
+ * (a static body, an eyes overlay, three pastel palettes), so anything drawing
+ * the cast walks this one list rather than repeating the same code nine times.
+ *
+ * NOTHING IMPORTS IT TODAY (2026-08-17). It was written for the workbench
+ * shelves, and those came down once the colours were settled — but it is also
+ * the only record of WHICH DRAWING IS WHICH SPECIES, so it waits here for the
+ * task that puts the real drawings on the Guest Book, the reveal, the cameo
+ * and the Abode. That task is its real reader; the workbench was a rehearsal.
+ * (Friend 10 is not in the list: its component was assembled separately, and
+ * joins this roll-call in that same task.)
  *
  * SIZES ARE NO LONGER SET HERE (T5.3d). They used to be: a column of rem
  * widths lived in this file, which meant the cast's proportions would have died
@@ -50,17 +57,17 @@ import { friendSize } from './friendCanon.js'
 // and most sophisticated. That makes the NUMBERS a workbench-only convenience;
 // the durable identity is the species key, which is what friendCanon.js is
 // written against and what survives when this shelf is removed. Friend 10 is
-// the poet, and is drawn by its own component over in DesignPage.jsx.
+// the hamdi bulo, and is drawn by its own component over in DesignPage.jsx.
 const SPECIES_OF = {
-  '01': 'drifter',
-  '02': 'nester',
-  '03': 'mimic',
-  '04': 'signer',
-  '05': 'sprout',
-  '06': 'chatter',
-  '07': 'neighbour',
-  '08': 'storyteller',
-  '09': 'scholar',
+  '01': 'plip',
+  '02': 'baluhm',
+  '03': 'klupengk',
+  '04': 'zala',
+  '05': 'liwi-bi-jiji',
+  '06': 'meuhy',
+  '07': 'rassatt',
+  '08': 'woigolp',
+  '09': 'chitu',
 }
 
 // THE SHELF'S OWN BASE SIZE, in rem: how much room the largest friend gets

@@ -335,10 +335,10 @@ describe('five simulated years at ~3.5 taps/day (plan T3.1 “done when”)', ()
       tally.reading.magazine * LITERACY_POINTS.magazine +
       tally.reading.novel * LITERACY_POINTS.novel +
       tally.reading.dictionary * LITERACY_POINTS.dictionary
-    const poets = LITERACY_MILESTONES[LITERACY_MILESTONES.length - 1]
-    expect(points).toBeGreaterThanOrEqual(poets)
+    const lastDoor = LITERACY_MILESTONES[LITERACY_MILESTONES.length - 1]
+    expect(points).toBeGreaterThanOrEqual(lastDoor)
     // ...but not by miles — the ladder should take years, not months.
-    expect(points).toBeLessThan(poets * 1.35)
+    expect(points).toBeLessThan(lastDoor * 1.35)
   })
 
   it('fungus income supports about one mid-priced object per rotation', () => {

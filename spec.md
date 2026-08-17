@@ -280,23 +280,23 @@ opening its own growing world:
   language. The ladder below is a WORKING DESCRIPTION, not the names:
   the ten species names are Kimia's to write (T6.1a, 2026-08-10), and
   they live in `src/content/names.js` alongside a slot for each of the
-  55 individuals. What "Drifters", "Nesters" … name here is the RUNG —
+  55 individuals. What "plips", "baluhms" … name here is the RUNG —
   each species' place on the literacy ladder and what it is like — and
   those same words survive in code as permanent internal ids that are
   never shown on screen. A species with a blank name slot simply shows
   no name in the app; nothing invents one. Lowest literacy first:
-  1. **Drifters** — ambient beings; no language, just presence
-  2. **Nesters** — small critters that respond to routine and warmth
-  3. **Mimics** — creatures that echo our sounds and gestures back
-  4. **Signers** — beings who converse in light and gesture patterns
-  5. **Sprouts** — young locals; first spoken words
-  6. **Chatters** — everyday conversation, small talk, jokes
-  7. **Neighbours** — real relationships; we get invited in
-  8. **Storytellers** — share N-Z-D's folklore and history
-  9. **Scholars** — the local professors; deep, technical language
-  10. **Poets** — language at its most subtle; the rarest friendship
-- Each category has a **fixed roster of individuals** — 10 Drifters
-  down to a single Poet, **55 in all** (design-bible §9c). A category
+  1. **plips** — ambient beings; no language, just presence
+  2. **baluhms** — small critters that respond to routine and warmth
+  3. **klupengks** — creatures that echo our sounds and gestures back
+  4. **zalas** — beings who converse in light and gesture patterns
+  5. **liwi bi-jijis** — young locals; first spoken words
+  6. **meuhys** — everyday conversation, small talk, jokes
+  7. **rassatts** — real relationships; we get invited in
+  8. **woigolps** — share N-Z-D's folklore and history
+  9. **chitus** — the local professors; deep, technical language
+  10. **hamdi bulos** — language at its most subtle; the rarest friendship
+- Each category has a **fixed roster of individuals** — 10 plips
+  down to a single hamdi bulo, **55 in all** (design-bible §9c). A category
   refills — the next friend arriving a seeded 20–50 days after the
   previous — **only until its roster is exhausted**; 55 friendships is
   the lifetime maximum (2026-07-24, amending the 2026-07-20
@@ -476,11 +476,14 @@ region discovery expands what the Market can offer.
 - **Settings:** day cutoff, data export/import, and **start a new game**
   (§8) — the one door that wipes the world.
 - **Design assets (TEMPORARY, T5 prep — 2026-07-21):** a workbench page
-  holding one empty shelf per image-asset family the M5 design pass
-  will fill (charms, friends, map regions, flora, fungi, market
-  objects, reading spreads). Reached from a door at the foot of the
-  home screen; it leaves or becomes deliberate when the design pass
-  lands.
+  where a new image asset is shown for Kimia to judge before it dresses
+  a real screen. Reached from a door at the foot of the home screen; it
+  leaves or becomes deliberate when the design pass lands.
+  **It is a waiting room, not a gallery (Kimia, 2026-08-17):** a shelf
+  stands only while a question about that asset is still open, and comes
+  down once she has answered it — every settled asset left on the page is
+  another screenful between her and the one she came to look at. As of
+  2026-08-17 what waits there is the texture library and the abode sky.
 
 ### The date display (T4.5)
 

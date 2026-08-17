@@ -1357,7 +1357,7 @@ body {
    the Guest Book card, and the home-screen cameo (T4.6, which runs
    them a single iteration; party mode never plays them). All gentle,
    all looping while their moment is open. */
-/* Drifter — the signature "drift-and-bob" (T5.3b, Kimia's call 2026-07-25):
+/* plip — the signature "drift-and-bob" (T5.3b, Kimia's call 2026-07-25):
    floats slowly UP, hangs a beat at the top, then settles back — something
    adrift in low gravity. The gentle glow-swell (opacity) rides with the lift so
    the rise reads as a breath, not a bounce. Vertical only; the earlier T4-era
@@ -1378,7 +1378,7 @@ body {
   }
 }
 
-.friend-anim-drifter {
+.friend-anim-plip {
   animation: friend-drift 5s ease-in-out infinite;
 }
 
@@ -1392,7 +1392,7 @@ body {
   }
 }
 
-.friend-anim-nester {
+.friend-anim-baluhm {
   animation: friend-nest 2.6s ease-in-out infinite;
 }
 
@@ -1408,7 +1408,7 @@ body {
   }
 }
 
-.friend-anim-mimic {
+.friend-anim-klupengk {
   animation: friend-echo 1.8s ease-in-out infinite;
 }
 
@@ -1428,7 +1428,7 @@ body {
   }
 }
 
-.friend-anim-signer {
+.friend-anim-zala {
   animation: friend-signal 2.4s ease-in-out infinite;
 }
 
@@ -1445,11 +1445,11 @@ body {
   }
 }
 
-.friend-anim-sprout {
+.friend-anim-liwi-bi-jiji {
   animation: friend-hop 2.2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
 }
 
-@keyframes friend-chatter {
+@keyframes friend-meuhy {
   0%,
   100% {
     transform: rotate(-2.5deg);
@@ -1459,8 +1459,8 @@ body {
   }
 }
 
-.friend-anim-chatter {
-  animation: friend-chatter 0.9s ease-in-out infinite;
+.friend-anim-meuhy {
+  animation: friend-meuhy 0.9s ease-in-out infinite;
 }
 
 @keyframes friend-sway {
@@ -1473,7 +1473,7 @@ body {
   }
 }
 
-.friend-anim-neighbour {
+.friend-anim-rassatt {
   animation: friend-sway 3.4s ease-in-out infinite;
 }
 
@@ -1486,7 +1486,7 @@ body {
   }
 }
 
-.friend-anim-storyteller {
+.friend-anim-woigolp {
   animation: friend-tale 7s linear infinite;
 }
 
@@ -1501,7 +1501,7 @@ body {
   }
 }
 
-.friend-anim-scholar {
+.friend-anim-chitu {
   animation: friend-ponder 4.5s ease-in-out infinite;
 }
 
@@ -1515,7 +1515,7 @@ body {
   }
 }
 
-.friend-anim-poet {
+.friend-anim-hamdi-bulo {
   animation: friend-shimmer 3.8s ease-in-out infinite;
 }
 
@@ -2855,77 +2855,6 @@ body {
   color: var(--text-quiet);
 }
 
-/* TEMPORARY (T5.2e, 2026-08-13): the star-shimmer's workbench shelf.
-   The drops here are the real arrival shelf, so the only thing this has
-   to do is UNDO its pinning — in the game the shelf is fixed to the
-   window's top right, and two of those would sit on top of each other in
-   the same corner. Everything else about them is left exactly as the
-   game has it. Leaves with the workbench. */
-/* TEMPORARY (T5.2e, 2026-08-16): the cameo firework on the workbench.
-   The real Cameo is mounted, so the only job here is giving the burst
-   somewhere to fly — the stars end well outside the visit, and without
-   this padding the two demo cameos would throw stars over each other
-   and over the heading. Leaves with the workbench. */
-.firework-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-  list-style: none;
-  padding: 0;
-}
-
-.firework-swatch {
-  padding: var(--space-8) var(--space-8) var(--space-7);
-  min-width: 12rem;
-}
-
-/* Put the visit back in the flow. In the game it is pinned to the
-   bottom left of the WINDOW, so two of them side by side would land on
-   exactly the same spot — the same override, for the same reason, that
-   .shimmer-swatch makes for the arrival shelf. What the workbench is
-   for is the blob, the caption and the burst; where it sits on a real
-   screen is something only the real screen can show. */
-.firework-swatch .cameo {
-  position: static;
-  max-width: 14rem;
-}
-
-.shimmer-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-  list-style: none;
-  padding: 0;
-}
-
-/* The ring of stars stands well outside the blob, so the swatch is
-   given room for it — otherwise the shelf's own drops sit as close
-   together here as they do in the game, and the rings overlap the
-   heading. */
-.shimmer-swatch {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-6) var(--space-8);
-}
-
-.shimmer-swatch .arrival-shelf {
-  position: static;
-  max-width: none;
-  align-items: flex-start;
-  gap: var(--space-7);
-}
-
-/* The note, put back in the flow. In the game it hangs in the margin
-   beside a habit tile, out of the layout and hidden on a narrow window —
-   neither of which lets it be looked at here. */
-.shimmer-note-swatch .arrival-note {
-  position: static;
-  display: inline-block;
-  margin-left: 0;
-  transform: none;
-  max-width: none;
-}
-
 /* TEMPORARY (T5.3, 2026-07-24): the texture-library swatches — the §8
    surface vocabulary drawn at a readable size for the eyeball pass. A
    plain wrapped shelf; each swatch is a rounded SVG tile with its name
@@ -2959,80 +2888,8 @@ body {
   text-align: center;
 }
 
-/* TEMPORARY (T5.3a, 2026-07-25): the friend-eye candidate swatches
-   (design-bible §9c). Same card layout as the texture swatches, drawn a
-   little larger so the fine differences between eye FORMS read for the pick.
-   Leaves with the workbench. */
-.eye-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  list-style: none;
-  padding: 0;
-}
-
-.eye-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  width: 7rem;
-}
-
-.eye-swatch-art {
-  width: 7rem;
-  height: 7rem;
-  border-radius: 0.75rem;
-}
-
-.eye-swatch-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  color: var(--text-quieter);
-  text-align: center;
-}
-
-/* TEMPORARY (2026-07-26): the signer illustration swatches. An imported
-   drawing (signer.jsx) shown in three reward-stream pastels for the eyeball
-   pass — the same dark card the other assets stand on, sized to the artwork's
-   tall portrait aspect. Leaves with the workbench. */
-.signer-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-6);
-  list-style: none;
-  padding: 0;
-}
-
-.signer-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  width: 9rem;
-  max-width: 100%;
-}
-
-.signer-swatch-art {
-  width: 9rem;
-  max-width: 100%;
-  height: auto;
-  aspect-ratio: 174 / 343.49;
-  border-radius: 0.75rem;
-  background: var(--surface-workbench);
-  padding: var(--space-2);
-  box-sizing: border-box;
-}
-
-.signer-swatch-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  color: var(--text-quieter);
-  text-align: center;
-}
-
 /* NOT workbench-temporary — the SHARED friend idle blink (renamed from
-   storyteller-only 2026-08-10; used by every assembled archetype's eye
+   woigolp-only 2026-08-10; used by every assembled archetype's eye
    overlay), and it moves with the assets into the game source. Each
    canonical eye sits in its own wrapper and squashes shut around its
    own centre for a beat, then reopens — rare and quiet (design-notes
@@ -3055,105 +2912,6 @@ body {
   animation: friend-blink 6.5s ease-in-out infinite;
 }
 
-/* TEMPORARY (2026-08-10): the friend-10 illustration swatches — the same
-   dark card as the other imported archetypes, sized to this artwork's own
-   nearly-square portrait aspect. Two stacked svgs per card (static body,
-   blinking eyes), as with the storyteller. Leaves with the workbench. */
-.friend10-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-6);
-  list-style: none;
-  padding: 0;
-}
-
-/* The card's WIDTH and aspect ratio are not here (T5.3d): friend 10's size
-   used to be an 11rem typed into this rule, which split the cast's canon
-   between a stylesheet and a JavaScript file. It now comes from
-   friendCanon.js, applied inline by DesignPage.jsx like the other nine. */
-.friend10-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  max-width: 100%;
-}
-
-.friend10-swatch-art {
-  position: relative;
-  max-width: 100%;
-  border-radius: 0.75rem;
-  background: var(--surface-workbench);
-}
-
-.friend10-swatch-layer {
-  position: absolute;
-  inset: 0.6rem;
-  width: calc(100% - 1.2rem);
-  height: calc(100% - 1.2rem);
-}
-
-.friend10-swatch-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  color: var(--text-quieter);
-  text-align: center;
-}
-
-/* TEMPORARY (2026-08-10): the nine other traced archetypes' swatches. Same
-   dark card as friend 10's, but ONE set of rules for all nine — each card's
-   width and its artwork's aspect ratio are set per friend in tracedFriends.js
-   (the one place the archetypes' relative sizes live), so this file no longer
-   needs a block per drawing. Leaves with the workbench. */
-.traced-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-6);
-  list-style: none;
-  padding: 0;
-}
-
-/* The card is only as wide as its artwork should be — which for the smallest
-   friend is a couple of rem — so the column gets a floor wide enough for the
-   tint name underneath to sit on one line. */
-.traced-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  min-width: 4rem;
-  max-width: 100%;
-}
-
-/* The art card is a positioned div holding TWO stacked svgs — the heavy static
-   body below, the featherweight blinking eyes above, same viewBox so they
-   align exactly (the split is load-bearing: see storyteller.jsx). */
-.traced-swatch-art {
-  position: relative;
-  max-width: 100%;
-  border-radius: 0.75rem;
-  background: var(--surface-workbench);
-}
-
-/* The breathing room around the artwork is a PERCENTAGE, not a fixed 0.6rem
-   like the older shelves: these cards range from 1.6rem to 11.5rem wide, and a
-   fixed inset that looks right on the big ones would swallow the small ones
-   whole. 5.5% is the same proportion 0.6rem gave friend 10's card. */
-.traced-swatch-layer {
-  position: absolute;
-  inset: 5.5%;
-  width: 89%;
-  height: 89%;
-}
-
-.traced-swatch-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  color: var(--text-quieter);
-  text-align: center;
-}
-
 /* TEMPORARY (T5.3, 2026-07-24): the environment-sky swatches (design-bible
    §11a). Each swatch is a bounded, positioned box so NightSky (which fills
    its positioned parent) and AbodeSky (100% of its box) have somewhere to
@@ -3162,15 +2920,6 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 0.75rem;
-}
-
-/* NightSky fills its positioned parent with absolutely-positioned stars, so
-   the box has no in-flow content to give it width — and the workbench lays
-   families out flex-start (shrink-to-fit). Give it an explicit viewing size. */
-.night-sky-swatch {
-  width: 36rem;
-  max-width: 100%;
-  height: 12rem;
 }
 
 .sky-swatches {
@@ -3201,18 +2950,4 @@ body {
   letter-spacing: 0.04em;
   color: var(--text-quieter);
   text-align: center;
-}
-
-/* TEMPORARY (T5.2e, 2026-08-12): the startup planet on the workbench. Like
-   the sky swatches it has no in-flow content, so the box needs a size of its
-   own — wide and shallow, because the asset is a bottom-edge slither and the
-   only proportion that matters is how tall the arc stands against the width.
-   Leaves with the workbench when the design pass lands. */
-.planet-swatch {
-  position: relative;
-  width: 100%;
-  height: 13rem;
-  margin-bottom: var(--space-4);
-  border-radius: 0.75rem;
-  overflow: hidden;
 }

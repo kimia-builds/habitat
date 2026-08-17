@@ -17,9 +17,9 @@ import {
 import Cameo from './Cameo.jsx'
 
 // A fixture name, never Kimia's real one (src/test/nameFixture.js).
-const SIGNER = 'test species name'
+const zala = 'test species name'
 
-// A record-streak win celebrated by the second Signer.
+// A record-streak win celebrated by the second zala.
 const WIN = {
   type: 'streakRecord',
   habitId: 'h1',
@@ -29,9 +29,9 @@ const WIN = {
 beforeEach(() => {
   vi.useFakeTimers()
   // Wipe first — an individual name outranks a species name, and this
-  // win is celebrated by signer 2, who now has one (2026-08-11).
+  // win is celebrated by zala 2, who now has one (2026-08-11).
   blankAllNames()
-  setSpeciesName('signer', SIGNER)
+  setSpeciesName('zala', zala)
 })
 
 afterEach(() => {
@@ -58,7 +58,7 @@ describe('the cameo visit (T4.6)', () => {
     render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
     const visit = screen.getByRole('status')
     expect(visit.querySelector('.cameo-name')).toBeNull()
-    expect(visit.textContent).not.toContain(SIGNER)
+    expect(visit.textContent).not.toContain(zala)
   })
 
   it("reads its message from Kimia's slot — blank renders nothing", () => {

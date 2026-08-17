@@ -16,16 +16,16 @@ import { FRIEND_CATEGORIES } from '../game/constants.js'
 // proportions would silently stop being hers. If a change to the canon is
 // deliberate, these numbers change with it, deliberately.
 const SHEET_REM = {
-  drifter: 1.6,
-  nester: 4.8,
-  mimic: 4.8,
-  signer: 6.9,
-  sprout: 9.4,
-  chatter: 4.2,
-  neighbour: 9.9,
-  storyteller: 9.1,
-  scholar: 11.5,
-  poet: 11.0,
+  plip: 1.6,
+  baluhm: 4.8,
+  klupengk: 4.8,
+  zala: 6.9,
+  'liwi-bi-jiji': 9.4,
+  meuhy: 4.2,
+  rassatt: 9.9,
+  woigolp: 9.1,
+  chitu: 11.5,
+  'hamdi-bulo': 11.0,
 }
 
 // How far a stored ratio may sit from the sheet, as a FRACTION of itself rather
@@ -42,7 +42,7 @@ function proportionsMatch(actual, expected) {
 describe('the friend size canon', () => {
   test('covers every category, and nothing else', () => {
     expect(Object.keys(FRIEND_CANON).sort()).toEqual(
-      FRIEND_CATEGORIES.map(({ key }) => key).sort()
+      FRIEND_CATEGORIES.map(({ key }) => key).sort(),
     )
   })
 
@@ -82,7 +82,7 @@ describe('the friend size canon', () => {
   })
 
   test('the two friends drawn the same size on the sheet stay equal', () => {
-    expect(FRIEND_CANON.nester).toBe(FRIEND_CANON.mimic)
+    expect(FRIEND_CANON.baluhm).toBe(FRIEND_CANON.klupengk)
   })
 })
 
@@ -94,7 +94,7 @@ describe('asking the canon for a size', () => {
     for (const key of FRIEND_CANON_ORDER) {
       // 3 digits: within half a thousandth of a rem, far finer than a screen
       // can draw and far tighter than any drift worth catching.
-      expect(friendSize(key, SHEET_REM.scholar)).toBeCloseTo(SHEET_REM[key], 3)
+      expect(friendSize(key, SHEET_REM.chitu)).toBeCloseTo(SHEET_REM[key], 3)
     }
   })
 
@@ -103,7 +103,7 @@ describe('asking the canon for a size', () => {
   test('holds the proportions at any base size', () => {
     for (const base of [1, 3.5, 40, 512]) {
       for (const key of FRIEND_CANON_ORDER) {
-        const ratioToAnchor = friendSize(key, base) / friendSize('scholar', base)
+        const ratioToAnchor = friendSize(key, base) / friendSize('chitu', base)
         expect(ratioToAnchor).toBeCloseTo(FRIEND_CANON[key], 6)
       }
     }

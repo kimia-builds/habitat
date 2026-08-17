@@ -1,10 +1,10 @@
 // Friend 06 (friend-06-big.svg, added to the workbench 2026-08-10) —
 // one of Kimia's nine traced archetype drawings, imported and assembled
-// exactly like friend10.jsx and the storyteller: the traced layers are
+// exactly like friend10.jsx: the traced layers are
 // kept verbatim in their source paint order and only the shade RAMP is
 // swapped, so one drawing can be shown in any candidate body colour.
 //
-// A STACKED trace, like the storyteller: the darkest layer (#333) is the
+// A STACKED trace (unlike friend 10): the darkest layer (#333) is the
 // whole figure and the lighter shades stack on top of it, so the glow
 // aura blurs that bottom layer and nothing needs reconstructing.
 // It showed no holes at all on the magenta ground.
@@ -13,7 +13,7 @@
 // traced eye placeholders are replaced by the canonical yellow <Eye/> at
 // their measured centres; the body glows its own colour; the eyes blink in
 // their own featherweight overlay svg — the body/eyes split is load-bearing
-// (see storyteller.jsx).
+// (see friend10.jsx).
 //
 // COLOURS ARE STAND-INS. TODO(T5.2): move the ramps into the CSS
 // design-tokens file once it exists, like every other asset here.
@@ -78,7 +78,7 @@ export function Friend06BodyDefs({ prefix = '' }) {
 
 // The heavy, static half: the glow aura (the silhouette blurred and filled
 // the body colour) → the seven stacked shade layers.
-// No animation may ever live in this svg (see storyteller.jsx).
+// No animation may ever live in this svg (see friend10.jsx).
 export function Friend06Body({ palette = FRIEND06_GREYS, prefix = '' }) {
   return (
     <g>

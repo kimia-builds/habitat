@@ -9,7 +9,7 @@ import { FRIEND_CATEGORIES, FRIEND_ROSTER } from '../game/constants.js'
 const KEYS = FRIEND_CATEGORIES.map(({ key }) => key)
 
 // The palette has to be at least as big as the largest roster, or two siblings
-// must collide however cleverly the runs are chosen. Ten drifters, ten
+// must collide however cleverly the runs are chosen. Ten plips, ten
 // colours: this is the assumption the sibling guarantee rests on, so it is
 // asserted rather than assumed.
 const LARGEST_ROSTER = Math.max(...FRIEND_ROSTER)
@@ -78,54 +78,107 @@ describe('the friend palette', () => {
   })
 })
 
+// A handful of stand-in worlds. Colours are dealt per save now, so almost
+// everything below has to be asked of a particular game rather than of the
+// module — and asked of SEVERAL games, since a rule that only holds for one
+// seed is not a rule.
+const WORLDS = ['seed-a', 'seed-b', 'seed-c', 'another-world', '12345']
+
 describe('handing colours out', () => {
   test('gives every species exactly its roster of colours', () => {
-    KEYS.forEach((key, i) => {
-      expect(speciesColours(key)).toHaveLength(FRIEND_ROSTER[i])
-    })
+    for (const world of WORLDS) {
+      KEYS.forEach((key, i) => {
+        expect(speciesColours(key, world)).toHaveLength(FRIEND_ROSTER[i])
+      })
+    }
   })
 
   test('covers all 55 friendships', () => {
-    const total = KEYS.reduce((sum, key) => sum + speciesColours(key).length, 0)
+    const total = KEYS.reduce(
+      (sum, key) => sum + speciesColours(key, 'seed-a').length,
+      0,
+    )
     expect(total).toBe(55)
   })
 
   // THE HEART OF IT. Colour is the only thing telling two siblings apart
-  // (Kimia, 2026-08-17) — so if two drifters ever land on the same colour,
-  // they are the same friend as far as anyone looking can tell.
+  // (Kimia, 2026-08-17) — so if two plips ever land on the same colour,
+  // they are the same friend as far as anyone looking can tell. Dealing off
+  // one shuffled pack is what makes this true by construction, but it is the
+  // promise itself that is pinned here, in every world.
   test('no two individuals of a species share a colour', () => {
     const clashes = []
-    for (const key of KEYS) {
-      const names = speciesColours(key).map((c) => c.name)
-      if (new Set(names).size !== names.length) {
-        clashes.push(`${key}: ${names.join(', ')}`)
+    for (const world of WORLDS) {
+      for (const key of KEYS) {
+        const names = speciesColours(key, world).map((c) => c.name)
+        if (new Set(names).size !== names.length) {
+          clashes.push(`${world}/${key}: ${names.join(', ')}`)
+        }
       }
     }
     expect(clashes).toEqual([])
   })
 
-  test('the drifters wear the whole palette', () => {
-    expect(speciesColours('drifter')).toEqual(FRIEND_COLOURS)
+  test('the plips wear the whole palette, in some order', () => {
+    for (const world of WORLDS) {
+      const names = speciesColours('plip', world).map((c) => c.name)
+      expect(names.slice().sort()).toEqual(
+        FRIEND_COLOURS.map((c) => c.name).sort(),
+      )
+    }
   })
 
-  // The offset is what stops the later pastels never being worn — every
-  // colour in the palette is somebody's, somewhere in the cast.
+  // Ten plips wear all ten, so no pastel is ever left in the box.
   test('every colour finds a friend somewhere in the cast', () => {
-    const worn = new Set(
-      KEYS.flatMap((key) => speciesColours(key)).map((c) => c.name),
+    for (const world of WORLDS) {
+      const worn = new Set(
+        KEYS.flatMap((key) => speciesColours(key, world)).map((c) => c.name),
+      )
+      expect(worn.size).toBe(FRIEND_COLOURS.length)
+    }
+  })
+
+  // KIMIA'S CALL (2026-08-17): "different players might get friends of
+  // different colours." Two saves must be able to disagree — otherwise the
+  // deal is decoration, not a deal.
+  test('two players get different friends', () => {
+    const hand = (world) =>
+      KEYS.map((key) => individualColour(key, 1, world).name).join('|')
+    const hands = new Set(WORLDS.map(hand))
+    expect(hands.size).toBe(WORLDS.length)
+  })
+
+  // …and the other half of that promise: WITHIN one save the deal never
+  // changes. A friend that re-rolled its colour on every render, undo or
+  // backup restore would not be a friend you recognise.
+  test('one player gets the same friends every time they look', () => {
+    for (const world of WORLDS) {
+      for (const key of KEYS) {
+        const first = speciesColours(key, world).map((c) => c.name)
+        const again = speciesColours(key, world).map((c) => c.name)
+        expect(again).toEqual(first)
+        // And asking for one friend on its own agrees with the roster —
+        // skipping the lone hamdi bulo, who has no second individual.
+        if (first.length > 1) {
+          expect(individualColour(key, 2, world).name).toBe(first[1])
+        }
+      }
+    }
+  })
+
+  // One species' shuffle must not be another's, or the whole cast would line
+  // up in matching colours down the ladder.
+  test('two species in one world are dealt differently', () => {
+    const deals = new Set(
+      KEYS.map((key) => speciesColours(key, 'seed-a').map((c) => c.name)[0]),
     )
-    expect(worn.size).toBe(FRIEND_COLOURS.length)
+    expect(deals.size).toBeGreaterThan(1)
   })
 
-  test('no two species start on the same colour', () => {
-    const firsts = KEYS.map((key) => individualColour(key, 1).name)
-    expect(new Set(firsts).size).toBe(firsts.length)
-  })
-
-  // The single poet is the edge case the roster maths could trip on: one
+  // The single hamdi bulo is the edge case the roster maths could trip on: one
   // individual, nothing to be different from.
-  test('the lone poet gets one colour and no arithmetic trouble', () => {
-    const colours = speciesColours('poet')
+  test('the lone hamdi bulo gets one colour and no arithmetic trouble', () => {
+    const colours = speciesColours('hamdi-bulo', 'seed-a')
     expect(colours).toHaveLength(1)
     expect(colours[0].name).toBeTruthy()
   })
@@ -133,15 +186,15 @@ describe('handing colours out', () => {
   // Same reasoning as friendCanon's fallback: a wrong colour is a visible bug,
   // and an undefined one is an invisible crash.
   test('an unknown species still gets a usable colour', () => {
-    expect(individualColour('nobody', 1)).toEqual(FRIEND_COLOURS[0])
-    expect(individualColour(undefined, 3).name).toBeTruthy()
+    expect(FRIEND_COLOURS).toContain(individualColour('nobody', 1, 'seed-a'))
+    expect(individualColour(undefined, 3, 'seed-a').name).toBeTruthy()
   })
 
   test('an individual past the roster wraps instead of breaking', () => {
-    // An 11th drifter is a bug in the roster cap, not here — it comes back
-    // wearing the first drifter's colour rather than undefined.
-    expect(individualColour('drifter', 11)).toEqual(
-      individualColour('drifter', 1),
+    // An 11th plip is a bug in the roster cap, not here — it comes back
+    // wearing the first plip's colour rather than undefined.
+    expect(individualColour('plip', 11, 'seed-a')).toEqual(
+      individualColour('plip', 1, 'seed-a'),
     )
   })
 })

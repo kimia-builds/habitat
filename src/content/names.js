@@ -6,18 +6,25 @@
 // nothing in the app rather than inventing a name.
 //
 // WHY IT EXISTS (Kimia's call, 2026-08-10). The ten species had
-// Claude-drafted names ("Drifter", "Nester", …) living in
-// src/game/constants.js as game data. They are words a player reads, so
-// they are copy, and copy is hers. The drafts are gone from the app; the
-// slots below are where the real names go.
+// Claude-drafted names living in src/game/constants.js as game data.
+// They are words a player reads, so they are copy, and copy is hers.
+// The drafts are gone from the app; the slots below are where the real
+// names go.
 //
-// ABOUT THE KEYS ON THE LEFT (drifter:, nester:, …). Those are permanent
-// internal ids, not names — they are how the code, the CSS animations and
-// the narration slots in narration.js find each species, and they never
-// appear on screen. They stay as they are even after you rename a
-// species: the key `drifter` may well end up holding a species you call
-// something else entirely. They are listed low to high on the literacy
-// ladder, so `drifter` is the first species you meet and `poet` the last.
+// ABOUT THE KEYS ON THE LEFT (plip:, baluhm:, …). Those are internal
+// ids, not the names themselves — they are how the code, the CSS
+// animations and the narration slots in narration.js find each species,
+// and they never appear on screen. They used to be the Claude drafts
+// (Claude's draft words); on 2026-08-17 Kimia ruled that no word her world
+// does not use belongs anywhere in Habitat, not even in a place only the
+// code reads, so they now carry the species' real names. The one on the
+// RIGHT is still the only thing a player sees, and still yours to
+// rewrite whenever you like — rename a species and only the right-hand
+// side needs to change. They are listed low to high on the literacy
+// ladder, so `plip` is the first species you meet and `hamdi-bulo` the
+// last. (The two two-word names are hyphenated and quoted on the left
+// purely because that is what the code needs; the name itself, on the
+// right, keeps its space.)
 //
 // HOW A FRIEND GETS ITS NAME ON SCREEN, in order:
 //   1. its own individual name below, if you have written one;
@@ -30,31 +37,31 @@
 export const NAMES = {
   // ── the ten species ────────────────────────────────────────────────
   // What ONE of them is called, exactly as it should read on screen —
-  // include the article if you want one ("a drifter", "an ember").
+  // include the article if you want one ("a plip", "an ember").
   // Shown on the Guest Book list and card, the arrival reveal, the
   // arrival shelf, and the home-screen cameo visits.
   // TODO: written by Kimia.
   species: {
-    drifter: 'plip',
-    nester: 'baluhm',
-    mimic: 'klupengk',
-    signer: 'zala',
-    sprout: 'liwi bi-jiji',
-    chatter: 'meuhy',
-    neighbour: 'rassatt',
-    storyteller: 'woigolp',
-    scholar: 'chitu',
-    poet: 'hamdi bulo',
+    plip: 'plip',
+    baluhm: 'baluhm',
+    klupengk: 'klupengk',
+    zala: 'zala',
+    'liwi-bi-jiji': 'liwi bi-jiji',
+    meuhy: 'meuhy',
+    rassatt: 'rassatt',
+    woigolp: 'woigolp',
+    chitu: 'chitu',
+    'hamdi-bulo': 'hamdi bulo',
   },
 
   // ── the individuals ────────────────────────────────────────────────
-  // Each species has a FIXED roster (design-bible §9c): 10 drifters down
-  // to a single poet, 55 friendships in a lifetime. The number is the
-  // order they arrive in — drifter 1 is the first drifter you ever meet.
+  // Each species has a FIXED roster (design-bible §9c): 10 plips down
+  // to a single hamdi bulo, 55 friendships in a lifetime. The number is the
+  // order they arrive in — plip 1 is the first plip you ever meet.
   // Naming these is optional and endless; an unnamed friend simply wears
   // its species name. TODO: written by Kimia.
   individuals: {
-    drifter: {
+    plip: {
       1: 'bi',
       2: 'ti',
       3: 'ki',
@@ -66,7 +73,7 @@ export const NAMES = {
       9: 'wi',
       10: 'di',
     },
-    nester: {
+    baluhm: {
       1: 'owa',
       2: 'nor',
       3: 'dulu',
@@ -77,7 +84,7 @@ export const NAMES = {
       8: 'momo',
       9: 'sah',
     },
-    mimic: {
+    klupengk: {
       1: 'chok',
       2: 'draktam',
       3: 'su-chuch',
@@ -87,7 +94,7 @@ export const NAMES = {
       7: 'serchu',
       8: 'klist',
     },
-    signer: {
+    zala: {
       1: 'joo',
       2: 'ri-mapa',
       3: 'foyon',
@@ -96,7 +103,7 @@ export const NAMES = {
       6: 'fente',
       7: 'lujaa',
     },
-    sprout: {
+    'liwi-bi-jiji': {
       1: 'dugo linowa',
       2: 'sirid umaan',
       3: 'so-lono chapina',
@@ -104,29 +111,29 @@ export const NAMES = {
       5: 'fo-kocho panu-baa',
       6: 'rolo mu-nino',
     },
-    chatter: {
+    meuhy: {
       1: 'auhya',
       2: 'uwo',
       3: 'yawy',
       4: 'wuyo',
       5: 'nii',
     },
-    neighbour: {
+    rassatt: {
       1: 'batta du',
       2: 'sikki chi',
       3: 'zuchi naffi',
       4: 'appatta',
     },
-    storyteller: {
+    woigolp: {
       1: 'mogo',
       2: 'unt',
       3: 'rori',
     },
-    scholar: {
+    chitu: {
       1: 'ayalit salong',
       2: 'ayalit sumachi',
     },
-    poet: {
+    'hamdi-bulo': {
       1: 'pikimi bulo',
     },
   },

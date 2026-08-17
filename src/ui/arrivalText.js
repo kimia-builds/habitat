@@ -4,7 +4,7 @@
 import { FRIEND_CATEGORIES } from '../game/constants.js'
 import { friendDisplayName } from '../content/names.js'
 
-// One arrival, named: "a flora find", "a novel", "2 fungi", "a Drifter"…
+// One arrival, named: "a flora find", "a novel", "2 fungi", "a plip"…
 export function arrivalLabel(arrival) {
   switch (arrival.key) {
     case 'flora':

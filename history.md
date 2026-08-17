@@ -623,7 +623,7 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   friend per category per month or two; the T6.2 recalibration retunes
   the gap if the community ever feels crowded.
 - 2026-07-20 (fourteenth session, T4.4): **draft category names until
-  T6.1** — a friend shows its category's draft singular ("a Drifter")
+  T6.1** — a friend shows its category's draft singular ("a plip")
   on the arrival, the Guest Book and the card (the "a flora find" /
   "a curiosity" precedent, one rung up: categories are named,
   individuals aren't). The names live in constants.js as game data —
@@ -860,8 +860,8 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   one ladder, and added the production count layer.
 - 2026-07-24: **all world-asset counts fixed** (design-bible Part II):
   flora 64 species (48 collectible + 16 landmark); fungi exactly 1
-  species; friends 55 individuals on a fixed ladder (10 Drifters → 1
-  Poet); curiosities 64 (4 per Map region × 16); publications 30 (10
+  species; friends 55 individuals on a fixed ladder (10 plips → 1
+  hamdi bulo); curiosities 64 (4 per Map region × 16); publications 30 (10
   per type; spine + cover + Kimia's interior spread = 90 images); Map
   16 regions; one Abode sky asset in 4 palettes (the shared night sky
   stays the §13c CSS star layer); one terrain asset serving the
@@ -908,7 +908,7 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   count/size), every variation subject to her approval. Chosen over
   all-hand-drawn (too many drawing hours, hand-drawn eyes would
   undercut the canonical-eye rule) and all-code-drawn (risks the
-  engineered feel the bible forbids). Order of work: pilot one Drifter
+  engineered feel the bible forbids). Order of work: pilot one plip
   end-to-end first, then all 10 archetypes, then individuals — and
   characters start before the 8 new flora silhouettes land (parked as
   T5.3f). Folded into design-bible §9c and the plan.md T5.3 character
@@ -943,43 +943,43 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   the eyes read as distinct points. Scoped to **friends**; flora/fungi
   keep their green pending their own passes (T5.3f/T6.1). Folded into
   design-bible §3, §7, §8, §9c.
-- 2026-07-25 (Kimia's calls, T5.3b): **the pilot Drifter's recipe** —
+- 2026-07-25 (Kimia's calls, T5.3b): **the pilot plip's recipe** —
   the first friend assembled end-to-end, proving the workflow the other
   nine archetypes follow. Iterated from a first pass (wispy hair / green
   glow / larger eyes) to Kimia's final calls: the plain traced silhouette
   (no hair) wears a **sponge** texture (§8) **tinted its deep-blue body
   colour**, glows that same deep blue, and carries **two tiny yellow
-  eyes** (almost dots) as the Drifter baseline (other individuals vary
+  eyes** (almost dots) as the plip baseline (other individuals vary
   the count/size in T5.3d, never the eye colour). Its **signature
   congratulation animation is a slow "drift-and-bob"** — floats up,
   hangs, settles back, glow swelling with the lift (design-notes §8),
-  replacing the T4-era placeholder that drifted sideways. Drifters are
+  replacing the T4-era placeholder that drifted sideways. plips are
   the simplest, lowest rung, so the body stays a single quiet surface —
   complexity climbs from here, never via brighter colour or stronger
   glow (§9c). Folded into design-bible §9c and design-notes §8.
-  _Build:_ Kimia's hand-drawn winning Drifter, Inkscape-traced, lives
+  _Build:_ Kimia's hand-drawn winning plip, Inkscape-traced, lives
   verbatim in `src/ui/drifterSilhouette.js` (kept isolated so code never
-  edits the trace). `src/ui/drifter.jsx` assembles it in four layers
+  edits the trace). `src/ui/plip.jsx` assembles it in four layers
   (deep-blue glow aura → dark-blue body base → the tinted sponge, which
   self-clips to the silhouette via its filter → the two tiny eyes) as
-  `<Drifter prefix/>` + a self-contained `<DrifterDefs/>` (eye gradients,
-  glow blur, and the Drifter's own `<SpongeFilter light=…/>` instance —
+  `<plip prefix/>` + a self-contained `<DrifterDefs/>` (eye gradients,
+  glow blur, and the plip's own `<SpongeFilter light=…/>` instance —
   extracted from `textures.jsx` so a friend can tint the sponge to its
   body colour). The shared eye in `src/ui/eye.jsx` was recoloured yellow
   with a dark socket-halo (it is the one shared eye, so this is global).
   Body colours are JS stand-ins with `TODO(T5.2)` markers. The DesignPage
-  workbench shows the finished Drifter resting and mid-greeting; the real
+  workbench shows the finished plip resting and mid-greeting; the real
   `friend-drift` keyframe in `index.css` became the drift-and-bob.
   Colours/eye-placement stay free to retune on the workbench — the tests
   pin only the recipe invariants (verbatim trace, two eyes).
 - 2026-07-26 (Kimia's calls, workbench maintenance): **the pilot
-  Drifter's body art is rejected and removed** — Kimia judged the
-  assembled pilot body not good enough; `drifter.jsx`,
+  plip's body art is rejected and removed** — Kimia judged the
+  assembled pilot body not good enough; `plip.jsx`,
   `drifterSilhouette.js` and their tests were deleted and the swatches
   left the DesignPage. The T5.3b **recipe and workflow stand** (they
-  produced the storyteller assembly the same week), and the
-  **drift-and-bob keyframes stay** in index.css — the in-game Drifter
-  friends still play them via `friend-anim-drifter`. A redone Drifter
+  produced the woigolp assembly the same week), and the
+  **drift-and-bob keyframes stay** in index.css — the in-game plip
+  friends still play them via `friend-anim-plip`. A redone plip
   archetype joins the T5.3c ladder pass. Folded into design-bible §9c
   and plan T5.3c. Same session: **the workbench's empty placeholder
   tiles are gone** — the slot grids (charms / friends / map regions)
@@ -1105,7 +1105,7 @@ return 0` right after the era is worked out, so a moment before the
   replacing the first #ffcf1e; the gradient keeps its depth (core and
   rim derived from the new mid: #fffae0 / #d9b44e, eye.jsx). Same
   session: **friend-10.svg lands on the workbench** in the three
-  reward-stream pastels, assembled like the storyteller (canonical
+  reward-stream pastels, assembled like the woigolp (canonical
   blinking eyes at Kimia's traced placeholders, body-colour glow,
   body/eyes split). Its trace had LOST its darkest layer — the seven
   tonal bands don't overlap, leaving holes through the figure's core —
@@ -1113,7 +1113,7 @@ return 0` right after the era is worked out, so a moment before the
   computed from all bands with shapely) now sits behind the bands as an
   extra ramp shade. Caveat flagged to Kimia: the seal also closes the
   tendril loops' interiors, which the raster reads as background. The
-  idle-blink class was renamed storyteller-eye-blink →
+  idle-blink class was renamed woigolp-eye-blink →
   **friend-eye-blink** (shared by every assembled archetype).
 
 - 2026-08-10 (Kimia's calls, second workbench session of the day):
@@ -1124,7 +1124,7 @@ return 0` right after the era is worked out, so a moment before the
   the T5.3c checkpoint's purpose, though the checkpoint itself stays
   unticked until Kimia says it is met. Four decisions came out of it.
   **(1) The traces are two different animals**, and the file says which:
-  friends 01, 02 and 06 are STACKED like the storyteller (a #333 layer
+  friends 01, 02 and 06 are STACKED like the woigolp (a #333 layer
   that is the whole figure, lighter shades on top, nothing lost), while
   03, 04, 05, 07, 08 and 09 are BANDED like friend 10 (non-overlapping
   tonal bands whose darkest layer the tracing lost) and get a
@@ -1145,8 +1145,8 @@ return 0` right after the era is worked out, so a moment before the
   (1.6rem); friend 10 recomputed to exactly the 11rem it already had.
   Friend 01's eyes came down to 0.55x its placeholders: they were drawn
   at ~7% of its body where every other friend sits near 1%. **(4) The
-  storyteller leaves the lineup** — it is not on the character sheet and
-  Kimia removed it; `storyteller.jsx` stays only because its header is
+  woigolp leaves the lineup** — it is not on the character sheet and
+  Kimia removed it; `woigolp.jsx` stays only because its header is
   where the body/eyes split is explained. Also this session: the friends'
   colours moved into one shared **grey→pastel table**
   (`src/ui/friendPalettes.js`) — every trace came out of Inkscape in the
@@ -1228,7 +1228,7 @@ return 0` right after the era is worked out, so a moment before the
   so they are hers. The stable keys stay in code (the save file and the
   tests reference them); the WORDS move to `src/content/`, where she
   edits on GitHub. Individual names — 45 — have no home at all yet, since
-  a friend is still announced as "a Drifter"; T6.1a builds keyed, blank
+  a friend is still announced as "a plip"; T6.1a builds keyed, blank
   slots for both and ships them empty, per design-notes §7.
   _Also noted:_ nothing in the repo tells her where her copy lives. The
   content files explain themselves in their own headers, and AGENTS.md
@@ -1264,11 +1264,11 @@ return 0` right after the era is worked out, so a moment before the
   generic beats a species name Claude invented — it sits with "a flora
   find" and "a magazine" as functional UI wording, not story.
   **The keys stay as they are, and that is a wrinkle worth knowing.**
-  `drifter`, `nester` … remain in code as permanent internal ids: they
+  `plip`, `baluhm` … remain in code as permanent internal ids: they
   order the ladder, name the CSS animation classes and key the narration
-  slots Kimia has already been filling (`friendIntros.drifter`).
+  slots Kimia has already been filling (`friendIntros.plip`).
   Renaming them would churn her file mid-edit for no gain, so the key
-  `drifter` may well end up holding a species she calls something else
+  `plip` may well end up holding a species she calls something else
   entirely. names.js says so at the top.
   _Tests:_ ten tests across five files were asserting the drafted names
   — the exact copy-coupling that has broken CI twice. They now use
@@ -1284,7 +1284,7 @@ return 0` right after the era is worked out, so a moment before the
   §9c and CLAUDE.md all say a category refills only until its roster is
   exhausted, but `nextFriendDue` computes the next individual as
   "however many have arrived, plus one", with no ceiling — so an
-  eleventh drifter would arrive years from now, and there is no name
+  eleventh plip would arrive years from now, and there is no name
   slot for it. The roster now exists in code as `FRIEND_ROSTER` for the
   name slots to be measured against, which is the groundwork; enforcing
   it is a behaviour change to the friendship stream and wants its own
@@ -2464,16 +2464,16 @@ return 0` right after the era is worked out, so a moment before the
   spec-then-implement move already rejected. Folded into spec §5b and
   design-notes §14.
 - 2026-08-17 (Kimia's call): **the numbered archetypes are the species,
-  in exact ladder order** — friend 01 is the drifter (which she calls
-  *plip*), friend 10 the poet, and the eight between follow the literacy
+  in exact ladder order** — friend 01 is the plip (which she calls
+  *plip*), friend 10 the hamdi bulo, and the eight between follow the literacy
   ladder without a gap. Asked whether size should track the ladder, she
   confirmed the ordering she had already drawn: friend 01 smallest and
   simplest, friend 10 "the top most rare and sophisticated". This is the
   fact that lets the canon be keyed by SPECIES rather than by drawing
   number, which matters because the numbers are workbench-only and leave
   with the shelf. Folded into design-bible §9c.
-- 2026-08-17 (Kimia's call): **she would rather not use "drifter",
-  "nester" and the rest — the species have names she invented.** They
+- 2026-08-17 (Kimia's call): **she would rather not use "plip",
+  "baluhm" and the rest — the species have names she invented.** They
   already do, everywhere a player can see: T6.1a moved every name into
   `src/content/names.js` and she has filled all ten species and all 55
   individuals. What remains in the code are permanent internal ids that
@@ -2499,7 +2499,7 @@ return 0` right after the era is worked out, so a moment before the
   The workflow note in design-bible §9c had listed four axes (size,
   texture, appendages, eye count/size); asked which of them code should
   actually turn, she picked body colour alone, and confirmed it when the
-  consequence was put plainly back to her ("ten drifters are one identical
+  consequence was put plainly back to her ("ten plips are one identical
   shape in ten pastels"). Two of the four were already settled or
   impossible: **size** was spoken for by T5.3d, which fixed one size per
   species and holds everywhere; **appendages** cannot be derived by code
@@ -2511,7 +2511,7 @@ return 0` right after the era is worked out, so a moment before the
 - 2026-08-17 (design call): **a species spreads its roster evenly around
   the colour wheel, and colours repeat across species on purpose.** With
   colour carrying the whole job of telling siblings apart, the ten
-  drifters take 36° each, the nine nesters 40°, and so on; each species
+  plips take 36° each, the nine baluhms 40°, and so on; each species
   starts 18° further round than the one below it, from 40°. Uniqueness
   across all 55 was considered and rejected as fake precision — 55 hues on
   one wheel sit 6.5° apart, which nobody perceives as different, so it
@@ -2531,7 +2531,7 @@ return 0` right after the era is worked out, so a moment before the
   standing on the workbench — a colour change nobody asked for, in a task
   about something else.
 
-- 2026-08-17 (Kimia's call, seeing the first ten drifters): **the friend
+- 2026-08-17 (Kimia's call, seeing the first ten plips): **the friend
   palette is CHOSEN, not calculated — and blues and greens are mostly the
   flora's.** The even sweep round the colour wheel was rejected on sight
   for spending four of its ten colours on blues and greens, which belong
@@ -2566,7 +2566,46 @@ return 0` right after the era is worked out, so a moment before the
   brief could not have anticipated: that reaching real pastels needed a
   third dial at all.
 
-## T5.3e build notes (part 1) — the ten drifters (2026-08-17)
+- 2026-08-17 (Kimia's call, closing T5.3e): **who wears which colour is
+  DEALT, not decided.** "The colours of each friend should pick at random
+  from the existing 10 colours, with no colours ever repeating within the
+  same species. Therefore different players might get friends of different
+  colours." This replaces the fixed per-species runs shipped the same
+  morning: the palette stays shared and settled, the deal becomes personal.
+  Seeded from the world seed, so it is random across players and fixed
+  within a save — a friend never re-rolls its colour on a reload, an undo or
+  a backup restore. No sibling can repeat because a species shuffles the ten
+  and deals off the top, and no roster exceeds ten. It also ends the
+  species-by-species approval loop: there is no fixed roster of colours left
+  to show her.
+- 2026-08-17 (Kimia's ruling, correcting the previous session): **the size
+  canon holds on the workbench too — "everywhere and always" has no
+  exception for scaffolding.** The T5.3e colour shelves were built at one
+  flat card width per species, on the argument that a colour swatch asks a
+  different question than a size chart. Flagging the departure was not the
+  same as being allowed it: a page showing the cast at the wrong
+  proportions teaches the wrong proportions whatever it claims to be
+  asking. If an asset is too small to judge at its canonical share of a
+  page, the page's BASE size goes up; the ratios never bend. Folded into
+  design-bible §9c as the rule for any future shelf.
+- 2026-08-17 (Kimia's ruling): **no word her world does not use belongs
+  anywhere in Habitat — not even where only the code reads it.** The ten
+  species keys were still Claude's July drafts (drifter, nester, …), kept
+  on the argument that an internal id is nobody's reading material. There
+  is no such place: she opens these files. Every key was renamed to the
+  species' own name on N-Z-D — plip, baluhm, klupengk, zala, liwi-bi-jiji,
+  meuhy, rassatt, woigolp, chitu, hamdi-bulo — through the code, the CSS
+  animation classes, the tests and the docs. Cheap because saved games
+  store a category NUMBER, not a key, which stays true if she ever renames
+  a species. The display name in `names.js` is still separate and still
+  hers.
+- 2026-08-17 (Kimia's call): **the design-assets page is a waiting room,
+  not a gallery.** A shelf stands only while a question about that asset is
+  open, and comes down once she has answered it — every settled asset left
+  standing is another screenful between her and the one she came to look
+  at. Folded into spec §5b.
+
+## T5.3e build notes (part 1) — the ten plips (2026-08-17)
 
 - **`src/ui/friendColours.js` is the permanent home**, deliberately the
   twin of `friendCanon.js` and beside it: the canon says how big a friend
@@ -2586,18 +2625,18 @@ return 0` right after the era is worked out, so a moment before the
   its exported `FRIEND01_GREYS.ramp` is already the trace's shade list in
   paint order, which is exactly what the generator wants.
 - **The shelf shows one species, so it picks its own base size.** A
-  drifter is the smallest of the cast at 1.6rem on the cast shelf — fine
+  plip is the smallest of the cast at 1.6rem on the cast shelf — fine
   for placing it in the scale, far too small to judge ten colours on. The
-  drifters shelf therefore sets a base of 50rem (a drifter ≈ 7rem), which
+  plips shelf therefore sets a base of 50rem (a plip ≈ 7rem), which
   the canon expressly allows: the proportions bind within any ONE view,
-  and this view holds only drifters. The size is still ASKED FOR via
-  `friendSize('drifter', …)` and never typed in — that is the part of the
+  and this view holds only plips. The size is still ASKED FOR via
+  `friendSize('plip', …)` and never typed in — that is the part of the
   rule that matters, and typing "7rem" would have been the exact failure
   friendCanon.js exists to prevent.
 - **Tests.** `friendColours.test.js` holds the load-bearing line — no two
   siblings share a colour — plus the palette being at least as long as the
   largest roster (the assumption that line rests on), every colour being
-  worn by somebody, and the lone poet's roster-of-one arithmetic. Two of
+  worn by somebody, and the lone hamdi bulo's roster-of-one arithmetic. Two of
   its tests pin DESIGN boundaries rather than behaviour, on purpose, so a
   later "let's add a nice sage green" has to argue with something: at most
   two blue-or-green colours, and at least half the palette genuinely pale.
@@ -2613,7 +2652,7 @@ return 0` right after the era is worked out, so a moment before the
   needed for the screenshot).
 - **The comparison bench, built and then resolved the same day
   (2026-08-17).** Kimia asked to see her five kept colours lifted into the
-  pastels' range, so a second drifters shelf was built with only that one
+  pastels' range, so a second plips shelf was built with only that one
   thing changed — the two pastels already below the candidate's 40 were
   deliberately left alone, because a comparison in which more than one
   thing differs is not a comparison. She chose the lifted version ("that's
@@ -2625,14 +2664,14 @@ return 0` right after the era is worked out, so a moment before the
   sharing an id have the first silently supply the second's glow filter,
   invisible in a screenshot of one shelf and wrong everywhere else.
 
-## T5.3e build notes (part 2) — the nesters, and the shelf goes generic (2026-08-17)
+## T5.3e build notes (part 2) — the baluhms, and the shelf goes generic (2026-08-17)
 
 - **The second species, and the last one that needed any thinking.** With
   the palette settled, `DrifterIndividual` became `FriendIndividual` and
   the shelf `IndividualsShelf`, both driven by a `tracedFriends.js` entry
   — so a species is added by putting its key in `INDIVIDUALS_DONE` and
-  nothing else. The nesters are nine, and take colours 2–10: the
-  per-species offset means they never wear the drifters' gold.
+  nothing else. The baluhms are nine, and take colours 2–10: the
+  per-species offset means they never wear the plips' gold.
 - **`tracedFriends.js` entries now carry `greys`** (the trace's own shade
   list, plus the reconstructed `base` on the six banded traces). The three
   named tints never needed it — `palettesFor` had baked them — but the
@@ -2641,17 +2680,71 @@ return 0` right after the era is worked out, so a moment before the
   trace: the four stacked ones simply pass `undefined`, which is exactly
   what `paletteForTone` wants.
 - **These shelves are colour swatches and NOT to the size canon, flagged
-  rather than done quietly.** Every species is drawn at the same 7rem card
+  rather than done quietly.** _(OVERRULED the next day — see the
+  2026-08-17 decision above: flagging a departure from the canon is not
+  permission for it. The shelves have since been removed entirely.)_ Every species is drawn at the same 7rem card
   here, because a shelf true to the proportions would need either a
-  scholar too big for the page or a drifter too small to judge a colour
+  chitu too big for the page or a plip too small to judge a colour
   on. The canon is Kimia's "everywhere and always" rule, so the departure
   is written down in the component, in the reply to her, and here: the
   cast shelf above remains where proportions are checked, this shelf asks
   only "does this drawing wear these colours", and nothing on the
   workbench feeds the app. The four real screens still take their sizes
   from `friendCanon.js` in the task that swaps the drawings in.
-- **Still open:** the other eight species — chatter, mimic, signer,
-  sprout, neighbour, storyteller, scholar, poet. One line each now.
+- **Still open:** the other eight species — meuhy, klupengk, zala,
+  liwi bi-jiji, rassatt, woigolp, chitu, hamdi bulo. One line each now.
+
+## T5.3e build notes (part 3) — the deal, the names, and the emptying (2026-08-17)
+
+- **The deal.** `individualColour(key, individual, worldSeed)` and
+  `speciesColours(key, worldSeed)` now shuffle rather than count. One
+  Fisher-Yates pass over the ten colours, its randomness from the same
+  seeded `randomUnit` the drops use, seeded `worldSeed|friend-colour|key|i`
+  — the species is in the seed so two species in one game are not
+  colour-matched down the ladder, and `i` is in it so each swap gets its
+  own throw. Dealing off the top of one shuffled pack is what makes "no two
+  siblings" true by construction rather than by luck. The old
+  `offsetFor()` runs are gone.
+- **The tests moved from "what colour" to "what promise".** Colours are per
+  save now, so most of them ask five stand-in worlds rather than the module:
+  no sibling clashes in any of them, ten plips wearing all ten colours in
+  some order, two saves getting different hands (Kimia's "different players
+  might get different colours"), and one save getting the same hand every
+  time it is asked (the half that makes a friend recognisable).
+- **It reached the GAME, not just the workbench.** `FriendGlyph.jsx` — the
+  T4.4 placeholder line-art the Guest Book, reveal, cameo and Abode all
+  draw — used to roll its own hue anywhere on the wheel. It now asks
+  `individualColour` and paints with `toneAtLightness()`, a new one-shade
+  version of `paletteForTone` in `friendPalettes.js` for art that has no
+  ramp to re-paint. So the settled palette is live on the real screens
+  today, and swapping Kimia's drawings in later changes the shape without
+  disturbing the colour.
+- **The rename.** Ten species keys, every mention in code, CSS class,
+  test and doc. Two of them are two-word names, so their keys are
+  hyphenated and quoted — `'liwi-bi-jiji'`, `'hamdi-bulo'` — while the
+  display name on the right of `names.js` keeps its space. Two traps worth
+  recording: a blanket find-and-replace turns `const poet =` into a syntax
+  error, and — far worse — it rewrites KIMIA'S OWN WORDS, because her
+  narration legitimately calls the chitus "N-Z-D's finest poets" in plain
+  English. Her two content files were done separately, converting only what
+  sits OUTSIDE quotes, so keys and comments changed and not one word of
+  hers did.
+- **The emptying.** `DesignPage.jsx` went from nine families to two. Gone:
+  the friend eye, the nine traced archetypes, friend 10, the zala pilot,
+  the individuals' colour shelves, the night sky, the rolling planet, the
+  drop arrival and the cameo firework — each either already visible in the
+  running app or already answered. Left: the texture library and the abode
+  sky, the only two that have never been anywhere but here. About 480 lines
+  of component and 260 of CSS went with them, and a new test fails the
+  suite if a settled family creeps back on.
+- **Two superseded pilot drawings were deleted**, `src/ui/signer.jsx` and
+  `src/ui/storyteller.jsx` — hand-drawn demos from 2026-07-26, replaced by
+  friend 04 and friend 08 in the full traced cast of 2026-08-10.
+  `storyteller.jsx` had already been unimported for a week. Recoverable
+  from git if either is ever wanted back.
+- **`tracedFriends.js` survives with no reader.** It is the only record of
+  which numbered drawing is which species, so it waits for the task that
+  puts the real drawings on the four screens.
 
 ## T5.3d build notes — the size canon (2026-08-17)
 
@@ -2663,18 +2756,18 @@ return 0` right after the era is worked out, so a moment before the
   paints SVG, the same class of value as `friendPalettes.js` and the
   texture tints. constants.js is for tunable game numbers, and nothing
   here can be retuned without redrawing the character sheet.
-- **The anchor is the largest friend at 1** (the scholar, 11.5rem on the
+- **The anchor is the largest friend at 1** (the chitu, 11.5rem on the
   sheet). Every other ratio is then a fraction of the biggest, and a
   screen's base size reads as "how much room the biggest friend gets
   here" — a more natural thing for a render site to decide than an
-  abstract unit. Worth knowing: **the poet is fractionally smaller than
-  the scholar** despite topping the ladder. That is the sheet, not a bug;
+  abstract unit. Worth knowing: **the hamdi bulo is fractionally smaller than
+  the chitu** despite topping the ladder. That is the sheet, not a bug;
   §9c has always said sophistication climbs through texture, appendages
   and silhouette rather than size.
 - **Six figures, not four.** The first pass stored four decimal places
   and the pair test failed: a ratio's error is multiplied by whatever
-  base a screen picks, and the tiny drifter (0.1391) carried enough
-  relative error to throw its ratio against the nester off by 0.0007.
+  base a screen picks, and the tiny plip (0.1391) carried enough
+  relative error to throw its ratio against the baluhm off by 0.0007.
   Six figures puts every pair within a thousandth of a percent.
 - **The test is about PAIRS, and its tolerance is relative.** Kimia's
   rule is that the ten stand in the sheet's proportions, so the test
@@ -3265,7 +3358,7 @@ friendships. Decided with Kimia: a literacy milestone only OPENS the
 door — the category's first friend arrives 1–5 seeded days later;
 **repeats are allowed** (her call), each category refilling every
 20–50 seeded days after the previous arrival; friends show their
-**draft category names** ("a Drifter") until T6.1; two narration
+**draft category names** ("a plip") until T6.1; two narration
 slots per category (the momentary intro, played at the first arrival
 only, and the re-readable card text on the Guest Book popup card);
 **party mode built whole here**, since T4.4 lands before T4.5 — greyed
@@ -3885,7 +3978,7 @@ and recorded in spec.md's decisions log._
       repeats every 20–50 seeded days after the previous arrival
       (repeats allowed — Kimia's call), one friend per tap,
       earliest-due first, stored on the completion like every drop;
-      draft category names ("a Drifter") from constants until T6.1.
+      draft category names ("a plip") from constants until T6.1.
       Every arrival a neon FriendReveal (intro words from the new
       `friendIntros` slots, played at the category's FIRST arrival
       only); the Guest Book page (bare until a friend exists) with its
@@ -4094,7 +4187,7 @@ and recorded in spec.md's decisions log._
       top edge the pointer has passed — **skipping the dragged row itself**
       — and on release `handleMoveTo(habit, toId)` maps that row's id to its
       full-list position, so archived habits interleaved in `data.habits`
-      keep their places (the same neighbour trick the old ▲▼ used). No
+      keep their places (the same rassatt trick the old ▲▼ used). No
       change persists until the drop.
       BUG FIX (same session, on Kimia's report): the first cut compared by
       loop index and did NOT skip the dragged row. Because the lifted row
@@ -4184,8 +4277,8 @@ and recorded in spec.md's decisions log._
       _Done when:_ the checkpoint the sub-plan set — all ten read as one
       family, complexity visibly climbing — and that is a human judgement,
       not a test. **Kimia passed it on the eyeball test (2026-08-10).**
-      The rejected T5.3b pilot Drifter stays gone; its recipe and its
-      drift-and-bob animation stand, and the cast's Drifter is one of the
+      The rejected T5.3b pilot plip stays gone; its recipe and its
+      drift-and-bob animation stand, and the cast's plip is one of the
       ten traced bodies.
       Two rules came out of the approval rather than the build, and both
       became tasks rather than being folded in here: the size canon must

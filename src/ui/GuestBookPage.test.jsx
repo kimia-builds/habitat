@@ -21,8 +21,8 @@ afterEach(cleanup)
 // Every friend name here is a FIXTURE, never Kimia's real slot value —
 // hers are hers to rewrite, and a test that quoted them would break the
 // deploy the moment she did (src/test/nameFixture.js explains).
-const DRIFTER = 'test species name'
-const POET = 'another test species name'
+const plip = 'test species name'
+const hamdiBulo = 'another test species name'
 
 beforeEach(() => {
   // Blank EVERY slot first, then set only what this file needs. Without
@@ -30,8 +30,8 @@ beforeEach(() => {
   // individual name outranks a species name, so her real words would
   // decide the result. That is what broke the deploy on 2026-08-11.
   blankAllNames()
-  setSpeciesName('drifter', DRIFTER)
-  setSpeciesName('poet', POET)
+  setSpeciesName('plip', plip)
+  setSpeciesName('hamdi-bulo', hamdiBulo)
 })
 afterEach(restoreNames)
 
@@ -52,7 +52,7 @@ describe('the Guest Book page', () => {
       screen.getByRole('heading', { name: 'local community' }),
     ).toBeDefined()
     expect(container.querySelectorAll('p')).toHaveLength(0)
-    expect(screen.queryByRole('button', { name: DRIFTER })).toBeNull()
+    expect(screen.queryByRole('button', { name: plip })).toBeNull()
   })
 
   it('shows every friend, named by whatever name its slot holds', () => {
@@ -63,13 +63,13 @@ describe('the Guest Book page', () => {
         onBack={() => {}}
       />,
     )
-    expect(screen.getAllByRole('button', { name: DRIFTER })).toHaveLength(2)
-    expect(screen.getByRole('button', { name: POET })).toBeDefined()
+    expect(screen.getAllByRole('button', { name: plip })).toHaveLength(2)
+    expect(screen.getByRole('button', { name: hamdiBulo })).toBeDefined()
   })
 
   it("prefers a friend's own name over its species name", () => {
     // The T6.1a ladder: individual name first, species name second.
-    setIndividualName('drifter', 2, 'a named individual')
+    setIndividualName('plip', 2, 'a named individual')
     render(
       <GuestBookPage
         friends={[friend(0, 1, 'c1'), friend(0, 2, 'c2')]}
@@ -80,13 +80,13 @@ describe('the Guest Book page', () => {
     expect(
       screen.getByRole('button', { name: 'a named individual' }),
     ).toBeDefined()
-    expect(screen.getAllByRole('button', { name: DRIFTER })).toHaveLength(1)
+    expect(screen.getAllByRole('button', { name: plip })).toHaveLength(1)
   })
 
   it('shows no name at all while the slots are blank, and stays usable', () => {
     // Habitat ships this way until Kimia writes. The art carries the
     // friend; a screen reader still gets a handle on the control.
-    setSpeciesName('drifter', '')
+    setSpeciesName('plip', '')
     const { container } = render(
       <GuestBookPage
         friends={[friend(0, 1, 'c1')]}
@@ -108,21 +108,21 @@ describe('the popup card', () => {
         onBack={() => {}}
       />,
     )
-    fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
-    const card = screen.getByRole('dialog', { name: DRIFTER })
+    fireEvent.click(screen.getByRole('button', { name: plip }))
+    const card = screen.getByRole('dialog', { name: plip })
     expect(card).toBeDefined()
     // The signature category animation plays on the card's art.
-    expect(card.querySelector('.friend-anim-drifter')).not.toBeNull()
+    expect(card.querySelector('.friend-anim-plip')).not.toBeNull()
     expect(screen.getByRole('button', { name: 'close' })).toBeDefined()
     // …and its class name is the only place the animation is declared.
-    expect(container.querySelectorAll('.friend-anim-drifter')).toHaveLength(1)
+    expect(container.querySelectorAll('.friend-anim-plip')).toHaveLength(1)
   })
 
   it('shows the card text from its slot — and nothing when the slot is empty', () => {
-    const original = NARRATION.friendCards.drifter
+    const original = NARRATION.friendCards.plip
     try {
       // Whatever the slot holds is what the card shows.
-      NARRATION.friendCards.drifter = 'a written card text'
+      NARRATION.friendCards.plip = 'a written card text'
       const { unmount } = render(
         <GuestBookPage
           friends={[friend(0, 1)]}
@@ -130,12 +130,12 @@ describe('the popup card', () => {
           onBack={() => {}}
         />,
       )
-      fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
+      fireEvent.click(screen.getByRole('button', { name: plip }))
       expect(screen.getByText('a written card text')).toBeDefined()
       unmount()
 
       // Blank, the card still works — art, name and animation, no prose.
-      NARRATION.friendCards.drifter = ''
+      NARRATION.friendCards.plip = ''
       render(
         <GuestBookPage
           friends={[friend(0, 1)]}
@@ -143,17 +143,17 @@ describe('the popup card', () => {
           onBack={() => {}}
         />,
       )
-      fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
-      const card = screen.getByRole('dialog', { name: DRIFTER })
+      fireEvent.click(screen.getByRole('button', { name: plip }))
+      const card = screen.getByRole('dialog', { name: plip })
       expect(card.querySelector('.friend-card-text')).toBeNull()
-      expect(card.querySelector('.friend-anim-drifter')).not.toBeNull()
+      expect(card.querySelector('.friend-anim-plip')).not.toBeNull()
     } finally {
-      NARRATION.friendCards.drifter = original
+      NARRATION.friendCards.plip = original
     }
   })
 
   it('never shows the momentary arrival narration — the card is the only re-readable text', () => {
-    const intro = NARRATION.friendIntros.drifter
+    const intro = NARRATION.friendIntros.plip
     const original = { ...intro }
     intro.title = 'the night we met (momentary)'
     intro.line = 'played once, never re-readable'
@@ -165,7 +165,7 @@ describe('the popup card', () => {
           onBack={() => {}}
         />,
       )
-      fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
+      fireEvent.click(screen.getByRole('button', { name: plip }))
       expect(screen.queryByText('the night we met (momentary)')).toBeNull()
       expect(screen.queryByText('played once, never re-readable')).toBeNull()
     } finally {
@@ -181,10 +181,10 @@ describe('the popup card', () => {
         onBack={() => {}}
       />,
     )
-    fireEvent.click(screen.getByRole('button', { name: DRIFTER }))
+    fireEvent.click(screen.getByRole('button', { name: plip }))
     fireEvent.click(screen.getByRole('button', { name: 'close' }))
     expect(screen.queryByRole('dialog')).toBeNull()
-    expect(screen.getByRole('button', { name: DRIFTER })).toBeDefined()
+    expect(screen.getByRole('button', { name: plip })).toBeDefined()
   })
 
   it('the back button leads home', () => {

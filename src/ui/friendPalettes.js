@@ -10,7 +10,7 @@
  * WHY THIS FILE EXISTS (2026-08-10): retuning a hue used to mean editing nine
  * files and hoping they stayed consistent; now it is one edit here, and two
  * archetypes drawn in the same grey are guaranteed to land on the same pastel.
- * The values are exactly the ones the storyteller and friend-10 already wear,
+ * The values are exactly the ones the archetypes already wear,
  * so nothing on the workbench changes colour by this file existing.
  *
  * The three hues are the reward-stream pastels (expedition green, literacy
@@ -51,7 +51,7 @@ const GLOW_GREY = '#767676'
 // lands within one or two of 255 per channel of the value typed by hand.
 //
 // That matters because individuals differ ONLY by body colour (Kimia,
-// 2026-08-17), so the app needs ten drifter ramps, nine nester ramps and so on
+// 2026-08-17), so the app needs ten plip ramps, nine baluhm ramps and so on
 // — 55 in all, eight shades each. Nobody is hand-picking 440 hex values. One
 // tone in, one ramp out.
 //
@@ -92,7 +92,9 @@ function lightnessOf(grey) {
 // in order, and the modelling survives. Nothing can ever clip, because a
 // fraction of the remaining distance never arrives.
 //
-// The five colours Kimia kept sit at lift 0, so they are untouched.
+// All ten friend colours are lifted (Kimia, 2026-08-17), between 35 and 45, so
+// the cast reads as one family — see friendColours.js. A lift of 0 leaves a
+// colour exactly as the drawing's own shading has it.
 function lifted(lightness, lift) {
   return lightness + (100 - lightness) * (lift / 100)
 }
@@ -146,6 +148,21 @@ export function paletteForTone(greys, tone, baseGrey) {
   }
   if (baseGrey) palette.base = pastel(baseGrey)
   return palette
+}
+
+/**
+ * ONE tone as a single flat colour, for art that has no shade ramp to re-paint
+ * — the T4.4 placeholder line-drawings in FriendGlyph.jsx, which are one
+ * stroke colour all through. `paletteForTone` above is the same maths applied
+ * to a whole ramp; this is the one-shade version of it, so a placeholder friend
+ * and the real drawing that replaces it are lit by the same rule.
+ *
+ * `lightness` is where on the light-to-dark scale the flat colour sits before
+ * the tone's lift pales it, exactly as a ramp shade's own lightness would.
+ */
+export function toneAtLightness(tone, lightness) {
+  const { hue, saturation = TINT_SATURATION, lift = 0 } = tone
+  return hslHex(hue, saturation, lifted(lightness, lift))
 }
 
 export const TINTS = ['green', 'violet', 'amber']

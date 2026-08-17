@@ -78,7 +78,7 @@ describe('startNewGame', () => {
       ]),
       tap('c2', 200, '2026-08-02', [
         { kind: 'reading', type: 'novel', publicationId: 'p1' },
-        { kind: 'friend', category: 'drifter', individual: 0 },
+        { kind: 'friend', category: 'plip', individual: 0 },
       ]),
     ],
   })
@@ -163,7 +163,7 @@ describe('after a new game', () => {
       ]),
       tap('c2', 200, '2026-08-02', [
         { kind: 'reading', type: 'novel', publicationId: 'p1' },
-        { kind: 'friend', category: 'drifter', individual: 0 },
+        { kind: 'friend', category: 'plip', individual: 0 },
       ]),
       tap('c3', 300, '2026-08-03'),
     ],

@@ -70,21 +70,21 @@ describe('reading a slot', () => {
   afterEach(restoreNames)
 
   it('gives back what is written, trimmed', () => {
-    setSpeciesName('drifter', '  a written species name  ')
-    expect(speciesName('drifter')).toBe('a written species name')
+    setSpeciesName('plip', '  a written species name  ')
+    expect(speciesName('plip')).toBe('a written species name')
   })
 
   it('gives back null for a blank slot, so screens show nothing', () => {
-    setSpeciesName('drifter', '')
-    expect(speciesName('drifter')).toBeNull()
-    expect(individualName('drifter', 1)).toBeNull()
+    setSpeciesName('plip', '')
+    expect(speciesName('plip')).toBeNull()
+    expect(individualName('plip', 1)).toBeNull()
   })
 
   it('gives back null for a slot that does not exist', () => {
     // Belt and braces: an unknown key or an individual past the roster
     // must never throw — it simply has no name.
     expect(speciesName('nobody')).toBeNull()
-    expect(individualName('drifter', 999)).toBeNull()
+    expect(individualName('plip', 999)).toBeNull()
     expect(individualName('nobody', 1)).toBeNull()
   })
 })
@@ -94,18 +94,18 @@ describe('the display ladder', () => {
   afterEach(restoreNames)
 
   it('prefers the individual name over the species name', () => {
-    setSpeciesName('drifter', 'a species name')
-    setIndividualName('drifter', 3, 'an individual name')
-    expect(friendDisplayName('drifter', 3)).toBe('an individual name')
-    expect(friendDisplayName('drifter', 4)).toBe('a species name')
+    setSpeciesName('plip', 'a species name')
+    setIndividualName('plip', 3, 'an individual name')
+    expect(friendDisplayName('plip', 3)).toBe('an individual name')
+    expect(friendDisplayName('plip', 4)).toBe('a species name')
   })
 
   it('falls back to the species name, then to nothing at all', () => {
-    setSpeciesName('drifter', 'a species name')
-    setIndividualName('drifter', 1, '')
-    expect(friendDisplayName('drifter', 1)).toBe('a species name')
+    setSpeciesName('plip', 'a species name')
+    setIndividualName('plip', 1, '')
+    expect(friendDisplayName('plip', 1)).toBe('a species name')
 
-    setSpeciesName('drifter', '')
-    expect(friendDisplayName('drifter', 1)).toBeNull()
+    setSpeciesName('plip', '')
+    expect(friendDisplayName('plip', 1)).toBeNull()
   })
 })

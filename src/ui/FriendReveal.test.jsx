@@ -18,12 +18,12 @@ import FriendReveal from './FriendReveal.jsx'
 afterEach(cleanup)
 
 // A fixture name, never Kimia's real one (src/test/nameFixture.js).
-const DRIFTER = 'test species name'
+const plip = 'test species name'
 beforeEach(() => {
   // Wipe first: an individual name outranks a species name, so without
   // this the test would read Kimia's real words (2026-08-11).
   blankAllNames()
-  setSpeciesName('drifter', DRIFTER)
+  setSpeciesName('plip', plip)
 })
 afterEach(restoreNames)
 
@@ -48,25 +48,25 @@ describe('the friend arrival reveal', () => {
   it('always shows the art with its signature animation, the name and the button', () => {
     renderReveal()
     const dialog = screen.getByRole('dialog')
-    expect(dialog.querySelector('.friend-anim-drifter')).not.toBeNull()
-    expect(screen.getByText(DRIFTER)).toBeDefined()
+    expect(dialog.querySelector('.friend-anim-plip')).not.toBeNull()
+    expect(screen.getByText(plip)).toBeDefined()
     expect(screen.getByRole('button', { name: 'onward' })).toBeDefined()
   })
 
   it('shows no name line while the species slot is blank', () => {
     // Ships this way until Kimia writes: art, her narration, the button.
-    setSpeciesName('drifter', '')
+    setSpeciesName('plip', '')
     renderReveal()
     const dialog = screen.getByRole('dialog')
     expect(dialog.querySelector('.reveal-friend-name')).toBeNull()
-    expect(dialog.querySelector('.friend-anim-drifter')).not.toBeNull()
+    expect(dialog.querySelector('.friend-anim-plip')).not.toBeNull()
     expect(screen.getByRole('button', { name: 'onward' })).toBeDefined()
   })
 
   it('the intro words come from the slot at the category’s first arrival', () => {
-    const intro = NARRATION.friendIntros.nester
+    const intro = NARRATION.friendIntros.baluhm
     const original = { ...intro }
-    intro.title = 'a first nester arrives'
+    intro.title = 'a first baluhm arrives'
     intro.line = 'the words Kimia wrote for this moment'
     try {
       render(
@@ -77,7 +77,7 @@ describe('the friend arrival reveal', () => {
           onDismiss={() => {}}
         />,
       )
-      expect(screen.getByText('a first nester arrives')).toBeDefined()
+      expect(screen.getByText('a first baluhm arrives')).toBeDefined()
       expect(
         screen.getByText('the words Kimia wrote for this moment'),
       ).toBeDefined()
@@ -87,9 +87,9 @@ describe('the friend arrival reveal', () => {
   })
 
   it('a later friend of the same category arrives wordless, slots or no slots', () => {
-    const intro = NARRATION.friendIntros.drifter
+    const intro = NARRATION.friendIntros.plip
     const original = { ...intro }
-    intro.title = 'only the first drifter hears this'
+    intro.title = 'only the first plip hears this'
     intro.line = 'momentary words'
     try {
       render(
@@ -100,12 +100,12 @@ describe('the friend arrival reveal', () => {
           onDismiss={() => {}}
         />,
       )
-      expect(screen.queryByText('only the first drifter hears this')).toBeNull()
+      expect(screen.queryByText('only the first plip hears this')).toBeNull()
       expect(screen.queryByText('momentary words')).toBeNull()
       // …but the moment still pops: art, name, animation, button.
-      expect(screen.getByText(DRIFTER)).toBeDefined()
+      expect(screen.getByText(plip)).toBeDefined()
       expect(
-        screen.getByRole('dialog').querySelector('.friend-anim-drifter'),
+        screen.getByRole('dialog').querySelector('.friend-anim-plip'),
       ).not.toBeNull()
     } finally {
       Object.assign(intro, original)
@@ -113,7 +113,7 @@ describe('the friend arrival reveal', () => {
   })
 
   it('renders gracefully with empty slots — nothing invented', () => {
-    const intro = NARRATION.friendIntros.mimic
+    const intro = NARRATION.friendIntros.klupengk
     const original = { ...intro }
     intro.title = ''
     intro.line = ''
@@ -129,7 +129,7 @@ describe('the friend arrival reveal', () => {
       const dialog = screen.getByRole('dialog')
       expect(dialog.querySelector('.reveal-title')).toBeNull()
       expect(dialog.querySelector('.reveal-line')).toBeNull()
-      expect(dialog.querySelector('.friend-anim-mimic')).not.toBeNull()
+      expect(dialog.querySelector('.friend-anim-klupengk')).not.toBeNull()
       expect(screen.getByRole('button', { name: 'onward' })).toBeDefined()
     } finally {
       Object.assign(intro, original)

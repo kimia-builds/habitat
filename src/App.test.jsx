@@ -2099,11 +2099,11 @@ describe('friendships (T4.4)', () => {
   // (src/test/nameFixture.js explains why).
   const DRIFTER_NAME = 'test species name'
   beforeEach(() => {
-    // Wipe every slot first: the arriving friend is drifter 1, who has
+    // Wipe every slot first: the arriving friend is plip 1, who has
     // an individual name in Kimia's file, and an individual name
     // outranks a species one (2026-08-11).
     blankAllNames()
-    setSpeciesName('drifter', DRIFTER_NAME)
+    setSpeciesName('plip', DRIFTER_NAME)
   })
   afterEach(restoreNames)
 
@@ -2111,7 +2111,7 @@ describe('friendships (T4.4)', () => {
   // — never hard-code her words (the 2026-07-19 lesson). Mirror
   // FriendReveal's fallback for blank slots.
   const friendRevealName = () =>
-    narrationSlot('friendIntros.drifter.title') ?? 'a friend arrives'
+    narrationSlot('friendIntros.plip.title') ?? 'a friend arrives'
 
   // A seed where the test's tap delivers NO ordinary drop (no flora at
   // its expedition step, no reading, no fungi) — so the friend rides
@@ -2454,15 +2454,16 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
     expect(screen.queryByRole('navigation', { name: 'pages' })).toBeNull()
   })
 
-  it('the design page shows its made-asset shelves, reachable and leavable', () => {
+  it('the design page shows its waiting shelves, reachable and leavable', () => {
     seedWorld('design-seed')
     render(<App />)
     settleStartup()
     fireEvent.click(screen.getByRole('button', { name: 'design assets' }))
-    // Assets appear as they are made (2026-07-26 — no more empty
-    // placeholder tiles), so the page holds only shelves with real
-    // content: at least the texture library and the imported archetypes.
-    for (const name of ['textures — plant-like', 'friend eye', 'friend 01']) {
+    // The page is a waiting room (2026-08-17): a shelf stands only while
+    // its asset still has a question open, so what it holds is the
+    // texture library and the abode sky. DesignPage.test.jsx guards the
+    // rest of the emptying; this only proves the door still works.
+    for (const name of ['textures — plant-like', 'abode sky']) {
       expect(screen.getByRole('region', { name })).toBeDefined()
     }
     // The rail reaches this page too, and its back button leads home.
@@ -2473,7 +2474,7 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
 
   it('a big day brings a friend cameo to the list — once, then it settles away', () => {
     // Today is Thursday 2026-07-16: eight completions against it is a
-    // big day (the threshold in constants), and a Drifter arrived the
+    // big day (the threshold in constants), and a plip arrived the
     // day before, so there is a friend to celebrate.
     seedWorld('cameo-seed', {
       completions: [

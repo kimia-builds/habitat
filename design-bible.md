@@ -88,7 +88,7 @@ Stated once so no asset family has to repeat them:
   conventions differ (§7). Its **colour is the thing's own body colour**
   (revised 2026-07-25, T5.3b — reverses the earlier "one green, never
   varies"): **friends** each carry their own body colour and glow it
-  (the pilot Drifter is deep blue, §9c); friend **eyes are the one fixed
+  (the pilot plip is deep blue, §9c); friend **eyes are the one fixed
   exception** — always yellow in a dark socket, and by rule always a
   different colour from the body. (Flora & fungi colour is still their
   earlier green pending their own passes — T5.3f / T6.1.)
@@ -273,7 +273,7 @@ with every variation approved or rejected by Kimia.
 **An individual is a COLOUR (Kimia, 2026-08-17, T5.3e — this replaces the
 first list of four axes).** Two friends of a species differ by **body
 colour and nothing else**: not size, not texture, not appendages, not eye
-count. Ten drifters are one drawing in ten pastels. The reasoning is that
+count. Ten plips are one drawing in ten pastels. The reasoning is that
 the species is the creature you recognise and the colour is the one you
 met — vary the silhouette too and a species stops reading as a species.
 (Size was already spoken for: T5.3d fixed one size per species and that
@@ -313,10 +313,25 @@ friendships. Two friends of different species sharing a pastel are not
 confusable — they are different drawings at different sizes, and shape is
 what says which species. The rule that must never break is that no two
 **siblings** share one, and since no roster exceeds ten, none ever do.
-Each species takes a run of the palette starting one step further along
-than the species below it, so every colour is worn by somebody and the
-rarest friends are not dressed like the commonest. The lone poet lands on
-the last colour.
+
+**Who wears which is DEALT, not decided (Kimia, 2026-08-17 — replaces the
+fixed runs this palette shipped with the same morning).** Her rule: the
+colours of each friend pick at random from the ten, never repeating within
+a species, "therefore different players might get friends of different
+colours". The palette is shared and settled; the deal is personal. Your
+first plip is a colour that is yours, and another player's first plip is
+very likely another one.
+
+Two properties hold it together, both in `src/ui/friendColours.js`:
+
+- **Random across players, fixed within a save.** The deal is seeded from
+  the world seed, like every other surprise in Habitat, so it survives a
+  reload, an undo and a backup restore. A friend never re-rolls its
+  colour once you have met it.
+- **No sibling repeats, by construction rather than by luck.** A species
+  shuffles the whole palette and deals off the top, so its individuals are
+  the first N of a permutation. No roster exceeds ten, so the deal can
+  never run out.
 
 **A friend's colour is a hue, a strength, and a LIFT.** Lift is how far
 the colour is pulled toward white, and it had to be added (2026-08-17)
@@ -352,12 +367,12 @@ of `friendCanon.js`, guarded by `friendColours.test.js` — which holds both
 the line that no two siblings share a colour and the boundary keeping
 blues and greens with the flora.
 
-**Pilot: the Drifter (T5.3b, 2026-07-25; body art rejected
-2026-07-26).** The Drifter was assembled end-to-end first and proved
+**Pilot: the plip (T5.3b, 2026-07-25; body art rejected
+2026-07-26).** The plip was assembled end-to-end first and proved
 the recipe every archetype now follows — traced silhouette + tinted §8
 texture + the canonical eyes + body-colour glow. The recipe stands, but
 Kimia rejected the pilot's body art itself and it was removed from the
-app (no drifter source files remain); a redone Drifter joins the T5.3c
+app (no plip source files remain); a redone plip joins the T5.3c
 ladder pass. Its signature animation, the drift-and-bob (design-notes
 §8), was kept and still serves the category.
 
@@ -419,8 +434,8 @@ in `src/ui/` rather than `constants.js` under §11d's boundary — these are
 proportions of drawings, consumed only by the code that paints SVG, like the
 friend pastels and the texture tints. **The anchor is the largest friend at
 1**, so every other number is a fraction of the biggest and a screen's base
-size means "how much room the biggest friend gets here". Note the poet, top
-of the literacy ladder, is fractionally SMALLER than the scholar: on this
+size means "how much room the biggest friend gets here". Note the hamdi bulo, top
+of the literacy ladder, is fractionally SMALLER than the chitu: on this
 ladder sophistication climbs through texture, appendages and silhouette
 (below), never through size, and the character sheet is the authority on size.
 
@@ -434,7 +449,21 @@ The four screens that draw friends — Guest Book, arrival reveal, cameo,
 Abode — do NOT consult the canon yet, deliberately: they still draw the
 placeholder line-art of T4.4, so there is no archetype there to size. They
 each pick a base size and multiply in the task that swaps the real drawings
-in.
+in. (Their COLOUR is already the settled one — the placeholder line-art
+wears the dealt friend colour as of 2026-08-17, so only the shape is still
+standing in.)
+
+**THE CANON HOLDS ON THE WORKBENCH TOO (Kimia, 2026-08-17).** "Everywhere
+and always" has no exception for scaffolding. The T5.3e colour shelves were
+built at one flat card width for every species, on the argument that a
+colour swatch is asking a different question than a size chart and that a
+plip drawn a sixth the height of a chitu is too small to judge a pastel on.
+Kimia rejected the reasoning outright: a page that shows the cast at the
+wrong proportions teaches the wrong proportions, whatever it says it is
+asking. If an asset is too small to judge at its canonical share of the
+page, the base size for that page goes UP — the ratios never bend. This is
+the rule that governs any future shelf, not a note about one that has since
+been removed.
 
 **Complexity scales with size.** Larger friends are more visually
 complex, but complexity comes from **layered texture, appendages, and
@@ -446,20 +475,20 @@ analogue. Weird, not familiar-in-costume.
 
 **Ten categories** on the literacy ladder (spec §5), each with a
 **fixed roster of individuals** — population inversely tied to
-literacy, from 10 Drifters down to a single Poet:
+literacy, from 10 plips down to a single hamdi bulo:
 
 | Category (low → high literacy) | Individuals |
 | ------------------------------ | ----------- |
-| Drifters                       | 10          |
-| Nesters                        | 9           |
-| Mimics                         | 8           |
-| Signers                        | 7           |
-| Sprouts                        | 6           |
-| Chatters                       | 5           |
-| Neighbours                     | 4           |
-| Storytellers                   | 3           |
-| Scholars                       | 2           |
-| Poets                          | 1           |
+| plips                       | 10          |
+| baluhms                        | 9           |
+| klupengks                         | 8           |
+| zalas                        | 7           |
+| liwi bi-jijis                        | 6           |
+| meuhys                       | 5           |
+| rassatts                     | 4           |
+| woigolps                   | 3           |
+| chitus                       | 2           |
+| hamdi bulos                          | 1           |
 | **Total**                      | **55**      |
 
 The roster is a **cap** (2026-07-24): a category refills only until its

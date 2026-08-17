@@ -8,7 +8,7 @@
  *
  * KIMIA'S CALL (2026-08-17, T5.3e): individuals of a species differ by BODY
  * COLOUR AND NOTHING ELSE. Not size (T5.3d fixed one size per species and it
- * holds everywhere), not texture, not eye count. Ten drifters are one drawing
+ * holds everywhere), not texture, not eye count. Ten plips are one drawing
  * in ten pastels. The species is the creature you recognise; the colour is the
  * one you met. design-bible §9c is written to match.
  *
@@ -37,14 +37,29 @@
  * one of these" — so the rule it must never break is that no two SIBLINGS
  * share one, and that is what friendColours.test.js guards.
  *
- * NOT YET WIRED TO THE GAME SCREENS. The Guest Book, arrival reveal, cameo and
- * Abode still draw the T4.4 placeholder line-art, whose hue comes from a seeded
- * roll in FriendGlyph.jsx (a different hue in every new game). This file
- * replaces that roll in the task that swaps the real drawings in — the same
- * task friendCanon.js is waiting on. Until then it feeds the workbench only.
+ * WHICH FRIEND GETS WHICH COLOUR IS A ROLL OF THE DICE (Kimia, 2026-08-17,
+ * replacing the fixed runs this file shipped with that morning). Her call: "the
+ * colours of each friend should pick at random from the existing 10 colours,
+ * with no colours ever repeating within the same species — therefore different
+ * players might get friends of different colours." So the palette is settled
+ * and shared, and the DEAL is personal: your first plip is a colour that is
+ * yours, and somebody else's first plip is very likely another.
+ *
+ * HOW THE DICE ARE KEPT HONEST. The roll is seeded from the WORLD SEED, the
+ * same trick every other surprise in Habitat uses (drops.js) — so it is random
+ * across players and fixed within one game. A friend cannot change colour
+ * because you closed the tab, undid a check-in or restored a backup; the seed
+ * travels with the save and always deals the same hand.
+ *
+ * NO SIBLING EVER REPEATS, and by construction rather than by luck: a species
+ * SHUFFLES the ten colours and deals off the top, so its individuals are the
+ * first N of a permutation. No roster is bigger than ten (the plips are exactly
+ * ten and the rest are smaller), so dealing can never run out and never has to
+ * reuse a card.
  * =========================================================================== */
 
 import { FRIEND_CATEGORIES, FRIEND_ROSTER } from '../game/constants.js'
+import { randomUnit } from '../game/drops.js'
 
 /*
  * THE TEN FRIEND COLOURS, in shelf order.
@@ -95,48 +110,58 @@ const INDEX_OF = Object.fromEntries(
 )
 
 /*
- * WHICH COLOURS A SPECIES GETS. The drifters, being ten, get all ten. Every
- * other species is smaller than the palette, so it takes a RUN of it starting
- * one step further along than the species below it on the ladder, wrapping at
- * the end. Two reasons for the offset rather than "everyone takes the first
- * few": it stops the same handful of colours doing all the work while the
- * later pastels are never seen, and it means the rarest friends are not
- * dressed identically to the commonest. The lone poet lands on the last
- * colour, which feels right for the friend you meet once in five years.
+ * ONE SPECIES' SHUFFLED PACK. The ten colours dealt into this species' own
+ * order, for this one world.
  *
- * Every species' run is still contiguous and wrap-free of repeats, because no
- * roster exceeds the ten colours — which is the guarantee siblings depend on.
+ * It is a Fisher–Yates shuffle — walk the pack from the back, and swap each
+ * card with one drawn from the part not yet walked. That is the standard way
+ * to shuffle, and the one that matters here: every one of the ten! orders is
+ * equally likely, so no colour is quietly commoner than another.
+ *
+ * Its randomness comes from `randomUnit`, the same seeded dice the drops use.
+ * The seed names the world and the species, so two species in one game shuffle
+ * differently (your plips and your baluhms are not colour-matched pairs) and
+ * one species in two games shuffles differently too. `i` is in the seed as
+ * well, so each swap gets its own throw rather than the pack being turned by
+ * one number.
  */
-function offsetFor(speciesIndex) {
-  return speciesIndex % FRIEND_COLOURS.length
+function shuffledPack(key, worldSeed) {
+  const pack = [...FRIEND_COLOURS]
+  for (let i = pack.length - 1; i > 0; i--) {
+    const j = Math.floor(
+      randomUnit(`${worldSeed}|friend-colour|${key}|${i}`) * (i + 1),
+    )
+    ;[pack[i], pack[j]] = [pack[j], pack[i]]
+  }
+  return pack
 }
 
 /**
- * The colour this individual wears — `{ name, hue, saturation }`.
+ * The colour this individual wears — `{ name, hue, saturation, lift }`.
  *
- * `key`        the species key ('drifter', 'nester', …)
+ * `key`        the species key ('plip', 'baluhm', …)
  * `individual` which one of that species, 1-based — the same numbering the
  *              game uses (src/game/friends.js: individual = arrival order)
+ * `worldSeed`  this save's seed, so the deal is this player's own
  *
- * An unknown species falls back to the ladder's first slot, and an individual
- * past the roster wraps back onto an earlier sibling's colour. Both are bugs
- * elsewhere if they happen (the roster is capped in the game), but a friend in
- * a repeated colour is a far better failure than one with no colour at all.
+ * An unknown species still gets a colour (it shuffles under its own name), and
+ * an individual past the roster wraps back onto an earlier sibling's colour.
+ * Both are bugs elsewhere if they happen (the roster is capped in the game),
+ * but a friend in a repeated colour is a far better failure than one with no
+ * colour at all.
  */
-export function individualColour(key, individual) {
-  const speciesIndex = INDEX_OF[key] ?? 0
-  const slot = offsetFor(speciesIndex) + (individual - 1)
-  return FRIEND_COLOURS[
-    ((slot % FRIEND_COLOURS.length) + FRIEND_COLOURS.length) %
-      FRIEND_COLOURS.length
-  ]
+export function individualColour(key, individual, worldSeed) {
+  const pack = shuffledPack(key, worldSeed)
+  const slot = individual - 1
+  return pack[((slot % pack.length) + pack.length) % pack.length]
 }
 
 /**
  * Every colour of a species, in arrival order — for anything that shows a
- * whole roster at once, like the workbench shelf.
+ * whole roster at once. Because it is the top of one shuffled pack, no two of
+ * them can be the same colour.
  */
-export function speciesColours(key) {
+export function speciesColours(key, worldSeed) {
   const roster = FRIEND_ROSTER[INDEX_OF[key] ?? 0]
-  return Array.from({ length: roster }, (_, i) => individualColour(key, i + 1))
+  return shuffledPack(key, worldSeed).slice(0, roster)
 }
