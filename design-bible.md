@@ -328,8 +328,16 @@ dusty rose — right arithmetic, wrong colour. Lift moves each shade a
 which is what keeps it safe: a flat amount would push the top of the ramp
 past white, clipping several shades to the same solid tone and flattening
 the modelling; a fraction never arrives, so every shade stays distinct and
-in order at any lift. **The five kept colours sit at lift 0** and are
-therefore pixel-for-pixel what she approved.
+in order at any lift.
+
+**Everybody is lifted (Kimia, 2026-08-17, choosing between two benches).**
+Her five kept colours first stood at lift 0, which left the palette
+reading as two weights — five vivid friends beside five pale ones. Shown
+both versions side by side, she took the one where **all ten are lifted**,
+so the cast reads as one family; the five keep their hues and strengths
+untouched. The band is **35–45 and deliberately not uniform**, set per
+colour by eye, because a soft lilac and a pastel peach need different
+pushes to look like they belong together.
 
 **Where a body colour comes from.** The 24 hand-written pastels in
 `src/ui/friendPalettes.js` turned out (T5.3e) to be a single formula

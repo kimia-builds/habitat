@@ -61,8 +61,16 @@ import { FRIEND_CATEGORIES, FRIEND_ROSTER } from '../game/constants.js'
  * distance to white, which pales the body without ever clipping, so the
  * modelling Kimia drew survives intact (the maths is in friendPalettes.js).
  *
- * The five she kept sit at lift 0 and are therefore untouched, exactly the
- * colours she approved on the first shelf.
+ * EVERYBODY IS LIFTED (Kimia, 2026-08-17 — the last of three passes). The five
+ * she kept first stood at lift 0, which left the palette reading as two
+ * weights: five vivid friends and five pale ones. Shown both versions side by
+ * side on the workbench, she took the one where her five are lifted too, so
+ * the ten read as one family. Their hues and strengths are untouched — only
+ * the lift moved.
+ *
+ * The band is 35 to 45, and it is deliberately NOT uniform: a soft lilac and a
+ * pastel peach do not need the same push to look like they belong together, so
+ * each was set by eye.
  *
  * WHY SO FEW BLUES AND GREENS (Kimia, 2026-08-17): those tones are mostly
  * reserved for the flora palette. What survives is one teal, one baby blue and
@@ -70,38 +78,17 @@ import { FRIEND_CATEGORIES, FRIEND_ROSTER } from '../game/constants.js'
  * friend with a plant.
  */
 export const FRIEND_COLOURS = [
-  { name: 'gold', hue: 40, saturation: 60, lift: 0 }, // kept — was colour 1
+  { name: 'gold', hue: 40, saturation: 60, lift: 40 },
   { name: 'soft lilac', hue: 285, saturation: 35, lift: 35 },
   { name: 'pastel peach', hue: 26, saturation: 55, lift: 45 },
   { name: 'baby pink', hue: 350, saturation: 50, lift: 45 },
-  { name: 'teal', hue: 184, saturation: 60, lift: 0 }, // kept — was colour 5
+  { name: 'teal', hue: 184, saturation: 60, lift: 40 },
   { name: 'pale grey', hue: 225, saturation: 8, lift: 35 },
-  { name: 'violet', hue: 256, saturation: 60, lift: 0 }, // kept — was colour 7
+  { name: 'violet', hue: 256, saturation: 60, lift: 40 },
   { name: 'baby blue', hue: 202, saturation: 45, lift: 40 },
-  { name: 'magenta', hue: 328, saturation: 60, lift: 0 }, // kept — was colour 9
-  { name: 'red', hue: 4, saturation: 60, lift: 0 }, // kept — was colour 10
+  { name: 'magenta', hue: 328, saturation: 60, lift: 40 },
+  { name: 'red', hue: 4, saturation: 60, lift: 40 },
 ]
-
-/*
- * A CANDIDATE, NOT THE PALETTE (2026-08-17, Kimia: "just wanna test how it
- * looks"). The approved palette above reads as two weights — her five kept
- * colours at full strength and no lift, the five pastels pale. This is the
- * same ten with the five originals lifted into the pastels' range, to see
- * whether the set reads better as ONE family.
- *
- * Only the five at lift 0 are touched. The pastels are left exactly as they
- * are, including the two sitting at 35 rather than 40 — nudging those would
- * mean the two benches differed in more than the one thing being tested, and
- * the comparison would stop being a comparison.
- *
- * TEMPORARY. It leaves with the second shelf when Kimia decides: either the
- * lifted values move into FRIEND_COLOURS above and this goes, or it goes.
- */
-export const FAMILY_LIFT = 40
-
-export const FRIEND_COLOURS_LIFTED = FRIEND_COLOURS.map((colour) =>
-  colour.lift === 0 ? { ...colour, lift: FAMILY_LIFT } : colour,
-)
 
 const INDEX_OF = Object.fromEntries(
   FRIEND_CATEGORIES.map(({ key }, i) => [key, i]),
@@ -152,14 +139,4 @@ export function individualColour(key, individual) {
 export function speciesColours(key) {
   const roster = FRIEND_ROSTER[INDEX_OF[key] ?? 0]
   return Array.from({ length: roster }, (_, i) => individualColour(key, i + 1))
-}
-
-/**
- * The same roster in the lifted candidate above — for the comparison shelf
- * only. TEMPORARY, and it leaves when Kimia decides.
- */
-export function speciesColoursLifted(key) {
-  return speciesColours(key).map(
-    (colour) => FRIEND_COLOURS_LIFTED[FRIEND_COLOURS.indexOf(colour)],
-  )
 }

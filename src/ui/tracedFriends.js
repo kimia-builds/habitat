@@ -79,6 +79,12 @@ function entry(num, mod) {
     label: `friend ${num}`,
     viewBox: mod[`${U}_VIEWBOX`],
     palettes: mod[`${U}_PALETTES`],
+    // The trace's OWN greys — its shade list in paint order, plus the
+    // reconstructed darkest `base` on the six banded traces that needed one.
+    // The three named tints don't need this (palettesFor already baked them),
+    // but the individuals do: their colours are generated per friend from a
+    // tone, and `paletteForTone` needs the greys to generate FROM.
+    greys: mod[`${U}_GREYS`],
     Body: mod[`${C}Body`],
     BodyDefs: mod[`${C}BodyDefs`],
     Eyes: mod[`${C}Eyes`],

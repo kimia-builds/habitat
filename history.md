@@ -2611,24 +2611,47 @@ return 0` right after the era is worked out, so a moment before the
   overlay. Verified in the browser as well (the shelf sits at the foot of
   a long page, so the CLAUDE.md trick of hiding the shelves above it was
   needed for the screenshot).
-- **A second bench, awaiting a verdict (2026-08-17, Kimia: "just wanna
-  test how it looks").** The approved palette reads as two weights — her
-  five kept colours vivid, the five pastels pale — so the workbench now
-  carries a SECOND drifters shelf with the five originals lifted to 40 and
-  the pastels untouched. `FRIEND_COLOURS_LIFTED` and `speciesColoursLifted`
-  are explicitly TEMPORARY: either the lifted values move into
-  FRIEND_COLOURS and the candidate goes, or the candidate goes. Only the
-  five at lift 0 are raised — the two pastels sitting at 35 were left
-  there deliberately, because a comparison in which more than one thing
-  differs is not a comparison. Its test asserts exactly that, plus that
-  every swatch's SVG ids stay unique across the page (two shelves of the
-  same drawing are the first thing on this workbench that could collide
-  and silently share a glow filter).
-- **Still open:** the other nine species. The recipe is general — nothing
-  in `friendHues.js` or `paletteForHue` is drifter-specific — so they are
-  a shelf each once Kimia has judged this one. Per the standing rule about
-  showing design one slice at a time, the roster was NOT built out for all
-  55 before she has seen ten.
+- **The comparison bench, built and then resolved the same day
+  (2026-08-17).** Kimia asked to see her five kept colours lifted into the
+  pastels' range, so a second drifters shelf was built with only that one
+  thing changed — the two pastels already below the candidate's 40 were
+  deliberately left alone, because a comparison in which more than one
+  thing differs is not a comparison. She chose the lifted version ("that's
+  fire"), so `FRIEND_COLOURS_LIFTED`, `speciesColoursLifted`, `FAMILY_LIFT`
+  and the second shelf are all gone, and the lifted values are simply what
+  `FRIEND_COLOURS` says. What survives of it is one test — that every
+  swatch on the page owns its SVG ids — which the bench exposed as a real
+  risk the moment a second copy of the same drawing appeared: two swatches
+  sharing an id have the first silently supply the second's glow filter,
+  invisible in a screenshot of one shelf and wrong everywhere else.
+
+## T5.3e build notes (part 2) — the nesters, and the shelf goes generic (2026-08-17)
+
+- **The second species, and the last one that needed any thinking.** With
+  the palette settled, `DrifterIndividual` became `FriendIndividual` and
+  the shelf `IndividualsShelf`, both driven by a `tracedFriends.js` entry
+  — so a species is added by putting its key in `INDIVIDUALS_DONE` and
+  nothing else. The nesters are nine, and take colours 2–10: the
+  per-species offset means they never wear the drifters' gold.
+- **`tracedFriends.js` entries now carry `greys`** (the trace's own shade
+  list, plus the reconstructed `base` on the six banded traces). The three
+  named tints never needed it — `palettesFor` had baked them — but the
+  individuals generate their palettes from a tone, so they need the greys
+  to generate FROM. Passing `greys.base` through covers both kinds of
+  trace: the four stacked ones simply pass `undefined`, which is exactly
+  what `paletteForTone` wants.
+- **These shelves are colour swatches and NOT to the size canon, flagged
+  rather than done quietly.** Every species is drawn at the same 7rem card
+  here, because a shelf true to the proportions would need either a
+  scholar too big for the page or a drifter too small to judge a colour
+  on. The canon is Kimia's "everywhere and always" rule, so the departure
+  is written down in the component, in the reply to her, and here: the
+  cast shelf above remains where proportions are checked, this shelf asks
+  only "does this drawing wear these colours", and nothing on the
+  workbench feeds the app. The four real screens still take their sizes
+  from `friendCanon.js` in the task that swaps the drawings in.
+- **Still open:** the other eight species — chatter, mimic, signer,
+  sprout, neighbour, storyteller, scholar, poet. One line each now.
 
 ## T5.3d build notes — the size canon (2026-08-17)
 

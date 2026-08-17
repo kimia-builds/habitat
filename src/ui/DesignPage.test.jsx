@@ -86,90 +86,65 @@ describe('DesignPage workbench', () => {
     expect(labels).toEqual(['signer, green', 'signer, violet', 'signer, amber'])
   })
 
-  // T5.3e — the ten drifters. The claim being tested is Kimia's rule that
-  // individuals differ by COLOUR ALONE: same drawing, same size, same eyes,
-  // ten different bodies. So the test checks the roster is all there, that
-  // every one of them is a different colour, and that nothing else moved.
-  it('shows all ten drifters, each a different colour and all one size', () => {
-    render(<DesignPage onBack={vi.fn()} />)
-    const shelf = screen.getByLabelText('the ten drifters')
-    const swatches = [...shelf.querySelectorAll('[role="img"]')]
-    expect(swatches).toHaveLength(10)
+  // T5.3e — the individuals, one shelf per species. The claim being tested is
+  // Kimia's rule that individuals differ by COLOUR ALONE: same drawing, same
+  // size, same eyes, different bodies. Driven by the species list so adding
+  // the next one needs no new test, only a new row here.
+  const INDIVIDUALS = [
+    { species: 'drifter', num: '01', roster: 10 },
+    { species: 'nester', num: '02', roster: 9 },
+  ]
 
-    // Every individual of the species, numbered the way the game numbers them
-    // (src/game/friends.js: individual = arrival order, 1-based).
-    expect(swatches.map((img) => img.getAttribute('aria-label'))).toEqual(
-      Array.from({ length: 10 }, (_, i) => `drifter ${i + 1}`),
-    )
+  it.each(INDIVIDUALS)(
+    'shows every $species, each a different colour and all one size',
+    ({ species, num, roster }) => {
+      render(<DesignPage onBack={vi.fn()} />)
+      const shelf = screen.getByLabelText(`the ${species}s`)
+      const swatches = [...shelf.querySelectorAll('[role="img"]')]
 
-    // ONE SIZE. T5.3d fixed a size per species and T5.3e does not vary it, so
-    // ten identical widths is the assertion — not ten particular widths, which
-    // would just pin this shelf's own base size.
-    const widths = new Set(swatches.map((img) => img.style.width))
-    expect(widths.size).toBe(1)
-
-    // TEN COLOURS. Each swatch's body layers carry that individual's ramp, so
-    // two drifters sharing a fill would mean two friends nobody can tell
-    // apart. The glow path is skipped: it is the same shade of the same hue.
-    const bodies = swatches.map((img) =>
-      [...img.querySelectorAll('svg')[0].querySelectorAll('path')]
-        .slice(1)
-        .map((p) => p.getAttribute('fill'))
-        .join('|'),
-    )
-    expect(new Set(bodies).size).toBe(10)
-
-    // And the drawing itself is untouched: the drifter archetype's two
-    // canonical eyes, still blinking in their own overlay.
-    for (const swatch of swatches) {
-      const [body, eyes] = swatch.querySelectorAll('svg')
-      expect(body.querySelectorAll('.friend-eye-blink')).toHaveLength(0)
-      expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(
-        EYE_COUNTS['01'],
+      // The species' whole roster, numbered the way the game numbers them
+      // (src/game/friends.js: individual = arrival order, 1-based).
+      expect(swatches.map((img) => img.getAttribute('aria-label'))).toEqual(
+        Array.from({ length: roster }, (_, i) => `${species} ${i + 1}`),
       )
-    }
-  })
 
-  // TEMPORARY (2026-08-17) — the comparison bench, which goes when Kimia
-  // decides for or against the lifted candidate. The point of the shelf is
-  // that it differs from the one above in exactly one way, so that is what is
-  // tested: same ten friends, every one of them paler.
-  it('shows a second bench of ten drifters, all lighter than the first', () => {
+      // ONE SIZE. T5.3d fixed a size per species and T5.3e does not vary it,
+      // so identical widths is the assertion — not particular widths, which
+      // would just pin this shelf's own swatch size.
+      expect(new Set(swatches.map((img) => img.style.width)).size).toBe(1)
+
+      // A COLOUR EACH. Two siblings sharing a body ramp would be two friends
+      // nobody can tell apart. The first path is skipped: it is the glow.
+      const bodies = swatches.map((img) =>
+        [...img.querySelectorAll('svg')[0].querySelectorAll('path')]
+          .slice(1)
+          .map((p) => p.getAttribute('fill'))
+          .join('|'),
+      )
+      expect(new Set(bodies).size).toBe(roster)
+
+      // And the drawing itself is untouched: the archetype's own eye count,
+      // still blinking in its own overlay.
+      for (const swatch of swatches) {
+        const [body, eyes] = swatch.querySelectorAll('svg')
+        expect(body.querySelectorAll('.friend-eye-blink')).toHaveLength(0)
+        expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(
+          EYE_COUNTS[num],
+        )
+      }
+    },
+  )
+
+  // Every swatch on the page carries its own SVG filter and gradient ids. Two
+  // sharing one would have the first silently supply the second's glow — which
+  // is invisible in a screenshot of a single shelf and wrong everywhere else.
+  it('gives every swatch on the page its own SVG ids', () => {
     render(<DesignPage onBack={vi.fn()} />)
-    const plain = screen.getByLabelText('the ten drifters')
-    const lifted = screen.getByLabelText('the ten drifters, everyone lifted')
-    const swatchesOf = (shelf) => [...shelf.querySelectorAll('[role="img"]')]
-    expect(swatchesOf(lifted)).toHaveLength(10)
-
-    // Every swatch's own SVG ids must be unique across the page, or one shelf
-    // silently borrows the other's glow filter.
     const ids = [...document.querySelectorAll('.traced-swatch [id]')].map(
       (el) => el.id,
     )
+    expect(ids.length).toBeGreaterThan(0)
     expect(new Set(ids).size).toBe(ids.length)
-
-    // The mid shade of each body, which is where a lift shows most plainly.
-    const midTone = (img) =>
-      img
-        .querySelectorAll('svg')[0]
-        .querySelectorAll('path')[4]
-        .getAttribute('fill')
-    const brightness = (hex) =>
-      [1, 3, 5].reduce((sum, i) => sum + parseInt(hex.slice(i, i + 2), 16), 0)
-
-    swatchesOf(plain).forEach((img, i) => {
-      const before = midTone(img)
-      const after = midTone(swatchesOf(lifted)[i])
-      // The five Kimia kept get lighter; the five pastels are deliberately
-      // untouched, so "no darker, and lighter for some" is the honest claim.
-      expect(brightness(after)).toBeGreaterThanOrEqual(brightness(before))
-    })
-
-    // …and the five that were at no lift really did move.
-    const moved = swatchesOf(plain).filter(
-      (img, i) => midTone(img) !== midTone(swatchesOf(lifted)[i]),
-    )
-    expect(moved).toHaveLength(5)
   })
 
   it('shows friend 10 in three tints with two blinking eyes each', () => {

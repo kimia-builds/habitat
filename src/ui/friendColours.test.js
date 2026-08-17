@@ -1,11 +1,8 @@
 import { describe, test, expect } from 'vitest'
 import {
   FRIEND_COLOURS,
-  FRIEND_COLOURS_LIFTED,
-  FAMILY_LIFT,
   individualColour,
   speciesColours,
-  speciesColoursLifted,
 } from './friendColours.js'
 import { FRIEND_CATEGORIES, FRIEND_ROSTER } from '../game/constants.js'
 
@@ -54,14 +51,6 @@ describe('the friend palette', () => {
     expect(blueOrGreen.length).toBeLessThanOrEqual(2)
   })
 
-  // The pastels are the point of the second pass: a palette that cannot reach
-  // a light colour has no baby pink in it, only a dusty rose. At least half
-  // the palette must be genuinely pale.
-  test('is half pastels, not ten vivid ones', () => {
-    const pastel = FRIEND_COLOURS.filter((c) => c.lift >= 30)
-    expect(pastel.length).toBeGreaterThanOrEqual(5)
-  })
-
   // The five Kimia kept from the first shelf, in the slots she numbered them
   // by, so "colour 7" keeps meaning what it meant when she said it.
   test('keeps the five she chose, in their original slots', () => {
@@ -70,52 +59,22 @@ describe('the friend palette', () => {
     expect(FRIEND_COLOURS[6].name).toBe('violet')
     expect(FRIEND_COLOURS[8].name).toBe('magenta')
     expect(FRIEND_COLOURS[9].name).toBe('red')
-    // Kept means KEPT: full strength and no lift, so they are pixel-for-pixel
-    // the five she approved on the first shelf.
+    // Their hue and strength are hers. Their LIFT is not pinned here: she
+    // later chose to lift them with everyone else, and the family test below
+    // is what holds that.
     for (const i of [0, 4, 6, 8, 9]) {
       expect(FRIEND_COLOURS[i].saturation).toBe(60)
-      expect(FRIEND_COLOURS[i].lift).toBe(0)
-    }
-  })
-})
-
-// TEMPORARY (2026-08-17) — these go when Kimia decides for or against the
-// lifted candidate. They exist because the comparison is only worth looking at
-// if exactly ONE thing differs between the two shelves.
-describe('the lifted candidate', () => {
-  test('changes nothing but the lift', () => {
-    FRIEND_COLOURS.forEach((colour, i) => {
-      const lifted = FRIEND_COLOURS_LIFTED[i]
-      expect(lifted.name).toBe(colour.name)
-      expect(lifted.hue).toBe(colour.hue)
-      expect(lifted.saturation).toBe(colour.saturation)
-    })
-  })
-
-  test('lifts the five originals and leaves the pastels alone', () => {
-    FRIEND_COLOURS.forEach((colour, i) => {
-      const lifted = FRIEND_COLOURS_LIFTED[i]
-      if (colour.lift === 0) {
-        expect(lifted.lift).toBe(FAMILY_LIFT)
-      } else {
-        // Untouched, including the two pastels below FAMILY_LIFT: nudging
-        // those would make the two shelves differ in more than the one thing
-        // being judged.
-        expect(lifted.lift).toBe(colour.lift)
-      }
-    })
-  })
-
-  test('leaves nobody at no lift at all', () => {
-    for (const colour of FRIEND_COLOURS_LIFTED) {
-      expect(colour.lift).toBeGreaterThan(0)
     }
   })
 
-  test('hands out the same roster, in the same order', () => {
-    const plain = speciesColours('drifter').map((c) => c.name)
-    expect(speciesColoursLifted('drifter').map((c) => c.name)).toEqual(plain)
-    expect(speciesColoursLifted('poet')).toHaveLength(1)
+  // ONE FAMILY (Kimia, 2026-08-17, choosing between two benches). Nobody sits
+  // at no lift any more: a single unlifted colour would stand out as vivid
+  // against nine pale ones, which is the split she rejected.
+  test('is one family — every colour lifted, none of them starkly', () => {
+    for (const colour of FRIEND_COLOURS) {
+      expect(colour.lift).toBeGreaterThanOrEqual(35)
+      expect(colour.lift).toBeLessThanOrEqual(45)
+    }
   })
 })
 

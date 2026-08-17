@@ -45,15 +45,7 @@ import {
   SHELF_BASE_REM,
 } from './tracedFriends.js'
 import { friendSize } from './friendCanon.js'
-import {
-  Friend01Body,
-  Friend01BodyDefs,
-  Friend01Eyes,
-  EyeDefs as Friend01EyeDefs,
-  FRIEND01_VIEWBOX,
-  FRIEND01_GREYS,
-} from './friend01.jsx'
-import { speciesColours, speciesColoursLifted } from './friendColours.js'
+import { speciesColours } from './friendColours.js'
 import { paletteForTone } from './friendPalettes.js'
 
 // The §8 texture families, in the order the design bible lists them, so
@@ -295,45 +287,49 @@ function TracedFriendSwatch({ friend, tint }) {
   )
 }
 
-// THE TEN DRIFTERS (T5.3e, 2026-08-17) — the first species to get its whole
-// roster, and the proof of what an "individual" is in Habitat.
+// A SPECIES AND ITS INDIVIDUALS (T5.3e, 2026-08-17).
 //
-// Kimia's call (2026-08-17): individuals of a species differ by BODY COLOUR and
-// nothing else. So this is friend01 — the drifter archetype — drawn ten times
-// from the one drawing, wearing the ten colours of friendColours.js. Same
-// silhouette, same texture, same two eyes, same size.
+// Kimia's call: individuals of a species differ by BODY COLOUR and nothing
+// else. So a shelf is one archetype drawing repeated across its roster —
+// same silhouette, same texture, same eyes, same size — wearing the colours
+// friendColours.js hands that species. The drifters came first and wear the
+// whole palette (theirs is the only roster as long as it is), which is why
+// that shelf is where the colours themselves were judged.
 //
-// The drifters are the species that wears the WHOLE palette, being the only
-// roster as long as it is, so this shelf doubles as the palette's own swatch
-// card — which is why it is the one Kimia judges the colours on.
-//
-// SIZE, AND WHY THIS SHELF LOOKS BIGGER THAN THE CAST SHELF ABOVE. The drifter
-// is the smallest of the ten at 1.6rem on the cast shelf — big enough to place
-// it in the scale, far too small to judge ten colours on. This shelf therefore
-// picks a much larger base size of its own, exactly as the canon allows a
-// screen to (friendCanon.js): the ten species stand in the sheet's proportions
-// within any ONE view, and this view holds only drifters, so there is nothing
-// here for a drifter to out-size. The size is still ASKED FOR, never typed in
-// — that is the part of the rule that matters.
-const DRIFTER_SHELF_BASE_REM = 50 // → a drifter about 7rem wide
+// SIZE: THESE ARE COLOUR SWATCHES, NOT THE SCALE. Every species is drawn at
+// the same card width here, which is deliberately NOT the canon's proportions
+// — a drifter is a sixth of a scholar, so a shelf true to the scale would show
+// either a scholar that does not fit the page or a drifter too small to judge
+// a colour on. The question this shelf asks is "does this drawing wear these
+// colours", and the cast shelf above it is where proportions are checked and
+// where friendCanon.js is consulted. Nothing here feeds the app: when the real
+// drawings reach the Guest Book, the reveal, the cameo and the Abode, those
+// screens each pick a base size and multiply by the canon, exactly as
+// friendCanon.js says. (Flagged to Kimia 2026-08-17 rather than done quietly,
+// since "the canon holds everywhere and always" is her rule.)
+const INDIVIDUAL_SWATCH_REM = 7
 
-// `variant` keeps the two shelves apart in two ways that both matter: it makes
-// each swatch's SVG filter and gradient ids unique (two shelves sharing an id
-// would have one silently borrow the other's glow), and it distinguishes the
-// accessible labels, so "drifter 3" and "drifter 3, lifted" are separate things
-// on the page.
-function DrifterIndividual({ individual, colour, variant = '' }) {
-  const prefix = `drifter-${variant}${individual}-`
-  const label = variant
-    ? `drifter ${individual}, lifted`
-    : `drifter ${individual}`
-  const box = `0 0 ${FRIEND01_VIEWBOX.w} ${FRIEND01_VIEWBOX.h}`
-  // The trace's own greys, re-coloured into this individual's tone. friend01
-  // is a stacked trace, so there is no reconstructed base shade to carry.
-  const palette = paletteForTone(FRIEND01_GREYS.ramp, colour)
+function FriendIndividual({ friend, individual, colour }) {
+  // The species key rather than the drawing number, so the ids stay right when
+  // the numbered shelf leaves — and unique per shelf, since two swatches
+  // sharing an id would have one silently borrow the other's glow filter.
+  const prefix = `${friend.species}-${individual}-`
+  const {
+    Body,
+    BodyDefs,
+    Eyes,
+    EyeDefs: FriendEyeDefs,
+    viewBox,
+    greys,
+  } = friend
+  const box = `0 0 ${viewBox.w} ${viewBox.h}`
+  // The trace's own greys re-coloured into this individual's tone. `greys.base`
+  // is the reconstructed darkest shade the six banded traces carry and the
+  // four stacked ones do not — passing undefined for those is exactly right.
+  const palette = paletteForTone(greys.ramp, colour, greys.base)
   const shape = {
-    width: `${friendSize('drifter', DRIFTER_SHELF_BASE_REM)}rem`,
-    aspectRatio: `${FRIEND01_VIEWBOX.w} / ${FRIEND01_VIEWBOX.h}`,
+    width: `${INDIVIDUAL_SWATCH_REM}rem`,
+    aspectRatio: `${viewBox.w} / ${viewBox.h}`,
   }
   return (
     <li className="traced-swatch" style={{ width: shape.width }}>
@@ -341,19 +337,19 @@ function DrifterIndividual({ individual, colour, variant = '' }) {
         className="traced-swatch-art"
         style={shape}
         role="img"
-        aria-label={label}
+        aria-label={`${friend.species} ${individual}`}
       >
         <svg className="traced-swatch-layer" viewBox={box} aria-hidden="true">
           <defs>
-            <Friend01BodyDefs prefix={prefix} />
+            <BodyDefs prefix={prefix} />
           </defs>
-          <Friend01Body palette={palette} prefix={prefix} />
+          <Body palette={palette} prefix={prefix} />
         </svg>
         <svg className="traced-swatch-layer" viewBox={box} aria-hidden="true">
           <defs>
-            <Friend01EyeDefs prefix={prefix} />
+            <FriendEyeDefs prefix={prefix} />
           </defs>
-          <Friend01Eyes prefix={prefix} />
+          <Eyes prefix={prefix} />
         </svg>
       </div>
       {/* Numbered AND named: Kimia picks colours out by number ("keep 1, 5, 7,
@@ -363,6 +359,37 @@ function DrifterIndividual({ individual, colour, variant = '' }) {
         {individual}. {colour.name}
       </span>
     </li>
+  )
+}
+
+// WHICH SPECIES HAVE HAD THEIR INDIVIDUALS DONE, in ladder order. This list is
+// the whole of what "doing the next species" means: add its key, and the
+// drawing, the roster length and the colours all already know what to do.
+// Kimia approves each shelf before the next is added (design-bible §9c), so it
+// grows one species at a time rather than all ten at once.
+const INDIVIDUALS_DONE = ['drifter', 'nester'].map((species) =>
+  TRACED_FRIENDS.find((friend) => friend.species === species),
+)
+
+// One shelf per species that has had its individuals done.
+function IndividualsShelf({ friend }) {
+  const colours = speciesColours(friend.species)
+  return (
+    <section className="design-family" aria-label={`the ${friend.species}s`}>
+      <h3>
+        the {colours.length} {friend.species}s
+      </h3>
+      <ul className="traced-swatches">
+        {colours.map((colour, i) => (
+          <FriendIndividual
+            key={i}
+            friend={friend}
+            individual={i + 1}
+            colour={colour}
+          />
+        ))}
+      </ul>
+    </section>
   )
 }
 
@@ -588,37 +615,13 @@ function DesignPage({ onBack }) {
           drawing in ten colours. The first answer to "what makes two friends
           of a species different"; the other nine species follow the same
           recipe once Kimia has judged this one. */}
-      <section className="design-family" aria-label="the ten drifters">
-        <h3>the ten drifters</h3>
-        <ul className="traced-swatches">
-          {speciesColours('drifter').map((colour, i) => (
-            <DrifterIndividual key={i} individual={i + 1} colour={colour} />
-          ))}
-        </ul>
-      </section>
-
-      {/* THE COMPARISON BENCH (2026-08-17, Kimia: "just wanna test how it
-          looks") — the same ten with her five originals lifted into the
-          pastels' range, to see whether the set reads better as one family.
-          The pastels are untouched, so the ONLY difference between the two
-          shelves is the thing being judged. Temporary: it leaves with the
-          candidate when she decides. */}
-      <section
-        className="design-family"
-        aria-label="the ten drifters, everyone lifted"
-      >
-        <h3>the ten drifters — everyone lifted</h3>
-        <ul className="traced-swatches">
-          {speciesColoursLifted('drifter').map((colour, i) => (
-            <DrifterIndividual
-              key={i}
-              individual={i + 1}
-              colour={colour}
-              variant="lifted-"
-            />
-          ))}
-        </ul>
-      </section>
+      {/* The individuals, one shelf per species that has been done (T5.3e).
+          Each is its archetype repeated across its roster in the colours
+          friendColours.js hands it. The list grows by one entry per species
+          as Kimia approves them. */}
+      {INDIVIDUALS_DONE.map((friend) => (
+        <IndividualsShelf key={friend.species} friend={friend} />
+      ))}
 
       <button className="pebble" onClick={onBack}>
         ← back to the habits

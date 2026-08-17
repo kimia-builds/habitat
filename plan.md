@@ -149,19 +149,17 @@ tracker. Everything after this is delight, informed by real use.
             (T5.3d fixed that per species), not texture, not eye count,
             not appendages (which code cannot derive from a traced
             outline). design-bible §9c rewritten to match._
-            _In progress: **the ten drifters** are on the workbench
-            (2026-08-17), and being the longest roster they wear the whole
-            palette — so that shelf is where the colours get judged. The
-            machinery is general, not drifter-specific:
-            `src/ui/friendColours.js` (permanent, the colour twin of
-            friendCanon.js — ten NAMED colours after Kimia rejected an even
-            sweep of the wheel for spending too much on the flora's blues
-            and greens) and `paletteForTone()` in friendPalettes.js, where
-            a colour is a hue, a strength and a lift toward white. A **second
-            drifters bench** offers the five originals lifted into the pastels'
-            range, for Kimia to judge whether the ten read better as one family
-            — temporary, and it goes either way once she decides. **Remaining:
-            the other nine species**, a shelf each. Build notes in history.md._
+            _In progress. The **palette is settled** (2026-08-17): ten NAMED
+            colours in `src/ui/friendColours.js` — permanent, the colour twin
+            of friendCanon.js — after Kimia rejected an even sweep of the wheel
+            for spending too much on the flora's blues and greens, and then
+            chose to have all ten lifted so the cast reads as one family. A
+            colour is a hue, a strength and a lift toward white
+            (`paletteForTone()` in friendPalettes.js). **Done: the 10 drifters
+            and the 9 nesters.** The shelf is generic now, so each remaining
+            species is one entry in `INDIVIDUALS_DONE`. **Remaining: mimic,
+            signer, sprout, chatter, neighbour, storyteller, scholar, poet.**
+            Build notes in history.md._
       - [ ] **T5.3f Animations** _(was T5.3e)_ — the 9 remaining
             signature category animations (one per category,
             design-notes §8).
