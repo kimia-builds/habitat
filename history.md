@@ -2611,6 +2611,19 @@ return 0` right after the era is worked out, so a moment before the
   overlay. Verified in the browser as well (the shelf sits at the foot of
   a long page, so the CLAUDE.md trick of hiding the shelves above it was
   needed for the screenshot).
+- **A second bench, awaiting a verdict (2026-08-17, Kimia: "just wanna
+  test how it looks").** The approved palette reads as two weights — her
+  five kept colours vivid, the five pastels pale — so the workbench now
+  carries a SECOND drifters shelf with the five originals lifted to 40 and
+  the pastels untouched. `FRIEND_COLOURS_LIFTED` and `speciesColoursLifted`
+  are explicitly TEMPORARY: either the lifted values move into
+  FRIEND_COLOURS and the candidate goes, or the candidate goes. Only the
+  five at lift 0 are raised — the two pastels sitting at 35 were left
+  there deliberately, because a comparison in which more than one thing
+  differs is not a comparison. Its test asserts exactly that, plus that
+  every swatch's SVG ids stay unique across the page (two shelves of the
+  same drawing are the first thing on this workbench that could collide
+  and silently share a glow filter).
 - **Still open:** the other nine species. The recipe is general — nothing
   in `friendHues.js` or `paletteForHue` is drifter-specific — so they are
   a shelf each once Kimia has judged this one. Per the standing rule about

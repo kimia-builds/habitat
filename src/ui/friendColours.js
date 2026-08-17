@@ -82,6 +82,27 @@ export const FRIEND_COLOURS = [
   { name: 'red', hue: 4, saturation: 60, lift: 0 }, // kept — was colour 10
 ]
 
+/*
+ * A CANDIDATE, NOT THE PALETTE (2026-08-17, Kimia: "just wanna test how it
+ * looks"). The approved palette above reads as two weights — her five kept
+ * colours at full strength and no lift, the five pastels pale. This is the
+ * same ten with the five originals lifted into the pastels' range, to see
+ * whether the set reads better as ONE family.
+ *
+ * Only the five at lift 0 are touched. The pastels are left exactly as they
+ * are, including the two sitting at 35 rather than 40 — nudging those would
+ * mean the two benches differed in more than the one thing being tested, and
+ * the comparison would stop being a comparison.
+ *
+ * TEMPORARY. It leaves with the second shelf when Kimia decides: either the
+ * lifted values move into FRIEND_COLOURS above and this goes, or it goes.
+ */
+export const FAMILY_LIFT = 40
+
+export const FRIEND_COLOURS_LIFTED = FRIEND_COLOURS.map((colour) =>
+  colour.lift === 0 ? { ...colour, lift: FAMILY_LIFT } : colour,
+)
+
 const INDEX_OF = Object.fromEntries(
   FRIEND_CATEGORIES.map(({ key }, i) => [key, i]),
 )
@@ -131,4 +152,14 @@ export function individualColour(key, individual) {
 export function speciesColours(key) {
   const roster = FRIEND_ROSTER[INDEX_OF[key] ?? 0]
   return Array.from({ length: roster }, (_, i) => individualColour(key, i + 1))
+}
+
+/**
+ * The same roster in the lifted candidate above — for the comparison shelf
+ * only. TEMPORARY, and it leaves when Kimia decides.
+ */
+export function speciesColoursLifted(key) {
+  return speciesColours(key).map(
+    (colour) => FRIEND_COLOURS_LIFTED[FRIEND_COLOURS.indexOf(colour)],
+  )
 }

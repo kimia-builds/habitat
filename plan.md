@@ -157,7 +157,10 @@ tracker. Everything after this is delight, informed by real use.
             friendCanon.js — ten NAMED colours after Kimia rejected an even
             sweep of the wheel for spending too much on the flora's blues
             and greens) and `paletteForTone()` in friendPalettes.js, where
-            a colour is a hue, a strength and a lift toward white. **Remaining:
+            a colour is a hue, a strength and a lift toward white. A **second
+            drifters bench** offers the five originals lifted into the pastels'
+            range, for Kimia to judge whether the ten read better as one family
+            — temporary, and it goes either way once she decides. **Remaining:
             the other nine species**, a shelf each. Build notes in history.md._
       - [ ] **T5.3f Animations** _(was T5.3e)_ — the 9 remaining
             signature category animations (one per category,

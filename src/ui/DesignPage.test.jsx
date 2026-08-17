@@ -130,6 +130,48 @@ describe('DesignPage workbench', () => {
     }
   })
 
+  // TEMPORARY (2026-08-17) — the comparison bench, which goes when Kimia
+  // decides for or against the lifted candidate. The point of the shelf is
+  // that it differs from the one above in exactly one way, so that is what is
+  // tested: same ten friends, every one of them paler.
+  it('shows a second bench of ten drifters, all lighter than the first', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    const plain = screen.getByLabelText('the ten drifters')
+    const lifted = screen.getByLabelText('the ten drifters, everyone lifted')
+    const swatchesOf = (shelf) => [...shelf.querySelectorAll('[role="img"]')]
+    expect(swatchesOf(lifted)).toHaveLength(10)
+
+    // Every swatch's own SVG ids must be unique across the page, or one shelf
+    // silently borrows the other's glow filter.
+    const ids = [...document.querySelectorAll('.traced-swatch [id]')].map(
+      (el) => el.id,
+    )
+    expect(new Set(ids).size).toBe(ids.length)
+
+    // The mid shade of each body, which is where a lift shows most plainly.
+    const midTone = (img) =>
+      img
+        .querySelectorAll('svg')[0]
+        .querySelectorAll('path')[4]
+        .getAttribute('fill')
+    const brightness = (hex) =>
+      [1, 3, 5].reduce((sum, i) => sum + parseInt(hex.slice(i, i + 2), 16), 0)
+
+    swatchesOf(plain).forEach((img, i) => {
+      const before = midTone(img)
+      const after = midTone(swatchesOf(lifted)[i])
+      // The five Kimia kept get lighter; the five pastels are deliberately
+      // untouched, so "no darker, and lighter for some" is the honest claim.
+      expect(brightness(after)).toBeGreaterThanOrEqual(brightness(before))
+    })
+
+    // …and the five that were at no lift really did move.
+    const moved = swatchesOf(plain).filter(
+      (img, i) => midTone(img) !== midTone(swatchesOf(lifted)[i]),
+    )
+    expect(moved).toHaveLength(5)
+  })
+
   it('shows friend 10 in three tints with two blinking eyes each', () => {
     const { container } = render(<DesignPage onBack={vi.fn()} />)
     // The tenth archetype follows the storyteller's assembled pattern:

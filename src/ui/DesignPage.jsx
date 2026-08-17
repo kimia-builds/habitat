@@ -53,7 +53,7 @@ import {
   FRIEND01_VIEWBOX,
   FRIEND01_GREYS,
 } from './friend01.jsx'
-import { speciesColours } from './friendColours.js'
+import { speciesColours, speciesColoursLifted } from './friendColours.js'
 import { paletteForTone } from './friendPalettes.js'
 
 // The §8 texture families, in the order the design bible lists them, so
@@ -317,8 +317,16 @@ function TracedFriendSwatch({ friend, tint }) {
 // — that is the part of the rule that matters.
 const DRIFTER_SHELF_BASE_REM = 50 // → a drifter about 7rem wide
 
-function DrifterIndividual({ individual, colour }) {
-  const prefix = `drifter-${individual}-`
+// `variant` keeps the two shelves apart in two ways that both matter: it makes
+// each swatch's SVG filter and gradient ids unique (two shelves sharing an id
+// would have one silently borrow the other's glow), and it distinguishes the
+// accessible labels, so "drifter 3" and "drifter 3, lifted" are separate things
+// on the page.
+function DrifterIndividual({ individual, colour, variant = '' }) {
+  const prefix = `drifter-${variant}${individual}-`
+  const label = variant
+    ? `drifter ${individual}, lifted`
+    : `drifter ${individual}`
   const box = `0 0 ${FRIEND01_VIEWBOX.w} ${FRIEND01_VIEWBOX.h}`
   // The trace's own greys, re-coloured into this individual's tone. friend01
   // is a stacked trace, so there is no reconstructed base shade to carry.
@@ -333,7 +341,7 @@ function DrifterIndividual({ individual, colour }) {
         className="traced-swatch-art"
         style={shape}
         role="img"
-        aria-label={`drifter ${individual}`}
+        aria-label={label}
       >
         <svg className="traced-swatch-layer" viewBox={box} aria-hidden="true">
           <defs>
@@ -585,6 +593,29 @@ function DesignPage({ onBack }) {
         <ul className="traced-swatches">
           {speciesColours('drifter').map((colour, i) => (
             <DrifterIndividual key={i} individual={i + 1} colour={colour} />
+          ))}
+        </ul>
+      </section>
+
+      {/* THE COMPARISON BENCH (2026-08-17, Kimia: "just wanna test how it
+          looks") — the same ten with her five originals lifted into the
+          pastels' range, to see whether the set reads better as one family.
+          The pastels are untouched, so the ONLY difference between the two
+          shelves is the thing being judged. Temporary: it leaves with the
+          candidate when she decides. */}
+      <section
+        className="design-family"
+        aria-label="the ten drifters, everyone lifted"
+      >
+        <h3>the ten drifters — everyone lifted</h3>
+        <ul className="traced-swatches">
+          {speciesColoursLifted('drifter').map((colour, i) => (
+            <DrifterIndividual
+              key={i}
+              individual={i + 1}
+              colour={colour}
+              variant="lifted-"
+            />
           ))}
         </ul>
       </section>
