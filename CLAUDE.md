@@ -98,9 +98,15 @@ Kimia is a non-coder. Therefore:
   check-in belongs to the day it was DONE, not the day it was entered.
   Day cutoff is 3am by default, configurable. Check-in always asks
   about calendar yesterday and must be answered; older days are
-  optional. Past days are editable only while their Mon–Sun week is
-  the current one (calendar yesterday always is, even on a Monday);
-  once a week ends, its days freeze. Unfilled days simply count as
+  optional. Past days are editable only while their week is the current
+  one (calendar yesterday always is, even on the first day of a week);
+  once a week ends, its days freeze. **Which days make up a week is a
+  SETTING, not a constant (2026-08-16, T6.15):** Mon–Sun, Sun–Sat or
+  Sat–Fri, chosen by the user and independent of language. Changing it
+  re-groups the same marks and rewrites nothing — the unit of analysis
+  moves, the record does not — so it can also freeze or unfreeze a day
+  at the boundary. Never hard-code Monday as the week's start; ask
+  `weekStart()`. Unfilled days simply count as
   not done — neutral data, no "no data" state, no punishment.
 - Reward pacing is flat and patient — no front-loading, no
   retention-hook mechanics, no early-days bonuses.

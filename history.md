@@ -2585,6 +2585,62 @@ return 0` right after the era is worked out, so a moment before the
   with a visible result Kimia can react to, which is how design work on
   this project goes.
 
+- 2026-08-16 (Kimia's calls, reviewing T6.13 — same session): **five
+  decisions that reshape the language work.**
+  1. **The wordmark stays Latin in every language.** HABITAT is not a
+     slot and never will be — a constant, with no key to translate and
+     no way to change it from a content edit. Applied immediately.
+  2. **Architect for MORE than two languages.** Farsi is the first
+     additional language, not a special case. This is what settles the
+     file's shape below.
+  3. **It is a COPY deck, not a translation file.** T6.13 framed it as
+     "the languages file", which makes it specifically functional
+     instead of generically functional. Its real job is to be the one
+     place all copy lives and is edited — including English — so that
+     wording is never hunted for inside a component again, and so it
+     stays current as we change things. Layout is therefore
+     **key-first**: one entry per piece of copy, carrying a
+     plain-English note and every language beside each other. Adding a
+     language is adding a line per entry. Chosen over a block or a file
+     per language because those put a word and its translation far
+     apart, which defeats the point.
+  4. **The deck absorbs the other content files** — narration.js,
+     names.js, mishap.js, blocked.js — into labelled sections, with
+     **two blank-rules stated per section**: interface falls back to
+     English, story and names stay silent.
+  5. **The week gets three shapes** — Mon–Sun, Sun–Sat, Sat–Fri — as its
+     own setting, independent of language, exactly as the previous
+     working note argued it had to be. Kimia's framing, which is the
+     one to keep: *the data does not change, only the unit of analysis
+     through which it is viewed.* A weekly spike from a Sunday mark
+     lands in a different bar after a switch because the bars are drawn
+     differently, not because anything was edited.
+- 2026-08-16 (audit, same session): **T6.13 caught about 55% of the
+  copy.** Kimia spotted the missing cameo text; a full audit found ~110
+  more slots against the 130 already keyed. The categories, all four
+  confirmed as in scope: arrival and cameo text, weekday and month names
+  and a.m./p.m., backup and import error messages, confirm dialogs and
+  the schedule-change warning, charm names, difficulty options, graph
+  zoom labels, field-notes navigation. The audit also exposed a
+  standing bug: **the weekday names exist in four separate copies**
+  (days.js, HabitRow, HabitForm, CheckInPanel), so changing "Mon" today
+  means finding four files. T6.14 collapses them to one.
+- 2026-08-16 (same session): **completeness needs its own test.** A deck
+  that is merely consistent will drift back out of date as components
+  grow new strings — the exact problem it exists to end. T6.14 adds a
+  source scan that fails the suite on a new hardcoded user-facing
+  string, the way pebbles.test.js guards buttons.
+- 2026-08-16 (Kimia's call, same session): **infrastructure first,
+  translation last** (T6.14 → T6.19). Habitat should already WORK in
+  Farsi shape — right to left, right lettering, right calendar — before
+  any words are translated, so layout surprises are found against a
+  finished frame rather than blamed on the copy. Translation itself is
+  **AI-drafted with human review, slot by slot**: the one place the
+  never-writes-the-copy rule bends, and only this far — a machine draft
+  is a suggestion in a review queue, never a slot filled in her name.
+  Unreviewed stays blank; blank interface shows English. Habitat can be
+  partly translated, never wrongly translated.
+
 ## T6.13 build notes — one keyed catalogue for every interface word (2026-08-16)
 
 **What changed.** About 130 interface strings — button words, page

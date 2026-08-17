@@ -51,11 +51,6 @@
 // also the fallback for any Farsi slot left blank, so this block should
 // never contain a blank.
 const en = {
-  // The app's own name, in the top bar. A wordmark, not really a word —
-  // it is likely to stay HABITAT in every language, but it lives here so
-  // that staying is a choice rather than an accident.
-  'app.wordmark': 'HABITAT',
-
   // The left icon rail (design-notes §12d). Each of these is a hover
   // label AND the screen-reader name for that icon.
   'rail.pages': 'pages',
@@ -229,8 +224,6 @@ const en = {
 // blocks, so the switch reads identically either way and there is always
 // a way back.
 const fa = {
-  'app.wordmark': '',
-
   'rail.pages': '',
   'rail.addHabit': '',
   'rail.editPastDays': '',
@@ -351,6 +344,13 @@ const fa = {
   'language.en': 'English',
   'language.fa': 'فارسی',
 }
+
+// The app's own name, in the top bar and on the home link. Kimia's call
+// (2026-08-16): it stays in LATIN LETTERS in every language, always. So
+// it is deliberately NOT a slot — there is no key to translate, and no
+// way to change it by accident from a content edit. A constant, not
+// copy.
+export const WORDMARK = 'HABITAT'
 
 export const UI = { en, fa }
 

@@ -242,6 +242,118 @@ tracker. Everything after this is delight, informed by real use.
       Jalali calendar and the Saturday-start week are all still ahead,
       and the week change in particular is not a language question at
       all — see history.md. Build notes in history.md)_
+- [ ] **T6.14 The copy deck — one home for every word Habitat says.**
+      _(Kimia's call 2026-08-16, after reviewing T6.13.)_ T6.13 built the
+      mechanism but caught only about 55% of the copy, and framed the
+      file as a TRANSLATION file rather than what it should be: the one
+      place all copy lives, editable in any language including English,
+      so nothing has to be hunted for in a component ever again.
+      - **Restructure to key-first.** Each piece of copy is ONE entry
+        carrying a plain-English `note` (what it is and where it shows)
+        and every language beside each other. Adding a language is
+        adding a line per entry, not a new block — this is what makes
+        further languages cheap.
+      - **Absorb the other content files.** `narration.js`, `names.js`,
+        `mishap.js` and `blocked.js` fold into the deck, in labelled
+        sections. Two blank-rules live side by side and each section
+        says which it follows: **interface** blanks fall back to
+        English (a blank button is broken); **story and names** blanks
+        stay silent (unchanged — never invent prose, never invent a
+        name). The rule is per section, stated in the section header.
+      - **Complete it — the ~110 slots T6.13 missed**, all four
+        categories confirmed by Kimia: arrival & cameo text
+        (`arrivalText.js`); weekday and month names and a.m./p.m.;
+        backup and import error messages; confirm dialogs and the
+        schedule-change warning; charm names; difficulty options; graph
+        zoom labels; field-notes navigation; the empty-tile invitation.
+      - **Fix the four-way weekday duplication** it exposes: `days.js`,
+        `HabitRow`, `HabitForm` and `CheckInPanel` each keep their own
+        copy of Mon–Sun today, so changing a weekday name means finding
+        four files. One entry in the deck, read by all four.
+      - **A test that the deck is COMPLETE**, not just consistent: a
+        source scan that fails the suite when a component grows a new
+        hardcoded user-facing string, the way `pebbles.test.js` guards
+        buttons. Without it the deck drifts back out of date, which is
+        the exact problem this task exists to end.
+      - The wordmark is NOT in the deck and never will be — HABITAT
+        stays in Latin letters in every language (Kimia 2026-08-16), so
+        it is a constant with no key to translate.
+- [ ] **T6.15 The week gets a shape you choose.** _(Kimia's call
+      2026-08-16.)_ Three options — **Mon–Sun, Sun–Sat, Sat–Fri** — as
+      its own setting, **independent of language**. A Farsi speaker who
+      wants Monday weeks can have them; English with Saturday weeks is
+      equally fine.
+      **Nothing in the record changes — only the unit of analysis**
+      (Kimia's framing). The same marks are re-grouped: a Sunday spike
+      moves into a different bar because the bars are drawn differently,
+      not because the data moved. No migration, no rewrite, and
+      switching back and forth is lossless.
+      The code is small — `weekStart()` in `game/days.js` is a single
+      function with ~7 call sites (`graphs.js`, `schedule.js`,
+      `fieldnotes.js`, `cameos.js`) — but three things ride on it and
+      each needs its own test: which days an N-per-week habit's streak
+      is judged across, how the field notes slice history, and **which
+      past days are still editable**, since the freeze rule is written
+      against the week. Switching may therefore freeze or unfreeze a day
+      at the boundary; that is the same principle, not an exception.
+      **Reword the guardrail first.** CLAUDE.md and spec §4.2 both say
+      past days are editable "while their Mon–Sun week is the current
+      one". That has to become "their current week shape" before the
+      code can honestly contradict it.
+      Habit schedules are untouched: "walk on Mon/Wed/Fri" still means
+      Mon/Wed/Fri. Only the boundary moves. The weekday PICKER reorders
+      to match the chosen shape; the stored ISO numbers do not.
+- [ ] **T6.16 Habitat reads right to left.** The layout half of Farsi,
+      and the half that has nothing to do with words. `index.css` has 29
+      direction-specific rules (`left`, `right`, `margin-left`,
+      `text-align`) against 2 direction-neutral ones, plus 9
+      `translateX` moves that do not flip on their own; those become
+      logical properties. The icon rail is fixed to the window's left
+      edge and has to learn which edge is the start.
+      **The scenes do NOT mirror.** The Abode ground, the bookcase and
+      the map store real x/y positions Kimia arranged by hand; they are
+      pictures, not text. Rule, decided once, here: **text direction
+      flips, the world does not.**
+      Knock-on: `ViewportGate`'s 740px threshold was calculated from the
+      English wordmark plus the longest English date, so it becomes
+      language-dependent and needs re-deriving per language.
+- [ ] **T6.17 Farsi gets its own lettering.** Habitat's look leans on 18
+      letterspacing rules (up to 0.5em on the wordmark) and on
+      upper/lowercase styling. **Neither survives translation**: Persian
+      script is cursive, so letterspacing severs the joins and makes
+      text close to unreadable, and Persian has no letter case at all.
+      Both switch off for Farsi, which means Farsi Habitat needs its own
+      typographic identity rather than a copy of the English one — a
+      design slice for Kimia to see and react to, one visible change at
+      a time (design-notes §0), never a spec written up front.
+      Also Habitat's **first webfont**: `system-ui` does not render
+      Persian dependably. Vazirmatn or similar, ~150KB — the first thing
+      in Habitat that must download before text looks right, so its
+      loading behaviour is part of the task, not an afterthought.
+- [ ] **T6.18 The Jalali calendar.** Farsi speakers expect Jalali dates
+      — today is 1405, not 2026. **Display only**: day keys stay
+      `YYYY-MM-DD` Gregorian and go on driving every streak, so nothing
+      in the record changes and no history is touched. Only the date
+      line and the field notes' labels render Jalali. Persian digits
+      (۰–۹) are the same question and belong here: the date, the meters,
+      prices and streak counts.
+      Contained enough to ride WITH the language rather than needing its
+      own setting — unlike the week, which is why they are separate
+      tasks.
+- [ ] **T6.19 The translation pass.** Last, on purpose: by here Habitat
+      already WORKS in Farsi shape — right to left, right lettering,
+      right calendar — so the words land in a finished frame and layout
+      surprises have already been found.
+      **AI drafts, Kimia reviews, slot by slot** (her call 2026-08-16).
+      This is the one place the "Claude Code never writes the copy" rule
+      bends, and it bends in a specific way: a machine draft is a
+      SUGGESTION in a review queue, never a slot filled in her name. An
+      unreviewed slot stays blank, and a blank interface slot shows
+      English — so the app is only ever partly translated, never wrongly
+      translated. The section blank-rules from T6.14 do the enforcing.
+      Story and names go last and get the most human attention: they
+      carry the voice, and `narration.js` is the file where a machine
+      would do the most damage.
 - [ ] **T6.7 The first hour — storytelling & narration for a new
       player** (Kimia's call 2026-08-11) — revisit what arriving on
       N-Z-D actually feels like for someone who has never opened

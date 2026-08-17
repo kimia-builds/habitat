@@ -393,14 +393,30 @@ are personal firsts, not world unlocks.)
 Story and narration are **written by Kimia, never generated**. Claude
 Code builds the _slots and plumbing_ only.
 
-**Interface copy is hers too, in its own file (2026-08-16, T6.13).**
-`src/content/narration.js` holds the STORY; `src/content/ui.js` holds
-the FURNITURE — every button, page title and hover label. Same rule
-(Claude Code builds the slots, Kimia writes the words), one deliberate
-difference: in `ui.js` a blank slot falls back to **English**, not to
-silence. Silence is right for a story beat nobody has written yet; a
-blank button is just broken. That fallback is what makes a second
-language fillable one word at a time.
+**All copy lives in ONE deck (2026-08-16; T6.13 began it, T6.14
+completes it).** Interface words, story, names, the blocked and mishap
+messages — one keyed file, Kimia's, and the place English copy is
+edited too, so no wording is ever hunted for inside a component. Each
+entry carries a plain-English note saying what it is and where it shows,
+then every language beside each other; adding a language adds a line per
+entry.
+
+Same rule as ever — Claude Code builds the slots, Kimia writes the words
+— with **two blank-rules, one per section, stated in the section
+header**:
+
+- **interface** blanks fall back to **English**. A blank button is not
+  restraint, it is a broken control. This fallback is what makes a
+  language fillable one word at a time, and it means nothing is ever
+  machine-published: an unfilled slot shows a real person's English.
+- **story and names** blanks stay **silent**, exactly as before. Never
+  invented prose, never an invented name.
+
+Translation (T6.19) is the one place the never-writes-the-copy rule
+bends, and only this far: a machine draft is a suggestion Kimia reviews,
+never a slot filled in her name. Unreviewed stays blank, and blank
+interface shows English — so Habitat can be partly translated, never
+wrongly translated.
 
 - **Authoring model.** A **keyed content file** with an empty slot per
   narrated moment (each first-occurrence reveal, each friend

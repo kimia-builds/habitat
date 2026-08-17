@@ -135,9 +135,14 @@ dailies/habits/to-dos distinction. Each habit has:
   was held, so the page stays where it stood.
 - **The backfill window (2026-07-14, replaces the earlier "no data"
   idea):** a past day can be filled in or corrected only while its week
-  is still the current one. Every day of the current Mon–Sun week stays
+  is still the current one. Every day of the current week stays
   editable until the week ends; once a week has passed, its days are
-  frozen. The one exception is **calendar yesterday, which is always
+  frozen. **The week's shape is a setting (2026-08-16, T6.15)** — Mon–Sun,
+  Sun–Sat or Sat–Fri, the user's choice and independent of language —
+  so which days are frozen moves with it. Changing the shape re-groups
+  the same marks and rewrites none of them: the unit of analysis moves,
+  the record does not. A Sunday spike lands in a different bar because
+  the bars are drawn differently, not because anything was edited. The one exception is **calendar yesterday, which is always
   editable** — so a Monday-morning check-in can still fill in Sunday,
   and last week's numbers simply update. Days never filled in just
   count as **not done**, which (as always) is neutral data, not a
@@ -424,7 +429,8 @@ region discovery expands what the Market can offer.
   **quiet / party mode toggle** (below).
 - **Guest Book** (via the rail's _community_): friends made so far.
   Titled **local community**.
-- **Field notes:** the weekly view (T2.3) — browsable Mon–Sun weeks,
+- **Field notes:** the weekly view (T2.3) — browsable weeks in the
+  chosen week shape (§4.2),
   opening on the last completed one; reached from the graph icon at the
   foot of the habit list, and opens by itself on the first visit of each
   Sunday (after any check-in _and_ after the startup animation). Has a
@@ -594,32 +600,47 @@ Full visual treatment in design-notes §12f.
     thing that says whether it still counts. It states a fact and
     stops there: no colour change, no urgency, no counting of neglect
     (§ no punishment mechanics applies to chores too).
-- **Languages (2026-08-16, T6.13).** Habitat is built to speak more than
-  one language. Every INTERFACE word — buttons, page titles, hover
-  labels, screen-reader names — lives in one keyed catalogue,
-  `src/content/ui.js`, which is Kimia's file like the rest of
-  `src/content/`. Story stays in `narration.js`; the two are different
-  voices and translate on different clocks.
-  - The chosen language is a **setting inside the storage envelope**
-    (schema v11), so it survives a reload and travels in a backup.
-  - **A blank slot falls back to English.** This is the single place
-    where a blank content slot does not mean silence — a blank button is
-    a broken control, not restraint. The fallback is what lets a
-    language be filled in one word at a time without the app ever being
-    half-broken, and it means nothing is ever machine-translated: an
-    unfilled slot shows a real human's English.
-  - English is the fallback language and so is the one block that must
-    never contain a blank; `src/content/ui.test.js` enforces that, along
-    with both blocks carrying the same keys.
-  - Each language names itself **in its own script** in every block, so
+- **Languages (2026-08-16; T6.13 built the mechanism, T6.14–T6.19
+  complete it).** Habitat is built to speak **more than two** languages:
+  Farsi is the first additional one, not a special case.
+  - **One copy deck.** Every word Habitat says — interface, story,
+    names, blocked and mishap messages — lives in ONE keyed file, which
+    is Kimia's. It is a copy file first and a translation file second:
+    the place English copy is edited too, so no wording is ever hunted
+    for inside a component.
+  - **Key-first layout.** Each entry carries a plain-English `note`
+    saying what it is and where it shows, then every language beside
+    each other. **Adding a language is adding a line per entry** — this
+    shape is the one that makes further languages cheap, and it is why
+    it was chosen over a block or a file per language.
+  - **Two blank-rules, one per section, stated in the section header.**
+    **Interface** blanks fall back to English — a blank button is a
+    broken control, not restraint, and this fallback is what lets a
+    language be filled one word at a time without the app ever being
+    half-broken. **Story and names** blanks stay silent, exactly as
+    before: never invented prose, never an invented name.
+  - English is the fallback and so is the one language that must never
+    contain a blank; tests enforce that, that every language carries the
+    same keys, and — from T6.14 — that no component holds a hardcoded
+    user-facing string, so the deck cannot drift out of date.
+  - Each language names itself **in its own script** in every entry, so
     the switch reads the same whichever language is on and there is
     always a way back out of one you cannot read.
-  - **Scope, deliberately.** T6.13 is plumbing. It does NOT touch
-    layout direction, typography, calendars or the shape of the week —
-    right-to-left, a Persian typeface, the Jalali calendar and a
-    Saturday-start week are all separate, later, and the week in
-    particular is not a language question at all (history.md,
-    2026-08-16).
+  - The chosen language is a **setting inside the storage envelope**
+    (schema v11): it survives a reload and travels in a backup.
+  - **The wordmark is not copy.** HABITAT stays in Latin letters in
+    every language (Kimia 2026-08-16) — a constant, with no key to
+    translate and no way to change it from a content edit.
+  - **What rides with the language and what does not.** Direction,
+    lettering and the calendar ride with it (T6.16–T6.18). **The shape
+    of the week does not** — see §4.2. That split is deliberate: the
+    first three change how things are DRAWN, the week changes what the
+    data MEANS.
+  - **Translation is AI-drafted and human-reviewed** (T6.19, Kimia's
+    call). A machine draft is a suggestion in a review queue, never a
+    slot filled in her name; an unreviewed slot stays blank, and a blank
+    interface slot shows English. So Habitat can be partly translated,
+    but never wrongly translated.
 - **Starting a new game (2026-08-11; two doors since 2026-08-12).**
   "start a new game" opens a popup that asks WHICH kind of fresh start,
   then asks "are you sure?" and names exactly what goes and what stays

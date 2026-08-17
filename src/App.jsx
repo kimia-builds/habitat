@@ -114,6 +114,7 @@ import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import IconRail from './ui/IconRail.jsx'
 import LanguageSwitch from './ui/LanguageSwitch.jsx'
+import { WORDMARK } from './content/ui.js'
 import { LanguageProvider, useText } from './ui/language.jsx'
 import MapPage from './ui/MapPage.jsx'
 import MarketPage from './ui/MarketPage.jsx'
@@ -1343,7 +1344,7 @@ function AppBody({ data, setData }) {
   if (checkInOpen) {
     return (
       <main className="app">
-        <h1>{t('app.wordmark')}</h1>
+        <h1>{WORDMARK}</h1>
         <div className="behind-checkin" aria-hidden="true" inert>
           {listContent}
         </div>
@@ -1467,7 +1468,7 @@ function AppBody({ data, setData }) {
     <header className="app-header" ref={measureHeader}>
       <h1>
         <button className="home-link" onClick={() => setPage(null)}>
-          {t('app.wordmark')}
+          {WORDMARK}
         </button>
       </h1>
       <Meters
