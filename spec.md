@@ -30,14 +30,27 @@ battles.
 
 ## 3. Constraints & non-goals
 
-- Single user (Kimia). No accounts, no auth, no multiplayer.
+- **Who uses it (revised 2026-08-17).** Built for Kimia, and friends
+  and family use it too — each in their own browser, which is why
+  accounts were never needed: a fresh browser is a fresh world, and the
+  browser itself is what keeps one person's record apart from another's.
+  Still **no login, no passwords, no multiplayer.** The optional
+  two-device sync (§8) is named by a **pairing code, not an identity** —
+  it never learns who anyone is.
 - Web app. Hosted free on GitHub Pages; code public on GitHub.
 - Personal habit data stays private in the browser (localStorage) — never
   committed to the repo.
 - **No punishment mechanics.** Missed habits cause no damage, decay, or
   loss. They simply appear in weekly data.
-- Non-goals for v1: mobile app, sync across devices, social features,
-  seasonal events (candidate for v2).
+- Non-goals for v1: social features, seasonal events (candidate for v2).
+  **A phone companion and cross-device sync left this list on
+  2026-08-17** (Kimia's call): friends and family who use Habitat asked
+  to mark habits away from a laptop, and habits are a
+  several-times-a-day affair, so the laptop-only rule was costing real
+  marks. Both are planned, neither is built — **M7 is sync, M8 is the
+  phone**, in that order and for a reason (see plan.md). The phone is
+  deliberately a LIMITED companion, not a second full Habitat: scope in
+  §5b, feel in design-notes §14.
 - **Device stance — wide screens, by width (2026-07-23; threshold
   lowered 2026-08-12).** Habitat is designed for wide screens and
   **small-screen layouts are parked indefinitely**. Below **740px**
@@ -56,6 +69,16 @@ battles.
   removes/softens the gate and adds small-screen layouts. The
   desktop-only startup animation (§5) is one moment _inside_ this block,
   no longer a special case on its own.
+  **What the gate becomes (2026-08-17).** M8 replaces the blocked
+  message below 740px with the phone companion (§5b), so the gate stops
+  being a wall and becomes a **fork**: below 740px the phone shell, at
+  740px and above the app unchanged. Note what that means for tablets —
+  a portrait tablet is already on the wide side of the line, so it gets
+  the full Habitat, not the phone. Until M8 lands the gate is also the
+  **feature flag** that hides the work: nothing below 740px renders
+  today, so a half-built phone shell can ship to the live site session
+  after session without any user seeing it, and softening the gate is
+  the deliberate last task.
 - **Safety net (2026-07-27).** If any screen ever fails to draw, one
   calm full-screen message replaces it — Kimia-written copy in a
   content slot — instead of the blank black page React otherwise
@@ -522,6 +545,69 @@ lives on the wide side of that block; the plain fade is the resting
 behaviour just below the line, which has been 740px since 2026-08-12.)
 Full visual treatment in design-notes §12f.
 
+### The phone (M8 — planned 2026-08-17, not built)
+
+Below 740px Habitat becomes a **deliberately limited companion**, not a
+second full app. Kimia's constraint, in her words: "the only mobile
+experience I can accept is a limited one, before it gets too busy." It
+is not a separate app or a separate codebase — the same URL, a different
+shell inside the width fork (§3), sharing every pure function in
+`src/game/`.
+
+**The phone requires a laptop.** It cannot create a habit, so it can
+never be someone's only Habitat: a phone-only browser would be an empty
+screen with nothing to do. Setting up is a laptop act, and the phone is
+where the days get marked.
+
+**What the phone can do:**
+
+- see today's habits and mark them — **+1 / done only**
+- filter today's view by charm (the same lens as the home screen)
+- the **morning check-in, yesterday only**
+- the game, near enough in full: the meters, drop arrivals and their
+  reveals, the Abode, the Bookcase, the Map, the Market, the Guest Book
+  and the cameos — **all the juice** (Kimia's call: "pretty much all the
+  game juice features should exist on mobile")
+- **arrange** the Abode and the Bookcase by touch — its own arrangement,
+  see below
+
+**What the phone cannot do — every one of these is an EDIT, and edits
+live on the laptop:**
+
+- create a habit, or edit one (name, symbol, difficulty, schedule,
+  description)
+- archive, unarchive or delete a habit
+- see the archived-habits view
+- reverse a mark (**no −1**)
+- re-order the habit list
+- see the field notes, including the graphs
+- edit any past day other than yesterday's check-in
+- change any time-shape setting — the day cutoff, and the week shape
+  when T6.15 builds it
+
+The line is **marking versus editing**, not "some of the app versus the
+rest". A phone adds to the record; only a laptop can rewrite it. That is
+also what makes sync easy: marks from a phone are purely additive, so no
+deletion ever has to travel between devices (§8).
+
+**Two arrangements, on purpose.** The Abode and Bookcase layouts are
+**per-device and never synced** — screen size massively changes what
+arrangement you want, so a phone abode and a laptop abode are meant to
+differ and are never reconciled. The gameplay persists across devices;
+the arrangements do not talk to each other. They still live inside the
+versioned envelope, so a backup file keeps them (the 2026-08-12 rule in
+plan.md T6.11 stands); it is sync, not storage, that leaves them alone.
+
+**The world pages arrive one at a time.** The list above is the
+destination, not one task. A vertical habit list is the easy thing to
+fit on a phone; the Map, Abode, Bookcase and Market are wide 2D layouts
+and are the hard ones. So M8 ships the daily core first and then adds
+one spatial page per design slice, each judged on a real phone, the way
+every other design task has been done (Kimia's call 2026-08-17 —
+committing to six spatial redesigns on paper is the spec-then-implement
+trap). If a page cannot stay calm on a small screen it does not ship,
+and nothing is lost by finding that out late.
+
 ## 6. Data & reflection
 
 - Every completion/skip logged locally, timestamped, attributed to the
@@ -674,6 +760,85 @@ Full visual treatment in design-notes §12f.
   until a backup has been exported in that visit. So the discarded world
   is always recoverable by importing the file. While it is disabled it
   says why — **"export a backup first"**, as a hover label.
+- **Two devices (M7 — planned 2026-08-17, not built).** One person's
+  laptop and one phone or tablet showing the same record. Two devices is
+  the whole design target; nothing here tries to be a general sync
+  system. The shape, decided before any code:
+  - **Local-first, always.** `localStorage` stays the source of truth on
+    every device and nothing ever waits on the network: a device loads
+    from its own store and renders instantly, exactly as today, and the
+    fetch happens afterwards in the background. So **sync failing is
+    never Habitat failing** — offline, bad signal, or the host being
+    down all degrade to "Habitat works normally, syncs later". Sync is a
+    **mirror, not a replacement.**
+  - **Opt-in, and dormant until asked for.** A laptop-only user makes no
+    network request to anything Kimia runs — not a failed one, not an
+    empty one, none. The feature is one quiet settings row, and until
+    someone uses it their pairing slot does not exist.
+  - **A pairing code, not an account.** A long random string, generated
+    by Kimia by hand (below), entered on the laptop once; the laptop
+    then shows a QR the phone scans, which carries both the address and
+    the code. **The two devices need to be together once, for seconds,
+    ever** — after that they talk through the host, not to each other.
+    No email, no password, no reset. The app strips the code out of the
+    address bar as it reads it.
+  - **Encrypted on the device.** The pairing code doubles as the
+    encryption key: the envelope is encrypted before it leaves and
+    decrypted on arrival, so the host stores ciphertext and **Kimia
+    cannot read her friends' habit data even though she is hosting it**
+    — nor can anyone who breaches the host. The price is real and
+    decides other things: lose both devices and the code and the data is
+    unrecoverable, which is what makes the exported-file habit (T6.4)
+    mandatory rather than nice to have.
+  - **Unpair** deletes the remote copy and returns that person to
+    local-only. This is what makes "delete my data" a request that can
+    actually be honoured.
+  - **What syncs, and what stays put.** Sync merges an **allowlist of
+    fields** — habits, completions, flora decisions, purchases, the world
+    seed, the day cutoff, `checkedInThrough` — and leaves everything else
+    to whatever the local device says: the Abode and Bookcase
+    arrangements (§5b), `startupShownOn`, `fieldNotesShownOn`,
+    `lastExportedOn`. So **the envelope does not change and there is no
+    schema bump**: device-scoped-ness is a rule sync obeys, not a new
+    storage tier, and a backup file goes on carrying everything as it
+    always has. The pairing code itself is device-scoped state and lives
+    under its own `localStorage` key outside the envelope, following the
+    precedent T6.11 sets for the charm lens.
+  - **Merging.** Completions carry unique ids and a frozen `dayKey`, so
+    two devices' marks are a union; the phone cannot delete anything
+    (§5b), so no deletion ever has to travel; `checkedInThrough` only
+    moves forward, so the later day wins. The merge must be
+    **idempotent** — merging the same data twice gives what merging it
+    once gave — or two devices will correct each other forever.
+  - **Where it lives: deliberately undecided until M7 builds** (Kimia's
+    call 2026-08-17). Two candidates, and the encryption boundary is what
+    keeps them swappable: a **Cloudflare Worker + KV** store Kimia runs
+    (cheapest, free tier fails closed rather than billing, five-second
+    setup for a friend), or **each user's own cloud** — Dropbox or
+    Drive — where Kimia hosts nothing at all but every friend needs an
+    account and a sign-in flow.
+  - **No public create.** Whichever host: the public endpoint supports
+    read and update-existing only. A slot exists **only because Kimia
+    made it by hand** and sent the code — so the "someone generates a
+    thousand slots" abuse route is not gated, it is absent. Plus a rate
+    limit per code and per IP, a write size cap, and a per-code daily
+    write cap on the host.
+  - **Guarding against Habitat's own bugs.** The realistic way this
+    burns quota is not an attacker but a runaway loop in our own sync
+    code. Three layers: (1) make loops impossible — send only if the
+    bytes actually changed, an idempotent merge, one request in flight,
+    no polling timers (open / focus / debounced-save only), one tab syncs
+    via Web Locks; (2) cap the damage from bugs nobody foresaw — a
+    client-side hourly request budget that trips and simply stops
+    syncing, exponential backoff with a ceiling, debounce and coalesce
+    (five taps are one upload), the per-code daily cap; (3) catch it
+    early — keep the merge a pure function tested with a call-counting
+    fake, a "run the cycle twice, expect zero requests" regression test,
+    Kimia's own two devices as the canary before a second code is ever
+    issued, and a host-side off switch that works without a deploy
+    (GitHub Pages takes minutes; a burning quota does not wait). **If
+    only three get built, build the content-change guard, the hourly
+    budget, and the run-it-twice test.**
 - Deployed via GitHub Pages from the public repo.
 
 ## 9. Testing strategy

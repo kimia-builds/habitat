@@ -412,6 +412,95 @@ tracker. Everything after this is delight, informed by real use.
       the question is only whether either wants softening. Fold the
       new rule into spec §5b when it lands.
 
+## M7 — Two devices (sync) (5–6 sessions)
+
+Planned 2026-08-17. Spec §8 holds the architecture; decisions in
+history.md. **Built BEFORE the phone, deliberately** — a phone cannot
+create habits, so a phone-first milestone has no data to test with,
+while sync is testable on two desktop browsers on one laptop with no
+phone involved. Ships **dormant**: nobody is affected until a pairing
+code is issued by hand.
+
+- [ ] **T7.1 The merge, as pure functions.** No network, no React —
+      `src/sync/` gains the logic and nothing else, testable like
+      `src/game/`. The field allowlist (habits, completions, flora
+      decisions, purchases, world seed, day cutoff, `checkedInThrough`);
+      everything outside it left to the local device, arrangements
+      included. Completions union on their unique ids;
+      `checkedInThrough` takes the later day. **The merge must be
+      idempotent and the test must say so** — merging twice gives what
+      merging once gave, or two devices correct each other forever. No
+      schema bump: the envelope does not change (see the 2026-08-17
+      refinement in history.md).
+- [ ] **T7.2 Encryption on the device.** The pairing code doubles as the
+      key; Web Crypto, no library. Encrypt before anything leaves,
+      decrypt on arrival, so the host only ever holds ciphertext.
+      Round-trip tests, plus the ugly cases: wrong code, truncated
+      blob, junk — each must fail cleanly and never destroy local data.
+- [ ] **T7.3 The host and its endpoint.** **Decide Cloudflare Worker+KV
+      vs each user's own Dropbox/Drive here** (left open on purpose —
+      spec §8). Read and update-existing ONLY: no public create, so a
+      slot exists only because Kimia made one by hand. Rate limit per
+      code and per IP, write size cap, per-code daily write cap, and an
+      **off switch that works without a deploy** (GitHub Pages takes
+      minutes; a burning quota does not wait). Write the one-line
+      runbook for issuing a code, since that is the whole approval gate.
+- [ ] **T7.4 The sync module — the only thing that touches the
+      network.** The sibling of CLAUDE.md's one-storage-module rule.
+      Local-first: load from `localStorage` and render instantly as
+      today, fetch afterwards, never block on the network. Then every
+      layer-1 and layer-2 guard from spec §8 — content-change guard
+      (send only if the bytes moved), one request in flight, no polling
+      timers (open / focus / debounced-save only), one tab syncs via Web
+      Locks, hourly request budget that trips and simply stops, backoff
+      with a ceiling, debounce and coalesce. **The three that matter
+      most if anything gets cut: content-change guard, hourly budget,
+      and the "run the cycle twice, expect zero requests" test.**
+- [ ] **T7.5 Pairing, unpair, and the quiet line.** The settings row,
+      the code entry, the QR the phone will scan (address + code in one,
+      stripped from the address bar as it is read). Unpair deletes the
+      remote copy. Status line follows the backup-age tone rule — a dim
+      fact, no spinner, no alarm colour, no counting of neglect
+      (design-notes §14).
+- [ ] **T7.6 Canary, then the docs.** Run it on two desktop browsers for
+      a fortnight before a second code is ever issued. **README's
+      "No backend" line stops being true when this ships** — rewrite the
+      Status section and that bullet in the same session (CLAUDE.md's
+      doc-sync rule (c)), to something honest: no backend by default,
+      optional two-device sync, encrypted before it leaves.
+
+## M8 — Habitat on a phone (7+ sessions, collaborative)
+
+Planned 2026-08-17. Scope in spec §5b, feel in design-notes §14.
+Depends on M7. **The width gate is the feature flag** — nothing below
+740px renders today, so every task here ships to the live site unseen
+and softening the gate is the deliberate last one.
+
+- [ ] **T8.1 The fork.** Below 740px, render a phone shell instead of
+      the blocked message; 740px and up unchanged, so a portrait tablet
+      still gets the full Habitat. Gate stays in place for real users
+      until T8.9 — this task only builds the road.
+- [ ] **T8.2 Today, on a phone.** The habit list, +1/done only, and the
+      charm lens. No creating, editing, archiving, deleting,
+      re-ordering or −1 — and no control for any of them, so nothing is
+      hunted for. The easy page: phones are good at vertical lists.
+- [ ] **T8.3 The morning check-in, yesterday only.** Must still be
+      answered; the optional older days stay on the laptop.
+- [ ] **T8.4 The meters and the drop reveals.** The first of the juice,
+      and the proof that "all the juice on mobile" can hold — reveals
+      are the POP moments and they have never had to work small.
+- [ ] **T8.5–T8.8 One spatial page per design slice.** Abode (touch
+      arrange, its own per-device layout), Bookcase, Map, Market, Guest
+      Book, cameos — in whatever order Kimia wants, art-directed live,
+      one visible change at a time. Touch dragging starts most of the
+      way there: the existing drag is Pointer Events and
+      `touch-action: none` is already set, so the work is finger-sized
+      targets and affordances that do not need hover. **A page that
+      cannot stay calm on a phone does not ship** — that is the whole
+      reason these are slices and not a spec.
+- [ ] **T8.9 Soften the gate.** The last task, on purpose. Update spec
+      §3's device stance and README's Status in the same session.
+
 ---
 
 ## Credit-efficiency notes

@@ -1684,3 +1684,64 @@ a full screen, and never reshapes when a window gets taller.
 Kimia art-directed it live over 2026-08-13, one visible change at a
 time; the workbench swatch on the design page is where she looked, and
 it stays there until the workbench itself goes.
+
+## 14. The phone — limited on purpose **[TO-BUILD · M8]**
+
+Planned 2026-08-17, with Kimia. Spec scope in §5b; this is the feel.
+
+**The limit is the design, not a shortfall.** Kimia's constraint was
+"the only mobile experience I can accept is a limited one, before it
+gets too busy." Habitat's north star (§1) is calm, and calm on a small
+screen is bought by leaving things out. A phone Habitat that tried to
+hold everything the laptop holds would be a worse Habitat, not a
+smaller one — so the phone is not an apology for a small screen, it is
+a different, quieter room in the same house.
+
+**Marking, not editing.** The one line that decides what belongs: a
+phone ADDS to the record, a laptop REWRITES it. Every omission in §5b
+follows from it — no creating, no editing, no archiving, no −1, no
+re-ordering, no past days but yesterday. This is why it does not feel
+arbitrary in the hand: you never hunt for a control that is missing,
+because the phone is for the one gesture you came to make.
+
+Note what this costs, and that it is accepted: the phone loses the undo
+affordance that §2 treats as load-bearing everywhere else. A mistaken
+tap on a phone waits for the laptop. That is a real rough edge, chosen
+over letting a phone rewrite history.
+
+**All of the juice, none of the admin.** The reverse of the usual
+companion-app instinct. Drop arrivals reveal on the phone, the meters
+move, the cameos play, the friends arrive — the whole reward side is
+present (Kimia's call: "pretty much all the game juice features should
+exist on mobile"). What the phone drops is the paperwork: the field
+notes, the graphs, the archive, the settings. The phone is where the
+game is played; the laptop is where the record is kept.
+
+**Two abodes, on purpose.** Screen size massively changes what
+arrangement you want, so the phone keeps its own Abode and Bookcase
+layout and the two are never reconciled (spec §5b, §8). This is a
+feel decision before a technical one: an arrangement made for a wide
+screen looks wrong squeezed narrow, and being handed your laptop's
+composition on a phone would feel like someone had moved your things.
+Touch dragging is already most of the way there — the existing drag is
+built on Pointer Events, which cover finger and mouse alike, and
+`touch-action: none` is already set — so what is left is finger-sized
+targets and affordances that do not depend on hover, because a phone
+has none.
+
+**One page at a time, judged on a phone.** The habit list is the easy
+thing to fit — phones are good at vertical lists. The Map, Abode,
+Bookcase and Market are wide 2D compositions and are the hard ones, and
+they are where "too busy" will actually bite. So each arrives as its own
+design slice, art-directed live the way everything in §11 and §13 was,
+and any page that cannot stay calm small does not ship. Deciding six
+spatial redesigns in a document would be exactly the spec-then-implement
+move Kimia has rejected before.
+
+**Sync is invisible or it is wrong.** The status line follows the
+backup-age rule (§9, and spec §8's durability note): it states a fact,
+dimly, and stops. "Synced just now", "last synced yesterday". No
+spinners anywhere — the app never waits on a network — no alarm colour,
+no urgency, and never a count of neglect. A tracker with no punishment
+mechanics does not get to make you feel bad about a chore, and that
+includes one it is doing itself.

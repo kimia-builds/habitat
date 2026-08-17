@@ -2353,6 +2353,116 @@ return 0` right after the era is worked out, so a moment before the
   does NOT do is record yesterday as answered, or jump to the top —
   nothing was being built toward, so the page stays where it stood.
   Folded into spec §4.2 and design-notes §12c.
+- 2026-08-17 (Kimia's call): **a phone companion and two-device sync stop
+  being non-goals.** Habitat turned out not to have one user — friends
+  and family have been using it — and they asked to mark habits away from
+  a laptop. Habits are a several-times-a-day affair, so the laptop-only
+  rule was costing real marks. The v1 non-goals list said "mobile app,
+  sync across devices"; both are now planned (M7 sync, M8 phone) and
+  neither is built. The "single user, no accounts" line went too: no
+  accounts were ever needed because a fresh browser is already a fresh
+  world, and that remains true — there is still no login and no
+  password anywhere. Folded into spec §3.
+- 2026-08-17 (Kimia's call): **the phone is limited on purpose, and the
+  line is marking versus editing.** "The only mobile experience I can
+  accept is a limited one, before it gets too busy." A phone may ADD to
+  the record — +1/done, the charm lens, the morning check-in for
+  yesterday only — and a laptop alone may REWRITE it: no creating, no
+  editing, no archive/unarchive/delete, no archived view, no −1, no
+  re-ordering, no field notes or graphs, no past day but yesterday, no
+  time-shape settings (the day cutoff, and the week shape when T6.15
+  builds it). Two things fall out of one rule rather than a list of
+  arbitrary cuts: the phone never shows a control you cannot use, and
+  marks from a phone are purely additive, so **no deletion ever has to
+  travel between devices** — which is what makes the merge in §8
+  tractable. The cost, accepted knowingly: the phone loses the undo
+  affordance design-notes §2 treats as load-bearing, so a mistaken tap
+  waits for the laptop. Folded into spec §5b and design-notes §14.
+- 2026-08-17 (Kimia's call): **the phone gets all of the juice and none
+  of the admin.** "Pretty much all the game juice features should exist
+  on mobile" — drop arrivals reveal there, the meters move, the cameos
+  play, and the Map, Market, Guest Book, Abode and Bookcase are all
+  present, arrangeable by touch. The reverse of the usual companion-app
+  instinct, and it follows from what a phone is FOR here: the game is
+  played on the phone, the record is kept on the laptop. Folded into
+  spec §5b and design-notes §14.
+- 2026-08-17 (Kimia's call): **two abodes, on purpose — arrangements are
+  per-device and never synced.** "The screen size massively affects my
+  preferences… the gameplay needs to persist, but they don't have to talk
+  to each other across devices." So the Abode and Bookcase layouts are
+  device-scoped: a phone arrangement and a laptop arrangement are meant
+  to differ and are never reconciled. Refined in the same session after
+  checking T6.11: they **stay inside the versioned envelope** so a backup
+  file still carries them (T6.11's 2026-08-12 rule stands untouched), and
+  it is SYNC that leaves them alone rather than storage that moves them.
+  That refinement removes what had looked like a schema bump touching
+  every user — **M7 needs no schema change at all.** Folded into spec
+  §5b and §8.
+- 2026-08-17 (Kimia's call): **sync is an opt-in mirror named by a
+  pairing code, and it is encrypted on the device.** Five parts, each
+  chosen against a cheaper alternative. Local-first: `localStorage` stays
+  the source of truth and nothing ever waits on a network, so sync
+  failing is never Habitat failing. Dormant until asked for: a
+  laptop-only user makes no network request at all, so most people's data
+  is never touched. A long random pairing code instead of an account —
+  no email, no password, no reset, and the two devices need to be
+  together exactly once, for seconds, ever. Encrypted with that same code
+  before it leaves, so Kimia stores ciphertext and cannot read her
+  friends' habit data even while hosting it. And unpair deletes the
+  remote copy, which is what makes "delete my data" a request that can
+  actually be honoured. The price is named and accepted: lose both
+  devices and the code and the data is gone, which is what makes T6.4's
+  exported-file habit mandatory rather than nice to have. Folded into
+  spec §8.
+- 2026-08-17 (Kimia's call): **where the synced blob lives is
+  deliberately left open until M7 builds.** Two candidates — a Cloudflare
+  Worker + KV store Kimia runs (free at this scale, free tier fails
+  closed rather than billing, five-second setup for a friend) or each
+  user's own Dropbox/Drive (Kimia hosts nothing, but every friend needs
+  an account and a sign-in flow). The encryption boundary is what keeps
+  the choice cheap to defer: the app hands over an opaque encrypted blob
+  either way, so where it goes is a contained decision, not an
+  architecture. Folded into spec §8.
+- 2026-08-17: **abuse and quota are designed against, and the likelier
+  culprit is our own code.** Pairing slots are created BY HAND by Kimia
+  and never by the app, so the public endpoint offers read and
+  update-existing only — the "generate a thousand slots" route is absent
+  rather than merely gated — plus a rate limit per code and per IP, a
+  write size cap, and a per-code daily write cap. But a runaway loop in
+  Habitat's own sync code would burn more quota in ten minutes than a
+  stranger would in a year, so three layers guard it: loops made
+  impossible (send only if the bytes changed, idempotent merge, one
+  request in flight, no polling timers, one tab syncs), damage capped (a
+  client-side hourly budget that trips and stops, backoff with a ceiling,
+  debounce and coalesce), and caught early (pure merge tested with a
+  call-counting fake, a "run twice, expect zero requests" test, Kimia's
+  own two devices as canary, a host-side off switch that needs no
+  deploy). **If only three get built: the content-change guard, the
+  hourly budget, and the run-it-twice test.** Folded into spec §8.
+- 2026-08-17 (Kimia's call, after questioning the first plan): **sync is
+  built BEFORE the phone.** The order was going to be the other way
+  round, and Kimia found the flaw: a phone cannot create habits, so a
+  fresh phone has no data, cannot get any, and a phone-first milestone
+  would be a blank screen with nothing to test. Exporting a backup and
+  importing it on the phone works as a dev trick and needs no new code,
+  but it is a data-loss trap as a shipped feature — mark habits on the
+  phone after importing and the next import wipes them. Sync first
+  inverts every one of those problems: it is testable with **two desktop
+  browsers on one laptop**, no phone involved; it ships dormant so nobody
+  is affected while it is built; if the merge turns out to be a nightmare
+  that is discovered before a whole phone UI depends on it; and once it
+  works, populating a real phone for testing is a QR scan instead of
+  shuffling JSON files. Recorded in plan.md M7/M8.
+- 2026-08-17 (Kimia's call): **the phone's world pages arrive one at a
+  time, judged on a real phone.** The scope in spec §5b is a destination,
+  not a task. A vertical habit list is the easy thing to fit on a phone;
+  the Map, Abode, Bookcase and Market are wide 2D compositions and are
+  where "too busy" will actually bite. So M8 ships the daily core first
+  and then adds one spatial page per design slice, art-directed live the
+  way §11 and §13 were, and a page that cannot stay calm small does not
+  ship. Committing to six spatial redesigns in a document would be the
+  spec-then-implement move already rejected. Folded into spec §5b and
+  design-notes §14.
 
 ## T6.12 build notes — the quick check-in (2026-08-14)
 
