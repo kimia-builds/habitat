@@ -61,7 +61,7 @@ import { FRIEND_CATEGORIES } from '../game/constants.js'
 export const FRIEND_CANON = {
   plip: 0.13913, // the tiny one; Kimia: "its relative size should be tiny"
   baluhm: 0.417391,
-  klupengk: 0.417391, // the same size as the baluhm on the sheet
+  krupengk: 0.417391, // the same size as the baluhm on the sheet
   zala: 0.6,
   'liwi-bi-jiji': 0.817391,
   meuhy: 0.365217, // tall and narrow, so it reads smaller than its height

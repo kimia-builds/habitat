@@ -2593,7 +2593,7 @@ return 0` right after the era is worked out, so a moment before the
   species keys were still Claude's July drafts (drifter, nester, …), kept
   on the argument that an internal id is nobody's reading material. There
   is no such place: she opens these files. Every key was renamed to the
-  species' own name on N-Z-D — plip, baluhm, klupengk, zala, liwi-bi-jiji,
+  species' own name on N-Z-D — plip, baluhm, krupengk, zala, liwi-bi-jiji,
   meuhy, rassatt, woigolp, chitu, hamdi-bulo — through the code, the CSS
   animation classes, the tests and the docs. Cheap because saved games
   store a category NUMBER, not a key, which stays true if she ever renames
@@ -2691,7 +2691,7 @@ return 0` right after the era is worked out, so a moment before the
   only "does this drawing wear these colours", and nothing on the
   workbench feeds the app. The four real screens still take their sizes
   from `friendCanon.js` in the task that swaps the drawings in.
-- **Still open:** the other eight species — meuhy, klupengk, zala,
+- **Still open:** the other eight species — meuhy, krupengk, zala,
   liwi bi-jiji, rassatt, woigolp, chitu, hamdi bulo. One line each now.
 
 ## T5.3e build notes (part 3) — the deal, the names, and the emptying (2026-08-17)

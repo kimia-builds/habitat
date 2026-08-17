@@ -18,7 +18,7 @@ import { FRIEND_CATEGORIES } from '../game/constants.js'
 const SHEET_REM = {
   plip: 1.6,
   baluhm: 4.8,
-  klupengk: 4.8,
+  krupengk: 4.8,
   zala: 6.9,
   'liwi-bi-jiji': 9.4,
   meuhy: 4.2,
@@ -82,7 +82,7 @@ describe('the friend size canon', () => {
   })
 
   test('the two friends drawn the same size on the sheet stay equal', () => {
-    expect(FRIEND_CANON.baluhm).toBe(FRIEND_CANON.klupengk)
+    expect(FRIEND_CANON.baluhm).toBe(FRIEND_CANON.krupengk)
   })
 })
 

@@ -481,7 +481,7 @@ literacy, from 10 plips down to a single hamdi bulo:
 | ------------------------------ | ----------- |
 | plips                       | 10          |
 | baluhms                        | 9           |
-| klupengks                         | 8           |
+| krupengks                         | 8           |
 | zalas                        | 7           |
 | liwi bi-jijis                        | 6           |
 | meuhys                       | 5           |

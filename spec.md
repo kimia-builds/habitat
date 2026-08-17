@@ -287,7 +287,7 @@ opening its own growing world:
   no name in the app; nothing invents one. Lowest literacy first:
   1. **plips** — ambient beings; no language, just presence
   2. **baluhms** — small critters that respond to routine and warmth
-  3. **klupengks** — creatures that echo our sounds and gestures back
+  3. **krupengks** — creatures that echo our sounds and gestures back
   4. **zalas** — beings who converse in light and gesture patterns
   5. **liwi bi-jijis** — young locals; first spoken words
   6. **meuhys** — everyday conversation, small talk, jokes

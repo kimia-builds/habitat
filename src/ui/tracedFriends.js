@@ -61,7 +61,7 @@ import { friendSize } from './friendCanon.js'
 const SPECIES_OF = {
   '01': 'plip',
   '02': 'baluhm',
-  '03': 'klupengk',
+  '03': 'krupengk',
   '04': 'zala',
   '05': 'liwi-bi-jiji',
   '06': 'meuhy',

@@ -44,7 +44,7 @@ export const NAMES = {
   species: {
     plip: 'plip',
     baluhm: 'baluhm',
-    klupengk: 'klupengk',
+    krupengk: 'krupengk',
     zala: 'zala',
     'liwi-bi-jiji': 'liwi bi-jiji',
     meuhy: 'meuhy',
@@ -84,7 +84,7 @@ export const NAMES = {
       8: 'momo',
       9: 'sah',
     },
-    klupengk: {
+    krupengk: {
       1: 'chok',
       2: 'draktam',
       3: 'su-chuch',

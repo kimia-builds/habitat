@@ -56,8 +56,8 @@ const FORMS = {
       <circle cx="12" cy="11.5" r="1.6" fill="currentColor" />
     </>
   ),
-  // klupengks — one shape and its echo, a beat behind.
-  klupengk: (
+  // krupengks — one shape and its echo, a beat behind.
+  krupengk: (
     <>
       <path
         d="M8 5C5.5 8 5.5 16 8 19"

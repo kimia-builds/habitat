@@ -113,7 +113,7 @@ describe('the friend arrival reveal', () => {
   })
 
   it('renders gracefully with empty slots — nothing invented', () => {
-    const intro = NARRATION.friendIntros.klupengk
+    const intro = NARRATION.friendIntros.krupengk
     const original = { ...intro }
     intro.title = ''
     intro.line = ''
@@ -129,7 +129,7 @@ describe('the friend arrival reveal', () => {
       const dialog = screen.getByRole('dialog')
       expect(dialog.querySelector('.reveal-title')).toBeNull()
       expect(dialog.querySelector('.reveal-line')).toBeNull()
-      expect(dialog.querySelector('.friend-anim-klupengk')).not.toBeNull()
+      expect(dialog.querySelector('.friend-anim-krupengk')).not.toBeNull()
       expect(screen.getByRole('button', { name: 'onward' })).toBeDefined()
     } finally {
       Object.assign(intro, original)

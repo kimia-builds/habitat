@@ -84,7 +84,7 @@ export const NARRATION = {
       title: 'a baluhm!',
       line: 'curious and kind, baluhms gravitate towards strangers, communicating mostly through gesture.',
     },
-    klupengk: {
+    krupengk: {
       title: 'a krupengk!',
       line: 'the observant krupengk loves to gather information, saving it all for analysis later.',
     },
@@ -128,7 +128,7 @@ export const NARRATION = {
     plip: 'plips are a wordless creature on N-Z-D. they love company.',
     baluhm:
       'curious baluhms gravitate towards strangers, communicating mostly through gesture.',
-    klupengk:
+    krupengk:
       'the observant krupengk loves to gather information, saving it all for analysis later.',
     zala: 'zalas can be stand-offish, but you may see them often because they move slowly.',
     'liwi-bi-jiji':

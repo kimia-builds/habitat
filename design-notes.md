@@ -568,7 +568,7 @@ design-bible.md §9c.)
      gather there but do not perform. Scarcity is what makes the gesture
      land — a greeting you can see any time you like is wallpaper.
 - **Wordless greetings — visual-only until literate.** Low-literacy
-  beings (plips, baluhms, klupengks) communicate **visually only**
+  beings (plips, baluhms, krupengks) communicate **visually only**
   (glyphs, light, motion). **Written speech bubbles are earned** —
   they unlock only for higher-literacy friends, mirroring the ladder.
 

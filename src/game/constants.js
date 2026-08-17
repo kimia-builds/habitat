@@ -162,7 +162,7 @@ export const LITERACY_POINTS = {
 export const LITERACY_MILESTONES = [
   10, // plips
   30, // baluhms
-  65, // klupengks
+  65, // krupengks
   115, // zalas
   180, // liwi bi-jijis
   260, // meuhys
@@ -339,7 +339,7 @@ export const DIFFICULTY_DROP_MULTIPLIER = {
 export const FRIEND_CATEGORIES = [
   { key: 'plip' },
   { key: 'baluhm' },
-  { key: 'klupengk' },
+  { key: 'krupengk' },
   { key: 'zala' },
   { key: 'liwi-bi-jiji' },
   { key: 'meuhy' },
