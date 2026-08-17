@@ -53,8 +53,8 @@ import {
   FRIEND01_VIEWBOX,
   FRIEND01_GREYS,
 } from './friend01.jsx'
-import { speciesHues } from './friendHues.js'
-import { paletteForHue } from './friendPalettes.js'
+import { speciesColours } from './friendColours.js'
+import { paletteForTone } from './friendPalettes.js'
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -300,8 +300,12 @@ function TracedFriendSwatch({ friend, tint }) {
 //
 // Kimia's call (2026-08-17): individuals of a species differ by BODY COLOUR and
 // nothing else. So this is friend01 — the drifter archetype — drawn ten times
-// from the one drawing, wearing the ten hues friendHues.js gives it. Same
+// from the one drawing, wearing the ten colours of friendColours.js. Same
 // silhouette, same texture, same two eyes, same size.
+//
+// The drifters are the species that wears the WHOLE palette, being the only
+// roster as long as it is, so this shelf doubles as the palette's own swatch
+// card — which is why it is the one Kimia judges the colours on.
 //
 // SIZE, AND WHY THIS SHELF LOOKS BIGGER THAN THE CAST SHELF ABOVE. The drifter
 // is the smallest of the ten at 1.6rem on the cast shelf — big enough to place
@@ -313,12 +317,12 @@ function TracedFriendSwatch({ friend, tint }) {
 // — that is the part of the rule that matters.
 const DRIFTER_SHELF_BASE_REM = 50 // → a drifter about 7rem wide
 
-function DrifterIndividual({ individual, hue }) {
+function DrifterIndividual({ individual, colour }) {
   const prefix = `drifter-${individual}-`
   const box = `0 0 ${FRIEND01_VIEWBOX.w} ${FRIEND01_VIEWBOX.h}`
-  // The trace's own greys, re-coloured into this individual's hue. friend01 is
-  // a stacked trace, so there is no reconstructed base shade to carry.
-  const palette = paletteForHue(FRIEND01_GREYS.ramp, hue)
+  // The trace's own greys, re-coloured into this individual's tone. friend01
+  // is a stacked trace, so there is no reconstructed base shade to carry.
+  const palette = paletteForTone(FRIEND01_GREYS.ramp, colour)
   const shape = {
     width: `${friendSize('drifter', DRIFTER_SHELF_BASE_REM)}rem`,
     aspectRatio: `${FRIEND01_VIEWBOX.w} / ${FRIEND01_VIEWBOX.h}`,
@@ -344,7 +348,12 @@ function DrifterIndividual({ individual, hue }) {
           <Friend01Eyes prefix={prefix} />
         </svg>
       </div>
-      <span className="traced-swatch-name">{individual}</span>
+      {/* Numbered AND named: Kimia picks colours out by number ("keep 1, 5, 7,
+          9 and 10"), and says what she wants by name ("a baby pink"), so the
+          shelf speaks both. */}
+      <span className="traced-swatch-name">
+        {individual}. {colour.name}
+      </span>
     </li>
   )
 }
@@ -574,8 +583,8 @@ function DesignPage({ onBack }) {
       <section className="design-family" aria-label="the ten drifters">
         <h3>the ten drifters</h3>
         <ul className="traced-swatches">
-          {speciesHues('drifter').map((hue, i) => (
-            <DrifterIndividual key={i} individual={i + 1} hue={hue} />
+          {speciesColours('drifter').map((colour, i) => (
+            <DrifterIndividual key={i} individual={i + 1} colour={colour} />
           ))}
         </ul>
       </section>

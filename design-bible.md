@@ -281,29 +281,68 @@ holds everywhere. Appendages were dropped as an axis because code cannot
 invent a limb on a traced outline — it would take a drawn kit of parts,
 and Kimia declined the trade.)
 
-**How the colours are chosen.** A species spreads its roster **evenly
-around the colour wheel** — ten drifters every 36°, nine nesters every
-40°, the single poet wherever it starts — because colour is now the only
-thing telling siblings apart and so has to work as hard as it can. Each
-species starts 18° further round than the one below it on the ladder, from
-40° (the amber the cast was first shown in). **Colours repeat across
-species on purpose:** 55 friends on one wheel would sit 6.5° apart, which
-no eye reads as different, so chasing uniqueness would cost the even
-spacing that actually works. A drifter and a nester may share a green;
-they are different drawings at different sizes, and shape is what says
-which species.
+**The ten friend colours (Kimia, 2026-08-17 — chosen, not calculated).**
+The palette is a named list of ten, in `src/ui/friendColours.js`:
+
+| # | colour | # | colour |
+| - | ------ | - | ------ |
+| 1 | gold _(kept)_ | 6 | pale grey |
+| 2 | soft lilac | 7 | violet _(kept)_ |
+| 3 | pastel peach | 8 | baby blue |
+| 4 | baby pink | 9 | magenta _(kept)_ |
+| 5 | teal _(kept)_ | 10 | red _(kept)_ |
+
+The first attempt spread a species **evenly around the colour wheel**, and
+Kimia rejected it for two reasons that are now standing rules:
+
+- **Blues and greens are mostly the FLORA's.** An even sweep must pass
+  through every hue, so it spent four of its ten there. Friends borrowing
+  those tones blurs the two families the silhouette test exists to keep
+  apart. What survives is one teal, one baby blue, and a pale grey with a
+  cool cast.
+- **Pastels are a colour the sweep could not reach at all**, because it
+  varied only hue. See below.
+
+She kept five of the swept colours (1, 5, 7, 9, 10 as the shelf numbered
+them) and named the five pastels that replaced the rest. **Her five keep
+their original slot numbers**, so "colour 7" still means what it meant
+when she said it.
+
+**Colours repeat across species, necessarily:** ten colours, 55
+friendships. Two friends of different species sharing a pastel are not
+confusable — they are different drawings at different sizes, and shape is
+what says which species. The rule that must never break is that no two
+**siblings** share one, and since no roster exceeds ten, none ever do.
+Each species takes a run of the palette starting one step further along
+than the species below it, so every colour is worn by somebody and the
+rarest friends are not dressed like the commonest. The lone poet lands on
+the last colour.
+
+**A friend's colour is a hue, a strength, and a LIFT.** Lift is how far
+the colour is pulled toward white, and it had to be added (2026-08-17)
+the moment real pastels were tried: a pastel is a **light** colour, and a
+friend's lightness belongs to Kimia's shading, whose mid tone sits near
+55%. A baby pink lives near 86%, so hue and saturation alone returned a
+dusty rose — right arithmetic, wrong colour. Lift moves each shade a
+**fraction of its remaining distance to white** rather than a flat amount,
+which is what keeps it safe: a flat amount would push the top of the ramp
+past white, clipping several shades to the same solid tone and flattening
+the modelling; a fraction never arrives, so every shade stays distinct and
+in order at any lift. **The five kept colours sit at lift 0** and are
+therefore pixel-for-pixel what she approved.
 
 **Where a body colour comes from.** The 24 hand-written pastels in
 `src/ui/friendPalettes.js` turned out (T5.3e) to be a single formula
 rather than 24 choices: **keep the grey's own lightness, set saturation to
-60%, turn the hue.** So a ramp can be generated from one hue —
-`paletteForHue()` — which is what makes 55 individual palettes possible
-without hand-picking 440 hex values. The hand table stays the source of
-truth for the three named tints (its darkest green was deliberately
-darkened past the formula). The hues themselves live permanently in
-**`src/ui/friendHues.js`**, the colour twin of `friendCanon.js`, guarded
-by `friendHues.test.js` — which holds the line that no two individuals of
-a species ever share a colour.
+60%, turn the hue.** So a whole ramp can be generated from one tone —
+`paletteForTone()` — which is what makes 55 individual palettes possible
+without hand-picking 440 hex values, and lift is the third dial it grew.
+The hand table stays the source of truth for the three named tints (its
+darkest green was deliberately darkened past the formula). The palette
+itself lives permanently in **`src/ui/friendColours.js`**, the colour twin
+of `friendCanon.js`, guarded by `friendColours.test.js` — which holds both
+the line that no two siblings share a colour and the boundary keeping
+blues and greens with the flora.
 
 **Pilot: the Drifter (T5.3b, 2026-07-25; body art rejected
 2026-07-26).** The Drifter was assembled end-to-end first and proved

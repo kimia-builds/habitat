@@ -53,19 +53,48 @@ const GLOW_GREY = '#767676'
 // That matters because individuals differ ONLY by body colour (Kimia,
 // 2026-08-17), so the app needs ten drifter ramps, nine nester ramps and so on
 // — 55 in all, eight shades each. Nobody is hand-picking 440 hex values. One
-// hue in, one ramp out.
+// tone in, one ramp out.
+//
+// SATURATION IS PART OF THE TONE, not a constant (revised 2026-08-17, second
+// pass). The first cut fixed it at the table's 60% and turned the hue only,
+// which can reach every HUE but only ever at one strength — no pale grey at
+// any hue. So a tone carries its own saturation, and 60 is just where the
+// three original tints happen to sit. (Saturation alone still did not reach a
+// pastel: that took `lift`, below — a pastel turned out to be a LIGHT colour
+// more than a weak one.)
 //
 // The hand table STAYS the source of truth for green/violet/amber. Two
 // reasons: the darkest green (#113f28) was deliberately darkened past what the
 // formula gives, and regenerating them would shift the nine archetypes already
 // standing on the workbench — a colour change nobody asked for, in a task about
 // something else.
-const PASTEL_SATURATION = 60
+export const TINT_SATURATION = 60
 
 // A grey's lightness, as a percentage. These are true greys (r = g = b), so the
 // red channel alone is the answer and there is no need for a full HSL convert.
 function lightnessOf(grey) {
   return (parseInt(expand(grey).slice(1, 3), 16) / 255) * 100
+}
+
+// LIFT — how far toward white a colour is pulled, 0 to 100 (added 2026-08-17,
+// the third pass). Hue and saturation alone cannot make a pastel, because a
+// pastel is a LIGHT colour and the lightness here belongs to the drawing:
+// friend01's mid tone sits near 55%, where a baby pink (about 86%) simply
+// cannot exist. Asked for one, the formula returned a dusty rose — correct
+// arithmetic, wrong colour.
+//
+// So lift moves every shade the same FRACTION of its remaining distance to
+// white, rather than adding a flat amount. That distinction is the whole
+// design: a flat amount would push the top of the ramp past white and clip,
+// flattening the shading Kimia drew into a solid blob. A fraction compresses
+// the ramp gently toward the light end instead — at lift 45, the darkest shade
+// climbs 20% → 56% and the lightest 81% → 90% — so every shade stays distinct,
+// in order, and the modelling survives. Nothing can ever clip, because a
+// fraction of the remaining distance never arrives.
+//
+// The five colours Kimia kept sit at lift 0, so they are untouched.
+function lifted(lightness, lift) {
+  return lightness + (100 - lightness) * (lift / 100)
 }
 
 // HSL → #rrggbb, the standard conversion. Kept here because this is the only
@@ -97,16 +126,20 @@ function hslHex(hue, saturation, lightness) {
 }
 
 /**
- * The same trace in ANY hue — the individuals' path, where `palettesFor` is the
- * three named tints' path. Same shape of palette, so a component cannot tell
- * which one it was handed.
+ * The same trace in ANY tone — the individuals' path, where `palettesFor` is
+ * the three named tints' path. Same shape of palette, so a component cannot
+ * tell which one it was handed.
  *
  * `greys`    the trace's shade list, in its source paint order
- * `hue`      degrees on the colour wheel (see friendHues.js for whose is whose)
+ * `tone`     `{ hue, saturation, lift }` — degrees round the wheel, how strong
+ *            the colour is, and how far it is pulled toward white. Only `hue`
+ *            is required. See friendColours.js for whose is whose.
  * `baseGrey` the reconstructed darkest shade, for banded traces only
  */
-export function paletteForHue(greys, hue, baseGrey) {
-  const pastel = (grey) => hslHex(hue, PASTEL_SATURATION, lightnessOf(grey))
+export function paletteForTone(greys, tone, baseGrey) {
+  const { hue, saturation = TINT_SATURATION, lift = 0 } = tone
+  const pastel = (grey) =>
+    hslHex(hue, saturation, lifted(lightnessOf(grey), lift))
   const palette = {
     ramp: greys.map(pastel),
     glow: pastel(GLOW_GREY),

@@ -150,13 +150,15 @@ tracker. Everything after this is delight, informed by real use.
             not appendages (which code cannot derive from a traced
             outline). design-bible §9c rewritten to match._
             _In progress: **the ten drifters** are on the workbench
-            (2026-08-17). The machinery is general, not drifter-specific
-            — `src/ui/friendHues.js` (permanent, the colour twin of
-            friendCanon.js: a species spreads its roster evenly round the
-            wheel) and `paletteForHue()` in friendPalettes.js, which works
-            because the 24 hand-written pastels turned out to be one
-            formula. **Remaining: the other nine species**, a shelf each,
-            once Kimia has judged the drifters. Build notes in history.md._
+            (2026-08-17), and being the longest roster they wear the whole
+            palette — so that shelf is where the colours get judged. The
+            machinery is general, not drifter-specific:
+            `src/ui/friendColours.js` (permanent, the colour twin of
+            friendCanon.js — ten NAMED colours after Kimia rejected an even
+            sweep of the wheel for spending too much on the flora's blues
+            and greens) and `paletteForTone()` in friendPalettes.js, where
+            a colour is a hue, a strength and a lift toward white. **Remaining:
+            the other nine species**, a shelf each. Build notes in history.md._
       - [ ] **T5.3f Animations** _(was T5.3e)_ — the 9 remaining
             signature category animations (one per category,
             design-notes §8).

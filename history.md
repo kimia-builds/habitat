@@ -2531,17 +2531,55 @@ return 0` right after the era is worked out, so a moment before the
   standing on the workbench — a colour change nobody asked for, in a task
   about something else.
 
+- 2026-08-17 (Kimia's call, seeing the first ten drifters): **the friend
+  palette is CHOSEN, not calculated — and blues and greens are mostly the
+  flora's.** The even sweep round the colour wheel was rejected on sight
+  for spending four of its ten colours on blues and greens, which belong
+  to the plants: friends borrowing those tones blurs the two families the
+  silhouette test exists to keep apart. She kept five of the swept colours
+  — the gold, teal, violet, magenta and red, numbers 1, 5, 7, 9 and 10 as
+  the shelf showed them — and named five pastels for the rest: a baby
+  pink, a soft lilac, a pastel peach, a pale grey and a baby blue. Her
+  five keep their original slot numbers so that "colour 7" still means
+  what it meant when she said it. Only one teal, one baby blue and a
+  cool-cast grey survive of the cool half. Folded into design-bible §9c.
+- 2026-08-17 (found while building, second pass): **a colour needs a
+  LIGHTNESS dial as well as hue and strength, or a pastel is unreachable.**
+  The generator varied hue only, then hue and saturation, and a request for
+  "baby pink" still came back a dusty rose (#99535e) — because a pastel is
+  a LIGHT colour and a friend's lightness belongs to Kimia's shading, whose
+  mid tone sits near 55% where a baby pink (about 86%) cannot exist. The
+  fix is `lift`: how far toward white the colour is pulled. It moves each
+  shade a **fraction of its remaining distance** to white rather than a
+  flat amount, which is the load-bearing detail — a flat amount would push
+  the top of the ramp past white, clip several shades to one solid tone and
+  flatten the modelling Kimia drew into a blob, where a fraction never
+  arrives and so keeps every shade distinct and ordered at any lift. The
+  five kept colours sit at lift 0 and are untouched.
+- 2026-08-17 (judgement call while building, flagged to Kimia): **the two
+  pastel values first tried did not deserve their names.** "Pastel peach"
+  at 52% saturation rendered a vivid orange near-twinned with the gold, and
+  the baby pink a salmon. Both were the assistant's numbers rather than
+  Kimia's brief, so they were corrected without asking — the brief said
+  peach and pink, and delivering an orange under the label "pastel peach"
+  would have been the failure. What WAS taken back to her is the thing her
+  brief could not have anticipated: that reaching real pastels needed a
+  third dial at all.
+
 ## T5.3e build notes (part 1) — the ten drifters (2026-08-17)
 
-- **`src/ui/friendHues.js` is the permanent home**, deliberately the twin
-  of `friendCanon.js` and beside it: the canon says how big a friend is
-  against the others, this says what colour it is against its siblings,
+- **`src/ui/friendColours.js` is the permanent home**, deliberately the
+  twin of `friendCanon.js` and beside it: the canon says how big a friend
+  is against the others, this says what colour it is against its siblings,
   and together they are the whole of what code decides about a friend's
-  looks. `individualHue(key, individual)` takes the game's own 1-based
-  individual number (`src/game/friends.js`), `speciesHues(key)` returns a
-  whole roster. It sits in `src/ui/` under the §11d boundary, same as the
-  canon and the pastels: artwork values live beside the artwork.
-- **`paletteForHue(greys, hue, baseGrey)`** joined `friendPalettes.js` as
+  looks. `individualColour(key, individual)` takes the game's own 1-based
+  individual number (`src/game/friends.js`), `speciesColours(key)` returns
+  a whole roster. It sits in `src/ui/` under the §11d boundary, same as the
+  canon and the pastels: artwork values live beside the artwork. (Born as
+  `friendHues.js` earlier the same day and renamed within the hour — once
+  a colour was a hue AND a strength AND a lift, the old name described a
+  third of the file.)
+- **`paletteForTone(greys, tone, baseGrey)`** joined `friendPalettes.js` as
   the individuals' path, returning the same SHAPE of palette as the named
   tints' `palettesFor` — so a friend component cannot tell which one it
   was handed and needed no changes at all. friend01.jsx was not touched:
@@ -2556,12 +2594,18 @@ return 0` right after the era is worked out, so a moment before the
   `friendSize('drifter', …)` and never typed in — that is the part of the
   rule that matters, and typing "7rem" would have been the exact failure
   friendCanon.js exists to prevent.
-- **Tests.** `friendHues.test.js` holds the load-bearing line — no two
-  individuals of a species share a colour — plus even spacing, distinct
-  species starts, and the lone poet's roster-of-one arithmetic.
+- **Tests.** `friendColours.test.js` holds the load-bearing line — no two
+  siblings share a colour — plus the palette being at least as long as the
+  largest roster (the assumption that line rests on), every colour being
+  worn by somebody, and the lone poet's roster-of-one arithmetic. Two of
+  its tests pin DESIGN boundaries rather than behaviour, on purpose, so a
+  later "let's add a nice sage green" has to argue with something: at most
+  two blue-or-green colours, and at least half the palette genuinely pale.
   `friendPalettes.test.js` is new and proves the formula claim above
   against the hand table, naming the darkened green as the one deliberate
-  exception rather than loosening the tolerance to hide it. The DesignPage
+  exception rather than loosening the tolerance to hide it; it also holds
+  the property that made lift a fraction rather than a flat amount — that
+  the ramp's shades stay distinct and ordered even at lift 90. The DesignPage
   test asserts ten swatches, ten distinct body ramps, ONE width shared by
   all ten, and the archetype's two eyes still blinking in their own
   overlay. Verified in the browser as well (the shelf sits at the foot of
