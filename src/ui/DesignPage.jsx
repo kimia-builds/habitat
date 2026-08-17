@@ -39,7 +39,12 @@ import {
   FRIEND10_VIEWBOX,
   FRIEND10_PALETTES,
 } from './friend10.jsx'
-import { TRACED_FRIENDS, FRIEND_TINTS } from './tracedFriends.js'
+import {
+  TRACED_FRIENDS,
+  FRIEND_TINTS,
+  SHELF_BASE_REM,
+} from './tracedFriends.js'
+import { friendSize } from './friendCanon.js'
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -194,10 +199,19 @@ const FRIEND10_TINTS = ['green', 'violet', 'amber']
 function Friend10Swatch({ tint }) {
   const prefix = `friend10-${tint}-`
   const viewBox = `0 0 ${FRIEND10_VIEWBOX.w} ${FRIEND10_VIEWBOX.h}`
+  // Friend 10 is the poet (tracedFriends.js records the mapping). Its size used
+  // to be an 11rem typed into index.css — the second half of the split T5.3d
+  // closed — and now comes from the canon against the same shelf base as the
+  // other nine, which reproduces that 11rem exactly.
+  const shape = {
+    width: `${friendSize('poet', SHELF_BASE_REM)}rem`,
+    aspectRatio: `${FRIEND10_VIEWBOX.w} / ${FRIEND10_VIEWBOX.h}`,
+  }
   return (
-    <li className="friend10-swatch">
+    <li className="friend10-swatch" style={{ width: shape.width }}>
       <div
         className="friend10-swatch-art"
+        style={shape}
         role="img"
         aria-label={`friend 10, ${tint}`}
       >

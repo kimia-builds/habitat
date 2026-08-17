@@ -327,7 +327,33 @@ anywhere in the app. Practically: one unitless table of relative scales
 in a permanent home, every render site multiplying its own base by that
 number, and a test holding the ratios to the sheet. Never a per-screen
 size typed in by hand — that is how a cast loses its scale one screen at
-a time. (Built in T5.3d.)
+a time.
+
+**Built in T5.3d (2026-08-17): the canon lives in `src/ui/friendCanon.js`**
+— ten unitless ratios keyed by species, `friendSize(key, base)` to ask for
+one, and `friendCanon.test.js` holding every PAIR of friends to the sheet's
+proportions (a ratio test, because the rule is about ratios; a per-friend
+size test would pass on a cast that had been scaled wrong together). It sits
+in `src/ui/` rather than `constants.js` under §11d's boundary — these are
+proportions of drawings, consumed only by the code that paints SVG, like the
+friend pastels and the texture tints. **The anchor is the largest friend at
+1**, so every other number is a fraction of the biggest and a screen's base
+size means "how much room the biggest friend gets here". Note the poet, top
+of the literacy ladder, is fractionally SMALLER than the scholar: on this
+ladder sophistication climbs through texture, appendages and silhouette
+(below), never through size, and the character sheet is the authority on size.
+
+**Which drawing is which species (Kimia, 2026-08-17):** the ten numbered
+archetypes run straight down the literacy ladder — friend 01 is the first
+species you meet, the smallest and simplest, and friend 10 the rarest and
+most sophisticated. The numbers are workbench-only; the species key is the
+durable identity and outlives the shelf.
+
+The four screens that draw friends — Guest Book, arrival reveal, cameo,
+Abode — do NOT consult the canon yet, deliberately: they still draw the
+placeholder line-art of T4.4, so there is no archetype there to size. They
+each pick a base size and multiply in the task that swaps the real drawings
+in.
 
 **Complexity scales with size.** Larger friends are more visually
 complex, but complexity comes from **layered texture, appendages, and

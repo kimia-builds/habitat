@@ -137,16 +137,9 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **T5.3c The ladder** _(done 2026-08-10 — checkpoint passed
             on Kimia's eyeball test: all ten read as one family. Build
             notes in history.md)_
-      - [ ] **T5.3d The size canon** (new 2026-08-10, Kimia's rule:
-            "their canon sizes must remain true in relation to each
-            other — not necessarily in absolute values — everywhere and
-            always") — the ten archetypes' relative scales become ONE
-            unitless table in a permanent home, and every place a friend
-            is drawn takes its size from it against that place's own
-            base size. Today the canon is absolute rem, split across a
-            temporary workbench file and one CSS rule, and describes the
-            shelf rather than the cast. Comes before T5.3e because the
-            individuals vary size against their archetype.
+      - [x] **T5.3d The size canon** _(done 2026-08-17 — `src/ui/friendCanon.js`
+            + the pair-ratio test; also fixed which drawing is which
+            species. design-bible §9c; build notes in history.md)_
       - [ ] **T5.3e Individuals** _(was T5.3d before the 2026-08-10
             insert)_ — per category, derive the remaining individuals in
             code from the archetype (size, texture, appendage, eye

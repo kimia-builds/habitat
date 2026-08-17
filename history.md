@@ -2463,6 +2463,83 @@ return 0` right after the era is worked out, so a moment before the
   ship. Committing to six spatial redesigns in a document would be the
   spec-then-implement move already rejected. Folded into spec §5b and
   design-notes §14.
+- 2026-08-17 (Kimia's call): **the numbered archetypes are the species,
+  in exact ladder order** — friend 01 is the drifter (which she calls
+  *plip*), friend 10 the poet, and the eight between follow the literacy
+  ladder without a gap. Asked whether size should track the ladder, she
+  confirmed the ordering she had already drawn: friend 01 smallest and
+  simplest, friend 10 "the top most rare and sophisticated". This is the
+  fact that lets the canon be keyed by SPECIES rather than by drawing
+  number, which matters because the numbers are workbench-only and leave
+  with the shelf. Folded into design-bible §9c.
+- 2026-08-17 (Kimia's call): **she would rather not use "drifter",
+  "nester" and the rest — the species have names she invented.** They
+  already do, everywhere a player can see: T6.1a moved every name into
+  `src/content/names.js` and she has filled all ten species and all 55
+  individuals. What remains in the code are permanent internal ids that
+  never render, and they have to remain: a stylesheet or a test that
+  quoted her words would break the deploy the moment she edited one on
+  GitHub (the standing content-coupling rule). The convention that
+  settles it, applied in `friendCanon.js`: **code keys stay, and her
+  species name goes in the comment beside each one**, so the file reads
+  in her language without depending on it. Same session she corrected
+  *blip* to **plip**.
+- 2026-08-17 (scope call, agreed before building): **T5.3d is the canon
+  table and the workbench, not the four real screens.** The plan asks for
+  "every place a friend is drawn" to take its size from the canon, but
+  the Guest Book, arrival reveal, cameo and Abode still draw the T4.4
+  placeholder line-art — there is no archetype there to size, so wiring
+  them now would mean either sizing placeholders about to be deleted or
+  swallowing the whole art swap into this task. They adopt the canon in
+  the task that replaces the placeholders. The same reasoning T5.2e used
+  for not spending the glow scale on placeholder art.
+
+## T5.3d build notes — the size canon (2026-08-17)
+
+- **`src/ui/friendCanon.js` is the permanent home**: ten unitless ratios
+  keyed by species, `friendScale(key)`, `friendSize(key, base)`, and
+  `FRIEND_CANON_ORDER` for anything walking the cast. It sits in
+  `src/ui/` and not `constants.js` on design-notes §11d's boundary —
+  these are proportions of DRAWINGS, consumed only by the code that
+  paints SVG, the same class of value as `friendPalettes.js` and the
+  texture tints. constants.js is for tunable game numbers, and nothing
+  here can be retuned without redrawing the character sheet.
+- **The anchor is the largest friend at 1** (the scholar, 11.5rem on the
+  sheet). Every other ratio is then a fraction of the biggest, and a
+  screen's base size reads as "how much room the biggest friend gets
+  here" — a more natural thing for a render site to decide than an
+  abstract unit. Worth knowing: **the poet is fractionally smaller than
+  the scholar** despite topping the ladder. That is the sheet, not a bug;
+  §9c has always said sophistication climbs through texture, appendages
+  and silhouette rather than size.
+- **Six figures, not four.** The first pass stored four decimal places
+  and the pair test failed: a ratio's error is multiplied by whatever
+  base a screen picks, and the tiny drifter (0.1391) carried enough
+  relative error to throw its ratio against the nester off by 0.0007.
+  Six figures puts every pair within a thousandth of a percent.
+- **The test is about PAIRS, and its tolerance is relative.** Kimia's
+  rule is that the ten stand in the sheet's proportions, so the test
+  compares every friend against every other friend rather than checking
+  ten sizes one at a time — a per-friend test would pass a cast that had
+  been scaled wrong *together*, which is exactly the failure the rule
+  exists to prevent. The tolerance is a fraction of the value, not a flat
+  amount, because a flat margin is generous on the largest friend and
+  impossible on the smallest. The test keeps its **own second copy of the
+  sheet measurements**: that duplication is the point, since it is what
+  catches a future task tuning "just one friend" by hand.
+- **Both halves of the old split are gone.** The rem column left
+  `tracedFriends.js` (which now maps drawing number → species and picks
+  a shelf base of 11.5rem), and friend 10's `width: 11rem` left
+  `index.css`, replaced by an inline size from the canon like the other
+  nine. Its aspect ratio moved out of CSS at the same time, since it was
+  a hand-copy of the artwork's own viewBox.
+- **Verified nothing moved**, which was the claim worth checking: with
+  the dev server up, every one of the ten cards measures its previous
+  width to within half a thousandth of a rem, and friend 10's aspect
+  ratio survived the move. Measured by DOM query rather than screenshot —
+  the workbench is a long page and CLAUDE.md's browser note applies.
+- Not touched: the four screens that draw friends (see the scope call
+  above), and `FriendGlyph.jsx`'s placeholder art.
 
 ## T6.12 build notes — the quick check-in (2026-08-14)
 

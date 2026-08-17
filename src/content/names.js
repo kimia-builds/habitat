@@ -35,7 +35,7 @@ export const NAMES = {
   // arrival shelf, and the home-screen cameo visits.
   // TODO: written by Kimia.
   species: {
-    drifter: 'blip',
+    drifter: 'plip',
     nester: 'baluhm',
     mimic: 'klupengk',
     signer: 'zala',

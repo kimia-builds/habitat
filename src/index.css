@@ -3067,20 +3067,21 @@ body {
   padding: 0;
 }
 
+/* The card's WIDTH and aspect ratio are not here (T5.3d): friend 10's size
+   used to be an 11rem typed into this rule, which split the cast's canon
+   between a stylesheet and a JavaScript file. It now comes from
+   friendCanon.js, applied inline by DesignPage.jsx like the other nine. */
 .friend10-swatch {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
-  width: 11rem;
   max-width: 100%;
 }
 
 .friend10-swatch-art {
   position: relative;
-  width: 11rem;
   max-width: 100%;
-  aspect-ratio: 687.651 / 832.012;
   border-radius: 0.75rem;
   background: var(--surface-workbench);
 }

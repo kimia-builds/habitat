@@ -6,10 +6,15 @@
  * an eyes overlay, three pastel palettes), so the workbench draws them from
  * this one list rather than repeating the same swatch nine times.
  *
- * `width` is the card's width in rem, and it is the ONE place the archetypes'
- * relative sizes are set — the whole point of showing them side by side is
- * that a Drifter should read as small next to a Storyteller. The card's shape
- * comes from each artwork's own viewBox, so setting a width sets the card.
+ * SIZES ARE NO LONGER SET HERE (T5.3d). They used to be: a column of rem
+ * widths lived in this file, which meant the cast's proportions would have died
+ * with the workbench that leaves with it. They now live in friendCanon.js as
+ * unitless ratios, permanently, and this shelf is just one more screen picking
+ * its own base size and multiplying — the same thing the Guest Book and the
+ * arrival reveal will do when the real art reaches them.
+ *
+ * The card's shape still comes from each artwork's own viewBox, so setting a
+ * width sets the card.
  * =========================================================================== */
 
 import * as f01 from './friend01.jsx'
@@ -21,6 +26,7 @@ import * as f06 from './friend06.jsx'
 import * as f07 from './friend07.jsx'
 import * as f08 from './friend08.jsx'
 import * as f09 from './friend09.jsx'
+import { friendSize } from './friendCanon.js'
 
 // CARD WIDTHS, in rem, read off Kimia's pixel character sheet (2026-08-10):
 // the sheet draws all ten archetypes together at their canonical sizes, so it
@@ -38,23 +44,38 @@ import * as f09 from './friend09.jsx'
 // The scale is set by friend 09, the widest, filling the shelf three to a row.
 // Friend 10 falls out of the same maths at 11rem — exactly the width its card
 // already had, which is a decent check that the mapping is sound.
-const CARD_WIDTH = {
-  '01': 1.6, // the tiny one — Kimia: "its relative size should be tiny"
-  '02': 4.8,
-  '03': 4.8,
-  '04': 6.9,
-  '05': 9.4,
-  '06': 4.2,
-  '07': 9.9,
-  '08': 9.1,
-  '09': 11.5, // the widest of the nine, and the scale's anchor
+// WHICH DRAWING IS WHICH SPECIES (Kimia, 2026-08-17): "01 is the plip, and
+// they follow in exact order" — the numbered drawings run straight down the
+// literacy ladder, friend 01 the smallest and simplest, friend 10 the rarest
+// and most sophisticated. That makes the NUMBERS a workbench-only convenience;
+// the durable identity is the species key, which is what friendCanon.js is
+// written against and what survives when this shelf is removed. Friend 10 is
+// the poet, and is drawn by its own component over in DesignPage.jsx.
+const SPECIES_OF = {
+  '01': 'drifter',
+  '02': 'nester',
+  '03': 'mimic',
+  '04': 'signer',
+  '05': 'sprout',
+  '06': 'chatter',
+  '07': 'neighbour',
+  '08': 'storyteller',
+  '09': 'scholar',
 }
+
+// THE SHELF'S OWN BASE SIZE, in rem: how much room the largest friend gets
+// here. Every other friend is a fraction of it, straight from the canon. The
+// value is the width the largest archetype already had, so the shelf still
+// fills three to a row and nothing on screen moves — this task changed where
+// the proportions live, not what they are.
+export const SHELF_BASE_REM = 11.5
 
 function entry(num, mod) {
   const U = `FRIEND${num}`
   const C = `Friend${num}`
   return {
     num,
+    species: SPECIES_OF[num],
     label: `friend ${num}`,
     viewBox: mod[`${U}_VIEWBOX`],
     palettes: mod[`${U}_PALETTES`],
@@ -62,7 +83,7 @@ function entry(num, mod) {
     BodyDefs: mod[`${C}BodyDefs`],
     Eyes: mod[`${C}Eyes`],
     EyeDefs: mod.EyeDefs,
-    width: CARD_WIDTH[num],
+    width: friendSize(SPECIES_OF[num], SHELF_BASE_REM),
   }
 }
 
