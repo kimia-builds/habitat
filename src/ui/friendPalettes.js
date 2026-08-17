@@ -44,6 +44,77 @@ export const GREY_TO_PASTEL = {
 // as light and still plainly the body's own colour.
 const GLOW_GREY = '#767676'
 
+// THE RULE HIDING IN THE TABLE ABOVE (found T5.3e, 2026-08-17). Those 24 hand
+// -written pastels are not 24 independent choices. Read them in HSL and they
+// are one formula: KEEP THE GREY'S OWN LIGHTNESS, SET SATURATION TO 60%, TURN
+// THE HUE. Green is that at 151°, violet at 256.5°, amber at 40° — every row
+// lands within one or two of 255 per channel of the value typed by hand.
+//
+// That matters because individuals differ ONLY by body colour (Kimia,
+// 2026-08-17), so the app needs ten drifter ramps, nine nester ramps and so on
+// — 55 in all, eight shades each. Nobody is hand-picking 440 hex values. One
+// hue in, one ramp out.
+//
+// The hand table STAYS the source of truth for green/violet/amber. Two
+// reasons: the darkest green (#113f28) was deliberately darkened past what the
+// formula gives, and regenerating them would shift the nine archetypes already
+// standing on the workbench — a colour change nobody asked for, in a task about
+// something else.
+const PASTEL_SATURATION = 60
+
+// A grey's lightness, as a percentage. These are true greys (r = g = b), so the
+// red channel alone is the answer and there is no need for a full HSL convert.
+function lightnessOf(grey) {
+  return (parseInt(expand(grey).slice(1, 3), 16) / 255) * 100
+}
+
+// HSL → #rrggbb, the standard conversion. Kept here because this is the only
+// file in the project that thinks in hues.
+function hslHex(hue, saturation, lightness) {
+  const h = ((hue % 360) + 360) % 360
+  const s = saturation / 100
+  const l = lightness / 100
+  const c = (1 - Math.abs(2 * l - 1)) * s
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
+  const m = l - c / 2
+  const [r, g, b] =
+    h < 60
+      ? [c, x, 0]
+      : h < 120
+        ? [x, c, 0]
+        : h < 180
+          ? [0, c, x]
+          : h < 240
+            ? [0, x, c]
+            : h < 300
+              ? [x, 0, c]
+              : [c, 0, x]
+  const byte = (n) =>
+    Math.round((n + m) * 255)
+      .toString(16)
+      .padStart(2, '0')
+  return `#${byte(r)}${byte(g)}${byte(b)}`
+}
+
+/**
+ * The same trace in ANY hue — the individuals' path, where `palettesFor` is the
+ * three named tints' path. Same shape of palette, so a component cannot tell
+ * which one it was handed.
+ *
+ * `greys`    the trace's shade list, in its source paint order
+ * `hue`      degrees on the colour wheel (see friendHues.js for whose is whose)
+ * `baseGrey` the reconstructed darkest shade, for banded traces only
+ */
+export function paletteForHue(greys, hue, baseGrey) {
+  const pastel = (grey) => hslHex(hue, PASTEL_SATURATION, lightnessOf(grey))
+  const palette = {
+    ramp: greys.map(pastel),
+    glow: pastel(GLOW_GREY),
+  }
+  if (baseGrey) palette.base = pastel(baseGrey)
+  return palette
+}
+
 export const TINTS = ['green', 'violet', 'amber']
 
 // Inkscape writes some greys in three-digit shorthand (#333). Normalise so the

@@ -86,6 +86,50 @@ describe('DesignPage workbench', () => {
     expect(labels).toEqual(['signer, green', 'signer, violet', 'signer, amber'])
   })
 
+  // T5.3e — the ten drifters. The claim being tested is Kimia's rule that
+  // individuals differ by COLOUR ALONE: same drawing, same size, same eyes,
+  // ten different bodies. So the test checks the roster is all there, that
+  // every one of them is a different colour, and that nothing else moved.
+  it('shows all ten drifters, each a different colour and all one size', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    const shelf = screen.getByLabelText('the ten drifters')
+    const swatches = [...shelf.querySelectorAll('[role="img"]')]
+    expect(swatches).toHaveLength(10)
+
+    // Every individual of the species, numbered the way the game numbers them
+    // (src/game/friends.js: individual = arrival order, 1-based).
+    expect(swatches.map((img) => img.getAttribute('aria-label'))).toEqual(
+      Array.from({ length: 10 }, (_, i) => `drifter ${i + 1}`),
+    )
+
+    // ONE SIZE. T5.3d fixed a size per species and T5.3e does not vary it, so
+    // ten identical widths is the assertion — not ten particular widths, which
+    // would just pin this shelf's own base size.
+    const widths = new Set(swatches.map((img) => img.style.width))
+    expect(widths.size).toBe(1)
+
+    // TEN COLOURS. Each swatch's body layers carry that individual's ramp, so
+    // two drifters sharing a fill would mean two friends nobody can tell
+    // apart. The glow path is skipped: it is the same shade of the same hue.
+    const bodies = swatches.map((img) =>
+      [...img.querySelectorAll('svg')[0].querySelectorAll('path')]
+        .slice(1)
+        .map((p) => p.getAttribute('fill'))
+        .join('|'),
+    )
+    expect(new Set(bodies).size).toBe(10)
+
+    // And the drawing itself is untouched: the drifter archetype's two
+    // canonical eyes, still blinking in their own overlay.
+    for (const swatch of swatches) {
+      const [body, eyes] = swatch.querySelectorAll('svg')
+      expect(body.querySelectorAll('.friend-eye-blink')).toHaveLength(0)
+      expect(eyes.querySelectorAll('.friend-eye-blink')).toHaveLength(
+        EYE_COUNTS['01'],
+      )
+    }
+  })
+
   it('shows friend 10 in three tints with two blinking eyes each', () => {
     const { container } = render(<DesignPage onBack={vi.fn()} />)
     // The tenth archetype follows the storyteller's assembled pattern:

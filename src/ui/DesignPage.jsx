@@ -45,6 +45,16 @@ import {
   SHELF_BASE_REM,
 } from './tracedFriends.js'
 import { friendSize } from './friendCanon.js'
+import {
+  Friend01Body,
+  Friend01BodyDefs,
+  Friend01Eyes,
+  EyeDefs as Friend01EyeDefs,
+  FRIEND01_VIEWBOX,
+  FRIEND01_GREYS,
+} from './friend01.jsx'
+import { speciesHues } from './friendHues.js'
+import { paletteForHue } from './friendPalettes.js'
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -285,6 +295,60 @@ function TracedFriendSwatch({ friend, tint }) {
   )
 }
 
+// THE TEN DRIFTERS (T5.3e, 2026-08-17) — the first species to get its whole
+// roster, and the proof of what an "individual" is in Habitat.
+//
+// Kimia's call (2026-08-17): individuals of a species differ by BODY COLOUR and
+// nothing else. So this is friend01 — the drifter archetype — drawn ten times
+// from the one drawing, wearing the ten hues friendHues.js gives it. Same
+// silhouette, same texture, same two eyes, same size.
+//
+// SIZE, AND WHY THIS SHELF LOOKS BIGGER THAN THE CAST SHELF ABOVE. The drifter
+// is the smallest of the ten at 1.6rem on the cast shelf — big enough to place
+// it in the scale, far too small to judge ten colours on. This shelf therefore
+// picks a much larger base size of its own, exactly as the canon allows a
+// screen to (friendCanon.js): the ten species stand in the sheet's proportions
+// within any ONE view, and this view holds only drifters, so there is nothing
+// here for a drifter to out-size. The size is still ASKED FOR, never typed in
+// — that is the part of the rule that matters.
+const DRIFTER_SHELF_BASE_REM = 50 // → a drifter about 7rem wide
+
+function DrifterIndividual({ individual, hue }) {
+  const prefix = `drifter-${individual}-`
+  const box = `0 0 ${FRIEND01_VIEWBOX.w} ${FRIEND01_VIEWBOX.h}`
+  // The trace's own greys, re-coloured into this individual's hue. friend01 is
+  // a stacked trace, so there is no reconstructed base shade to carry.
+  const palette = paletteForHue(FRIEND01_GREYS.ramp, hue)
+  const shape = {
+    width: `${friendSize('drifter', DRIFTER_SHELF_BASE_REM)}rem`,
+    aspectRatio: `${FRIEND01_VIEWBOX.w} / ${FRIEND01_VIEWBOX.h}`,
+  }
+  return (
+    <li className="traced-swatch" style={{ width: shape.width }}>
+      <div
+        className="traced-swatch-art"
+        style={shape}
+        role="img"
+        aria-label={`drifter ${individual}`}
+      >
+        <svg className="traced-swatch-layer" viewBox={box} aria-hidden="true">
+          <defs>
+            <Friend01BodyDefs prefix={prefix} />
+          </defs>
+          <Friend01Body palette={palette} prefix={prefix} />
+        </svg>
+        <svg className="traced-swatch-layer" viewBox={box} aria-hidden="true">
+          <defs>
+            <Friend01EyeDefs prefix={prefix} />
+          </defs>
+          <Friend01Eyes prefix={prefix} />
+        </svg>
+      </div>
+      <span className="traced-swatch-name">{individual}</span>
+    </li>
+  )
+}
+
 // The star-shimmer's workbench shelf (T5.2e, design-notes §5). It lands
 // here first because the real thing plays for a couple of seconds and
 // only when a habit happens to give something — this shelf replays it on
@@ -502,6 +566,19 @@ function DesignPage({ onBack }) {
           </ul>
         </section>
       ))}
+
+      {/* The ten drifters (T5.3e) — one species' whole roster, which is one
+          drawing in ten colours. The first answer to "what makes two friends
+          of a species different"; the other nine species follow the same
+          recipe once Kimia has judged this one. */}
+      <section className="design-family" aria-label="the ten drifters">
+        <h3>the ten drifters</h3>
+        <ul className="traced-swatches">
+          {speciesHues('drifter').map((hue, i) => (
+            <DrifterIndividual key={i} individual={i + 1} hue={hue} />
+          ))}
+        </ul>
+      </section>
 
       <button className="pebble" onClick={onBack}>
         ← back to the habits

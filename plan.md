@@ -142,8 +142,21 @@ tracker. Everything after this is delight, informed by real use.
             species. design-bible §9c; build notes in history.md)_
       - [ ] **T5.3e Individuals** _(was T5.3d before the 2026-08-10
             insert)_ — per category, derive the remaining individuals in
-            code from the archetype (size, texture, appendage, eye
-            count/size); Kimia approves each. 45 across all categories.
+            code from the archetype; Kimia approves each. 45 across all
+            categories.
+            _Kimia's call 2026-08-17: an individual is a **COLOUR** —
+            siblings differ by body colour and nothing else, not size
+            (T5.3d fixed that per species), not texture, not eye count,
+            not appendages (which code cannot derive from a traced
+            outline). design-bible §9c rewritten to match._
+            _In progress: **the ten drifters** are on the workbench
+            (2026-08-17). The machinery is general, not drifter-specific
+            — `src/ui/friendHues.js` (permanent, the colour twin of
+            friendCanon.js: a species spreads its roster evenly round the
+            wheel) and `paletteForHue()` in friendPalettes.js, which works
+            because the 24 hand-written pastels turned out to be one
+            formula. **Remaining: the other nine species**, a shelf each,
+            once Kimia has judged the drifters. Build notes in history.md._
       - [ ] **T5.3f Animations** _(was T5.3e)_ — the 9 remaining
             signature category animations (one per category,
             design-notes §8).

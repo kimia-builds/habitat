@@ -2494,6 +2494,85 @@ return 0` right after the era is worked out, so a moment before the
   the task that replaces the placeholders. The same reasoning T5.2e used
   for not spending the glow scale on placeholder art.
 
+- 2026-08-17 (Kimia's call, asked twice): **an individual friend is a
+  COLOUR — siblings of a species differ by body colour and nothing else.**
+  The workflow note in design-bible §9c had listed four axes (size,
+  texture, appendages, eye count/size); asked which of them code should
+  actually turn, she picked body colour alone, and confirmed it when the
+  consequence was put plainly back to her ("ten drifters are one identical
+  shape in ten pastels"). Two of the four were already settled or
+  impossible: **size** was spoken for by T5.3d, which fixed one size per
+  species and holds everywhere; **appendages** cannot be derived by code
+  from a traced outline — adding one means drawing a kit of parts, a
+  drawing session she declined. Texture and eye count were live options,
+  both built and both offered, and she took neither. Her reasoning is the
+  species-recognition one: the drawing is the creature you recognise, the
+  colour is the one you met. §9c rewritten to match.
+- 2026-08-17 (design call): **a species spreads its roster evenly around
+  the colour wheel, and colours repeat across species on purpose.** With
+  colour carrying the whole job of telling siblings apart, the ten
+  drifters take 36° each, the nine nesters 40°, and so on; each species
+  starts 18° further round than the one below it, from 40°. Uniqueness
+  across all 55 was considered and rejected as fake precision — 55 hues on
+  one wheel sit 6.5° apart, which nobody perceives as different, so it
+  would trade the spacing that works for a guarantee that reads as a
+  coincidence. Species are told apart by SHAPE (different drawings at
+  different sizes); colour only ever answers "which one of these".
+- 2026-08-17 (found while building): **the friends' 24 hand-written
+  pastels are one formula, not 24 choices.** Read in HSL, every value in
+  `GREY_TO_PASTEL` is the grey's own lightness at 60% saturation with the
+  hue turned — green 151°, violet 256.5°, amber 40° — landing within one
+  or two of 255 per channel of what was typed by hand. That is what makes
+  the colour-only call affordable: 55 individuals need 55 ramps of eight
+  shades, and nobody was going to hand-pick 440 hex values. The hand table
+  is KEPT as the source of truth for the three named tints rather than
+  regenerated, because its darkest green was deliberately darkened past
+  the formula and because regenerating would shift nine archetypes already
+  standing on the workbench — a colour change nobody asked for, in a task
+  about something else.
+
+## T5.3e build notes (part 1) — the ten drifters (2026-08-17)
+
+- **`src/ui/friendHues.js` is the permanent home**, deliberately the twin
+  of `friendCanon.js` and beside it: the canon says how big a friend is
+  against the others, this says what colour it is against its siblings,
+  and together they are the whole of what code decides about a friend's
+  looks. `individualHue(key, individual)` takes the game's own 1-based
+  individual number (`src/game/friends.js`), `speciesHues(key)` returns a
+  whole roster. It sits in `src/ui/` under the §11d boundary, same as the
+  canon and the pastels: artwork values live beside the artwork.
+- **`paletteForHue(greys, hue, baseGrey)`** joined `friendPalettes.js` as
+  the individuals' path, returning the same SHAPE of palette as the named
+  tints' `palettesFor` — so a friend component cannot tell which one it
+  was handed and needed no changes at all. friend01.jsx was not touched:
+  its exported `FRIEND01_GREYS.ramp` is already the trace's shade list in
+  paint order, which is exactly what the generator wants.
+- **The shelf shows one species, so it picks its own base size.** A
+  drifter is the smallest of the cast at 1.6rem on the cast shelf — fine
+  for placing it in the scale, far too small to judge ten colours on. The
+  drifters shelf therefore sets a base of 50rem (a drifter ≈ 7rem), which
+  the canon expressly allows: the proportions bind within any ONE view,
+  and this view holds only drifters. The size is still ASKED FOR via
+  `friendSize('drifter', …)` and never typed in — that is the part of the
+  rule that matters, and typing "7rem" would have been the exact failure
+  friendCanon.js exists to prevent.
+- **Tests.** `friendHues.test.js` holds the load-bearing line — no two
+  individuals of a species share a colour — plus even spacing, distinct
+  species starts, and the lone poet's roster-of-one arithmetic.
+  `friendPalettes.test.js` is new and proves the formula claim above
+  against the hand table, naming the darkened green as the one deliberate
+  exception rather than loosening the tolerance to hide it. The DesignPage
+  test asserts ten swatches, ten distinct body ramps, ONE width shared by
+  all ten, and the archetype's two eyes still blinking in their own
+  overlay. Verified in the browser as well (the shelf sits at the foot of
+  a long page, so the CLAUDE.md trick of hiding the shelves above it was
+  needed for the screenshot).
+- **Still open:** the other nine species. The recipe is general — nothing
+  in `friendHues.js` or `paletteForHue` is drifter-specific — so they are
+  a shelf each once Kimia has judged this one. Per the standing rule about
+  showing design one slice at a time, the roster was NOT built out for all
+  55 before she has seen ten.
+
 ## T5.3d build notes — the size canon (2026-08-17)
 
 - **`src/ui/friendCanon.js` is the permanent home**: ten unitless ratios

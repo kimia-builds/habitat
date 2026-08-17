@@ -267,9 +267,43 @@ ring, crescent, compound) were exploration only.
 hand-drawn by Kimia** (raster drawing → Inkscape trace → SVG), keeping
 friends visibly from the same hand as the flora; texture, eyes and
 glow are then assembled in code on the workbench. The remaining
-**individuals are derived in code from their category's archetype** —
-varying size, texture, appendages, and eye count/size — with every
-variation approved or rejected by Kimia.
+**individuals are derived in code from their category's archetype**,
+with every variation approved or rejected by Kimia.
+
+**An individual is a COLOUR (Kimia, 2026-08-17, T5.3e — this replaces the
+first list of four axes).** Two friends of a species differ by **body
+colour and nothing else**: not size, not texture, not appendages, not eye
+count. Ten drifters are one drawing in ten pastels. The reasoning is that
+the species is the creature you recognise and the colour is the one you
+met — vary the silhouette too and a species stops reading as a species.
+(Size was already spoken for: T5.3d fixed one size per species and that
+holds everywhere. Appendages were dropped as an axis because code cannot
+invent a limb on a traced outline — it would take a drawn kit of parts,
+and Kimia declined the trade.)
+
+**How the colours are chosen.** A species spreads its roster **evenly
+around the colour wheel** — ten drifters every 36°, nine nesters every
+40°, the single poet wherever it starts — because colour is now the only
+thing telling siblings apart and so has to work as hard as it can. Each
+species starts 18° further round than the one below it on the ladder, from
+40° (the amber the cast was first shown in). **Colours repeat across
+species on purpose:** 55 friends on one wheel would sit 6.5° apart, which
+no eye reads as different, so chasing uniqueness would cost the even
+spacing that actually works. A drifter and a nester may share a green;
+they are different drawings at different sizes, and shape is what says
+which species.
+
+**Where a body colour comes from.** The 24 hand-written pastels in
+`src/ui/friendPalettes.js` turned out (T5.3e) to be a single formula
+rather than 24 choices: **keep the grey's own lightness, set saturation to
+60%, turn the hue.** So a ramp can be generated from one hue —
+`paletteForHue()` — which is what makes 55 individual palettes possible
+without hand-picking 440 hex values. The hand table stays the source of
+truth for the three named tints (its darkest green was deliberately
+darkened past the formula). The hues themselves live permanently in
+**`src/ui/friendHues.js`**, the colour twin of `friendCanon.js`, guarded
+by `friendHues.test.js` — which holds the line that no two individuals of
+a species ever share a colour.
 
 **Pilot: the Drifter (T5.3b, 2026-07-25; body art rejected
 2026-07-26).** The Drifter was assembled end-to-end first and proved
