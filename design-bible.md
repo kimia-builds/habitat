@@ -240,12 +240,15 @@ collectible classes** (Kimia, 2026-08-19, `src/ui/floraCanon.js`):
   tall it stands next to you is what size means for a plant.
 - **All four species share the two classes.** A species is not big or
   small; a flora is. The shapes differ, the sizes do not.
-- **Small stands as tall as a ZALA. Large stands as tall as a CHITU**,
-  the biggest friend — so the large class reads 37% taller than the
-  small. She first named the rassatt for the large class; measured by
-  height the rassatt is 2.6% SHORTER than the zala (it is wide and low),
-  which would have made two classes the same size, so on seeing the cast's
-  heights she re-pegged it to the chitu.
+- **Large stands as tall as a CHITU**, the biggest friend. She first
+  named the rassatt for it; measured by height the rassatt is 2.6%
+  SHORTER than the zala (it is wide and low), which would have made two
+  classes the same size, so on seeing the cast's heights she re-pegged it
+  to the chitu.
+- **Small stands HALF as tall as a ZALA.** It was pegged to the whole zala
+  first; seeing both classes drawn beside the two friends she called the
+  small one too tall and halved it. **A large flora is 2.74× the height of
+  a small one.** Both are locked (2026-08-19).
 - **The numbers live in the FRIENDS' scale**, not a private flora one:
   both files count in the same unitless units, whose 1 is the largest
   friend's width. That is the whole point — flora, friends and one day

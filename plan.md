@@ -163,19 +163,21 @@ tracker. Everything after this is delight, informed by real use.
             - [x] **The six fills** — hair textures only, all four modes
                   with curly coat and dense underfur doubled, each worn in
                   one of the four colours (`src/ui/floraFills.js`); the
-                  hair generator learned to take a tint to do it. On the
-                  workbench, awaiting her eye.
+                  hair generator learned to take a tint to do it. Now worn
+                  by the real shapes on the workbench (4 × 6 = 24 of the
+                  48 collectibles), awaiting her eye.
             - [x] **The four silhouettes** — flora 1, 2, 3 and 6 of the
                   eight she drew in July, her traces kept verbatim in
                   `src/ui/floraSilhouettes.js` under her own numbering.
                   Unnamed until T6.1.
-            - [x] **The sizing sheet** — no sheet was needed in the end:
-                  she pegged the two collectible classes to two FRIENDS
-                  instead (small = as tall as a zala, large = as tall as a
-                  chitu), so `src/ui/floraCanon.js` derives them in the
-                  friends' own scale and the two families are true to each
-                  other by construction. Standing on the workbench beside
-                  those two friends, awaiting her eye.
+            - [x] **The two sizes** _(no sizing sheet was needed in the
+                  end)_ — she pegged the collectible classes to two
+                  FRIENDS instead: large = as tall as a chitu, small =
+                  HALF as tall as a zala after she saw both drawn and cut
+                  the small one down. `src/ui/floraCanon.js` derives them
+                  in the friends' own scale, so the two families are true
+                  to each other by construction. **Locked 2026-08-19**,
+                  and the comparison shelf came down with them.
             - [ ] **The landmark super-size** — the third size class,
                   still unset (2026-08-19, her call to settle the
                   collectibles first). It belongs with the Map work, and

@@ -2673,6 +2673,51 @@ sizes, only "price correlates with size". So flora and friends are one
 scale today, and both `floraCanon.js` and §9a say the objects join this
 same scale when they are drawn rather than starting a third.
 
+## T5.3g build notes (part 2) — the sizes locked, the flora dressed (2026-08-19)
+
+**Same session as part 1**, after Kimia looked at the size scene.
+
+**The halving.** `FLORA_CANON.small` went from a whole zala's height to
+half of one. The test kept its shape rather than having the new number
+pasted in: it grew a `PEG_SHARE` table (`small: 0.5, large: 1`) so the
+derivation still reads as "this share of that friend's height", and the
+halving got its own named test — it is the one number here that no
+arithmetic would have produced, so it should fail loudly if someone
+"tidies" it back to a whole zala.
+
+**The shelf turned over in place.** The ruler friends and the small class
+went; the four shapes stayed, at large size, now wearing all six fills.
+That also removed `DesignPage.jsx`'s only imports of `friend04`/`friend09`
+and the whole hand-rolled row-packing layout — the dressed flora are a
+plain wrapping list like every other shelf on the page, one row per shape.
+
+**Drawing a dressed flora**, the recipe now proved in the browser:
+
+1. the aura — the silhouette blurred (`feGaussianBlur`) and painted the
+   fill's own colour, because a living thing's light IS its body colour
+   (§3), which is why it is SVG behind the shape and not a box-shadow
+   around a rectangle;
+2. a dark ground in the shape, so the hair reads as the fill rather than
+   as a texture laid on a colour;
+3. the hair field, clipped to the silhouette so no strand fringes out.
+
+**One thing worth knowing for the next flora screen.** The hair modes
+were tuned on a 110-unit swatch and their strand LENGTH is absolute in
+drawing units, so dropping a field straight into a trace's own canvas
+would make the fur a different size on every species (the four canvases
+run 95–197 units tall). The fix here: generate the hair in its own space
+that is always 110 units tall, then scale it onto the drawing — so a
+strand is the same size on screen on all four. Wide shapes get their
+field in tiles of roughly one swatch each, with a seed per tile, so the
+density is the tuned one instead of thinning out across a wide canvas.
+
+**Verified in the browser:** 24 figures, every one 141.7px tall (the
+large class at this shelf's base), each aura carrying its own fill's hex,
+every strand inside a clipped group. No console errors. It is heavy — the
+shelf paints about 22,400 paths — which is fine for a workbench page that
+one person opens deliberately, and worth remembering before this recipe
+goes anywhere the game draws many flora at once.
+
 ## T5.3e build notes (part 1) — the ten plips (2026-08-17)
 
 - **`src/ui/friendColours.js` is the permanent home**, deliberately the
@@ -3225,6 +3270,23 @@ same scale when they are drawn rather than starting a third.
   re-derives them from `friendCanon.js` and the two friends' own drawings
   on every run, so if the cast is ever redrawn the suite says so rather
   than the flora drifting quietly.
+- 2026-08-19 (Kimia's call, T5.3g — same day, on seeing them drawn):
+  **the small class is HALVED and both classes are LOCKED.** Shown the two
+  classes standing beside the zala and the chitu she said the small ones
+  were too tall and cut them in half, so small is now **half a zala's
+  height** (0.280993) and large is unchanged at a whole chitu's (0.770215)
+  — a large flora is 2.74× the height of a small one. This is the eyeball
+  method paying for itself twice in one day: the arithmetic caught the
+  rassatt peg before anything was built, and her eye caught the small
+  class after. The derived number was the proposal; her eye was the
+  decision.
+- 2026-08-19 (Kimia's call, T5.3g): **the size comparison came down and
+  the flora got dressed.** With the sizes locked, the ruler friends and
+  the small class left the workbench the same session that put them there
+  — the waiting-room rule, applied the moment the question closed. What
+  stands in their place is the four shapes at their LARGE size wearing all
+  six fills (24 of the 48 collectibles), which is the last open question
+  of the ordinary flora.
 
 ## T6.13 build notes — one keyed catalogue for every interface word (2026-08-16)
 

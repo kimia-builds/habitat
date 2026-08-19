@@ -11,20 +11,30 @@ import { FRIEND_CANON, friendSize } from './friendCanon.js'
 import { FRIEND04_VIEWBOX } from './friend04.jsx'
 import { FRIEND09_VIEWBOX } from './friend09.jsx'
 
-// The two friends the classes are pegged to (Kimia, 2026-08-19): a small flora
-// stands as tall as a ZALA, a large one as tall as a CHITU. Their drawings are
-// imported above rather than copied, because "as tall as a zala" has to keep
-// meaning that even if the zala is ever redrawn — this is the guard that makes
-// the two numbers in floraCanon.js a derivation rather than a pair of taste
-// decisions that could quietly stop being true.
+// The two friends the classes are pegged to (Kimia, 2026-08-19): a large flora
+// stands as tall as a CHITU, a small one HALF as tall as a ZALA — she halved
+// the small class on sight after seeing both drawn. Their drawings are imported
+// above rather than copied, because "half a zala tall" has to keep meaning that
+// even if the zala is ever redrawn — this is the guard that makes the two
+// numbers in floraCanon.js a derivation rather than a pair of taste decisions
+// that could quietly stop being true.
 const PEGS = { small: 'zala', large: 'chitu' }
 const PEG_VIEWBOX = { zala: FRIEND04_VIEWBOX, chitu: FRIEND09_VIEWBOX }
+
+// How much of its peg friend's height each class actually takes.
+const PEG_SHARE = { small: 0.5, large: 1 }
 
 // A friend's canon number is its WIDTH; its own drawing then says how tall that
 // makes it. That height is what a flora of the matching class must equal.
 function friendHeightInCanon(key) {
   const { w, h } = PEG_VIEWBOX[key]
   return FRIEND_CANON[key] * (h / w)
+}
+
+// The height a class must come out at: its peg friend's height, times the
+// share of it Kimia settled on.
+function expectedHeight(sizeClass) {
+  return friendHeightInCanon(PEGS[sizeClass]) * PEG_SHARE[sizeClass]
 }
 
 // Relative, not flat, for the reason friendCanon.test.js gives: proportions are
@@ -53,13 +63,14 @@ describe('the flora size canon', () => {
 
   // THE HEART OF IT. Each class is a friend's height, in the friends' own
   // scale, so the two families are one scale and not two.
-  test('a small flora is exactly as tall as a zala, a large one as tall as a chitu', () => {
+  test('a small flora is half a zala tall, a large one a whole chitu tall', () => {
     const wrong = []
     for (const cls of FLORA_SIZE_CLASSES) {
-      const peg = PEGS[cls]
-      const pegHeight = friendHeightInCanon(peg)
-      if (!proportionsMatch(FLORA_CANON[cls], pegHeight)) {
-        wrong.push(`${cls} is ${FLORA_CANON[cls]}, the ${peg} is ${pegHeight}`)
+      const wanted = expectedHeight(cls)
+      if (!proportionsMatch(FLORA_CANON[cls], wanted)) {
+        wrong.push(
+          `${cls} is ${FLORA_CANON[cls]}, ${PEG_SHARE[cls]} of a ${PEGS[cls]} is ${wanted}`,
+        )
       }
     }
     // Named rather than counted, so a failure says which class drifted.
@@ -73,15 +84,25 @@ describe('the flora size canon', () => {
   test('the two classes are far enough apart to read as two sizes', () => {
     expect(FLORA_CANON.large / FLORA_CANON.small).toBeGreaterThan(1.2)
   })
+
+  test('the small class is half its peg, not a whole one', () => {
+    // The halving is Kimia's eyeball decision (2026-08-19), and it is the one
+    // number here that no arithmetic would have produced on its own — so it
+    // gets its own guard rather than living only inside the derivation above.
+    expect(PEG_SHARE.small).toBe(0.5)
+    expect(
+      proportionsMatch(FLORA_CANON.small, friendHeightInCanon('zala') / 2),
+    ).toBe(true)
+  })
 })
 
 describe('asking the canon for a size', () => {
-  test('a flora and its peg friend come out the same height at the same base', () => {
+  test('a flora keeps its share of its peg friend’s height at any base', () => {
     for (const base of [1, 11.5, 40, 512]) {
       for (const cls of FLORA_SIZE_CLASSES) {
         const peg = PEGS[cls]
         const { w, h } = PEG_VIEWBOX[peg]
-        const pegHeight = friendSize(peg, base) * (h / w)
+        const pegHeight = friendSize(peg, base) * (h / w) * PEG_SHARE[cls]
         // Relative, not to a fixed number of decimals: an absolute margin that
         // is right at a base of 1 is impossibly tight at a base of 512, since
         // the canon's six stored figures scale up with everything else.

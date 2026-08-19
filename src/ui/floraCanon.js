@@ -13,8 +13,12 @@
  *     Map work. Nothing may invent one in the meantime.)
  *   • A flora's size is its HEIGHT. Not its width, not its bulk: how tall it
  *     stands next to you is what "size" means for a plant.
- *   • The small class stands as tall as a ZALA. The large class stands as tall
- *     as a CHITU, the biggest friend.
+ *   • The large class stands as tall as a CHITU, the biggest friend.
+ *   • The small class stands HALF as tall as a ZALA. It was pegged to the whole
+ *     zala first; seeing the two classes drawn she called the small one too
+ *     tall and halved it, which is the eyeball test doing its job — the derived
+ *     number was the proposal, her eye was the decision. A large flora is now
+ *     2.74× the height of a small one.
  *
  * WHY THE CHITU AND NOT THE RASSATT, which she first named. The rassatt is wide
  * and low: measured by height it is 2.6% SHORTER than the zala, so pegging the
@@ -54,10 +58,11 @@
 // They are not free-standing choices; they are two friends' heights, worked out
 // from the character sheet:
 //
-//   small = the zala's height  = 0.6     × (366.19 ÷ 390.96) = 0.561986
-//   large = the chitu's height = 1       × (550.65 ÷ 714.93) = 0.770215
+//   small = the zala's height  ÷ 2 = 0.6 × (366.19 ÷ 390.96) ÷ 2 = 0.280993
+//   large = the chitu's height     = 1   × (550.65 ÷ 714.93)     = 0.770215
 //
-// (canon width × the drawing's own height ÷ its own width). They are written
+// (canon width × the drawing's own height ÷ its own width, and then Kimia's
+// halving on the small one). They are written
 // out as plain numbers rather than computed here so that this file stays a
 // short statement of fact, and `floraCanon.test.js` re-derives them from
 // friendCanon.js and the two drawings every time the suite runs — so if the
@@ -66,7 +71,7 @@
 // Six figures for the same reason friendCanon.js gives: these are ratios, and a
 // rounding error is multiplied by whatever base a screen picks.
 export const FLORA_CANON = {
-  small: 0.561986, // as tall as a zala
+  small: 0.280993, // half as tall as a zala
   large: 0.770215, // as tall as a chitu, the biggest friend
 }
 

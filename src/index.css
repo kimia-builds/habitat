@@ -2967,16 +2967,26 @@ body {
   width: 5.5rem;
 }
 
-/* TEMPORARY (T5.3g, 2026-08-19): the flora size scene — the four
-   silhouettes at both size classes standing on shared ground with the
-   two friends the classes are pegged to (floraCanon.js). It is one SVG
-   drawn in canon units, so the box only has to give it a width and the
-   proportions inside look after themselves. Leaves when the sizes are
-   approved. */
-.flora-size-scene {
-  display: block;
-  width: 100%;
-  height: auto;
+/* TEMPORARY (T5.3g, 2026-08-19): the dressed flora — the four
+   silhouettes at their large canon size in each of the six fills. One
+   row per shape, wrapping. The SVGs carry their own width and height in
+   rem, straight from floraCanon.js, so this rule must never set a size:
+   the canon does that, and a CSS width here would silently overrule it. */
+.flora-figures {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-6);
+}
+
+.flora-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
 }
 
 /* A line of workbench explanation under a shelf's title — what the eye is

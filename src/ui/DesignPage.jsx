@@ -31,13 +31,13 @@
 // colour. It is still workbench-only; the real Abode screen has not
 // been given a sky yet.
 //
-// FLORA SIZES (T5.3g, 2026-08-19) — the four silhouettes Kimia chose, at
-// both size classes, standing on shared ground with the two friends the
-// classes are pegged to: a small flora is as tall as a zala, a large one
-// as tall as a chitu (floraCanon.js). Flat outlines only — the question
-// this shelf asks is whether the sizes sit right when flora, friends and
-// (one day) objects share the Abode, and a surface would only argue with
-// it. It leaves when she has judged the sizes.
+// FLORA (T5.3g, 2026-08-19) — the four silhouettes Kimia chose, at their
+// large canon size, wearing all six fills. The sizes themselves are
+// SETTLED and this shelf no longer shows them being judged: it stood for
+// one session with both classes and two ruler friends beside them, she
+// halved the small class on sight and locked both, and the comparison
+// came down the same day (floraCanon.js). What is still open is the
+// fills on the real shapes, which is what stands here now.
 //
 // FLORA FILLS (T5.3g, 2026-08-19) — the open question of the flora pass.
 // The four colours were chosen off this shelf earlier today and their
@@ -52,14 +52,7 @@ import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
 import { AbodeSky, ABODE_PALETTES } from './sky.jsx'
 import { FLORA_FILLS } from './floraFills.js'
 import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
-import { FLORA_SIZE_CLASSES, floraHeight, floraWidth } from './floraCanon.js'
-import { friendSize } from './friendCanon.js'
-import { FRIEND04_VIEWBOX, FRIEND04_BASE } from './friend04.jsx'
-import {
-  FRIEND09_VIEWBOX,
-  FRIEND09_OFFSET,
-  FRIEND09_BASE,
-} from './friend09.jsx'
+import { floraHeight, floraWidth } from './floraCanon.js'
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -179,179 +172,103 @@ function FloraFillSwatch({ fill }) {
   )
 }
 
-/* ── THE FLORA SIZE SCENE (T5.3g, 2026-08-19) ─────────────────────────────
- * Kimia's four chosen silhouettes at both size classes, standing on a shared
- * ground with the two friends the classes are pegged to. Everything here is
- * drawn in CANON UNITS — the unitless scale friendCanon.js and floraCanon.js
- * both speak, whose 1 is the largest friend's width — so the scene cannot
- * quietly stop matching the canon: it has no sizes of its own to drift.
+/* ── THE FLORA, DRESSED (T5.3g, 2026-08-19) ───────────────────────────────
+ * The four silhouettes at their LARGE canon size, each wearing all six fills:
+ * 4 × 6 = 24 of the 48 collectible flora, the other 24 being these same
+ * drawings at the small size.
  *
- * Flat silhouettes, no fill and no glow: this shelf asks ONE question, whether
- * the two sizes sit right against the friends, and a surface would only argue
- * with it. The six fills are the shelf below.
+ * The recipe, from design-bible §9a and §3:
+ *   • the shape is Kimia's trace, never redrawn;
+ *   • the hair FORMS the fill and is clipped to the outline, so no strand
+ *     fringes out past it;
+ *   • a dark ground sits behind the strands, because a solid backing would
+ *     make the hair a texture ON a colour when the point is that the hair IS
+ *     the fill (the same reasoning as the fill squares above);
+ *   • the glow is the silhouette itself, blurred and painted the fill's own
+ *     colour — a living thing's light IS its body colour, so it is drawn in
+ *     SVG behind the shape rather than as a box-shadow around a rectangle.
+ *
+ * Nothing here types a size in: the box comes from floraCanon.js at one shelf
+ * base, so the whole shelf follows the canon by construction.
  */
 
-// One scene unit = the largest friend's width, so every figure asks the canon
-// with a base of 1 and the numbers come back as pure proportions.
-const SCENE_BASE = 1
+// How much room the largest FRIEND would get on this shelf. Every flora size
+// is a fraction of it (floraCanon.js), so this single number sets the shelf.
+const FLORA_SHELF_BASE_REM = 11.5
 
-// How far apart the figures stand, and how wide a row may get before the next
-// figure starts a new one. Wrapping keeps the scene nearly square instead of a
-// long thin strip, which on a phone would draw everything too small to judge.
-const SCENE_GAP = 0.14
-const SCENE_ROW_GAP = 0.16
-const SCENE_ROW_MAX = 3.6
+// The hair modes were tuned on a 110-unit swatch, and strand length is fixed
+// in drawing units rather than relative to the box. So the hair is generated
+// in its own space that is always 110 units TALL, then scaled onto the
+// drawing — which makes a strand the same size on screen on all four species,
+// however big each one's own trace canvas happens to be.
+const HAIR_UNIT = 110
 
-// Air around the whole scene, so no silhouette touches the edge.
-const SCENE_PAD = 0.1
+// The blur that makes the aura, as a fraction of the drawing's width — the
+// same fraction the friends use (friend04.jsx: 6.6 on a 391-wide canvas).
+const GLOW_FRACTION = 0.017
 
-// The ruler friends: the small class stands as tall as the zala, the large as
-// tall as the chitu. Each is drawn as its reconstructed outer silhouette — the
-// sealed body shape behind its tonal bands — which is exactly the flat outline
-// the flora are being compared against.
-const RULER_FRIENDS = [
-  {
-    key: 'zala',
-    viewBox: FRIEND04_VIEWBOX,
-    offset: null,
-    d: FRIEND04_BASE,
-  },
-  {
-    key: 'chitu',
-    viewBox: FRIEND09_VIEWBOX,
-    offset: FRIEND09_OFFSET,
-    d: FRIEND09_BASE,
-  },
-]
-
-// A friend's canon number is its WIDTH; the drawing then gives the height.
-function rulerFigure({ key, viewBox, offset, d }) {
-  const width = friendSize(key, SCENE_BASE)
-  return {
-    id: `ruler-${key}`,
-    label: `${key} — the ruler`,
-    kind: 'ruler',
-    viewBox,
-    offset,
-    d,
-    width,
-    height: (width * viewBox.h) / viewBox.w,
-  }
-}
-
-// A flora's canon number is its HEIGHT; the drawing then gives the width.
-function floraFigure(silhouette, sizeClass) {
-  return {
-    id: `flora-${sizeClass}-${silhouette.key}`,
-    label: `${sizeClass} ${silhouette.label}`,
-    kind: 'flora',
-    viewBox: silhouette.viewBox,
-    offset: silhouette.transform ?? null,
-    d: silhouette.d,
-    width: floraWidth(sizeClass, silhouette, SCENE_BASE),
-    height: floraHeight(sizeClass, SCENE_BASE),
-  }
-}
-
-// The cast of the scene, in the order they stand: the zala leading the four
-// small flora, then the chitu leading the four large ones.
-const SCENE_FIGURES = [
-  rulerFigure(RULER_FRIENDS[0]),
-  ...FLORA_SILHOUETTES.map((s) => floraFigure(s, FLORA_SIZE_CLASSES[0])),
-  rulerFigure(RULER_FRIENDS[1]),
-  ...FLORA_SILHOUETTES.map((s) => floraFigure(s, FLORA_SIZE_CLASSES[1])),
-]
-
-// Lay the figures out left to right, wrapping to a new row when the next one
-// would overrun SCENE_ROW_MAX. Everything in a row shares one baseline, which
-// is the whole point: they are standing on the same ground, as they would in
-// the Abode.
-function sceneLayout(figures) {
-  const rows = [[]]
-  let rowWidth = 0
-  for (const figure of figures) {
-    const row = rows[rows.length - 1]
-    const added =
-      row.length === 0 ? figure.width : rowWidth + SCENE_GAP + figure.width
-    if (row.length > 0 && added > SCENE_ROW_MAX) {
-      rows.push([figure])
-      rowWidth = figure.width
-    } else {
-      row.push(figure)
-      rowWidth = added
-    }
-  }
-
-  const placed = []
-  let top = SCENE_PAD
-  let widest = 0
-  for (const row of rows) {
-    const rowHeight = Math.max(...row.map((f) => f.height))
-    const baseline = top + rowHeight
-    let x = SCENE_PAD
-    for (const figure of row) {
-      // y is the TOP of the figure; standing on the baseline means the taller
-      // ones start higher up.
-      placed.push({ ...figure, x, y: baseline - figure.height, baseline })
-      x += figure.width + SCENE_GAP
-    }
-    widest = Math.max(widest, x - SCENE_GAP + SCENE_PAD)
-    top = baseline + SCENE_ROW_GAP
-  }
-
-  return {
-    figures: placed,
-    grounds: [...new Set(placed.map((f) => f.baseline))],
-    width: widest,
-    height: top - SCENE_ROW_GAP + SCENE_PAD,
-  }
-}
-
-const FLORA_SIZE_SCENE = sceneLayout(SCENE_FIGURES)
-
-// The two silhouette colours. The flora read bright because they are the thing
-// being judged; the ruler friends read dim because they are the measuring
-// stick, not the subject.
-const SCENE_INK = { flora: 'var(--text-title)', ruler: 'var(--text-faint)' }
-
-function FloraSizeScene() {
-  const { figures, grounds, width, height } = FLORA_SIZE_SCENE
+// The hair for one shape: enough tiles of roughly-swatch-sized field to cover
+// a wide drawing at the density the mode was tuned for, each tile with its own
+// seed so the joins do not repeat.
+function shapeHair(silhouette, fill) {
+  const aspect = silhouette.viewBox.w / silhouette.viewBox.h
+  const fieldWidth = HAIR_UNIT * aspect
+  const tiles = Math.max(1, Math.round(aspect))
   return (
-    <svg
-      className="flora-size-scene"
-      viewBox={`0 0 ${width} ${height}`}
-      role="img"
-      aria-label="flora sizes"
-    >
-      {grounds.map((y) => (
-        <rect
-          key={y}
-          x="0"
-          y={y}
-          width={width}
-          height="0.004"
-          fill="var(--hairline-faint)"
+    <g transform={`scale(${silhouette.viewBox.h / HAIR_UNIT})`}>
+      {Array.from({ length: tiles }, (_, i) =>
+        hairField({
+          mode: fill.mode,
+          x: (i * fieldWidth) / tiles,
+          y: 0,
+          w: fieldWidth / tiles,
+          h: HAIR_UNIT,
+          seed: 42 + i,
+          colour: fill.colour.hex,
+        }),
+      )}
+    </g>
+  )
+}
+
+// One dressed flora: shape × fill, at the large canon size.
+function FloraFigure({ silhouette, fill }) {
+  const id = `flora-${silhouette.key}-${fill.id}`
+  const { viewBox, d, transform } = silhouette
+  const shape = <path d={d} transform={transform ?? undefined} />
+  return (
+    <li className="flora-figure">
+      <svg
+        viewBox={`0 0 ${viewBox.w} ${viewBox.h}`}
+        width={`${floraWidth('large', silhouette, FLORA_SHELF_BASE_REM)}rem`}
+        height={`${floraHeight('large', FLORA_SHELF_BASE_REM)}rem`}
+        role="img"
+        aria-label={`${silhouette.label} — ${fill.id}`}
+      >
+        <defs>
+          <clipPath id={`${id}-clip`}>{shape}</clipPath>
+          <filter
+            id={`${id}-glow`}
+            x="-40%"
+            y="-40%"
+            width="180%"
+            height="180%"
+          >
+            <feGaussianBlur stdDeviation={viewBox.w * GLOW_FRACTION} />
+          </filter>
+        </defs>
+        <path
+          d={d}
+          transform={transform ?? undefined}
+          fill={fill.colour.hex}
+          opacity="0.8"
+          filter={`url(#${id}-glow)`}
         />
-      ))}
-      {figures.map((f) => (
-        // A nested <svg> per figure: it carries the drawing's own viewBox, so
-        // the trace is placed and scaled without a single hand-worked number.
-        <svg
-          key={f.id}
-          x={f.x}
-          y={f.y}
-          width={f.width}
-          height={f.height}
-          viewBox={`0 0 ${f.viewBox.w} ${f.viewBox.h}`}
-          role="img"
-          aria-label={f.label}
-        >
-          <g transform={f.offset ?? undefined}>
-            <path d={f.d} fill={SCENE_INK[f.kind]} />
-          </g>
-        </svg>
-      ))}
-    </svg>
+        <path d={d} transform={transform ?? undefined} fill={SWATCH_GROUND} />
+        <g clipPath={`url(#${id}-clip)`}>{shapeHair(silhouette, fill)}</g>
+      </svg>
+      <span className="texture-swatch-name">{fill.id}</span>
+    </li>
   )
 }
 
@@ -395,17 +312,22 @@ function DesignPage({ onBack }) {
         </ul>
       </section>
 
-      {/* The flora sizes (T5.3g, design-bible §9a) — the four silhouettes at
-          both size classes, standing with the two friends they are pegged to
-          so the proportions can be judged the way they will be seen. */}
-      <section className="design-family" aria-label="flora sizes">
-        <h3>flora sizes</h3>
+      {/* The dressed flora (T5.3g, design-bible §9a) — the four shapes at
+          their large canon size wearing all six fills, which is half the
+          collectible catalogue and the last open question of the flora pass. */}
+      <section className="design-family" aria-label="flora">
+        <h3>flora</h3>
         <p className="design-note">
-          the dim shapes are the ruler: a zala leading the small flora, a chitu
-          leading the large ones. every flora stands as tall as the friend in
-          front of it.
+          the four shapes at their large size, each in all six fills. the small
+          size is the same drawings at 2.7 times less height.
         </p>
-        <FloraSizeScene />
+        {FLORA_SILHOUETTES.map((silhouette) => (
+          <ul key={silhouette.key} className="flora-figures">
+            {FLORA_FILLS.map((fill) => (
+              <FloraFigure key={fill.id} silhouette={silhouette} fill={fill} />
+            ))}
+          </ul>
+        ))}
       </section>
 
       {/* The six flora fills (T5.3g, design-bible §9a) — hair textures in
