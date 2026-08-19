@@ -247,11 +247,14 @@ opening its own growing world:
   it, never the tree itself: the cutting goes to the Abode and is
   compostable as usual, while the tree stays where it grows, on the
   Map, regardless. This is a rule for the special ones only — small
-  flora don't appear on the Map. There are **16 landmark species — one
+  flora don't appear on the Map. There are **16 landmarks — one
   per Map region, enforced (2026-07-24)**: the drop seeding guarantees
   each region receives exactly its own landmark tree, placed as the
-  expedition passes through it. Which flora count as landmarks is
-  decided with the content pools (T6.1).
+  expedition passes through it. The 16 are **four super-sized versions of
+  each of N-Z-D's four flora species** (2026-08-19, design-bible §9a) —
+  "landmark" is a size and a role, not a separate species. What tells the
+  four versions of one species apart is decided with the content pools
+  (T6.1).
 
 ### Stream 2 — Literacy & society: earning our place
 

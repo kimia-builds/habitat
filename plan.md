@@ -151,10 +151,26 @@ tracker. Everything after this is delight, informed by real use.
       - [ ] **T5.3f Animations** _(was T5.3e)_ — the 9 remaining
             signature category animations (one per category,
             design-notes §8).
-      - [ ] **T5.3g The 8 new flora silhouettes** _(was T5.3f;_ parked
-            2026-07-25, Kimia's call to start characters first) — land
-            them on the workbench with textures + glow, then continue the
-            flora collection toward the 64-species count.
+      - [ ] **T5.3g The flora** _(was "the 8 new flora silhouettes";
+            parked 2026-07-25, Kimia's call to start characters first;
+            restarted 2026-08-19 and re-scoped by her calls that day —
+            there are **four** flora silhouettes, not 64, and the 64 flora
+            are those four in two sizes wearing six fills. design-bible
+            §9a)_
+            - [x] **The four colours** — emerald, leaf, sky and azure,
+                  picked by eye off the workbench from twelve candidates
+                  (`src/ui/floraColours.js`).
+            - [x] **The six fills** — hair textures only, all four modes
+                  with curly coat and dense underfur doubled, each worn in
+                  one of the four colours (`src/ui/floraFills.js`); the
+                  hair generator learned to take a tint to do it. On the
+                  workbench, awaiting her eye.
+            - [ ] **The four silhouettes** — a later session, on her call:
+                  the fills are being settled first, on squares.
+            - [ ] **The sizing sheet** — two sizes per species plus the
+                  landmark super-size need a canon of ratios like the
+                  friends' (T5.3d). Kimia does not have the sheet yet
+                  (2026-08-19), so no flora size is set anywhere.
 
 ## M6 — Hardening & content (ongoing)
 

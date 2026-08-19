@@ -3079,6 +3079,51 @@ return 0` right after the era is worked out, so a moment before the
   is a suggestion in a review queue, never a slot filled in her name.
   Unreviewed stays blank; blank interface shows English. Habitat can be
   partly translated, never wrongly translated.
+- 2026-08-19 (Kimia's calls, T5.3g — **this replaces the "64 flora
+  species" reading of 2026-07-24**): **N-Z-D grows four flora
+  silhouettes, not sixty-four.** The 64 flora are those four shapes in
+  two sizes wearing six fills: **4 × 2 × 6 = 48 collectible**, and the
+  **16 landmarks are four super-sized versions of each of the four
+  species**. Nothing about the counts changed — 64 flora, 48 gatherable,
+  16 on the Map, one per region — only what is DRAWN to reach them, which
+  falls from 64 drawings to 4. Variation now lives in size and fill
+  alone; the earlier axes (leaf shape, fruit, texture) were written when
+  there were 64 shapes to tell apart. Folded into design-bible §9a and
+  §12, spec §5 (the landmark paragraph) and plan.md's T5.3g.
+- 2026-08-19 (Kimia's call, T5.3g): **the flora wear four colours —
+  emerald, leaf, sky, azure** (`src/ui/floraColours.js`), rich and
+  bioluminescent. Twelve candidates went up on the workbench as plain
+  glowing squares, three per hue. She had named the four hues on paper as
+  "green, blue, indigo and aqua"; off the screen she took **two greens
+  and two blues** and neither of the other two. **There is no aqua and no
+  indigo in Habitat's flora.** The eyeball pass beat the written
+  description again — the same lesson as T5.2c, arriving this time as a
+  narrowing rather than a rejection. It is also the second half of the
+  friend/flora boundary: flora are deep and vivid, friend pastels soft
+  (`friendColours.js` reserves blues and greens for exactly this).
+- 2026-08-19 (Kimia's calls, T5.3g): **a flora fill is a hair texture
+  worn in a colour, and there are six** (`src/ui/floraFills.js`). Hair
+  textures ONLY — no moss, bark, pores or sponge; flora are furred, not
+  crusted. All four hair modes are used with **curly coat and dense
+  underfur doubled** (1+2+1+2 = 6). And **the hair forms the fill inside
+  the silhouette** — it never fringes out past the outline, so a drawing
+  clips the field to its shape (the generator scatters strands beyond its
+  box by design, so the clip is the rule's only enforcement; a test holds
+  it). The colour pairing was left to Claude and proposed as: each
+  doubled texture takes one green and one blue, so no texture belongs to
+  a single hue and the six split three green / three blue.
+- 2026-08-19 (working note, T5.3g): **the flora need a sizing sheet and
+  do not have one.** Two sizes per species plus a landmark super-size is
+  exactly the problem T5.3d solved for the friends — one sheet from
+  Kimia, read into unitless ratios that hold everywhere and always. She
+  does not have it yet, so no flora size is set anywhere and no screen
+  may type one in by hand in the meantime. The §9c canon rule governs any
+  family, not only friends.
+- 2026-08-19 (working note, T5.3g): **"the 8 new flora silhouettes" is
+  retired as a task name.** It referred to eight drawings on Kimia's
+  Desktop from July (seven of them traced; flora 5 never was). With four
+  species settled, those eight are candidates to choose four from, not a
+  set to import — and the silhouette session comes after the fills.
 
 ## T6.13 build notes — one keyed catalogue for every interface word (2026-08-16)
 

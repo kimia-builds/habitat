@@ -90,8 +90,9 @@ Stated once so no asset family has to repeat them:
   varies"): **friends** each carry their own body colour and glow it
   (the pilot plip is deep blue, §9c); friend **eyes are the one fixed
   exception** — always yellow in a dark socket, and by rule always a
-  different colour from the body. (Flora & fungi colour is still their
-  earlier green pending their own passes — T5.3f / T6.1.)
+  different colour from the body. (**Flora** wear one of four colours as of
+  2026-08-19 — two greens and two blues, §9a — and glow it. **Fungi**
+  colour is still the earlier green pending its own pass, T6.1.)
 - **Darkness is the default; nothing casts a shadow.**
 - **Palette by class:** organic life stays in the restrained palette;
   curiosities use the broadest palette; publications take one block
@@ -206,28 +207,75 @@ hierarchy. Low gravity allows sprawling, unsupported forms. (This holds
 at every size — a "tree-like" landmark is tree-like in **scale**, not
 in body plan.)
 
+**FOUR SPECIES, AND ONLY FOUR (Kimia, 2026-08-19 — this replaces the
+first "64 species" reading).** N-Z-D grows **four flora silhouettes**.
+The 64 flora are not 64 drawings: they are those four shapes in
+different sizes and different fills, and the arithmetic is exact.
+
+- **48 collectible** — **4 silhouettes × 2 sizes × 6 fills = 48.** Each
+  species comes in two sizes, and every size wears any of the six fills.
+  Placeable in the Abode, gatherable and compostable.
+- **16 landmark** — **4 super-sized versions of each of the four
+  species.** Giant, too big to carry, **one per Map region, enforced**
+  (2026-07-24; mechanics in spec §5): the moment one drops it reveals a
+  **permanent marker on the regional Map**; gathering one (optional,
+  like all flora) collects a **keepsake** cutting — leaf, branch, or
+  fruit — that goes to the Abode, while the tree itself stays on the Map
+  regardless. Art per landmark: body + Map marker + one keepsake type.
+  _Open (T6.1): what makes the four versions of a landmark species
+  differ from one another — fill is the obvious answer but has not been
+  decided._
+
+**Size is a canon, not a per-drawing choice.** Two sizes for the
+collectibles and a super-size for the landmarks means the flora need the
+same treatment the friends got in T5.3d: one sizing sheet from Kimia,
+read into unitless ratios that hold everywhere and always. She does not
+have that sheet yet (2026-08-19), so flora sizes are unset — and no
+screen may type one in by hand in the meantime. See §9c's canon rule; it
+governs any family, not only friends.
+
+**The four colours (Kimia, 2026-08-19, T5.3g).** Rich and bioluminescent,
+in `src/ui/floraColours.js`: **emerald · leaf · sky · azure**. Note what
+that is — **two greens and two blues**. The hues were named on paper as
+green, blue, indigo and aqua; shown twelve candidates glowing on the dark
+ground she took two of each of the first two and none of the last two.
+There is no aqua and no indigo in Habitat's flora. This is also the other
+half of the friend/flora boundary: the flora colours are deep and vivid
+where the friend pastels are soft (`friendColours.js`).
+
+**A FILL is a texture worn in a colour, and there are six**
+(`src/ui/floraFills.js`). Kimia's calls:
+
+- The fills come from the **hair textures only** — never moss, bark,
+  pores or sponge. Flora are furred, not crusted.
+- **All four hair modes are used, with curly coat and dense underfur
+  doubled**: 1 + 2 + 1 + 2 = 6.
+- **The hair FORMS the fill, inside the silhouette.** It never fringes
+  out past the outline, so whatever draws a flora clips the field to its
+  shape. (Hair is scattered by a generator that overruns its box by
+  design; the clip is what enforces the rule, and a test holds it.)
+- The pairing puts one green and one blue on each doubled texture, so no
+  texture belongs to a single hue and the six split three green / three
+  blue.
+
+Hair wears a colour through `hairRamp()` in `textures.jsx`, which rebuilds
+the whole five-part strand ramp from one hex — the same one-tone-in,
+whole-set-out idea as the friends' `paletteForTone()`.
+
 **Leaves.** A species may have leaves or not. Leaf shape is **consistent
-within** a species and can vary **wildly between** species.
+within** a species and can vary **wildly between** species — with only
+four species, this is now a property of the four silhouettes rather than
+an axis of variation.
 
 **Fruit.** Tiny shrubs may bear none; larger flora may. Each species has
 **exactly one** fruit type, in any rounded or blobby form.
 
-**Axes of variation:** overall size · leaf shape · presence/absence of
-fruit · surface texture. **Not** varied: glow colour, growth habit,
-body plan.
-
-**Collection — 64 species**, ground-cover to giant centrepieces:
-
-- **48 collectible** — placeable in the Abode, gatherable and
-  compostable.
-- **16 landmark** — giant, too big to carry, **one per Map region,
-  enforced** (2026-07-24; mechanics in spec §5): the moment one drops
-  it reveals a **permanent marker on the regional Map**; gathering one
-  (optional, like all flora) collects a **keepsake** cutting — leaf,
-  branch, or fruit — that goes to the Abode, while the tree itself
-  stays on the Map regardless. Art per landmark: body + Map marker +
-  one keepsake type. Which species are landmarks is fixed with the
-  content pools (T6.1).
+**Axes of variation: size and fill.** That is the whole list (2026-08-19
+— it replaces the earlier "overall size · leaf shape · presence/absence
+of fruit · surface texture", which was written when there were 64 shapes
+to tell apart). **Not** varied: growth habit, body plan — and glow
+colour only in the sense that a flora always glows its own body colour
+and never a light applied on top (§3).
 
 #### 9b. Fungi
 
@@ -602,10 +650,15 @@ A checklist view for the M5 design pass. Every quantity is fixed;
 boundaries and content-pool assignments (which flora are landmarks,
 region order) are detailed with T6.1.
 
+**The flora line changed on 2026-08-19** and is worth reading twice: the
+64 flora are **four drawings**, not sixty-four. Counting drawings rather
+than flora is what makes the family buildable at all — see §9a.
+
 | Family              | Count | Assets per unit                                        |
 | ------------------- | ----- | ------------------------------------------------------ |
-| Flora — collectible | 48    | body (+ optional leaves, one fruit type)               |
-| Flora — landmark    | 16    | body + Map marker + one keepsake type                  |
+| Flora — silhouettes | 4     | one drawing each; 48 collectibles = 4 × 2 sizes × 6 fills |
+| Flora — fills       | 6     | hair texture × colour, no drawing of their own         |
+| Flora — landmark    | 16    | 4 super-sized versions of each species; body + Map marker + one keepsake type |
 | Fungi               | 1     | single form                                            |
 | Friend categories   | 10    | 1 signature animation each                             |
 | Friend individuals  | 55    | body each (10 → 1 down the ladder)                     |
