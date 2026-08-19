@@ -2951,3 +2951,20 @@ body {
   color: var(--text-quieter);
   text-align: center;
 }
+
+/* TEMPORARY (T5.3g, 2026-08-19): the flora-colour swatches — four hues,
+   three candidate shades each, as plain glowing squares for the eyeball
+   pick (design-bible §9a). Each square's colour AND its glow are set
+   inline from floraColours.js, because a living thing glows its own body
+   colour and the palette is artwork paint, not stylesheet colour (§11d).
+   The rows reuse the texture shelf's layout so the page reads as one
+   thing. Leaves when the four are chosen. */
+.flora-colour-row {
+  margin-block: var(--space-3);
+}
+
+.flora-colour-square {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 0.75rem;
+}

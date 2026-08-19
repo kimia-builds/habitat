@@ -5,14 +5,16 @@
 // The page is a WAITING ROOM (Kimia, 2026-08-17): a shelf stands only
 // while its asset still has a question open, and leaves once she has
 // judged it. So these tests cover exactly what is still waiting — the
-// texture library and the abode sky — and the last test guards the
-// emptying itself, by failing if a settled family creeps back on.
+// texture library, the abode sky and the flora colours — and the last
+// test guards the emptying itself, by failing if a settled family creeps
+// back on.
 
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
 import { ABODE_PALETTES } from './sky.jsx'
+import { FLORA_COLOUR_CANDIDATES } from './floraColours.js'
 
 afterEach(cleanup)
 
@@ -55,6 +57,37 @@ describe('DesignPage workbench', () => {
     expect(labels).toHaveLength(4)
   })
 
+  it('offers every candidate flora shade, grouped by its hue', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    // One row per hue, holding exactly that hue's candidates — so the
+    // pick is made hue by hue rather than out of one undifferentiated
+    // heap (T5.3g).
+    for (const group of FLORA_COLOUR_CANDIDATES) {
+      const row = screen.getByLabelText(`flora colours — ${group.hue}`)
+      expect(row.querySelectorAll('.flora-colour-swatch')).toHaveLength(
+        group.shades.length,
+      )
+    }
+  })
+
+  it('glows each flora candidate in its own body colour', () => {
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // Design-bible §3: a living thing's light IS its body colour. So
+    // every square's glow must be the same hex as its fill — never a
+    // shared halo colour applied on top.
+    // (Checked against the palette rather than against the square's own
+    // background, because the DOM rewrites a hex fill as rgb() while
+    // leaving the hex inside the shadow alone — comparing the two strings
+    // would only be testing that quirk.)
+    const squares = [...container.querySelectorAll('.flora-colour-square')]
+    const shades = FLORA_COLOUR_CANDIDATES.flatMap((g) => g.shades)
+    expect(squares).toHaveLength(shades.length)
+    for (const shade of shades) {
+      const square = screen.getByRole('img', { name: shade.name })
+      expect(square.style.boxShadow).toContain(shade.hex)
+    }
+  })
+
   it('holds nothing but the families still waiting to be judged', () => {
     render(<DesignPage onBack={vi.fn()} />)
     // The shelves are exactly the texture families plus the abode sky.
@@ -65,7 +98,11 @@ describe('DesignPage workbench', () => {
     )
     const families = [...new Set(TEXTURES.map((t) => t.family))]
     expect(shelves.slice().sort()).toEqual(
-      [...families.map((f) => `textures — ${f}`), 'abode sky'].sort(),
+      [
+        ...families.map((f) => `textures — ${f}`),
+        'abode sky',
+        'flora colours',
+      ].sort(),
     )
   })
 
