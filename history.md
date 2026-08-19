@@ -2673,6 +2673,51 @@ sizes, only "price correlates with size". So flora and friends are one
 scale today, and both `floraCanon.js` and §9a say the objects join this
 same scale when they are drawn rather than starting a third.
 
+## T5.3g build notes (part 3) — the table, and the edge rule (2026-08-19)
+
+**Third pass of the same session**, all three items from Kimia's list.
+
+**1. The canon stopped being about two friends.** `floraCanon.js` used to
+say "half a zala tall" and "as tall as a chitu"; it now says 0.28 and
+0.77, entries in the one shared scale in their own right. The file gained
+the thing that makes that meaningful: **the sizing table written out** —
+every friend by HEIGHT, with the two flora classes in their slots — so a
+person can see the whole ladder without computing anything.
+
+The test carries the weight, and it changed shape completely. It used to
+re-derive each class from one friend's drawing; it now **rebuilds the
+whole cast's ladder** from `friendCanon.js` plus all ten viewBoxes,
+sorts it, and asserts each flora class falls between the NEIGHBOURS it
+was placed between (small: plip → baluhm; large: meuhy → hamdi bulo).
+That is a weaker assertion in the right way: a tidy-up inside the slot is
+free, which is what "not tied to a specific friend" has to mean, while a
+size that wandered out of its place still fails. It also checks the
+ladder's ORDER survives any base size, and that the two numbers stay
+two-decimal — a tail of decimals growing back is the sign someone has
+quietly re-pegged a class to something again.
+
+Rounding moved the drawn size by a third of one percent.
+
+**2. Fixed-size hair confirmed** by Kimia — no change.
+
+**3. The edge rule.** Two filter primitives, in this order, on the dark
+ground only: `feMorphology operator="erode"` to eat the shape inwards,
+then `feGaussianBlur` to dissolve the pulled-back edge so it does not
+become a second hard line of its own. Both radii are fractions of the
+drawing's own height (`GROUND_INSET` 0.022, `GROUND_FADE` 0.011), so the
+rule lands identically on four traces whose canvases run 95–197 units.
+The ground is also inside the clip now — the softening blur would
+otherwise push it back out past the very outline it was pulled inside.
+
+`GROUND_INSET` is the dial if she wants more or less: raise it and the
+dark retreats further, at the cost of the flora reading thinner.
+
+**Seen at 3× on the workbench:** the tendril's arms now carry no ground
+at all and are drawn in pure hair, and the dark survives only as patches
+in the body's core. That falling-out is the rule working, not a bug — an
+arm narrower than twice the inset has no middle left, and a thin arm is
+all edge.
+
 ## T5.3g build notes (part 2) — the sizes locked, the flora dressed (2026-08-19)
 
 **Same session as part 1**, after Kimia looked at the size scene.
@@ -3287,6 +3332,31 @@ goes anywhere the game draws many flora at once.
   stands in their place is the four shapes at their LARGE size wearing all
   six fills (24 of the 48 collectibles), which is the last open question
   of the ordinary flora.
+- 2026-08-19 (Kimia's call, T5.3g): **the flora sizes are places in the
+  whole sizing table, not one friend's height each.** They were derived
+  through two particular friends — large = a chitu's height, small = half
+  a zala's — and she cut them loose from that once the sizes were settled:
+  a flora should sit where it sits among everything on N-Z-D, not be
+  hostage to two individuals who might be redrawn. The numbers were
+  rounded to **0.28 and 0.77** in the same breath, since a chosen number
+  should look chosen rather than like the residue of a calculation (the
+  drawn size moved by a third of one percent). `floraCanon.test.js` now
+  rebuilds the whole cast's ladder BY HEIGHT and guards each class's
+  PLACE in it — small between the plip and the baluhm, large between the
+  meuhy and the hamdi bulo — instead of its tie to any one friend.
+- 2026-08-19 (Kimia's call, T5.3g): **the edge rule — no dark ground at a
+  silhouette's rim.** The dark the hair grows out of belongs in the middle
+  of a flora; reaching the outline it reads as a drawn black edge, which
+  these shapes must never have. So the ground is the shape SHRUNK and then
+  SOFTENED, fading out before the outline so the last stretch of every
+  edge is hair alone. Both amounts are fractions of the drawing's own
+  height, so the rule lands the same on all four species — and a thin
+  tendril arm, being narrower than twice the inset, keeps no ground at all
+  and is drawn in pure hair, which is right, since a thin arm is all edge.
+- 2026-08-19 (Kimia's call, T5.3g): **fixed-size hair is settled.** The
+  strands being the same size on screen on every species — rather than
+  scaling with each trace's own canvas — was shown to her and approved as
+  it stands.
 
 ## T6.13 build notes — one keyed catalogue for every interface word (2026-08-16)
 

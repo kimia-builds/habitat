@@ -7,42 +7,62 @@ import {
   floraWidth,
 } from './floraCanon.js'
 import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
-import { FRIEND_CANON, friendSize } from './friendCanon.js'
+import { FRIEND_CANON, FRIEND_CANON_ORDER } from './friendCanon.js'
+import { FRIEND01_VIEWBOX } from './friend01.jsx'
+import { FRIEND02_VIEWBOX } from './friend02.jsx'
+import { FRIEND03_VIEWBOX } from './friend03.jsx'
 import { FRIEND04_VIEWBOX } from './friend04.jsx'
+import { FRIEND05_VIEWBOX } from './friend05.jsx'
+import { FRIEND06_VIEWBOX } from './friend06.jsx'
+import { FRIEND07_VIEWBOX } from './friend07.jsx'
+import { FRIEND08_VIEWBOX } from './friend08.jsx'
 import { FRIEND09_VIEWBOX } from './friend09.jsx'
+import { FRIEND10_VIEWBOX } from './friend10.jsx'
 
-// The two friends the classes are pegged to (Kimia, 2026-08-19): a large flora
-// stands as tall as a CHITU, a small one HALF as tall as a ZALA — she halved
-// the small class on sight after seeing both drawn. Their drawings are imported
-// above rather than copied, because "half a zala tall" has to keep meaning that
-// even if the zala is ever redrawn — this is the guard that makes the two
-// numbers in floraCanon.js a derivation rather than a pair of taste decisions
-// that could quietly stop being true.
-const PEGS = { small: 'zala', large: 'chitu' }
-const PEG_VIEWBOX = { zala: FRIEND04_VIEWBOX, chitu: FRIEND09_VIEWBOX }
+// Every friend's drawing, so the whole cast can be measured by HEIGHT. The
+// canon stores WIDTHS, and a friend's drawing is what turns one into the other
+// — which is why these are imported rather than a column of numbers copied in.
+const FRIEND_VIEWBOX = {
+  plip: FRIEND01_VIEWBOX,
+  baluhm: FRIEND02_VIEWBOX,
+  krupengk: FRIEND03_VIEWBOX,
+  zala: FRIEND04_VIEWBOX,
+  'liwi-bi-jiji': FRIEND05_VIEWBOX,
+  meuhy: FRIEND06_VIEWBOX,
+  rassatt: FRIEND07_VIEWBOX,
+  woigolp: FRIEND08_VIEWBOX,
+  chitu: FRIEND09_VIEWBOX,
+  'hamdi-bulo': FRIEND10_VIEWBOX,
+}
 
-// How much of its peg friend's height each class actually takes.
-const PEG_SHARE = { small: 0.5, large: 1 }
+// WHERE EACH CLASS SITS IN THE TABLE (Kimia, 2026-08-19). This is the whole
+// point of the change she asked for: a flora is no longer "as tall as friend
+// X", it is a place in the one ladder everything is measured on. So the test
+// names the NEIGHBOURS it must fall between, and a size that wandered out of
+// its slot fails here — while a small tidy-up inside the slot is free, as it
+// should be, because no single friend owns a flora's height any more.
+const NEIGHBOURS = {
+  small: { taller_than: 'plip', shorter_than: 'baluhm' },
+  large: { taller_than: 'meuhy', shorter_than: 'hamdi-bulo' },
+}
 
 // A friend's canon number is its WIDTH; its own drawing then says how tall that
-// makes it. That height is what a flora of the matching class must equal.
-function friendHeightInCanon(key) {
-  const { w, h } = PEG_VIEWBOX[key]
+// makes it, in the same unitless scale the flora numbers are written in.
+function friendHeight(key) {
+  const { w, h } = FRIEND_VIEWBOX[key]
   return FRIEND_CANON[key] * (h / w)
 }
 
-// The height a class must come out at: its peg friend's height, times the
-// share of it Kimia settled on.
-function expectedHeight(sizeClass) {
-  return friendHeightInCanon(PEGS[sizeClass]) * PEG_SHARE[sizeClass]
-}
-
-// Relative, not flat, for the reason friendCanon.test.js gives: proportions are
-// relative, so the tolerance has to be. Six stored figures land far inside this.
-const RELATIVE_TOLERANCE = 0.0001
-
-function proportionsMatch(actual, expected) {
-  return Math.abs(actual - expected) / expected <= RELATIVE_TOLERANCE
+// The whole cast plus the two flora classes, shortest first — the sizing table
+// the flora now answer to, rebuilt from source rather than trusted.
+function sizingTable() {
+  return [
+    ...FRIEND_CANON_ORDER.map((key) => ({ key, height: friendHeight(key) })),
+    ...FLORA_SIZE_CLASSES.map((key) => ({
+      key: `flora:${key}`,
+      height: FLORA_CANON[key],
+    })),
+  ].sort((a, b) => a.height - b.height)
 }
 
 describe('the flora size canon', () => {
@@ -61,53 +81,70 @@ describe('the flora size canon', () => {
     expect(FLORA_CANON.large).toBeGreaterThan(FLORA_CANON.small)
   })
 
-  // THE HEART OF IT. Each class is a friend's height, in the friends' own
-  // scale, so the two families are one scale and not two.
-  test('a small flora is half a zala tall, a large one a whole chitu tall', () => {
+  // THE HEART OF IT. Each class holds a place in the one table everything is
+  // measured on — not a tie to any single friend.
+  test('each class falls between the neighbours it was placed between', () => {
     const wrong = []
     for (const cls of FLORA_SIZE_CLASSES) {
-      const wanted = expectedHeight(cls)
-      if (!proportionsMatch(FLORA_CANON[cls], wanted)) {
+      const { taller_than, shorter_than } = NEIGHBOURS[cls]
+      const floor = friendHeight(taller_than)
+      const ceiling = friendHeight(shorter_than)
+      if (FLORA_CANON[cls] <= floor || FLORA_CANON[cls] >= ceiling) {
         wrong.push(
-          `${cls} is ${FLORA_CANON[cls]}, ${PEG_SHARE[cls]} of a ${PEGS[cls]} is ${wanted}`,
+          `${cls} is ${FLORA_CANON[cls]}, not between the ${taller_than} (${floor}) and the ${shorter_than} (${ceiling})`,
         )
       }
     }
-    // Named rather than counted, so a failure says which class drifted.
+    // Named rather than counted, so a failure says which class wandered.
     expect(wrong).toEqual([])
   })
 
-  // The zala and the rassatt are near enough the same height (the rassatt is
-  // wide and low), which is why the large class is pegged to the chitu instead.
-  // If a later change re-pegs it to a friend that is not actually taller, the
-  // two classes collapse into one and nothing else in the suite would notice.
+  test('the table has no two things at exactly the same height by accident', () => {
+    // Not a rule — the baluhm and krupengk are deliberately equal in WIDTH, and
+    // things may legitimately land close. This checks the far weaker thing that
+    // matters: the two flora classes are distinct entries, not a duplicate of
+    // each other.
+    const table = sizingTable()
+    const flora = table.filter((row) => row.key.startsWith('flora:'))
+    expect(flora).toHaveLength(2)
+    expect(flora[0].height).not.toBe(flora[1].height)
+  })
+
+  test('the sizing table holds every drawn thing, flora included', () => {
+    const table = sizingTable()
+    expect(table).toHaveLength(FRIEND_CANON_ORDER.length + 2)
+    // Sorted shortest first, which is what makes "between these two" mean
+    // anything at all.
+    for (let i = 1; i < table.length; i++) {
+      expect(table[i].height).toBeGreaterThanOrEqual(table[i - 1].height)
+    }
+  })
+
   test('the two classes are far enough apart to read as two sizes', () => {
     expect(FLORA_CANON.large / FLORA_CANON.small).toBeGreaterThan(1.2)
   })
 
-  test('the small class is half its peg, not a whole one', () => {
-    // The halving is Kimia's eyeball decision (2026-08-19), and it is the one
-    // number here that no arithmetic would have produced on its own — so it
-    // gets its own guard rather than living only inside the derivation above.
-    expect(PEG_SHARE.small).toBe(0.5)
-    expect(
-      proportionsMatch(FLORA_CANON.small, friendHeightInCanon('zala') / 2),
-    ).toBe(true)
+  test('the numbers are chosen, not the residue of a calculation', () => {
+    // Kimia rounded them when they stopped being derived from two friends
+    // (2026-08-19). A number growing a tail of decimals again is the sign that
+    // someone has quietly re-pegged a class to something.
+    for (const cls of FLORA_SIZE_CLASSES) {
+      expect(FLORA_CANON[cls]).toBe(Number(FLORA_CANON[cls].toFixed(2)))
+    }
   })
 })
 
 describe('asking the canon for a size', () => {
-  test('a flora keeps its share of its peg friend’s height at any base', () => {
+  test('every flora keeps its place in the table at any base size', () => {
+    // The table is proportions, so it must survive a screen picking any base:
+    // the ladder's ORDER cannot change just because the drawing got bigger.
+    const order = sizingTable().map((row) => row.key)
     for (const base of [1, 11.5, 40, 512]) {
-      for (const cls of FLORA_SIZE_CLASSES) {
-        const peg = PEGS[cls]
-        const { w, h } = PEG_VIEWBOX[peg]
-        const pegHeight = friendSize(peg, base) * (h / w) * PEG_SHARE[cls]
-        // Relative, not to a fixed number of decimals: an absolute margin that
-        // is right at a base of 1 is impossibly tight at a base of 512, since
-        // the canon's six stored figures scale up with everything else.
-        expect(proportionsMatch(floraHeight(cls, base), pegHeight)).toBe(true)
-      }
+      const scaled = sizingTable()
+        .map((row) => ({ key: row.key, height: row.height * base }))
+        .sort((a, b) => a.height - b.height)
+        .map((row) => row.key)
+      expect(scaled).toEqual(order)
     }
   })
 

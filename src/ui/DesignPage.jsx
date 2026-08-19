@@ -183,7 +183,8 @@ function FloraFillSwatch({ fill }) {
  *     fringes out past it;
  *   • a dark ground sits behind the strands, because a solid backing would
  *     make the hair a texture ON a colour when the point is that the hair IS
- *     the fill (the same reasoning as the fill squares above);
+ *     the fill (the same reasoning as the fill squares above) — but it is
+ *     PULLED BACK FROM THE EDGE, see the inset rule below;
  *   • the glow is the silhouette itself, blurred and painted the fill's own
  *     colour — a living thing's light IS its body colour, so it is drawn in
  *     SVG behind the shape rather than as a box-shadow around a rectangle.
@@ -206,6 +207,30 @@ const HAIR_UNIT = 110
 // The blur that makes the aura, as a fraction of the drawing's width — the
 // same fraction the friends use (friend04.jsx: 6.6 on a 391-wide canvas).
 const GLOW_FRACTION = 0.017
+
+/* THE EDGE RULE (Kimia, 2026-08-19). The dark ground is what the hair grows
+ * out of, and it belongs in the MIDDLE of a flora, not at its rim: dark
+ * reaching the outline reads as a drawn black edge, which is the one thing
+ * these silhouettes should never have. So the ground is not the shape — it is
+ * the shape SHRUNK, and then softened, so it fades out before the outline and
+ * the last stretch of every edge is made of hair alone.
+ *
+ * Two numbers do it, both fractions of the drawing's own height so the rule
+ * lands the same on all four species whatever their trace canvas measures:
+ *
+ *   INSET — how far the ground is pulled in from the outline. This is the
+ *     "minimise the dark around the edges" number: raise it and the dark
+ *     retreats further, at the cost of the flora reading thinner and wispier.
+ *   FADE — how softly the pulled-back edge dissolves, so there is no second
+ *     hard line where the ground stops. Roughly half the inset keeps the
+ *     falloff inside the ground the inset just made.
+ *
+ * A happy side effect on the thin shapes: a tendril arm narrower than twice
+ * the inset has no middle left, so it loses its ground entirely and is drawn
+ * in pure hair — which is right, since a thin arm is all edge.
+ */
+const GROUND_INSET = 0.022
+const GROUND_FADE = 0.011
 
 // The hair for one shape: enough tiles of roughly-swatch-sized field to cover
 // a wide drawing at the density the mode was tuned for, each tile with its own
@@ -256,6 +281,17 @@ function FloraFigure({ silhouette, fill }) {
           >
             <feGaussianBlur stdDeviation={viewBox.w * GLOW_FRACTION} />
           </filter>
+          {/* The edge rule: eat the outline in, then soften what is left. */}
+          <filter
+            id={`${id}-ground`}
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+          >
+            <feMorphology operator="erode" radius={viewBox.h * GROUND_INSET} />
+            <feGaussianBlur stdDeviation={viewBox.h * GROUND_FADE} />
+          </filter>
         </defs>
         <path
           d={d}
@@ -264,8 +300,17 @@ function FloraFigure({ silhouette, fill }) {
           opacity="0.8"
           filter={`url(#${id}-glow)`}
         />
-        <path d={d} transform={transform ?? undefined} fill={SWATCH_GROUND} />
-        <g clipPath={`url(#${id}-clip)`}>{shapeHair(silhouette, fill)}</g>
+        {/* Clipped as well as inset: the softening blur must never push the
+            ground back out past the outline it was just pulled inside. */}
+        <g clipPath={`url(#${id}-clip)`}>
+          <path
+            d={d}
+            transform={transform ?? undefined}
+            fill={SWATCH_GROUND}
+            filter={`url(#${id}-ground)`}
+          />
+          {shapeHair(silhouette, fill)}
+        </g>
       </svg>
       <span className="texture-swatch-name">{fill.id}</span>
     </li>

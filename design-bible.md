@@ -240,15 +240,25 @@ collectible classes** (Kimia, 2026-08-19, `src/ui/floraCanon.js`):
   tall it stands next to you is what size means for a plant.
 - **All four species share the two classes.** A species is not big or
   small; a flora is. The shapes differ, the sizes do not.
-- **Large stands as tall as a CHITU**, the biggest friend. She first
-  named the rassatt for it; measured by height the rassatt is 2.6%
-  SHORTER than the zala (it is wide and low), which would have made two
-  classes the same size, so on seeing the cast's heights she re-pegged it
-  to the chitu.
-- **Small stands HALF as tall as a ZALA.** It was pegged to the whole zala
-  first; seeing both classes drawn beside the two friends she called the
-  small one too tall and halved it. **A large flora is 2.74× the height of
-  a small one.** Both are locked (2026-08-19).
+- **The two sizes are PLACES IN THE WHOLE SIZING TABLE, not one friend's
+  height each** (her call, 2026-08-19). They were arrived at through two
+  particular friends — the large class a chitu's height, the small class
+  half a zala's — and she ruled that framing out once the sizes were
+  settled: a flora sits where it sits among everything that grows and
+  walks on N-Z-D, and must not be hostage to two individuals who may be
+  redrawn. **Small 0.28, large 0.77**, in the one shared scale; a large
+  flora is 2.75× the height of a small one. Both locked.
+- Where that puts them, on the whole cast ordered by height: **the small
+  class falls between the plip and the baluhm; the large class between
+  the meuhy and the hamdi bulo** (a hair under the chitu). Those places
+  are what `floraCanon.test.js` guards, rebuilding the ladder from
+  `friendCanon.js` and the drawings on every run.
+- Two asides worth keeping, both from getting it wrong first: the rassatt
+  was her original peg for the large class, and measured by HEIGHT it is
+  2.6% shorter than the zala (it is wide and low), which would have made
+  two classes the same size — the friends' canon stores WIDTHS, so rank by
+  width says nothing about rank by height. And the small class was a whole
+  zala until she saw it drawn and halved it.
 - **The numbers live in the FRIENDS' scale**, not a private flora one:
   both files count in the same unitless units, whose 1 is the largest
   friend's width. That is the whole point — flora, friends and one day
@@ -283,6 +293,16 @@ where the friend pastels are soft (`friendColours.js`).
   out past the outline, so whatever draws a flora clips the field to its
   shape. (Hair is scattered by a generator that overruns its box by
   design; the clip is what enforces the rule, and a test holds it.)
+- **THE EDGE RULE (Kimia, 2026-08-19).** The dark ground the hair grows
+  out of belongs in the MIDDLE of a flora, never at its rim — dark
+  reaching the outline reads as a drawn black edge, which is the one
+  thing these silhouettes must not have. So the ground is not the shape:
+  it is the shape **shrunk and then softened**, fading out before the
+  outline so the last stretch of every edge is hair alone. Both amounts
+  are fractions of the drawing's own height, so the rule lands the same
+  on all four species. A thin arm narrower than twice the inset keeps no
+  ground at all and is drawn in pure hair — correct, since a thin arm is
+  all edge.
 - The pairing puts one green and one blue on each doubled texture, so no
   texture belongs to a single hue and the six split three green / three
   blue.

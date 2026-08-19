@@ -108,6 +108,31 @@ describe('DesignPage workbench', () => {
     }
   })
 
+  it('pulls the dark ground back from every silhouette’s edge', () => {
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // Kimia's edge rule (2026-08-19): dark must not reach the outline, or the
+    // flora reads as having a drawn black edge. The ground is therefore the
+    // shape eroded and softened — and clipped too, so the softening cannot
+    // push it back out past the outline it was just pulled inside.
+    for (const figure of container.querySelectorAll('.flora-figure')) {
+      const ground = figure.querySelector('g[clip-path] path[filter]')
+      expect(ground).not.toBeNull()
+      const filter = figure.querySelector(
+        `#${ground.getAttribute('filter').slice(5, -1)}`,
+      )
+      const erode = filter.querySelector('feMorphology')
+      expect(erode.getAttribute('operator')).toBe('erode')
+      expect(Number(erode.getAttribute('radius'))).toBeGreaterThan(0)
+      // And a softening pass after it, so the pulled-back edge has no second
+      // hard line of its own.
+      expect(
+        Number(
+          filter.querySelector('feGaussianBlur').getAttribute('stdDeviation'),
+        ),
+      ).toBeGreaterThan(0)
+    }
+  })
+
   it('glows each dressed flora in its own body colour', () => {
     render(<DesignPage onBack={vi.fn()} />)
     // Design-bible §3: a living thing's light IS its body colour. The aura

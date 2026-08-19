@@ -165,19 +165,20 @@ tracker. Everything after this is delight, informed by real use.
                   one of the four colours (`src/ui/floraFills.js`); the
                   hair generator learned to take a tint to do it. Now worn
                   by the real shapes on the workbench (4 × 6 = 24 of the
-                  48 collectibles), awaiting her eye.
+                  48 collectibles), under the edge rule that keeps the
+                  dark ground off every outline. Awaiting her eye.
             - [x] **The four silhouettes** — flora 1, 2, 3 and 6 of the
                   eight she drew in July, her traces kept verbatim in
                   `src/ui/floraSilhouettes.js` under her own numbering.
                   Unnamed until T6.1.
             - [x] **The two sizes** _(no sizing sheet was needed in the
-                  end)_ — she pegged the collectible classes to two
-                  FRIENDS instead: large = as tall as a chitu, small =
-                  HALF as tall as a zala after she saw both drawn and cut
-                  the small one down. `src/ui/floraCanon.js` derives them
-                  in the friends' own scale, so the two families are true
-                  to each other by construction. **Locked 2026-08-19**,
-                  and the comparison shelf came down with them.
+                  end)_ — **small 0.28, large 0.77** in the one shared
+                  scale (`src/ui/floraCanon.js`), so flora and friends are
+                  true to each other by construction. Arrived at through
+                  two friends and then cut loose from them on her call: a
+                  flora holds a PLACE in the whole sizing table, not one
+                  friend's height. **Locked 2026-08-19**, and the
+                  comparison shelf came down with them.
             - [ ] **The landmark super-size** — the third size class,
                   still unset (2026-08-19, her call to settle the
                   collectibles first). It belongs with the Map work, and

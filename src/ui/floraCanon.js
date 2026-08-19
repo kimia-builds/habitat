@@ -1,5 +1,5 @@
 /*
- * floraCanon.js — how big a flora is against everything else (T5.3g)
+ * floraCanon.js — where the flora stand in the sizing table (T5.3g)
  * =============================================================================
  * PERMANENT, and the twin of friendCanon.js. That file settled the friends'
  * proportions; this one settles the flora's, and — this is the whole point —
@@ -13,18 +13,13 @@
  *     Map work. Nothing may invent one in the meantime.)
  *   • A flora's size is its HEIGHT. Not its width, not its bulk: how tall it
  *     stands next to you is what "size" means for a plant.
- *   • The large class stands as tall as a CHITU, the biggest friend.
- *   • The small class stands HALF as tall as a ZALA. It was pegged to the whole
- *     zala first; seeing the two classes drawn she called the small one too
- *     tall and halved it, which is the eyeball test doing its job — the derived
- *     number was the proposal, her eye was the decision. A large flora is now
- *     2.74× the height of a small one.
- *
- * WHY THE CHITU AND NOT THE RASSATT, which she first named. The rassatt is wide
- * and low: measured by height it is 2.6% SHORTER than the zala, so pegging the
- * two classes to those two friends would have produced two classes the same
- * size. Shown the cast's heights she re-pegged the large class to the chitu,
- * which is genuinely taller. The large flora reads 37% taller than the small.
+ *   • **The two sizes are places in the whole table, not one friend's height
+ *     each.** They were worked out from two particular friends — the large
+ *     class was a chitu's height, the small class half a zala's — and she
+ *     ruled that out once the sizes were settled: a flora should sit where it
+ *     sits among everything that grows and walks on N-Z-D, not be tied to two
+ *     individuals who might be redrawn. So the numbers below are entries in the
+ *     scale in their own right, and the table under them is what they answer to.
  *
  * ═══ HEIGHTS HERE, WIDTHS IN friendCanon.js — READ THIS BEFORE USING EITHER ═══
  * Both files speak the same unitless scale, whose 1 is the chitu's WIDTH. What
@@ -41,38 +36,55 @@
  * HOW TO USE IT. Never type a flora size in by hand. A screen decides ONE base
  * — how much room the largest friend gets there — and asks:
  *
- *     floraHeight('small', 11.5)             // → 6.46, in whatever unit base was
+ *     floraHeight('small', 11.5)             // → 3.22, in whatever unit base was
  *     floraWidth('small', silhouette, 11.5)  // → the width that height makes
  *
  * WHERE THE OBJECTS COME IN. Kimia's reason for wanting this canon is that
  * flora, friends and market objects may all sit in the Abode at once. Two of
  * those three are now in one scale. The objects are not drawn yet (design-bible
  * §10a has no sizes, only "price correlates with size") — when they are, they
- * join THIS scale, measured against the same chitu, rather than getting a third
- * private one.
+ * take their own places in this same table rather than getting a private one.
  * =========================================================================== */
+
+/* ── THE SIZING TABLE, BY HEIGHT ──────────────────────────────────────────────
+ * Everything Habitat draws, tallest last, in the one shared scale. The friends'
+ * figures are not stored here — they are their canon WIDTHS turned into heights
+ * by their own drawings, and friendCanon.js remains the only place they live.
+ * This is the picture the two flora numbers were chosen against, written out so
+ * a person can see the whole ladder at a glance:
+ *
+ *     plip           0.147
+ *     SMALL FLORA    0.280   ← between the plip and the baluhm
+ *     baluhm         0.397
+ *     liwi bi jiji   0.427
+ *     krupengk       0.438
+ *     rassatt        0.547     (wide and low — tall friends are not the big ones)
+ *     zala           0.562
+ *     woigolp        0.694
+ *     meuhy          0.721
+ *     LARGE FLORA    0.770   ← between the meuhy and the hamdi bulo
+ *     chitu          0.770
+ *     hamdi bulo     1.157
+ *
+ * The comment can go stale; the test cannot. `floraCanon.test.js` rebuilds this
+ * ladder from friendCanon.js and the drawings on every run and checks that each
+ * flora class still falls between the neighbours named above — so the flora are
+ * pinned to their PLACE in the table, which is what Kimia asked for, rather than
+ * to any one friend's height.
+ * ────────────────────────────────────────────────────────────────────────── */
 
 // THE CANON. Both numbers are heights, as fractions of the chitu's width — the
 // same 1 that friendCanon.js counts in.
 //
-// They are not free-standing choices; they are two friends' heights, worked out
-// from the character sheet:
-//
-//   small = the zala's height  ÷ 2 = 0.6 × (366.19 ÷ 390.96) ÷ 2 = 0.280993
-//   large = the chitu's height     = 1   × (550.65 ÷ 714.93)     = 0.770215
-//
-// (canon width × the drawing's own height ÷ its own width, and then Kimia's
-// halving on the small one). They are written
-// out as plain numbers rather than computed here so that this file stays a
-// short statement of fact, and `floraCanon.test.js` re-derives them from
-// friendCanon.js and the two drawings every time the suite runs — so if the
-// cast is ever redrawn, the suite says so instead of the flora drifting quietly.
-//
-// Six figures for the same reason friendCanon.js gives: these are ratios, and a
-// rounding error is multiplied by whatever base a screen picks.
+// Two figures, unlike friendCanon.js's six. That file needs six because its
+// numbers are RATIOS READ OFF A DRAWING, where a rounding error is a drawing
+// being wrong; these two are choices, and a chosen number should look chosen.
+// (They began life as 0.280993 and 0.770215, the leftovers of the friend
+// arithmetic they were derived from; Kimia rounded them when they stopped being
+// derived. The drawn size moved by a third of one percent — no eye can see it.)
 export const FLORA_CANON = {
-  small: 0.280993, // half as tall as a zala
-  large: 0.770215, // as tall as a chitu, the biggest friend
+  small: 0.28,
+  large: 0.77,
 }
 
 // The two classes in order, for anything that walks them both.
