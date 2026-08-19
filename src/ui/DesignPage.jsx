@@ -31,18 +31,18 @@
 // colour. It is still workbench-only; the real Abode screen has not
 // been given a sky yet.
 //
-// FLORA COLOURS (T5.3g, 2026-08-19) — the first step of the flora pass,
-// now settled: the four colours the ordinary flora wear, chosen off this
-// shelf from twelve candidates. They stand as plain glowing squares — no
-// silhouette, deliberately, because the four species shapes are a later
-// session and a colour is easier to judge on a shape that is asking
-// nothing. The shelf stays only until the four colours have been paired
-// with textures into the six FILLS; that pairing is the open question
-// now, and this is where it gets looked at.
+// FLORA FILLS (T5.3g, 2026-08-19) — the open question of the flora pass.
+// The four colours were chosen off this shelf earlier today and their
+// swatches have gone; what stands now is the six FILLS those colours make
+// with the hair textures (floraFills.js). Squares, not silhouettes: the
+// four species shapes are a later session, and Kimia's call was to settle
+// the surface first on a shape that is asking nothing. The hair is
+// clipped INSIDE each square — her rule that the hair forms the fill and
+// never fringes out past the outline.
 
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
 import { AbodeSky, ABODE_PALETTES } from './sky.jsx'
-import { FLORA_COLOURS } from './floraColours.js'
+import { FLORA_FILLS } from './floraFills.js'
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -118,25 +118,46 @@ function TextureSwatch({ tex }) {
   )
 }
 
-// One flora colour: a square of the colour throwing a glow of
-// that same colour, because a living thing's light IS its body colour
-// (design-bible §3). The glow spread is --glow-pop, the top of the
-// everyday scale — §7 says the organics take the top, and which top step
-// "full" finally means is an eyeball call on the real art, so this shelf
-// makes a start at the louder of the two.
-function FloraColourSwatch({ colour }) {
+// One flora fill: a square of hair, grown in that fill's colour and
+// clipped to the square so no strand escapes it. The square throws a glow
+// of the same colour, because a living thing's light IS its body colour
+// (design-bible §3) — glow spread --glow-pop, the top of the everyday
+// scale, since §7 gives the organics the top and which top step "full"
+// finally means is an eyeball call on real art.
+//
+// Behind the strands sits a dark ground rather than the colour itself: a
+// solid backing would make the hair a texture ON a colour, when the point
+// is that the hair IS the fill.
+function FloraFillSwatch({ fill }) {
+  const clipId = `flora-fill-clip-${fill.id}`
   return (
-    <li className="flora-colour-swatch">
-      <div
-        className="flora-colour-square"
+    <li className="flora-fill-swatch">
+      <svg
+        className="texture-swatch-art"
+        viewBox={`0 0 ${SWATCH} ${SWATCH}`}
         role="img"
-        aria-label={colour.name}
-        style={{
-          background: colour.hex,
-          boxShadow: `0 0 var(--glow-pop) ${colour.hex}`,
-        }}
-      />
-      <span className="texture-swatch-name">{colour.name}</span>
+        aria-label={fill.id}
+        style={{ boxShadow: `0 0 var(--glow-pop) ${fill.colour.hex}` }}
+      >
+        <defs>
+          <clipPath id={clipId}>
+            <rect width={SWATCH} height={SWATCH} rx="12" />
+          </clipPath>
+        </defs>
+        <rect width={SWATCH} height={SWATCH} rx="12" fill={SWATCH_GROUND} />
+        <g clipPath={`url(#${clipId})`}>
+          {hairField({
+            mode: fill.mode,
+            x: 0,
+            y: 0,
+            w: SWATCH,
+            h: SWATCH,
+            seed: 42,
+            colour: fill.colour.hex,
+          })}
+        </g>
+      </svg>
+      <span className="texture-swatch-name">{fill.id}</span>
     </li>
   )
 }
@@ -181,13 +202,13 @@ function DesignPage({ onBack }) {
         </ul>
       </section>
 
-      {/* The flora colours (T5.3g, design-bible §9a) — the settled four,
-          standing together so the palette can be read as one set. */}
-      <section className="design-family" aria-label="flora colours">
-        <h3>flora colours</h3>
-        <ul className="texture-swatches flora-colour-row">
-          {FLORA_COLOURS.map((colour) => (
-            <FloraColourSwatch key={colour.name} colour={colour} />
+      {/* The six flora fills (T5.3g, design-bible §9a) — hair textures in
+          the four settled colours, waiting on Kimia's eye. */}
+      <section className="design-family" aria-label="flora fills">
+        <h3>flora fills</h3>
+        <ul className="texture-swatches">
+          {FLORA_FILLS.map((fill) => (
+            <FloraFillSwatch key={fill.id} fill={fill} />
           ))}
         </ul>
       </section>

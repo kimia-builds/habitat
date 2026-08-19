@@ -94,7 +94,10 @@ export const TEX_COLORS = {
  * colour (Kimia's rule, T5.3b), so it must be emittable under a per-friend id
  * and tint. TextureDefs renders the default green instance for the swatch.
  * --------------------------------------------------------------------------- */
-export function SpongeFilter({ id = 'tex-sponge', light = TEX_COLORS.spongeLight }) {
+export function SpongeFilter({
+  id = 'tex-sponge',
+  light = TEX_COLORS.spongeLight,
+}) {
   return (
     <filter id={id} x="-15%" y="-15%" width="130%" height="130%">
       <feTurbulence
@@ -320,6 +323,10 @@ export function pumicePits({
  *   'coat'     — thicker, tighter curls (curly coat).
  *   'wispy'    — long, very fine, high count (wispy waves).
  *   'underfur' — tiny dense strands, maximum quantity (dense underfur).
+ *
+ * COLOUR: pass `colour: '#43e08a'` to grow the field in that hue instead of the
+ * library green — hairRamp() below rebuilds the whole depth ramp from it. Used
+ * by the flora fills (T5.3g), where hair IS the fill.
  * =========================================================================== */
 
 // Deterministic RNG so a given seed always reproduces the same field.
@@ -430,6 +437,84 @@ const HAIR_MODES = {
   },
 }
 
+/* -----------------------------------------------------------------------------
+ * TINTING THE HAIR (T5.3g, 2026-08-19). The filter surfaces take their tint as
+ * a lighting colour, but hair is painted strand by strand out of a five-part
+ * ramp (a dark root shadow, a mid body, a bright tip, and five accent hues
+ * scattered through the body). To wear a colour, hair needs that whole ramp
+ * rebuilt in it — so this derives one from a single hex.
+ *
+ * It is the same idea as the friends' paletteForTone(): one tone in, a whole
+ * coherent set out, so nobody hand-picks thirty-odd hex values. The shape of
+ * the ramp is copied from the green one that was drawn by hand and approved —
+ * root near-black at the same hue, tip nearly white, accents fanned a little
+ * either side of the body colour — so a tinted field reads exactly like the
+ * original with the hue turned.
+ * --------------------------------------------------------------------------- */
+
+// hex → [hue 0–360, saturation 0–1, lightness 0–1]
+function hexToHsl(hex) {
+  const n = parseInt(hex.slice(1), 16)
+  const r = ((n >> 16) & 255) / 255
+  const g = ((n >> 8) & 255) / 255
+  const b = (n & 255) / 255
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  const l = (max + min) / 2
+  const d = max - min
+  if (d === 0) return [0, 0, l]
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+  let h
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) * 60
+  else if (max === g) h = ((b - r) / d + 2) * 60
+  else h = ((r - g) / d + 4) * 60
+  return [h, s, l]
+}
+
+// [hue, saturation, lightness] → [r, g, b] 0–255, the array shape the strand
+// painter's lerp() and hx() already expect.
+function hslToRgb(h, s, l) {
+  const hue = ((h % 360) + 360) % 360
+  const sat = Math.max(0, Math.min(1, s))
+  const lum = Math.max(0, Math.min(1, l))
+  const c = (1 - Math.abs(2 * lum - 1)) * sat
+  const x = c * (1 - Math.abs(((hue / 60) % 2) - 1))
+  const m = lum - c / 2
+  const seg = Math.floor(hue / 60) % 6
+  const rgb = [
+    [c, x, 0],
+    [x, c, 0],
+    [0, c, x],
+    [0, x, c],
+    [x, 0, c],
+    [c, 0, x],
+  ][seg]
+  return rgb.map((v) => Math.round((v + m) * 255))
+}
+
+export function hairRamp(hex) {
+  const [h, s, l] = hexToHsl(hex)
+  return {
+    // The root shadow: the same hue, drained and taken almost to black, so
+    // the field has depth without a second colour appearing in it.
+    hairDark: hslToRgb(h, s * 0.6, 0.12),
+    // The body: the colour itself, untouched. This is the one the eye reads.
+    hairMid: hslToRgb(h, s, l),
+    // The tip: nearly white but still tinted, so strands end in light rather
+    // than in a hard edge.
+    hairBright: hslToRgb(h, Math.min(1, s * 1.1), 0.88),
+    // Accents fanned either side of the body hue — the variation that stops a
+    // field of one colour looking like a flat fill.
+    hairAccents: [
+      hslToRgb(h - 12, s, l * 0.8),
+      hslToRgb(h + 12, s, Math.min(0.78, l * 1.15)),
+      hslToRgb(h - 24, s * 0.85, l),
+      hslToRgb(h + 24, s * 0.85, l * 0.9),
+      hslToRgb(h, s * 0.7, Math.min(0.82, l * 1.3)),
+    ],
+  }
+}
+
 export function hairField({
   mode = 'curled',
   x = 0,
@@ -437,9 +522,12 @@ export function hairField({
   w = 200,
   h = 200,
   seed = 1,
+  colour = null,
 } = {}) {
   const cfg = HAIR_MODES[mode] || HAIR_MODES.curled
-  const C = TEX_COLORS
+  // No colour asked for = the library's own green, so every existing swatch
+  // draws exactly as it did before tinting existed.
+  const C = colour ? { ...TEX_COLORS, ...hairRamp(colour) } : TEX_COLORS
   const rng = mulberry32(seed)
   const baseAng = -Math.PI / 2 // hairs grow "up"
   // [palette, opacity, blur/glow filter, count, widthScale]

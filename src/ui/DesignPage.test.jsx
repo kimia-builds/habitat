@@ -5,7 +5,7 @@
 // The page is a WAITING ROOM (Kimia, 2026-08-17): a shelf stands only
 // while its asset still has a question open, and leaves once she has
 // judged it. So these tests cover exactly what is still waiting — the
-// texture library, the abode sky and the flora colours — and the last
+// texture library, the abode sky and the flora fills — and the last
 // test guards the emptying itself, by failing if a settled family creeps
 // back on.
 
@@ -14,7 +14,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
 import { ABODE_PALETTES } from './sky.jsx'
-import { FLORA_COLOURS } from './floraColours.js'
+import { FLORA_FILLS } from './floraFills.js'
 
 afterEach(cleanup)
 
@@ -57,30 +57,43 @@ describe('DesignPage workbench', () => {
     expect(labels).toHaveLength(4)
   })
 
-  it('shows the whole flora palette and nothing else', () => {
+  it('shows all six flora fills and nothing else', () => {
     const { container } = render(<DesignPage onBack={vi.fn()} />)
-    // The four settled colours (T5.3g). A count test, so a fifth colour
-    // sneaking into the palette without a decision fails here.
+    // Six is the number the flora arithmetic depends on (4 silhouettes ×
+    // 2 sizes × 6 fills = 48), so a seventh appearing without a decision
+    // fails here.
     const names = [
-      ...container.querySelectorAll('.flora-colour-swatch [role="img"]'),
+      ...container.querySelectorAll('.flora-fill-swatch svg[role="img"]'),
     ].map((sq) => sq.getAttribute('aria-label'))
-    expect(names).toEqual(FLORA_COLOURS.map((c) => c.name))
+    expect(names).toEqual(FLORA_FILLS.map((f) => f.id))
   })
 
-  it('glows each flora colour in its own body colour', () => {
+  it('glows each flora fill in its own body colour', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    // Design-bible §3: a living thing's light IS its body colour. So each
+    // square's glow must be that fill's own hex, never a shared halo.
+    for (const fill of FLORA_FILLS) {
+      const square = screen.getByRole('img', { name: fill.id })
+      expect(square.style.boxShadow).toContain(fill.colour.hex)
+    }
+  })
+
+  it('keeps every strand of hair inside its fill swatch', () => {
     const { container } = render(<DesignPage onBack={vi.fn()} />)
-    // Design-bible §3: a living thing's light IS its body colour. So
-    // every square's glow must be the same hex as its fill — never a
-    // shared halo colour applied on top.
-    // (Checked against the palette rather than against the square's own
-    // background, because the DOM rewrites a hex fill as rgb() while
-    // leaving the hex inside the shadow alone — comparing the two strings
-    // would only be testing that quirk.)
-    const squares = [...container.querySelectorAll('.flora-colour-square')]
-    expect(squares).toHaveLength(FLORA_COLOURS.length)
-    for (const colour of FLORA_COLOURS) {
-      const square = screen.getByRole('img', { name: colour.name })
-      expect(square.style.boxShadow).toContain(colour.hex)
+    // Kimia's rule (2026-08-19): the hair FORMS the fill and never fringes
+    // out past the outline. The generator scatters strands that overrun
+    // their box by design, so the clip is what enforces it — every strand
+    // group must sit inside a clipped <g>.
+    for (const swatch of container.querySelectorAll('.flora-fill-swatch')) {
+      const clipped = swatch.querySelector('g[clip-path]')
+      expect(clipped).not.toBeNull()
+      expect(swatch.querySelectorAll('path').length).toBeGreaterThan(0)
+      // No strand may be painted outside that clipped group.
+      expect(
+        [...swatch.querySelectorAll('path')].every((strand) =>
+          clipped.contains(strand),
+        ),
+      ).toBe(true)
     }
   })
 
@@ -97,7 +110,7 @@ describe('DesignPage workbench', () => {
       [
         ...families.map((f) => `textures — ${f}`),
         'abode sky',
-        'flora colours',
+        'flora fills',
       ].sort(),
     )
   })
