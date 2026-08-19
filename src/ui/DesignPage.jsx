@@ -31,18 +31,18 @@
 // colour. It is still workbench-only; the real Abode screen has not
 // been given a sky yet.
 //
-// FLORA COLOURS (T5.3g, 2026-08-19) — the newest shelf, and the first
-// step of the flora pass. Kimia's call: the ordinary flora wear four
-// colours in total, one green, one aqua, one blue, one indigo, all rich
-// and bioluminescent. Three candidate shades per hue stand here as plain
-// glowing squares — no silhouette yet, deliberately, because the species
-// shapes are a later session and a colour is easier to judge on a shape
-// that is asking nothing. She picks one per hue; the losers are then
-// deleted from floraColours.js and this shelf becomes the four.
+// FLORA COLOURS (T5.3g, 2026-08-19) — the first step of the flora pass,
+// now settled: the four colours the ordinary flora wear, chosen off this
+// shelf from twelve candidates. They stand as plain glowing squares — no
+// silhouette, deliberately, because the four species shapes are a later
+// session and a colour is easier to judge on a shape that is asking
+// nothing. The shelf stays only until the four colours have been paired
+// with textures into the six FILLS; that pairing is the open question
+// now, and this is where it gets looked at.
 
 import { TEXTURES, TextureDefs, hairField, pumicePits } from './textures.jsx'
 import { AbodeSky, ABODE_PALETTES } from './sky.jsx'
-import { FLORA_COLOUR_CANDIDATES } from './floraColours.js'
+import { FLORA_COLOURS } from './floraColours.js'
 
 // The §8 texture families, in the order the design bible lists them, so
 // the workbench reads top-to-bottom like the catalogue.
@@ -118,25 +118,25 @@ function TextureSwatch({ tex }) {
   )
 }
 
-// One candidate flora colour: a square of the colour throwing a glow of
+// One flora colour: a square of the colour throwing a glow of
 // that same colour, because a living thing's light IS its body colour
 // (design-bible §3). The glow spread is --glow-pop, the top of the
 // everyday scale — §7 says the organics take the top, and which top step
 // "full" finally means is an eyeball call on the real art, so this shelf
 // makes a start at the louder of the two.
-function FloraColourSwatch({ shade }) {
+function FloraColourSwatch({ colour }) {
   return (
     <li className="flora-colour-swatch">
       <div
         className="flora-colour-square"
         role="img"
-        aria-label={shade.name}
+        aria-label={colour.name}
         style={{
-          background: shade.hex,
-          boxShadow: `0 0 var(--glow-pop) ${shade.hex}`,
+          background: colour.hex,
+          boxShadow: `0 0 var(--glow-pop) ${colour.hex}`,
         }}
       />
-      <span className="texture-swatch-name">{shade.name}</span>
+      <span className="texture-swatch-name">{colour.name}</span>
     </li>
   )
 }
@@ -181,21 +181,15 @@ function DesignPage({ onBack }) {
         </ul>
       </section>
 
-      {/* The flora colours (T5.3g, design-bible §9a) — three candidates
-          per hue, waiting on Kimia's pick of one each. */}
+      {/* The flora colours (T5.3g, design-bible §9a) — the settled four,
+          standing together so the palette can be read as one set. */}
       <section className="design-family" aria-label="flora colours">
         <h3>flora colours</h3>
-        {FLORA_COLOUR_CANDIDATES.map((group) => (
-          <ul
-            key={group.hue}
-            className="texture-swatches flora-colour-row"
-            aria-label={`flora colours — ${group.hue}`}
-          >
-            {group.shades.map((shade) => (
-              <FloraColourSwatch key={shade.name} shade={shade} />
-            ))}
-          </ul>
-        ))}
+        <ul className="texture-swatches flora-colour-row">
+          {FLORA_COLOURS.map((colour) => (
+            <FloraColourSwatch key={colour.name} colour={colour} />
+          ))}
+        </ul>
       </section>
 
       <button className="pebble" onClick={onBack}>
