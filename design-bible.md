@@ -293,16 +293,22 @@ where the friend pastels are soft (`friendColours.js`).
   out past the outline, so whatever draws a flora clips the field to its
   shape. (Hair is scattered by a generator that overruns its box by
   design; the clip is what enforces the rule, and a test holds it.)
-- **THE EDGE RULE (Kimia, 2026-08-19).** The dark ground the hair grows
-  out of belongs in the MIDDLE of a flora, never at its rim — dark
-  reaching the outline reads as a drawn black edge, which is the one
-  thing these silhouettes must not have. So the ground is not the shape:
-  it is the shape **shrunk and then softened**, fading out before the
-  outline so the last stretch of every edge is hair alone. Both amounts
-  are fractions of the drawing's own height, so the rule lands the same
-  on all four species. A thin arm narrower than twice the inset keeps no
-  ground at all and is drawn in pure hair — correct, since a thin arm is
-  all edge.
+- **CUT THE SHAPE OUT OF THE MIDDLE OF A DENSE FIELD (Kimia,
+  2026-08-19).** The generator grows every strand upward from a scattered
+  root, which leaves any field thin along its BOTTOM edge — a point near
+  the bottom is covered only by the few roots beneath it, where a point in
+  the middle has everything below it as well. On a square swatch nobody
+  minds; cut a flora out of one and the shape wears that thin band across
+  its underside, which is what she saw and rejected. So a flora is never
+  cut from a field its own size: the field is grown **larger than the
+  shape and denser than one pass**, and the shape is cookie-cut from the
+  middle of it. `denseHairField()` in `textures.jsx` is the rule made
+  code — enough room below for a whole strand's reach, plus repeat passes
+  to hold the tuned density over the bigger area — and a test measures the
+  bottom of every mode against its middle.
+  _(An earlier attempt at the same complaint, shrinking and softening the
+  dark ground so it never reached the outline, was built and rejected the
+  same day: it thinned the flora instead of filling them.)_
 - The pairing puts one green and one blue on each doubled texture, so no
   texture belongs to a single hue and the six split three green / three
   blue.

@@ -594,6 +594,75 @@ export function hairField({
   return groups
 }
 
+/* -----------------------------------------------------------------------------
+ * A FIELD WITH NO THIN EDGE (T5.3g, Kimia 2026-08-19)
+ * -----------------------------------------------------------------------------
+ * `hairField` scatters roots across its box and grows every strand UPWARD. That
+ * leaves the box thin along its BOTTOM: a point near the bottom edge is covered
+ * only by the few roots between it and the edge, while a point in the middle is
+ * covered by everything below it as well. On a square swatch nobody minds. Cut
+ * a flora out of one and the shape wears that thin band across its underside —
+ * which is exactly what Kimia saw and disliked.
+ *
+ * THE RULE SHE ASKED FOR: grow one big dense field, and cookie-cut the shape out
+ * of the MIDDLE of it. That is all this function does.
+ *
+ *   • It grows the field over a box larger than the one asked for — enough room
+ *     below for a whole strand's worth of roots, so the strands that would have
+ *     been missing under the shape's belly exist and grow up into it, plus a
+ *     margin at the sides and top for the small inset the generator keeps.
+ *   • It then repeats that field until the density is back to what the mode was
+ *     tuned for. Density is strands per area, so a box four times the size needs
+ *     four passes; each pass reseeds, and because roots are scattered uniformly
+ *     the passes lay over each other with no seam.
+ *
+ * Ask it for the box you actually want covered and clip to your shape. The
+ * overscan is its business, not the caller's.
+ * -------------------------------------------------------------------------- */
+
+// The tuning square the hair modes were dialled in on. Density everywhere else
+// is measured against it.
+const HAIR_TUNED_BOX = 110
+
+// The furthest a strand of this mode can travel from its root. Segment count ×
+// the longest a segment gets × the mode's length scale — an upper bound, since
+// a curling strand does not spend all of that going straight up.
+export function hairReach(mode) {
+  const cfg = HAIR_MODES[mode] || HAIR_MODES.curled
+  return cfg.nseg * cfg.sl[1] * cfg.lens
+}
+
+// The small margin at the sides and top: the generator keeps roots 3 units clear
+// of its own edges, and a couple more costs nothing and removes the seam.
+const HAIR_EDGE_MARGIN = 6
+
+export function denseHairField({
+  mode = 'curled',
+  x = 0,
+  y = 0,
+  w = 200,
+  h = 200,
+  seed = 1,
+  colour = null,
+} = {}) {
+  // Room below for a full strand's worth of roots; a hairline elsewhere.
+  const south = hairReach(mode)
+  const box = {
+    x: x - HAIR_EDGE_MARGIN,
+    y: y - HAIR_EDGE_MARGIN,
+    w: w + HAIR_EDGE_MARGIN * 2,
+    h: h + HAIR_EDGE_MARGIN + south,
+  }
+  // Back to the tuned density: one pass per tuning square of area.
+  const passes = Math.max(
+    1,
+    Math.round((box.w * box.h) / (HAIR_TUNED_BOX * HAIR_TUNED_BOX)),
+  )
+  return Array.from({ length: passes }, (_, i) =>
+    hairField({ mode, ...box, seed: seed + i * 101, colour }),
+  )
+}
+
 /* =============================================================================
  * 3. MANIFEST — machine-readable index of every primitive in this file.
  * `family` follows design-bible §8's "who may use what" table.

@@ -2673,6 +2673,62 @@ sizes, only "price correlates with size". So flora and friends are one
 scale today, and both `floraCanon.js` and §9a say the objects join this
 same scale when they are drawn rather than starting a third.
 
+## T5.3g build notes (part 4) — a flora is cut from the middle (2026-08-19)
+
+**Kimia diagnosed this one, and the diagnosis was the fix.** She looked
+past the flora at the SWATCHES and named what was wrong with them: "a
+sort of southern area of lower density of the hair and fur in each of the
+swatches". Then she gave the remedy as a picture — grow one big dense
+field, and cookie-cut the flora out of the middle of it.
+
+**Why she was right.** `hairField` scatters roots across its box and grows
+every strand UPWARD. A point near the bottom of the box is covered only by
+the few roots between it and the edge; a point in the middle is covered by
+everything below it as well. So every field is thin along its southern
+edge — invisible on a square swatch, glaring once a shape is cut from one
+and wears the band across its belly.
+
+**`denseHairField()` in `textures.jsx`** is her rule as code, and it lives
+beside the generator rather than in the workbench because every future
+flora screen needs it:
+
+- it grows the field over a box **taller than asked for** — one whole
+  strand-reach of extra room below, so the strands that were missing under
+  the belly exist and grow up into it — plus a hairline at the sides and
+  top for the 3-unit inset the generator keeps;
+- then it **repeats the field** until the density is back to what the mode
+  was tuned for, one pass per tuning square of area. Roots are scattered
+  uniformly, so passes lay over each other with no seam. (Tiling would
+  have been the obvious way and is wrong here: a tile has a thin bottom
+  edge too, so vertical tiles would have printed the very band we are
+  removing straight across the middle of the shape.)
+
+`hairReach(mode)` is new and exported with it: segments × longest segment
+× the mode's length scale, an upper bound on how far a strand travels.
+
+**Measured, not eyeballed** (`textures.test.jsx`, new). Strands crossing
+the bottom fifth of the box against strands crossing the middle fifth:
+
+    curled    0.32 → 1.03      wispy     0.32 → 0.99
+    coat      0.63 → 0.90      underfur  0.71 → 1.02
+
+The plain field's thinness is written down as a test too — not as a
+complaint, but so nobody "fixes" `hairField` itself and silently changes
+every texture swatch on the workbench.
+
+**The cost is real:** covering four times the area at the same density
+means about four times the strands. The shelf went from 22,400 paths to
+41,400. Fine for a workbench page one person opens on purpose; the note
+from part 2 stands doubly now — this recipe wants a lighter version before
+the game draws a screenful of flora at once.
+
+It also broke the page's own tests, which is worth knowing as a symptom:
+`DesignPage.test.jsx` rendered the whole page once per test, and building
+41,000 paths a dozen times blew the 5-second timeout. It now renders ONCE
+for the file and every test reads that one render — all the assertions are
+reads, and the single test that clicks does so on the shared handler. The
+file went from 39 seconds to 12.
+
 ## T5.3g build notes (part 3) — the table, and the edge rule (2026-08-19)
 
 **Third pass of the same session**, all three items from Kimia's list.
@@ -2700,23 +2756,12 @@ Rounding moved the drawn size by a third of one percent.
 
 **2. Fixed-size hair confirmed** by Kimia — no change.
 
-**3. The edge rule.** Two filter primitives, in this order, on the dark
-ground only: `feMorphology operator="erode"` to eat the shape inwards,
-then `feGaussianBlur` to dissolve the pulled-back edge so it does not
-become a second hard line of its own. Both radii are fractions of the
-drawing's own height (`GROUND_INSET` 0.022, `GROUND_FADE` 0.011), so the
-rule lands identically on four traces whose canvases run 95–197 units.
-The ground is also inside the clip now — the softening blur would
-otherwise push it back out past the very outline it was pulled inside.
-
-`GROUND_INSET` is the dial if she wants more or less: raise it and the
-dark retreats further, at the cost of the flora reading thinner.
-
-**Seen at 3× on the workbench:** the tendril's arms now carry no ground
-at all and are drawn in pure hair, and the dark survives only as patches
-in the body's core. That falling-out is the rule working, not a bug — an
-arm narrower than twice the inset has no middle left, and a thin arm is
-all edge.
+**3. The edge rule — built, and it was the wrong fix.** Two filter
+primitives on the dark ground (`feMorphology` erode, then a blur to
+dissolve the pulled-back edge), both radii fractions of the drawing's own
+height. It did what it said and Kimia rejected it: pulling the dark back
+made the flora read thinner and wispier, because the dark ground was
+never what was wrong. Reverted in part 4, which has the real cause.
 
 ## T5.3g build notes (part 2) — the sizes locked, the flora dressed (2026-08-19)
 
@@ -3344,15 +3389,25 @@ goes anywhere the game draws many flora at once.
   rebuilds the whole cast's ladder BY HEIGHT and guards each class's
   PLACE in it — small between the plip and the baluhm, large between the
   meuhy and the hamdi bulo — instead of its tie to any one friend.
-- 2026-08-19 (Kimia's call, T5.3g): **the edge rule — no dark ground at a
-  silhouette's rim.** The dark the hair grows out of belongs in the middle
-  of a flora; reaching the outline it reads as a drawn black edge, which
-  these shapes must never have. So the ground is the shape SHRUNK and then
-  SOFTENED, fading out before the outline so the last stretch of every
-  edge is hair alone. Both amounts are fractions of the drawing's own
-  height, so the rule lands the same on all four species — and a thin
-  tendril arm, being narrower than twice the inset, keeps no ground at all
-  and is drawn in pure hair, which is right, since a thin arm is all edge.
+- 2026-08-19 (T5.3g, built and REVERTED the same day): **the edge rule —
+  the dark ground shrunk and softened so it never reached the outline.**
+  Kimia rejected it on sight: it thinned the flora rather than filling
+  them, and the dark ground had not been the problem. Superseded by the
+  dense-field rule below, which is the same complaint diagnosed properly.
+- 2026-08-19 (Kimia's call, T5.3g — **this is the fix, and her own
+  diagnosis**): **a flora is cookie-cut from the middle of a big dense
+  field of hair.** She named the real cause: every field is thin along its
+  SOUTHERN edge, because the generator grows strands upward from scattered
+  roots, so a point near the bottom is covered only by the few roots
+  beneath it while a point in the middle has everything below it too. Cut
+  a shape from a field its own size and it wears that thin band across its
+  underside. So the field is grown larger than the shape — enough room
+  below for a whole strand's reach — and repeated until the tuned density
+  is back over the bigger area, and the shape is cut from the middle.
+  `denseHairField()` in `textures.jsx` is the rule; `textures.test.jsx`
+  measures the bottom fifth of every mode against its middle fifth, which
+  went from 0.32 to about 1.0. The dark ground behind the strands is
+  unchanged and was never the problem.
 - 2026-08-19 (Kimia's call, T5.3g): **fixed-size hair is settled.** The
   strands being the same size on screen on every species — rather than
   scaling with each trace's own canvas — was shown to her and approved as

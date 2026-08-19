@@ -165,8 +165,9 @@ tracker. Everything after this is delight, informed by real use.
                   one of the four colours (`src/ui/floraFills.js`); the
                   hair generator learned to take a tint to do it. Now worn
                   by the real shapes on the workbench (4 × 6 = 24 of the
-                  48 collectibles), under the edge rule that keeps the
-                  dark ground off every outline. Awaiting her eye.
+                  48 collectibles), each cookie-cut from the middle of a
+                  dense hair field so no shape wears a thin underside.
+                  Awaiting her eye.
             - [x] **The four silhouettes** — flora 1, 2, 3 and 6 of the
                   eight she drew in July, her traces kept verbatim in
                   `src/ui/floraSilhouettes.js` under her own numbering.
