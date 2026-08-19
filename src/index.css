@@ -2966,3 +2966,24 @@ body {
   gap: var(--space-1);
   width: 5.5rem;
 }
+
+/* TEMPORARY (T5.3g, 2026-08-19): the flora size scene — the four
+   silhouettes at both size classes standing on shared ground with the
+   two friends the classes are pegged to (floraCanon.js). It is one SVG
+   drawn in canon units, so the box only has to give it a width and the
+   proportions inside look after themselves. Leaves when the sizes are
+   approved. */
+.flora-size-scene {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* A line of workbench explanation under a shelf's title — what the eye is
+   being asked to judge. Quiet, because the assets are the subject. */
+.design-note {
+  margin: 0 0 var(--space-3);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-faint);
+}

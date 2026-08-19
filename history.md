@@ -2605,6 +2605,74 @@ return 0` right after the era is worked out, so a moment before the
   standing is another screenful between her and the one she came to look
   at. Folded into spec §5b.
 
+## T5.3g build notes — the four silhouettes and the two sizes (2026-08-19)
+
+**What Kimia asked for.** Her four chosen silhouettes, each in two size
+classes: the small one "roughly equivalent to zalas", the large "roughly
+equivalent to rassatts", and the canon "should speak to the friends and
+the objects, because they might all sit together in the abode at any
+given time."
+
+**Two questions had to be settled before any code.** She asked to be
+checked with first, and it paid twice over:
+
+1. *What does "size" mean for a flora* — width, height, or the friends'
+   "how big does it read" bulk? She chose **height**.
+2. *And then the arithmetic refused her pegs.* Height turns the friends'
+   canon on its head: it stores WIDTHS, and the rassatt is wide and low,
+   so by height it is 2.6% shorter than the zala. Zala-tall and
+   rassatt-tall would have been the same size twice. Shown the cast
+   ranked by height, she re-pegged the large class to the **chitu**.
+   The general lesson is in the decisions log: a friend's rank by width
+   says nothing about its rank by height.
+
+**The three new files.**
+
+- `src/ui/floraSilhouettes.js` — flora 1, 2, 3 and 6, her Inkscape traces
+  verbatim, one path each. Flora 1 kept the group `transform` Inkscape
+  left on it rather than having it folded into the coordinates, because
+  folding it in would mean editing her drawing. Keys are HER file
+  numbers; the `label` is the word on her own exported file and is a
+  handle, not a name (T6.1 names them).
+- `src/ui/floraCanon.js` — the permanent twin of `friendCanon.js`, and
+  deliberately in the SAME unitless scale, whose 1 is the largest
+  friend's width. Two numbers: `small` 0.561986 (the zala's height),
+  `large` 0.770215 (the chitu's). The file's loudest comment is the one
+  warning that **friendCanon stores widths and floraCanon stores
+  heights** — pass both the same base and the families come out true to
+  each other, but read either as the other measurement and everything is
+  wrong by an aspect ratio.
+- `src/ui/floraCanon.test.js` — re-derives both numbers from
+  `friendCanon.js` and the zala's and chitu's own drawings on every run,
+  so "as tall as a zala" keeps meaning that even if the zala is redrawn.
+  It also guards the two classes staying far enough apart to read as two
+  (>1.2×) — the exact failure the rassatt peg would have caused, which
+  nothing else in the suite would have noticed.
+
+**The workbench shelf** is one SVG drawn entirely in canon units, so it
+has no sizes of its own to drift from the canon: every figure asks
+`floraHeight`/`floraWidth` with a base of 1. The four silhouettes stand
+at both classes with the two ruler friends (drawn as their reconstructed
+outer silhouettes, flat and dim), wrapped into rows that share ground
+lines — the point being that they are standing on the same floor, as
+they would in the Abode. A test asserts every figure's box against the
+canon and every figure's foot against a drawn ground.
+
+**Verified in the browser**, not only in jsdom: each small flora renders
+at 94.1px tall and so does the zala; each large at 129px and so does the
+chitu. No console errors. (Habitat's width gate makes this a desktop-only
+page, so no small-screen case exists.)
+
+**Left undone deliberately:** the landmark super-size (her call — it
+belongs with the Map work), and the fills are not on the silhouettes
+yet. This shelf asks one question only: whether the two sizes sit right.
+
+**One thing this could not answer.** She wanted the canon to speak to the
+OBJECTS as well, and the objects do not exist — design-bible §10a has no
+sizes, only "price correlates with size". So flora and friends are one
+scale today, and both `floraCanon.js` and §9a say the objects join this
+same scale when they are drawn rather than starting a third.
+
 ## T5.3e build notes (part 1) — the ten plips (2026-08-17)
 
 - **`src/ui/friendColours.js` is the permanent home**, deliberately the
@@ -3112,8 +3180,9 @@ return 0` right after the era is worked out, so a moment before the
   it). The colour pairing was left to Claude and proposed as: each
   doubled texture takes one green and one blue, so no texture belongs to
   a single hue and the six split three green / three blue.
-- 2026-08-19 (working note, T5.3g): **the flora need a sizing sheet and
-  do not have one.** Two sizes per species plus a landmark super-size is
+- 2026-08-19 (working note, T5.3g — **superseded later the same day** by
+  the two size classes below; no sheet was needed): **the flora need a
+  sizing sheet and do not have one.** Two sizes per species plus a landmark super-size is
   exactly the problem T5.3d solved for the friends — one sheet from
   Kimia, read into unitless ratios that hold everywhere and always. She
   does not have it yet, so no flora size is set anywhere and no screen
@@ -3124,6 +3193,38 @@ return 0` right after the era is worked out, so a moment before the
   Desktop from July (seven of them traced; flora 5 never was). With four
   species settled, those eight are candidates to choose four from, not a
   set to import — and the silhouette session comes after the fills.
+- 2026-08-19 (Kimia's call, T5.3g): **the four silhouettes are flora 1,
+  2, 3 and 6** of those eight. Her traces are kept verbatim in
+  `src/ui/floraSilhouettes.js`, under HER file numbers rather than
+  renumbered 1–4, so the trail back to the drawings on her Desktop never
+  breaks. They are not named — that is T6.1, and the names come from her;
+  the `label` on each entry is only the word on her own exported file.
+- 2026-08-19 (Kimia's calls, T5.3g): **the two collectible size classes
+  are set** (`src/ui/floraCanon.js`). A flora's size is its **HEIGHT**,
+  not its width or its bulk. **All four species share the two classes** —
+  a species is not big or small, a flora is. **Small stands as tall as a
+  zala, large as tall as a chitu**, so large reads 37% taller. And the
+  numbers live in the **friends' own scale**, whose 1 is the largest
+  friend's width, because flora, friends and eventually objects share the
+  Abode and must be true to each other rather than each true to their own
+  family; when the objects are drawn they join this scale rather than
+  starting a third.
+- 2026-08-19 (correction, T5.3g): **she first pegged the large class to
+  the RASSATT, and the arithmetic said no.** The rassatt is wide and low:
+  by height it is 2.6% SHORTER than the zala, so "small = zala-tall,
+  large = rassatt-tall" would have produced two classes the same size.
+  Shown the whole cast's heights she re-pegged to the chitu. Worth
+  remembering as a pattern, not a one-off — the friends' canon numbers are
+  WIDTHS, so a friend's rank by width says nothing about its rank by
+  height, and any future "as big as an X" call has to be checked in the
+  measurement it will actually be used in.
+- 2026-08-19 (working note, T5.3g): **no sizing sheet was needed after
+  all.** T5.3d had to measure ten drawings off a pixel character sheet;
+  the flora needed no such thing, because pegging to two friends makes the
+  two numbers a derivation instead of a measurement. `floraCanon.test.js`
+  re-derives them from `friendCanon.js` and the two friends' own drawings
+  on every run, so if the cast is ever redrawn the suite says so rather
+  than the flora drifting quietly.
 
 ## T6.13 build notes — one keyed catalogue for every interface word (2026-08-16)
 

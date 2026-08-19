@@ -165,12 +165,21 @@ tracker. Everything after this is delight, informed by real use.
                   one of the four colours (`src/ui/floraFills.js`); the
                   hair generator learned to take a tint to do it. On the
                   workbench, awaiting her eye.
-            - [ ] **The four silhouettes** — a later session, on her call:
-                  the fills are being settled first, on squares.
-            - [ ] **The sizing sheet** — two sizes per species plus the
-                  landmark super-size need a canon of ratios like the
-                  friends' (T5.3d). Kimia does not have the sheet yet
-                  (2026-08-19), so no flora size is set anywhere.
+            - [x] **The four silhouettes** — flora 1, 2, 3 and 6 of the
+                  eight she drew in July, her traces kept verbatim in
+                  `src/ui/floraSilhouettes.js` under her own numbering.
+                  Unnamed until T6.1.
+            - [x] **The sizing sheet** — no sheet was needed in the end:
+                  she pegged the two collectible classes to two FRIENDS
+                  instead (small = as tall as a zala, large = as tall as a
+                  chitu), so `src/ui/floraCanon.js` derives them in the
+                  friends' own scale and the two families are true to each
+                  other by construction. Standing on the workbench beside
+                  those two friends, awaiting her eye.
+            - [ ] **The landmark super-size** — the third size class,
+                  still unset (2026-08-19, her call to settle the
+                  collectibles first). It belongs with the Map work, and
+                  no screen may type one in meanwhile.
 
 ## M6 — Hardening & content (ongoing)
 

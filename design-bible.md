@@ -226,13 +226,39 @@ different sizes and different fills, and the arithmetic is exact.
   differ from one another — fill is the obvious answer but has not been
   decided._
 
-**Size is a canon, not a per-drawing choice.** Two sizes for the
-collectibles and a super-size for the landmarks means the flora need the
-same treatment the friends got in T5.3d: one sizing sheet from Kimia,
-read into unitless ratios that hold everywhere and always. She does not
-have that sheet yet (2026-08-19), so flora sizes are unset — and no
-screen may type one in by hand in the meantime. See §9c's canon rule; it
-governs any family, not only friends.
+**THE FOUR SILHOUETTES ARE CHOSEN (Kimia, 2026-08-19, T5.3g).** They are
+flora **1, 2, 3 and 6** of the eight she drew and traced in July — her
+own numbering is kept, so the trail back to the drawings never breaks.
+Each is a single Inkscape path, held verbatim in
+`src/ui/floraSilhouettes.js`. They are not NAMED yet; that is T6.1, and
+the names come from her.
+
+**Size is a canon, not a per-drawing choice, and it is SET for the two
+collectible classes** (Kimia, 2026-08-19, `src/ui/floraCanon.js`):
+
+- **A flora's size is its HEIGHT** — not its width and not its bulk. How
+  tall it stands next to you is what size means for a plant.
+- **All four species share the two classes.** A species is not big or
+  small; a flora is. The shapes differ, the sizes do not.
+- **Small stands as tall as a ZALA. Large stands as tall as a CHITU**,
+  the biggest friend — so the large class reads 37% taller than the
+  small. She first named the rassatt for the large class; measured by
+  height the rassatt is 2.6% SHORTER than the zala (it is wide and low),
+  which would have made two classes the same size, so on seeing the cast's
+  heights she re-pegged it to the chitu.
+- **The numbers live in the FRIENDS' scale**, not a private flora one:
+  both files count in the same unitless units, whose 1 is the largest
+  friend's width. That is the whole point — flora, friends and one day
+  objects share the Abode, so they must be true to each other and not
+  merely each true to their own family. When the objects are drawn they
+  join this same scale rather than starting a third.
+- Note which measurement each family's number IS: a friend's canon number
+  is its WIDTH (its drawing gives the height), a flora's is its HEIGHT
+  (its drawing gives the width). Neither is ever stretched.
+
+**The landmark super-size is still unset** (2026-08-19) — deliberately, as
+the third class belongs with the Map work. No screen may type one in
+meanwhile. See §9c's canon rule; it governs any family, not only friends.
 
 **The four colours (Kimia, 2026-08-19, T5.3g).** Rich and bioluminescent,
 in `src/ui/floraColours.js`: **emerald · leaf · sky · azure**. Note what

@@ -5,9 +5,9 @@
 // The page is a WAITING ROOM (Kimia, 2026-08-17): a shelf stands only
 // while its asset still has a question open, and leaves once she has
 // judged it. So these tests cover exactly what is still waiting — the
-// texture library, the abode sky and the flora fills — and the last
-// test guards the emptying itself, by failing if a settled family creeps
-// back on.
+// texture library, the abode sky, the flora sizes and the flora fills —
+// and the last test guards the emptying itself, by failing if a settled
+// family creeps back on.
 
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -15,6 +15,8 @@ import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
 import { ABODE_PALETTES } from './sky.jsx'
 import { FLORA_FILLS } from './floraFills.js'
+import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
+import { FLORA_SIZE_CLASSES, floraHeight, floraWidth } from './floraCanon.js'
 
 afterEach(cleanup)
 
@@ -55,6 +57,58 @@ describe('DesignPage workbench', () => {
       ).toBe('svg')
     }
     expect(labels).toHaveLength(4)
+  })
+
+  it('stands every silhouette at both sizes, with a ruler friend each', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    const scene = screen.getByRole('img', { name: 'flora sizes' })
+    // Four silhouettes × two size classes, plus the two friends the classes
+    // are pegged to — ten figures, and a missing one means a flora nobody
+    // can judge.
+    const figures = scene.querySelectorAll('svg[role="img"]')
+    expect(figures).toHaveLength(FLORA_SILHOUETTES.length * 2 + 2)
+    const labels = [...figures].map((f) => f.getAttribute('aria-label'))
+    expect(labels).toContain('zala — the ruler')
+    expect(labels).toContain('chitu — the ruler')
+  })
+
+  it('draws every flora in the scene at its canon size, never a typed-in one', () => {
+    render(<DesignPage onBack={vi.fn()} />)
+    // The scene is drawn in canon units (base 1), so each figure's box must
+    // be exactly what floraCanon.js says — this is the guard that the
+    // workbench cannot drift away from the canon it is illustrating.
+    for (const sizeClass of FLORA_SIZE_CLASSES) {
+      for (const silhouette of FLORA_SILHOUETTES) {
+        const figure = screen.getByRole('img', {
+          name: `${sizeClass} ${silhouette.label}`,
+        })
+        expect(Number(figure.getAttribute('height'))).toBeCloseTo(
+          floraHeight(sizeClass, 1),
+          6,
+        )
+        expect(Number(figure.getAttribute('width'))).toBeCloseTo(
+          floraWidth(sizeClass, silhouette, 1),
+          6,
+        )
+      }
+    }
+  })
+
+  it('stands the whole scene on shared ground lines', () => {
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    // Every figure's foot must land on one of the drawn grounds: sizes can
+    // only be compared by eye if the things being compared are standing on
+    // the same floor, the way they would in the Abode.
+    const scene = container.querySelector('.flora-size-scene')
+    const grounds = [...scene.querySelectorAll(':scope > rect')].map((r) =>
+      Number(r.getAttribute('y')),
+    )
+    expect(grounds.length).toBeGreaterThan(0)
+    for (const figure of scene.querySelectorAll('svg[role="img"]')) {
+      const foot =
+        Number(figure.getAttribute('y')) + Number(figure.getAttribute('height'))
+      expect(grounds.some((g) => Math.abs(g - foot) < 1e-9)).toBe(true)
+    }
   })
 
   it('shows all six flora fills and nothing else', () => {
@@ -110,6 +164,7 @@ describe('DesignPage workbench', () => {
       [
         ...families.map((f) => `textures — ${f}`),
         'abode sky',
+        'flora sizes',
         'flora fills',
       ].sort(),
     )
