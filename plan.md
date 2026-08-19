@@ -156,18 +156,21 @@ tracker. Everything after this is delight, informed by real use.
             restarted 2026-08-19 and re-scoped by her calls that day —
             there are **four** flora silhouettes, not 64, and the 64 flora
             are those four in two sizes wearing six fills. design-bible
-            §9a)_
+            §9a. **The ORDINARY flora closed 2026-08-19** — shapes,
+            colours, fills, sizes and the drawing recipe all settled and
+            approved, and the flora, flora-fill and hair shelves left the
+            workbench together. What remains under this task is the
+            landmark class.)_
             - [x] **The four colours** — emerald, leaf, sky and azure,
                   picked by eye off the workbench from twelve candidates
                   (`src/ui/floraColours.js`).
             - [x] **The six fills** — hair textures only, all four modes
                   with curly coat and dense underfur doubled, each worn in
                   one of the four colours (`src/ui/floraFills.js`); the
-                  hair generator learned to take a tint to do it. Now worn
-                  by the real shapes on the workbench (4 × 6 = 24 of the
-                  48 collectibles), each cookie-cut from the middle of a
-                  dense hair field so no shape wears a thin underside.
-                  Awaiting her eye.
+                  hair generator learned to take a tint to do it, and
+                  `denseHairField()` cookie-cuts each shape from the middle
+                  of a big dense field so none wears a thin underside.
+                  **Approved 2026-08-19** on all four shapes.
             - [x] **The four silhouettes** — flora 1, 2, 3 and 6 of the
                   eight she drew in July, her traces kept verbatim in
                   `src/ui/floraSilhouettes.js` under her own numbering.
@@ -180,10 +183,13 @@ tracker. Everything after this is delight, informed by real use.
                   flora holds a PLACE in the whole sizing table, not one
                   friend's height. **Locked 2026-08-19**, and the
                   comparison shelf came down with them.
-            - [ ] **The landmark super-size** — the third size class,
-                  still unset (2026-08-19, her call to settle the
-                  collectibles first). It belongs with the Map work, and
-                  no screen may type one in meanwhile.
+            - [ ] **The landmark class** — the big flora: the third size
+                  class, still unset (2026-08-19, her call to settle the
+                  collectibles first), plus what makes the four versions
+                  of a landmark species differ (design-bible §9a leaves it
+                  open), the Map marker and the keepsake cutting. Kimia
+                  opens this in its own session. No screen may type a
+                  landmark size in meanwhile.
 
 ## M6 — Hardening & content (ongoing)
 

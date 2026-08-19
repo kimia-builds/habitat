@@ -190,7 +190,11 @@ mineral · weathered rock
 **tinted to its wearer's body colour**, not a fixed green — a friend's
 sponge/hair/etc. takes that friend's own colour (§3, §9c). In code the
 tint is a parameter (e.g. `<SpongeFilter light=…/>`); the library's
-default green instances are only the workbench swatches.
+default green instances are only the workbench swatches. The four HAIR
+modes have left that workbench (2026-08-19) — they were there to be judged
+as the flora's surface and were — but they remain fully part of the
+library, and `denseHairField()` beside them is how a shape is filled with
+hair (§9a).
 
 ### 9. Living assets
 

@@ -17,52 +17,40 @@
 // pilot, the individuals' colour shelves, the night sky, the rolling
 // planet, the drop arrival and the cameo firework — every one of them
 // either already plays in the game where it can be watched for real,
-// or has had its answer given. What that leaves is the two families
-// that have still never been anywhere but here.
+// or has had its answer given.
+//
+// Cleared out again on 2026-08-19, when Kimia closed the flora design:
+// the four hair textures, the six flora fills and the dressed flora
+// themselves all came down together. The hair went with them because it
+// existed here to be judged as the flora's surface and has now been
+// judged as exactly that — it is still in the library (textures.jsx,
+// design-bible §8) and still what every flora is made of; it simply has
+// no question left standing over it. The flora's own record lives in
+// floraSilhouettes.js, floraColours.js, floraFills.js and floraCanon.js,
+// which outlive this page, and the drawing recipe is written up in
+// history.md for the task that puts flora on the real screens.
 //
 // TEXTURES (T5.3, 2026-07-24) — the shared surface vocabulary
-// (design-bible §8), drawn at swatch size so the grain reads: the seven
-// filter surfaces (moss/bark glow green, pores/sponge glow green, the
-// three rock surfaces NON-glowing per §3/§7) and the four procedural
-// hair modes, grouped by §8 family. They dress no real asset yet.
+// (design-bible §8), drawn at swatch size so the grain reads. What
+// stands now is the seven FILTER surfaces (moss/bark glow green,
+// pores/sponge glow green, the three rock surfaces NON-glowing per
+// §3/§7), grouped by §8 family. They dress no real asset yet, which is
+// the question still open on them.
 //
 // ABODE SKY (T5.3, design-bible §11a) — the static sky in all four
 // palettes, so its one fixed composition can be compared colour to
 // colour. It is still workbench-only; the real Abode screen has not
 // been given a sky yet.
-//
-// FLORA (T5.3g, 2026-08-19) — the four silhouettes Kimia chose, at their
-// large canon size, wearing all six fills. The sizes themselves are
-// SETTLED and this shelf no longer shows them being judged: it stood for
-// one session with both classes and two ruler friends beside them, she
-// halved the small class on sight and locked both, and the comparison
-// came down the same day (floraCanon.js). What is still open is the
-// fills on the real shapes, which is what stands here now.
-//
-// FLORA FILLS (T5.3g, 2026-08-19) — the open question of the flora pass.
-// The four colours were chosen off this shelf earlier today and their
-// swatches have gone; what stands now is the six FILLS those colours make
-// with the hair textures (floraFills.js). Squares, not silhouettes: the
-// four species shapes are a later session, and Kimia's call was to settle
-// the surface first on a shape that is asking nothing. The hair is
-// clipped INSIDE each square — her rule that the hair forms the fill and
-// never fringes out past the outline.
 
-import {
-  TEXTURES,
-  TextureDefs,
-  hairField,
-  denseHairField,
-  pumicePits,
-} from './textures.jsx'
+import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
 import { AbodeSky, ABODE_PALETTES } from './sky.jsx'
-import { FLORA_FILLS } from './floraFills.js'
-import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
-import { floraHeight, floraWidth } from './floraCanon.js'
 
-// The §8 texture families, in the order the design bible lists them, so
-// the workbench reads top-to-bottom like the catalogue.
-const TEXTURE_FAMILIES = ['plant-like', 'fungal', 'rock', 'hair']
+// The §8 texture families still waiting to be judged, in the order the
+// design bible lists them, so the workbench reads like the catalogue.
+// HAIR is deliberately not here (2026-08-19): it was on the workbench to be
+// judged as the flora's surface, Kimia judged it there, and the shelf left
+// with the flora. The textures themselves are untouched in the library.
+const TEXTURE_FAMILIES = ['plant-like', 'fungal', 'rock']
 
 // One swatch is drawn at this many user units square. Big enough that a
 // noise grain or a coil of hair reads on the dark page, small enough to
@@ -75,6 +63,9 @@ const SWATCH = 110
 // and the pores/sponge holes fall back to this same dark.
 const SWATCH_GROUND = '#0b0f14'
 
+// One texture swatch. Every surface left on this page is a FILTER surface —
+// the procedural hair went with the flora (see the header) — so a swatch is a
+// dark tile wearing that filter, plus pumice's own vesicle holes.
 function TextureSwatch({ tex }) {
   const clipId = `swatch-clip-${tex.id}`
   return (
@@ -90,191 +81,28 @@ function TextureSwatch({ tex }) {
             <rect width={SWATCH} height={SWATCH} rx="12" />
           </clipPath>
         </defs>
-        <rect width={SWATCH} height={SWATCH} rx="12" fill={SWATCH_GROUND} />
-        {tex.kind === 'procedural' ? (
-          // The hair field draws its own hundreds of strands; clip them
-          // to the rounded swatch. The mode is the id after "hair-".
+        <rect
+          width={SWATCH}
+          height={SWATCH}
+          rx="12"
+          fill={SWATCH_GROUND}
+          filter={`url(#${tex.id})`}
+        />
+        {/* Pumice is filter grain + its vesicle holes (design-bible §8). */}
+        {tex.id === 'tex-pumice' && (
           <g clipPath={`url(#${clipId})`}>
-            {hairField({
-              mode: tex.id.replace('hair-', ''),
+            {pumicePits({
               x: 0,
               y: 0,
               w: SWATCH,
               h: SWATCH,
-              seed: 42,
+              seed: 3,
+              count: 60,
             })}
           </g>
-        ) : (
-          <>
-            <rect
-              width={SWATCH}
-              height={SWATCH}
-              rx="12"
-              fill={SWATCH_GROUND}
-              filter={`url(#${tex.id})`}
-            />
-            {/* Pumice is filter grain + its vesicle holes (design-bible §8). */}
-            {tex.id === 'tex-pumice' && (
-              <g clipPath={`url(#${clipId})`}>
-                {pumicePits({
-                  x: 0,
-                  y: 0,
-                  w: SWATCH,
-                  h: SWATCH,
-                  seed: 3,
-                  count: 60,
-                })}
-              </g>
-            )}
-          </>
         )}
       </svg>
       <span className="texture-swatch-name">{tex.name}</span>
-    </li>
-  )
-}
-
-// One flora fill: a square of hair, grown in that fill's colour and
-// clipped to the square so no strand escapes it. The square throws a glow
-// of the same colour, because a living thing's light IS its body colour
-// (design-bible §3) — glow spread --glow-pop, the top of the everyday
-// scale, since §7 gives the organics the top and which top step "full"
-// finally means is an eyeball call on real art.
-//
-// Behind the strands sits a dark ground rather than the colour itself: a
-// solid backing would make the hair a texture ON a colour, when the point
-// is that the hair IS the fill.
-function FloraFillSwatch({ fill }) {
-  const clipId = `flora-fill-clip-${fill.id}`
-  return (
-    <li className="flora-fill-swatch">
-      <svg
-        className="texture-swatch-art"
-        viewBox={`0 0 ${SWATCH} ${SWATCH}`}
-        role="img"
-        aria-label={fill.id}
-        style={{ boxShadow: `0 0 var(--glow-pop) ${fill.colour.hex}` }}
-      >
-        <defs>
-          <clipPath id={clipId}>
-            <rect width={SWATCH} height={SWATCH} rx="12" />
-          </clipPath>
-        </defs>
-        <rect width={SWATCH} height={SWATCH} rx="12" fill={SWATCH_GROUND} />
-        <g clipPath={`url(#${clipId})`}>
-          {hairField({
-            mode: fill.mode,
-            x: 0,
-            y: 0,
-            w: SWATCH,
-            h: SWATCH,
-            seed: 42,
-            colour: fill.colour.hex,
-          })}
-        </g>
-      </svg>
-      <span className="texture-swatch-name">{fill.id}</span>
-    </li>
-  )
-}
-
-/* ── THE FLORA, DRESSED (T5.3g, 2026-08-19) ───────────────────────────────
- * The four silhouettes at their LARGE canon size, each wearing all six fills:
- * 4 × 6 = 24 of the 48 collectible flora, the other 24 being these same
- * drawings at the small size.
- *
- * The recipe, from design-bible §9a and §3:
- *   • the shape is Kimia's trace, never redrawn;
- *   • the hair FORMS the fill and is clipped to the outline, so no strand
- *     fringes out past it;
- *   • a dark ground sits behind the strands, because a solid backing would
- *     make the hair a texture ON a colour when the point is that the hair IS
- *     the fill (the same reasoning as the fill squares above);
- *   • the glow is the silhouette itself, blurred and painted the fill's own
- *     colour — a living thing's light IS its body colour, so it is drawn in
- *     SVG behind the shape rather than as a box-shadow around a rectangle.
- *
- * Nothing here types a size in: the box comes from floraCanon.js at one shelf
- * base, so the whole shelf follows the canon by construction.
- */
-
-// How much room the largest FRIEND would get on this shelf. Every flora size
-// is a fraction of it (floraCanon.js), so this single number sets the shelf.
-const FLORA_SHELF_BASE_REM = 11.5
-
-// The hair modes were tuned on a 110-unit swatch, and strand length is fixed
-// in drawing units rather than relative to the box. So the hair is generated
-// in its own space that is always 110 units TALL, then scaled onto the
-// drawing — which makes a strand the same size on screen on all four species,
-// however big each one's own trace canvas happens to be.
-const HAIR_UNIT = 110
-
-// The blur that makes the aura, as a fraction of the drawing's width — the
-// same fraction the friends use (friend04.jsx: 6.6 on a 391-wide canvas).
-const GLOW_FRACTION = 0.017
-
-// The hair for one shape. The field is asked for over the drawing's whole
-// canvas and comes back dense right to the edges — denseHairField grows it
-// bigger than that and repeats it, so the shape is cut out of the middle of a
-// dense field rather than out of one with a thin underside (its own comment
-// has the why). All that is left to do here is put it in the drawing's space:
-// the hair is generated in a space that is always HAIR_UNIT tall and then
-// scaled, so a strand is the same size on screen on all four species, however
-// big each one's own trace canvas happens to be.
-function shapeHair(silhouette, fill) {
-  const aspect = silhouette.viewBox.w / silhouette.viewBox.h
-  return (
-    <g transform={`scale(${silhouette.viewBox.h / HAIR_UNIT})`}>
-      {denseHairField({
-        mode: fill.mode,
-        x: 0,
-        y: 0,
-        w: HAIR_UNIT * aspect,
-        h: HAIR_UNIT,
-        seed: 42,
-        colour: fill.colour.hex,
-      })}
-    </g>
-  )
-}
-
-// One dressed flora: shape × fill, at the large canon size.
-function FloraFigure({ silhouette, fill }) {
-  const id = `flora-${silhouette.key}-${fill.id}`
-  const { viewBox, d, transform } = silhouette
-  const shape = <path d={d} transform={transform ?? undefined} />
-  return (
-    <li className="flora-figure">
-      <svg
-        viewBox={`0 0 ${viewBox.w} ${viewBox.h}`}
-        width={`${floraWidth('large', silhouette, FLORA_SHELF_BASE_REM)}rem`}
-        height={`${floraHeight('large', FLORA_SHELF_BASE_REM)}rem`}
-        role="img"
-        aria-label={`${silhouette.label} — ${fill.id}`}
-      >
-        <defs>
-          <clipPath id={`${id}-clip`}>{shape}</clipPath>
-          <filter
-            id={`${id}-glow`}
-            x="-40%"
-            y="-40%"
-            width="180%"
-            height="180%"
-          >
-            <feGaussianBlur stdDeviation={viewBox.w * GLOW_FRACTION} />
-          </filter>
-        </defs>
-        <path
-          d={d}
-          transform={transform ?? undefined}
-          fill={fill.colour.hex}
-          opacity="0.8"
-          filter={`url(#${id}-glow)`}
-        />
-        <path d={d} transform={transform ?? undefined} fill={SWATCH_GROUND} />
-        <g clipPath={`url(#${id}-clip)`}>{shapeHair(silhouette, fill)}</g>
-      </svg>
-      <span className="texture-swatch-name">{fill.id}</span>
     </li>
   )
 }
@@ -315,35 +143,6 @@ function DesignPage({ onBack }) {
               <AbodeSky palette={palette} />
               <span className="sky-swatch-name">{palette}</span>
             </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* The dressed flora (T5.3g, design-bible §9a) — the four shapes at
-          their large canon size wearing all six fills, which is half the
-          collectible catalogue and the last open question of the flora pass. */}
-      <section className="design-family" aria-label="flora">
-        <h3>flora</h3>
-        <p className="design-note">
-          the four shapes at their large size, each in all six fills. the small
-          size is the same drawings at 2.7 times less height.
-        </p>
-        {FLORA_SILHOUETTES.map((silhouette) => (
-          <ul key={silhouette.key} className="flora-figures">
-            {FLORA_FILLS.map((fill) => (
-              <FloraFigure key={fill.id} silhouette={silhouette} fill={fill} />
-            ))}
-          </ul>
-        ))}
-      </section>
-
-      {/* The six flora fills (T5.3g, design-bible §9a) — hair textures in
-          the four settled colours, waiting on Kimia's eye. */}
-      <section className="design-family" aria-label="flora fills">
-        <h3>flora fills</h3>
-        <ul className="texture-swatches">
-          {FLORA_FILLS.map((fill) => (
-            <FloraFillSwatch key={fill.id} fill={fill} />
           ))}
         </ul>
       </section>

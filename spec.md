@@ -486,7 +486,9 @@ region discovery expands what the Market can offer.
   stands only while a question about that asset is still open, and comes
   down once she has answered it — every settled asset left on the page is
   another screenful between her and the one she came to look at. As of
-  2026-08-17 what waits there is the texture library and the abode sky.
+  2026-08-19 what waits there is the seven FILTER surfaces of the texture
+  library and the abode sky — the hair textures left with the flora they
+  were being judged for, once the ordinary flora design closed.
 
 ### The date display (T4.5)
 

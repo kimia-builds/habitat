@@ -2673,6 +2673,40 @@ sizes, only "price correlates with size". So flora and friends are one
 scale today, and both `floraCanon.js` and §9a say the objects join this
 same scale when they are drawn rather than starting a third.
 
+## T5.3g build notes (part 5) — the workbench cleared (2026-08-19)
+
+**The fifth and last pass of the day.** With the fills approved, three
+shelves came down: the dressed flora, the flora-fill squares and the four
+hair swatches. `DesignPage.jsx` went from 380 lines to 157.
+
+**Why the hair went too**, since it is the one that looks like an
+overreach: the workbench is a waiting room, and the hair was in it to be
+judged as the flora's surface. That question is now answered. The
+textures are untouched in the library and every flora is still made of
+them; only the shelf left. `TEXTURE_FAMILIES` on the page is now the
+three FILTER families, and the page's own test asserts no hair swatch can
+reappear — a settled asset creeping back into the waiting room is exactly
+what that test is for.
+
+**What came out with them.** `TextureSwatch`'s procedural branch (the hair
+was the only procedural texture on the page), the `hairField` and
+`denseHairField` imports, every flora import, and four CSS rules. Also the
+shared-render trick from part 4: it existed because 41,000 paths a dozen
+times over blew the test timeout, and with the flora gone the page renders
+in milliseconds again, so the file is back to a render per test — the
+project's normal idiom. That test file went from 39 seconds to 1.4.
+
+**The flora's record outlives the page**, which is the point of having
+built it this way: `floraSilhouettes.js` (her four traces),
+`floraColours.js`, `floraFills.js` and `floraCanon.js` are all permanent,
+and `denseHairField()` sits in `textures.jsx` where the task that puts
+flora on the real screens will need it. Nothing about the flora lived on
+the workbench except the questions.
+
+**What is still waiting there:** the seven filter surfaces, which dress no
+real asset yet, and the abode sky, which has still never been put on the
+real Abode screen.
+
 ## T5.3g build notes (part 4) — a flora is cut from the middle (2026-08-19)
 
 **Kimia diagnosed this one, and the diagnosis was the fix.** She looked
@@ -3408,6 +3442,20 @@ goes anywhere the game draws many flora at once.
   measures the bottom fifth of every mode against its middle fifth, which
   went from 0.32 to about 1.0. The dark ground behind the strands is
   unchanged and was never the problem.
+- 2026-08-19 (Kimia's call, T5.3g): **the ORDINARY flora are closed.**
+  The six fills were approved on all four shapes and the design of the
+  collectible flora is finished: four silhouettes, four colours, six
+  fills, two sizes and the drawing recipe. What is left under T5.3g is
+  the LANDMARK class, which she opens in its own session.
+- 2026-08-19 (Kimia's call, T5.3g): **the flora, flora-fill AND HAIR
+  shelves left the workbench together.** The hair went with them by the
+  waiting-room rule and not as a casualty: it was on the page to be judged
+  as the flora's surface, and it has now been judged as exactly that. The
+  textures themselves are untouched in `textures.jsx` and design-bible §8
+  — every flora is still made of them — they simply have no question left
+  standing over them. What remains on the workbench is the seven filter
+  surfaces (which still dress no real asset) and the abode sky (which has
+  still never reached the real Abode screen).
 - 2026-08-19 (Kimia's call, T5.3g): **fixed-size hair is settled.** The
   strands being the same size on screen on every species — rather than
   scaling with each trace's own canvas — was shown to her and approved as
