@@ -419,36 +419,72 @@ tracker. Everything after this is delight, informed by real use.
       fixed spec. Reads history only; the no-punishment rule binds
       here as hard as anywhere (a sparse month is neutral data, never
       a red patch).
-- [ ] **T6.11 The charm lens remembers itself** (Kimia's call
-      2026-08-12) — today the lens is plain screen state: choose two
-      charms, reload, and the whole list is back (spec §5b calls it "a
-      temporary lens that resets each visit"). It should instead
-      survive a refresh and carry across days, so the charms Kimia
-      lives in are the ones Habitat opens on.
-      **Its persistence tier is its own, and narrower than everything
-      else Habitat keeps:** the lens describes THIS browser, not the
-      record. So it lives under its own localStorage key, OUTSIDE the
-      versioned envelope — never written into a backup file, never
-      restored by an import, and never carried to another device if
-      Habitat ever reaches a phone. Kimia asked for "the same as the
-      bookshelf and abode arrangements"; those sit INSIDE the envelope
-      and so do ride along in backups, which means this task
-      deliberately does not copy them (decision logged 2026-08-12).
-      **Both new-game doors clear it** — total refresh and keep-habit-
-      data alike — replacing today's documented exception, where only
-      a total refresh does.
-      Still exactly one storage module: `src/storage/` gains the
-      second key and components go on touching localStorage never
-      (CLAUDE.md). A missing or junk value must read as "no lens",
-      never as a crash — nothing here is worth losing a launch over.
-      Two knock-ons to settle with Kimia before building, because both
-      now happen on days she never touched the filter: dragging a
-      habit to re-order is disabled while a lens is on (design-notes
-      §12a), so Habitat can open in a state where tiles will not move;
-      and a lens showing exactly one charm makes a new habit's draft
-      open already wearing it (spec §5b). Both are correct as built —
-      the question is only whether either wants softening. Fold the
-      new rule into spec §5b when it lands.
+- [x] **T6.11 The charm lens remembers itself** _(retired unbuilt
+      2026-08-20 — absorbed whole into T6.23e, which saves the charm
+      lens alongside the order and the mutings. Every persistence
+      decision it had already made still stands and moves across with
+      it. Original task text in history.md.)_
+
+
+- [ ] **T6.23 The lenses — ways of looking at the habit list** (Kimia's
+      call 2026-08-20; spec §5b "The lenses", design-notes §11f). A long
+      list can only be looked at two ways today: all of it, or one charm
+      combination that forgets itself the moment you reload. Five lenses
+      join the charms — **default · today · prioritise · tasks · un-hide
+      all** — plus a **padlock** and an **eye** on every tile. They are
+      their own control family, not pebbles (§11e), and they belong to
+      the home screen alone. **One sub-task per session, in this
+      order** — each one is visible on screen the day it lands, and the
+      last one saves what the others make. Kimia eyeballs every look
+      before it settles (the T5.2c rule): smallest visible piece first,
+      never a finished system.
+  - [ ] **T6.23a Muting — the eye on every tile.** A third icon beside
+        edit and archive: closed eye dims the tile and drifts it softly
+        to the bottom; open eye leaves it exactly where it stands.
+        Muting sinks, un-muting moves nothing. A muted tile is fully
+        tappable and can be dragged back up afterwards, still dim.
+        Resets on refresh and at the day turn, like the charm lens.
+        _Done when:_ the eye's real click is verified in the browser
+        pane (CLAUDE.md's reachability rule), tests cover sink-on-mute /
+        no-move-on-unmute and the day-turn reset, and Kimia has seen the
+        icon and the drop.
+  - [ ] **T6.23b The `today` lens.** Keep what applies today; mute to
+        the bottom what could (N-per-week, whenever, one-time tasks —
+        including an N-per-week already at its number); hide the rest.
+        Pure schedule logic, so it lands in `src/game/` as functions
+        over a habit and a day key, tested there. This is the task that
+        first makes something HIDDEN, so it also brings the general
+        no-dragging-while-anything-is-hidden rule (design-notes §12a)
+        and the **un-hide all** lens that escapes it.
+  - [ ] **T6.23c The `prioritise` lens.** A stable three-tier sort —
+        applies today · applies this week · everything else. _Done
+        when:_ a test proves two habits of the same tier keep the order
+        they were in, which is the whole point of "stable" and the thing
+        Kimia asked for by name.
+  - [ ] **T6.23d The `tasks` lens.** The four-press cycle over one-time
+        to-dos: top · bottom and muted · hidden · off. "Off" un-hides
+        and un-dims where they stand and restores no earlier position —
+        the scattered-tasks scenario in the decisions log is the test to
+        write.
+  - [ ] **T6.23e The default view, the padlock and design mode.** The
+        saved arrangement — order + charms + mutings, and only those —
+        restored by the **default** lens, by a refresh and by the new
+        day. Dragging becomes always-temporary; only design mode writes
+        an order down. Design mode: the confirm pop-up, the glowing
+        window edge, the pulsing padlock, the stripped screen, the inert
+        tiles, mute-instead-of-hide, and the two exits. Absorbs T6.11
+        whole, including its persistence tier — the charms and mutings
+        live under their own localStorage key OUTSIDE the versioned
+        envelope (never in a backup file, never restored by an import,
+        cleared by BOTH new-game doors), and a missing or junk value
+        reads as "no default", never a crash.
+        **Settle with Kimia before building:** the default ORDER cannot
+        live there, because the order already lives inside the envelope
+        as the habits array and rides along in backups. Proposal — leave
+        it exactly where it is, so a restored backup brings your order
+        back but not your charm-and-mute defaults, which describe a
+        browser rather than a record. Also to settle: a mute pointing at
+        a habit that has since been deleted must read as no mute.
 
 ## M7 — Two devices (sync) (5–6 sessions)
 

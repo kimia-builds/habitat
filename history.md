@@ -2696,6 +2696,109 @@ return 0` right after the era is worked out, so a moment before the
   the stylesheet — the one check that can actually see it. Folded into
   design-notes §8 and CLAUDE.md.
 
+- 2026-08-20: **the lenses — five ways to look at the habit list, and
+  one of them remembers** (Kimia's call, after a session of questions).
+  The charm filter was the list's only lens and it forgot itself every
+  visit, which left a long list either whole and overwhelming or
+  narrowed and unrepeatable. Five controls join it as their own family
+  (design-notes §11f): **default · today · prioritise · tasks · un-hide
+  all**, with a **padlock** beside default and an **eye** on every tile.
+  They are deliberately NOT pebbles — §11e's pebble does a thing and
+  settles, and these change or hold a view — and they live on the home
+  screen only, never the field notes or the check-in: they are about
+  arranging a list you are working through, not reading a record.
+  Planned as T6.23a–e.
+
+- 2026-08-20: **muting — the eye on every tile.** A habit can be dimmed
+  and softly dropped to the bottom of the list on demand, alongside its
+  edit and archive icons. **Muting sinks; un-muting moves nothing**
+  (Kimia's clarification): the drop is a one-time movement, not a rule
+  that muted tiles live at the bottom — so a muted tile can be dragged
+  back anywhere afterwards and stays there, still dim. A muted tile is
+  fully tappable: +1 still counts. Muting is "out of my eyeline", never
+  "disabled". It resets on refresh and at the new day, exactly like the
+  charm lens, unless it was saved into a default view.
+
+- 2026-08-20: **the three verbs act on what is already there, then let
+  go.** today, prioritise and tasks are not switches holding a view:
+  each reaches into the arrangement currently on screen, changes it,
+  and surrenders to whatever the user does next (Kimia's framing).
+  Pressing today and then prioritise narrows further rather than
+  starting over, and a manual drag survives any verb with no opinion
+  about it — prioritise never re-jigs two habits of the same tier,
+  because a daily and a daily are the same priority. The one memory any
+  of them keeps is the tasks control's place in its own four-press
+  cycle — to the top · to the bottom and muted · hidden · off — where
+  "off" un-hides and un-dims without restoring any earlier position.
+
+- 2026-08-20: **today's tiers, and prioritise's.** Today keeps what
+  applies today (daily, N-per-day, a weekday habit whose day this is —
+  including one already completed, which is the point of a day view);
+  mutes at the bottom what COULD apply today (N-per-week, whenever,
+  one-time tasks — and an N-per-week already at its number is muted like
+  any other, never hidden: being ahead is not a reason to disappear);
+  and hides everything else. Prioritise sorts into exactly three tiers,
+  stably: applies today · applies this week (N-per-week) · everything
+  else. Whenever, a weekday habit whose day this is not, and one-time
+  tasks all share the third tier — a task in Habitat deliberately has no
+  deadline, because this is a habit app and not a to-do list (Kimia,
+  narrowing an earlier four-tier draft to three).
+
+- 2026-08-20: **the order must always be exactly knowable, so nothing
+  re-orders while anything is hidden.** The existing rule (no dragging
+  while a charm filter is on, §12a) turns out to be the general one, and
+  it binds inside design mode too: dropping a tile into a list with gaps
+  in it would force Habitat to GUESS where it belongs in the full order,
+  and Habitat never guesses about the record of a deliberate choice.
+  Hence **un-hide all**: it un-hides everything and clears the charms,
+  and deliberately leaves mutings alone — a muted tile is visible, so it
+  never stopped the order being knowable.
+
+- 2026-08-20: **a permanent re-order is a ceremony; every other
+  re-order is throwaway.** Dragging is ALWAYS temporary, from the first
+  day, and only design mode writes an order down. Kimia chose this over
+  the alternative where dragging persists until the first default is
+  saved and then stops — a rule that changes under a user is worse than
+  one that is strict from the start. So a new player's default view is
+  decided FOR them: the order habits were created in, no charms, nothing
+  muted, which is exactly what the app does today. Two routes to a new
+  permanent order — unlock, redesign, save; or redesign FIRST and then
+  unlock and save, since unlocking keeps whatever is already on screen.
+  The second route is the point: an arrangement fiddled into shape over
+  a long evening is locked in by a quick unlock-then-lock before the day
+  ends. Her reason for the strictness: "temporary reorders feel fun to
+  do… they should feel throwaway and flexible, without fear of
+  commitment."
+
+- 2026-08-20: **design mode is a visible, consequential place.**
+  Unlocking asks first — "are you sure you want to re-design your
+  default view? any previous default view choices will be lost", her
+  words, living in ui.js — answered by **design new default** or
+  **cancel**. While it lasts, the window's edges glow in colour and the
+  padlock pulses; only the header, the lenses, the charms and the
+  baguettes stay on screen, and the rail, the archived drawer, the
+  footer buttons, the arrival shelf and any cameo go. **Every tile is
+  inert**: +1, -1, the to-do tick, edit and archive all dim, leaving
+  only the eye and the drag — a stray tap while arranging would write a
+  real completion into the record. Two exits, **save new default view**
+  (or shutting the padlock) and **exit design mode without changing**;
+  a refresh is a third and cancels the session, since nothing is saved
+  until the lock shuts.
+
+- 2026-08-20: **a default view cannot hide anything, so design mode
+  mutes instead of hiding.** Hidden is not one of the three things a
+  default holds (order, charms, mutings) and cannot be — a saved view
+  you cannot find your habits in is a trap. So inside design mode the
+  verbs never hide: a habit today would have hidden is MUTED instead,
+  and anything already hidden that way when design mode opens comes back
+  muted. Kimia's reasoning: there was a reason it was out of view, so
+  muted is the happy compromise — visible, but not in your face.
+  Charm-hiding is the one exception that stays, because charms ARE
+  saved. One accepted consequence: inside design mode the tasks
+  control's third press (hidden) looks identical to its second (bottom
+  and muted); the cycle still advances underneath, so the fourth press
+  un-mutes as usual.
+
 ## T6.22 build notes — the visit shows that it can be pressed (2026-08-20)
 
 `@keyframes cameo-breathe` on `.cameo-openable .cameo-blob path`,
@@ -4284,6 +4387,38 @@ item from the v0.2 draft — decisions taken with Kimia on 2026-07-19
 and recorded in spec.md's decisions log._
 
 ## Completed plan tasks — full build notes (formerly in plan.md)
+
+- [x] **T6.11 The charm lens remembers itself** _(retired unbuilt
+      2026-08-20 — absorbed into T6.23e; original text below.)_
+      Written 2026-08-12: today the lens is plain screen state: choose two
+      charms, reload, and the whole list is back (spec §5b calls it "a
+      temporary lens that resets each visit"). It should instead
+      survive a refresh and carry across days, so the charms Kimia
+      lives in are the ones Habitat opens on.
+      **Its persistence tier is its own, and narrower than everything
+      else Habitat keeps:** the lens describes THIS browser, not the
+      record. So it lives under its own localStorage key, OUTSIDE the
+      versioned envelope — never written into a backup file, never
+      restored by an import, and never carried to another device if
+      Habitat ever reaches a phone. Kimia asked for "the same as the
+      bookshelf and abode arrangements"; those sit INSIDE the envelope
+      and so do ride along in backups, which means this task
+      deliberately does not copy them (decision logged 2026-08-12).
+      **Both new-game doors clear it** — total refresh and keep-habit-
+      data alike — replacing today's documented exception, where only
+      a total refresh does.
+      Still exactly one storage module: `src/storage/` gains the
+      second key and components go on touching localStorage never
+      (CLAUDE.md). A missing or junk value must read as "no lens",
+      never as a crash — nothing here is worth losing a launch over.
+      Two knock-ons to settle with Kimia before building, because both
+      now happen on days she never touched the filter: dragging a
+      habit to re-order is disabled while a lens is on (design-notes
+      §12a), so Habitat can open in a state where tiles will not move;
+      and a lens showing exactly one charm makes a new habit's draft
+      open already wearing it (spec §5b). Both are correct as built —
+      the question is only whether either wants softening. Fold the
+      new rule into spec §5b when it lands.
 
 - [x] **T0.1 Repo + scaffold + first deploy.** _(done 2026-07-12)_
       Create public GitHub repo `habitat`. Scaffold Vite + React + Vitest +

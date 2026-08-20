@@ -1122,6 +1122,7 @@ is one number in `src/tokens.css`.
 | The draft tile | save, cancel |
 | Foot of the home screen | export backup, import backup, start a new game, view historical data |
 | The new-game pop-up | total refresh, keep habit data, not now, yes, no take me back |
+| Design mode (T6.23, planned) | design new default, cancel, save new default view, exit design mode without changing |
 | A held drop, and the abode's waiting-to-decide list | gather, leave it, read now, read later |
 | Field notes | ‹ earlier, later › |
 | Market | buy |
@@ -1142,6 +1143,11 @@ app:
 - **Switches.** The graph zooms (day / week / 4 weeks) and party mode
   hold a state; a pebble does a thing and settles. They keep their own
   pressed-state look.
+- **Lenses (T6.23, planned 2026-08-20).** default, today, prioritise,
+  tasks, un-hide all, the padlock and the tile eye — the whole of §11f.
+  Same reason as the switches, and the reason the family needed its own
+  section: a lens changes how the list is being looked at and leaves
+  nothing behind, where a pebble acts and settles.
 - **The reveal's own control.** "Onward", dismissing a first-occurrence
   reveal or a friend arrival, belongs to the one moment Habitat is
   allowed to shout (§5) and wears the reveal's neon, not the everyday
@@ -1161,6 +1167,67 @@ decision — make it a pebble, or name it in the list with its reason.
 
 ---
 
+### 11f. The lenses — Habitat's ways of LOOKING **[TO-BUILD · T6.23, planned 2026-08-20]**
+
+**A third family, named because it is not the other two** (Kimia's call
+2026-08-20). §11e settled that a **pebble** says what it does and then
+does it — it acts and settles. A **lens** does not act on the world at
+all: it changes how the habit list is being LOOKED at, and changes
+nothing about the record underneath. Ask which family a control belongs
+to by asking what it leaves behind. A pebble leaves a completion, a
+saved habit, a purchase. A lens leaves only a different-looking screen.
+
+**The roster** (home screen only — never the field notes, never the
+check-in):
+
+| Lens | What it does |
+| --- | --- |
+| the six **charms** | the original lens: show only these tags |
+| **default** | back to the saved default view |
+| the **padlock** | shut = the default is protected; open = design mode |
+| **today** | keep what applies today, mute what could, hide the rest |
+| **prioritise** | re-order into three tiers, stably |
+| **tasks** | cycle the to-dos: top · bottom and muted · hidden · off |
+| **un-hide all** | un-hide everything, clear the charms, leave mutings |
+| the **eye**, on every tile | mute this one / un-mute it |
+
+**Two of them are wordless, and that is §12a, not an exception.** The
+**eye** is furniture on a tile, and belongs with the pencil and the box
+it sits beside — same size, same dim tier, hover label only. The
+**padlock** is the same kind of thing at page level, hovering "lock
+default view" / "unlock default view". The rest say their names.
+
+**What the family must not look like.** Not a pebble — a lens holds or
+changes a state, and the pebble family's whole value is that pressing
+one is a completed act. Not a charm either: the charms are drawings
+carrying colour meaning, and a lens must not read as a seventh tag.
+Beyond that, the look is Kimia's to judge on screen, not on paper
+(§0 and the T5.2c lesson): build the smallest visible piece and show
+her.
+
+**Placement, as a starting proposal.** One line, the charms centred,
+the word lenses flowing out to their left and right so the line reads
+evenly spaced; at a narrow window they fall to a second line **under**
+the charms rather than shuffling the charms out of the middle. Kimia
+will eyeball this before it settles.
+
+**Design mode's dress.** While the padlock is open, the window's edges
+**glow in colour** and the padlock itself **pulses** — the two signs
+that the next drag is permanent. §12a's quiet does not apply here on
+purpose: this is the one everyday state in Habitat with a consequence
+that outlives the visit, and it should be impossible to be in by
+accident. Every tile goes **inert** — +1, -1, the tick, edit and
+archive all dim to the disabled tier, leaving only the eye and the drag
+alive — which is also what the glow is explaining. The colour itself,
+and how strongly it pulses, are judged live.
+
+**The four words design mode says are pebbles, not lenses** — they act
+and settle, and they belong to §11e's roster: **design new default** and
+**cancel** on the confirm pop-up, **save new default view** and **exit
+design mode without changing** on the screen itself.
+
+---
+
 ## 12. The home screen & the daily startup **[BUILT — T4.5; the startup ceremony T5.2e, 2026-08-13]**
 
 _Decided with Kimia 2026-07-20 (twelfth session). Spec §5b carries the
@@ -1171,7 +1238,10 @@ rules; this section carries the feel._
 Every action on the home screen becomes an **icon with a hover label**:
 edit (pencil), archive (box), delete forever (trash), add new habit
 (**+**), edit past days (pencil), view historical data (graph). The
-label appears on hover and nowhere else.
+label appears on hover and nowhere else. Two more join them when T6.23
+lands: **mute** (an eye that opens and closes) on every tile, beside the
+pencil and the box, and the default view's **padlock** on the lens row
+(§11f).
 
 The rule outgrew the icons on 2026-08-12: **anything that needs
 explaining explains itself on hover**, icon or not. The two grey lines
@@ -1284,6 +1354,17 @@ itself carries the hover "clear the symbol filter to re-order" (the
 filter-lock rule the old arrows had), and no tile carries a hover at any
 other time. Desktop-only (T5.1b), so a plain pointer press is the only
 input supported — no touch path.
+
+**That filter-lock is the general rule, not a charm rule (Kimia
+2026-08-20, T6.23 — planned, not built).** Nothing re-orders while
+ANYTHING is hidden, by a charm or by a lens (§11f), and the rule binds
+inside design mode too. A tile dropped into a list with gaps in it would
+make Habitat guess where it belongs in the full order, and the order is
+a record of deliberate choices — it must be exactly knowable at every
+moment. Muted tiles are the deliberate exception: they are visible, so
+they never block a drag, and a muted tile dragged back up the list stays
+where it is put. The hover message generalises with the rule, and
+**un-hide all** is the one-press way out of it.
 
 **The lifted tile floats (Kimia, 2026-08-11).** A dragged tile used to
 be welded to the cursor, which read as sharp and mechanical. Now it is
