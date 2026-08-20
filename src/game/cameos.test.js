@@ -300,17 +300,26 @@ describe('record streak (win 2)', () => {
     expect(win.streaks.map((streak) => streak.habitId)).toEqual(['h1'])
   })
 
-  it('lets a week-kind streak celebrate from its very first week', () => {
+  // A run of ONE is not a run of anything (Kimia 2026-08-20, on reading
+  // "1-week coding practice streak record!"). The week floor is two.
+  it('never announces a one-week streak', () => {
     const habit = makeHabit({ type: 'nPerWeek', n: 1 })
     const completions = [
       withFriend(done('h1', 2026, 7, 13)), // this week (Mon 2026-07-13)
     ]
-    // No floor for week streaks (Kimia 2026-08-20): one fulfilled week
-    // is already a week of work.
+    expect(cameoWin([habit], completions, SEED, NOW, CUTOFF)).toBe(null)
+  })
+
+  it('celebrates a week-kind streak from its second week', () => {
+    const habit = makeHabit({ type: 'nPerWeek', n: 1 })
+    const completions = [
+      withFriend(done('h1', 2026, 7, 6)), // week of Mon 2026-07-06
+      done('h1', 2026, 7, 13), // this week (Mon 2026-07-13)
+    ]
     const win = cameoWin([habit], completions, SEED, NOW, CUTOFF)
     expect(win.type).toBe('streakRecord')
     expect(win.unit).toBe('week')
-    expect(win.n).toBe(1)
+    expect(win.n).toBe(2)
   })
 
   it('celebrates a week-kind streak every week it sets a new best', () => {

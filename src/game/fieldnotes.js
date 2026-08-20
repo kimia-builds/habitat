@@ -80,6 +80,21 @@ export function weekNotes(habits, completions, weekStartKey, now, cutoffHour) {
   // week, late on the Monday right after it — so its Sunday counts as
   // concluded; for the current week, right now.
   const asOf = isCurrent ? now : timestampAtHour(addDays(weekEnd, 1), 23)
+  // …and "as of" has to mean it (2026-08-20). The moment was right but
+  // the EVIDENCE was not: currentStreak got the whole completions list,
+  // including everything marked after the week on show, so its walk
+  // began on the week AFTER this one and counted a run that need not
+  // reach this week at all. Four unbroken weeks browsed back read
+  // 2, 3, 4, 4 rather than 1, 2, 3, 4 — and a week genuinely MISSED
+  // reported the following week's streak instead of the blank it earned,
+  // which is how a broken run could look unbroken all the way back.
+  //
+  // A streak as of a moment cannot know what happened after it, so the
+  // walk is given exactly what had happened by then. The current week
+  // needs no trimming: nothing can be marked later than now.
+  const asOfCompletions = isCurrent
+    ? completions
+    : completions.filter((completion) => completion.dayKey <= weekEnd)
 
   const rows = []
   const tasksCompleted = []
@@ -133,7 +148,7 @@ export function weekNotes(habits, completions, weekStartKey, now, cutoffHour) {
     // An archived habit's streak is over by definition — not notable.
     const streak = habit.archived
       ? null
-      : currentStreak(habit, completions, asOf, cutoffHour)
+      : currentStreak(habit, asOfCompletions, asOf, cutoffHour)
     rows.push({
       habit,
       days,

@@ -641,7 +641,13 @@ and nothing is lost by finding that out late.
   week-counted schedule restarts its streak at the switch (§4.2), so
   weeks BEFORE such a switch fall outside the streak now running: they
   simply show no streak, the same blank a broken streak shows. The
-  grid, the marks and the graphs are unaffected.
+  grid, the marks and the graphs are unaffected. **A week's streak is
+  told on the evidence that existed by then (2026-08-20):** the walk
+  sees only what had been marked by that week's end, never what came
+  after. Without that, a finished week borrowed the following week's run
+  — four unbroken weeks read 2, 3, 4, 4 instead of 1, 2, 3, 4, and a week
+  genuinely missed reported a streak instead of the blank it earned,
+  which made a broken run look intact all the way back.
 - **The streak spotlight (2026-08-20).** Arriving here from a cameo
   opens the page on the week the record stands in — not the last
   completed week it opens on otherwise — and blacks the page out around

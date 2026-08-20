@@ -144,3 +144,57 @@ describe('shouldOpenFieldNotes (the Sunday ritual)', () => {
     expect(shouldOpenFieldNotes('2026-07-15', null)).toBe(false) // a Wednesday
   })
 })
+
+// A STREAK "AS OF" A FINISHED WEEK CANNOT SEE PAST IT (2026-08-20).
+//
+// The bug behind Kimia's report: browsing back, three weeks running all
+// said "1-week streak" — which reads like an unbroken pattern, and is
+// how a run she had actually broken looked intact. The moment was right
+// (late on the Monday after the week) but the walk was handed the WHOLE
+// completions list, so it began on the week AFTER the one on show and
+// counted a run that need not reach that week at all.
+describe('the streak told for a finished week', () => {
+  // Mondays: 2026-07-27, 08-03, 08-10, 08-17 (the current week, since
+  // "now" below is Thursday the 20th).
+  const WEEKS = ['2026-07-27', '2026-08-03', '2026-08-10', '2026-08-17']
+  const THURSDAY_20TH = at(2026, 8, 20, 12)
+  const weekly = makeHabit('w1', { type: 'nPerWeek', n: 1 })
+  const daily = makeHabit('d1', { type: 'daily' })
+
+  const streakOn = (habit, completions, week) =>
+    weekNotes([habit], completions, week, THURSDAY_20TH, CUTOFF).rows[0].streak
+
+  it('counts up as an unbroken run is browsed forward, one week at a time', () => {
+    // One mark in each of four consecutive weeks, all on the Monday.
+    const completions = [
+      doneBy('w1', 2026, 7, 27),
+      doneBy('w1', 2026, 8, 3),
+      doneBy('w1', 2026, 8, 10),
+      doneBy('w1', 2026, 8, 17),
+    ]
+    expect(WEEKS.map((week) => streakOn(weekly, completions, week))).toEqual([
+      1, 2, 3, 4,
+    ])
+  })
+
+  it('reports no streak at all for a week that was missed', () => {
+    // Fulfilled, missed, fulfilled — the shape behind the report. The
+    // middle week earned a blank; it used to borrow the NEXT week's run.
+    const completions = [doneBy('w1', 2026, 8, 3), doneBy('w1', 2026, 8, 17)]
+    expect(streakOn(weekly, completions, '2026-08-03')).toBe(1)
+    expect(streakOn(weekly, completions, '2026-08-10')).toBe(null)
+    expect(streakOn(weekly, completions, '2026-08-17')).toBe(1)
+  })
+
+  it('does the same for a day-counted habit', () => {
+    // Every day of the week of the 3rd, then nothing until the 17th: as
+    // of the 3rd's week the run is 7, and the missed week is blank —
+    // neither may borrow from the marks that came after.
+    const completions = []
+    for (let d = 3; d <= 9; d++) completions.push(doneBy('d1', 2026, 8, d))
+    for (let d = 17; d <= 20; d++) completions.push(doneBy('d1', 2026, 8, d))
+    expect(streakOn(daily, completions, '2026-08-03')).toBe(7)
+    expect(streakOn(daily, completions, '2026-08-10')).toBe(null)
+    expect(streakOn(daily, completions, '2026-08-17')).toBe(4)
+  })
+})

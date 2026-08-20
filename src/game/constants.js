@@ -430,11 +430,16 @@ export const CAMEO_BIG_DAY_COMPLETIONS = 8
 // own unit — a day-counted habit (daily, weekdays, Mondays-and-
 // Thursdays, N-per-day) says nothing until five fulfilled days are
 // banked, because the reward pacing is flat and patient and a
-// congratulation on day one is an early-days bonus. A week-counted
-// habit (N-per-week) has no floor at all: its first fulfilled week is
-// already a week of work, so it may celebrate from the jump.
-// (Kimia's calls 2026-08-20.)
-export const CAMEO_STREAK_RECORD_MIN = { day: 5, week: 1 }
+// congratulation on day one is an early-days bonus.
+//
+// The week floor went to 1 earlier on 2026-08-20 — one fulfilled week
+// is already a week of work — and came straight back to 2 the same day,
+// when Kimia read what it produced: "1-week coding practice streak
+// record!". A run of one is not a run of anything, whatever the
+// arithmetic behind it says, so two consecutive weeks is where a week
+// habit's first celebration lives. Her rule that every new best after
+// that is celebrated is untouched — it just cannot start at one.
+export const CAMEO_STREAK_RECORD_MIN = { day: 5, week: 2 }
 
 // …and how far the run must travel before the SAME record streak may
 // be celebrated again (Kimia's call 2026-08-20, the fix for T4.6's

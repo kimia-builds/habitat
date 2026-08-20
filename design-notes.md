@@ -508,10 +508,14 @@ design-bible.md §9c.)
      firing daily. The visit now anchors on the first length that is
      both past the old best and clear of the floor, and recurs from
      there: **every 5 fulfilled days** for a day-counted habit, **every
-     week** for an N-per-week one. The floors moved with the rule — 5
-     days still, but week streaks lost theirs entirely, because one
-     fulfilled week is already a week of work while a daily habit
-     congratulated on day one is the early-days bonus the pacing forbids.
+     week** for an N-per-week one. The floors are **5 days and 2 weeks**:
+     a daily habit congratulated on day one is the early-days bonus the
+     pacing forbids, and a week habit celebrated at one week is
+     announcing a run of one, which is not a run of anything. The week
+     floor was briefly removed the same day, on the reasoning that one
+     fulfilled week is already a week of work, and went straight back
+     when Kimia read what it produced — "1-week coding practice streak
+     record!".
      **Pressing the visit opens the record it is about (2026-08-20).**
      A momentary notice cannot be interrogated, which was the whole
      complaint: "15 day streak" of WHAT? Pressing a record-streak cameo

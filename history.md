@@ -2646,6 +2646,47 @@ return 0` right after the era is worked out, so a moment before the
   the notes have no separate view of one. Folded into design-notes §8
   and spec §5 and §6.
 
+- 2026-08-20 (Kimia, testing the same day): **a run of one is not a
+  run.** The week floor removed a few hours earlier produced "1-week
+  coding practice streak record!" and she called it wrong on sight. Back
+  to 2, where it was. The reasoning that removed it — one fulfilled week
+  is already a week of work — was sound and still produced a sentence
+  that reads as broken, which is the T5.2c lesson again: the paper
+  argument is not the thing being judged. Her "every personal best after
+  that" rule is untouched; it just cannot start at one.
+- 2026-08-20: **a streak told "as of" a past week may not see past it.**
+  Found chasing her report and NOT a cameo bug at all — the cameo's
+  number was right. `weekNotes` asked `currentStreak` as of late on the
+  Monday after a finished week (correct) but handed it the WHOLE
+  completions list (not), so the walk began on the week AFTER the one on
+  show. Four unbroken weeks browsed back read 2, 3, 4, 4 instead of
+  1, 2, 3, 4, and a week genuinely MISSED reported the following week's
+  streak instead of a blank. That is what made her broken run look
+  intact: three weeks back, every cell said "1-week streak". The walk is
+  now given only the completions that existed by the as-of moment.
+  Folded into spec §6.
+
+## T6.21 build notes — a past week's streak stops at that week (2026-08-20)
+
+Two lines in `game/fieldnotes.js`: an `asOfCompletions` list, filtered
+to `dayKey <= weekEnd` for a finished week (the current week needs no
+trimming — nothing can be marked later than now), handed to
+`currentStreak` in place of the full list.
+
+How it was found is worth keeping. Her report was "the cameo said 1 week
+and it should be 3", which reads like a cameo bug, and the first two
+things I did were both dead ends that were worth doing: a property test
+over 900 generated histories — random birth dates, weekly targets,
+marking patterns and mid-life schedule edits — proved the cameo's week
+walk agrees with `currentStreak` on every one, so the cameo could only
+be reporting what the field notes report. The clue that broke it open
+was hers: **three consecutive weeks all reading "1-week streak"**, which
+is arithmetically impossible for an unbroken run (they would read 3, 2,
+1) and pointed straight at the as-of walk rather than at the cameo.
+
+The bug is older than T6.20 — it dates to the 2026-07-27 as-of decision
+— and had been quietly overstating every past week's streak since.
+
 ## T6.20 build notes — the cameo tells the truth (2026-08-20)
 
 Three changes, in the order the session found them.
