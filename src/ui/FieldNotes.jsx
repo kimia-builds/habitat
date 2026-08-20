@@ -40,6 +40,54 @@ function cellText(day) {
   return day.expected ? '·' : ''
 }
 
+// THE SPOTLIGHT (Kimia's call 2026-08-20). A cameo is momentary: it
+// performs, it says its one sentence, and it is gone — so there was no
+// way to go back and interrogate a claim it made. Pressing the visit
+// now brings you here, and what it opens is a blackout: everything on
+// the page goes dark and the record that fell stands alone in it, lit
+// the same rose a visiting friend wears. Click anywhere to escape and
+// the week is underneath, where it always was.
+//
+// EVERY record that fell today, not just the one the cameo spoke for:
+// only one friend may visit a day, so if two habits both broke a record
+// the second would otherwise be unfindable — and there is no catching
+// the notice again.
+//
+// It stores nothing. Leaving the page or reloading loses it, exactly
+// like the visit that opened it.
+function StreakSpotlight({ streaks, onDismiss }) {
+  const { t } = useText()
+  const unit = (kind) =>
+    kind === 'week' ? t('fieldNotes.unitWeek') : t('fieldNotes.unitDay')
+  return (
+    <div
+      className="streak-spotlight"
+      role="button"
+      tabIndex={0}
+      aria-label={t('fieldNotes.spotlightDismiss')}
+      onClick={onDismiss}
+      onKeyDown={(event) => {
+        if (['Enter', ' ', 'Escape'].includes(event.key)) onDismiss()
+      }}
+    >
+      <p className="streak-spotlight-title">{t('fieldNotes.spotlightTitle')}</p>
+      <ul className="streak-spotlight-list">
+        {streaks.map((streak) => (
+          <li key={streak.habitId}>
+            <span className="streak-spotlight-habit">{streak.habitName}</span>
+            <span className="streak-spotlight-run">
+              {t('fieldNotes.streak', {
+                n: streak.n,
+                unit: unit(streak.unit),
+              })}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function FieldNotes({
   habits,
   completions,
@@ -50,6 +98,10 @@ function FieldNotes({
   filter = [],
   onToggleFilter = () => {},
   onBack,
+  // The record(s) a cameo sent you here to look at, or null for the
+  // ordinary visit to this page — see StreakSpotlight.
+  spotlight = null,
+  onDismissSpotlight = () => {},
 }) {
   const { t } = useText()
   const today = dayKeyFromTimestamp(now, cutoffHour)
@@ -66,10 +118,16 @@ function FieldNotes({
   const firstWeek = earliestWeek(shownHabits, shownCompletions, cutoffHour)
   // Default to the last completed week; a Habitat whose whole history
   // is this week starts on the current week instead.
+  //
+  // …unless a cameo sent you here (2026-08-20), in which case the week
+  // that matters is the one the record is standing in — THIS one. The
+  // page opened on last week otherwise, so escaping the blackout landed
+  // on a row reporting a two-day streak directly under a spotlight that
+  // had just announced five.
   const [chosenWeek, setWeek] = useState(
-    firstWeek !== null && firstWeek <= lastCompletedWeek
-      ? lastCompletedWeek
-      : thisWeek,
+    spotlight !== null || firstWeek === null || firstWeek > lastCompletedWeek
+      ? thisWeek
+      : lastCompletedWeek,
   )
 
   // The same row of charms the habit list carries — the SAME element in
@@ -120,6 +178,9 @@ function FieldNotes({
 
   return (
     <>
+      {spotlight !== null && (
+        <StreakSpotlight streaks={spotlight} onDismiss={onDismissSpotlight} />
+      )}
       {lens}
       <section className="field-notes" aria-label={t('page.fieldNotes')}>
         <div className="week-nav">
@@ -176,7 +237,15 @@ function FieldNotes({
                     <td key={day.dayKey}>{cellText(day)}</td>
                   ))}
                   <td className="streak-cell">
-                    {streak !== null && `${streak}-${streakUnit} streak`}
+                    {streak !== null &&
+                      t('fieldNotes.streak', {
+                        n: streak,
+                        unit: t(
+                          streakUnit === 'week'
+                            ? 'fieldNotes.unitWeek'
+                            : 'fieldNotes.unitDay',
+                        ),
+                      })}
                   </td>
                 </tr>
               ))}

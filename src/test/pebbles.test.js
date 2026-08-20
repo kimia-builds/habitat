@@ -48,6 +48,10 @@ const NOT_PEBBLES = {
   'icon-button': 'icon-only furniture: edit, archive, unarchive, delete',
   'rail-icon': 'the left rail — icons as furniture, never a navbar',
   'arrival-hold': 'the drop object itself, pressed to hold it',
+  'cameo-press':
+    "the friend's visit itself, pressed to go and see the record it is " +
+    'about — a bare hit area over a drawing and its caption, and the ' +
+    'visit shows nothing else (2026-08-20)',
   'guestbook-friend': 'a friend card — the friend IS the button',
   meter: 'a meter bar, pressed for its bare number',
   'home-link': 'the HABITAT wordmark, dressed as a button',

@@ -2604,6 +2604,91 @@ return 0` right after the era is worked out, so a moment before the
   open, and comes down once she has answered it — every settled asset left
   standing is another screenful between her and the one she came to look
   at. Folded into spec §5b.
+- 2026-08-20 (Kimia, opening the session): **a cameo that cannot be
+  interrogated is not a reward, it is a claim.** She had had "15 day
+  streak" two days running and could not tell which habit it meant, nor
+  whether it was even true. It was not: the narration slots held her
+  July DRAFT sentences with the example numbers typed into them, so
+  every visit in Habitat's life had announced a 15-day streak whatever
+  the streak was. The slots now write `{holes}` the win fills — `{n}`,
+  `{unit}`, `{habit}`, `{previous}` — through the same filler the
+  interface words use. Folded into design-notes §8 and spec §5.
+- 2026-08-20 (Kimia's rule): **a record streak visits on the day the
+  record FALLS, then a step at a time.** The second bug behind the same
+  complaint, and the worse one: "current run beats every earlier run"
+  is true again tomorrow and every day after, so the cameo billed as
+  the rarest was the only one firing daily — and it outranks a big day,
+  so it was hiding those too. Her rule, given as a worked example: hit
+  7 for the first time and the friend comes; at 12 it comes again; break
+  it, build a new run, and the next visit is at 13 because 12 is now the
+  best to beat. **Every 5 fulfilled days for a day-counted habit, every
+  week for an N-per-week one** — and asked where a brand-new habit
+  starts, she kept the 5-day floor for daily habits ("no early-days
+  bonuses") and removed the floor from week habits entirely, since one
+  fulfilled week is already a week of work. Mondays-and-Thursdays
+  habits follow the day rule: she had grouped them with weeklies until
+  told Habitat counts their streak in fulfilled days. Folded into
+  design-notes §8 and spec §5.
+- 2026-08-20 (Kimia's call): **pressing the visit opens the record it is
+  about.** She rejected a standing "personal best" column in the field
+  notes — the answer should belong to the moment, not become another
+  number on a page. Instead the cameo is pressable, and what it opens is
+  a blackout over the field notes: the page goes dark and the run stands
+  alone in it, habit name and length, click anywhere to escape onto the
+  week underneath. Her reason for showing EVERY record that fell that
+  day rather than only the one the cameo spoke for: the notices are
+  momentary and there is no going back to catch a second one. Two
+  consequences decided while building and confirmed by the same
+  reasoning: the page opens on the week the record actually stands in
+  (it opens on last week otherwise, which put a "2-day streak" row
+  directly under a spotlight announcing five), and the big-day and
+  milestone cameos are not pressable, since they are about the day and
+  the notes have no separate view of one. Folded into design-notes §8
+  and spec §5 and §6.
+
+## T6.20 build notes — the cameo tells the truth (2026-08-20)
+
+Three changes, in the order the session found them.
+
+**The numbers.** `narrationSlot(path, vars)` now fills `{holes}`, using
+`fill` exported from `content/ui.js` rather than a second copy of the
+same regex — the two content files are due to merge in T6.14 and a
+duplicated filler is exactly the drift that task exists to end. The win
+object carries `n` for every win type, plus `unit`, `habitName` and
+`previous` for a streak. `cameos.streakRecord` has a sibling
+`cameos.streakRecordFirst` for a habit with no old best to name;
+`Cameo.jsx` picks between them on `previous > 0`.
+
+**The firing rule.** `isCelebrationPoint(current, record, kind)` in
+`game/cameos.js`: the anchor is `max(record + 1, MIN[kind])` and the win
+stands when `(current - anchor) % STEP[kind] === 0`. The old best cannot
+change while a run is alive — it is by definition the longest run that
+ENDED before this one — so the anchor is fixed for the run's whole life
+and the pattern never drifts. `CAMEO_STREAK_RECORD_MIN` became
+`{ day: 5, week: 1 }` and `CAMEO_STREAK_RECORD_STEP` is new.
+
+**The spotlight.** `streakRecordWin` collects every winning habit
+instead of returning the first; the win keeps `streaks` alongside the
+first entry's fields, so the message code is unchanged. `Cameo` gains a
+bare `.cameo-press` hit area over the whole visit (classified in
+`pebbles.test.js` as a non-pebble: it is a drawing and a caption, and
+the visit carries no words of its own, so what it does is said in its
+aria-label). `App` holds the spotlight, clears it whenever `page`
+leaves the field notes, and `FieldNotes` renders `StreakSpotlight` — a
+full-bleed `--surface-solid` blackout, the run lit in `--friendship` so
+it reads as the same event as the visit that sent you.
+
+**Testing content that is Kimia's.** `src/test/narrationFixture.js` is
+the `nameFixture.js` twin: tests set their own sentence and restore it
+in `afterEach`, so nothing here depends on what her file says or whether
+a slot is blank. Proving the filling WORKS needs a known input, and
+reading her real slot to compare against it would have been the same
+CI-breaking trap twice over.
+
+**Two hardcoded strings retired in passing**, both on lines this task
+already touched: the field notes' `${streak}-${streakUnit} streak` is
+now `fieldNotes.streak` in the copy deck with its unit as its own entry,
+since a language may not build "5-day" the way English does.
 
 ## T5.3g build notes — the four silhouettes and the two sizes (2026-08-19)
 

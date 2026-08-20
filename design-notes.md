@@ -489,15 +489,41 @@ design-bible.md §9c.)
   3. **Home-screen cameos that celebrate big wins** — a friend turns
      up on the habit list to celebrate: a day with many completions, a
      new record streak, a lived-day milestone. It performs once, with a
-     short message alongside (Kimia's slots, shipped blank; her draft
-     examples: "12 steps in one day!", "15-day streak record!", "50
-     lived days!"). Encouragement, never a scoreboard. **The thresholds
-     (Kimia's calls 2026-07-21, in constants):** a big day is 8
-     completions; a record streak must beat the habit's own record and
-     be at least 5 days (2 weeks for week-counted) strong — never a
-     learnable schedule; a milestone is every 50 lived days, the
-     crossing day only. The visitor is a seeded surprise pick; at most
-     one cameo a day, rarest first; once per visit, nothing stored.
+     short message alongside (Kimia's slots). Encouragement, never a
+     scoreboard. **The thresholds (Kimia's calls 2026-07-21, in
+     constants):** a big day is 8 completions; a milestone is every 50
+     lived days, the crossing day only. The visitor is a seeded surprise
+     pick; at most one cameo a day, rarest first; once per visit,
+     nothing stored.
+     **The message says a TRUE number (2026-08-20).** The slots write
+     `{holes}` — `{n}`, and for a streak `{unit}`, `{habit}` and
+     `{previous}` — which Habitat fills from the win itself. Until then
+     they held her draft sentences with the example numbers typed in, so
+     every visit announced a 15-day streak whatever the streak was. A
+     streak has two slots, since a habit setting its first-ever record
+     has no old best to name.
+     **A record streak visits on the day the record FALLS, and a step at
+     a time after (Kimia's rule 2026-08-20).** "Beats its own record" is
+     true again tomorrow and every day after, so the rarest win was
+     firing daily. The visit now anchors on the first length that is
+     both past the old best and clear of the floor, and recurs from
+     there: **every 5 fulfilled days** for a day-counted habit, **every
+     week** for an N-per-week one. The floors moved with the rule — 5
+     days still, but week streaks lost theirs entirely, because one
+     fulfilled week is already a week of work while a daily habit
+     congratulated on day one is the early-days bonus the pacing forbids.
+     **Pressing the visit opens the record it is about (2026-08-20).**
+     A momentary notice cannot be interrogated, which was the whole
+     complaint: "15 day streak" of WHAT? Pressing a record-streak cameo
+     goes to the field notes on the week the record stands in, and
+     blacks the page out around the run itself — the habit's name, the
+     length, lit the same rose a visiting friend wears. Click anywhere
+     to escape onto the week underneath. It shows EVERY record that fell
+     that day, not just the one the cameo spoke for: only one friend may
+     visit a day, and there is no catching the notice again. The other
+     two wins are not pressable — they are about the day, which the
+     notes have no separate view of. Nothing about the blackout is
+     stored; leaving the page puts it out.
      _(Amended 2026-07-20, fourteenth session — Kimia's redecision,
      over the twelfth session's "rare and unpredictable". Built in
      T4.6, 2026-07-21.)_
@@ -658,6 +684,9 @@ design-bible.md §9c.)
 18. **Cameos celebrate big wins** → a big day, a record streak, a
     lived-day milestone; the signature animation plus a short message
     from Kimia's slots. Built in T4.6 (§8). Party mode still excluded.
+    Revisited 2026-08-20: the message's numbers are the win's own, the
+    record streak stopped visiting daily, and the visit can be pressed
+    to see the record it means.
 19. **Party mode shipped whole with T4.4** — toggle, greyed state and
     all, since T4.4 landed before T4.5 (§12e).
 

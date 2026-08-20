@@ -111,6 +111,20 @@ const en = {
   'fieldNotes.graphs': 'graphs',
   'fieldNotes.habitTooYoung': 'habit is too young',
   'fieldNotes.graphLabel': '{habit}, completions {zoom}',
+  // What pressing a friend's visit is for. Never shown — the visit is a
+  // friend and a caption and nothing else — so these are the words a
+  // screen reader says (2026-08-20).
+  'cameo.open': 'see the record this is about',
+  // The streak reported beside a week's row, and the same words blown
+  // up in the spotlight a cameo sends you to (2026-08-20). The unit is
+  // its own entry because a language may not build "5-day" the way
+  // English does.
+  'fieldNotes.streak': '{n}-{unit} streak',
+  'fieldNotes.unitDay': 'day',
+  'fieldNotes.unitWeek': 'week',
+  // The blackout the cameo opens: what it announces, and how to leave.
+  'fieldNotes.spotlightTitle': 'a record fell today',
+  'fieldNotes.spotlightDismiss': 'close and see the week',
 
   // The arrival shelf — the drops waiting to be dealt with.
   'arrivals.region': 'arrivals',
@@ -272,6 +286,12 @@ const fa = {
   'fieldNotes.graphs': '',
   'fieldNotes.habitTooYoung': '',
   'fieldNotes.graphLabel': '',
+  'cameo.open': '',
+  'fieldNotes.streak': '',
+  'fieldNotes.unitDay': '',
+  'fieldNotes.unitWeek': '',
+  'fieldNotes.spotlightTitle': '',
+  'fieldNotes.spotlightDismiss': '',
 
   'arrivals.region': '',
   'arrivals.hold': '',

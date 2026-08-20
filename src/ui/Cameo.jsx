@@ -39,6 +39,7 @@ import { narrationSlot } from '../content/narration.js'
 import Blob from './blob.jsx'
 import Firework from './firework.jsx'
 import FriendGlyph from './FriendGlyph.jsx'
+import { useText } from './language.jsx'
 
 // Which wins earn the firework (design-notes §5, Kimia's call
 // 2026-08-16): the two that mark something never done before. A big day
@@ -69,10 +70,23 @@ function slotFor(win) {
   }
 }
 
-function Cameo({ win, worldSeed, onExpire }) {
+// PRESSABLE, for a record streak (Kimia's call 2026-08-20). The visit
+// is momentary and says one short sentence, so a claim it makes used to
+// be impossible to check afterwards — "15 day streak" with no way to
+// ask which habit. Pressing it now opens the field notes with the
+// record(s) spotlit (FieldNotes.jsx).
+//
+// Only a record streak: the other two wins are about the day itself,
+// which the notes have no separate view of, and a control that
+// sometimes does nothing is worse than one that isn't there.
+const OPENABLE = 'streakRecord'
+
+function Cameo({ win, worldSeed, onExpire, onOpen }) {
+  const { t } = useText()
   const key = FRIEND_CATEGORIES[win.friend.category].key
   const slot = slotFor(win)
   const message = narrationSlot(slot.path, slot.vars)
+  const openable = win.type === OPENABLE && onOpen !== undefined
   // The visit's whole length is one timer; the CSS fade is driven from
   // the same constant (inline below), so the two never disagree.
   useEffect(() => {
@@ -81,11 +95,24 @@ function Cameo({ win, worldSeed, onExpire }) {
   }, [onExpire])
   return (
     <div
-      className="cameo"
+      className={openable ? 'cameo cameo-openable' : 'cameo'}
       role="status"
       style={{ animationDuration: `${CAMEO_LINGER_MS}ms` }}
     >
       {FIREWORK_WINS.has(win.type) && <Firework />}
+      {/* The press covers the friend AND the caption — the whole visit
+          is the target, since the whole visit is the thing you want to
+          ask about. It carries no words of its own: the visit shows a
+          friend and a caption and nothing else (Kimia 2026-08-16), so
+          what it is for is said in its label, not on the screen. */}
+      {openable && (
+        <button
+          type="button"
+          className="cameo-press"
+          aria-label={t('cameo.open')}
+          onClick={() => onOpen(win)}
+        />
+      )}
       {/* The friend in its blob. The blob is picked from the win and the
           visitor rather than at random, so re-deriving the same win
           brings back the same shape as well as the same friend — the

@@ -395,12 +395,18 @@ region discovery expands what the Market can offer.
   Habits can be archived (history kept) or permanently
   deleted (with confirmation). Every action on the home screen is an
   **icon with a hover label** (T4.5) — no action words on the page. On
-  a big-win day a **cameo** visits between the date and the list
-  (T4.6): a friend celebrating — a big day (8 completions), a record
-  streak (own record beaten, 5 days / 2 weeks minimum), a lived-day
-  milestone (every 50, the crossing day only). It performs its
-  animation once beside Kimia's message slot, then settles back to the
-  calm list — once per visit, nothing stored (design-notes §8).
+  a big-win day a **cameo** visits (T4.6): a friend celebrating — a big
+  day (8 completions), a record streak, a lived-day milestone (every 50,
+  the crossing day only). It performs its animation once beside Kimia's
+  message slot, then settles back to the calm list — once per visit,
+  nothing stored (design-notes §8). The message's numbers come from the
+  win, never from a fixed sentence, and a record streak visits on the
+  day the record falls and then every 5 fulfilled days (every week for
+  an N-per-week habit) — not daily, which is what "beats its own
+  record" means on its own. **Pressing a streak cameo** opens the field
+  notes on that week with every record that fell today spotlit in a
+  blackout, click to escape: the way to ask what a momentary notice
+  meant (all three, Kimia's calls 2026-08-20).
 - **The left rail (T4.5):** icon buttons down the left edge, each
   revealing its name on hover, in two groups (2026-08-12):
   - **the three doers**, on top — **+ (add a habit) · pencil (edit past
@@ -636,6 +642,13 @@ and nothing is lost by finding that out late.
   weeks BEFORE such a switch fall outside the streak now running: they
   simply show no streak, the same blank a broken streak shows. The
   grid, the marks and the graphs are unaffected.
+- **The streak spotlight (2026-08-20).** Arriving here from a cameo
+  opens the page on the week the record stands in — not the last
+  completed week it opens on otherwise — and blacks the page out around
+  the run: the habit's name and its length, and every other record that
+  fell the same day. Click anywhere to escape onto the week underneath.
+  It stores nothing and leaving the page puts it out, exactly like the
+  visit that opened it (design-notes §8).
 
 ## 7. Look & feel
 

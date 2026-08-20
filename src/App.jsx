@@ -400,6 +400,24 @@ function AppBody({ data, setData }) {
   // win standing. Nothing about it is ever stored.
   const [cameoGone, setCameoGone] = useState(false)
   const expireCameo = useCallback(() => setCameoGone(true), [])
+  // Pressing the visit takes you to the field notes with the record(s)
+  // it was about spotlit (Kimia's call 2026-08-20) — the answer to "a
+  // 15-day streak of WHAT?", which a momentary notice could never give.
+  // The visit leaves as it hands over: it has been read, and it has no
+  // business floating over the page it just opened.
+  const [spotlight, setSpotlight] = useState(null)
+  const openCameo = useCallback((win) => {
+    setSpotlight(win.streaks)
+    setCameoGone(true)
+    setPage('fieldnotes')
+  }, [])
+  const dismissSpotlight = useCallback(() => setSpotlight(null), [])
+  // …and it belongs to that one visit to that one page. Leaving by any
+  // door — back, the rail, the wordmark — puts it out, so coming back to
+  // the notes later never reopens a blackout about a moment long gone.
+  useEffect(() => {
+    if (page !== 'fieldnotes') setSpotlight(null)
+  }, [page])
   const cameo = cameoGone
     ? null
     : cameoWin(
@@ -1498,6 +1516,8 @@ function AppBody({ data, setData }) {
             filter={filter}
             onToggleFilter={toggleFilter}
             onBack={() => setPage(null)}
+            spotlight={spotlight}
+            onDismissSpotlight={dismissSpotlight}
           />
           {/* The same three buttons the home screen ends with (Kimia's
             call 2026-08-12), directly under "back to the habits" — so
@@ -1663,6 +1683,7 @@ function AppBody({ data, setData }) {
             win={cameo}
             worldSeed={data.worldSeed}
             onExpire={expireCameo}
+            onOpen={openCameo}
           />
         )}
         {listContent}

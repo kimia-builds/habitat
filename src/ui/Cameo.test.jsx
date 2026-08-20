@@ -5,10 +5,9 @@
 // settles back to the calm list by itself after the linger — once per
 // visit, nothing stored.
 
-import { act, cleanup, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { CAMEO_LINGER_MS } from '../game/constants.js'
-import { narrationSlot } from '../content/narration.js'
 import {
   blankAllNames,
   restoreNames,
@@ -130,6 +129,62 @@ describe('the cameo visit (T4.6)', () => {
       expect(document.querySelector('.cameo-message').textContent).toBe(
         '11 steps',
       )
+    })
+  })
+
+  // Pressing the visit is the way back to what it meant (Kimia's call
+  // 2026-08-20): a momentary notice claiming "15 day streak" with no
+  // way to ask which habit was the whole complaint.
+  describe('pressing the visit', () => {
+    it('hands the win back so the field notes can spotlight it', () => {
+      const onOpen = vi.fn()
+      render(
+        <Cameo
+          win={WIN}
+          worldSeed="seed"
+          onExpire={() => {}}
+          onOpen={onOpen}
+        />,
+      )
+      fireEvent.click(screen.getByRole('button'))
+      expect(onOpen).toHaveBeenCalledWith(WIN)
+    })
+
+    it('adds no words of its own to the visit', () => {
+      // The visit shows a friend and a caption and nothing else (Kimia
+      // 2026-08-16) — so the press says what it is for in its label.
+      render(
+        <Cameo
+          win={WIN}
+          worldSeed="seed"
+          onExpire={() => {}}
+          onOpen={vi.fn()}
+        />,
+      )
+      expect(screen.getByRole('button').textContent).toBe('')
+    })
+
+    it('is not offered for a big day or a milestone', () => {
+      // Those two wins are about the day, which the notes have no
+      // separate view of — and a control that sometimes does nothing is
+      // worse than one that is not there.
+      for (const type of ['bigDay', 'livedDays']) {
+        cleanup()
+        render(
+          <Cameo
+            win={{ ...WIN, type }}
+            worldSeed="seed"
+            onExpire={() => {}}
+            onOpen={vi.fn()}
+          />,
+        )
+        expect(screen.queryByRole('button')).toBeNull()
+      }
+    })
+
+    it('is not offered at all where nothing is listening', () => {
+      render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
+      expect(screen.queryByRole('button')).toBeNull()
     })
   })
 

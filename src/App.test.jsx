@@ -2514,6 +2514,62 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
     expect(screen.queryByRole('status')).toBeNull()
   })
 
+  // Pressing the visit is the way back to what it meant (Kimia's call
+  // 2026-08-20). The whole path in one test: a record falls, a friend
+  // comes to say so, and pressing what it says lands on the field notes
+  // with that record — named — blacked out around it.
+  it('pressing a streak cameo opens the field notes with the record spotlit', () => {
+    const habit = {
+      id: 'walk',
+      name: 'walk',
+      description: '',
+      symbol: 1,
+      difficulty: 'easy',
+      schedule: { type: 'daily' },
+      scheduleHistory: [{ schedule: { type: 'daily' }, fromDay: '2026-07-12' }],
+      archived: false,
+      archivedAt: null,
+      createdAt: new Date(2026, 6, 12, 9).getTime(),
+    }
+    // Five consecutive fulfilled days ending today — the floor, and the
+    // habit's first-ever record, so the run is at its anchor.
+    const days = [
+      '2026-07-12',
+      '2026-07-13',
+      '2026-07-14',
+      '2026-07-15',
+      '2026-07-16',
+    ]
+    seedWorld('cameo-seed', {
+      habits: [habit],
+      completions: days.map((dayKey, i) => ({
+        id: `d${i}`,
+        habitId: 'walk',
+        recordedAt: i + 1,
+        dayKey,
+        drops: i === 0 ? [{ kind: 'friend', category: 0, individual: 1 }] : [],
+      })),
+    })
+    render(<App />)
+    settleStartup()
+
+    fireEvent.click(within(screen.getByRole('status')).getByRole('button'))
+
+    // We are on the field notes, and the blackout names the habit the
+    // streak was for — the question a momentary notice could not answer.
+    expect(screen.getByRole('region', { name: 'field notes' })).toBeDefined()
+    const spotlight = document.querySelector('.streak-spotlight')
+    expect(spotlight.textContent).toContain('walk')
+    expect(spotlight.textContent).toContain('5')
+
+    // The visit does not follow you here, and a click escapes onto the
+    // week itself.
+    expect(screen.queryByRole('status')).toBeNull()
+    fireEvent.click(spotlight)
+    expect(document.querySelector('.streak-spotlight')).toBeNull()
+    expect(screen.getByRole('table')).toBeDefined()
+  })
+
   it('no win, no cameo — the plain day stays calm', () => {
     seedWorld('cameo-seed', {
       completions: [

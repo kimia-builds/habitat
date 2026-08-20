@@ -1758,6 +1758,114 @@ body {
   overflow-wrap: anywhere;
 }
 
+/* The press (2026-08-20). It carries nothing of its own — no frame, no
+   words, no colour — because the visit is already exactly the right
+   shape and Kimia's 2026-08-16 call was that it shows a friend, a
+   caption, and nothing else. So this is a plain hit area laid over the
+   whole thing, and the only thing it adds is the pointer that says the
+   visit is worth pressing. */
+.cameo-press {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* The one visible sign, and it is the one the rest of Habitat already
+   uses for a thing you may press: a lift of light on hover and focus.
+   The glow is the friend's own rose, not a colour of the press's. */
+.cameo-openable:hover .cameo-blob path,
+.cameo-press:focus-visible ~ .cameo-figure .cameo-blob path {
+  stroke-opacity: 0.8;
+  filter: drop-shadow(0 0 var(--glow-bright) currentColor);
+}
+
+.cameo-press:focus-visible {
+  outline: none;
+}
+
+/* ── the streak spotlight (2026-08-20) ─────────────────────────────────
+   Where a cameo takes you when you press it. A BLACKOUT, not a veil:
+   --surface-solid is the ground colour itself, so the page does not dim
+   behind it, it goes away — the record that fell is the only thing left
+   in the world for a moment. Kimia's brief exactly.
+
+   Sits above everything reachable from this page (the reveals' 10),
+   below the daily startup's 20, which owns the screen outright. */
+.streak-spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  background: var(--surface-solid);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-7);
+  padding: var(--space-6);
+  text-align: center;
+  cursor: pointer;
+  /* Arriving is the whole animation: it fades up out of the dark rather
+     than snapping on, so the blackout reads as the lights going down.
+     Leaving is instant — a click to escape should escape. */
+  animation: spotlight-in 600ms ease-out both;
+}
+
+@keyframes spotlight-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Quiet, and small: it names what you are looking at and then gets out
+   of the way of the number, which is the thing you came for. */
+.streak-spotlight-title {
+  color: var(--text-quiet);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.streak-spotlight-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  /* Two records that fell on the same day stand side by side, not one
+     above the other, so neither reads as the more important of them. */
+  gap: var(--space-7);
+}
+
+.streak-spotlight-list li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* The habit's own name — the answer to "a streak of WHAT?", which is
+   the whole reason this screen exists. */
+.streak-spotlight-habit {
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+/* …and the run itself, lit the same rose a visiting friend wears
+   (--friendship, as .cameo-figure) so the blackout is visibly the same
+   event as the visit that opened it, not a separate page. */
+.streak-spotlight-run {
+  color: var(--friendship);
+  font-size: 2.4rem;
+  line-height: 1.1;
+  text-shadow: 0 0 var(--glow-pop) currentColor;
+}
+
 .reveal-glyph {
   width: 4rem;
   height: 4rem;
