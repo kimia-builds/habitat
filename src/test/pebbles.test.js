@@ -149,3 +149,37 @@ describe('the pebbles (design-notes §11e)', () => {
     expect(family).toContain('--button-edge-strength')
   })
 })
+
+// A CONTROL UNDER A pointer-events: none ANCESTOR MUST TURN THEM BACK
+// ON (2026-08-20).
+//
+// The cameo's press shipped dead: `.cameo` disables pointer events for
+// the whole visit — right, and still right, because a celebration must
+// never come between a finger and the habit underneath — and the press
+// inherited that. It took no clicks and showed no pointer cursor, and
+// Kimia found it rather than any test here.
+//
+// It hid because of HOW it was checked. A component test fires its
+// click straight at the element, and jsdom does no hit-testing or
+// pointer-events at all; the live check called .click() in JavaScript.
+// Both bypass this property completely, so no amount of clicking in a
+// test can ever prove a control is reachable by a real finger.
+//
+// This reads the stylesheet as text instead, the way the rest of this
+// file does — the one check that CAN see the property. Anything
+// pressable that lives inside a switched-off box belongs on the list.
+describe('controls inside a switched-off box', () => {
+  const REVIVED = {
+    'cameo-press': 'lives inside .cameo, which switches pointer events off',
+  }
+
+  it('turn pointer events back on for themselves', () => {
+    const css = readFileSync(join(process.cwd(), 'src/index.css'), 'utf8')
+    for (const [name, why] of Object.entries(REVIVED)) {
+      const start = css.indexOf(`\n.${name} {`)
+      expect(start, `${name}: ${why} — but has no rule of its own`).not.toBe(-1)
+      const rule = css.slice(start, css.indexOf('\n}', start))
+      expect(rule, `${name}: ${why}`).toContain('pointer-events: auto')
+    }
+  })
+})

@@ -2681,6 +2681,21 @@ return 0` right after the era is worked out, so a moment before the
   seconds is enough to watch a performance, not enough to notice a thing
   is pressable, read it and reach for it. Folded into design-notes §8.
 
+- 2026-08-20: **a click in a test and a click from a finger are not the
+  same event, and only one of them matters.** The cameo's press shipped
+  completely inert: `.cameo` sets `pointer-events: none` (right, and
+  still right — a celebration must not come between a finger and the
+  habit underneath), and the press inherited it. No cursor, no click.
+  It got through because every check bypassed the property: a component
+  test fires its click straight at the element and jsdom implements no
+  hit-testing or pointer-events at all, and the live verification called
+  `.click()` in JavaScript, which does the same. The control was proved
+  to WORK and never proved to be REACHABLE. From now on a new control is
+  verified with a real click at real coordinates in the browser pane
+  before it ships, and `pebbles.test.js` guards the property by reading
+  the stylesheet — the one check that can actually see it. Folded into
+  design-notes §8 and CLAUDE.md.
+
 ## T6.22 build notes — the visit shows that it can be pressed (2026-08-20)
 
 `@keyframes cameo-breathe` on `.cameo-openable .cameo-blob path`,
@@ -2701,6 +2716,15 @@ reasoning that produced the invisible press was sound, followed a real
 rule of hers, and was written down in three places — and it still
 shipped a control nobody could find. Reasoning about a rule is not the
 same as looking at what the rule produces.
+
+**A second pass the same day** made the press actually reachable: it had
+been inert the whole time under `.cameo`'s `pointer-events: none`, which
+is why she could not click it even once the blob was breathing. One
+line, plus a stylesheet guard in `pebbles.test.js` (with its own
+`REVIVED` list, the same bookkeeping shape as `NOT_PEBBLES`) and a real
+mouse click in the browser pane as proof: press the visit, the blackout
+opens on "coding practice — 2-week streak", click again, the week
+underneath reports the same two weeks.
 
 ## T6.21 build notes — a past week's streak stops at that week (2026-08-20)
 

@@ -73,6 +73,16 @@ Kimia is a non-coder. Therefore:
   own code actually works before pushing — e.g. drag surfaces, see
   history.md's browser-verification notes. The rule is only: no
   preview runs purely for Kimia's benefit.)
+- **A new CONTROL is verified with a real click (2026-08-20):** in the
+  browser pane, `computer` → `screenshot`, then `left_click` at the
+  control's actual coordinates. Never `element.click()` from
+  `javascript_tool`, and never a component test alone. Both fire the
+  event straight at the element: jsdom implements no hit-testing and no
+  `pointer-events`, and a scripted `.click()` ignores the property too.
+  So neither can tell you whether a finger can reach the thing — they
+  prove it WORKS, not that it is REACHABLE. The cameo's press shipped
+  inert for exactly this reason (it sat under a `pointer-events: none`
+  ancestor), passing every test, until Kimia tried to click it.
 - **Verifying visuals on long pages, e.g. the design workbench
   (2026-07-26):** the in-Claude browser pane runs its tab "hidden", so
   (a) screenshots more than ~a viewport down a long page render solid

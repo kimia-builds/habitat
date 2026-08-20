@@ -539,6 +539,16 @@ design-bible.md §9c.)
      performance first: one movement at a time, and the breath begins
      exactly where the visit stops being something to watch and becomes
      something to answer. Stilled under `prefers-reduced-motion`.
+     **And it had to be told it could take a click at all.** `.cameo`
+     switches pointer events off for the whole visit — a celebration
+     must never come between a finger and the habit underneath — so the
+     press inherited that and was inert: no cursor, no click, on a
+     control that looked finished and passed every test. It turns them
+     back on for itself; a watch-only visit stays wholly untouchable.
+     The lesson is about VERIFICATION, and it is in history.md: a test
+     click and a scripted `.click()` both bypass pointer events, so
+     neither can prove a control is reachable by a real finger. Only a
+     real click at real coordinates does.
      **A pressable visit also stays about twice as long** (18s against
      9s). Nine seconds is a performance and a beat to read, which is
      enough to WATCH; noticing a thing is pressable, reading it and

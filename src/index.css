@@ -1668,8 +1668,11 @@ body {
      it.) A row being DRAGGED keeps its z-index 2 and still crowns a
      celebration — it is under a finger. */
   z-index: 1;
-  /* Nothing here is pressable, and a celebration must never come
-     between a finger and the habit underneath it. */
+  /* A celebration must never come between a finger and the habit
+     underneath it — so the visit as a whole catches nothing, and a
+     watch-only visit (a big day, a milestone) stays wholly untouchable.
+     The one exception is .cameo-press, which turns them back on for
+     itself: see the note there. */
   pointer-events: none;
   display: flex;
   flex-direction: column;
@@ -1772,6 +1775,19 @@ body {
   background: none;
   padding: 0;
   cursor: pointer;
+  /* THE LINE THAT MAKES IT A CONTROL (2026-08-20). .cameo turns pointer
+     events off for the whole visit, which was written when nothing in
+     it was pressable and is still right for a visit you only watch.
+     The press inherits that unless it says otherwise — and it did not,
+     so it took no clicks and never even showed the pointer cursor.
+     Kimia found it; nothing here had.
+     It hid because of HOW it was checked: a test fires its click
+     straight at the element and jsdom does no hit-testing, and the
+     live check called .click() in JavaScript. Both bypass
+     pointer-events completely. Only a real click at real coordinates
+     touches this line, so that is what verifies it now — and
+     pebbles.test.js guards the property itself. */
+  pointer-events: auto;
 }
 
 /* THE BLOB BREATHES (Kimia's call 2026-08-20). The press was invisible:
