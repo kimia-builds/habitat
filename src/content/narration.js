@@ -12,6 +12,8 @@
 // Narration is momentary (spec decisions 2026-07-19): these lines play
 // once, in the moment, and are never stored or re-readable in the app.
 
+import { fill } from './ui.js'
+
 export const NARRATION = {
   // ── the five first-occurrence reveals (built in T3.2) ──────────────
   // Each reveal has a title (the big line) and a line (the story
@@ -147,15 +149,34 @@ export const NARRATION = {
 
   // cameo messages (T4.6) — one slot per win type, shown while a
   // friend visits the habit list to celebrate. Momentary like all
-  // narration: it plays with the visit and is never stored. The win's
-  // number is yours to bake into the words if you want it (your drafts:
-  // "12 steps in one day!", "15-day streak record!", "50 lived days!").
+  // narration: it plays with the visit and is never stored.
+  //
+  // THE NUMBERS ARE REAL NOW (2026-08-20). These slots used to hold
+  // your draft sentences with their example numbers typed in, so every
+  // cameo said "15-day streak record!" whatever the streak actually
+  // was. Write a {hole} and Habitat fills it in from the win itself:
+  //
+  //   bigDay            {n}  how many steps you took today
+  //   livedDays         {n}  the lived-day count you just crossed
+  //   streakRecord      {n}  how long the run is now
+  //                     {unit}  the word "day" or "week"
+  //                     {habit}  the habit's own name
+  //                     {previous}  the best it just beat
+  //
+  // A streak has two slots because a habit with no earlier run has no
+  // old best to name: streakRecordFirst is used the first time a habit
+  // ever sets a record, streakRecord every time after. A hole with no
+  // value stays on screen as {previous} rather than becoming the word
+  // "undefined" — a visible hole is a bug that announces itself.
+  //
   // Left blank, the visit shows just the friend and its performance.
   // TODO: written by Kimia.
   cameos: {
-    bigDay: '12 steps in one day!',
-    streakRecord: '15-day streak record!',
-    livedDays: '50 lived days!',
+    bigDay: '{n} steps in one day!',
+    streakRecordFirst: '{n}-{unit} {habit} streak record!',
+    streakRecord:
+      '{n}-{unit} {habit} streak record! your old best was {previous}.',
+    livedDays: '{n} lived days!',
   },
 
   // map regions (T4.1) — one slot per region, in discovery order:
@@ -190,7 +211,13 @@ export const NARRATION = {
 // Look a slot up by its path, e.g. narrationSlot('firstReveals.flora.title').
 // Returns the text, or null when the slot is empty, blank, or doesn't
 // exist yet — so callers show nothing rather than inventing copy.
-export function narrationSlot(path) {
+//
+// `vars` fills the {holes} a slot chose to write (2026-08-20), using the
+// same filler the interface words use — narrationSlot('cameos.bigDay',
+// { n: 11 }) turns '{n} steps in one day!' into '11 steps in one day!'.
+// A slot that writes no holes ignores it entirely, which is every slot
+// but the cameos today.
+export function narrationSlot(path, vars) {
   let value = NARRATION
   for (const key of path.split('.')) {
     if (value === null || typeof value !== 'object') return null
@@ -198,5 +225,5 @@ export function narrationSlot(path) {
   }
   if (typeof value !== 'string') return null
   const text = value.trim()
-  return text === '' ? null : text
+  return text === '' ? null : fill(text, vars)
 }

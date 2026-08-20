@@ -162,6 +162,21 @@ describe('lived-day milestone (win 1)', () => {
 })
 
 describe('record streak (win 2)', () => {
+  // A run of `length` fulfilled days ending today, preceded by an
+  // earlier run of `record` days with a clear gap before it — so the
+  // habit's old best is exactly `record`, zero included. The friend
+  // rides on a long-ago completion of ANOTHER habit, so that arranging
+  // for a friend to exist never quietly adds a fulfilled day to h1's
+  // own record.
+  const runAfterRecord = (length, record) => {
+    const completions = [withFriend(done('carrier', 2025, 1, 1))]
+    for (let d = 1; d <= record; d++) completions.push(done('h1', 2026, 6, d))
+    for (let i = length - 1; i >= 0; i--) {
+      completions.push(doneOn('h1', addDays(TODAY, -i)))
+    }
+    return completions
+  }
+
   it('fires when a first-ever streak reaches the floor', () => {
     const habit = makeHabit({ type: 'daily' })
     // Five consecutive fulfilled days ending today; nothing before.
@@ -189,37 +204,130 @@ describe('record streak (win 2)', () => {
     expect(cameoWin([habit], completions, SEED, NOW, CUTOFF)).toBe(null)
   })
 
-  it('fires when the current run passes the old record', () => {
+  it('stays quiet when the run only TIES the old record', () => {
     const habit = makeHabit({ type: 'daily' })
-    const completions = [withFriend(done('h1', 2025, 1, 1))]
-    // A 4-day run in June, a gap, then 6 days ending today.
-    for (let d = 1; d <= 4; d++) completions.push(done('h1', 2026, 6, d))
-    for (let d = 10; d <= 15; d++) completions.push(done('h1', 2026, 7, d))
-    expect(cameoWin([habit], completions, SEED, NOW, CUTOFF).type).toBe(
-      'streakRecord',
+    expect(cameoWin([habit], runAfterRecord(6, 6), SEED, NOW, CUTOFF)).toBe(
+      null,
     )
   })
 
-  it('counts week-kind streaks against their own floor', () => {
+  it('fires on the day the record falls', () => {
+    const habit = makeHabit({ type: 'daily' })
+    // Old best 6, so the record falls at 7 — the anchor.
+    expect(
+      cameoWin([habit], runAfterRecord(7, 6), SEED, NOW, CUTOFF).type,
+    ).toBe('streakRecord')
+  })
+
+  // THE BUG THIS RULE EXISTS FOR (Kimia 2026-08-20): a run that has
+  // beaten its record beats it again tomorrow, and the day after, for
+  // ever — she got the same streak cameo two days running. The visit
+  // now anchors on the day the record fell and recurs a step at a time.
+  it('stays quiet on the days between celebration points', () => {
+    const habit = makeHabit({ type: 'daily' })
+    for (const length of [8, 9, 10, 11]) {
+      expect(
+        cameoWin([habit], runAfterRecord(length, 6), SEED, NOW, CUTOFF),
+      ).toBe(null)
+    }
+  })
+
+  it('visits again a full step after the record fell', () => {
+    const habit = makeHabit({ type: 'daily' })
+    // Anchor 7, step 5 → 7, 12, 17.
+    for (const length of [12, 17]) {
+      expect(
+        cameoWin([habit], runAfterRecord(length, 6), SEED, NOW, CUTOFF).type,
+      ).toBe('streakRecord')
+    }
+  })
+
+  it('anchors an unbeaten daily habit on the floor, not on day one', () => {
+    const habit = makeHabit({ type: 'daily' })
+    // No earlier run at all: 5, 10, 15 speak; 6–9 and 11–14 do not.
+    for (const length of [5, 10, 15]) {
+      expect(
+        cameoWin([habit], runAfterRecord(length, 0), SEED, NOW, CUTOFF).type,
+      ).toBe('streakRecord')
+    }
+    for (const length of [6, 7, 8, 9, 11, 14]) {
+      expect(
+        cameoWin([habit], runAfterRecord(length, 0), SEED, NOW, CUTOFF),
+      ).toBe(null)
+    }
+  })
+
+  it('carries the numbers the message needs', () => {
+    const habit = makeHabit({ type: 'daily' })
+    const win = cameoWin([habit], runAfterRecord(7, 6), SEED, NOW, CUTOFF)
+    expect(win.n).toBe(7)
+    expect(win.unit).toBe('day')
+    expect(win.previous).toBe(6)
+    expect(win.habitName).toBe(habit.name)
+  })
+
+  it('reports no old best for a habit setting its first record', () => {
+    const habit = makeHabit({ type: 'daily' })
+    const win = cameoWin([habit], runAfterRecord(5, 0), SEED, NOW, CUTOFF)
+    expect(win.previous).toBe(0)
+  })
+
+  // The visit is momentary and easy to miss, and pressing it goes to
+  // the field notes to see what it meant — so if two habits both broke
+  // a record today, both must be there (Kimia 2026-08-20). Only one
+  // friend visits, and the message speaks for the first in list order.
+  it('carries every habit whose record fell today', () => {
+    const one = makeHabit({ type: 'daily' }, 'h1')
+    const two = makeHabit({ type: 'daily' }, 'h2')
+    const completions = runAfterRecord(5, 0)
+    for (let i = 4; i >= 0; i--) {
+      completions.push(doneOn('h2', addDays(TODAY, -i)))
+    }
+    const win = cameoWin([one, two], completions, SEED, NOW, CUTOFF)
+    expect(win.streaks.map((streak) => streak.habitId)).toEqual(['h1', 'h2'])
+    expect(win.habitId).toBe('h1')
+  })
+
+  it('carries only the habits that won, not every habit', () => {
+    const one = makeHabit({ type: 'daily' }, 'h1')
+    const two = makeHabit({ type: 'daily' }, 'h2')
+    const completions = runAfterRecord(5, 0)
+    // h2 has a two-day run: nowhere near its floor.
+    for (let i = 1; i >= 0; i--) {
+      completions.push(doneOn('h2', addDays(TODAY, -i)))
+    }
+    const win = cameoWin([one, two], completions, SEED, NOW, CUTOFF)
+    expect(win.streaks.map((streak) => streak.habitId)).toEqual(['h1'])
+  })
+
+  it('lets a week-kind streak celebrate from its very first week', () => {
     const habit = makeHabit({ type: 'nPerWeek', n: 1 })
     const completions = [
-      withFriend(done('h1', 2025, 1, 1)),
-      done('h1', 2026, 6, 29), // week of Mon 2026-06-29
-      done('h1', 2026, 7, 7), // week of Mon 2026-07-06
-      done('h1', 2026, 7, 13), // this week (Mon 2026-07-13)
+      withFriend(done('h1', 2026, 7, 13)), // this week (Mon 2026-07-13)
     ]
-    // Three fulfilled weeks running: at/above the 2-week floor, no
-    // earlier week run at all.
-    expect(cameoWin([habit], completions, SEED, NOW, CUTOFF).type).toBe(
-      'streakRecord',
-    )
+    // No floor for week streaks (Kimia 2026-08-20): one fulfilled week
+    // is already a week of work.
+    const win = cameoWin([habit], completions, SEED, NOW, CUTOFF)
+    expect(win.type).toBe('streakRecord')
+    expect(win.unit).toBe('week')
+    expect(win.n).toBe(1)
   })
 
-  it('keeps week-kind records below their floor quiet', () => {
+  it('celebrates a week-kind streak every week it sets a new best', () => {
+    const habit = makeHabit({ type: 'nPerWeek', n: 1 })
+    const weeks = ['2026-06-29', '2026-07-06', '2026-07-13']
+    const completions = [withFriend(doneOn('h1', weeks[0]))]
+    for (const week of weeks.slice(1)) completions.push(doneOn('h1', week))
+    // Three unbroken weeks, no earlier run: step 1, so every week of it
+    // speaks — including this one.
+    expect(cameoWin([habit], completions, SEED, NOW, CUTOFF).n).toBe(3)
+  })
+
+  it('keeps a week-kind streak quiet while it only ties its old best', () => {
     const habit = makeHabit({ type: 'nPerWeek', n: 1 })
     const completions = [
-      withFriend(done('h1', 2025, 1, 1)),
-      done('h1', 2026, 7, 13), // this week only
+      withFriend(done('h1', 2025, 1, 1)), // an old fulfilled week: best 1
+      done('h1', 2026, 7, 13), // this week only: a tie, not a record
     ]
     expect(cameoWin([habit], completions, SEED, NOW, CUTOFF)).toBe(null)
   })

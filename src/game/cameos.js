@@ -12,9 +12,10 @@
 //      milestone while today's mark is the one that reached it);
 //   2. a RECORD STREAK — a habit's current streak beats every run
 //      before it inside its current counting era (the schedule.js
-//      kind-switch rule: day and week records never compete), and is
-//      at least CAMEO_STREAK_RECORD_MIN strong — otherwise every young
-//      habit would "beat its record" daily, a learnable schedule;
+//      kind-switch rule: day and week records never compete), on the
+//      day the record FALLS and at every CAMEO_STREAK_RECORD_STEP of
+//      the run thereafter (Kimia's rule 2026-08-20 — see the anchor
+//      note beside streakRecordWin);
 //   3. a BIG DAY — CAMEO_BIG_DAY_COMPLETIONS or more completions
 //      against one Habitat day.
 //
@@ -33,6 +34,7 @@ import {
   CAMEO_BIG_DAY_COMPLETIONS,
   CAMEO_LIVED_DAY_STEP,
   CAMEO_STREAK_RECORD_MIN,
+  CAMEO_STREAK_RECORD_STEP,
 } from './constants.js'
 import { addDays, dayKeyFromTimestamp, weekStart } from './days.js'
 import { randomUnit } from './drops.js'
@@ -137,12 +139,47 @@ function livedDayWin(completions, today) {
   if (!completions.some((completion) => completion.dayKey === today)) {
     return null
   }
-  return { type: 'livedDays' }
+  return { type: 'livedDays', n: lived }
 }
 
-// Win 2: the first habit (list order — stable) whose current streak is
-// a genuine all-time record at or above the floor for its kind.
+// Is a run at one of its celebration points today?
+//
+// THE ANCHOR (Kimia's rule 2026-08-20). Once a run has passed the old
+// best it passes it again every single day, so "beats its record" on
+// its own fires daily and for ever — the bug that had one habit's
+// 15-day streak visiting two days running. The visit instead anchors on
+// the day the record actually FALLS: the first length at which the run
+// is both past the old best and clear of the floor. From there it
+// recurs one step at a time.
+//
+//   old best 6, daily      → 7, 12, 17 …    (anchor 7, step 5)
+//   never broken, daily    → 5, 10, 15 …    (floor 5 IS the anchor)
+//   old best 3, N-per-week → 4, 5, 6, 7 …   (anchor 4, step 1)
+//
+// The old best cannot change while the run is alive — it is the longest
+// run that ENDED before this one — so the anchor is fixed for the run's
+// whole life and the pattern never drifts.
+function isCelebrationPoint(current, record, kind) {
+  const anchor = Math.max(record + 1, CAMEO_STREAK_RECORD_MIN[kind])
+  if (current < anchor) return false
+  return (current - anchor) % CAMEO_STREAK_RECORD_STEP[kind] === 0
+}
+
+// Win 2: every habit whose run is at a celebration point today.
+//
+// ALL of them, not just the first (Kimia's call 2026-08-20). Only one
+// cameo may visit — scarcity is the mechanic — so the message speaks
+// for the first habit in list order, exactly as before. But the visit
+// is momentary and easy to miss, and pressing it goes to the field
+// notes to see what it meant; if two habits both broke a record today,
+// both must be waiting there. So the win carries the whole list.
+//
+// Each entry carries what the message needs: how long the run is now,
+// the word for its unit, the habit's own name, and the best it beat
+// (0 when this is the habit's first record — the two cases have their
+// own narration slots, since there is no old best to name).
 function streakRecordWin(habits, counts, today, cutoffHour) {
+  const streaks = []
   for (const habit of habits) {
     const kind = streakKind(habit.schedule.type)
     if (kind === null) continue
@@ -150,11 +187,17 @@ function streakRecordWin(habits, counts, today, cutoffHour) {
       kind === 'week'
         ? weekStreaks(habit, counts, today, cutoffHour)
         : dayStreaks(habit, counts, today, cutoffHour)
-    if (current >= CAMEO_STREAK_RECORD_MIN[kind] && current > record) {
-      return { type: 'streakRecord', habitId: habit.id }
-    }
+    if (!isCelebrationPoint(current, record, kind)) continue
+    streaks.push({
+      habitId: habit.id,
+      habitName: habit.name,
+      n: current,
+      unit: kind,
+      previous: record,
+    })
   }
-  return null
+  if (streaks.length === 0) return null
+  return { type: 'streakRecord', ...streaks[0], streaks }
 }
 
 // Win 3: many completions against one Habitat day, live and retro
@@ -163,7 +206,9 @@ function bigDayWin(completions, today) {
   const todays = completions.filter(
     (completion) => completion.dayKey === today,
   ).length
-  return todays >= CAMEO_BIG_DAY_COMPLETIONS ? { type: 'bigDay' } : null
+  return todays >= CAMEO_BIG_DAY_COMPLETIONS
+    ? { type: 'bigDay', n: todays }
+    : null
 }
 
 // The seeded surprise guest: one of the arrived friends, picked by the
@@ -191,9 +236,14 @@ export function streakStatus(habit, completions, now, cutoffHour) {
 // The cameo owed right now, or null. `habits` is the FULL list
 // (archived included — a record streak stands even if the habit was
 // archived today); `now` is a timestamp, like currentStreak takes.
-// Returns { type, friend } — plus habitId for a record streak — or
-// null when there is no win, or no friend has arrived yet to celebrate
-// it ("only when a friend exists", plan T4.6).
+//
+// Returns { type, friend, n, … } — or null when there is no win, or no
+// friend has arrived yet to celebrate it ("only when a friend exists",
+// plan T4.6). Every win carries `n`, the number the win is ABOUT, so
+// the message can say a true one (2026-08-20): steps taken today for a
+// big day, the lived-day count for a milestone, the run's length for a
+// record streak. A record streak also carries `habitName`, `unit`,
+// `previous` and the full `streaks` list — see streakRecordWin.
 //
 // `played` (T6.6) is the slice of `completions` the CURRENT game may
 // count — see game/newgame.js. The two wins differ in what they are

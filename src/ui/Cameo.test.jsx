@@ -14,6 +14,11 @@ import {
   restoreNames,
   setSpeciesName,
 } from '../test/nameFixture.js'
+import {
+  blankNarrationSlot,
+  restoreNarration,
+  setNarrationSlot,
+} from '../test/narrationFixture.js'
 import Cameo from './Cameo.jsx'
 
 // A fixture name, never Kimia's real one (src/test/nameFixture.js).
@@ -23,6 +28,10 @@ const zala = 'test species name'
 const WIN = {
   type: 'streakRecord',
   habitId: 'h1',
+  habitName: 'test habit name',
+  n: 7,
+  unit: 'day',
+  previous: 6,
   friend: { category: 3, individual: 2 },
 }
 
@@ -37,6 +46,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup()
   restoreNames()
+  restoreNarration()
   vi.useRealTimers()
 })
 
@@ -61,14 +71,66 @@ describe('the cameo visit (T4.6)', () => {
     expect(visit.textContent).not.toContain(zala)
   })
 
-  it("reads its message from Kimia's slot — blank renders nothing", () => {
+  it("reads its message from Kimia's slot", () => {
+    setNarrationSlot('cameos.streakRecord', 'a fixture sentence')
     render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
-    const message = document.querySelector('.cameo-message')
-    // Whatever the slot holds is exactly what shows; a blank slot is no
-    // element at all (the T3.4 rule). Never assert her words themselves.
-    const slot = narrationSlot(`cameos.${WIN.type}`)
-    if (slot === null) expect(message).toBeNull()
-    else expect(message.textContent).toBe(slot)
+    expect(document.querySelector('.cameo-message').textContent).toBe(
+      'a fixture sentence',
+    )
+  })
+
+  it('renders nothing at all for a blank slot', () => {
+    // The T3.4 rule: an unwritten slot shows nothing rather than
+    // inventing copy. Set through the fixture, never read from her file.
+    blankNarrationSlot('cameos.streakRecord')
+    render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
+    expect(document.querySelector('.cameo-message')).toBeNull()
+  })
+
+  // The bug that started this (Kimia 2026-08-20): the slots held her
+  // draft sentences with their example numbers typed in, so every visit
+  // announced a 15-day streak whatever the streak really was. The
+  // numbers now come from the win.
+  describe("the numbers are the win's own", () => {
+    it('fills a streak slot from the win', () => {
+      setNarrationSlot(
+        'cameos.streakRecord',
+        '{n}-{unit} {habit}, was {previous}',
+      )
+      render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
+      expect(document.querySelector('.cameo-message').textContent).toBe(
+        '7-day test habit name, was 6',
+      )
+    })
+
+    it('uses the first-record slot when there is no old best to name', () => {
+      setNarrationSlot('cameos.streakRecord', 'beat a best')
+      setNarrationSlot('cameos.streakRecordFirst', 'first ever: {n}')
+      render(
+        <Cameo
+          win={{ ...WIN, n: 5, previous: 0 }}
+          worldSeed="seed"
+          onExpire={() => {}}
+        />,
+      )
+      expect(document.querySelector('.cameo-message').textContent).toBe(
+        'first ever: 5',
+      )
+    })
+
+    it('fills a big day and a lived-day milestone too', () => {
+      setNarrationSlot('cameos.bigDay', '{n} steps')
+      render(
+        <Cameo
+          win={{ ...WIN, type: 'bigDay', n: 11 }}
+          worldSeed="seed"
+          onExpire={() => {}}
+        />,
+      )
+      expect(document.querySelector('.cameo-message').textContent).toBe(
+        '11 steps',
+      )
+    })
   })
 
   it('settles back by itself after the linger', () => {

@@ -46,9 +46,33 @@ import FriendGlyph from './FriendGlyph.jsx'
 // celebration you can see any time is wallpaper (§8's scarcity rule).
 const FIREWORK_WINS = new Set(['streakRecord', 'livedDays'])
 
+// Which of Kimia's slots this win speaks through, and the values it may
+// fill its {holes} with (2026-08-20). The numbers come from the win
+// itself, so the sentence is true of THIS win — before this, the slots
+// held her draft sentences with their example numbers typed in, and
+// every cameo claimed a 15-day streak whatever the streak really was.
+//
+// A record streak has two slots because a habit setting its first-ever
+// record has no old best to name.
+function slotFor(win) {
+  if (win.type !== 'streakRecord') {
+    return { path: `cameos.${win.type}`, vars: { n: win.n } }
+  }
+  return {
+    path: win.previous > 0 ? 'cameos.streakRecord' : 'cameos.streakRecordFirst',
+    vars: {
+      n: win.n,
+      unit: win.unit,
+      habit: win.habitName,
+      previous: win.previous,
+    },
+  }
+}
+
 function Cameo({ win, worldSeed, onExpire }) {
   const key = FRIEND_CATEGORIES[win.friend.category].key
-  const message = narrationSlot(`cameos.${win.type}`)
+  const slot = slotFor(win)
+  const message = narrationSlot(slot.path, slot.vars)
   // The visit's whole length is one timer; the CSS fade is driven from
   // the same constant (inline below), so the two never disagree.
   useEffect(() => {

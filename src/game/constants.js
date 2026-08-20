@@ -426,12 +426,32 @@ export const MARKET_PRICE_TIERS = [6, 12, 18]
 export const CAMEO_BIG_DAY_COMPLETIONS = 8
 
 // A RECORD STREAK: a habit's current streak beats its own all-time
-// record — but only once the streak is at least this strong. Without
-// the floor every young habit would beat its "record" daily, and a
-// cameo you can predict is a cameo you stop seeing (T4.6: never on a
-// learnable schedule). Day-counted streaks and week-counted ones
-// (N-per-week) have their own floors, in their own units.
-export const CAMEO_STREAK_RECORD_MIN = { day: 5, week: 2 }
+// record. The floor is the shortest run worth a visit, in the streak's
+// own unit — a day-counted habit (daily, weekdays, Mondays-and-
+// Thursdays, N-per-day) says nothing until five fulfilled days are
+// banked, because the reward pacing is flat and patient and a
+// congratulation on day one is an early-days bonus. A week-counted
+// habit (N-per-week) has no floor at all: its first fulfilled week is
+// already a week of work, so it may celebrate from the jump.
+// (Kimia's calls 2026-08-20.)
+export const CAMEO_STREAK_RECORD_MIN = { day: 5, week: 1 }
+
+// …and how far the run must travel before the SAME record streak may
+// be celebrated again (Kimia's call 2026-08-20, the fix for T4.6's
+// worst bug: a run that has beaten its record beats it again every
+// single day, so the "rarest" cameo was visiting daily forever).
+//
+// The visit anchors on the day the record actually falls — the first
+// day the run passes the old best AND clears the floor — and then
+// recurs one step at a time from there:
+//
+//   old best 6, daily      → 7, 12, 17, 22 …   (step 5)
+//   never broken, daily    → 5, 10, 15, 20 …   (the floor is the anchor)
+//   old best 3, N-per-week → 4, 5, 6, 7 …      (step 1 — every new best)
+//
+// The anchor is fixed for the life of the run (the old best cannot
+// change while the run is alive), so the pattern never drifts.
+export const CAMEO_STREAK_RECORD_STEP = { day: 5, week: 1 }
 
 // A LIVED-DAY MILESTONE: every this-many lived days (50, 100, 150 … —
 // her draft message read "50 lived days!"). Fires only on the crossing

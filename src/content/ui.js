@@ -369,7 +369,11 @@ export function isLanguage(value) {
 // becomes 'read a novel'. A hole with no matching value is left exactly
 // as it is rather than becoming the word "undefined" — a visible {label}
 // on screen is a bug that announces itself, which is the kinder failure.
-function fill(text, vars) {
+//
+// Exported because narration.js needs the identical filling for Kimia's
+// story slots (the cameo messages, 2026-08-20) and two copies of one
+// regular expression is exactly the drift T6.14 exists to end.
+export function fill(text, vars) {
   if (!vars) return text
   return text.replace(/\{(\w+)\}/g, (whole, name) =>
     name in vars ? String(vars[name]) : whole,

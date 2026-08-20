@@ -37,6 +37,7 @@ import {
   restoreNames,
   setSpeciesName,
 } from './test/nameFixture.js'
+import { restoreNarration, setNarrationSlot } from './test/narrationFixture.js'
 
 // The Habitat day these tests are running in, on the default 3am
 // cutoff — so backup-age expectations never go stale.
@@ -78,6 +79,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup() // unmount this test's App (no vitest globals = no auto-cleanup)
+  restoreNarration()
   vi.useRealTimers()
   vi.restoreAllMocks()
 })
@@ -2494,17 +2496,16 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
         })),
       ],
     })
+    setNarrationSlot('cameos.bigDay', 'fixture: {n}')
     render(<App />)
     settleStartup()
 
     const cameo = screen.getByRole('status')
     expect(cameo.querySelector('svg')).not.toBeNull()
-    // The message is Kimia's slot: whatever it holds is what shows, and
-    // a blank slot is no element at all — never assert her words here.
-    const slot = narrationSlot('cameos.bigDay')
-    const message = cameo.querySelector('.cameo-message')
-    if (slot === null) expect(message).toBeNull()
-    else expect(message.textContent).toBe(slot)
+    // The message is Kimia's slot, set above through the fixture so this
+    // never depends on what her file actually says — and its {n} is
+    // filled with the win's own number, eight (2026-08-20).
+    expect(cameo.querySelector('.cameo-message').textContent).toBe('fixture: 8')
 
     // Once per visit: after the linger it leaves by itself.
     act(() => {
