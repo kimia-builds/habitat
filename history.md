@@ -2794,10 +2794,12 @@ return 0` right after the era is worked out, so a moment before the
   muted. Kimia's reasoning: there was a reason it was out of view, so
   muted is the happy compromise — visible, but not in your face.
   Charm-hiding is the one exception that stays, because charms ARE
-  saved. One accepted consequence: inside design mode the tasks
-  control's third press (hidden) looks identical to its second (bottom
-  and muted); the cycle still advances underneath, so the fourth press
-  un-mutes as usual.
+  saved. **The tasks cycle therefore SHORTENS in design mode** (Kimia,
+  the same day, shown the rule written out at its edge): mute-instead-of-
+  hide would have made its third press look identical to its second, a
+  press that appears to do nothing, so the hidden step is skipped
+  outright — three presses in design mode (top · bottom and muted · off)
+  against four everywhere else.
 
 ## T6.22 build notes — the visit shows that it can be pressed (2026-08-20)
 

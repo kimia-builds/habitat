@@ -541,7 +541,10 @@ so they stack in any order and never start over:
   arrangement of them survives.
 - **tasks** cycles the one-time to-dos through four presses: to the top ·
   to the bottom and muted · hidden · off. "Off" un-hides and un-dims
-  where they stand; it restores no earlier position.
+  where they stand; it restores no earlier position. Inside design mode the cycle is
+  **three** presses — top · bottom and muted · off — because nothing
+  hides in there (below), and a hidden step that merely muted again
+  would be a press that appeared to do nothing.
 
 **un-hide all** un-hides everything and clears the charms, and leaves
 mutings alone. It is the way back to a re-orderable list, and it shows
@@ -582,7 +585,8 @@ in `src/content/ui.js` — answered by **design new default** or
   habits, so the verbs mute instead, and anything hidden that way on
   entry comes back muted: there was a reason it was out of view, and
   muted is visible without being in your face. Charm-hiding is the
-  exception, because charms are saved.
+  exception, because charms are saved. The tasks cycle loses its
+  hidden step here rather than muting twice (above).
 
 Two exits: **save new default view** (or shutting the padlock) and
 **exit design mode without changing**. A refresh is a third — nothing is

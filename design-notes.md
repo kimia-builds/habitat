@@ -1187,7 +1187,7 @@ check-in):
 | the **padlock** | shut = the default is protected; open = design mode |
 | **today** | keep what applies today, mute what could, hide the rest |
 | **prioritise** | re-order into three tiers, stably |
-| **tasks** | cycle the to-dos: top · bottom and muted · hidden · off |
+| **tasks** | cycle the to-dos: top · bottom and muted · hidden · off (three steps in design mode — nothing hides there) |
 | **un-hide all** | un-hide everything, clear the charms, leave mutings |
 | the **eye**, on every tile | mute this one / un-mute it |
 
