@@ -470,6 +470,16 @@ export const CAMEO_LIVED_DAY_STEP = 50
 // still qualifies — no persistence, no nagging.
 export const CAMEO_LINGER_MS = 9000
 
+// …and how long a visit you can PRESS stays (Kimia's call 2026-08-20).
+// Roughly double, because the two visits ask different things of you: a
+// big day or a milestone is watched, and nine seconds is a whole
+// performance and a beat to read the words. A record streak also has to
+// be NOTICED as pressable, read, and decided about — and nine seconds
+// to spot something, understand it and reach for it is not a moment, it
+// is a reflex test. Only the pressable visit waits; the others stay as
+// momentary as they were.
+export const CAMEO_OPENABLE_LINGER_MS = 18000
+
 // How many of yesterday's habit rows the check-in shows before it folds
 // the rest behind a `…` (Kimia's call 2026-08-14). The check-in is meant
 // to be a glance and a few taps, so the offer to update earlier days —

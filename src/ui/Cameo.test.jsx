@@ -7,7 +7,7 @@
 
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { CAMEO_LINGER_MS } from '../game/constants.js'
+import { CAMEO_LINGER_MS, CAMEO_OPENABLE_LINGER_MS } from '../game/constants.js'
 import {
   blankAllNames,
   restoreNames,
@@ -185,6 +185,59 @@ describe('the cameo visit (T4.6)', () => {
     it('is not offered at all where nothing is listening', () => {
       render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
       expect(screen.queryByRole('button')).toBeNull()
+    })
+
+    // The press was invisible until 2026-08-20 — a bare hit area whose
+    // only sign was the cursor. The blob now breathes, which the
+    // stylesheet drives off this class; without it there is nothing on
+    // screen saying the visit can be opened at all.
+    it('marks the visit as pressable', () => {
+      render(
+        <Cameo
+          win={WIN}
+          worldSeed="seed"
+          onExpire={() => {}}
+          onOpen={vi.fn()}
+        />,
+      )
+      expect(screen.getByRole('status').className).toContain('cameo-openable')
+    })
+
+    it('leaves a watch-only visit unmarked', () => {
+      render(
+        <Cameo
+          win={{ ...WIN, type: 'bigDay' }}
+          worldSeed="seed"
+          onExpire={() => {}}
+          onOpen={vi.fn()}
+        />,
+      )
+      expect(screen.getByRole('status').className).not.toContain(
+        'cameo-openable',
+      )
+    })
+
+    // Nine seconds is a whole performance and a beat to read — enough to
+    // WATCH, not enough to notice a thing is pressable, read it, and
+    // reach for it (Kimia 2026-08-20).
+    it('waits longer than a watch-only visit before settling away', () => {
+      const onExpire = vi.fn()
+      render(
+        <Cameo
+          win={WIN}
+          worldSeed="seed"
+          onExpire={onExpire}
+          onOpen={vi.fn()}
+        />,
+      )
+      act(() => {
+        vi.advanceTimersByTime(CAMEO_LINGER_MS)
+      })
+      expect(onExpire).not.toHaveBeenCalled()
+      act(() => {
+        vi.advanceTimersByTime(CAMEO_OPENABLE_LINGER_MS - CAMEO_LINGER_MS)
+      })
+      expect(onExpire).toHaveBeenCalledTimes(1)
     })
   })
 

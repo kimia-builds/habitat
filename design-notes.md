@@ -528,6 +528,22 @@ design-bible.md §9c.)
      two wins are not pressable — they are about the day, which the
      notes have no separate view of. Nothing about the blackout is
      stored; leaving the page puts it out.
+     **And the visit says so — the blob BREATHES (Kimia's call
+     2026-08-20, same day, after not finding it).** The press shipped as
+     a bare invisible hit area, on the reasoning that the visit shows a
+     friend and a caption and nothing else; the only sign it existed was
+     the cursor changing if you happened to pass over it, which is not a
+     sign. Nothing is added to the visit even now — the rose outline the
+     blob already wears simply rises and falls, §5's own word for a
+     thing alive and touchable. It waits out the four-second signature
+     performance first: one movement at a time, and the breath begins
+     exactly where the visit stops being something to watch and becomes
+     something to answer. Stilled under `prefers-reduced-motion`.
+     **A pressable visit also stays about twice as long** (18s against
+     9s). Nine seconds is a performance and a beat to read, which is
+     enough to WATCH; noticing a thing is pressable, reading it and
+     reaching for it is not a moment but a reflex test. The watch-only
+     wins keep their nine.
      _(Amended 2026-07-20, fourteenth session — Kimia's redecision,
      over the twelfth session's "rare and unpredictable". Built in
      T4.6, 2026-07-21.)_

@@ -2666,6 +2666,42 @@ return 0` right after the era is worked out, so a moment before the
   now given only the completions that existed by the as-of moment.
   Folded into spec §6.
 
+- 2026-08-20 (Kimia, an hour after it shipped): **an invisible control
+  is not a control.** She could not find the press at all. It had been
+  built as a bare transparent hit area over the whole visit, reasoning
+  from her 2026-08-16 rule that a visit shows a friend and a caption and
+  nothing else — so its only sign was the cursor changing if you
+  happened to pass over it. Her choice of fix kept the rule intact and
+  solved it inside it: **the blob BREATHES.** Nothing is added; the rose
+  outline it already wears rises and falls, which is §5's own language
+  for a thing alive and touchable. The breath waits out the four-second
+  signature performance — one movement at a time — which also puts it
+  exactly where the visit stops being something to watch. She also chose
+  a longer window for a pressable visit, **roughly double**: nine
+  seconds is enough to watch a performance, not enough to notice a thing
+  is pressable, read it and reach for it. Folded into design-notes §8.
+
+## T6.22 build notes — the visit shows that it can be pressed (2026-08-20)
+
+`@keyframes cameo-breathe` on `.cameo-openable .cameo-blob path`,
+2600ms ease-in-out with a 4s delay (the slowest `friend-anim-*`'s own
+length), pulsing `stroke-opacity` 0.5 → 0.85 and the drop-shadow from
+`--glow-lifted` to `--glow-bright`. Hover and focus set `animation:
+none` alongside their lifted values, because an animation beats a plain
+declaration and the hover state has to be able to win. Stilled under
+`prefers-reduced-motion`.
+
+`CAMEO_OPENABLE_LINGER_MS` (18000) joins `CAMEO_LINGER_MS` (9000, kept):
+`Cameo` picks between them on the same `openable` flag that decides the
+press and the class, so the timer, the CSS fade and the mark can never
+disagree about which kind of visit this is.
+
+The lesson worth keeping is in the decisions log above, not here: the
+reasoning that produced the invisible press was sound, followed a real
+rule of hers, and was written down in three places — and it still
+shipped a control nobody could find. Reasoning about a rule is not the
+same as looking at what the rule produces.
+
 ## T6.21 build notes — a past week's streak stops at that week (2026-08-20)
 
 Two lines in `game/fieldnotes.js`: an `asOfCompletions` list, filtered

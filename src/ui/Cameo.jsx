@@ -34,7 +34,11 @@
 //     something you see, and the Guest Book is where names live.
 
 import { useEffect } from 'react'
-import { CAMEO_LINGER_MS, FRIEND_CATEGORIES } from '../game/constants.js'
+import {
+  CAMEO_LINGER_MS,
+  CAMEO_OPENABLE_LINGER_MS,
+  FRIEND_CATEGORIES,
+} from '../game/constants.js'
 import { narrationSlot } from '../content/narration.js'
 import Blob from './blob.jsx'
 import Firework from './firework.jsx'
@@ -87,17 +91,19 @@ function Cameo({ win, worldSeed, onExpire, onOpen }) {
   const slot = slotFor(win)
   const message = narrationSlot(slot.path, slot.vars)
   const openable = win.type === OPENABLE && onOpen !== undefined
+  const linger = openable ? CAMEO_OPENABLE_LINGER_MS : CAMEO_LINGER_MS
   // The visit's whole length is one timer; the CSS fade is driven from
-  // the same constant (inline below), so the two never disagree.
+  // the same number (inline below), so the two never disagree — and a
+  // pressable visit gets the longer of the two (2026-08-20).
   useEffect(() => {
-    const timer = setTimeout(onExpire, CAMEO_LINGER_MS)
+    const timer = setTimeout(onExpire, linger)
     return () => clearTimeout(timer)
-  }, [onExpire])
+  }, [onExpire, linger])
   return (
     <div
       className={openable ? 'cameo cameo-openable' : 'cameo'}
       role="status"
-      style={{ animationDuration: `${CAMEO_LINGER_MS}ms` }}
+      style={{ animationDuration: `${linger}ms` }}
     >
       {FIREWORK_WINS.has(win.type) && <Firework />}
       {/* The press covers the friend AND the caption — the whole visit

@@ -390,6 +390,8 @@ tracker. Everything after this is delight, informed by real use.
       2026-08-20)_
 - [x] **T6.21 A past week's streak stops at that week** _(done
       2026-08-20)_
+- [x] **T6.22 The visit shows that it can be pressed** _(done
+      2026-08-20)_
 - [ ] **T6.7 The first hour — storytelling & narration for a new
       player** (Kimia's call 2026-08-11) — revisit what arriving on
       N-Z-D actually feels like for someone who has never opened

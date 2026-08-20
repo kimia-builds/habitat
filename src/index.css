@@ -1774,17 +1774,59 @@ body {
   cursor: pointer;
 }
 
-/* The one visible sign, and it is the one the rest of Habitat already
-   uses for a thing you may press: a lift of light on hover and focus.
-   The glow is the friend's own rose, not a colour of the press's. */
+/* THE BLOB BREATHES (Kimia's call 2026-08-20). The press was invisible:
+   a bare hit area whose only sign was the cursor changing if you
+   happened to pass over it, so there was no way to know the visit could
+   be opened at all. The fix adds NOTHING to the visit — it is still a
+   friend and a caption, her 2026-08-16 rule — the outline the blob
+   already wears simply rises and falls, which is Habitat's own word for
+   a thing that is alive and may be touched (§5: glow and pulse, never
+   an alarm).
+
+   It waits for the performance. The friend's signature animation plays
+   once and takes about four seconds; breathing underneath it would be
+   two movements at once, and the visit is meant to settle. So the blob
+   holds still, the friend performs, and only then does the breathing
+   start — which is also the moment the visit stops being something to
+   watch and becomes something to answer. */
+@keyframes cameo-breathe {
+  0%,
+  100% {
+    stroke-opacity: 0.5;
+    filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
+  }
+  50% {
+    stroke-opacity: 0.85;
+    filter: drop-shadow(0 0 var(--glow-bright) currentColor);
+  }
+}
+
+.cameo-openable .cameo-blob path {
+  /* Slow: a breath, not a blink. Four seconds of delay is the slowest
+     signature animation's own length (the friend-anim-* keyframes). */
+  animation: cameo-breathe 2600ms ease-in-out 4s infinite;
+}
+
+/* Hover and focus still lift it above whatever the breath is doing —
+   the animation would otherwise win over these plain declarations, so
+   it is stopped rather than fought. */
 .cameo-openable:hover .cameo-blob path,
 .cameo-press:focus-visible ~ .cameo-figure .cameo-blob path {
+  animation: none;
   stroke-opacity: 0.8;
   filter: drop-shadow(0 0 var(--glow-bright) currentColor);
 }
 
 .cameo-press:focus-visible {
   outline: none;
+}
+
+/* Nobody's eye should be asked to endure a pulse it did not want. */
+@media (prefers-reduced-motion: reduce) {
+  .cameo-openable .cameo-blob path {
+    animation: none;
+    stroke-opacity: 0.8;
+  }
 }
 
 /* ── the streak spotlight (2026-08-20) ─────────────────────────────────
