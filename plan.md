@@ -430,9 +430,9 @@ tracker. Everything after this is delight, informed by real use.
       call 2026-08-20; spec §5b "The lenses", design-notes §11f). A long
       list could only be looked at two ways: all of it, or one charm
       combination that forgot itself the moment you reloaded. Four lenses
-      joined the charms — **default · today · prioritise · to-dos ·
-      un-hide all** — plus an **eye** on every tile and the one pebble
-      that saves, **save as default**. They are their own control family,
+      joined the charms — **today · prioritise · to-dos · un-hide all**
+      — plus an **eye** on every tile and the one pebble that saves, a
+      miniature **padlock**. They are their own control family,
       not pebbles (§11e), and they belong to the home screen alone. **One sub-task per session, in this
       order** — each one is visible on screen the day it lands, and the
       last one saves what the others make. Kimia eyeballs every look
@@ -442,9 +442,10 @@ tracker. Everything after this is delight, informed by real use.
   - [x] **T6.23b The `today` lens.** _(2026-08-21)_
   - [x] **T6.23c The `prioritise` lens.** _(2026-08-21)_
   - [x] **T6.23d The `to-dos` lens.** _(2026-08-21)_
-  - [x] **T6.23e The default view, and the one press that saves it.**
+  - [x] **T6.23e The default view, and the padlock that saves it.**
         _(2026-08-21 — design mode retired unbuilt in favour of one
-        press; original design in history.md)_
+        press; presentation settled the same day. Original design in
+        history.md)_
 
 ## M7 — Two devices (sync) (5–6 sessions)
 

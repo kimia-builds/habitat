@@ -1403,15 +1403,15 @@ function AppBody({ data, setData }) {
   // pop-up (below) dims this exact content behind itself.
   const listContent = (
     <>
-      {/* The lens line (design-notes §11f): the charms centred, the word
-          lenses flowing out to their left and right. A three-column grid
-          rather than a plain row, so the charms keep the middle of the
-          screen whether or not a word is showing beside them — `un-hide
-          all` comes and goes with the work it has to do, and the charms
-          must not shuffle sideways when it does. At a narrow window the
-          sides wrap underneath rather than pushing the charms out of the
-          centre. This is §11f's proposal, built so Kimia can judge the
-          placement on screen; it fills out as the other lenses land. */}
+      {/* The lens line (design-notes §11f), settled by Kimia on
+          2026-08-21 after seeing it full: ONE line, reading
+          today · prioritise · to-dos · [the charms] · un-hide all · the
+          padlock. A three-column grid rather than a plain row, so the
+          charms keep the middle of the screen whether or not a word is
+          showing beside them — `un-hide all` comes and goes with the
+          work it has to do, and the charms must not shuffle sideways
+          when it does. Squeeze the window and everything BUT the charms
+          drops to a second line beneath them (the CSS carries that). */}
       <div className="lens-row">
         <div className="lens-row-side lens-row-side--left">
           <button
@@ -1425,18 +1425,18 @@ function AppBody({ data, setData }) {
           <button
             type="button"
             className="lens-word"
-            data-lens="todos"
-            onClick={handleTodosLens}
+            data-lens="prioritise"
+            onClick={handlePrioritiseLens}
           >
-            {t('lens.todos')}
+            {t('lens.prioritise')}
           </button>
           <button
             type="button"
             className="lens-word"
-            data-lens="default"
-            onClick={restoreDefaultView}
+            data-lens="todos"
+            onClick={handleTodosLens}
           >
-            {t('lens.default')}
+            {t('lens.todos')}
           </button>
         </div>
         <section
@@ -1447,14 +1447,6 @@ function AppBody({ data, setData }) {
           <SymbolPicker selected={filter} onToggle={toggleFilter} />
         </section>
         <div className="lens-row-side lens-row-side--right">
-          <button
-            type="button"
-            className="lens-word"
-            data-lens="prioritise"
-            onClick={handlePrioritiseLens}
-          >
-            {t('lens.prioritise')}
-          </button>
           {anythingHidden && (
             <button
               type="button"
@@ -1465,18 +1457,35 @@ function AppBody({ data, setData }) {
               {t('lens.unhideAll')}
             </button>
           )}
-          {/* The one PEBBLE on this line (design-notes §11e): it acts on
-              the world and settles, where every other word here only
-              changes how the list is being looked at. It wears the
-              pebble's frame for exactly that reason — the family
-              difference should be visible rather than muddled. */}
+          {/* The padlock — the one control on this line that is NOT a
+              lens (design-notes §11e/§11f): every word beside it only
+              changes how the list is being looked at, while this one
+              acts on the world and settles. So it is a pebble, wearing
+              the counter trio's circle at the lens words' own size, and
+              wordless like the rest of the home screen's furniture —
+              title and aria-label carry the words (§12a). */}
           <button
             type="button"
-            className="pebble"
+            className="pebble pebble-counter pebble-lock"
             data-lens="save-as-default"
             onClick={handleSaveAsDefault}
+            title={t('lens.saveAsDefault')}
+            aria-label={t('lens.saveAsDefault')}
           >
-            {t('lens.saveAsDefault')}
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              {/* A shut padlock: the body, and the shackle standing on
+                  it. Shut, always — there is no open state to be in. */}
+              <rect x="4.5" y="10.5" width="15" height="10" rx="2.5" />
+              <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
+            </svg>
           </button>
         </div>
       </div>

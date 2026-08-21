@@ -2408,37 +2408,84 @@ body {
   gap: var(--space-4);
 }
 
-/* THE LENS LINE (design-notes §11f, T6.23b). The charms hold the centre
-   and the word lenses flow out to their left and right, so the line
-   reads evenly spaced. Equal side columns rather than plain flex
-   siblings, because `un-hide all` appears and disappears with the work
-   it has to do and the charms must not shuffle sideways each time it
-   does. The charms' column is `auto`, so a squeeze takes room from the
-   words and never from the drawings; the words wrap inside their own
-   column rather than overflowing. §11f also wants the sides to fall
-   UNDER the charms at a narrow window — nothing to build yet, since two
-   short words cannot crowd six charms at any width the app runs at
-   (740px and up, T5.1b). It belongs with the task that fills the line. */
+/* THE LENS LINE (design-notes §11f; shape settled by Kimia 2026-08-21,
+   T6.23e, once the line was finally full). ONE line, in her order:
+   today · prioritise · to-dos · [the charms] · un-hide all · the padlock.
+
+   The charms hold the centre and everything else flows out to their left
+   and right. Equal side columns rather than plain flex siblings, because
+   `un-hide all` appears and disappears with the work it has to do and the
+   charms must not shuffle sideways each time it does. The charms' column
+   is `auto`, so a squeeze takes room from the words and never from the
+   drawings.
+
+   NOTHING WRAPS INSIDE A COLUMN any more (`nowrap` below): a word folding
+   under its neighbour was the eyesore Kimia asked to be rid of. When the
+   line genuinely cannot fit, the whole of it drops instead — see the
+   media query. */
 .lens-row {
   display: grid;
+  grid-template-areas: 'left charms right';
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-2);
+  /* THE ONE THING ON THE PAGE WIDER THAN THE TEXT COLUMN. Six charms and
+     five controls need more room than `.app`'s 40rem, and the choice was
+     between shrinking the words until they were hard to read and letting
+     this one line breathe past the tiles. The line breathes. The negative
+     margins are symmetric, so the charms stay dead centre; the `min()`
+     keeps the row inside the window at every width the app runs at. */
+  --lens-row-width: min(44rem, calc(100vw - var(--space-4) * 2));
+  width: var(--lens-row-width);
+  margin-inline: calc((100% - var(--lens-row-width)) / 2);
 }
 
 .lens-row-side {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-4);
+  flex-wrap: nowrap;
+  gap: var(--space-2);
 }
 
 .lens-row-side--left {
+  grid-area: left;
   justify-content: flex-end;
 }
 
 .lens-row-side--right {
+  grid-area: right;
   justify-content: flex-start;
+}
+
+.lens-row .filter-view {
+  grid-area: charms;
+}
+
+/* THE NARROW WINDOW (Kimia's rule, 2026-08-21): "everything minus charms
+   drops to a second line beneath the charms". The charms take the first
+   row whole and the two side groups sit together on the second, still
+   centred and still reading in the same left-to-right order — so the line
+   folds as ONE thing rather than each word wrapping on its own.
+
+   45rem is derived, not chosen. The widest the row ever needs is
+   216px + 240px of charms + 216px + gaps = 43rem (the side columns are
+   equal by rule, so the wider one sets both); the row is capped at 44rem
+   for a little slack, and `100vw - 2rem` falls below 43rem exactly when
+   the window falls below 45rem.
+
+   Worth knowing: at today's 740px minimum app width (T5.1b's viewport
+   gate) the line ALWAYS fits, so this second row is a safety net rather
+   than something Kimia will see — it is here because the rule is right,
+   and because M8's phone will drop that gate. */
+@media (max-width: 45rem) {
+  .lens-row {
+    grid-template-areas:
+      'charms charms'
+      'left right';
+    grid-template-columns: auto auto;
+    justify-content: center;
+    row-gap: var(--space-2);
+  }
 }
 
 /* A word lens is neither a pebble nor a charm (§11f): it holds no state
@@ -2448,7 +2495,10 @@ body {
 .lens-word {
   background: none;
   border: none;
-  padding: var(--space-2);
+  /* A lens says one thing; "to-dos" folding into "to-" over "dos" was
+     the first eyesore the full line produced (2026-08-21). */
+  white-space: nowrap;
+  padding: var(--space-2) var(--space-1);
   font: inherit;
   font-size: 0.85rem;
   letter-spacing: 0.08em;
@@ -2644,6 +2694,37 @@ body {
     transparent
   );
   border-radius: 50%;
+}
+
+/* THE PADLOCK (T6.23e, Kimia 2026-08-21) — the one control on the lens
+   line that is not a lens, so it is a pebble and wears the counter trio's
+   circle. But MINIATURE: "if the padlock is too tall for the line, make
+   it small and miniature to fit the size of the text beside it. it
+   shouldn't be an eyesore." The counter's own 2rem would stand a head
+   above 0.85rem words and pull the eye straight to it, which is the
+   opposite of what a quiet line wants. 1.4rem sits inside the words'
+   line box.
+
+   It also takes the lens words' quiet colour and lights up on hover the
+   same way they do, so the whole line brightens as one family — the
+   circle is what says "this one acts", not a louder colour. */
+.pebble-lock {
+  width: 1.4rem;
+  height: 1.4rem;
+  color: var(--text-quiet);
+  transition:
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.pebble-lock svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.pebble-lock:hover,
+.pebble-lock:focus-visible {
+  color: var(--text);
 }
 
 /* One-time to-do tick-box: the same empty circle as its +1 neighbours

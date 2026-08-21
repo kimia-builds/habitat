@@ -2987,13 +2987,52 @@ return 0` right after the era is worked out, so a moment before the
   screen. It is full now. The thing to change is the three-column grid,
   not the words in it.
 
-- 2026-08-21 (T6.23e): **`save as default` is a PEBBLE, by §11f's own
+- 2026-08-21 (T6.23e): **the save control is a PEBBLE, by §11f's own
   test.** A lens leaves only a different-looking screen; a pebble leaves
   something behind. This one leaves a saved arrangement, so it wears
-  `.pebble` and its frame, sitting among the frameless lens words. It was
-  already foreseen — design-notes §11f had classed design mode's four
-  words as pebbles for exactly this reason — so retiring design mode
-  changed the count, not the rule.
+  `.pebble`, sitting among the frameless lens words. It was already
+  foreseen — design-notes §11f had classed design mode's four words as
+  pebbles for exactly this reason — so retiring design mode changed the
+  count, not the rule. (It shipped as the worded "save as default" and
+  became the padlock the same day; see the presentation entry below. That
+  makes it the family's one WORDLESS pebble — it says its name on hover,
+  the way §12a's icons do.)
+
+- 2026-08-21 (Kimia's call, after seeing T6.23e live): **the lens line's
+  presentation, settled.** "the functions are all good… we just need to
+  clean up the presentation." Five decisions in one pass:
+  **(1) The `default` word is removed outright** — a refresh and the day
+  turn already restore the saved view, so a control that only duplicated
+  them was one word too many on a line with no room to spare.
+  **(2) `save as default` becomes a PADLOCK** — the counter trio's circle
+  with a shut padlock drawn inside, hover label "save as default view".
+  The padlock survives its own retirement this way: design mode is gone,
+  but its icon turned out to be the right drawing for the one control
+  that commits. **Miniature, explicitly**: "if the padlock is too tall
+  for the line, make it small and miniature to fit the size of the text
+  beside it. it shouldn't be an eyesore" — so 1.4rem, not the counter's
+  2rem, sitting inside the words' own line box.
+  **(3) The order is fixed**: today · prioritise · to-dos · [charms] ·
+  un-hide all · padlock, all on one line.
+  **(4) The narrow window drops everything but the charms to a second
+  line beneath them** — the line folds as one thing.
+  **(5) The confirm sentence gains a way back**: "…any previous default
+  view choices will be lost. refresh the page to go back to previous
+  default view." Which is the `default` word's job, handed to the sentence
+  that had to be read anyway.
+
+- 2026-08-21 (T6.23e presentation): **the lens line is the one thing on
+  the page wider than the text column.** Six charms (240px) and five
+  controls need more than `.app`'s 40rem — 608px of content — and the
+  measured need was ~670px. The choice was between shrinking the words
+  until they were hard to read (the arithmetic wanted 0.68rem, well past
+  "quiet" and into "squinting") and letting one line breathe past the
+  tiles. The line breathes: 44rem wide with symmetric negative margins,
+  so the charms stay dead centre and nothing overflows the window at any
+  width the app runs at. Flagged rather than assumed: at the 740px
+  viewport gate the line still fits on one row, so the second-row
+  fallback is a safety net nobody will see until M8's phone drops that
+  gate — built anyway, because the rule is right.
 
 ## T6.23e build notes — the default view, and the one press that saves it (2026-08-21)
 
@@ -3083,6 +3122,55 @@ Her sentence from that pop-up was not wasted: it is the confirm on
 `save as default`, with only its opening clause reworded from
 "re-design your default view" to "save this as your default view", with
 her approval.
+
+## T6.23e build notes (part 2) — the presentation pass (2026-08-21)
+
+Same day, straight after part 1. Kimia: "the functions are all good i
+think we just need to clean up the presentation." Decisions in the log
+above; what it took to build:
+
+- **The `default` word** and its `lens.default` slot are gone.
+  `restoreDefaultView` stayed exactly as it was — it still serves the
+  mount and the day-turn effect, which is precisely why the word was
+  redundant.
+- **The padlock** is `.pebble .pebble-counter .pebble-lock`, a shut
+  padlock drawn at 24×24 in the same stroke language as the eye, pencil
+  and box. Wordless, so `title` + `aria-label` carry the words (§12a).
+- **One CSS trap worth remembering**: `.pebble-lock` was first written
+  beside `.lens-word`, several hundred lines ABOVE `.pebble-counter`.
+  Same specificity, so the counter's `width: 2rem` won and the padlock
+  rendered full size while the stylesheet plainly said 1.4rem. Moved to
+  sit directly after `.pebble-counter`, which is also where it belongs to
+  read. Caught by measuring the rendered box, not by reading the CSS.
+- **`white-space: nowrap` on `.lens-word`** — "to-dos" folding into "to-"
+  over "dos" was the first eyesore the full line produced.
+- **The row's width and the breakpoint are derived, not chosen.** The
+  widest the row needs is measured (196px of words each side, 240px of
+  charms, gaps); capped at 44rem for slack; and `100vw - 2rem` falls
+  below that exactly when the window falls below 45rem, which is the
+  media query.
+
+**Tests**: the two that pressed the removed `default` word were rewritten
+rather than deleted — one now proves the **day turn** restores the saved
+view without a reload (the other half of "a refresh and the new day
+restore it by themselves"), the other proves a **refresh** with nothing
+ever saved lands on the plain list. A third was added for the padlock
+being wordless: it asserts THAT there is a hover label and a
+screen-reader name, never what they say. 965 pass.
+
+**Verified with real clicks** at 1280×800 and measured at 740px (the
+gate's own minimum) and 760px: one line, charms dead centre, nothing
+wrapping, no page overflow. The two-line fallback was confirmed by
+injecting its rules at 740px, since the viewport gate makes it otherwise
+unreachable.
+
+**A tooling note that cost several round-trips**: calling
+`location.reload()` from `javascript_tool` left the pane's INPUT path
+pointing at the dead document. Screenshots and `javascript_exec` went on
+working perfectly, so nothing looked wrong — but every `computer` click
+timed out at 30s with "the Browser pane is currently hidden", which reads
+like a renderer problem and is not one. Closing the tab and reopening the
+pane fixed it instantly. Reload by `navigate`, not by script.
 
 ## T6.23a build notes — the eye on every tile (2026-08-21)
 

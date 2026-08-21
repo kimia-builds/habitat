@@ -591,24 +591,32 @@ general form of the existing no-dragging-under-a-charm-filter rule
 deliberate order must be exactly knowable at all times. Muted tiles never
 block dragging: they are visible.
 
-**default, and the one press that saves.** The **default view** is a
-saved arrangement — **order + charms + mutings**, and only those three.
-Pressing **default** restores it at any time; a refresh and the new day
-restore it by themselves. A new player has one from the start, decided
-for them: the order habits were created in, no charms, nothing muted.
+**The default view, and the one press that saves it.** The **default
+view** is a saved arrangement — **order + charms + mutings**, and only
+those three. A refresh and the new day restore it. A new player has one
+from the start, decided for them: the order habits were created in, no
+charms, nothing muted.
 
-**Dragging is always temporary.** Only **save as default** ever writes an
+**There is no `default` word** (Kimia's call 2026-08-21, on seeing the
+line full): a refresh and the day turn already do it, so a control that
+duplicated them was one word too many on a line that had no room to
+spare.
+
+**Dragging is always temporary.** Only the **padlock** ever writes an
 order down. Kimia's reason, 2026-08-20: "temporary reorders feel fun to
 do… they should feel throwaway and flexible, without fear of commitment."
 (A newly created habit still joins the default order at its end, as it
 always has; adding a habit is not a ceremony.)
 
-**save as default** is one press, and it **asks first** — Kimia's
-sentence, in `src/content/ui.js` — because it overwrites an arrangement
-that may have taken an evening to build. It is the one control on the
-lens line that is a **pebble** and not a lens (§11e/§11f): every other
-word there only changes how the list is being looked at, while this one
-acts on the world and settles.
+**The padlock** is that one press, and it **asks first** — Kimia's
+sentence, in `src/content/ui.js`, which names the refresh as the way back
+— because it overwrites an arrangement that may have taken an evening to
+build. It is the one control on the lens line that is a **pebble** and
+not a lens (§11e/§11f): every other word there only changes how the list
+is being looked at, while this one acts on the world and settles. It is
+drawn rather than worded — a shut padlock in the counter trio's circle,
+kept miniature so it sits inside the words' own line (design-notes §11f)
+— with its name on hover, like the rest of the home screen's furniture.
 
 **Nothing is saved hidden.** Hidden is not one of the three things a
 default holds and cannot be — a saved view you cannot find your habits in

@@ -1122,7 +1122,7 @@ is one number in `src/tokens.css`.
 | The draft tile | save, cancel |
 | Foot of the home screen | export backup, import backup, start a new game, view historical data |
 | The new-game pop-up | total refresh, keep habit data, not now, yes, no take me back |
-| The lens line (T6.23e) | save as default — the one control there that acts on the world |
+| The lens line (T6.23e) | the padlock — the one control there that acts on the world, and the only wordless pebble |
 | A held drop, and the abode's waiting-to-decide list | gather, leave it, read now, read later |
 | Field notes | ‹ earlier, later › |
 | Market | buy |
@@ -1147,9 +1147,10 @@ app:
   to-dos, un-hide all and the tile eye — the whole of §11f. Same reason
   as the switches, and the reason the family needed its own section: a
   lens changes how the list is being looked at and leaves nothing
-  behind, where a pebble acts and settles. **save as default** sits on
-  the same line and is the exception that proves the test: it leaves a
-  saved arrangement behind, so it is a pebble.
+  behind, where a pebble acts and settles. The **padlock** sits on the
+  same line and is the exception that proves the test: it leaves a saved
+  arrangement behind, so it is a pebble — the only one that says its name
+  on hover instead of on screen (§11f).
 - **The reveal's own control.** "Onward", dismissing a first-occurrence
   reveal or a friend arrival, belongs to the one moment Habitat is
   allowed to shout (§5) and wears the reveal's neon, not the everyday
@@ -1185,18 +1186,26 @@ check-in):
 | Lens | What it does |
 | --- | --- |
 | the six **charms** | the original lens: show only these tags |
-| **default** | back to the saved default view |
 | **today** | keep what applies today, mute what could, hide the rest |
 | **prioritise** | re-order into three tiers, stably — finished things sink |
 | **to-dos** | cycle the to-dos: top · bottom and muted · hidden · off |
 | **un-hide all** | un-hide everything, clear the charms, leave mutings |
 | the **eye**, on every tile | mute this one / un-mute it |
 
-**One control on that line is NOT a lens**: **save as default**, the one
+**One control on that line is NOT a lens**: the **padlock**, the one
 press that writes the arrangement down. By §11f's own test it leaves
-something behind, so it is a **pebble** (§11e) and wears the pebble's
-frame — the family difference should be visible on the line rather than
-muddled by it.
+something behind, so it is a **pebble** (§11e) and wears the counter
+trio's circle — the family difference should be visible on the line
+rather than muddled by it. But **miniature**, at 1.4rem rather than the
+counter's 2rem (Kimia, 2026-08-21): "if the padlock is too tall for the
+line, make it small and miniature to fit the size of the text beside it.
+it shouldn't be an eyesore." It takes the lens words' quiet colour and
+brightens on hover exactly as they do, so the line lights as one family
+— the circle is what says "this one acts", not a louder colour.
+
+**There is no `default` word** (same call). A refresh and the 3am day
+turn already restore the saved view, so a control that only duplicated
+them was one word too many on a line with no room to spare.
 
 **One of them is wordless, and that is §12a, not an exception.** The
 **eye** is furniture on a tile, and belongs with the pencil and the box
@@ -1226,29 +1235,37 @@ Beyond that, the look is Kimia's to judge on screen, not on paper
 (§0 and the T5.2c lesson): build the smallest visible piece and show
 her.
 
-**Placement, as a starting proposal — now on screen (T6.23b, filling
-out in T6.23c–d).** One line, the charms centred, the word lenses flowing
-out to their left and right so the line reads evenly spaced; at a narrow
-window they fall to a second line **under** the charms rather than
-shuffling the charms out of the middle. **today** and **to-dos** sit on the
-left; **prioritise** and **un-hide all** on the right, Kimia's choice of
-the two sides on 2026-08-21. Built as three columns with the charms in the
-middle one, so a word appearing or leaving — **un-hide all** comes and
-goes with the work it has to do — never shuffles the charms sideways.
+**Placement — SETTLED (Kimia, 2026-08-21, seeing the line full).** One
+line, in this order:
+
+> today · prioritise · to-dos · **[the six charms]** · un-hide all · the padlock
+
+Three columns with the charms in the middle one, so a word appearing or
+leaving — **un-hide all** comes and goes with the work it has to do —
+never shuffles the charms sideways. At a narrow window **everything but
+the charms drops to a second line beneath them**, folding as one thing
+rather than each word wrapping on its own. Nothing wraps inside a column
+any more: "to-dos" folding into "to-" over "dos" was the first eyesore
+the full line produced.
+
+**This is the one line on the page wider than the text column.** Six
+charms and five controls need more room than `.app`'s 40rem, and the
+choice was between shrinking the words until they were hard to read and
+letting one line breathe past the tiles. The line breathes: 44rem, with
+symmetric negative margins so the charms stay dead centre. (At today's
+740px minimum width the line always fits, so the second-row fallback is a
+safety net rather than something Kimia will see — it is there because the
+rule is right, and because M8's phone will drop that gate.)
 The words themselves are
 the plainest thing that could be there — no frame, quiet until the
 pointer is near. Kimia eyeballs the line as it fills.
 
-**BOTH SIDES NOW WRAP, and the line is Kimia's to judge (T6.23e,
-2026-08-21).** The right-hand side has wrapped since T6.23b — measured at
-1280px: each side column is the grid's `1fr` share (168px) while
-**prioritise** and **un-hide all** need 193px side by side. T6.23e added
-**default** to the left and the **save as default** pebble to the right,
-so at 1280px the left column now wraps too and the line stands three
-words over two rows on each side. The line is finally full, which is the
-moment §11f said it would have to settle its shape — so this is the look
-to judge on screen, and the shape to change is the three-column grid
-itself rather than the words in it.
+**How the wrap was fixed.** Both sides wrapped the moment the line was
+full — the right since T6.23b, the left as soon as T6.23e added to it —
+because each side column was only the grid's `1fr` share of a 608px row
+(168px) while the words needed more. Kimia settled the shape rather than
+the words: the row got wider, the `default` word went, and the save
+control became a padlock a fifth the width of the phrase it replaced.
 
 **Design mode was retired before it was built (Kimia's call
 2026-08-21).** It was to be the ceremony that wrote an order down — a
@@ -1372,7 +1389,7 @@ rather than one long one.
 alone until 2026-08-11), not a pair of ▲▼ arrows. Press anywhere on a
 row — the charm, the name, the meta line, the space between them — and
 pull it up or down. **The new order does NOT persist (T6.23e,
-2026-08-21):** a drag is always throwaway, and `save as default` is the
+2026-08-21):** a drag is always throwaway, and the padlock is the
 one press that writes an order down — see §11f. The row's tap controls (+1,
 −1, the to-do tick, edit, archive) are the exception: a press that lands
 on one of them is a tap and never starts a drag, so nothing a finger

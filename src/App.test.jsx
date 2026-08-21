@@ -3649,12 +3649,23 @@ describe('the default view (T6.23e)', () => {
     expect(names()).toEqual(['one', 'two', 'three'])
   })
 
-  // `default` is the press back at any time; a refresh does the same
-  // thing by itself, which is the test above.
-  it('puts the saved view back at any time', () => {
+  // The 3am day turn restores it too, without a reload — the other half
+  // of "a refresh and the new day restore it by themselves". There is no
+  // `default` word to press: Kimia removed it on 2026-08-21 precisely
+  // because these two already do the job.
+  it('comes back on the day turn, without a reload', () => {
+    // 11:30pm, so the page's own minute-tick can carry it past the 3am
+    // cutoff while it sits there open.
+    vi.setSystemTime(new Date(2026, 6, 16, 23, 30))
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     render(<App />)
     three()
+    // Marked done before midnight, so the new day arrives with nothing
+    // to ask about: an open check-in pop-up lists the habits as well, and
+    // a quiet rollover leaves only the list itself on screen to read.
+    for (const name of ['one', 'two', 'three']) {
+      fireEvent.click(within(tile(name)).getByRole('button', { name: '+1' }))
+    }
 
     fireEvent.click(eye('two'))
     fireEvent.click(lens('save-as-default'))
@@ -3663,27 +3674,44 @@ describe('the default view (T6.23e)', () => {
     // Fiddle with all three parts of the arrangement…
     dragOneToTheBottom()
     fireEvent.click(eye('two')) // un-mute
-    fireEvent.click(lens('today')) // hides the whenever-nots, mutes others
+    fireEvent.click(lens('today')) // hides what today cannot want
     expect(names()).not.toEqual(saved)
 
-    fireEvent.click(lens('default'))
+    act(() => {
+      vi.advanceTimersByTime(4.5 * 60 * 60 * 1000) // 11:30pm → 4am
+    })
+
     expect(names()).toEqual(saved)
     expect(isMuted('two')).toBe(true)
     expect(isMuted('one')).toBe(false)
   })
 
   // A new player's default view is decided for them: the order the
-  // habits were created in, no charms, nothing muted. So `default`
-  // works before anything has ever been saved.
+  // habits were created in, no charms, nothing muted. So a refresh with
+  // nothing ever saved lands on the plain list rather than on a fault.
   it('reads a never-saved default as the plain, unarranged list', () => {
-    render(<App />)
+    const first = render(<App />)
     three()
     dragOneToTheBottom()
     fireEvent.click(eye('two'))
 
-    fireEvent.click(lens('default'))
+    first.unmount()
+    render(<App />)
     expect(names()).toEqual(['one', 'two', 'three'])
     expect(isMuted('two')).toBe(false)
+  })
+
+  // Wordless, like the rest of the home screen's furniture (§12a): the
+  // hover label and the screen-reader name carry the words, and the page
+  // itself says nothing. Asserted as "there IS a label", never what it
+  // says — the words are Kimia's.
+  it('says what the padlock does on hover, and nowhere else', () => {
+    render(<App />)
+    three()
+    const padlock = lens('save-as-default')
+    expect(padlock.title).toBeTruthy()
+    expect(padlock.getAttribute('aria-label')).toBeTruthy()
+    expect(padlock.textContent).toBe('')
   })
 
   // A saved view you cannot find your habits in is a trap (Kimia's
