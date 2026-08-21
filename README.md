@@ -126,7 +126,9 @@ built on top of a live, in-use app.
   chitu seven times across. The abode has its plants now too: a flora find
   is one of forty-eight — four shapes, two sizes and six furred fills —
   dealt from the same shuffle, standing at its true height beside the
-  friends who come to visit. Still to come in M5 are the friends on the
+  friends who come to visit. They arrive as themselves too: the drop that
+  lands at the top of the habit list is the plant you found, and the first
+  one you ever find introduces itself full-screen. Still to come in M5 are the friends on the
   rest of their screens, the giant landmark flora, and the object art.
 - **M6 — under way alongside M5.** Content pools, pacing tune-ups and
   portfolio polish are still ahead, but a good deal of it has shipped

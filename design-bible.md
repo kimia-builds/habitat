@@ -343,9 +343,10 @@ on purpose: that is what a catalogue of 48 means, rather than 48 templates for
 unique plants. `Flora.jsx` grows one hair field per shape-and-fill pair and
 reuses it everywhere, which is that fact made into code.
 
-**THE FLORA REACHED THE GAME on 2026-08-21** (T5.3i), on the Abode first —
-the ground and the doorstep list, with the party's friends going in beside
-them. `src/ui/Flora.jsx` is the one component every screen showing a flora goes
+**THE FLORA REACHED THE GAME on 2026-08-21** (T5.3i): the Abode first — the
+ground and the doorstep list, with the party's friends going in beside them —
+and then the arrival shelf at the top of the habit list and the first-flora
+reveal, which took the habit list's held arrival row in with them. `src/ui/Flora.jsx` is the one component every screen showing a flora goes
 through, the twin of `Friend.jsx`, and it carries the recipe above verbatim.
 **A screen chooses a BASE, not a size**, exactly as §9c requires of the
 friends, and the same base serves both families because the two canons speak

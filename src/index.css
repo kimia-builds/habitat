@@ -2095,6 +2095,16 @@ body {
   filter: drop-shadow(0 0 var(--glow-bright) currentColor);
 }
 
+/* THE FIRST FLORA (T5.3i). Its size comes from the canon, not from here, so
+   this rule sets none — a small find arrives at the 4rem the placeholder
+   sprig stood at and a large one arrives 2.75x that. What it keeps is the
+   reveal's neon POP, and it can keep it honestly now: Flora.jsx puts the
+   plant's own colour on the element, so the brightest step of the glow scale
+   lands in the plant's own light rather than in a colour chosen for it. */
+.reveal-flora-art {
+  filter: drop-shadow(0 0 var(--glow-bright) currentColor);
+}
+
 .reveal-title {
   font-weight: 300;
   letter-spacing: 0.2em;

@@ -39,7 +39,9 @@ import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import { arrivalLabel } from './arrivalText.js'
 import Blob from './blob.jsx'
 import DropGlyph from './DropGlyph.jsx'
-import FriendGlyph from './FriendGlyph.jsx'
+import Flora, { FloraDefs } from './Flora.jsx'
+import Friend from './Friend.jsx'
+import { baseWhereSmallestIs } from './friendCanon.js'
 import StarShimmer, { SHIMMER_STAGGER_MS } from './shimmer.jsx'
 import { useText } from './language.jsx'
 
@@ -48,6 +50,20 @@ import { useText } from './language.jsx'
 // language cannot be kept in two tables. What that file explains: three
 // outlines drawn once in a 120×44 frame and stretched, the stroke told
 // not to stretch with them, and why border-radius cannot do this.
+
+// HOW MUCH ROOM THE LIVING THINGS GET ON THE SHELF (T5.3i, 2026-08-21).
+// A flora and a friend can both land here, so this one base serves both —
+// floraCanon.js and friendCanon.js speak the same scale, and the shelf must
+// not be the one place on N-Z-D where a plant and a creature stop being true
+// to each other. Sized up from the SMALLEST, which is a plip: 1.5rem is what
+// a plip gets in the Guest Book list, judged there and the same here.
+//
+// So the shelf's items are no longer all one 1.5rem square. A plip arrives
+// small and a hamdi bulo arrives large, a large flora arrives taller than a
+// small one — because they ARE. Everything without a canon (publications,
+// fungi) keeps the old even glyph; those are objects, not living things, and
+// their own sizes arrive with their art.
+const SHELF_BASE_REM = baseWhereSmallestIs(1.5)
 
 // Which stream's colour an arrival wears.
 const STREAM_OF = {
@@ -131,11 +147,21 @@ function ShelfItem({
         title={held ? '' : t('arrivals.hold')}
       >
         {arrival.key === 'friend' ? (
-          <FriendGlyph
+          <Friend
             category={arrival.friend.category}
             individual={arrival.friend.individual}
             worldSeed={worldSeed}
-            className="drop-glyph"
+            base={SHELF_BASE_REM}
+            idPrefix={`arrival-${arrival.id}-`}
+          />
+        ) : arrival.key === 'flora' ? (
+          <Flora
+            completionId={arrival.completionId}
+            worldSeed={worldSeed}
+            base={SHELF_BASE_REM}
+            unit="rem"
+            idPrefix={`arrival-${arrival.id}-`}
+            className="arrival-flora-art"
           />
         ) : (
           <DropGlyph kind={arrival.key} />
@@ -204,6 +230,9 @@ function ArrivalShelf({
       // cannot drift apart when the bar folds or its spacing changes.
       style={{ '--header-height': `${headerHeight}px` }}
     >
+      {/* The texture library's definitions, once for the shelf: an arriving
+          flora paints its fill through them. */}
+      <FloraDefs />
       {/* Newest on top, older pushed down (Kimia's call 2026-08-13).
           Reversed here rather than with CSS so the reading order a
           screen reader hears matches the order on screen. */}

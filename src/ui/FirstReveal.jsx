@@ -11,7 +11,17 @@
 
 import { narrationSlot } from '../content/narration.js'
 import DropGlyph from './DropGlyph.jsx'
+import Flora, { FloraDefs } from './Flora.jsx'
+import { floraBaseWhereSmallestIs } from './floraCanon.js'
 import { useText } from './language.jsx'
+
+// HOW BIG THE FIRST FLORA IS (T5.3i, 2026-08-21). This screen shows one drop
+// and nothing beside it, and only flora among the living things reach it — the
+// friends have their own reveal — so it sizes from the smallest FLORA rather
+// than the smallest friend. 4rem is what the placeholder sprig stood at here,
+// so a small flora arrives exactly as big as the drawing it replaces, and a
+// large one arrives 2.75x that, as it must.
+const REVEAL_BASE_REM = floraBaseWhereSmallestIs(4)
 
 const STREAMS = {
   flora: 'flora',
@@ -21,7 +31,7 @@ const STREAMS = {
   fungi: 'fungi',
 }
 
-function FirstReveal({ arrival, onDismiss }) {
+function FirstReveal({ arrival, worldSeed, onDismiss }) {
   const { t } = useText()
   const title = narrationSlot(`firstReveals.${arrival.key}.title`)
   const line = narrationSlot(`firstReveals.${arrival.key}.line`)
@@ -32,7 +42,21 @@ function FirstReveal({ arrival, onDismiss }) {
       aria-label={title ?? t('reveal.firstArrival')}
     >
       <div className={`reveal reveal-${STREAMS[arrival.key]}`}>
-        <DropGlyph kind={arrival.key} className="reveal-glyph" />
+        {arrival.key === 'flora' ? (
+          <>
+            <FloraDefs />
+            <Flora
+              completionId={arrival.completionId}
+              worldSeed={worldSeed}
+              base={REVEAL_BASE_REM}
+              unit="rem"
+              idPrefix="first-reveal-"
+              className="reveal-flora-art"
+            />
+          </>
+        ) : (
+          <DropGlyph kind={arrival.key} className="reveal-glyph" />
+        )}
         {title && <h2 className="reveal-title">{title}</h2>}
         {line && <p className="reveal-line">{line}</p>}
         <button className="reveal-button" onClick={onDismiss}>

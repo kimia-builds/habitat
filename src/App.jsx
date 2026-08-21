@@ -1798,6 +1798,7 @@ function AppBody({ data, setData }) {
         ) : (
           <FirstReveal
             arrival={revealing}
+            worldSeed={data.worldSeed}
             onDismiss={() =>
               setSeenRevealIds((seen) => new Set([...seen, revealing.id]))
             }

@@ -213,9 +213,10 @@ tracker. Everything after this is delight, informed by real use.
             - [x] **The Abode's party** _(done 2026-08-21 — went in with
                   the flora under T5.3i, which is where it was always
                   going: both families share one base on that ground.)_
-            - [ ] **The habit list's arrival row** _(the last held one —
-                  it stands a friend beside a flora too, so it goes in
-                  with T5.3i's second slice.)_
+            - [x] **The habit list's arrival row** _(done 2026-08-21 —
+                  went in with T5.3i's second slice, where it belonged:
+                  a friend and a flora landing on one shelf share that
+                  shelf's one base.)_
 
       - [ ] **T5.3i The flora reach the game** _(opened 2026-08-21 on Kimia's
             call, "take the flora live into production")_ — the four
@@ -239,8 +240,11 @@ tracker. Everything after this is delight, informed by real use.
                   list, plus T5.3h's held party friends, which share this
                   screen's one base. `src/ui/Flora.jsx` is now the one component
                   every screen goes through. Build notes in history.md)_
-            - [ ] **The arrival, and the first-flora reveal** — the drop that
-                  lands on the habit list, and the neon POP the first time.
+            - [x] **The arrival, and the first-flora reveal** _(done
+                  2026-08-21 — the shelf at the top of the habit list, and
+                  the neon POP the first time. T5.3h's held arrival row
+                  went in here too, so the shelf's friends became the real
+                  drawings in the same push. Build notes in history.md)_
             - [ ] **The landmark class** — see T5.3g; still Kimia's own session.
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's

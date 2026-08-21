@@ -3186,6 +3186,73 @@ return 0` right after the era is worked out, so a moment before the
   48px curiosity now stands beside a 133px flora, which she may want to
   look at.
 
+- 2026-08-21 (T5.3i, second slice): **the arrival shelf sizes from the
+  plip, and a big friend simply arrives big.** A flora and a friend can
+  both land on that shelf, so it takes ONE base for both — the shelf must
+  not be the place on N-Z-D where a plant and a creature stop being true
+  to each other. Sized up from the smallest, a plip at 1.5rem, which is
+  what a plip gets in the Guest Book list and was judged there. The
+  consequence, checked in the browser before being accepted rather than
+  after: the shelf's items are no longer all one 1.5rem square, and a
+  hamdi bulo arrives 165px across where a plip arrives 21px. Nothing
+  overflows the window — the shelf's existing 20rem cap and its wrapping
+  hold it — so the collision that looked likely was not one, and the ratio
+  never had to bend. Everything WITHOUT a canon (publications, fungi)
+  keeps the old even glyph: those are objects, not living things, and
+  their own sizes arrive with their art.
+
+- 2026-08-21 (T5.3i, second slice): **the first-flora reveal sizes from
+  the smallest FLORA, not the smallest friend.** It shows one drop and
+  nothing beside it, and only flora among the living things reach it — the
+  friends have their own reveal — so `floraBaseWhereSmallestIs` is the
+  right question there. 4rem is what the placeholder sprig stood at, so a
+  small find arrives exactly as big as the drawing it replaces and a large
+  one arrives 2.75x that. The reveal keeps its neon POP and can now keep
+  it honestly: Flora.jsx puts the plant's own colour on the element, so the
+  brightest step of the glow scale lands in the plant's own light rather
+  than in a colour picked for it.
+
+## T5.3i build notes (part 2) — the flora arrive (2026-08-21)
+
+**What changed on screen.** The drop that lands at the top of the habit
+list is the plant you found now, not the placeholder sprig — and the first
+flora you ever find introduces itself full-screen as itself. T5.3h's held
+arrival row went in with it, so an arriving FRIEND on that shelf is the
+real drawing too, at its canon size beside the flora.
+
+**Why the two went together.** This is the last of the two things T5.3h
+parked, and it was parked for exactly this reason: the shelf is a place a
+friend stands beside a flora. Doing the flora and leaving the friend a
+placeholder square would have taught the wrong proportions on the one
+screen that was held back to avoid teaching them.
+
+**What the sizes turned out to be**, measured live rather than guessed: a
+hamdi bulo arrival is 165 x 200px, a plip 21px, a small flora 48px tall
+and a large one 133px. Three arrivals stack to a 520px column that stays
+inside the window. The shelf needed no CSS change at all — its 20rem cap
+and its wrapping already handled items that are no longer all one size.
+
+**Everything without a canon was left alone.** Publications and fungi keep
+`DropGlyph`, because they are objects rather than living things and their
+real sizes arrive with their art (design-bible §10). The friend REVEAL and
+the cameo also still wear the placeholder line-art — they are their own
+slices under T5.3h and were not touched.
+
+**Verified in the browser** by forcing a flora and a friend onto the shelf
+with a temporary local patch to `rollDrops` (reverted, never committed),
+then holding both arrivals so they could be measured and looked at: the
+real drawings, the right sizes, nothing off the edge of the window, no
+console errors.
+
+**Tests.** The shelf's new tests assert that each arriving flora carries
+the SHAPE it was dealt and that its height over the canon gives back the
+shelf's own base — so two flora and a friend on one shelf all resolve to
+one base, which is the whole claim. The reveal's assert the same for the
+one drop it shows, and that a drop with no canon still gets the shared
+glyph. Fixtures gained the `completionId` and the string `worldSeed` a
+real arrival always carries; the old ones passed `worldSeed={1}` and no
+completion at all, which was fine for a placeholder that ignored both.
+
 ## T5.3i build notes — the flora reach the Abode (2026-08-21)
 
 **What changed on screen.** The Abode's plants are Kimia's drawings now,
