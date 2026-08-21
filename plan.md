@@ -438,16 +438,7 @@ tracker. Everything after this is delight, informed by real use.
       last one saves what the others make. Kimia eyeballs every look
       before it settles (the T5.2c rule): smallest visible piece first,
       never a finished system.
-  - [ ] **T6.23a Muting — the eye on every tile.** A third icon beside
-        edit and archive: closed eye dims the tile and drifts it softly
-        to the bottom; open eye leaves it exactly where it stands.
-        Muting sinks, un-muting moves nothing. A muted tile is fully
-        tappable and can be dragged back up afterwards, still dim.
-        Resets on refresh and at the day turn, like the charm lens.
-        _Done when:_ the eye's real click is verified in the browser
-        pane (CLAUDE.md's reachability rule), tests cover sink-on-mute /
-        no-move-on-unmute and the day-turn reset, and Kimia has seen the
-        icon and the drop.
+  - [x] **T6.23a Muting — the eye on every tile.** _(2026-08-21)_
   - [ ] **T6.23b The `today` lens.** Keep what applies today; mute to
         the bottom what could (N-per-week, whenever, one-time tasks —
         including an N-per-week already at its number); hide the rest.

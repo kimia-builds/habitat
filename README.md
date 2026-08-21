@@ -122,9 +122,16 @@ built on top of a live, in-use app.
   when a game begins and never repeating within a species, so two
   players' guest books look different. Still to come in M5 is the
   creature, flora and object art itself.
-- **M6 — ahead.** Content pools, pacing tune-ups and portfolio polish.
-  The error-boundary safety net is already in, and so is the first half
-  of the backup habit — persistent-storage groundwork, and the export
-  button tells you how old your last backup is.
+- **M6 — under way alongside M5.** Content pools, pacing tune-ups and
+  portfolio polish are still ahead, but a good deal of it has shipped
+  out of order, as things came up in daily use. The error-boundary
+  safety net is in, and the first half of the backup habit —
+  persistent-storage groundwork, and the export button tells you how old
+  your last backup is. There are two doors to starting over. The morning
+  check-in got quick. Every word the interface says now lives in one
+  keyed file, so Habitat can hold a second language. And the habit list
+  is learning new ways to be LOOKED at: every tile carries an eye, and
+  closing it dims that habit and drifts it down out of your eyeline
+  without switching anything off.
 
 See [plan.md](plan.md) for the task-level truth.

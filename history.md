@@ -2801,6 +2801,84 @@ return 0` right after the era is worked out, so a moment before the
   outright — three presses in design mode (top · bottom and muted · off)
   against four everywhere else.
 
+- 2026-08-21: **a newly muted tile stops just under the LIVE list, not
+  at the floor** (Kimia, shown the two arrangements side by side). Mute
+  one habit and it sinks below everything still in your eyeline; mute a
+  second and it lands ABOVE the first, so the dim ones read newest-first
+  and the tile you have only just put aside is the one nearest the
+  habits you are still working through. The alternative — every mute to
+  the absolute floor, stacking in the order they were muted — buries the
+  most recent decision deepest, which is backwards. **Muting still only
+  ever SINKS**: a tile already lower than that landing spot (dragged
+  down to the floor at some point, or the last live tile with nothing
+  but dim ones above it) does not move at all, because closing an eye
+  must never lift something up the list.
+
+- 2026-08-21: **the eye leads the three icons on a tile** — eye, then
+  the pencil, then the archive box (Kimia's call). It is the gentlest of
+  the three and will be the most used, and it leaves archive last, where
+  the most final of them belongs. Its hover label is **"mute" / "unmute"**
+  — the same word the spec and the design notes use for the behaviour,
+  so the screen and the docs say one thing (`habits.mute` /
+  `habits.unmute` in src/content/ui.js, hers to rewrite).
+
+## T6.23a build notes — the eye on every tile (2026-08-21)
+
+The first of the five lenses, and the first visible piece of T6.23.
+
+**`src/game/lenses.js`** — the arrangement, as pure functions, with the
+hidden set still to come in T6.23b. `orderedForScreen(habits,
+screenOrder)` puts the list in the order the SCREEN is showing rather
+than the order storage holds; a null arrangement hands `habits` straight
+back, and any habit the arrangement never heard of (one created a moment
+ago) goes to the end, which is where a new habit has always joined.
+`sinkOnMute(order, id, muted)` is the landing rule above: remove the
+tile, find the lowest id that is not muted, insert just under it — and
+if that index is not BELOW where the tile started, return the order
+untouched. That last line is the whole of "muting only ever sinks", and
+it is the one the two edge cases hit (the last live tile with dim ones
+above it; a muted tile dragged to the floor and muted again).
+
+**App** grew two pieces of screen state and nothing else: `muted` (ids)
+and `screenOrder` (ids, or null). Neither is saved — a refresh is a
+fresh visit, and a `useEffect` on `today` empties both at the 3am day
+turn. The list now reads `orderedForScreen(activeHabits(…), screenOrder)`
+before the charm filter, so a mute sinks a tile through the temporary
+arrangement and never through the stored habits array. Which is exactly
+why `handleMoveTo` had to learn to say the same move TWICE — once into
+storage (dragging still saves an order until T6.23e) and once into
+`screenOrder`: once anything is muted the two orders have parted
+company, and writing only the stored one left the dragged tile visibly
+where it started.
+
+**The drift** reuses the drop-glide's FLIP rather than growing a second
+one. `settling` gained a `kind`: 'drop' keeps the lit, lifted look and
+holds it for DROP_SETTLE_MS, 'mute' travels at its own size and drops
+its class after MUTE_DRIFT_MS (420, matching `.habit-row--drifting` in
+index.css). The tile's top is measured in the click handler, BEFORE the
+list re-orders around it — the same trick, for the same reason, as the
+dropped tile.
+
+**The look**: `.habit-row--muted` is `opacity: var(--tile-muted)` (0.45,
+in tokens.css) and nothing else. No strike-through, no greying of the
+controls — muted is "out of my eyeline", never "switched off", so
+borrowing any of the language of a disabled thing would be a lie. The
+eye itself is two SVG paths — an almond with a pupil, or a lowered lid
+with three short lashes. Deliberately **no slash through the closed
+one**: a slash is a prohibition, and nothing here is forbidden.
+
+Classified in pebbles.test.js as `icon-button` — a lens by family
+(design-notes §11f), but furniture on a tile, so it dresses exactly like
+the pencil and the box it sits beside.
+
+**Verified with a real click** (CLAUDE.md's reachability rule, the one
+the cameo taught us), in the browser pane on the dev server: the eye
+took a real pointer at its own coordinates, "walk the dog" dimmed and
+sank; a second mute landed above it; the dim tile took a +1 and showed
+✓ 1/1; opening its eye again un-dimmed it exactly where it stood; and a
+refresh brought the stored order back with the completion still on the
+record.
+
 ## T6.22 build notes — the visit shows that it can be pressed (2026-08-20)
 
 `@keyframes cameo-breathe` on `.cameo-openable .cameo-blob path`,

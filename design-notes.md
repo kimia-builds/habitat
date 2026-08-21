@@ -1167,7 +1167,7 @@ decision — make it a pebble, or name it in the list with its reason.
 
 ---
 
-### 11f. The lenses — Habitat's ways of LOOKING **[TO-BUILD · T6.23, planned 2026-08-20]**
+### 11f. The lenses — Habitat's ways of LOOKING **[the eye BUILT — T6.23a, 2026-08-21; the rest TO-BUILD · T6.23b–e]**
 
 **A third family, named because it is not the other two** (Kimia's call
 2026-08-20). §11e settled that a **pebble** says what it does and then
@@ -1189,13 +1189,27 @@ check-in):
 | **prioritise** | re-order into three tiers, stably |
 | **tasks** | cycle the to-dos: top · bottom and muted · hidden · off (three steps in design mode — nothing hides there) |
 | **un-hide all** | un-hide everything, clear the charms, leave mutings |
-| the **eye**, on every tile | mute this one / un-mute it |
+| the **eye**, on every tile | mute this one / un-mute it **[BUILT]** |
 
 **Two of them are wordless, and that is §12a, not an exception.** The
 **eye** is furniture on a tile, and belongs with the pencil and the box
-it sits beside — same size, same dim tier, hover label only. The
-**padlock** is the same kind of thing at page level, hovering "lock
-default view" / "unlock default view". The rest say their names.
+it sits beside — same size, same dim tier, hover label only. It **leads
+the three** (Kimia's call 2026-08-21): eye, pencil, box. It is the
+gentlest of them and will be the most used, and it leaves archive last,
+where the most final of them belongs. Its two faces are an almond with a
+pupil and a lowered lid with three short lashes — and deliberately **no
+slash through the closed one**, because a slash is a prohibition and
+nothing here is forbidden. The **padlock** is the same kind of thing at
+page level, hovering "lock default view" / "unlock default view". The
+rest say their names.
+
+**What muted LOOKS like [BUILT — T6.23a].** Opacity, and nothing else:
+`--tile-muted` in tokens.css. No strike-through, no greying of the
+controls, none of the language of a disabled thing — the tile is out of
+your eyeline, not switched off, and its +1 still counts. Low enough to
+drop out of a scan, high enough to read plainly when you do look at it.
+The sink is the drop-glide's own easing without any of its lift, fill or
+lit edge: this tile is leaving your eyeline, not being shown off.
 
 **What the family must not look like.** Not a pebble — a lens holds or
 changes a state, and the pebble family's whole value is that pressing

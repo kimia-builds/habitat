@@ -329,6 +329,14 @@
   /* ===========================================================================
    * ODDS AND ENDS
    * ========================================================================= */
+  /* How dim a MUTED habit tile goes (T6.23a, spec §5b). Muted means "out
+     of my eyeline", never "switched off" — the tile is still fully
+     tappable and its +1 still counts — so this has to be low enough to
+     drop out of a scan and high enough to be plainly readable when you
+     do look at it. Not a colour, but it lives here for the same reason
+     the spacing and glow scales do: it is a look, and looks are edited
+     in one place. */
+  --tile-muted: 0.45;
   /* (The old --tick blue left on 2026-08-11: the one-time tick-box stopped
      being the browser's own square and became a circle that fills with its
      tile's charm, so there was no longer a tick to tint.) */

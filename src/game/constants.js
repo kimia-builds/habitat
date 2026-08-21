@@ -95,6 +95,16 @@ export const CHECKIN_MOVE_HOLD_MS = 700
 // keep this number in step with them.
 export const DROP_SETTLE_MS = 1000
 
+// How long a muted tile takes to drift down to its new place (T6.23a).
+// Closing an eye moves a tile, and a tile that simply APPEARED lower
+// down would read as the list glitching — so it travels there, on the
+// same easing a dropped tile glides with. Unlike a drop it arrives with
+// no fanfare: it is on its way out of your eyeline, not being shown off.
+// The drift itself is CSS (index.css, .habit-row--drifting); this is the
+// same span, and it exists so the app knows when the movement is over
+// and can take the class off again.
+export const MUTE_DRIFT_MS = 420
+
 // Weekday numbers use the ISO convention: 1 = Monday … 7 = Sunday.
 // (Chosen over JavaScript's own 0=Sunday counting because ISO weeks are
 // what the schedule engine in T1.2 will reason about.)

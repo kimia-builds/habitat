@@ -214,3 +214,90 @@ describe('the tap spark (§4)', () => {
     expect(spark()).toBeNull()
   })
 })
+
+// The eye — the muting lens on every tile (T6.23a, design-notes §11f).
+//
+// The eye is wordless furniture, so what a test can hold onto is its
+// accessible name and its state: which of the two labels it is wearing,
+// that pressing it tells App, and that a muted tile is dimmed rather
+// than disabled. The LABELS themselves come from src/content/ui.js and
+// are Kimia's to rewrite, so nothing here quotes them — it asks the row
+// for both spellings and checks they differ and that the tile swaps
+// between them.
+describe('the eye (T6.23a)', () => {
+  const eyeOf = (container) =>
+    container.querySelector('.row-buttons button:first-child')
+
+  const rowWith = (props) =>
+    render(
+      <ul>
+        <HabitRow
+          habit={habit}
+          arrivalNote={null}
+          todayCount={0}
+          required={1}
+          fulfilled={false}
+          onComplete={vi.fn()}
+          onUndo={vi.fn()}
+          onReorderStart={vi.fn()}
+          onEdit={vi.fn()}
+          onArchive={vi.fn()}
+          {...props}
+        />
+      </ul>,
+    )
+
+  it('leads the row of icons, ahead of the pencil and the box', () => {
+    // Kimia's call 2026-08-20: eye, edit, archive.
+    const { container } = rowWith({ onToggleMute: vi.fn() })
+    const icons = [...container.querySelectorAll('.row-buttons button')]
+    expect(icons).toHaveLength(3)
+    expect(icons[0]).toBe(eyeOf(container))
+  })
+
+  it('says a different thing open than shut', () => {
+    const open = rowWith({ onToggleMute: vi.fn() })
+    const openLabel = eyeOf(open.container).getAttribute('aria-label')
+    cleanup()
+    const shut = rowWith({ muted: true, onToggleMute: vi.fn() })
+    const shutLabel = eyeOf(shut.container).getAttribute('aria-label')
+    expect(openLabel).toBeTruthy()
+    expect(shutLabel).toBeTruthy()
+    expect(shutLabel).not.toBe(openLabel)
+  })
+
+  it('tells App when it is pressed', () => {
+    const onToggleMute = vi.fn()
+    const { container } = rowWith({ onToggleMute })
+    fireEvent.click(eyeOf(container))
+    expect(onToggleMute).toHaveBeenCalled()
+  })
+
+  it('a muted tile is dimmed, and nothing on it is disabled', () => {
+    // Muted is "out of my eyeline", never "switched off" (spec §5b):
+    // the +1 still counts and the row's own controls stay live.
+    // With a tap already on it, so -1 is live for its own reasons and a
+    // disabled control anywhere would have to be the muting's doing.
+    const { container } = rowWith({
+      muted: true,
+      todayCount: 1,
+      onToggleMute: vi.fn(),
+    })
+    const tile = container.querySelector('li')
+    expect(tile.className).toContain('habit-row--muted')
+    expect([...tile.querySelectorAll('button')].some((b) => b.disabled)).toBe(
+      false,
+    )
+  })
+
+  it('is not pressed by the drag that starts anywhere else on the tile', () => {
+    // The eye is a button, and HabitRow lets every press that lands on a
+    // button through untouched — otherwise closing an eye would start a
+    // drag as well (2026-08-11's whole-tile grab area).
+    const onReorderStart = vi.fn()
+    const onToggleMute = vi.fn()
+    const { container } = rowWith({ onToggleMute, onReorderStart })
+    fireEvent.pointerDown(eyeOf(container))
+    expect(onReorderStart).not.toHaveBeenCalled()
+  })
+})

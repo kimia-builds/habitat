@@ -27,6 +27,7 @@ import {
   ARCHIVE_FAREWELL_MS,
   CLOCK_CHECK_MS,
   DROP_SETTLE_MS,
+  MUTE_DRIFT_MS,
 } from './game/constants.js'
 import {
   bookcaseItems,
@@ -79,6 +80,7 @@ import {
   unarchiveHabit,
   updateHabit,
 } from './game/habits.js'
+import { orderedForScreen, sinkOnMute } from './game/lenses.js'
 import {
   archivesWhenDone,
   currentStreak,
@@ -149,6 +151,16 @@ function AppBody({ data, setData }) {
   // The symbol filter is a temporary lens: plain component state, so it
   // resets on every visit (spec §5b).
   const [filter, setFilter] = useState([])
+  // The muted habits — ids, in no particular order (T6.23a, spec §5b).
+  // "Out of my eyeline", never "switched off": a muted tile dims and
+  // sinks, and everything on it still works.
+  const [muted, setMuted] = useState([])
+  // The temporary arrangement the list is standing in: habit ids in
+  // screen order, or null while nothing has rearranged anything. Muting
+  // sinks a tile through THIS, not through the stored order — which is
+  // what makes a mute forgettable by a refresh (spec §5b: the
+  // arrangement is temporary until T6.23e gives it somewhere to live).
+  const [screenOrder, setScreenOrder] = useState(null)
   // What the form area is doing: null (closed), 'new', or a habit id.
   const [editing, setEditing] = useState(null)
   // Which charm a brand-new draft should open on, when something on
@@ -213,6 +225,11 @@ function AppBody({ data, setData }) {
   // standing in its new slot; the layout effect below starts it back at
   // `fromTop` and lets it glide from there, and the tile keeps its
   // lifted, charm-lit look for DROP_SETTLE_MS so the landing can be seen.
+  // Which tile is mid-glide, and why: { id, fromTop, kind }. 'drop' is
+  // a tile just let go of after a drag; 'mute' is one drifting down
+  // because its eye was closed (T6.23a). Both are the same FLIP — put
+  // the tile back where it visibly was and let the stylesheet carry it —
+  // and they differ only in how loud they look on the way.
   const [settling, setSettling] = useState(null)
 
   // The countdown that ends a tile's farewell (see startFarewell). Held
@@ -246,7 +263,7 @@ function AppBody({ data, setData }) {
   // whether or not a check-in was owed; the morning's fixed order is
   // check-in pop-up → startup ceremony → (Sundays) field notes.
   const startupDue = shouldShowStartup(today, data.settings.startupShownOn)
-  const active = activeHabits(data.habits)
+  const active = orderedForScreen(activeHabits(data.habits), screenOrder)
   const filtered = filterBySymbols(active, filter)
   // The archive answers to the same lens (Kimia's call 2026-08-11):
   // while charms are chosen, the dropdown holds only the archived habits
@@ -875,6 +892,16 @@ function AppBody({ data, setData }) {
     const target = data.habits.findIndex((h) => h.id === toId)
     if (target === -1) return
     save({ ...data, habits: moveHabit(data.habits, habit.id, target) })
+    // …and the same move in the arrangement on screen (T6.23a). Once
+    // anything has been muted the two orders have parted company, so
+    // writing only the stored one would leave the tile visibly where it
+    // started. Same move, said twice: put this habit where that one is.
+    // (Dragging still SAVES an order today; T6.23e is where that stops.)
+    const order = active.map((h) => h.id)
+    const landing = order.indexOf(toId)
+    if (landing !== -1) {
+      setScreenOrder(moveHabit(active, habit.id, landing).map((h) => h.id))
+    }
   }
 
   // Which row a dragged tile has landed on — decided by where the TILE
@@ -993,14 +1020,62 @@ function AppBody({ data, setData }) {
       tile.style.transition = 'none'
       tile.style.transform = 'none'
       const drift = settling.fromTop - tile.getBoundingClientRect().top
-      tile.style.transform = `translateY(${drift}px) scale(1.02)`
+      // A dropped tile is still held a touch larger as it lands; a muted
+      // one is only sinking, so it travels at its own size.
+      tile.style.transform =
+        `translateY(${drift}px)` +
+        (settling.kind === 'mute' ? '' : ' scale(1.02)')
       void tile.offsetHeight // let the browser take that in…
       tile.style.transition = ''
       tile.style.transform = '' // …before it eases back to nothing
     }
-    const timer = setTimeout(() => setSettling(null), DROP_SETTLE_MS)
+    // A drop KEEPS its lit look for a while after landing, so you can see
+    // where it went. A drift has no lit look to keep: the class comes off
+    // as soon as the movement is over.
+    const timer = setTimeout(
+      () => setSettling(null),
+      settling.kind === 'mute' ? MUTE_DRIFT_MS : DROP_SETTLE_MS,
+    )
     return () => clearTimeout(timer)
   }, [settling])
+
+  // The eye on a tile (T6.23a, spec §5b). Closing it mutes the habit —
+  // the tile dims and sinks to just under the live list — and opening it
+  // MOVES NOTHING: the tile stays exactly where it is standing, which is
+  // what lets a muted tile be dragged back up and stay put.
+  //
+  // Nothing here is saved. Muting lives in screen state and the sink
+  // happens in the temporary arrangement, so a refresh or the day turn
+  // below throws it all away and the stored order comes back.
+  function handleToggleMute(habit) {
+    if (muted.includes(habit.id)) {
+      setMuted(muted.filter((id) => id !== habit.id))
+      return
+    }
+    // Measured BEFORE the list re-orders around it: where the tile is
+    // standing right now is where its drift has to start from.
+    const tile = listRef.current?.querySelector(`[data-habit-id="${habit.id}"]`)
+    const fromTop = tile?.getBoundingClientRect().top
+    const order = active.map((h) => h.id)
+    const sunk = sinkOnMute(order, habit.id, muted)
+    setMuted([...muted, habit.id])
+    setScreenOrder(sunk)
+    // It only drifts if it actually moved — and only when the browser
+    // can tell us where it was.
+    if (fromTop !== undefined && sunk[order.indexOf(habit.id)] !== habit.id) {
+      setSettling({ id: habit.id, fromTop, kind: 'mute' })
+    }
+  }
+
+  // The day turn wipes the arrangement (spec §5b). At 3am the list is a
+  // new day's list, and yesterday's "I'm not looking at that today" has
+  // nothing to say about it. A refresh does the same by simply being a
+  // fresh visit — both of these are screen state and neither was ever
+  // stored.
+  useEffect(() => {
+    setMuted([])
+    setScreenOrder(null)
+  }, [today])
 
   function handleDelete(habit) {
     const sure = window.confirm(
@@ -1058,6 +1133,9 @@ function AppBody({ data, setData }) {
     // wearing yesterday's filter reads as a fault. The other door keeps
     // every habit, so its lens still means something.
     setFilter([])
+    // And the arrangement with it — there is nothing left to arrange.
+    setMuted([])
+    setScreenOrder(null)
     forgetTheOldWorld()
   }
 
@@ -1189,15 +1267,18 @@ function AppBody({ data, setData }) {
               todayCount={countOn(data.completions, habit.id, today)}
               required={requiredPerDay(habit, today)}
               fulfilled={isDayFulfilled(habit, data.completions, today)}
+              muted={muted.includes(habit.id)}
               reorderDisabled={filter.length > 0}
               dragging={reorderDrag?.id === habit.id}
               settling={settling?.id === habit.id}
+              drifting={settling?.id === habit.id && settling.kind === 'mute'}
               dragOffsetY={
                 reorderDrag?.id === habit.id ? reorderDrag.offsetY : 0
               }
               onComplete={() => handleComplete(habit)}
               onUndo={() => handleUndo(habit)}
               onReorderStart={(event) => handleReorderStart(habit, event)}
+              onToggleMute={() => handleToggleMute(habit)}
               onEdit={() => setEditing(habit.id)}
               onArchive={() => {
                 startFarewell(habit)

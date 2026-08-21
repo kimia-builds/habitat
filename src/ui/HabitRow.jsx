@@ -1,5 +1,5 @@
 // One habit in the list: its symbol, name, schedule-at-a-glance, the
-// tap-to-complete control, and the row buttons (edit, archive).
+// tap-to-complete control, and the row buttons (the eye, edit, archive).
 // Pure display + callbacks — every decision is made in App via the game
 // modules.
 
@@ -34,14 +34,17 @@ function HabitRow({
   todayCount,
   required,
   fulfilled,
+  muted,
   reorderDisabled,
   dragging,
   dragOffsetY,
   settling,
+  drifting,
   leaving,
   onComplete,
   onUndo,
   onReorderStart,
+  onToggleMute,
   onEdit,
   onArchive,
 }) {
@@ -109,10 +112,17 @@ function HabitRow({
       className={
         `habit-row charm-${habit.symbol}` +
         (dragging ? ' habit-row--dragging' : '') +
+        // Out of the eyeline, not switched off (T6.23a): the tile dims,
+        // and everything on it still works.
+        (muted ? ' habit-row--muted' : '') +
         // Just dropped: still lit, still lifted, gliding into its new
         // slot (2026-08-11). App decides how long this lasts and drives
         // the glide itself; the class is only the look.
-        (settling ? ' habit-row--settling' : '') +
+        (settling && !drifting ? ' habit-row--settling' : '') +
+        // Drifting down because its eye was just closed (T6.23a): the
+        // same glide, without the lit, lifted look a drop keeps — this
+        // tile is on its way out of the eyeline, not being shown off.
+        (drifting ? ' habit-row--drifting' : '') +
         (reorderDisabled ? ' habit-row--fixed' : '') +
         // On its way to the archive: the stylesheet sinks and fades it
         // (2026-08-11). App keeps it on screen for exactly as long as
@@ -189,6 +199,46 @@ function HabitRow({
       <span className="row-buttons">
         {/* T4.5's icon-only actions (decision 2026-07-20): every action is
             an icon with a hover label — title + aria-label carry the words. */}
+        {/* The eye leads the three (Kimia's call 2026-08-20). It is a
+            LENS, not an action (design-notes §11f) — it changes how the
+            list is being looked at and leaves the record alone — but it
+            is furniture on a tile, so it dresses exactly like the pencil
+            and the box it sits beside. Open eye = in your eyeline;
+            closed eye = muted, which dims the tile and sinks it. */}
+        <button
+          className="icon-button"
+          onClick={onToggleMute}
+          title={t(muted ? 'habits.unmute' : 'habits.mute')}
+          aria-label={t(muted ? 'habits.unmute' : 'habits.mute')}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            {muted ? (
+              // Closed: the lid drawn as a lowered curve, with the three
+              // short lashes an eye shut makes. No slash through it — a
+              // slash is a prohibition, and nothing here is forbidden.
+              <>
+                <path d="M3.5 10.5c3 4 5.8 5.5 8.5 5.5s5.5-1.5 8.5-5.5" />
+                <path d="M5 14l-1.4 2.2" />
+                <path d="M12 16v2.6" />
+                <path d="M19 14l1.4 2.2" />
+              </>
+            ) : (
+              // Open: the almond and its pupil.
+              <>
+                <path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z" />
+                <circle cx="12" cy="12" r="2.6" />
+              </>
+            )}
+          </svg>
+        </button>
         <button
           className="icon-button"
           onClick={onEdit}

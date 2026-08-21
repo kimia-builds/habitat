@@ -81,6 +81,8 @@ const en = {
   // The habit list and its tiles.
   'habits.filterView': 'filter view',
   'habits.markDone': 'mark done',
+  'habits.mute': 'mute',
+  'habits.unmute': 'unmute',
   'habits.edit': 'edit',
   'habits.archive': 'archive',
   'habits.unarchive': 'unarchive',
@@ -260,6 +262,8 @@ const fa = {
 
   'habits.filterView': '',
   'habits.markDone': '',
+  'habits.mute': '',
+  'habits.unmute': '',
   'habits.edit': '',
   'habits.archive': '',
   'habits.unarchive': '',

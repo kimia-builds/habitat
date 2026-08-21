@@ -45,7 +45,11 @@ function componentFiles(dir = 'src') {
 const NOT_PEBBLES = {
   // Drawings you press. A pebble speaks; these show.
   'symbol-button': 'a charm — a drawing, and a drawing needs no frame',
-  'icon-button': 'icon-only furniture: edit, archive, unarchive, delete',
+  'icon-button':
+    'icon-only furniture: the eye, edit, archive, unarchive, delete. ' +
+    'The eye is a LENS by family (design-notes §11f) rather than an ' +
+    'action, but it is furniture on a tile and dresses like the pencil ' +
+    'and the box it sits beside (T6.23a, 2026-08-21)',
   'rail-icon': 'the left rail — icons as furniture, never a navbar',
   'arrival-hold': 'the drop object itself, pressed to hold it',
   'cameo-press':

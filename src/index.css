@@ -2261,6 +2261,45 @@ body {
   }
 }
 
+/* Muted — the eye closed on this one (T6.23a, spec §5b). "Out of my
+   eyeline", never "switched off": the tile dims, and nothing about it
+   stops working. +1 still counts, the pencil still edits, and it still
+   drags. So this is opacity and nothing else — no strike-through, no
+   greying of the controls, none of the language of a disabled thing.
+
+   The fade is transitioned in BOTH directions, which is what makes
+   opening the eye again read as the tile coming back rather than
+   blinking. Un-muting moves nothing (spec §5b), so the fade is the whole
+   of what you see then. */
+.habit-row--muted {
+  opacity: var(--tile-muted);
+  transition:
+    opacity 300ms ease,
+    background-color 600ms ease,
+    border-color 600ms ease;
+}
+
+/* …and the drift down to its new place. The FLIP is App's (it puts the
+   tile back where the eye saw it and lets go); this is the rule that
+   turns the release into a movement instead of a jump — the same easing
+   a dropped tile glides on, and deliberately none of its lift, fill or
+   lit edge. The tile is leaving your eyeline, not being shown off.
+   Keep the duration in step with MUTE_DRIFT_MS in constants.js. */
+.habit-row--drifting {
+  position: relative;
+  z-index: 1;
+  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Whoever asked not to be moved at is not moved at: the tile still dims
+   — that is information — it simply arrives where it is going. */
+@media (prefers-reduced-motion: reduce) {
+  .habit-row--muted,
+  .habit-row--drifting {
+    transition: none;
+  }
+}
+
 /* A tile on its way to the archive (Kimia's call 2026-08-11). It used to
    blink out of existence the instant it was archived — whether by the
    archive button or by ticking off a to-do — which read as a glitch

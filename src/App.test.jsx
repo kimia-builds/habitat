@@ -586,6 +586,119 @@ describe('re-ordering', () => {
   })
 })
 
+describe('muting — the eye on every tile (T6.23a)', () => {
+  // What the list looks like right now, top to bottom.
+  const names = () =>
+    [...document.querySelectorAll('.habit-name')].map((el) => el.textContent)
+
+  // The eye leads the three icons on a tile (Kimia's call 2026-08-20).
+  // Found by position rather than by its label: the label is Kimia's
+  // word in src/content/ui.js and she may rewrite it any day.
+  const eye = (name) =>
+    tile(name).querySelector('.row-buttons button:first-child')
+
+  const isMuted = (name) => tile(name).className.includes('habit-row--muted')
+
+  function threeHabits() {
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+    createHabitViaUI('three')
+  }
+
+  it('closing an eye dims the tile and sinks it to the bottom', () => {
+    render(<App />)
+    threeHabits()
+
+    fireEvent.click(eye('one'))
+
+    expect(names()).toEqual(['two', 'three', 'one'])
+    expect(isMuted('one')).toBe(true)
+    expect(isMuted('two')).toBe(false)
+  })
+
+  it('a second muting lands ABOVE the first — newest nearest the live list', () => {
+    render(<App />)
+    threeHabits()
+
+    fireEvent.click(eye('one'))
+    fireEvent.click(eye('two'))
+
+    expect(names()).toEqual(['three', 'two', 'one'])
+  })
+
+  it('opening the eye again moves nothing', () => {
+    // The rule that makes muting safe to undo (spec §5b): un-muting is a
+    // change of look, never of place. The tile stays at the bottom until
+    // something actually moves it.
+    render(<App />)
+    threeHabits()
+
+    fireEvent.click(eye('one'))
+    expect(names()).toEqual(['two', 'three', 'one'])
+
+    fireEvent.click(eye('one'))
+    expect(names()).toEqual(['two', 'three', 'one'])
+    expect(isMuted('one')).toBe(false)
+  })
+
+  it('a muted tile still counts, and can be dragged back up still dim', () => {
+    // "Out of my eyeline", never "switched off".
+    render(<App />)
+    threeHabits()
+    fireEvent.click(eye('one'))
+
+    fireEvent.click(within(tile('one')).getByRole('button', { name: '+1' }))
+    expect(within(tile('one')).getByText('✓ 1/1')).toBeDefined()
+
+    // Rows at 0 / 50 / 100 with 'one' at the foot; drag it up over 'two'.
+    const drag = layOutRows('one')
+    fireEvent.pointerDown(tile('one'), { button: 0, clientX: 0, clientY: 110 })
+    drag.offset = -105
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 5 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 5 })
+
+    expect(names()).toEqual(['one', 'two', 'three'])
+    expect(isMuted('one')).toBe(true)
+  })
+
+  it('the sink is never written down — a reload brings the order back', () => {
+    // Nothing about an arrangement is saved until T6.23e. A refresh is a
+    // fresh visit, and a fresh visit is the stored order, unmuted.
+    const first = render(<App />)
+    threeHabits()
+    fireEvent.click(eye('one'))
+    expect(names()).toEqual(['two', 'three', 'one'])
+
+    first.unmount()
+    render(<App />)
+    expect(names()).toEqual(['one', 'two', 'three'])
+    expect(isMuted('one')).toBe(false)
+  })
+
+  it('the day turn wipes it too, without a reload', () => {
+    // 11:30pm, so the page's own minute-tick can carry it past the 3am
+    // cutoff while it sits there open.
+    vi.setSystemTime(new Date(2026, 6, 16, 23, 30))
+    render(<App />)
+    threeHabits()
+    // Marked done before midnight, so the new day arrives with nothing
+    // to ask about: the check-in pop-up lists the habits as well, and a
+    // quiet rollover leaves only the list itself on screen to read.
+    for (const name of ['one', 'two', 'three']) {
+      fireEvent.click(within(tile(name)).getByRole('button', { name: '+1' }))
+    }
+    fireEvent.click(eye('one'))
+    expect(names()).toEqual(['two', 'three', 'one'])
+
+    act(() => {
+      vi.advanceTimersByTime(4.5 * 60 * 60 * 1000) // 11:30pm → 4am
+    })
+
+    expect(names()).toEqual(['one', 'two', 'three'])
+    expect(isMuted('one')).toBe(false)
+  })
+})
+
 describe('editing', () => {
   it('edit changes the name in place', () => {
     render(<App />)

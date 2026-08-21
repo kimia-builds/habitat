@@ -514,15 +514,21 @@ reading a record. Their look and their family rules are design-notes
 set of **muted** tiles (dimmed, still fully tappable), and a set of
 **hidden** ones. It starts each visit as the saved default view and is
 otherwise temporary — a refresh or the 3am day turn brings the default
-back, exactly as the charm lens has always reset.
+back. (The charm lens has always cleared on a reload; the day turn is
+the new half of the rule, and muting obeys both as of T6.23a. The charms
+join it when the default view itself is built, T6.23e.)
 
-**The eye (muting).** A third icon beside edit and archive on every
-tile. Closed eye = muted: the tile dims and drifts softly to the bottom
-of the list. Open eye = visible. **Muting sinks; un-muting moves
-nothing** — the drift is a one-time movement, not a rule that muted
-tiles live at the bottom, so a muted tile can be dragged back up
-afterwards and stays where it is put, still dim. Muted is "out of my
-eyeline", never "disabled": +1 still counts.
+**The eye (muting) [BUILT — T6.23a, 2026-08-21].** The first of the
+three icons on every tile — the eye, then edit, then archive. Closed eye
+= muted: the tile dims and drifts softly down to just under the LIVE
+list — below everything still in your eyeline, and **above anything
+muted earlier**, so the dim ones read newest-first (2026-08-21). Open
+eye = visible. **Muting sinks; un-muting moves nothing** — the drift is
+a one-time movement, not a rule that muted tiles live at the bottom, so
+a muted tile can be dragged back up afterwards and stays where it is
+put, still dim. And muting only ever sinks: a tile already lower than
+that landing spot does not move at all. Muted is "out of my eyeline",
+never "disabled": +1 still counts.
 
 **The three verbs — today · prioritise · tasks.** None of them holds a
 view. Each reaches into whatever is on screen, changes it, and lets go,
