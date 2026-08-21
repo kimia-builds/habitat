@@ -42,7 +42,13 @@ import { friendArt } from './tracedFriends.js'
  * `category`   which species, as the game counts them (friend.category)
  * `individual` which one of that species, 1-based, in arrival order
  * `worldSeed`  this save's seed — it decides the colour this friend was dealt
- * `base`       how much room the LARGEST friend gets on this screen, in rem
+ * `base`       how much room the LARGEST friend gets on this screen
+ * `unit`       the unit `base` is in. 'rem' for a screen laid out in text
+ *              sizes, which is most of them; 'px' for a screen whose scale is
+ *              fixed pixels — the Abode's canvas is 1000 x 600 of them, and a
+ *              friend standing among flora measured in those must be measured
+ *              in the same thing or a text-zoom would silently break the one
+ *              scale the two families share.
  * `idPrefix`   what makes this drawing's internal svg ids its own. Two friends
  *              on one page sharing an id would have one silently borrow the
  *              other's glow filter, so every caller passes something that says
@@ -55,6 +61,7 @@ function Friend({
   individual = 1,
   worldSeed,
   base,
+  unit = 'rem',
   idPrefix = '',
   className = '',
 }) {
@@ -78,7 +85,7 @@ function Friend({
     <span
       className={`friend-art ${className}`.trim()}
       style={{
-        width: `${friendSize(key, base)}rem`,
+        width: `${friendSize(key, base)}${unit}`,
         aspectRatio: `${viewBox.w} / ${viewBox.h}`,
       }}
       aria-hidden="true"

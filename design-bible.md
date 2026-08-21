@@ -329,6 +329,29 @@ an axis of variation.
 **Fruit.** Tiny shrubs may bear none; larger flora may. Each species has
 **exactly one** fruit type, in any rounded or blobby form.
 
+**WHICH OF THE 48 A FIND IS, IS DEALT (Kimia, 2026-08-21, T5.3i).** A flora
+drop stores nothing but the word `flora`; its shape, size and fill are rolled
+from the save's own seed and the find's completion id (`src/ui/floraDeal.js`),
+the same trick that deals a friend its colour. Nothing new is written into a
+save, the answer never changes for a given find, and flora gathered before the
+art existed get their looks too. **Large and small come half and half** (her
+call, same day) — a large flora stands 2.75x a small one, so the mix is what a
+ground looks like, and even odds is the flattest answer.
+
+**Two finds of the same shape and fill ARE the same flora** and look identical
+on purpose: that is what a catalogue of 48 means, rather than 48 templates for
+unique plants. `Flora.jsx` grows one hair field per shape-and-fill pair and
+reuses it everywhere, which is that fact made into code.
+
+**THE FLORA REACHED THE GAME on 2026-08-21** (T5.3i), on the Abode first —
+the ground and the doorstep list, with the party's friends going in beside
+them. `src/ui/Flora.jsx` is the one component every screen showing a flora goes
+through, the twin of `Friend.jsx`, and it carries the recipe above verbatim.
+**A screen chooses a BASE, not a size**, exactly as §9c requires of the
+friends, and the same base serves both families because the two canons speak
+one scale: the Abode sizes up from the smallest thing that can stand on it,
+which is a plip and not a small flora.
+
 **Axes of variation: size and fill.** That is the whole list (2026-08-19
 — it replaces the earlier "overall size · leaf shape · presence/absence
 of fruit · surface texture", which was written when there were 64 shapes

@@ -210,13 +210,38 @@ tracker. Everything after this is delight, informed by real use.
                   notes in history.md)_
             - [ ] **The arrival reveal** — the full neon POP moment.
             - [ ] **The cameo** — the rare home-screen visit.
-            - [ ] **The Abode's party and the arrival row** _(held on
-                  purpose, Kimia's call 2026-08-21: both stand a friend
-                  beside FLORA, and the flora are still placeholder glyphs.
-                  The two families share one size scale by construction, so
-                  real friends among placeholder plants would teach the
-                  wrong proportions. These wait for the task that puts the
-                  real flora on the ground, and go in with them.)_
+            - [x] **The Abode's party** _(done 2026-08-21 — went in with
+                  the flora under T5.3i, which is where it was always
+                  going: both families share one base on that ground.)_
+            - [ ] **The habit list's arrival row** _(the last held one —
+                  it stands a friend beside a flora too, so it goes in
+                  with T5.3i's second slice.)_
+
+      - [ ] **T5.3i The flora reach the game** _(opened 2026-08-21 on Kimia's
+            call, "take the flora live into production")_ — the four
+            silhouettes, their six fills and their two canon sizes replace the
+            T3.2 placeholder sprig on every screen that shows a flora. One
+            screen at a time, each pushed and judged live before the next is
+            started (the design-slice rule), exactly as T5.3h ran.
+            **WHICH of the 48 a find is, dealt not stored (Kimia, 2026-08-21):**
+            a flora drop records only `{ kind: 'flora' }` and always did, so the
+            shape, size and fill are dealt from the save's seed and the find's
+            own completion id (`src/ui/floraDeal.js`) — no storage version, and
+            flora gathered weeks ago get their looks too. **Large and small half
+            and half** (her call, same day). Two finds that deal the same shape
+            and fill ARE the same one of the 48 and look identical, which is what
+            the catalogue means.
+            **The landmark class stays out**, and must: its size is still unset
+            and `LANDMARK_FLORA` is still empty, so every find is dealt an
+            ordinary collectible. A test pins that, so a landmark class joining
+            the canon fails the suite rather than quietly handing out giants.
+            - [x] **The Abode** _(done 2026-08-21 — the ground and the doorstep
+                  list, plus T5.3h's held party friends, which share this
+                  screen's one base. `src/ui/Flora.jsx` is now the one component
+                  every screen goes through. Build notes in history.md)_
+            - [ ] **The arrival, and the first-flora reveal** — the drop that
+                  lands on the habit list, and the neon POP the first time.
+            - [ ] **The landmark class** — see T5.3g; still Kimia's own session.
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

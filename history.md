@@ -3122,6 +3122,158 @@ return 0` right after the era is worked out, so a moment before the
   squares and teach exactly the wrong proportions. They go in with the
   flora, in the task that puts the flora on the ground.
 
+- 2026-08-21 (Kimia's calls, asked before building T5.3i): **which of the
+  48 a flora find is, is DEALT and not stored.** A flora drop has always
+  recorded nothing but `{ kind: 'flora' }` — no shape, no size, no fill —
+  which was right while every find was the same placeholder sprig and is
+  not enough the moment the real drawings go on screen. Offered the choice
+  between dealing the identity from the save's seed and writing it onto
+  the drop, she took the deal: nothing new is stored, no storage version
+  is needed, and the flora she gathered weeks ago get their looks too
+  rather than only the ones found from today. `src/ui/floraDeal.js` rolls
+  shape, size and fill off three seed strings built from the world seed
+  and the find's own completion id — the drops.js idiom, so the same find
+  is the same flora for ever. The risk taken knowingly: if the pool of 48
+  ever changed, existing finds would re-deal. The four shapes, six fills
+  and two sizes are all approved and locked, so that pool is not expected
+  to move.
+
+- 2026-08-21 (Kimia's call, T5.3i): **the identity lives in `src/ui/`,
+  not `src/game/`.** Shape, size and fill are LOOKS — no rule in the game
+  reads them, nothing is scored or unlocked by them — so they sit under
+  the §11d boundary beside floraColours.js and friendColours.js, which is
+  the same call the friends' colour deal got. Note the seam this leaves,
+  flagged rather than fixed: `game/map.js`'s `landmarkMarkers` still reads
+  a `drop.species` that no drop carries, which is the T6.1/landmark
+  plumbing written in July and is no more broken today than it was
+  yesterday (LANDMARK_FLORA is empty, so it returns []). The landmark
+  session resolves it.
+
+- 2026-08-21 (Kimia's call, T5.3i): **a find is as likely to be a large
+  flora as a small one.** A large flora stands 2.75x a small one, so the
+  mix IS what the ground looks like. Even odds is the flattest answer and
+  the one that sits with the no-front-loading rule — both classes turn up
+  early and keep turning up. Also settled by construction: **two finds
+  that deal the same shape and fill are the same one of the 48 and look
+  identical**, which is what a catalogue of 48 means, and is why one hair
+  field per shape-and-fill can be grown once and reused.
+
+- 2026-08-21 (Kimia's call, T5.3i): **the Abode goes first, and the two
+  held friend spots come in with the flora.** The ground can be opened at
+  will and shows many flora at once, so it is the cheapest screen to judge
+  shapes, fills and the two sizes on — the Guest Book argument from
+  T5.3h, in the same words. She also chose to bring in the two things
+  T5.3h parked, rather than wait: the party's friends went in with this
+  same push, since they stand on this very ground and share its one base,
+  and the habit list's arrival row follows as its own slice.
+
+- 2026-08-21 (T5.3i): **the Abode's one base is set from the plip, at
+  24px.** Kimia's rule for picking a base — size up from the SMALLEST
+  thing, never the biggest — and the smallest thing that can stand on this
+  ground is a plip, not a small flora. 24px is what a plip gets in the
+  Guest Book list, judged there and the same size on screen here. What it
+  makes: a small flora 48px tall, a large flora 133px, the largest friend
+  173px wide. The small flora landing on the old placeholder sprig's 48px
+  is a coincidence and a welcome one — the plants that were there
+  yesterday are the size they were, and the large ones are the new thing.
+
+- 2026-08-21 (T5.3i, flagged to Kimia rather than decided): **the
+  curiosities are the one thing on that ground with no canon to ask.**
+  The objects are not drawn yet and design-bible §10a gives them no sizes,
+  only "price correlates with size", so the placeholder glyph keeps the
+  placeholder's 48px. Nothing here invents an object size — the same
+  discipline floraCanon.js keeps about the landmark class. It does mean a
+  48px curiosity now stands beside a 133px flora, which she may want to
+  look at.
+
+## T5.3i build notes — the flora reach the Abode (2026-08-21)
+
+**What changed on screen.** The Abode's plants are Kimia's drawings now,
+not the T3.2 placeholder sprig: each gathered find stands on the ground as
+one of the 48 — its own shape, its own size class, its own furred fill,
+glowing its own colour — and the doorstep list of finds waiting to be
+decided shows them the same way. The party's visiting friends became the
+real drawings in the same push, because they stand on this ground too and
+share its single base.
+
+**Three new files, and the one component rule.**
+
+- `src/ui/floraDeal.js` — which of the 48 a find is. Three rolls off three
+  descriptive seed strings, so shape, size and fill vary independently
+  instead of marching in step the way three slices of one number would.
+  It returns the objects themselves, not keys to look up.
+- `src/ui/Flora.jsx` — the twin of `Friend.jsx`, and now the one component
+  every screen showing a flora goes through. It carries the recipe Kimia
+  approved on the workbench on 2026-08-19 verbatim: the aura is her
+  silhouette blurred and painted the fill's own colour, then a dark ground
+  in the shape, then the hair clipped to the outline. It also exports
+  `FloraDefs` (the texture library's filters, mounted once per page) and
+  `floraBox` (how much room a find needs, for a caller that has to stand
+  it on a ground line) — a screen should not have to know that flora are
+  made of hair.
+- `src/ui/floraDeal.test.js` and `src/ui/Flora.test.jsx`.
+
+**The one hair field, grown once.** A single flora is two to three
+THOUSAND drawn strands, and the Abode re-renders on every pointer move of
+a drag. Grown naively, dragging one plant would regrow every plant on the
+ground, sixty times a second. `Flora.jsx` keeps a module-level map of
+fields by shape-and-fill and reuses the React elements — which is not a
+performance hack bolted on but the truthful model: two finds that dealt
+the same shape and fill ARE the same one of the 48. Verified in the
+browser: a whole drag leaves the strands byte-identical, and a full drag
+adds and removes a dozen nodes rather than thousands.
+
+**The held grow became a SCALE, not a second size.** The placeholder items
+grew from 20 units to 26 when held. A flora's size is the canon's answer
+and may not quietly acquire a second one, so the same 26/20 is now a
+transform on the whole figure about its own foot — it stays planted, and
+no screen types a flora size in.
+
+**Party mode's friends moved out of the drawing and onto a layer above
+it.** `Friend.jsx` is two stacked svgs in an HTML wrapper (friend10.jsx's
+header has the reason — a blink may never re-blur the whole body), so a
+real friend cannot be a shape inside another svg the way the placeholder
+glyph was. The layer covers the scene box exactly, so a scene fraction
+means the same thing in both, and it is `pointer-events: none` so every
+press still reaches the flora underneath — a party may never disturb the
+arrangement. `Friend.jsx` also gained a `unit`, because this scene is
+measured in the canvas's fixed pixels and a friend sized in rem beside a
+flora sized in px would come apart the moment anyone zoomed their text.
+
+**Tests.** `floraDeal.test.js` holds the load-bearing line — no find is
+ever dealt a size class outside the two collectible ones, so a landmark
+class joining the canon fails the suite instead of quietly handing out
+giants — plus the half-and-half split over 2,000 finds, every one of the
+48 being reachable, and the three rolls being independent. The Abode's own
+new tests assert RATIOS and never a pixel size: a large flora is exactly
+FLORA_CANON.large/small times a small one, both stand with their FEET on
+the ground line whatever their height, and a plip against a chitu is the
+character sheet's own proportion — with one test tying the two families
+together, checking a small flora against the chitu's width in the one
+shared scale. Tuning the scene's base stays free; bending a proportion
+does not.
+
+**Verified in the browser**, not only in jsdom: twelve gathered flora and
+two pending ones, small at 48.3px and large at 132.8px (2.75x, the canon),
+four colours and six fills all appearing, the plip at 24px and the chitu
+at 172.5px on the same ground, no console errors. Dragging a flora works
+and the hold was verified with a REAL click at the plant's own
+coordinates, per the pointer-events rule — the name and its way back
+appear, and the figure grows about its foot.
+
+**One thing to look at, not fixed.** The held plant's `compost` line sits
+above it in a dim grey that was easy to read over empty ground and is
+harder over a big bright plant. Nothing about it changed today; the
+background under it did.
+
+**Known and unmeasurable here:** twelve flora put about 26,000 paths on
+the page, the same order as the workbench shelf that painted 22,400 and
+was fine. What could not be measured is PAINT cost, because the in-Claude
+browser pane runs its tab hidden and rAF stalls there (see the
+browser-verification notes above). If the Abode ever feels slow on the
+live site the answer is to thin the fur at small drawn sizes — which
+changes the look, so it is Kimia's call and not a change to make quietly.
+
 ## T5.3h build notes — the Guest Book gets the real friends (2026-08-21)
 
 **What changed on screen.** The Guest Book's friends are Kimia's drawings

@@ -9,6 +9,9 @@ import {
 import AbodePage from './AbodePage.jsx'
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from './worldCanvas.js'
 import { ABODE_SKIES, DEFAULT_ABODE_SKY } from '../game/abode.js'
+import { FLORA_CANON } from './floraCanon.js'
+import { floraIdentity } from './floraDeal.js'
+import { FRIEND_CANON } from './friendCanon.js'
 
 afterEach(cleanup)
 
@@ -44,7 +47,11 @@ const objectItem = (id, over = {}) => ({
   ...over,
 })
 
-const handlers = () => ({
+// The props every render needs: the four handlers, and the save's seed. The
+// seed is not optional scenery — it is what deals each flora its shape, size
+// and fill (floraDeal.js), so a real Abode always has one.
+const defaults = () => ({
+  worldSeed: 'seed',
   onDecide: vi.fn(),
   onMove: vi.fn(),
   onSell: vi.fn(),
@@ -70,7 +77,7 @@ beforeAll(() => {
 describe('the open ground', () => {
   it('shows bare ground when empty — no prose, no count', () => {
     const { container } = render(
-      <AbodePage finds={[]} items={[]} {...handlers()} />,
+      <AbodePage finds={[]} items={[]} {...defaults()} />,
     )
     expect(screen.getByRole('heading', { name: 'your abode' })).toBeDefined()
     expect(screen.getByRole('group', { name: 'the ground' })).toBeDefined()
@@ -85,7 +92,7 @@ describe('the open ground', () => {
       <AbodePage
         finds={[find('c1', 'gathered'), find('c2', 'gathered')]}
         items={[item('c1'), item('c2', { x: 0.7 })]}
-        {...handlers()}
+        {...defaults()}
       />,
     )
     expect(
@@ -97,7 +104,7 @@ describe('the open ground', () => {
 
 describe('the waiting list', () => {
   it('keeps undecided flora apart from the ground, with gather / leave it', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(<AbodePage finds={[find('c1', 'pending')]} items={[]} {...spies} />)
     expect(
       screen.getByRole('list', { name: 'waiting to decide' }),
@@ -113,7 +120,7 @@ describe('the waiting list', () => {
       <AbodePage
         finds={[find('c1', 'gathered')]}
         items={[item('c1')]}
-        {...handlers()}
+        {...defaults()}
       />,
     )
     expect(screen.queryByRole('list', { name: 'waiting to decide' })).toBeNull()
@@ -122,7 +129,7 @@ describe('the waiting list', () => {
 
 describe('holding and composting', () => {
   it('a click (press without movement) holds a flora, revealing its name and the quiet compost button', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(
       <AbodePage
         finds={[find('c1', 'gathered')]}
@@ -148,7 +155,7 @@ describe('holding and composting', () => {
       <AbodePage
         finds={[find('c1', 'gathered')]}
         items={[item('c1')]}
-        {...handlers()}
+        {...defaults()}
       />,
     )
     fireEvent.keyDown(screen.getByRole('button', { name: 'a flora find' }), {
@@ -162,7 +169,7 @@ describe('holding and composting', () => {
       <AbodePage
         finds={[find('c1', 'gathered')]}
         items={[item('c1')]}
-        {...handlers()}
+        {...defaults()}
       />,
     )
     const flora = screen.getByRole('button', { name: 'a flora find' })
@@ -185,7 +192,7 @@ describe('holding and composting', () => {
 
 describe('dragging', () => {
   it('commits the place as scene fractions on pointer-up, clamped in', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(
       <AbodePage
         finds={[find('c1', 'gathered')]}
@@ -206,7 +213,7 @@ describe('dragging', () => {
   })
 
   it('never sends a place outside the scene, even if the pointer leaves it', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(
       <AbodePage
         finds={[find('c1', 'gathered')]}
@@ -229,7 +236,7 @@ describe('owned objects on the ground (T4.3b)', () => {
         finds={[find('c1', 'gathered')]}
         items={[item('c1'), objectItem('p1')]}
         worldSeed="seed"
-        {...handlers()}
+        {...defaults()}
       />,
     )
     expect(screen.getByRole('button', { name: 'a flora find' })).toBeDefined()
@@ -237,7 +244,7 @@ describe('owned objects on the ground (T4.3b)', () => {
   })
 
   it('a click holds an object, revealing its name and the quiet sell button — never compost', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(
       <AbodePage
         finds={[]}
@@ -262,7 +269,7 @@ describe('owned objects on the ground (T4.3b)', () => {
   })
 
   it('drags an object like any flora — onMove with its purchase id', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(
       <AbodePage
         finds={[]}
@@ -279,14 +286,15 @@ describe('owned objects on the ground (T4.3b)', () => {
   })
 })
 
-describe('party mode (T4.4)', () => {
-  const friend = (category, individual, completionId) => ({
-    completionId,
-    category,
-    individual,
-    dayKey: '2026-07-20',
-  })
+// One friend visiting in party mode, as game/friends.js reports them.
+const friend = (category, individual, completionId) => ({
+  completionId,
+  category,
+  individual,
+  dayKey: '2026-07-20',
+})
 
+describe('party mode (T4.4)', () => {
   // Kimia's call 2026-08-12: all three parts of the toggle name
   // themselves on hover. The switch's ACCESSIBLE name stays "party
   // mode" — a switch has to say what it turns on — while its hover
@@ -298,7 +306,7 @@ describe('party mode (T4.4)', () => {
         items={[]}
         friends={[friend(0, 1, 'f1')]}
         worldSeed="seed"
-        {...handlers()}
+        {...defaults()}
       />,
     )
     const mode = container.querySelector('.abode-mode')
@@ -314,7 +322,7 @@ describe('party mode (T4.4)', () => {
 
   it('says only "not yet" everywhere while no friend exists', () => {
     const { container } = render(
-      <AbodePage finds={[]} items={[]} friends={[]} {...handlers()} />,
+      <AbodePage finds={[]} items={[]} friends={[]} {...defaults()} />,
     )
     const mode = container.querySelector('.abode-mode')
     expect(mode.title).toBe('not yet')
@@ -327,7 +335,7 @@ describe('party mode (T4.4)', () => {
 
   it('the toggle is greyed out — "not yet" — while no friend exists', () => {
     const { container } = render(
-      <AbodePage finds={[]} items={[]} friends={[]} {...handlers()} />,
+      <AbodePage finds={[]} items={[]} friends={[]} {...defaults()} />,
     )
     expect(container.querySelector('.abode-mode-off')).not.toBeNull()
     const toggle = screen.getByRole('switch', { name: 'party mode' })
@@ -344,7 +352,7 @@ describe('party mode (T4.4)', () => {
         items={[item('c1')]}
         friends={[friend(0, 1, 'f1'), friend(3, 1, 'f2')]}
         worldSeed="seed"
-        {...handlers()}
+        {...defaults()}
       />,
     )
     const toggle = screen.getByRole('switch', { name: 'party mode' })
@@ -360,7 +368,7 @@ describe('party mode (T4.4)', () => {
   })
 
   it('friends are simply present: not draggable, not clickable, no hold state', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(
       <AbodePage
         finds={[]}
@@ -383,7 +391,7 @@ describe('party mode (T4.4)', () => {
   })
 
   it('stores nothing: the ground underneath is left byte-identical', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(
       <AbodePage
         finds={[find('c1', 'gathered')]}
@@ -405,7 +413,7 @@ describe('party mode (T4.4)', () => {
   })
 
   it('flora stay draggable in the middle of a party', () => {
-    const spies = handlers()
+    const spies = defaults()
     render(
       <AbodePage
         finds={[find('c1', 'gathered')]}
@@ -426,7 +434,7 @@ describe('party mode (T4.4)', () => {
 
 describe('the ground is a fixed canvas you scroll around (T5.4)', () => {
   it('draws the scene at the shared world-page size, not a stretched one', () => {
-    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
+    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...defaults()} />)
     const ground = screen.getByRole('group', { name: 'the ground' })
     // The viewBox is the canvas exactly, so one unit is one pixel — the
     // thing every position in the scene depends on.
@@ -439,7 +447,7 @@ describe('the ground is a fixed canvas you scroll around (T5.4)', () => {
   })
 
   it('sits inside a window, so a narrow screen scrolls instead of shrinking', () => {
-    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
+    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...defaults()} />)
     const ground = screen.getByRole('group', { name: 'the ground' })
     const scene = ground.parentElement
     expect(scene.classList.contains('world-canvas')).toBe(true)
@@ -457,7 +465,7 @@ describe('the four skies (T5.4)', () => {
         items={[]}
         worldSeed="seed"
         sky="violet"
-        {...handlers()}
+        {...defaults()}
       />,
     )
     const group = screen.getByRole('radiogroup')
@@ -472,7 +480,7 @@ describe('the four skies (T5.4)', () => {
   })
 
   it('asks for a new sky when one is pressed, and does not decide alone', () => {
-    const spies = handlers()
+    const spies = defaults()
     const onChooseSky = vi.fn()
     render(
       <AbodePage
@@ -500,7 +508,7 @@ describe('the four skies (T5.4)', () => {
   })
 
   it('draws no ground and no horizon — the sky is the whole scene', () => {
-    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
+    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...defaults()} />)
     const ground = screen.getByRole('group', { name: 'the ground' })
     // Kimia's call 2026-08-21: one opaque sky edge to edge, with
     // everything sitting cleanly on top of it.
@@ -509,7 +517,7 @@ describe('the four skies (T5.4)', () => {
   })
 
   it('puts the sky behind everything rather than inside the drawing', () => {
-    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
+    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...defaults()} />)
     const scene = screen.getByRole('group', {
       name: 'the ground',
     }).parentElement
@@ -519,6 +527,120 @@ describe('the four skies (T5.4)', () => {
     // arranges has to be drawn around it.
     expect(layer.nextElementSibling).toBe(
       screen.getByRole('group', { name: 'the ground' }),
+    )
+  })
+})
+
+// T5.3i — the real flora and the real friends on the ground, and the one thing
+// that must hold between them: Kimia's rule that the canon sizes hold in
+// relation to each other everywhere and always. These tests never assert a
+// pixel size; they assert RATIOS, so tuning the scene's base is free and
+// bending a proportion is not.
+describe('the real flora on the ground', () => {
+  // Two finds dealt different size classes, found by asking the deal itself.
+  function twoClasses() {
+    const found = {}
+    for (let i = 0; i < 200 && (!found.small || !found.large); i++) {
+      const id = `c${i}`
+      found[floraIdentity(id, 'seed').sizeClass] ??= id
+    }
+    return found
+  }
+
+  function floraOnGround(container) {
+    return [...container.querySelectorAll('.abode-flora-art')]
+  }
+
+  it('draws each find at its own dealt shape and size, never one flora size', () => {
+    const { small, large } = twoClasses()
+    const { container } = render(
+      <AbodePage
+        finds={[find(small, 'gathered'), find(large, 'gathered')]}
+        items={[item(small), item(large, { x: 0.7 })]}
+        {...defaults()}
+      />,
+    )
+    const [a, b] = floraOnGround(container)
+    expect(a).toBeDefined()
+    expect(b).toBeDefined()
+    const heights = [a, b]
+      .map((svg) => Number(svg.getAttribute('height')))
+      .sort((x, y) => x - y)
+    // The canon's two classes are 0.28 and 0.77 of the same base, so a large
+    // flora stands 2.75x a small one — here, as everywhere.
+    expect(heights[1] / heights[0]).toBeCloseTo(
+      FLORA_CANON.large / FLORA_CANON.small,
+      5,
+    )
+  })
+
+  it('stands every flora on its own foot, whatever its height', () => {
+    const { small, large } = twoClasses()
+    const { container } = render(
+      <AbodePage
+        finds={[find(small, 'gathered'), find(large, 'gathered')]}
+        items={[item(small), item(large, { x: 0.7 })]}
+        {...defaults()}
+      />,
+    )
+    // Both were placed on the same ground line, so both must have their
+    // BOTTOM there — a taller plant grows upward, it does not sink.
+    for (const svg of floraOnGround(container)) {
+      const foot =
+        Number(svg.getAttribute('y')) + Number(svg.getAttribute('height'))
+      expect(foot).toBeCloseTo(0.58 * CANVAS_HEIGHT, 5)
+    }
+  })
+
+  it('measures the visiting friends against the same base as the flora', () => {
+    const { small } = twoClasses()
+    const { container } = render(
+      <AbodePage
+        finds={[find(small, 'gathered')]}
+        items={[item(small)]}
+        friends={[friend(0, 1, 'f1'), friend(8, 1, 'f2')]}
+        {...defaults()}
+      />,
+    )
+    fireEvent.click(screen.getByRole('switch', { name: 'party mode' }))
+    const widths = [...container.querySelectorAll('.friend-art')].map((node) =>
+      Number(node.style.width.replace('px', '')),
+    )
+    expect(widths).toHaveLength(2)
+    // A plip against a chitu, at whatever base this scene chose: the character
+    // sheet's own proportion, unbent.
+    const [plip, chitu] = widths
+    expect(chitu / plip).toBeCloseTo(FRIEND_CANON.chitu / FRIEND_CANON.plip, 5)
+    // …and the flora is in the SAME scale, not merely true to its own family:
+    // a small flora is 0.28 where the chitu's width is 1.
+    const floraHeight = Number(
+      floraOnGround(container)[0].getAttribute('height'),
+    )
+    expect(floraHeight / chitu).toBeCloseTo(
+      FLORA_CANON.small / FRIEND_CANON.chitu,
+      5,
+    )
+  })
+
+  it('shows the finds waiting to be decided as the flora they are', () => {
+    const { small, large } = twoClasses()
+    const { container } = render(
+      <AbodePage
+        finds={[find(small, 'pending'), find(large, 'pending')]}
+        items={[]}
+        {...defaults()}
+      />,
+    )
+    const waiting = container.querySelectorAll('.abode-list svg[viewBox]')
+    expect(waiting).toHaveLength(2)
+    const heights = [...waiting]
+      .map((svg) => parseFloat(svg.getAttribute('height')))
+      .sort((x, y) => x - y)
+    // The doorstep sizes from the smallest FLORA rather than the smallest
+    // friend — it holds nothing else — but the two classes keep their ratio.
+    expect(heights[1] / heights[0]).toBeCloseTo(
+      FLORA_CANON.large / FLORA_CANON.small,
+      5,
     )
   })
 })

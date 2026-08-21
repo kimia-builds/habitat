@@ -687,12 +687,23 @@ body {
   outline: none;
 }
 
+/* The placeholder curiosity, still wearing its glow as a CSS halo in the
+   scene's mint. The real flora beside it do not — see below. */
 .abode-flora-glyph {
   filter: drop-shadow(0 0 var(--glow-faint) currentColor);
 }
 
 .abode-flora-glyph.held,
 .abode-flora-hold:focus-visible .abode-flora-glyph {
+  filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
+}
+
+/* A REAL FLORA HAS NO CSS HALO AT REST (T5.3i): its aura is its own silhouette,
+   blurred and painted its own colour inside the drawing (design-bible §3, §7).
+   Held or focused, it lifts — and it lifts in the plant's own light, because
+   Flora.jsx puts the fill's colour on the element as currentColor. */
+.abode-flora-art.held,
+.abode-flora-hold:focus-visible .abode-flora-art {
   filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 
@@ -786,10 +797,24 @@ body {
   background: var(--friendship);
 }
 
-/* A visiting friend in party mode: simply present — a soft glow, no
-   signature animation, no pointer handlers (never draggable). */
-.abode-party-friend .friend-glyph {
-  filter: drop-shadow(0 0 var(--glow-resting) currentColor);
+/* PARTY MODE'S FRIENDS SIT ON A LAYER ABOVE THE GROUND (T5.3i), not inside the
+   drawing: a real friend is two stacked svgs in an HTML wrapper and cannot be a
+   shape within another svg. The layer covers the scene exactly, so a scene
+   fraction means the same thing in both — and it lets every press through to
+   the flora underneath, because a party may never disturb the arrangement. */
+.abode-party-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* One visiting friend: simply present — no signature animation, never
+   draggable. Its place is the formation's fraction of the scene, and it stands
+   ON that point rather than centred over it, so friends and flora share one
+   ground line. No glow rule: a friend's aura is part of the drawing. */
+.abode-party-friend {
+  position: absolute;
+  transform: translate(-50%, -100%);
 }
 
 /* T4.4: the Guest Book — visual-first like the ground and the shelf:

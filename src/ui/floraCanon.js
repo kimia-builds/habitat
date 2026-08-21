@@ -104,6 +104,22 @@ export function floraHeight(sizeClass, base) {
   return floraScale(sizeClass) * base
 }
 
+/*
+ * THE BASE AT WHICH THE SMALLEST FLORA STANDS `height` TALL — the twin of
+ * friendCanon.js's `baseWhereSmallestIs`, and for the same reason. A screen
+ * picks its base from the SMALL end, because sizing from the big end leaves the
+ * small class a speck; say how tall a small flora has to be before its drawing
+ * reads, and every other size follows from the canon as it always did.
+ *
+ * Use this only on a screen that shows flora and NOTHING ELSE. A screen where
+ * flora and friends stand together must size from the smallest of BOTH — which
+ * is a plip, not a small flora — so it asks friendCanon.js instead. Both files
+ * answer in the same scale, so one base is all any screen ever needs.
+ */
+export function floraBaseWhereSmallestIs(height) {
+  return height / Math.min(...Object.values(FLORA_CANON))
+}
+
 // …and how wide that makes THIS silhouette, from its own proportions. Two
 // species of the same class are the same height and different widths, which is
 // exactly what Kimia asked for: the tendril sprawls, the cactal does not.

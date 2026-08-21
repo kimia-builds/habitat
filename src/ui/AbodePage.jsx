@@ -37,9 +37,11 @@
 
 import { useRef, useState } from 'react'
 import { ABODE_SKIES, DEFAULT_ABODE_SKY } from '../game/abode.js'
-import DropGlyph from './DropGlyph.jsx'
-import FriendGlyph from './FriendGlyph.jsx'
+import Flora, { FloraDefs, floraBox } from './Flora.jsx'
+import Friend from './Friend.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
+import { floraBaseWhereSmallestIs } from './floraCanon.js'
+import { baseWhereSmallestIs } from './friendCanon.js'
 import { useText } from './language.jsx'
 import { AbodeSky } from './sky.jsx'
 import { CANVAS_HEIGHT, CANVAS_VIEWBOX, CANVAS_WIDTH } from './worldCanvas.js'
@@ -57,33 +59,61 @@ import { CANVAS_HEIGHT, CANVAS_VIEWBOX, CANVAS_WIDTH } from './worldCanvas.js'
 const WIDTH = CANVAS_WIDTH
 const HEIGHT = CANVAS_HEIGHT
 
-// EVERY SIZE BELOW IS A STAND-IN, AND ALL OF THEM LEAVE TOGETHER. The
-// flora, curiosities and friends on this ground are placeholder glyphs
-// until the T5.3 art pass; when the real drawings land they take their
-// sizes from friendCanon.js / floraCanon.js against one base size this
-// screen chooses, and these three numbers go with the glyphs.
-//
-// Until then they keep the ON-SCREEN size they had before the canvas
-// grew — the old 240-unit scene rendered about 574px wide, so a unit
-// there was 2.4 pixels here. That is deliberate: the visible change is
-// the GROUND getting bigger, which is the point of the canvas, rather
-// than the whole picture zooming in and leaving no more room than
-// before. The three keep their proportions to each other exactly.
+// THE OLD SCENE'S SCALE. Before the T5.4 canvas the ground was a
+// 240-unit drawing stretched to about 574px, so a unit there was 2.4
+// pixels here. The things still wearing placeholder glyphs keep that
+// scale, so the visible change stays the GROUND getting bigger rather
+// than the whole picture zooming in.
 const OLD_SCENE_SCALE = 2.4
 
-// A standing item — flora sprig or curiosity; held, it grows a touch
-// to show it's in hand.
-const FLORA_SIZE = 20 * OLD_SCENE_SCALE // 48px
-const HELD_SIZE = 26 * OLD_SCENE_SCALE // 62.4px
+// HOW MUCH ROOM THE GROWING AND WALKING THINGS GET HERE (T5.3i,
+// 2026-08-21). One base number for the whole scene: every flora and
+// every visiting friend is a fraction of it, so the two families stand
+// true to each other and to their own kind — floraCanon.js and
+// friendCanon.js speak the same scale, which is the entire point of
+// having built them that way.
+//
+// Chosen by Kimia's rule for picking a base: size up from the SMALLEST
+// thing, not the biggest. The smallest thing that can stand on this
+// ground is a plip, so say how big a plip must be before its drawing
+// reads and let everything else follow. 24px is what a plip gets in the
+// Guest Book list, judged there and the same size on screen here.
+//
+// What that makes, for a person reading rather than computing: a small
+// flora 48px tall, a large flora 133px, and the largest friend 173px
+// wide. The small flora landing on the placeholder sprig's old 48px is
+// a coincidence, and a welcome one — the plants that were here yesterday
+// are the size they were, and the large ones are the new thing.
+const SCENE_BASE = baseWhereSmallestIs(24)
+
+// A held item grows a touch to show it is in hand. This is a SCALE on
+// the whole figure, never a second size: the canon says how big a flora
+// is, and a momentary touch of juice may not quietly become a different
+// answer to that. (26/20 — the proportion the placeholder glyphs grew
+// by, kept exactly.)
+const HELD_SCALE = 26 / 20
+
+// THE DOORSTEP'S OWN BASE. The little list of finds waiting to be decided is
+// not the ground: it holds flora and nothing else, so it sizes from the
+// smallest FLORA rather than from the smallest friend. A small flora stands
+// 1.6rem — about a line of text — which puts a large one at 4.4rem, and that
+// unevenness is the honest answer: a large flora IS 2.75x a small one, and a
+// list that squared them into matching thumbnails would teach the opposite.
+const DOORSTEP_BASE = floraBaseWhereSmallestIs(1.6)
+
+// A curiosity is still a placeholder glyph, and keeps the placeholder's
+// size. It is the one thing on this ground with NO canon to ask: the
+// objects are not drawn yet and design-bible §10a gives them no sizes,
+// only "price correlates with size". Nothing here invents one — when
+// they are drawn they take their places in the same table the flora and
+// the friends already share.
+const OBJECT_SIZE = 20 * OLD_SCENE_SCALE // 48px
 
 // A press becomes a drag once the pointer travels this many pixels;
 // anything shorter is a click (hold ↔ settle back). A real screen
 // pixel, unrelated to the scene's units — it measures a finger, not a
 // drawing — though since T5.4 the two happen to be the same thing.
 const DRAG_THRESHOLD_PX = 4
-
-// A visiting friend in party mode: a little larger than a flora.
-const PARTY_FRIEND_SIZE = 22 * OLD_SCENE_SCALE // 52.8px
 
 // The held item's label and its way back to the world, stacked above
 // it: how far in from an edge the centred text has to stay to remain
@@ -242,6 +272,10 @@ function AbodePage({
   return (
     <section className="stub-page abode">
       <h2 className="page-title">{t('page.abode')}</h2>
+      {/* The texture library's definitions, once for the whole page: every
+        flora on it — the doorstep's and the ground's — paints its fill
+        through them. */}
+      <FloraDefs />
       <div className="page-box">
         {/* The quiet / party toggle (T4.4): a switch with an icon either
           side. Greyed — "not yet" — until the first friend exists.
@@ -373,7 +407,13 @@ function AbodePage({
             <ul className="abode-list" aria-label={t('abode.waitingToDecide')}>
               {pending.map((find) => (
                 <li key={find.completionId} className="abode-row arrival-flora">
-                  <DropGlyph kind="flora" />
+                  <Flora
+                    completionId={find.completionId}
+                    worldSeed={worldSeed}
+                    base={DOORSTEP_BASE}
+                    unit="rem"
+                    idPrefix={`doorstep-${find.completionId}-`}
+                  />
                   <span className="abode-name">{t('abode.floraFind')}</span>
                   <button
                     className="pebble arrival-choice"
@@ -431,20 +471,41 @@ function AbodePage({
                   ? t('abode.curiosity')
                   : t('abode.floraFind')
                 const isHeld = item.id === heldId
-                const size = isHeld ? HELD_SIZE : FLORA_SIZE
                 const place = placeOf(item)
                 const cx = place.x * WIDTH
                 const base = place.y * HEIGHT
+                // How much room this one takes. A flora asks the canon (its
+                // shape and size class were dealt from the seed); a curiosity
+                // is still a placeholder glyph with no canon to ask.
+                const box = isObject
+                  ? { width: OBJECT_SIZE, height: OBJECT_SIZE }
+                  : floraBox(item.id, worldSeed, SCENE_BASE)
+                // Held, the whole figure grows a touch about its own foot, so
+                // it stays planted where you left it and its canon size is
+                // never re-typed as a second number.
+                const hold = isHeld
+                  ? `translate(${cx} ${base}) scale(${HELD_SCALE}) translate(${-cx} ${-base})`
+                  : undefined
+                const drawnHeight = box.height * (isHeld ? HELD_SCALE : 1)
                 // The held item's name and its quiet way back stack above it,
                 // clamped so they stay readable at the scene's edges.
                 const textX = Math.min(
                   WIDTH - LABEL_EDGE_INSET,
                   Math.max(LABEL_EDGE_INSET, cx),
                 )
-                const nameY = Math.max(LABEL_CEILING, base - size - LABEL_LIFT)
+                const nameY = Math.max(
+                  LABEL_CEILING,
+                  base - drawnHeight - LABEL_LIFT,
+                )
+                // The placeholder curiosity wears its glow as a CSS halo;
+                // a real flora's aura is inside its own drawing (§3), so the
+                // two take different classes.
                 const glyphClass = isHeld
                   ? 'abode-flora-glyph held'
                   : 'abode-flora-glyph'
+                const floraClass = isHeld
+                  ? 'abode-flora-art held'
+                  : 'abode-flora-art'
                 return (
                   <g key={item.id} className="abode-flora">
                     <g
@@ -453,6 +514,7 @@ function AbodePage({
                       aria-label={name}
                       aria-pressed={isHeld}
                       className="abode-flora-hold"
+                      transform={hold}
                       onPointerDown={(event) => handlePointerDown(item, event)}
                       onKeyDown={(event) => handleKeyDown(item, event)}
                     >
@@ -461,19 +523,20 @@ function AbodePage({
                           objectKey={item.objectKey}
                           worldSeed={worldSeed}
                           className={glyphClass}
-                          x={cx - size / 2}
-                          y={base - size}
-                          width={size}
-                          height={size}
+                          x={cx - box.width / 2}
+                          y={base - box.height}
+                          width={box.width}
+                          height={box.height}
                         />
                       ) : (
-                        <DropGlyph
-                          kind="flora"
-                          className={glyphClass}
-                          x={cx - size / 2}
-                          y={base - size}
-                          width={size}
-                          height={size}
+                        <Flora
+                          completionId={item.id}
+                          worldSeed={worldSeed}
+                          base={SCENE_BASE}
+                          idPrefix={`${item.id}-`}
+                          className={floraClass}
+                          x={cx - box.width / 2}
+                          y={base - box.height}
                         />
                       )}
                     </g>
@@ -511,32 +574,38 @@ function AbodePage({
                   </g>
                 )
               })}
-              {/* Party mode: the friends, simply present among the flora —
-            not draggable, not performing, never stored. */}
-              {party &&
-                formation.map(({ friend, x, y }) => {
-                  const cx = x * WIDTH
-                  const base = y * HEIGHT
-                  return (
-                    <g
-                      key={friend.completionId}
-                      className="abode-party-friend"
-                      role="img"
-                      aria-label={t('abode.visitingFriend')}
-                    >
-                      <FriendGlyph
-                        category={friend.category}
-                        individual={friend.individual}
-                        worldSeed={worldSeed}
-                        x={cx - PARTY_FRIEND_SIZE / 2}
-                        y={base - PARTY_FRIEND_SIZE}
-                        width={PARTY_FRIEND_SIZE}
-                        height={PARTY_FRIEND_SIZE}
-                      />
-                    </g>
-                  )
-                })}
             </svg>
+            {/* Party mode: the friends, simply present among the flora — not
+              draggable, not performing, never stored.
+              THEY SIT ON A LAYER ABOVE THE DRAWING rather than inside it
+              (T5.3i, 2026-08-21). Friend.jsx is two stacked svgs in an HTML
+              wrapper — friend10.jsx's header has the reason, a blink may never
+              re-blur the whole body — so a friend cannot be a shape inside
+              another svg. The layer covers the same box exactly, so a scene
+              fraction means the same thing in both, and it passes every press
+              straight through to the flora underneath. */}
+            {party && (
+              <div className="abode-party-layer">
+                {formation.map(({ friend, x, y }) => (
+                  <span
+                    key={friend.completionId}
+                    className="abode-party-friend"
+                    role="img"
+                    aria-label={t('abode.visitingFriend')}
+                    style={{ left: `${x * 100}%`, top: `${y * 100}%` }}
+                  >
+                    <Friend
+                      category={friend.category}
+                      individual={friend.individual}
+                      worldSeed={worldSeed}
+                      base={SCENE_BASE}
+                      unit="px"
+                      idPrefix={`party-${friend.completionId}-`}
+                    />
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
