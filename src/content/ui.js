@@ -96,6 +96,7 @@ const en = {
   // §11f). These say their names on screen, in lower case like the rest
   // of Habitat's furniture.
   'lens.today': 'today',
+  'lens.prioritise': 'prioritise',
   'lens.unhideAll': 'un-hide all',
 
   // The habit form — the four prompts, then the two pebbles.
@@ -281,6 +282,7 @@ const fa = {
   'habits.unhideToReorder': '',
 
   'lens.today': '',
+  'lens.prioritise': '',
   'lens.unhideAll': '',
 
   'habitForm.name': '',

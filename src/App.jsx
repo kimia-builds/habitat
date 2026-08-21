@@ -80,7 +80,12 @@ import {
   unarchiveHabit,
   updateHabit,
 } from './game/habits.js'
-import { orderedForScreen, sinkOnMute, todayLens } from './game/lenses.js'
+import {
+  orderedForScreen,
+  prioritiseLens,
+  sinkOnMute,
+  todayLens,
+} from './game/lenses.js'
 import {
   archivesWhenDone,
   currentStreak,
@@ -1097,6 +1102,17 @@ function AppBody({ data, setData }) {
     setHidden(next.hidden)
   }
 
+  // The `prioritise` lens (T6.23c, spec §5b). The plainest verb: it only
+  // re-orders, into owed-today · owed-this-week · everything else, and
+  // leaves the dimmings and the hidings exactly as it found them.
+  //
+  // It sorts by what it can see AT THE MOMENT IT IS PRESSED (Kimia's
+  // call 2026-08-21). Tick a habit afterwards and it does not slide away
+  // under your hand — the list only re-sorts when you ask it to again.
+  function handlePrioritiseLens() {
+    setScreenOrder(prioritiseLens(active, data.completions, today))
+  }
+
   // `un-hide all` — the one press back to a re-orderable list. It brings
   // back everything a lens hid AND clears the charms, since both do the
   // hiding that locks the order. It deliberately leaves the mutings
@@ -1294,6 +1310,14 @@ function AppBody({ data, setData }) {
           <SymbolPicker selected={filter} onToggle={toggleFilter} />
         </section>
         <div className="lens-row-side lens-row-side--right">
+          <button
+            type="button"
+            className="lens-word"
+            data-lens="prioritise"
+            onClick={handlePrioritiseLens}
+          >
+            {t('lens.prioritise')}
+          </button>
           {anythingHidden && (
             <button
               type="button"

@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
-import { orderedForScreen, sinkOnMute, todayLens } from './lenses.js'
+import { recordCompletion } from './completions.js'
+import {
+  orderedForScreen,
+  prioritiseLens,
+  sinkOnMute,
+  todayLens,
+} from './lenses.js'
 
 const habits = (...ids) => ids.map((id) => ({ id, name: id }))
 const ids = (list) => list.map((h) => h.id)
@@ -193,5 +199,93 @@ describe('todayLens (T6.23b)', () => {
 
     expect(JSON.stringify(list)).toBe(before)
     expect(arrangement).toEqual({ muted: [], hidden: [] })
+  })
+})
+
+describe('prioritiseLens (T6.23c)', () => {
+  const MONDAY = '2026-07-13'
+  const scheduled = (id, type, extra = {}) => ({
+    id,
+    name: id,
+    schedule: { type, ...extra },
+    scheduleHistory: [{ fromDay: '2020-01-01', schedule: { type, ...extra } }],
+  })
+  // A real completion of `habitId`, attributed to Monday — built by the
+  // recorder rather than hand-shaped, so it can never drift from what
+  // the app actually stores.
+  let nextId = 0
+  const doneMonday = (habitId) =>
+    recordCompletion(
+      habitId,
+      3,
+      new Date(2026, 6, 13, 9).getTime(),
+      `c${nextId++}`,
+    )
+
+  it('sorts into three tiers: owed today, owed this week, everything else', () => {
+    const list = [
+      scheduled('whenever', 'whenever'),
+      scheduled('thrice', 'nPerWeek', { n: 3 }),
+      scheduled('daily', 'daily'),
+      scheduled('tuesdays', 'weekdays', { days: [2] }),
+      scheduled('mondays', 'weekdays', { days: [1] }),
+    ]
+    expect(prioritiseLens(list, [], MONDAY)).toEqual([
+      'daily',
+      'mondays',
+      'thrice',
+      'whenever',
+      'tuesdays',
+    ])
+  })
+
+  it('two habits of the same tier keep the order they were in', () => {
+    // The whole point of "stable" (Kimia, by name): a daily and a daily
+    // are the same priority, so a manual arrangement of them survives
+    // the press — pressed twice or a hundred times.
+    const list = [
+      scheduled('second', 'daily'),
+      scheduled('first', 'daily'),
+      scheduled('third', 'daily'),
+    ]
+    expect(prioritiseLens(list, [], MONDAY)).toEqual([
+      'second',
+      'first',
+      'third',
+    ])
+  })
+
+  it('a finished habit sinks to the last tier', () => {
+    // Kimia's call 2026-08-21: nothing left to do for its period.
+    const list = [scheduled('done', 'daily'), scheduled('owed', 'daily')]
+    expect(prioritiseLens(list, [doneMonday('done')], MONDAY)).toEqual([
+      'owed',
+      'done',
+    ])
+  })
+
+  it('sorts a dimmed tile exactly like a bright one', () => {
+    // "prioritise is an ordering tool: keep any (un)muted tasks the way
+    // that they are, reorder only where applicable" (Kimia 2026-08-21).
+    // The muted set is not even an argument here — there is nothing this
+    // function could do to it.
+    const list = [
+      scheduled('whenever', 'whenever'),
+      scheduled('dimDaily', 'daily'),
+    ]
+    expect(prioritiseLens(list, [], MONDAY)).toEqual(['dimDaily', 'whenever'])
+  })
+
+  it('presses twice to the same screen as once', () => {
+    // A verb that changed the list further every press would be a mode,
+    // not a verb (spec §5b).
+    const list = [
+      scheduled('whenever', 'whenever'),
+      scheduled('daily', 'daily'),
+      scheduled('thrice', 'nPerWeek', { n: 3 }),
+    ]
+    const once = prioritiseLens(list, [], MONDAY)
+    const reordered = once.map((id) => list.find((h) => h.id === id))
+    expect(prioritiseLens(reordered, [], MONDAY)).toEqual(once)
   })
 })

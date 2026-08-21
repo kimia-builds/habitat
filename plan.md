@@ -440,11 +440,7 @@ tracker. Everything after this is delight, informed by real use.
       never a finished system.
   - [x] **T6.23a Muting — the eye on every tile.** _(2026-08-21)_
   - [x] **T6.23b The `today` lens.** _(2026-08-21)_
-  - [ ] **T6.23c The `prioritise` lens.** A stable three-tier sort —
-        applies today · applies this week · everything else. _Done
-        when:_ a test proves two habits of the same tier keep the order
-        they were in, which is the whole point of "stable" and the thing
-        Kimia asked for by name.
+  - [x] **T6.23c The `prioritise` lens.** _(2026-08-21)_
   - [ ] **T6.23d The `tasks` lens.** The four-press cycle over one-time
         to-dos: top · bottom and muted · hidden · off. "Off" un-hides
         and un-dims where they stand and restores no earlier position —

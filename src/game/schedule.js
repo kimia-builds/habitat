@@ -111,6 +111,33 @@ export function isWeekFulfilled(habit, completions, dayKey) {
   return weekProgress(habit, completions, dayKey) >= weekEndSchedule.n
 }
 
+// Which tier a habit falls in for the `prioritise` lens (spec §5b,
+// T6.23c). Three tiers, and unlike `todayTier` this one asks about the
+// RECORD as well as the schedule: Kimia's call 2026-08-21 is that a
+// habit with nothing left to do for its period sinks out of its tier.
+//
+//   'today' — expected today and NOT yet fulfilled: daily, N-per-day or
+//             a weekday habit whose day this is, still owing today.
+//   'week'  — an N-per-week habit that has not yet reached its number
+//             this week.
+//   'rest'  — everything else: whenever, a weekday habit whose day this
+//             is not, one-time tasks (which have no deadline by
+//             design, §4.1), and anything already finished — a ticked
+//             daily, an N-per-day at its count, an N-per-week at its
+//             number for the week.
+//
+// Finished things sink, but only at the moment `prioritise` is pressed:
+// nothing here watches the record, so a habit ticked after the press
+// stays where it is until the lens is pressed again (Kimia, 2026-08-21).
+// That is a property of WHEN this is called, not of what it answers.
+export function priorityTier(habit, completions, dayKey) {
+  if (isScheduledOn(habit, dayKey)) {
+    return isDayFulfilled(habit, completions, dayKey) ? 'rest' : 'today'
+  }
+  if (scheduleOn(habit, dayKey).type !== 'nPerWeek') return 'rest'
+  return isWeekFulfilled(habit, completions, dayKey) ? 'rest' : 'week'
+}
+
 // Streaks come in two counting units: day-based schedules (daily,
 // weekdays, N-per-day) count fulfilled days; N-per-week counts
 // fulfilled weeks; whenever and one-time have no streak at all.

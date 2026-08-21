@@ -7,6 +7,7 @@ import {
   isDayFulfilled,
   isScheduledOn,
   isWeekFulfilled,
+  priorityTier,
   requiredPerDay,
   scheduleOn,
   todayTier,
@@ -111,6 +112,69 @@ describe("the today lens's three tiers (T6.23b)", () => {
     )
     expect(todayTier(habit, '2026-07-13')).toBe('could')
     expect(todayTier(habit, '2026-07-14')).toBe('applies')
+  })
+})
+
+describe("the prioritise lens's three tiers (T6.23c)", () => {
+  // 2026-07-13 is a Monday, 2026-07-14 the Tuesday after it.
+  const MONDAY = '2026-07-13'
+  const monday = (h) => done(2026, 7, 13, h)
+
+  it('what is owed today comes first', () => {
+    expect(priorityTier(makeHabit({ type: 'daily' }), [], MONDAY)).toBe('today')
+    expect(priorityTier(makeHabit({ type: 'nPerDay', n: 3 }), [], MONDAY)).toBe(
+      'today',
+    )
+    expect(
+      priorityTier(makeHabit({ type: 'weekdays', days: [1, 3] }), [], MONDAY),
+    ).toBe('today')
+  })
+
+  it('an N-per-week habit still owing days this week comes second', () => {
+    const thrice = makeHabit({ type: 'nPerWeek', n: 3 })
+    expect(priorityTier(thrice, [monday(9)], MONDAY)).toBe('week')
+  })
+
+  it('everything with no day of its own comes last', () => {
+    expect(priorityTier(makeHabit({ type: 'whenever' }), [], MONDAY)).toBe(
+      'rest',
+    )
+    expect(priorityTier(makeHabit({ type: 'oneTime' }), [], MONDAY)).toBe(
+      'rest',
+    )
+    // A weekday habit whose day this is not — Tuesdays, asked on Monday.
+    expect(
+      priorityTier(makeHabit({ type: 'weekdays', days: [2] }), [], MONDAY),
+    ).toBe('rest')
+  })
+
+  it('anything already finished sinks to the last tier', () => {
+    // Kimia's call 2026-08-21: nothing left to do for its period, so it
+    // drops out of its own tier rather than sitting at the top of it.
+    expect(
+      priorityTier(makeHabit({ type: 'daily' }), [monday(9)], MONDAY),
+    ).toBe('rest')
+    const twice = makeHabit({ type: 'nPerDay', n: 2 })
+    expect(priorityTier(twice, [monday(9)], MONDAY)).toBe('today')
+    expect(priorityTier(twice, [monday(9), monday(18)], MONDAY)).toBe('rest')
+    const thrice = makeHabit({ type: 'nPerWeek', n: 3 })
+    expect(
+      priorityTier(
+        thrice,
+        [monday(9), done(2026, 7, 14, 9), done(2026, 7, 15, 9)],
+        MONDAY,
+      ),
+    ).toBe('rest')
+  })
+
+  it('answers for the schedule in force on the day, like everything else', () => {
+    const habit = changeSchedule(
+      makeHabit({ type: 'whenever' }),
+      { type: 'daily' },
+      '2026-07-14',
+    )
+    expect(priorityTier(habit, [], MONDAY)).toBe('rest')
+    expect(priorityTier(habit, [], '2026-07-14')).toBe('today')
   })
 })
 

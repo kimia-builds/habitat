@@ -2,17 +2,18 @@
 // (spec §5b "The lenses", design-notes §11f; T6.23).
 //
 // A lens changes how the list LOOKS. It never touches the record
-// underneath: nothing in this file knows what a completion is, and
-// nothing it returns is ever saved. The arrangement is three things at
-// once — an ORDER, a set of MUTED tiles (dim, still fully tappable) and
-// a set of HIDDEN ones (not drawn at all — and the reason nothing
-// re-orders while any of them exist, design-notes §12a).
+// underneath: `prioritise` READS what has been done, since a finished
+// habit sinks, but nothing here writes anything and nothing it returns
+// is ever saved. The arrangement is three things at once — an ORDER, a
+// set of MUTED tiles (dim, still fully tappable) and a set of HIDDEN
+// ones (not drawn at all — and the reason nothing re-orders while any
+// of them exist, design-notes §12a).
 //
 // It is all TEMPORARY for now. A refresh or the 3am day turn throws the
 // arrangement away and the stored order comes back. T6.23e is the task
 // that gives it somewhere to be saved.
 
-import { todayTier } from './schedule.js'
+import { priorityTier, todayTier } from './schedule.js'
 
 // The habits in the order the SCREEN is showing them.
 //
@@ -112,4 +113,35 @@ export function todayLens(habits, { muted, hidden }, dayKey) {
   }
 
   return { order, muted: [...nextMuted], hidden: nextHidden }
+}
+
+// The `prioritise` lens (spec §5b, T6.23c) — Kimia's call 2026-08-20.
+//
+// The plainest of the verbs: it ONLY ever re-orders. Nothing is muted,
+// un-muted, hidden or un-hidden by it, and a dim tile is sorted exactly
+// like a bright one — "prioritise is an ordering tool: keep any
+// (un)muted tasks the way that they are, reorder only where applicable"
+// (Kimia, 2026-08-21). So it returns an order and nothing else.
+//
+// Three tiers, from `priorityTier`: owed today · owed this week ·
+// everything else. The sort is STABLE, which is the whole point of it —
+// two habits in the same tier keep the order they were already in,
+// because a daily and a daily are the same priority and a manual
+// arrangement of them must survive the press. Filling three buckets in
+// screen order and joining them is stable by construction; there is no
+// comparison between two habits anywhere, so there is nothing that
+// could shuffle equals.
+//
+// Hidden tiles are sorted along with the rest. They are not drawn, so
+// nothing about this is visible until an `un-hide all` brings them
+// back — and then they arrive already in their tiers rather than in
+// some older order nobody can account for.
+//
+// `habits` are the habit objects in SCREEN order.
+export function prioritiseLens(habits, completions, dayKey) {
+  const tiers = { today: [], week: [], rest: [] }
+  for (const habit of habits) {
+    tiers[priorityTier(habit, completions, dayKey)].push(habit.id)
+  }
+  return [...tiers.today, ...tiers.week, ...tiers.rest]
 }

@@ -2854,6 +2854,33 @@ return 0` right after the era is worked out, so a moment before the
   all` brings everything back, instead of stranding a live habit
   underneath a dim one it never asked to be under.
 
+- 2026-08-21 (Kimia, asked before building T6.23c): **a finished habit
+  sinks to prioritise's bottom tier — but only when prioritise is
+  pressed.** The three tiers started as pure schedule shapes. Asked
+  whether a 3×/week habit already at its number should stay in the
+  middle tier, she said it should drop, which turns the sort into a
+  question about the RECORD as well as the schedule. Shown what that
+  rule then says about a daily already ticked today — the same "nothing
+  left to do", landing at the opposite end of the list — she extended it
+  rather than special-cased it: anything finished for its period sinks,
+  a ticked daily and an N-per-day at its count included. And she added
+  the limit that makes it liveable: "prioritise only reorders based on
+  its own best knowledge at time of clicking". Tick a habit after the
+  press and it does not slide away under your hand; the list waits to be
+  asked again. Folded into spec §5b.
+
+- 2026-08-21 (Kimia): **prioritise is an ordering tool and nothing
+  else.** "Keep any (un)muted tasks the way that they are, reorder only
+  where applicable" — so a dim tile is sorted exactly like a bright one
+  and stays dim, and the lens never hides or un-hides. It is the only
+  verb of the three that touches just one of the arrangement's three
+  parts, which is why its function returns an order rather than an
+  arrangement.
+
+- 2026-08-21 (Kimia): **prioritise sits on the RIGHT of the charms**,
+  before `un-hide all`, with `today` alone on the left. Folded into
+  design-notes §11f.
+
 ## T6.23a build notes — the eye on every tile (2026-08-21)
 
 The first of the five lenses, and the first visible piece of T6.23.
@@ -2970,6 +2997,52 @@ appeared beside the charms without moving them, brought the Monday habit
 back to its own slot and left the three dim ones dim; and a habit muted
 by hand came back to full brightness on the next `today` without
 changing place.
+
+## T6.23c build notes — the `prioritise` lens (2026-08-21)
+
+The plainest of the three verbs, and the only one that touches a single
+part of the arrangement: it returns an ORDER, and there is nothing in it
+that could dim, hide or reveal a tile.
+
+**`priorityTier(habit, completions, dayKey)` in schedule.js** — three
+tiers: `today` (expected today and not yet fulfilled), `week` (an
+N-per-week short of its number this week), `rest` (everything else). It
+sits below `isDayFulfilled` and `isWeekFulfilled` because, unlike
+`todayTier` beside it, it needs them: Kimia's finished-things-sink rule
+makes the tier a question about the record as well as the schedule.
+Which is the one real difference between the two tier functions, and
+worth keeping in mind when reading them side by side — `todayTier`
+cannot see a completion, `priorityTier` must.
+
+The "only at the moment it is pressed" half of her rule needed no code
+at all. Nothing watches the record; the tier is computed once, in the
+click handler, and the resulting order is plain screen state afterwards.
+The property falls out of WHERE the function is called rather than out
+of anything it does — an App test pins it, since nothing in the code
+itself would stop a future caller re-sorting on every render.
+
+**`prioritiseLens(habits, completions, dayKey)` in lenses.js** — three
+buckets filled in screen order and joined. Stability is the whole point
+of the sort (Kimia asked for it by name), and bucket-filling is stable
+by construction: no two habits are ever compared, so nothing can shuffle
+equals. `Array.prototype.sort` with a comparator would have been stable
+too under the modern spec, but this way the guarantee is visible in four
+lines rather than inherited from a footnote.
+
+Hidden tiles are sorted along with the rest — invisible either way, and
+it means an `un-hide all` afterwards brings them back already in their
+tiers instead of in some older order nobody can account for.
+
+**lenses.js's header comment was wrong the moment this landed** — it
+claimed nothing in the file knows what a completion is. It now says what
+is true: `prioritise` reads the record, and nothing here writes it.
+
+**Verified with real clicks** (CLAUDE.md's reachability rule) on the dev
+server against the six-habit fixture: one press put the daily and the
+2×/day at the top, the 3×/week under them, then the Monday habit, the
+whenever and the one-time; +1 on the daily left it exactly where it was;
+the next press dropped it into the bottom tier, keeping its place
+relative to the others there.
 
 ## T6.22 build notes — the visit shows that it can be pressed (2026-08-20)
 

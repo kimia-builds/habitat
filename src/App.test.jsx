@@ -711,6 +711,123 @@ describe('the today lens (T6.23b)', () => {
   })
 })
 
+// The `prioritise` lens (T6.23c, spec §5b). Pinned to Thursday 16 July
+// 2026 like the rest (see beforeEach), so a Thursday habit is owed today
+// and a Monday one is not. The word itself is Kimia's, so the control is
+// found by its data-lens name rather than quoted.
+describe('the prioritise lens (T6.23c)', () => {
+  const names = () =>
+    [...document.querySelectorAll('.habit-name')].map((el) => el.textContent)
+  const lens = (name) => document.querySelector(`[data-lens="${name}"]`)
+  const isMuted = (name) => tile(name).className.includes('habit-row--muted')
+  const eye = (name) =>
+    tile(name).querySelector('.row-buttons button:first-child')
+
+  it('sorts into owed today, owed this week, then everything else', () => {
+    render(<App />)
+    // Created deliberately out of order, so only the sort could produce
+    // the arrangement below.
+    createHabitViaUI('sometime', { scheduleType: 'whenever' })
+    createHabitViaUI('thrice', { scheduleType: 'nPerWeek', n: 3 })
+    createHabitViaUI('daily')
+    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['Mon'] })
+    createHabitViaUI('thursdays', { scheduleType: 'weekdays', days: ['Thu'] })
+
+    fireEvent.click(lens('prioritise'))
+
+    expect(names()).toEqual([
+      'daily',
+      'thursdays',
+      'thrice',
+      'sometime',
+      'mondays',
+    ])
+  })
+
+  it('two habits of the same tier keep the order they were put in', () => {
+    // The point of a STABLE sort, and the thing Kimia asked for by name:
+    // a daily and a daily are the same priority, so an arrangement made
+    // by hand survives the press. 'second' is dragged above 'first'
+    // here, and prioritise must have no opinion about the pair.
+    render(<App />)
+    createHabitViaUI('first')
+    createHabitViaUI('second')
+    createHabitViaUI('sometime', { scheduleType: 'whenever' })
+    const drag = layOutRows('second')
+    fireEvent.pointerDown(tile('second'), {
+      button: 0,
+      clientX: 0,
+      clientY: 55,
+    })
+    drag.offset = -50
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 5 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 5 })
+    expect(names()).toEqual(['second', 'first', 'sometime'])
+
+    fireEvent.click(lens('prioritise'))
+
+    expect(names()).toEqual(['second', 'first', 'sometime'])
+  })
+
+  it('a habit finished today sinks to the bottom tier', () => {
+    // Kimia's call 2026-08-21: nothing left to do for its period.
+    render(<App />)
+    createHabitViaUI('done')
+    createHabitViaUI('owed')
+    fireEvent.click(row('done').getByRole('button', { name: '+1' }))
+
+    fireEvent.click(lens('prioritise'))
+
+    expect(names()).toEqual(['owed', 'done'])
+  })
+
+  it('a habit ticked AFTER the press does not slide away under your hand', () => {
+    // Kimia's rule 2026-08-21: prioritise sorts by what it knows at the
+    // moment it is pressed, and nothing re-sorts until it is pressed
+    // again.
+    render(<App />)
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+    fireEvent.click(lens('prioritise'))
+
+    fireEvent.click(row('one').getByRole('button', { name: '+1' }))
+    expect(names()).toEqual(['one', 'two'])
+
+    fireEvent.click(lens('prioritise'))
+    expect(names()).toEqual(['two', 'one'])
+  })
+
+  it('leaves the dimmings exactly as it found them', () => {
+    // "prioritise is an ordering tool: keep any (un)muted tasks the way
+    // that they are" (Kimia 2026-08-21) — so a dim tile is sorted like
+    // any other and stays dim, and a bright one stays bright.
+    render(<App />)
+    createHabitViaUI('sometime', { scheduleType: 'whenever' })
+    createHabitViaUI('daily')
+    fireEvent.click(eye('daily'))
+    expect(isMuted('daily')).toBe(true)
+
+    fireEvent.click(lens('prioritise'))
+
+    expect(names()).toEqual(['daily', 'sometime'])
+    expect(isMuted('daily')).toBe(true)
+    expect(isMuted('sometime')).toBe(false)
+  })
+
+  it('is never written down — a reload brings the stored order back', () => {
+    // Nothing about an arrangement is saved until T6.23e.
+    const first = render(<App />)
+    createHabitViaUI('sometime', { scheduleType: 'whenever' })
+    createHabitViaUI('daily')
+    fireEvent.click(lens('prioritise'))
+    expect(names()).toEqual(['daily', 'sometime'])
+
+    first.unmount()
+    render(<App />)
+    expect(names()).toEqual(['sometime', 'daily'])
+  })
+})
+
 describe('muting — the eye on every tile (T6.23a)', () => {
   // What the list looks like right now, top to bottom.
   const names = () =>

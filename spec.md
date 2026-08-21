@@ -498,7 +498,7 @@ region discovery expands what the Market can offer.
   library and the abode sky — the hair textures left with the flora they
   were being judged for, once the ordinary flora design closed.
 
-### The lenses (M6 · T6.23 — the eye and `today` BUILT; prioritise, tasks, the default view and design mode still to come)
+### The lenses (M6 · T6.23 — the eye, `today` and `prioritise` BUILT; tasks, the default view and design mode still to come)
 
 Kimia's call 2026-08-20, after a long list made the two existing ways of
 looking at it — all of it, or one charm combination that forgets itself —
@@ -548,12 +548,20 @@ so they stack in any order and never start over:
   by the eye's own rule, keeping the order it was already in, and sinks
   past hidden tiles as well as live ones — invisible either way now, and
   the tidier list once an un-hide brings them back.
-- **prioritise** re-orders into three tiers, **stably**: applies today ·
-  applies this week (N-per-week) · everything else — whenever, a weekday
-  habit whose day this is not, and one-time tasks, which have no
-  deadline by design (§4.1). Two habits of the same tier keep the order
-  they were in: a daily and a daily are the same priority, so a manual
-  arrangement of them survives.
+- **prioritise [BUILT — T6.23c, 2026-08-21]** re-orders into three
+  tiers, **stably**: owed today · owed this week (N-per-week) ·
+  everything else — whenever, a weekday habit whose day this is not, and
+  one-time tasks, which have no deadline by design (§4.1). Two habits of
+  the same tier keep the order they were in: a daily and a daily are the
+  same priority, so a manual arrangement of them survives. It is the one
+  verb that only ever RE-ORDERS: a dim tile is sorted exactly like a
+  bright one and stays dim, and nothing is hidden or un-hidden (Kimia's
+  call 2026-08-21). **Anything already finished sinks to the last tier**
+  — a ticked daily, an N-per-day at its count, an N-per-week at its
+  number for the week — because there is nothing left to do on it for
+  now. It sorts by what it knows **at the moment it is pressed**: tick a
+  habit afterwards and it does not slide away under your hand; the list
+  waits for the next press.
 - **tasks** cycles the one-time to-dos through four presses: to the top ·
   to the bottom and muted · hidden · off. "Off" un-hides and un-dims
   where they stand; it restores no earlier position. Inside design mode the cycle is

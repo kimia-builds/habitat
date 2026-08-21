@@ -132,6 +132,10 @@ built on top of a live, in-use app.
   keyed file, so Habitat can hold a second language. And the habit list
   is learning new ways to be LOOKED at: every tile carries an eye, and
   closing it dims that habit and drifts it down out of your eyeline
-  without switching anything off.
+  without switching anything off. Two words beside the six charms narrow
+  it further — `today` leaves you the day's list, and `prioritise` sorts
+  it into what is owed today, what is owed this week, and everything
+  else. None of it is written down: a refresh or the 3am day turn brings
+  your own order back.
 
 See [plan.md](plan.md) for the task-level truth.
