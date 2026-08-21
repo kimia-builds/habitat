@@ -8,7 +8,12 @@
 import { describe, test, expect } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import { afterEach } from 'vitest'
-import { hairField, denseHairField, hairReach } from './textures.jsx'
+import {
+  hairField,
+  denseHairField,
+  hairGrownBox,
+  hairReach,
+} from './textures.jsx'
 
 afterEach(cleanup)
 
@@ -101,6 +106,31 @@ describe('the dense hair field', () => {
       const dense = strandSpans(denseHairField({ ...BOX, mode })).length
       expect(dense).toBeGreaterThan(plain)
     }
+  })
+
+  test('holds that same density on a box SMALLER than the tuning square', () => {
+    // Where a small flora's fur is grown since 2026-08-21: its hair space is
+    // a third of a large one's, so its field is well under one tuning square.
+    // One whole pass there would be several times the tuned density — the same
+    // fur wrongly thickened, and none of the strands saved that were the point
+    // of growing it small. Density is strands per area of the field actually
+    // grown, overscan and all, which is what hairGrownBox gives.
+    const perArea = (box, mode) => {
+      const grown = hairGrownBox({ ...box, mode })
+      return (
+        strandSpans(denseHairField({ ...box, mode })).length /
+        (grown.w * grown.h)
+      )
+    }
+    const small = { x: 0, y: 0, w: BOX.w / 3, h: BOX.h / 3, seed: 42 }
+    const off = []
+    for (const mode of MODES) {
+      const ratio = perArea(small, mode) / perArea(BOX, mode)
+      if (ratio < 0.75 || ratio > 1.35)
+        off.push(`${mode} is ${ratio.toFixed(2)}`)
+    }
+    // Named rather than counted, so a failure says which mode drifted.
+    expect(off).toEqual([])
   })
 
   test('reports a reach for an unknown mode rather than crashing', () => {

@@ -18,7 +18,7 @@
  * shape, size and fill ARE the same flora, and they look identical on purpose —
  * that is what "4 silhouettes × 2 sizes × 6 fills = 48 collectible flora"
  * (design-bible §9a) means. Flora.jsx leans on this: it draws one hair field per
- * shape-and-fill pair and reuses it, which is both the truthful model and the
+ * shape, fill and size and reuses it, which is both the truthful model and the
  * reason an Abode full of flora does not have to grow tens of thousands of
  * strands over again on every frame of a drag.
  *
@@ -93,9 +93,10 @@ export function floraIdentity(completionId, worldSeed) {
 }
 
 // The catalogue number of a dealt flora — "shape 3 in coat-sky", the pair that
-// says two finds are the same one of the 48. Flora.jsx keys its cached hair
-// fields by this; size is deliberately not part of it, because a fill is grown
-// in the drawing's own space and scaled, so both classes share one field.
+// says which FILL a flora wears. Size is not part of it, because size is not
+// part of what a fill is. (Flora.jsx caches its grown hair fields under this
+// plus the size class: since 2026-08-21 the two classes wear the same fur at
+// the same size on screen, which takes a field each.)
 export function floraFillKey({ silhouette, fill }) {
   return `${silhouette.key}|${fill.id}`
 }

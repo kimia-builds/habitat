@@ -29,15 +29,15 @@
  *   3. the hair field, clipped to the outline so no strand fringes out past it.
  *
  * ONE HAIR FIELD PER FLORA, GROWN ONCE AND KEPT. Two finds that dealt the same
- * shape and fill are the same one of the 48 and look identical on purpose
- * (floraDeal.js) — so the field for a shape-and-fill pair is generated the first
- * time it is asked for and reused everywhere after. That matters here more than
- * anywhere: a single flora is two to three THOUSAND drawn strands, and the Abode
- * re-renders on every pointer move of a drag. Without this, dragging one plant
- * would regrow every plant on the ground, sixty times a second.
+ * shape, fill and size are the same one of the 48 and look identical on purpose
+ * (floraDeal.js) — so a field is generated the first time it is asked for and
+ * reused everywhere after. That matters here more than anywhere: a large flora
+ * is two to three THOUSAND drawn strands, and the Abode re-renders on every
+ * pointer move of a drag. Without this, dragging one plant would regrow every
+ * plant on the ground, sixty times a second.
  */
 
-import { floraHeight, floraWidth } from './floraCanon.js'
+import { floraHeight, floraScale, floraWidth } from './floraCanon.js'
 import { floraFillKey, floraIdentity } from './floraDeal.js'
 import { TextureDefs, denseHairField } from './textures.jsx'
 
@@ -49,38 +49,63 @@ const FLORA_GROUND = '#0b0f14'
 // The hair modes were tuned on a 110-unit swatch and a strand's LENGTH is fixed
 // in drawing units, so dropping a field straight into a trace's own canvas would
 // make the fur a different size on every species — the four canvases run 95 to
-// 197 units tall. So the hair is grown in its own space that is always this tall
-// and then scaled onto the drawing, which makes a strand the same size on screen
-// whichever shape wears it.
+// 197 units tall. So the hair is grown in its own space and then scaled onto the
+// drawing, which makes a strand the same size on screen whichever shape wears
+// it. This is that space for a LARGE flora, the class the fills were judged at.
 const HAIR_UNIT = 110
+
+/*
+ * ONE FUR, WORN AT ONE SIZE (Kimia, 2026-08-21).
+ *
+ * A small flora used to wear the large one's field shrunk to fit: the same two
+ * to three thousand strands at 36% the size, so every hair on it was 2.75×
+ * finer than on the plant standing beside it. Her call is that the fur is the
+ * SAME fur on both — a hair is as thick and as long on a small flora as on a
+ * large one, and a small plant simply wears fewer of them. That detail was
+ * invisible at 36%, and it is where most of the drawn strands went: a small
+ * flora is now a few hundred paths where it used to be a couple of thousand.
+ *
+ * The whole trick is the size of the space the hair is grown in. Grow it in a
+ * space small/large as tall and every strand comes out that much bigger against
+ * the drawing — which is exactly the amount the drawing is then shrunk by, so on
+ * screen the hairs land at the large flora's size. The smaller strand count
+ * follows on its own: density is strands per area, and there is less area.
+ */
+function hairUnit(sizeClass) {
+  return HAIR_UNIT * (floraScale(sizeClass) / floraScale('large'))
+}
 
 // The blur that makes the aura, as a fraction of the drawing's own width — the
 // same fraction the friends use (friend04.jsx: 6.6 on a 391-wide canvas).
 const GLOW_FRACTION = 0.017
 
-// Every hair field grown so far, by shape-and-fill. React elements are just
-// immutable descriptions, so one field can be rendered in as many places as
-// there are flora wearing it.
+// Every hair field grown so far, by shape-and-fill AND SIZE CLASS. React
+// elements are just immutable descriptions, so one field can be rendered in as
+// many places as there are flora wearing it. The size class is part of the key
+// because the two classes wear the same fur at the same size on screen
+// (`hairUnit` above), which takes a field each — 8 of them per fill rather than
+// 4, and the small ones are the cheap ones.
 const FIELDS = new Map()
 
 function hairFor(identity) {
-  const key = floraFillKey(identity)
+  const { silhouette, sizeClass, fill } = identity
+  const key = `${floraFillKey(identity)}|${sizeClass}`
   const grown = FIELDS.get(key)
   if (grown) return grown
-  const { silhouette, fill } = identity
+  const unit = hairUnit(sizeClass)
   const aspect = silhouette.viewBox.w / silhouette.viewBox.h
   // denseHairField grows the field bigger than the box asked for and repeats it,
   // so the shape is cut from the MIDDLE of a dense field and never wears a thin
   // band across its underside (its own comment has the why). All that is left
   // here is to put it in the drawing's space.
   const field = (
-    <g transform={`scale(${silhouette.viewBox.h / HAIR_UNIT})`}>
+    <g transform={`scale(${silhouette.viewBox.h / unit})`}>
       {denseHairField({
         mode: fill.mode,
         x: 0,
         y: 0,
-        w: HAIR_UNIT * aspect,
-        h: HAIR_UNIT,
+        w: unit * aspect,
+        h: unit,
         seed: 42,
         colour: fill.colour.hex,
       })}

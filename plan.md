@@ -245,6 +245,11 @@ tracker. Everything after this is delight, informed by real use.
                   the neon POP the first time. T5.3h's held arrival row
                   went in here too, so the shelf's friends became the real
                   drawings in the same push. Build notes in history.md)_
+            - [x] **One fur, worn at one size** _(done 2026-08-21 — Kimia's
+                  call: a small flora wears the large one's fur at the large
+                  one's size, and fewer hairs, which cut a small flora from
+                  ~1,700 drawn strands to ~430. Large flora untouched. Build
+                  notes in history.md)_
             - [ ] **The landmark class** — see T5.3g; still Kimia's own session.
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's

@@ -327,6 +327,11 @@ export function pumicePits({
  * COLOUR: pass `colour: '#43e08a'` to grow the field in that hue instead of the
  * library green — hairRamp() below rebuilds the whole depth ramp from it. Used
  * by the flora fills (T5.3g), where hair IS the fill.
+ *
+ * COUNT SCALE: each mode's strand counts are what covers the tuning square, so
+ * a box smaller than one square needs proportionally fewer — `countScale: 0.4`
+ * grows four tenths as many. `denseHairField` works it out and passes it; a
+ * swatch asking for a plain field never sets it.
  * =========================================================================== */
 
 // Deterministic RNG so a given seed always reproduces the same field.
@@ -523,6 +528,7 @@ export function hairField({
   h = 200,
   seed = 1,
   colour = null,
+  countScale = 1,
 } = {}) {
   const cfg = HAIR_MODES[mode] || HAIR_MODES.curled
   // No colour asked for = the library's own green, so every existing swatch
@@ -541,7 +547,11 @@ export function hairField({
   // skipped in the destructure — the pass index carries it.
   passes.forEach(([, opk, filt, n, wscale], pi) => {
     const paths = []
-    for (let i = 0; i < n; i++) {
+    // A mode's counts are what covers the TUNING SQUARE; `countScale` is the
+    // fraction of one square this box actually is, so a smaller box grows
+    // proportionally fewer strands instead of the same number packed tighter.
+    const count = Math.max(1, Math.round(n * countScale))
+    for (let i = 0; i < count; i++) {
       const sx = x + U(rng, 3, w - 3)
       const sy = y + U(rng, 3, h - 3)
       const ang = baseAng + U(rng, -0.5, 0.5)
@@ -636,6 +646,25 @@ export function hairReach(mode) {
 // of its own edges, and a couple more costs nothing and removes the seam.
 const HAIR_EDGE_MARGIN = 6
 
+// The box a dense field is actually GROWN over: the one asked for, plus room
+// below for a full strand's worth of roots and a hairline everywhere else. Its
+// own function because density is strands per area of THIS box, not of the box
+// the caller asked to cover — so anything measuring density needs the same sum.
+export function hairGrownBox({
+  mode = 'curled',
+  x = 0,
+  y = 0,
+  w = 200,
+  h = 200,
+} = {}) {
+  return {
+    x: x - HAIR_EDGE_MARGIN,
+    y: y - HAIR_EDGE_MARGIN,
+    w: w + HAIR_EDGE_MARGIN * 2,
+    h: h + HAIR_EDGE_MARGIN + hairReach(mode),
+  }
+}
+
 export function denseHairField({
   mode = 'curled',
   x = 0,
@@ -645,21 +674,18 @@ export function denseHairField({
   seed = 1,
   colour = null,
 } = {}) {
-  // Room below for a full strand's worth of roots; a hairline elsewhere.
-  const south = hairReach(mode)
-  const box = {
-    x: x - HAIR_EDGE_MARGIN,
-    y: y - HAIR_EDGE_MARGIN,
-    w: w + HAIR_EDGE_MARGIN * 2,
-    h: h + HAIR_EDGE_MARGIN + south,
-  }
+  const box = hairGrownBox({ mode, x, y, w, h })
   // Back to the tuned density: one pass per tuning square of area.
-  const passes = Math.max(
-    1,
-    Math.round((box.w * box.h) / (HAIR_TUNED_BOX * HAIR_TUNED_BOX)),
-  )
+  const squares = (box.w * box.h) / (HAIR_TUNED_BOX * HAIR_TUNED_BOX)
+  const passes = Math.max(1, Math.round(squares))
+  // …and when even ONE pass is more than the box needs — a box SMALLER than the
+  // tuning square, which is what a small flora's fur is grown in since 2026-08-21
+  // — that single pass is thinned to the fraction that fits. Without it a
+  // quarter-square box would wear four times the tuned density: the right fur,
+  // wrongly, four times as thick. A box of one square or more is untouched.
+  const countScale = Math.min(1, squares)
   return Array.from({ length: passes }, (_, i) =>
-    hairField({ mode, ...box, seed: seed + i * 101, colour }),
+    hairField({ mode, ...box, seed: seed + i * 101, colour, countScale }),
   )
 }
 

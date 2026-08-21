@@ -3212,6 +3212,72 @@ return 0` right after the era is worked out, so a moment before the
   brightest step of the glow scale lands in the plant's own light rather
   than in a colour picked for it.
 
+- 2026-08-21 (Kimia's call, T5.3i): **the two size classes wear the SAME
+  fur, at the same size on screen — and a small flora just wears fewer
+  hairs.** Until now one hair field was grown per shape-and-fill and simply
+  shrunk with the plant, so a small flora carried the large one's whole two
+  to three thousand strands at 36% the size: every hair 2.75x finer than on
+  the plant standing next to it, a fineness no eye can see at that size, and
+  most of the drawn paths in the game. Her reason for changing it was the
+  DATA, not the look — fewer strands, less to draw — and asked whether the
+  hairs should also keep their LENGTH she chose the whole fur: same
+  thickness and same length, one fur worn by both classes. She was told
+  first that a curled or wispy hair is 1.7-2.7x a small plant's own height,
+  so the small ones could have come out as a few long strokes; drawn, they
+  did not — they read as the same plant, smaller, wearing the same coat.
+  A small flora went from ~1,700 strands to ~430 (a 75% cut); a ground of
+  half-and-half draws about 38% fewer paths. **The large flora are
+  untouched, bit for bit** — this decision only ever moves the small class.
+
+## T5.3i build notes (part 3) — one fur, worn at one size (2026-08-21)
+
+**What changed on screen.** The hairs on a small flora are as thick and as
+long as the hairs on a large one, where they used to be 2.75x finer. The
+plants are the same plants; the fur is now one fur.
+
+**How, in one sentence.** The fur is grown in a space of its own and then
+scaled onto the drawing, so growing a small flora's fur in a space 0.28/0.77
+as tall makes every strand that much bigger against the drawing — exactly
+the amount the drawing is then shrunk by, which lands the hairs at the large
+flora's size on screen. `hairUnit()` in `Flora.jsx` is those two numbers,
+taken from the canon rather than typed in.
+
+**The strands came off on their own.** Density is strands per area and the
+hair space got smaller, so the field costs what it covers: ~1,700 paths per
+small flora down to ~430, measured live in the browser (curled 1710 -> 470,
+coat 1260 -> 346, wispy 2960 -> 740, underfur 2320 -> 426). Large flora are
+byte-for-byte what they were.
+
+**The one real fix underneath.** `denseHairField` held the tuned density by
+repeating WHOLE passes over its box — fine while every box was at least 1.4
+tuning squares, wrong the moment a box is smaller than one: a quarter-square
+box would have worn one whole pass, four times the tuned density, which is
+the right fur wrongly thickened and no strands saved. So a pass is now
+thinned to the fraction that fits (`countScale`). Boxes of a square or more
+take the same whole passes they always did, which is why the large flora did
+not move.
+
+**The cache grew a dimension.** `FIELDS` in `Flora.jsx` is keyed by shape,
+fill AND size class now — 8 grown fields per fill instead of 4, the four new
+ones being the cheap small ones. `floraFillKey` itself was left alone: it
+names the FILL a flora wears, and size is not part of what a fill is.
+
+**Verified in the browser** on a page rendering both classes of two
+silhouettes in all six fills side by side (rendered with `renderToStaticMarkup`
+into `public/`, looked at, deleted — never committed): the small plants read
+as smaller plants in the same coat, and the path counts above were read off
+the live DOM.
+
+**Tests.** Two in `Flora.test.jsx` — that a hair lands the same size on
+screen on both classes (the drawing's shrink times the field's own scale),
+and that the small one draws under 60% of the large one's strands while
+still being a field and not a handful of hairs. Both walk the deal for two
+finds sharing a shape and fill in different sizes rather than hard-coding
+ids. One in `textures.test.jsx`: a box smaller than the tuning square holds
+the same strands-per-area as a big one, measured against `hairGrownBox()`,
+which was pulled out of `denseHairField` so the test and the generator do
+that sum in one place.
+
 ## T5.3i build notes (part 2) — the flora arrive (2026-08-21)
 
 **What changed on screen.** The drop that lands at the top of the habit

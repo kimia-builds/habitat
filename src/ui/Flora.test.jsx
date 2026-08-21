@@ -90,6 +90,68 @@ describe('a flora drawn for real', () => {
   })
 })
 
+/*
+ * THE SAME FUR ON BOTH SIZES (Kimia, 2026-08-21). A small flora used to wear
+ * the large one's field shrunk to fit — every hair 2.75× finer, and the same
+ * two thousand of them. Now the fur is one fur: hairs the same size on screen
+ * whichever class wears them, and the small plant simply wears fewer.
+ */
+describe('the fur a flora wears', () => {
+  // The comparison only means something between two finds dealt the SAME shape
+  // and fill, since a different fill is a different fur. The deal is
+  // deterministic, so this walks it until it turns up such a pair in both
+  // classes rather than hard-coding two ids that a re-tuned deal would strand.
+  function matchedPair() {
+    const seen = new Map()
+    for (let i = 0; i < 400; i++) {
+      const id = `pair${i}`
+      const { silhouette, sizeClass, fill } = floraIdentity(id, SEED)
+      const key = `${silhouette.key}|${fill.id}`
+      const other = seen.get(key)
+      if (other && other.sizeClass !== sizeClass) {
+        return sizeClass === 'small'
+          ? { small: id, large: other.id }
+          : { small: other.id, large: id }
+      }
+      if (!other) seen.set(key, { id, sizeClass })
+    }
+    throw new Error('the deal never dealt one shape-and-fill in both sizes')
+  }
+
+  // How big a single hair lands ON SCREEN: the scale the drawing is shrunk by,
+  // times the scale its hair field is dropped in at.
+  function hairSizeOnScreen(svg) {
+    const drawingHeight = Number(svg.getAttribute('viewBox').split(' ')[3])
+    const shrink = Number(svg.getAttribute('height')) / drawingHeight
+    const field = svg.querySelector('g[clip-path] > g')
+    const scale = Number(
+      /scale\(([^)]+)\)/.exec(field.getAttribute('transform'))[1],
+    )
+    return shrink * scale
+  }
+
+  it('is the same size on screen on a small flora as on a large one', () => {
+    const { small, large } = matchedPair()
+    const onSmall = hairSizeOnScreen(draw(small))
+    const onLarge = hairSizeOnScreen(draw(large))
+    expect(onSmall).toBeCloseTo(onLarge, 10)
+  })
+
+  it('takes far fewer strands on the small one, which is the point', () => {
+    const { small, large } = matchedPair()
+    const strands = (id) =>
+      draw(id).querySelectorAll('g[clip-path] path').length
+    const onSmall = strands(small)
+    const onLarge = strands(large)
+    // Measured at a third or less when this went in; the assertion is loose
+    // enough to survive a re-tuned mode and tight enough to fail loudly if the
+    // small class ever goes back to wearing a full-size field.
+    expect(onSmall).toBeLessThan(onLarge * 0.6)
+    // …and it is still a field, not a handful of hairs.
+    expect(onSmall).toBeGreaterThan(100)
+  })
+})
+
 describe('the room a find needs', () => {
   it('is the same answer the drawing gives itself', () => {
     const svg = draw('c2')

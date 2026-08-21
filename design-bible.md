@@ -313,6 +313,17 @@ where the friend pastels are soft (`friendColours.js`).
   _(An earlier attempt at the same complaint, shrinking and softening the
   dark ground so it never reached the outline, was built and rejected the
   same day: it thinned the flora instead of filling them.)_
+- **ONE FUR, WORN AT ONE SIZE (Kimia, 2026-08-21).** The two size classes
+  wear the SAME fur: a hair is as thick and as long on a small flora as on
+  a large one, and a small plant simply wears fewer of them. It used to
+  wear the large one's field shrunk to fit — the same two to three thousand
+  strands at 36% the size, so every hair on it was 2.75x finer than on the
+  plant beside it. Her reason was the DATA (a small flora is now ~430 drawn
+  strands where it was ~1,700), and the look is truer for it: fur belongs
+  to the species, not to how big this one grew. In code the fur is grown in
+  a space whose height is the size class's own place in the canon, so the
+  rule needs no numbers of its own — see `hairUnit()` in `Flora.jsx`.
+
 - The pairing puts one green and one blue on each doubled texture, so no
   texture belongs to a single hue and the six split three green / three
   blue.
