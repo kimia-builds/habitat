@@ -99,6 +99,18 @@ const en = {
   'lens.todos': 'to-dos',
   'lens.prioritise': 'prioritise',
   'lens.unhideAll': 'un-hide all',
+  'lens.default': 'default',
+  // The one control on this line that is a PEBBLE and not a lens
+  // (design-notes §11e/§11f): it acts on the world and settles, where
+  // every other word here only changes how the list is being looked at.
+  'lens.saveAsDefault': 'save as default',
+  // Asked before the default view is overwritten. Kimia's sentence,
+  // written 2026-08-20 for design mode and carried across when that was
+  // retired in favour of one press (T6.23e); only its opening clause
+  // changed, with her approval, from "re-design" to "save this as".
+  'lens.saveAsDefaultConfirm':
+    'are you sure you want to save this as your default view? any ' +
+    'previous default view choices will be lost',
 
   // The habit form — the four prompts, then the two pebbles.
   'habitForm.name': 'write a good habit or task:',
@@ -286,6 +298,9 @@ const fa = {
   'lens.todos': '',
   'lens.prioritise': '',
   'lens.unhideAll': '',
+  'lens.default': '',
+  'lens.saveAsDefault': '',
+  'lens.saveAsDefaultConfirm': '',
 
   'habitForm.name': '',
   'habitForm.detail': '',

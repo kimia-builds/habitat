@@ -64,7 +64,7 @@
 import { DEFAULT_LANGUAGE, isLanguage } from '../content/ui.js'
 import { validateAbodeLayout } from '../game/abode.js'
 import { validateCompletion } from '../game/completions.js'
-import { DEFAULT_DAY_CUTOFF_HOUR } from '../game/constants.js'
+import { DEFAULT_DAY_CUTOFF_HOUR, SYMBOL_COUNT } from '../game/constants.js'
 import { validateBookcaseLayout } from '../game/bookcase.js'
 import {
   dayKeyFromTimestamp,
@@ -488,4 +488,84 @@ export function importData(jsonString) {
   validateData(data)
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   return data
+}
+
+// ── THE DEFAULT VIEW ─────────────────────────────────────────────────
+//
+// A SECOND key, and the only thing Habitat keeps outside the versioned
+// envelope above (T6.23e, 2026-08-21; the tier itself was decided
+// 2026-08-12 for the charm lens and inherited whole when that task was
+// absorbed into this one).
+//
+//   { charms: [1, 4], muted: ['habit-id', …] }
+//
+// It describes a BROWSER, not a record — which charms this screen likes
+// to open on, and which tiles it likes kept out of its eyeline. So it is
+// never written into a backup file, never restored by an import, and
+// never carried to another device if Habitat ever reaches a phone. Both
+// new-game doors clear it.
+//
+// The saved ORDER is deliberately NOT here (Kimia's call 2026-08-21).
+// The order already lives inside the envelope as the habits array and so
+// rides along in backups like the rest of the record; a restored backup
+// therefore brings your arrangement back, but not your charms and
+// mutings, which belong to the machine they were chosen on.
+//
+// A missing or junk value reads as "no default", never as a crash —
+// nothing here is worth losing a launch over. Every read is wrapped, and
+// anything unrecognisable is quietly thrown away rather than repaired.
+const DEFAULT_VIEW_KEY = 'habitat-default-view'
+
+export function emptyDefaultView() {
+  return { charms: [], muted: [] }
+}
+
+// A charm is one of the six, as a whole number. Anything else — a
+// string, a seventh charm, a duplicate — is dropped.
+function cleanCharms(value) {
+  if (!Array.isArray(value)) return []
+  const kept = []
+  for (const charm of value) {
+    if (!Number.isInteger(charm) || charm < 1 || charm > SYMBOL_COUNT) continue
+    if (!kept.includes(charm)) kept.push(charm)
+  }
+  return kept
+}
+
+// Habit ids are strings. Whether they still point at a habit is not
+// asked here — that is game/lenses.js's `forgetMissing`, which needs the
+// habit list this module deliberately knows nothing about.
+function cleanIds(value) {
+  if (!Array.isArray(value)) return []
+  const kept = []
+  for (const id of value) {
+    if (typeof id !== 'string' || id === '') continue
+    if (!kept.includes(id)) kept.push(id)
+  }
+  return kept
+}
+
+export function loadDefaultView() {
+  try {
+    const raw = localStorage.getItem(DEFAULT_VIEW_KEY)
+    if (raw === null) return emptyDefaultView()
+    const parsed = JSON.parse(raw)
+    if (parsed === null || typeof parsed !== 'object') return emptyDefaultView()
+    return { charms: cleanCharms(parsed.charms), muted: cleanIds(parsed.muted) }
+  } catch {
+    return emptyDefaultView()
+  }
+}
+
+export function saveDefaultView(view) {
+  const clean = {
+    charms: cleanCharms(view?.charms),
+    muted: cleanIds(view?.muted),
+  }
+  localStorage.setItem(DEFAULT_VIEW_KEY, JSON.stringify(clean))
+  return clean
+}
+
+export function clearDefaultView() {
+  localStorage.removeItem(DEFAULT_VIEW_KEY)
 }

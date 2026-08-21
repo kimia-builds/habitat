@@ -2,15 +2,19 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { createHabit } from '../game/habits.js'
 import {
   clearData,
+  clearDefaultView,
   emptyData,
+  emptyDefaultView,
   exportData,
   hasData,
   importData,
   loadData,
+  loadDefaultView,
   requestPersistentStorage,
   isStoragePersisted,
   SCHEMA_VERSION,
   saveData,
+  saveDefaultView,
 } from './storage.js'
 
 const habit = (id, name) =>
@@ -1032,5 +1036,86 @@ describe('the v10 → v11 upgrade (T6.13)', () => {
     const file = exportData(Date.parse('2026-08-16T12:00:00'))
     clearData()
     expect(importData(file).settings.language).toBe('fa')
+  })
+})
+
+// The DEFAULT VIEW (T6.23e) — the one thing Habitat keeps outside the
+// versioned envelope, because it describes a browser rather than a
+// record. The rules it has to keep: it never rides in a backup, an
+// import never restores it, and nothing it can be handed may crash a
+// launch.
+describe('the default view', () => {
+  beforeEach(() => {
+    localStorage.clear()
+  })
+
+  it('reads as no default when nothing has been saved', () => {
+    expect(loadDefaultView()).toEqual(emptyDefaultView())
+    expect(emptyDefaultView()).toEqual({ charms: [], muted: [] })
+  })
+
+  it('remembers the charms and the mutings it was given', () => {
+    saveDefaultView({ charms: [2, 5], muted: ['a', 'b'] })
+    expect(loadDefaultView()).toEqual({ charms: [2, 5], muted: ['a', 'b'] })
+  })
+
+  it('is cleared outright, not emptied', () => {
+    saveDefaultView({ charms: [1], muted: ['a'] })
+    clearDefaultView()
+    expect(loadDefaultView()).toEqual(emptyDefaultView())
+  })
+
+  // A missing or junk value reads as "no default", never as a crash:
+  // nothing here is worth losing a launch over.
+  it('reads junk as no default rather than throwing', () => {
+    for (const junk of ['', 'not json', '[]', 'null', '7', '"a string"']) {
+      localStorage.setItem('habitat-default-view', junk)
+      expect(() => loadDefaultView()).not.toThrow()
+    }
+    localStorage.setItem('habitat-default-view', '{"charms":9,"muted":"a"}')
+    expect(loadDefaultView()).toEqual(emptyDefaultView())
+  })
+
+  it('throws away charms that are not one of the six', () => {
+    saveDefaultView({ charms: [0, 1, 6, 7, 2.5, '3', null], muted: [] })
+    expect(loadDefaultView().charms).toEqual([1, 6])
+  })
+
+  it('throws away ids that are not strings, and duplicates of both', () => {
+    saveDefaultView({ charms: [2, 2, 4], muted: ['a', 'a', '', 3, null, 'b'] })
+    expect(loadDefaultView()).toEqual({ charms: [2, 4], muted: ['a', 'b'] })
+  })
+
+  // The whole point of the second key: the default view describes THIS
+  // browser, so it must never leave it inside a backup file, and an
+  // import must never overwrite the one the machine already has.
+  it('never rides along in a backup file', () => {
+    saveData({ ...emptyData(), habits: [habit('h1', 'read')] })
+    saveDefaultView({ charms: [3], muted: ['h1'] })
+    const backup = exportData()
+    // The envelope has no room for either half of a default view, so
+    // neither key is anywhere in the file — the habit's own id is, of
+    // course, because the habit itself travels.
+    expect(JSON.parse(backup).charms).toBeUndefined()
+    expect(JSON.parse(backup).muted).toBeUndefined()
+    expect(backup).not.toContain('default-view')
+  })
+
+  it('is untouched by an import', () => {
+    saveData({ ...emptyData(), habits: [habit('h1', 'read')] })
+    const backup = exportData()
+    saveDefaultView({ charms: [3], muted: ['h1'] })
+    importData(backup)
+    expect(loadDefaultView()).toEqual({ charms: [3], muted: ['h1'] })
+  })
+
+  // clearData is the envelope's own door (the total refresh). The two
+  // keys are separate on purpose, so clearing one must not touch the
+  // other — App.jsx clears both, deliberately and visibly.
+  it('is a separate key from the envelope', () => {
+    saveData({ ...emptyData(), habits: [habit('h1', 'read')] })
+    saveDefaultView({ charms: [3], muted: ['h1'] })
+    clearData()
+    expect(loadDefaultView()).toEqual({ charms: [3], muted: ['h1'] })
   })
 })

@@ -1122,7 +1122,7 @@ is one number in `src/tokens.css`.
 | The draft tile | save, cancel |
 | Foot of the home screen | export backup, import backup, start a new game, view historical data |
 | The new-game pop-up | total refresh, keep habit data, not now, yes, no take me back |
-| Design mode (T6.23, planned) | design new default, cancel, save new default view, exit design mode without changing |
+| The lens line (T6.23e) | save as default — the one control there that acts on the world |
 | A held drop, and the abode's waiting-to-decide list | gather, leave it, read now, read later |
 | Field notes | ‹ earlier, later › |
 | Market | buy |
@@ -1143,11 +1143,13 @@ app:
 - **Switches.** The graph zooms (day / week / 4 weeks) and party mode
   hold a state; a pebble does a thing and settles. They keep their own
   pressed-state look.
-- **Lenses (T6.23, planned 2026-08-20).** default, today, prioritise,
-  tasks, un-hide all, the padlock and the tile eye — the whole of §11f.
-  Same reason as the switches, and the reason the family needed its own
-  section: a lens changes how the list is being looked at and leaves
-  nothing behind, where a pebble acts and settles.
+- **Lenses (T6.23, built 2026-08-21).** default, today, prioritise,
+  to-dos, un-hide all and the tile eye — the whole of §11f. Same reason
+  as the switches, and the reason the family needed its own section: a
+  lens changes how the list is being looked at and leaves nothing
+  behind, where a pebble acts and settles. **save as default** sits on
+  the same line and is the exception that proves the test: it leaves a
+  saved arrangement behind, so it is a pebble.
 - **The reveal's own control.** "Onward", dismissing a first-occurrence
   reveal or a friend arrival, belongs to the one moment Habitat is
   allowed to shout (§5) and wears the reveal's neon, not the everyday
@@ -1167,7 +1169,7 @@ decision — make it a pebble, or name it in the list with its reason.
 
 ---
 
-### 11f. The lenses — Habitat's ways of LOOKING **[the eye, `today`, `prioritise` and `to-dos` BUILT — T6.23a–d, 2026-08-21; the rest TO-BUILD · T6.23e]**
+### 11f. The lenses — Habitat's ways of LOOKING **[BUILT — T6.23a–e, 2026-08-21]**
 
 **A third family, named because it is not the other two** (Kimia's call
 2026-08-20). §11e settled that a **pebble** says what it does and then
@@ -1184,14 +1186,19 @@ check-in):
 | --- | --- |
 | the six **charms** | the original lens: show only these tags |
 | **default** | back to the saved default view |
-| the **padlock** | shut = the default is protected; open = design mode |
-| **today** | keep what applies today, mute what could, hide the rest **[BUILT]** |
-| **prioritise** | re-order into three tiers, stably — finished things sink **[BUILT]** |
-| **to-dos** | cycle the to-dos: top · bottom and muted · hidden · off (three steps in design mode — nothing hides there) **[BUILT]** |
-| **un-hide all** | un-hide everything, clear the charms, leave mutings **[BUILT]** |
-| the **eye**, on every tile | mute this one / un-mute it **[BUILT]** |
+| **today** | keep what applies today, mute what could, hide the rest |
+| **prioritise** | re-order into three tiers, stably — finished things sink |
+| **to-dos** | cycle the to-dos: top · bottom and muted · hidden · off |
+| **un-hide all** | un-hide everything, clear the charms, leave mutings |
+| the **eye**, on every tile | mute this one / un-mute it |
 
-**Two of them are wordless, and that is §12a, not an exception.** The
+**One control on that line is NOT a lens**: **save as default**, the one
+press that writes the arrangement down. By §11f's own test it leaves
+something behind, so it is a **pebble** (§11e) and wears the pebble's
+frame — the family difference should be visible on the line rather than
+muddled by it.
+
+**One of them is wordless, and that is §12a, not an exception.** The
 **eye** is furniture on a tile, and belongs with the pencil and the box
 it sits beside — same size, same dim tier, hover label only. It **leads
 the three** (Kimia's call 2026-08-21): eye, pencil, box. It is the
@@ -1199,11 +1206,11 @@ gentlest of them and will be the most used, and it leaves archive last,
 where the most final of them belongs. Its two faces are an almond with a
 pupil and a lowered lid with three short lashes — and deliberately **no
 slash through the closed one**, because a slash is a prohibition and
-nothing here is forbidden. The **padlock** is the same kind of thing at
-page level, hovering "lock default view" / "unlock default view". The
-rest say their names.
+nothing here is forbidden. The rest say their names. (A **padlock** was
+to be the same kind of thing at page level; it went with design mode on
+2026-08-21.)
 
-**What muted LOOKS like [BUILT — T6.23a].** Opacity, and nothing else:
+**What muted LOOKS like.** Opacity, and nothing else:
 `--tile-muted` in tokens.css. No strike-through, no greying of the
 controls, none of the language of a disabled thing — the tile is out of
 your eyeline, not switched off, and its +1 still counts. Low enough to
@@ -1228,35 +1235,29 @@ left; **prioritise** and **un-hide all** on the right, Kimia's choice of
 the two sides on 2026-08-21. Built as three columns with the charms in the
 middle one, so a word appearing or leaving — **un-hide all** comes and
 goes with the work it has to do — never shuffles the charms sideways.
-The narrow-window wrap is not built yet: three short words still cannot
-crowd six charms at any width the app runs at (740px and up), so it
-belongs with the task that fills the line out. The words themselves are
+The words themselves are
 the plainest thing that could be there — no frame, quiet until the
 pointer is near. Kimia eyeballs the line as it fills.
 
-**The right-hand side wraps to two lines once `un-hide all` shows**, and
-has since T6.23b — measured at 1280px on 2026-08-21: each side column is
-the grid's `1fr` share (168px) while **prioritise** and **un-hide all**
-need 193px side by side. It is not caused by the words on the left,
-whose column has room to spare. Left as it is for now, deliberately:
-T6.23e adds **default** and the **padlock** to this line and will have
-to settle its shape anyway, and the wrap is Kimia's to judge on screen
-when the line is finally full.
+**BOTH SIDES NOW WRAP, and the line is Kimia's to judge (T6.23e,
+2026-08-21).** The right-hand side has wrapped since T6.23b — measured at
+1280px: each side column is the grid's `1fr` share (168px) while
+**prioritise** and **un-hide all** need 193px side by side. T6.23e added
+**default** to the left and the **save as default** pebble to the right,
+so at 1280px the left column now wraps too and the line stands three
+words over two rows on each side. The line is finally full, which is the
+moment §11f said it would have to settle its shape — so this is the look
+to judge on screen, and the shape to change is the three-column grid
+itself rather than the words in it.
 
-**Design mode's dress.** While the padlock is open, the window's edges
-**glow in colour** and the padlock itself **pulses** — the two signs
-that the next drag is permanent. §12a's quiet does not apply here on
-purpose: this is the one everyday state in Habitat with a consequence
-that outlives the visit, and it should be impossible to be in by
-accident. Every tile goes **inert** — +1, -1, the tick, edit and
-archive all dim to the disabled tier, leaving only the eye and the drag
-alive — which is also what the glow is explaining. The colour itself,
-and how strongly it pulses, are judged live.
-
-**The four words design mode says are pebbles, not lenses** — they act
-and settle, and they belong to §11e's roster: **design new default** and
-**cancel** on the confirm pop-up, **save new default view** and **exit
-design mode without changing** on the screen itself.
+**Design mode was retired before it was built (Kimia's call
+2026-08-21).** It was to be the ceremony that wrote an order down — a
+padlock, a confirm pop-up, a glowing window edge, a pulsing lock, a
+stripped screen, inert tiles, hiding that muted instead, a shortened
+`to-dos` cycle and two exits. One press and a confirm keep the part that
+mattered — dragging never commits — at a fraction of the size, and there
+is no state to signal because there is no place to be in. The one thing
+given up is the inert tiles. Its full design is in history.md.
 
 ---
 
@@ -1270,10 +1271,10 @@ rules; this section carries the feel._
 Every action on the home screen becomes an **icon with a hover label**:
 edit (pencil), archive (box), delete forever (trash), add new habit
 (**+**), edit past days (pencil), view historical data (graph). The
-label appears on hover and nowhere else. Two more join them across T6.23: **mute** (an eye that
-opens and closes) on every tile, beside the pencil and the box — built
-in T6.23a — and the default view's **padlock** on the lens row (§11f),
-still to come.
+label appears on hover and nowhere else. One more joined them in T6.23:
+**mute** (an eye that opens and closes) on every tile, beside the pencil
+and the box (§11f, T6.23a). A **padlock** was to join it on the lens row
+and went with design mode on 2026-08-21.
 
 The rule outgrew the icons on 2026-08-12: **anything that needs
 explaining explains itself on hover**, icon or not. The two grey lines
@@ -1370,7 +1371,9 @@ rather than one long one.
 **Reordering is a drag of the whole tile** (T5.1c, 2026-07-23; the grip
 alone until 2026-08-11), not a pair of ▲▼ arrows. Press anywhere on a
 row — the charm, the name, the meta line, the space between them — and
-pull it up or down; the new order persists. The row's tap controls (+1,
+pull it up or down. **The new order does NOT persist (T6.23e,
+2026-08-21):** a drag is always throwaway, and `save as default` is the
+one press that writes an order down — see §11f. The row's tap controls (+1,
 −1, the to-do tick, edit, archive) are the exception: a press that lands
 on one of them is a tap and never starts a drag, so nothing a finger
 does on a button can move a row. That, plus the small travel threshold
@@ -1389,8 +1392,8 @@ input supported — no touch path.
 
 **That filter-lock is the general rule, not a charm rule (Kimia
 2026-08-20; BUILT T6.23b, 2026-08-21).** Nothing re-orders while
-ANYTHING is hidden, by a charm or by a lens (§11f), and the rule binds
-inside design mode too. A tile dropped into a list with gaps in it would
+ANYTHING is hidden, by a charm or by a lens (§11f). A tile dropped into
+a list with gaps in it would
 make Habitat guess where it belongs in the full order, and the order is
 a record of deliberate choices — it must be exactly knowable at every
 moment. Muted tiles are the deliberate exception: they are visible, so

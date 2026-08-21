@@ -426,14 +426,14 @@ tracker. Everything after this is delight, informed by real use.
       it. Original task text in history.md.)_
 
 
-- [ ] **T6.23 The lenses — ways of looking at the habit list** (Kimia's
+- [x] **T6.23 The lenses — ways of looking at the habit list** (Kimia's
       call 2026-08-20; spec §5b "The lenses", design-notes §11f). A long
-      list can only be looked at two ways today: all of it, or one charm
-      combination that forgets itself the moment you reload. Five lenses
-      join the charms — **default · today · prioritise · to-dos · un-hide
-      all** — plus a **padlock** and an **eye** on every tile. They are
-      their own control family, not pebbles (§11e), and they belong to
-      the home screen alone. **One sub-task per session, in this
+      list could only be looked at two ways: all of it, or one charm
+      combination that forgot itself the moment you reloaded. Four lenses
+      joined the charms — **default · today · prioritise · to-dos ·
+      un-hide all** — plus an **eye** on every tile and the one pebble
+      that saves, **save as default**. They are their own control family,
+      not pebbles (§11e), and they belong to the home screen alone. **One sub-task per session, in this
       order** — each one is visible on screen the day it lands, and the
       last one saves what the others make. Kimia eyeballs every look
       before it settles (the T5.2c rule): smallest visible piece first,
@@ -442,25 +442,9 @@ tracker. Everything after this is delight, informed by real use.
   - [x] **T6.23b The `today` lens.** _(2026-08-21)_
   - [x] **T6.23c The `prioritise` lens.** _(2026-08-21)_
   - [x] **T6.23d The `to-dos` lens.** _(2026-08-21)_
-  - [ ] **T6.23e The default view, the padlock and design mode.** The
-        saved arrangement — order + charms + mutings, and only those —
-        restored by the **default** lens, by a refresh and by the new
-        day. Dragging becomes always-temporary; only design mode writes
-        an order down. Design mode: the confirm pop-up, the glowing
-        window edge, the pulsing padlock, the stripped screen, the inert
-        tiles, mute-instead-of-hide, and the two exits. Absorbs T6.11
-        whole, including its persistence tier — the charms and mutings
-        live under their own localStorage key OUTSIDE the versioned
-        envelope (never in a backup file, never restored by an import,
-        cleared by BOTH new-game doors), and a missing or junk value
-        reads as "no default", never a crash.
-        **Settle with Kimia before building:** the default ORDER cannot
-        live there, because the order already lives inside the envelope
-        as the habits array and rides along in backups. Proposal — leave
-        it exactly where it is, so a restored backup brings your order
-        back but not your charm-and-mute defaults, which describe a
-        browser rather than a record. Also to settle: a mute pointing at
-        a habit that has since been deleted must read as no mute.
+  - [x] **T6.23e The default view, and the one press that saves it.**
+        _(2026-08-21 — design mode retired unbuilt in favour of one
+        press; original design in history.md)_
 
 ## M7 — Two devices (sync) (5–6 sessions)
 

@@ -390,10 +390,9 @@ region discovery expands what the Market can offer.
   archived habits wearing the chosen charms (and counts only those), and
   the lens travels to the field notes, where the same row of charms sits
   at the top of the page and narrows the week grid, the completed tasks
-  and the graphs alike. It stays a temporary lens — one filter, held on
-  the home screen, cleared by a reload wherever you are.
-  (**The lenses**, below, rewrite this paragraph when T6.23 lands —
-  planned 2026-08-20, not built.)
+  and the graphs alike. It is one filter, held on the home screen, and
+  since T6.23e a reload restores the SAVED charms rather than clearing
+  them (**The lenses**, below, which built out the rest of this).
   Habits can be archived (history kept) or permanently
   deleted (with confirmation). Every action on the home screen is an
   **icon with a hover label** (T4.5) — no action words on the page. On
@@ -498,7 +497,7 @@ region discovery expands what the Market can offer.
   library and the abode sky — the hair textures left with the flora they
   were being judged for, once the ordinary flora design closed.
 
-### The lenses (M6 · T6.23 — the eye, `today`, `prioritise` and `to-dos` BUILT; the default view and design mode still to come)
+### The lenses (M6 · T6.23 — BUILT)
 
 Kimia's call 2026-08-20, after a long list made the two existing ways of
 looking at it — all of it, or one charm combination that forgets itself —
@@ -516,10 +515,8 @@ reading a record. Their look and their family rules are design-notes
 set of **muted** tiles (dimmed, still fully tappable), and a set of
 **hidden** ones. It starts each visit as the saved default view and is
 otherwise temporary — a refresh or the 3am day turn brings the default
-back. (The charm lens has always cleared on a reload; the day turn is
-the new half of the rule, and muting and hiding obey both as of T6.23a
-and T6.23b. The charms join it when the default view itself is built,
-T6.23e.)
+back. The charms obey the same rule as of T6.23e: a reload no longer
+clears them, it restores the saved ones.
 
 **The eye (muting) [BUILT — T6.23a, 2026-08-21].** The first of the
 three icons on every tile — the eye, then edit, then archive. Closed eye
@@ -579,10 +576,9 @@ so they stack in any order and never start over:
   exactly what the third press did and a control left standing there
   would spend its next press appearing to do nothing. The word is
   permanent furniture, unlike `un-hide all`: it shows even with no
-  to-dos on the list, and pressing it then changes nothing. Inside design
-  mode the cycle is **three** presses — top · bottom and muted · off —
-  because nothing hides in there (below), and a hidden step that merely
-  muted again would be a press that appeared to do nothing.
+  to-dos on the list, and pressing it then changes nothing. (A shortened
+  three-press form was planned for inside design mode; it went with
+  design mode itself on 2026-08-21, so there is one cycle.)
 
 **un-hide all [BUILT — T6.23b, 2026-08-21]** un-hides everything and
 clears the charms, and leaves mutings alone. It is the way back to a
@@ -591,47 +587,61 @@ exactly when the order is locked.
 
 **Nothing re-orders while anything is hidden [BUILT — T6.23b]** — the
 general form of the existing no-dragging-under-a-charm-filter rule
-(design-notes §12a), binding inside design mode too. A tile dropped into a list with gaps in
-it would make Habitat guess where it belongs in the full order, and the
+(design-notes §12a). A tile dropped into a list with gaps in it would make Habitat guess where it belongs in the full order, and the
 deliberate order must be exactly knowable at all times. Muted tiles never
 block dragging: they are visible.
 
-**default, and the padlock.** The **default view** is a saved
-arrangement — **order + charms + mutings**, and only those three.
+**default, and the one press that saves.** The **default view** is a
+saved arrangement — **order + charms + mutings**, and only those three.
 Pressing **default** restores it at any time; a refresh and the new day
 restore it by themselves. A new player has one from the start, decided
 for them: the order habits were created in, no charms, nothing muted.
 
-**Dragging is always temporary.** Only design mode ever writes an order
-down, from the first day — a permanent re-order is a ceremony, and every
-other re-order is throwaway and free of consequence. (A newly created
-habit still joins the default order at its end, as it always has; adding
-a habit is not a ceremony.)
+**Dragging is always temporary.** Only **save as default** ever writes an
+order down. Kimia's reason, 2026-08-20: "temporary reorders feel fun to
+do… they should feel throwaway and flexible, without fear of commitment."
+(A newly created habit still joins the default order at its end, as it
+always has; adding a habit is not a ceremony.)
 
-**Design mode** is entered through the padlock (hover: "lock default
-view" / "unlock default view"). Unlocking asks first — Kimia's sentence,
-in `src/content/ui.js` — answered by **design new default** or
-**cancel**. While it lasts:
+**save as default** is one press, and it **asks first** — Kimia's
+sentence, in `src/content/ui.js` — because it overwrites an arrangement
+that may have taken an evening to build. It is the one control on the
+lens line that is a **pebble** and not a lens (§11e/§11f): every other
+word there only changes how the list is being looked at, while this one
+acts on the world and settles.
 
-- the window's edges glow in colour and the padlock pulses;
-- only the header, the lenses, the charms and the baguettes remain — the
-  left rail, the archived drawer, the footer buttons, the arrival shelf
-  and any cameo are gone;
-- **every tile is inert**: +1, -1, the tick, edit and archive dim,
-  leaving the eye and the drag. A stray tap while arranging must never
-  write a completion into the record;
-- **nothing hides — it mutes.** A default view cannot hold hidden
-  habits, so the verbs mute instead, and anything hidden that way on
-  entry comes back muted: there was a reason it was out of view, and
-  muted is visible without being in your face. Charm-hiding is the
-  exception, because charms are saved. The tasks cycle loses its
-  hidden step here rather than muting twice (above).
+**Nothing is saved hidden.** Hidden is not one of the three things a
+default holds and cannot be — a saved view you cannot find your habits in
+is a trap. So anything hidden at the moment you press save is saved
+**muted** instead, keeping the place it stands in, and the screen shows
+that straight away rather than waiting for the next visit.
 
-Two exits: **save new default view** (or shutting the padlock) and
-**exit design mode without changing**. A refresh is a third — nothing is
-saved until the lock shuts, so it cancels the session. Unlocking keeps
-whatever is already on screen, which makes unlock-then-lock the quick
-way to keep an arrangement fiddled into shape over an evening.
+**The two tiers it is written to** (Kimia's call 2026-08-21). The
+**order** goes into the versioned envelope as the habits array, where it
+has always lived, so it rides along in a backup like the rest of the
+record. The **charms and mutings** go under their own localStorage key
+**outside** the envelope: they describe a browser rather than a record, so
+they are never written into a backup file, never restored by an import,
+and never carried to another device (§8). A restored backup therefore
+brings your arrangement back but not your charm-and-mute defaults. Both
+new-game doors clear the key, and a missing or junk value reads as "no
+default", never a crash. (This tier was decided 2026-08-12 for the charm
+lens as T6.11, and moved across whole when that task was absorbed.)
+
+**A mute pointing at a habit that has since been deleted reads as no
+mute** — a mute is a note about a tile, and with the tile gone the note
+means nothing.
+
+**Design mode was retired before it was built** (Kimia's call
+2026-08-21). It would have been the ceremony that wrote an order down: a
+padlock, a confirm pop-up, a glowing window edge, a pulsing lock, a
+stripped screen, inert tiles, hiding that muted instead, a shortened
+`to-dos` cycle and two exits. One press and a confirm keep the part that
+mattered — dragging never commits — at a fraction of the size. The one
+thing given up is the inert tiles, which existed so a stray tap during a
+long arranging session could not write a completion; arranging now
+happens on the ordinary live screen, as it always did. history.md holds
+the full original design.
 
 
 ### The date display (T4.5)
@@ -747,8 +757,9 @@ deletion ever has to travel between devices (§8).
 arrangement you want, so a phone abode and a laptop abode are meant to
 differ and are never reconciled. The gameplay persists across devices;
 the arrangements do not talk to each other. They still live inside the
-versioned envelope, so a backup file keeps them (the 2026-08-12 rule in
-plan.md T6.11 stands); it is sync, not storage, that leaves them alone.
+versioned envelope, so a backup file keeps them (the 2026-08-12 rule
+that sent the charms and mutings outside it stands, and did not move
+these); it is sync, not storage, that leaves them alone.
 
 **The world pages arrive one at a time.** The list above is the
 destination, not one task. A vertical habit list is the easy thing to
@@ -968,7 +979,8 @@ and nothing is lost by finding that out late.
     storage tier, and a backup file goes on carrying everything as it
     always has. The pairing code itself is device-scoped state and lives
     under its own `localStorage` key outside the envelope, following the
-    precedent T6.11 sets for the charm lens.
+    precedent the default view sets (§5b, T6.23e — the tier T6.11
+    decided and handed on).
   - **Merging.** Completions carry unique ids and a frozen `dayKey`, so
     two devices' marks are a union; the phone cannot delete anything
     (§5b), so no deletion ever has to travel; `checkedInThrough` only

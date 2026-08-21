@@ -2,12 +2,15 @@ import { describe, expect, it } from 'vitest'
 
 import { recordCompletion } from './completions.js'
 import {
+  forgetMissing,
   orderedForScreen,
+  orderToSave,
   prioritiseLens,
   sinkOnMute,
   TODOS_LENS_STEPS,
   todayLens,
   todosLens,
+  viewToSave,
 } from './lenses.js'
 
 const habits = (...ids) => ids.map((id) => ({ id, name: id }))
@@ -416,5 +419,106 @@ describe('todosLens (T6.23d)', () => {
     todosLens(list, arrangement, 'bottom')
     expect(ids(list)).toEqual(['daily', 'todoA', 'whenever', 'todoB', 'thrice'])
     expect(arrangement).toEqual({ muted: ['todoA'], hidden: ['whenever'] })
+  })
+})
+
+describe('the default view (T6.23e)', () => {
+  describe('viewToSave', () => {
+    it('keeps the charms and the mutings as they stand', () => {
+      expect(
+        viewToSave({ charms: [2, 5], muted: ['a', 'b'], hidden: [] }),
+      ).toEqual({ charms: [2, 5], muted: ['a', 'b'] })
+    })
+
+    // A saved view you cannot find your habits in is a trap (Kimia's
+    // reasoning 2026-08-20). Hidden is not one of the three things a
+    // default holds, so anything hidden at the moment of saving is
+    // saved MUTED — out of the eyeline, but always findable.
+    it('saves anything hidden as muted instead', () => {
+      expect(
+        viewToSave({ charms: [], muted: ['a'], hidden: ['b', 'c'] }),
+      ).toEqual({ charms: [], muted: ['a', 'b', 'c'] })
+    })
+
+    it('never lists a tile twice when it was both muted and hidden', () => {
+      expect(
+        viewToSave({ charms: [], muted: ['a', 'b'], hidden: ['b'] }),
+      ).toEqual({ charms: [], muted: ['a', 'b'] })
+    })
+
+    it('mutates nothing it was handed', () => {
+      const arrangement = { charms: [1], muted: ['a'], hidden: ['b'] }
+      viewToSave(arrangement)
+      expect(arrangement).toEqual({ charms: [1], muted: ['a'], hidden: ['b'] })
+    })
+  })
+
+  describe('forgetMissing', () => {
+    // Kimia's call 2026-08-21: a mute is a note about a tile, so with the
+    // tile deleted the note means nothing — and a stale id must never be
+    // left lying around to dim whatever id gets handed out next.
+    it('drops ids pointing at habits that no longer exist', () => {
+      expect(forgetMissing(['a', 'gone', 'c'], habits('a', 'b', 'c'))).toEqual([
+        'a',
+        'c',
+      ])
+    })
+
+    it('reads an empty list, and an empty world, as nothing muted', () => {
+      expect(forgetMissing([], habits('a'))).toEqual([])
+      expect(forgetMissing(['a'], [])).toEqual([])
+    })
+  })
+
+  describe('orderToSave', () => {
+    const stored = (...specs) =>
+      specs.map((spec) => ({
+        id: spec.replace('#', ''),
+        archived: spec.startsWith('#'),
+      }))
+
+    it('writes the screen order into the stored habits', () => {
+      expect(ids(orderToSave(stored('a', 'b', 'c'), ['c', 'a', 'b']))).toEqual([
+        'c',
+        'a',
+        'b',
+      ])
+    })
+
+    // Archived habits are not on screen, so the arrangement has nothing
+    // to say about where they sit — and shuffling them would quietly
+    // re-order the archived drawer behind Kimia's back.
+    it('leaves archived habits in their exact slots', () => {
+      const list = stored('a', '#x', 'b', 'c', '#y')
+      const saved = orderToSave(list, ['c', 'b', 'a'])
+      expect(ids(saved)).toEqual(['c', 'x', 'b', 'a', 'y'])
+      expect(saved.filter((h) => h.archived).map((h) => h.id)).toEqual([
+        'x',
+        'y',
+      ])
+    })
+
+    // What a habit created a moment ago is: the screen order has never
+    // heard of it, and the end is where it has always joined the list.
+    it('keeps an unmentioned habit at the end, in its stored order', () => {
+      expect(ids(orderToSave(stored('a', 'b', 'c'), ['b']))).toEqual([
+        'b',
+        'a',
+        'c',
+      ])
+    })
+
+    it('ignores ids the stored list has never heard of', () => {
+      expect(ids(orderToSave(stored('a', 'b'), ['ghost', 'b', 'a']))).toEqual([
+        'b',
+        'a',
+      ])
+    })
+
+    it('mutates neither the stored list nor its habits', () => {
+      const list = stored('a', 'b', 'c')
+      orderToSave(list, ['c', 'b', 'a'])
+      expect(ids(list)).toEqual(['a', 'b', 'c'])
+    })
   })
 })

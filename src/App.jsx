@@ -81,12 +81,15 @@ import {
   updateHabit,
 } from './game/habits.js'
 import {
+  forgetMissing,
   orderedForScreen,
+  orderToSave,
   prioritiseLens,
   TODOS_LENS_STEPS,
   sinkOnMute,
   todayLens,
   todosLens,
+  viewToSave,
 } from './game/lenses.js'
 import {
   archivesWhenDone,
@@ -98,12 +101,16 @@ import {
 import { shouldShowStartup } from './game/startup.js'
 import {
   clearData,
+  clearDefaultView,
+  emptyDefaultView,
   exportData,
   hasData,
   importData,
   loadData,
+  loadDefaultView,
   requestPersistentStorage,
   saveData,
+  saveDefaultView,
 } from './storage/storage.js'
 import AbodePage from './ui/AbodePage.jsx'
 import ArrivalShelf from './ui/ArrivalShelf.jsx'
@@ -155,13 +162,24 @@ function scrollToTop() {
 // like everything else.
 function AppBody({ data, setData }) {
   const { t } = useText()
-  // The symbol filter is a temporary lens: plain component state, so it
-  // resets on every visit (spec §5b).
-  const [filter, setFilter] = useState([])
+  // The SAVED DEFAULT VIEW, read once at mount (T6.23e, spec §5b): the
+  // charms this browser opens on and the tiles it opens with dimmed. It
+  // lives under its own localStorage key outside the versioned envelope,
+  // because it describes a machine rather than a record — see
+  // storage.js. Read into state so it is read exactly once per visit;
+  // `save as default` replaces it in step with the key.
+  const [defaultView, setDefaultView] = useState(loadDefaultView)
+  // The charm lens. Screen state still — it is thrown away by a refresh
+  // like everything else here — but a refresh now lands back on the
+  // SAVED charms rather than on none (T6.23e absorbed T6.11 whole).
+  const [filter, setFilter] = useState(() => [...defaultView.charms])
   // The muted habits — ids, in no particular order (T6.23a, spec §5b).
   // "Out of my eyeline", never "switched off": a muted tile dims and
-  // sinks, and everything on it still works.
-  const [muted, setMuted] = useState([])
+  // sinks, and everything on it still works. Starts as the saved
+  // mutings, minus any pointing at a habit that has since been deleted.
+  const [muted, setMuted] = useState(() =>
+    forgetMissing(defaultView.muted, data.habits),
+  )
   // The hidden habits — ids, put out of sight by a lens (T6.23b). Not
   // drawn at all, unlike a muted one, which is why hiding is what stops
   // the list re-ordering: a tile dropped into a list with gaps in it
@@ -914,25 +932,27 @@ function AppBody({ data, setData }) {
     })
   }
 
-  // Drop a dragged habit onto the row `toId` sits on now. moveHabit works
-  // on the full list (active + archived), so we translate that row to its
-  // full-list position — archived habits in between keep their places and
-  // don't get in the way. A no-op if it lands back on itself.
+  // Drop a dragged habit onto the row `toId` sits on now. A no-op if it
+  // lands back on itself.
+  //
+  // DRAGGING IS ALWAYS TEMPORARY (T6.23e; Kimia's call 2026-08-20, kept
+  // when design mode was retired on 2026-08-21). It moves the tile in the
+  // arrangement on screen and writes nothing at all: "temporary reorders
+  // feel fun to do… they should feel throwaway and flexible, without fear
+  // of commitment." One press of `save as default` is the only thing that
+  // commits, which is exactly what leaves this one free. Until T6.23e
+  // this also saved the order into the envelope on every drop.
+  //
+  // The screen order is the ACTIVE habits alone, so archived ones are not
+  // in the way here and no full-list translation is needed any more —
+  // `save as default` is where the archived places are looked after
+  // (game/lenses.js `orderToSave`).
   function handleMoveTo(habit, toId) {
     if (!toId || toId === habit.id) return
-    const target = data.habits.findIndex((h) => h.id === toId)
-    if (target === -1) return
-    save({ ...data, habits: moveHabit(data.habits, habit.id, target) })
-    // …and the same move in the arrangement on screen (T6.23a). Once
-    // anything has been muted the two orders have parted company, so
-    // writing only the stored one would leave the tile visibly where it
-    // started. Same move, said twice: put this habit where that one is.
-    // (Dragging still SAVES an order today; T6.23e is where that stops.)
     const order = active.map((h) => h.id)
     const landing = order.indexOf(toId)
-    if (landing !== -1) {
-      setScreenOrder(moveHabit(active, habit.id, landing).map((h) => h.id))
-    }
+    if (landing === -1) return
+    setScreenOrder(moveHabit(active, habit.id, landing).map((h) => h.id))
   }
 
   // Which row a dragged tile has landed on — decided by where the TILE
@@ -1153,16 +1173,74 @@ function AppBody({ data, setData }) {
     setTodosStep(0)
   }
 
-  // The day turn wipes the arrangement (spec §5b). At 3am the list is a
-  // new day's list, and yesterday's "I'm not looking at that today" has
-  // nothing to say about it. A refresh does the same by simply being a
-  // fresh visit — both of these are screen state and neither was ever
-  // stored.
-  useEffect(() => {
-    setMuted([])
-    setHidden([])
+  // Put the SAVED DEFAULT VIEW back (T6.23e, spec §5b) — the `default`
+  // lens, and the same thing a refresh and the 3am day turn do by
+  // themselves. The saved view holds three things and restores three:
+  // the order (by dropping the temporary arrangement, so the stored
+  // habits array is the answer again), the charms, and the mutings.
+  //
+  // Everything else on screen that is not one of the three simply goes:
+  // nothing stays hidden, since a default view can hold no hidden tiles
+  // at all, and the `to-dos` cycle goes back to its first press, for the
+  // reason `un-hide all` does — its next press would otherwise be one
+  // that appears to do nothing.
+  //
+  // A mute pointing at a habit deleted since the save reads as no mute
+  // (Kimia's call 2026-08-21): a mute is a note about a tile, and with
+  // the tile gone the note means nothing.
+  function restoreDefaultView() {
     setScreenOrder(null)
+    setFilter([...defaultView.charms])
+    setMuted(forgetMissing(defaultView.muted, data.habits))
+    setHidden([])
     setTodosStep(0)
+  }
+
+  // `save as default` — the ONE press that commits (T6.23e). It asks
+  // first, in Kimia's words, because it overwrites an arrangement that
+  // may have taken an evening to build.
+  //
+  // Two places to write, because the three parts of a default view do not
+  // all live in the same tier. The ORDER goes into the envelope as the
+  // habits array, where it has always been and where a backup picks it
+  // up. The CHARMS and MUTINGS go under their own browser-scoped key,
+  // never into a backup: they describe this machine's idea of a tidy
+  // screen, not the record (Kimia's call 2026-08-21).
+  //
+  // Anything HIDDEN at this moment is saved MUTED instead — a saved view
+  // you cannot find your habits in is a trap — which is also why the
+  // screen is left showing exactly what it has just stored.
+  function handleSaveAsDefault() {
+    if (!window.confirm(t('lens.saveAsDefaultConfirm'))) return
+    const view = viewToSave({ charms: filter, muted, hidden })
+    save({
+      ...data,
+      habits: orderToSave(
+        data.habits,
+        active.map((h) => h.id),
+      ),
+    })
+    setDefaultView(saveDefaultView(view))
+    // The arrangement on screen IS the saved one now, so the temporary
+    // one has nothing left to say and the hidden tiles come back muted.
+    setScreenOrder(null)
+    setMuted(view.muted)
+    setHidden([])
+    setTodosStep(0)
+  }
+
+  // The day turn restores the DEFAULT VIEW (spec §5b, T6.23e). At 3am the
+  // list is a new day's list, and yesterday's "I'm not looking at that
+  // today" has nothing to say about it — so the arrangement goes back to
+  // the saved one rather than to nothing. A refresh does the same by
+  // simply being a fresh visit: the state above is initialised from the
+  // same saved view, which is why this effect firing on mount is a
+  // harmless repeat of what has already happened.
+  useEffect(() => {
+    restoreDefaultView()
+    // restoreDefaultView is re-made every render but reads only state
+    // setters and the saved view, so the day key is the whole trigger.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today])
 
   function handleDelete(habit) {
@@ -1201,6 +1279,7 @@ function AppBody({ data, setData }) {
   // planet that no longer exists.
   function handleStartNewGame() {
     save(startNewGame(data))
+    forgetTheDefaultView()
     forgetTheOldWorld()
   }
 
@@ -1216,15 +1295,26 @@ function AppBody({ data, setData }) {
     clearData()
     setData(loadData())
     closeForm()
-    // The charm lens goes too — only here. After a total refresh there
-    // are no habits left for a lens to narrow, and an empty screen
-    // wearing yesterday's filter reads as a fault. The other door keeps
-    // every habit, so its lens still means something.
-    setFilter([])
-    // And the arrangement with it — there is nothing left to arrange.
-    setMuted([])
-    setScreenOrder(null)
+    forgetTheDefaultView()
     forgetTheOldWorld()
+  }
+
+  // BOTH new-game doors clear the saved default view (Kimia's call
+  // 2026-08-12, inherited by T6.23e from T6.11). It replaces the older
+  // exception where only a total refresh did: that rule turned on
+  // whether any habits were left for a charm lens to narrow, and one
+  // rule that always holds is easier to keep than two that nearly do.
+  //
+  // The key itself goes, not just the screen — a default view describing
+  // a world that has been thrown away is not a default anyone chose.
+  function forgetTheDefaultView() {
+    clearDefaultView()
+    setDefaultView(emptyDefaultView())
+    setFilter([])
+    setMuted([])
+    setHidden([])
+    setScreenOrder(null)
+    setTodosStep(0)
   }
 
   // Everything on screen from the world just discarded — the
@@ -1340,6 +1430,14 @@ function AppBody({ data, setData }) {
           >
             {t('lens.todos')}
           </button>
+          <button
+            type="button"
+            className="lens-word"
+            data-lens="default"
+            onClick={restoreDefaultView}
+          >
+            {t('lens.default')}
+          </button>
         </div>
         <section
           className="filter-view"
@@ -1367,6 +1465,19 @@ function AppBody({ data, setData }) {
               {t('lens.unhideAll')}
             </button>
           )}
+          {/* The one PEBBLE on this line (design-notes §11e): it acts on
+              the world and settles, where every other word here only
+              changes how the list is being looked at. It wears the
+              pebble's frame for exactly that reason — the family
+              difference should be visible rather than muddled. */}
+          <button
+            type="button"
+            className="pebble"
+            data-lens="save-as-default"
+            onClick={handleSaveAsDefault}
+          >
+            {t('lens.saveAsDefault')}
+          </button>
         </div>
       </div>
 

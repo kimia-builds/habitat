@@ -9,9 +9,11 @@
 // ones (not drawn at all — and the reason nothing re-orders while any
 // of them exist, design-notes §12a).
 //
-// It is all TEMPORARY for now. A refresh or the 3am day turn throws the
-// arrangement away and the stored order comes back. T6.23e is the task
-// that gives it somewhere to be saved.
+// The arrangement on screen is TEMPORARY. A refresh or the 3am day turn
+// throws it away and the saved DEFAULT VIEW comes back — order, charms
+// and mutings, restored at any time by the `default` lens and written
+// down by one press of `save as default` (T6.23e, at the foot of this
+// file). Dragging never writes anything: that is the whole point of it.
 
 import { priorityTier, todayTier } from './schedule.js'
 
@@ -218,4 +220,67 @@ export function todosLens(habits, { muted, hidden }, step) {
     muted: muted.filter((id) => !todoIds.includes(id)),
     hidden: hidden.filter((id) => !todoIds.includes(id)),
   }
+}
+
+// ── THE DEFAULT VIEW (T6.23e, spec §5b) ──────────────────────────────
+//
+// The arrangement Habitat opens on: an ORDER, a set of CHARMS and a set
+// of MUTED tiles, and only those three. Pressing `default` restores it,
+// and a refresh and the 3am day turn restore it by themselves.
+//
+// Dragging never writes it down (Kimia's call 2026-08-20, kept when
+// design mode was retired on 2026-08-21): "temporary reorders feel fun
+// to do… they should feel throwaway and flexible, without fear of
+// commitment." One press — `save as default` — is the only thing that
+// commits, which is what leaves every other re-order free.
+
+// What a press of `save as default` should store.
+//
+// HIDDEN IS NOT ONE OF THE THREE, and cannot be: a saved view you cannot
+// find your habits in is a trap (Kimia's reasoning 2026-08-20). So
+// anything hidden at the moment you save is saved MUTED instead — out of
+// your eyeline, exactly as it already was, but always findable. It keeps
+// the place it is standing in; nothing sinks on the way.
+export function viewToSave({ charms, muted, hidden }) {
+  const savedMuted = [...muted]
+  for (const id of hidden) {
+    if (!savedMuted.includes(id)) savedMuted.push(id)
+  }
+  return { charms: [...charms], muted: savedMuted }
+}
+
+// Ids pointing at habits that no longer exist read as nothing at all
+// (Kimia's call 2026-08-21). A mute is a note about a tile: delete the
+// tile and the note means nothing, and a stale id must never be left
+// lying around to dim whatever id gets handed out next.
+export function forgetMissing(ids, habits) {
+  const alive = new Set(habits.map((h) => h.id))
+  return ids.filter((id) => alive.has(id))
+}
+
+// The stored habits array, re-ordered so the ACTIVE habits stand in the
+// order the screen is showing them — what `save as default` writes into
+// the envelope.
+//
+// Archived habits keep their EXACT slots. They are not on screen, so the
+// arrangement has nothing to say about where they sit, and shuffling
+// them would quietly re-order the archived drawer behind Kimia's back.
+// Any active habit the screen never mentioned keeps its stored place at
+// the end of the queue, which is where a habit created a moment ago
+// already sits.
+export function orderToSave(habits, screenIds) {
+  const active = habits.filter((h) => !h.archived)
+  const byId = new Map(active.map((h) => [h.id, h]))
+  const queue = []
+  for (const id of screenIds) {
+    const habit = byId.get(id)
+    if (habit && !queue.includes(habit)) queue.push(habit)
+  }
+  for (const habit of active) {
+    if (!queue.includes(habit)) queue.push(habit)
+  }
+  // One active habit per active slot, in the queue's order; the archived
+  // ones are simply handed back where they were found.
+  let next = 0
+  return habits.map((habit) => (habit.archived ? habit : queue[next++]))
 }

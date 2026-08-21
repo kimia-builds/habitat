@@ -29,7 +29,7 @@ import {
 import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
 import { backupAgeLabel } from './game/backup.js'
 import { addDays, dayKeyFromTimestamp } from './game/days.js'
-import { loadData, SCHEMA_VERSION } from './storage/storage.js'
+import { loadData, loadDefaultView, SCHEMA_VERSION } from './storage/storage.js'
 import { LANGUAGES } from './content/ui.js'
 import { narrationSlot } from './content/narration.js'
 import {
@@ -419,7 +419,12 @@ describe('the symbol filter (a temporary lens)', () => {
 })
 
 describe('re-ordering', () => {
-  it('dragging a row lands it in a new slot and the order survives a reload', () => {
+  // Dragging moves the tile and writes NOTHING (T6.23e, 2026-08-21).
+  // "temporary reorders feel fun to do… they should feel throwaway and
+  // flexible, without fear of commitment" (Kimia, 2026-08-20), so a
+  // reload lands back on the saved default view — here the order the
+  // habits were created in, which is what a new player's default is.
+  it('dragging a row lands it in a new slot, and a reload forgets it', () => {
     const first = render(<App />)
     createHabitViaUI('one')
     createHabitViaUI('two')
@@ -443,7 +448,7 @@ describe('re-ordering', () => {
 
     first.unmount()
     render(<App />)
-    expect(names()).toEqual(['two', 'three', 'one'])
+    expect(names()).toEqual(['one', 'two', 'three'])
   })
 
   it('dragging a row UP lands it higher — over the row, not under the hand', () => {
@@ -471,9 +476,10 @@ describe('re-ordering', () => {
       [...document.querySelectorAll('.habit-name')].map((el) => el.textContent)
     expect(names()).toEqual(['three', 'one', 'two'])
 
+    // Temporary, like every other drag (T6.23e).
     first.unmount()
     render(<App />)
-    expect(names()).toEqual(['three', 'one', 'two'])
+    expect(names()).toEqual(['one', 'two', 'three'])
   })
 
   it('the whole tile is the grab area — dragging the name re-orders', () => {
@@ -3565,5 +3571,198 @@ describe('the language switch (T6.13)', () => {
     for (const icon of rail.querySelectorAll('button')) {
       expect(icon.getAttribute('aria-label')).toBeTruthy()
     }
+  })
+})
+
+// The DEFAULT VIEW (T6.23e, spec §5b) — the arrangement Habitat opens
+// on, and the one press that writes it down.
+//
+// Design mode was retired on 2026-08-21 in favour of this: one word,
+// `save as default`, and a confirm. What survived the simplification is
+// the reason it existed — dragging never commits, so a re-order stays
+// "throwaway and flexible, without fear of commitment" (Kimia).
+//
+// The controls are found by their data-lens name, never by Kimia's
+// words, and the confirm is stubbed rather than read.
+describe('the default view (T6.23e)', () => {
+  const names = () =>
+    [...document.querySelectorAll('.habit-name')].map((el) => el.textContent)
+  const lens = (name) => document.querySelector(`[data-lens="${name}"]`)
+  const isMuted = (name) => tile(name).className.includes('habit-row--muted')
+  const eye = (name) =>
+    tile(name).querySelector('.row-buttons button:first-child')
+  const charms = () =>
+    within(screen.getByRole('region', { name: 'filter view' }))
+
+  // Drag 'one' (top of three 40px rows at y 0/50/100) down onto 'three'.
+  function dragOneToTheBottom() {
+    const drag = layOutRows('one')
+    fireEvent.pointerDown(tile('one'), { button: 0, clientX: 0, clientY: 5 })
+    drag.offset = 100
+    fireEvent.pointerMove(window, { clientX: 0, clientY: 105 })
+    fireEvent.pointerUp(window, { clientX: 0, clientY: 105 })
+  }
+
+  function three() {
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+    createHabitViaUI('three')
+  }
+
+  it('saves the order, the charms and the mutings, and reopens on them', () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    const first = render(<App />)
+    createHabitViaUI('one', { symbol: 2 })
+    createHabitViaUI('two', { symbol: 2 })
+    createHabitViaUI('three', { symbol: 2 })
+
+    dragOneToTheBottom()
+    fireEvent.click(eye('two'))
+    fireEvent.click(charms().getByRole('button', { name: 'cherry' })) // 2
+    fireEvent.click(lens('save-as-default'))
+
+    first.unmount()
+    render(<App />)
+    // 'one' was dragged to the foot, then muting 'two' sank it below the
+    // last tile still in the eyeline — which is 'one' (T6.23a).
+    expect(names()).toEqual(['three', 'one', 'two'])
+    expect(isMuted('two')).toBe(true)
+    expect(
+      charms()
+        .getByRole('button', { name: 'cherry' })
+        .getAttribute('aria-pressed'),
+    ).toBe('true')
+  })
+
+  it('asks before it overwrites, and saves nothing when told no', () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    const first = render(<App />)
+    three()
+
+    dragOneToTheBottom()
+    expect(names()).toEqual(['two', 'three', 'one'])
+    fireEvent.click(lens('save-as-default'))
+    expect(confirm).toHaveBeenCalled()
+
+    first.unmount()
+    render(<App />)
+    expect(names()).toEqual(['one', 'two', 'three'])
+  })
+
+  // `default` is the press back at any time; a refresh does the same
+  // thing by itself, which is the test above.
+  it('puts the saved view back at any time', () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<App />)
+    three()
+
+    fireEvent.click(eye('two'))
+    fireEvent.click(lens('save-as-default'))
+    const saved = names()
+
+    // Fiddle with all three parts of the arrangement…
+    dragOneToTheBottom()
+    fireEvent.click(eye('two')) // un-mute
+    fireEvent.click(lens('today')) // hides the whenever-nots, mutes others
+    expect(names()).not.toEqual(saved)
+
+    fireEvent.click(lens('default'))
+    expect(names()).toEqual(saved)
+    expect(isMuted('two')).toBe(true)
+    expect(isMuted('one')).toBe(false)
+  })
+
+  // A new player's default view is decided for them: the order the
+  // habits were created in, no charms, nothing muted. So `default`
+  // works before anything has ever been saved.
+  it('reads a never-saved default as the plain, unarranged list', () => {
+    render(<App />)
+    three()
+    dragOneToTheBottom()
+    fireEvent.click(eye('two'))
+
+    fireEvent.click(lens('default'))
+    expect(names()).toEqual(['one', 'two', 'three'])
+    expect(isMuted('two')).toBe(false)
+  })
+
+  // A saved view you cannot find your habits in is a trap (Kimia's
+  // reasoning 2026-08-20), so hidden is not one of the three things a
+  // default holds — anything hidden when you save comes back MUTED,
+  // both on screen straight away and on the next visit.
+  it('saves anything hidden as muted instead, and unhides on the spot', () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    const first = render(<App />)
+    createHabitViaUI('daily')
+    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['Mon'] })
+
+    fireEvent.click(lens('today')) // Thursday: 'mondays' is hidden
+    expect(names()).toEqual(['daily'])
+
+    fireEvent.click(lens('save-as-default'))
+    expect(names()).toEqual(['daily', 'mondays'])
+    expect(isMuted('mondays')).toBe(true)
+
+    first.unmount()
+    render(<App />)
+    expect(names()).toEqual(['daily', 'mondays'])
+    expect(isMuted('mondays')).toBe(true)
+  })
+
+  // Kimia's call 2026-08-21: a mute is a note about a tile, so with the
+  // tile deleted the note means nothing.
+  it('reads a mute pointing at a deleted habit as no mute', () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    const first = render(<App />)
+    createHabitViaUI('one')
+    createHabitViaUI('two')
+
+    fireEvent.click(eye('one'))
+    fireEvent.click(lens('save-as-default'))
+
+    fireEvent.click(row('one').getByRole('button', { name: 'archive' }))
+    settleFarewell()
+    const drawer = screen.getByText(/^archived/).closest('details')
+    fireEvent.click(
+      within(drawer).getByRole('button', { name: 'delete forever' }),
+    )
+
+    first.unmount()
+    render(<App />)
+    expect(names()).toEqual(['two'])
+    expect(isMuted('two')).toBe(false)
+  })
+
+  // The tier decided 2026-08-12 for the charm lens and inherited whole:
+  // the default view describes a BROWSER, so both new-game doors clear
+  // it — the older exception, where only a total refresh did, is gone.
+  it('is cleared by the keep-habit-data new-game door too', () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<App />)
+    createHabitViaUI('one', { symbol: 2 })
+    createHabitViaUI('two', { symbol: 2 })
+
+    fireEvent.click(eye('one'))
+    fireEvent.click(charms().getByRole('button', { name: 'cherry' }))
+    fireEvent.click(lens('save-as-default'))
+
+    // The door, driven the way its own tests do: "keep habit data" waits
+    // for a backup exported in this visit, then asks "are you sure?".
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:fake')
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {})
+    const press = (name) =>
+      fireEvent.click(screen.getByRole('button', { name }))
+    press('export backup')
+    press('start a new game')
+    press('keep habit data')
+    press('yes')
+
+    expect(loadDefaultView()).toEqual({ charms: [], muted: [] })
+    expect(isMuted('one')).toBe(false)
+    expect(
+      charms()
+        .getByRole('button', { name: 'cherry' })
+        .getAttribute('aria-pressed'),
+    ).toBe('false')
   })
 })

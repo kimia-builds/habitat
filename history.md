@@ -2926,6 +2926,164 @@ return 0` right after the era is worked out, so a moment before the
   they end gathered at the bottom rather than back where they began —
   in both `lenses.test.js` and `App.test.jsx`.
 
+- 2026-08-21 (Kimia's call, asked before building T6.23e): **design mode
+  is retired unbuilt; one press saves the default view instead.** She
+  asked, before anything was written, whether there was a simpler way to
+  get a personalised default view than the design she had specified. There
+  was. The spec'd ceremony was a padlock, a confirm pop-up, a glowing
+  window edge, a pulsing lock, a stripped screen, inert tiles, a
+  hiding-becomes-muting rule, a shortened `to-dos` cycle and two exits —
+  five or six new behaviours, three sessions, all to answer one question:
+  what commits an order, if a drag does not. **`save as default` plus a
+  confirm answers it in one press.**
+  What survives whole is the reason design mode existed — "temporary
+  reorders feel fun to do… they should feel throwaway and flexible,
+  without fear of commitment" (her words, 2026-08-20). Dragging still
+  never commits.
+  What is genuinely GIVEN UP is the **inert tiles**, which existed so a
+  stray tap during a long arranging session could not write a completion
+  into the record. Arranging now happens on the ordinary live screen —
+  which is how it has always happened, and has never been raised as a
+  problem. Everything else was either not needed (there is no state to
+  signal, because there is no place to be in) or bought more cheaply:
+  "a default view cannot hide anything" survives as one save-time rule
+  (hidden saves as MUTED, in place), which also retires the shortened
+  `to-dos` cycle, since there is no mode for it to be shortened in.
+  Offered the choice of keeping design mode on the plan as a later task,
+  she chose to **retire it outright** and have the docs describe the
+  simple version as settled. Its full original design is preserved in the
+  T6.23e build notes below.
+
+- 2026-08-21 (Kimia's call, asked before building T6.23e): **the saved
+  ORDER stays inside the versioned envelope; only the charms and mutings
+  go outside it.** The default view is three things, but they do not all
+  belong to the same tier. The order already lives in the envelope as the
+  habits array and so rides along in a backup like the rest of the
+  record; the charms and mutings describe the machine they were chosen
+  on. Consequence, stated plainly and accepted: **a restored backup brings
+  your arrangement back but not your charm-and-mute defaults.** Her
+  reasoning for keeping it that way — the order is part of the record,
+  while charms and mutes describe how one particular screen likes to
+  look. Everything else in T6.11's 2026-08-12 tier decision moves across
+  untouched: own localStorage key, never in a backup, never restored by
+  an import, never synced, both new-game doors clear it, junk reads as
+  "no default".
+
+- 2026-08-21 (Kimia's call, asked before building T6.23e): **neither
+  knock-on of a remembered charm lens wants softening.** Both were
+  already true and simply fire more often now that Habitat can open
+  wearing charms: dragging is off while anything is hidden, so the app
+  can open in a state where tiles will not move (the tile's own hover
+  says why); and a lens showing exactly one charm makes a new habit's
+  draft open already wearing it. Left exactly as built. These were the
+  two questions T6.11 had parked in 2026-08-12 and never got to ask.
+
+- 2026-08-21 (T6.23e, flagged to Kimia rather than decided): **the lens
+  line now wraps on BOTH sides at 1280px.** The right side has wrapped
+  since T6.23b; `default` on the left and the `save as default` pebble on
+  the right fill the line out, so each side column now stands three words
+  over two rows. design-notes §11f always said the shape would have to be
+  settled once the line was full, and that the look is Kimia's to judge on
+  screen. It is full now. The thing to change is the three-column grid,
+  not the words in it.
+
+- 2026-08-21 (T6.23e): **`save as default` is a PEBBLE, by §11f's own
+  test.** A lens leaves only a different-looking screen; a pebble leaves
+  something behind. This one leaves a saved arrangement, so it wears
+  `.pebble` and its frame, sitting among the frameless lens words. It was
+  already foreseen — design-notes §11f had classed design mode's four
+  words as pebbles for exactly this reason — so retiring design mode
+  changed the count, not the rule.
+
+## T6.23e build notes — the default view, and the one press that saves it (2026-08-21)
+
+The last of the lenses, and the one that makes the others worth pressing:
+Habitat now opens on an arrangement you chose.
+
+**What was built.**
+
+- `src/storage/storage.js` gains a **second localStorage key**,
+  `habitat-default-view`, holding `{ charms, muted }` and nothing else —
+  the only thing Habitat keeps outside the versioned envelope. Every read
+  is wrapped and cleaned: a non-integer charm, a seventh charm, a
+  duplicate, a non-string id, unparseable JSON, a bare `null` — all read
+  as "no default", never a throw. Still exactly one storage module;
+  components touch localStorage never.
+- `src/game/lenses.js` gains three pure functions: `viewToSave` (folds
+  HIDDEN into MUTED — a saved view you cannot find your habits in is a
+  trap), `forgetMissing` (a mute pointing at a deleted habit reads as no
+  mute) and `orderToSave` (writes the screen order into the stored habits
+  array while archived habits keep their **exact** slots, so the archived
+  drawer is never quietly re-ordered).
+- `src/App.jsx`: `filter` and `muted` initialise from the saved view;
+  `restoreDefaultView` serves the `default` word, the day-turn effect and
+  the mount; `handleSaveAsDefault` asks, then writes to both tiers;
+  `forgetTheDefaultView` clears the key from **both** new-game doors.
+- **`handleMoveTo` stopped saving.** One deleted `save(...)` call is the
+  whole of "dragging becomes always-temporary", and it is the change with
+  the most reach in the task.
+- Two controls on the lens line: `default` (a lens word, left) and
+  `save as default` (a pebble, right).
+
+**The two tests that had to change**, and why that was the point rather
+than a casualty: `App.test.jsx`'s two drag tests asserted "…and the order
+survives a reload". It no longer does, deliberately. Both now assert the
+reload FORGETS the drag, which is the new promise.
+
+**27 new tests** — 12 in `lenses.test.js`, 8 in `storage.test.js`, 7 in
+`App.test.jsx`. The storage ones carry the tier's rules as assertions:
+the key is absent from an export, untouched by an import, and untouched
+by `clearData` (the two keys are separate on purpose; App clears both
+visibly). 964 pass.
+
+**Verified with real clicks in a real browser** (CLAUDE.md's 2026-08-20
+rule), at 1280×800 against a seeded three-habit world: closed an eye,
+pressed `save as default`, confirmed the second key held
+`{"charms":[],"muted":["h2"]}` and the envelope's habit order had been
+rewritten; reloaded and watched the dim tile come back at the foot of the
+list; then muted something else and pressed `default` to watch the saved
+view return. The confirm was stubbed to accept — the dialog is standard
+browser furniture already used by delete-forever — but both presses were
+genuine clicks at the controls' real coordinates.
+
+**One thing worth remembering about the preview pane**: it reloads the
+page on a viewport resize, which silently reset the arrangement mid-check
+and briefly looked like a bug in the new code. It was the correct
+behaviour (nothing had been saved yet) seen at the wrong moment. Three
+`[vite] connecting…` lines in the console were what gave it away — check
+those before doubting the code.
+
+**THE RETIRED DESIGN MODE, preserved.** T6.23e originally carried a whole
+ceremony, decided 2026-08-20 and retired unbuilt on 2026-08-21 (decisions
+log above). For the record, in case it is ever wanted back:
+
+> Design mode is entered through the padlock (hover: "lock default view" /
+> "unlock default view"). Unlocking asks first — "are you sure you want to
+> re-design your default view? any previous default view choices will be
+> lost", Kimia's words, in ui.js — answered by **design new default** or
+> **cancel**. While it lasts: the window's edges glow in colour and the
+> padlock pulses; only the header, the lenses, the charms and the
+> baguettes remain — the left rail, the archived drawer, the footer
+> buttons, the arrival shelf and any cameo are gone; **every tile is
+> inert**, +1, -1, the tick, edit and archive dimmed, leaving the eye and
+> the drag, so a stray tap while arranging can never write a completion
+> into the record; and **nothing hides — it mutes**, since a default view
+> cannot hold hidden habits, with anything hidden on entry coming back
+> muted (charm-hiding excepted, because charms are saved) and the `to-dos`
+> cycle therefore shortening to three presses — top · bottom and muted ·
+> off — because a hidden step that merely muted again would be a press
+> that appeared to do nothing. Two exits: **save new default view** (or
+> shutting the padlock) and **exit design mode without changing**; a
+> refresh is a third and cancels the session, since nothing is saved until
+> the lock shuts. Unlocking keeps whatever is already on screen, which
+> makes unlock-then-lock the quick way to keep an arrangement fiddled into
+> shape over an evening.
+
+Her sentence from that pop-up was not wasted: it is the confirm on
+`save as default`, with only its opening clause reworded from
+"re-design your default view" to "save this as your default view", with
+her approval.
+
 ## T6.23a build notes — the eye on every tile (2026-08-21)
 
 The first of the five lenses, and the first visible piece of T6.23.
