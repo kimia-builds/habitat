@@ -145,3 +145,77 @@ export function prioritiseLens(habits, completions, dayKey) {
   }
   return [...tiers.today, ...tiers.week, ...tiers.rest]
 }
+
+// The `to-dos` lens (spec §5b, T6.23d) — Kimia's call 2026-08-20.
+//
+// The only lens that keeps a memory: it walks the one-time to-dos
+// through a FOUR-PRESS CYCLE, and the control remembers which press
+// comes next. Everything else here is a single act with no position in
+// anything.
+//
+//   'top'    — the to-dos move to the head of the list, keeping the
+//              order they were already in among themselves. It ONLY
+//              moves them (Kimia's call 2026-08-21): a to-do that was
+//              already dim arrives at the top still dim, because
+//              un-dimming is 'off's job and nothing else's.
+//   'bottom' — they sink and go dim, by the eye's own landing rule
+//              (sinkOnMute), which is what "to the bottom" has meant
+//              since T6.23a: just under the live list, above anything
+//              muted before them.
+//   'hidden' — they stop being drawn. Which locks the order, like any
+//              other hiding, and brings `un-hide all` out.
+//   'off'    — un-hidden and un-dimmed WHERE THEY STAND. It restores no
+//              earlier position: to-dos that started scattered through
+//              the list end the cycle gathered at the bottom, plainly
+//              visible, and that is the whole point of the last press.
+//
+// `habits` are the habit objects in SCREEN order. A to-do is a habit on
+// a `oneTime` schedule — its CURRENT schedule, not the one in force on
+// some day, because this lens asks what a habit is rather than what any
+// day expects of it. (An active to-do is always unfinished: finishing
+// one archives it, `archivesWhenDone`.)
+export const TODOS_LENS_STEPS = ['top', 'bottom', 'hidden', 'off']
+
+export function todosLens(habits, { muted, hidden }, step) {
+  const todoIds = habits
+    .filter((h) => h.schedule.type === 'oneTime')
+    .map((h) => h.id)
+  const order = habits.map((h) => h.id)
+  const others = order.filter((id) => !todoIds.includes(id))
+
+  if (step === 'top') {
+    return {
+      order: [...todoIds, ...others],
+      muted: [...muted],
+      hidden: [...hidden],
+    }
+  }
+
+  if (step === 'bottom') {
+    // Sunk BOTTOM-MOST FIRST, for `todayLens`'s reason: each mute lands
+    // just ABOVE the one muted before it, so sinking the group top-down
+    // would land it upside down.
+    const nextMuted = new Set(muted)
+    let sunk = order
+    for (const id of [...todoIds].reverse()) {
+      sunk = sinkOnMute(sunk, id, [...nextMuted])
+      nextMuted.add(id)
+    }
+    return { order: sunk, muted: [...nextMuted], hidden: [...hidden] }
+  }
+
+  if (step === 'hidden') {
+    const nextHidden = [...hidden]
+    for (const id of todoIds) {
+      if (!nextHidden.includes(id)) nextHidden.push(id)
+    }
+    return { order, muted: [...muted], hidden: nextHidden }
+  }
+
+  // 'off' — nothing moves; the to-dos simply come back into view.
+  return {
+    order,
+    muted: muted.filter((id) => !todoIds.includes(id)),
+    hidden: hidden.filter((id) => !todoIds.includes(id)),
+  }
+}

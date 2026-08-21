@@ -2881,6 +2881,51 @@ return 0` right after the era is worked out, so a moment before the
   before `un-hide all`, with `today` alone on the left. Folded into
   design-notes §11f.
 
+- 2026-08-21 (Kimia): **the lens is called `to-dos`, not `tasks`.** Asked
+  for the rename after seeing the word on screen. The code says the same
+  thing the screen does — `todosLens`, `TODOS_LENS_STEPS`,
+  `data-lens="todos"`, `lens.todos` — in the way the species names and
+  the retired word "cron" already work here: one vocabulary, docs and
+  code together. NOTE the two OTHER places Habitat still says "task" in
+  its own voice, both Kimia's content slots and hers to change or keep:
+  `habitForm.name` ("write a good habit or task:") and
+  `fieldNotes.tasksCompleted` ("tasks completed"). Flagged, not touched.
+
+- 2026-08-21 (Kimia, asked before building T6.23d): **the cycle's first
+  press only MOVES the to-dos.** A to-do already dim — muted by hand, or
+  by `today` — arrives at the top still dim. She chose this over having
+  the press brighten them, which keeps un-dimming as the LAST press's
+  one job and stops the cycle touching two things at once. Visible on
+  screen after `un-hide all`, which leaves mutings alone: the next press
+  gathers them at the top, still dim.
+
+- 2026-08-21 (Kimia, asked before building T6.23d): **`un-hide all`
+  sends the to-dos cycle back to its start.** Un-hiding is exactly what
+  the cycle's third press did, so a control left standing at step three
+  would spend its next press on "off" — a press that appears to do
+  nothing. The same objection that shortened the cycle inside design
+  mode, answered the same way. The cycle position is screen state like
+  the rest of the arrangement: a refresh and the 3am day turn clear it
+  too.
+
+- 2026-08-21 (Kimia, asked before building T6.23d): **the `to-dos` word
+  is permanent furniture**, showing even when there is not a single
+  to-do on the list, where pressing it does nothing. Deliberately unlike
+  `un-hide all`, which comes and goes with the work it has to do: that
+  one is an escape hatch and its appearing IS the signal, while a verb
+  that vanished as you finished your last to-do would make the lens line
+  change shape under you. It sits on the LEFT beside `today`, her choice
+  of the four sides offered, which reads two words a side.
+
+- 2026-08-21: **plan.md pointed at a scenario nobody had written.**
+  T6.23d's entry named "the scattered-tasks scenario in the decisions
+  log" as the test to write; the decisions log had only the rule it
+  comes from ("off un-hides and un-dims without restoring any earlier
+  position", 2026-08-20) and no worked scenario. Written out as a test
+  instead — to-dos scattered between other habits, four presses, and
+  they end gathered at the bottom rather than back where they began —
+  in both `lenses.test.js` and `App.test.jsx`.
+
 ## T6.23a build notes — the eye on every tile (2026-08-21)
 
 The first of the five lenses, and the first visible piece of T6.23.
@@ -3043,6 +3088,76 @@ server against the six-habit fixture: one press put the daily and the
 whenever and the one-time; +1 on the daily left it exactly where it was;
 the next press dropped it into the bottom tier, keeping its place
 relative to the others there.
+
+## T6.23d build notes — the `to-dos` lens (2026-08-21)
+
+The only lens with a MEMORY, which is the one thing about it that could
+not live in `lenses.js`.
+
+**`todosLens(habits, { muted, hidden }, step)`** takes the step it is to
+perform and returns a whole arrangement, exactly like `todayLens`. The
+cycle's POSITION is App's (`todosStep`, an index into the exported
+`TODOS_LENS_STEPS`), because a pure function that remembered where it
+was would not be one. So the four steps are each independently testable
+and the cycle is four ordinary calls.
+
+A to-do is a habit whose CURRENT schedule is `oneTime` — `habit.schedule`
+rather than `scheduleOn(habit, dayKey)`, unlike both tier functions
+beside it. This lens asks what a habit IS, not what some day expects of
+it, so it takes no dayKey at all. (An active to-do is always unfinished:
+finishing one archives it, `archivesWhenDone`.)
+
+**'bottom' reuses `sinkOnMute`** rather than dropping the to-dos at the
+floor. "To the bottom" has meant the eye's landing rule since T6.23a —
+just under the live list, above anything muted earlier — and `todayLens`
+already sinks its could-tier that way. Sunk BOTTOM-MOST FIRST for
+`todayLens`'s reason: each mute lands just ABOVE the one muted before
+it, so a top-down sink would land the block upside down.
+
+**'off' is the only step that touches brightness**, and it is the whole
+of Kimia's rule: it un-hides and un-mutes the to-dos and returns the
+order untouched. Which is why the cycle is worth reading as a shape — it
+GATHERS. To-dos scattered through a list end it together at the bottom,
+visible, and nothing is put back. That scenario is the test in both
+files.
+
+**App**: one more piece of screen state (`todosStep`), wiped by the
+day-turn effect alongside `muted`, `hidden` and `screenOrder`, and reset
+by `handleUnhideAll` — Kimia's call, so that the press after an un-hide
+is never a silent one. `handleTodosLens` performs the current step and
+advances the index modulo four.
+
+**The lens line now reads `today · to-dos · [charms] · prioritise ·
+un-hide all`.** Classified in pebbles.test.js by the existing
+`lens-word` rule, so the new button needed no new classification — it is
+the same family and dresses the same.
+
+**The right-hand side wraps to two lines when `un-hide all` shows**, and
+measurement says it always did: at 1280px each side column is the grid's
+`1fr` share of 168px, while **prioritise** and **un-hide all** need
+193px side by side. Nothing to do with the word added on the left, whose
+column has room to spare. Left alone deliberately — T6.23e puts
+**default** and the **padlock** on this line and has to settle its shape
+anyway — and noted in design-notes §11f so it is not re-discovered.
+
+**Verified with real clicks** (CLAUDE.md's reachability rule) on the dev
+server, at real coordinates, against a seven-habit fixture with two
+to-dos scattered through it: press one gathered both at the top, bright;
+press two sank them under the live list, dim and the right way up; press
+three hid them and brought out `un-hide all`; press four returned them
+at the BOTTOM where they stood, bright, rather than to their old slots.
+Then `un-hide all` followed by one press gathered them at the top again
+— the reset — and they arrived still dim, which is the first press
+declining to brighten anything, on screen.
+
+**A browser-pane note worth keeping:** the tab's DOM channel went dead
+mid-session — `read_page` returned "(empty page)" with a 0x0 viewport
+and `document.querySelectorAll('button')` found nothing — while
+screenshots and real clicks kept working perfectly on the same tab. The
+clicks were landing on a page the DOM tools could no longer see. Opening
+a FRESH tab restored both. Worth knowing before concluding a page is
+broken: if the screenshots look right and only the queries are empty, it
+is the tool's handle that is stale, not the app.
 
 ## T6.22 build notes — the visit shows that it can be pressed (2026-08-20)
 

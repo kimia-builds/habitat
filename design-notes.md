@@ -1167,7 +1167,7 @@ decision — make it a pebble, or name it in the list with its reason.
 
 ---
 
-### 11f. The lenses — Habitat's ways of LOOKING **[the eye, `today` and `prioritise` BUILT — T6.23a–c, 2026-08-21; the rest TO-BUILD · T6.23d–e]**
+### 11f. The lenses — Habitat's ways of LOOKING **[the eye, `today`, `prioritise` and `to-dos` BUILT — T6.23a–d, 2026-08-21; the rest TO-BUILD · T6.23e]**
 
 **A third family, named because it is not the other two** (Kimia's call
 2026-08-20). §11e settled that a **pebble** says what it does and then
@@ -1187,7 +1187,7 @@ check-in):
 | the **padlock** | shut = the default is protected; open = design mode |
 | **today** | keep what applies today, mute what could, hide the rest **[BUILT]** |
 | **prioritise** | re-order into three tiers, stably — finished things sink **[BUILT]** |
-| **tasks** | cycle the to-dos: top · bottom and muted · hidden · off (three steps in design mode — nothing hides there) |
+| **to-dos** | cycle the to-dos: top · bottom and muted · hidden · off (three steps in design mode — nothing hides there) **[BUILT]** |
 | **un-hide all** | un-hide everything, clear the charms, leave mutings **[BUILT]** |
 | the **eye**, on every tile | mute this one / un-mute it **[BUILT]** |
 
@@ -1220,12 +1220,12 @@ Beyond that, the look is Kimia's to judge on screen, not on paper
 her.
 
 **Placement, as a starting proposal — now on screen (T6.23b, filling
-out in T6.23c).** One line, the charms centred, the word lenses flowing
+out in T6.23c–d).** One line, the charms centred, the word lenses flowing
 out to their left and right so the line reads evenly spaced; at a narrow
 window they fall to a second line **under** the charms rather than
-shuffling the charms out of the middle. **today** sits on the left;
-**prioritise** and **un-hide all** on the right, Kimia's choice of the
-two sides on 2026-08-21. Built as three columns with the charms in the
+shuffling the charms out of the middle. **today** and **to-dos** sit on the
+left; **prioritise** and **un-hide all** on the right, Kimia's choice of
+the two sides on 2026-08-21. Built as three columns with the charms in the
 middle one, so a word appearing or leaving — **un-hide all** comes and
 goes with the work it has to do — never shuffles the charms sideways.
 The narrow-window wrap is not built yet: three short words still cannot
@@ -1233,6 +1233,15 @@ crowd six charms at any width the app runs at (740px and up), so it
 belongs with the task that fills the line out. The words themselves are
 the plainest thing that could be there — no frame, quiet until the
 pointer is near. Kimia eyeballs the line as it fills.
+
+**The right-hand side wraps to two lines once `un-hide all` shows**, and
+has since T6.23b — measured at 1280px on 2026-08-21: each side column is
+the grid's `1fr` share (168px) while **prioritise** and **un-hide all**
+need 193px side by side. It is not caused by the words on the left,
+whose column has room to spare. Left as it is for now, deliberately:
+T6.23e adds **default** and the **padlock** to this line and will have
+to settle its shape anyway, and the wrap is Kimia's to judge on screen
+when the line is finally full.
 
 **Design mode's dress.** While the padlock is open, the window's edges
 **glow in colour** and the padlock itself **pulses** — the two signs

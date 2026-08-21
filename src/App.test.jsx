@@ -711,6 +711,105 @@ describe('the today lens (T6.23b)', () => {
   })
 })
 
+// The `to-dos` lens and its four-press cycle (T6.23d, spec §5b). The
+// cycle's POSITION lives in App rather than in the pure function, so
+// these are the tests for it: that four presses walk the same control
+// through four different screens, and that `un-hide all` sends it back
+// to the start. The word itself is Kimia's, so the control is found by
+// its data-lens name.
+describe('the to-dos lens (T6.23d)', () => {
+  const names = () =>
+    [...document.querySelectorAll('.habit-name')].map((el) => el.textContent)
+  const lens = (name) => document.querySelector(`[data-lens="${name}"]`)
+  const isMuted = (name) => tile(name).className.includes('habit-row--muted')
+
+  // To-dos scattered through the list, which is how they end up sitting
+  // once a few have been added over a few days.
+  function scatteredTodos() {
+    createHabitViaUI('daily')
+    createHabitViaUI('fix tap', { scheduleType: 'oneTime' })
+    createHabitViaUI('sometime', { scheduleType: 'whenever' })
+    createHabitViaUI('call the bank', { scheduleType: 'oneTime' })
+  }
+
+  it('walks the to-dos through top, bottom-and-dim, hidden, then back', () => {
+    render(<App />)
+    scatteredTodos()
+
+    fireEvent.click(lens('todos'))
+    expect(names()).toEqual(['fix tap', 'call the bank', 'daily', 'sometime'])
+    expect(isMuted('fix tap')).toBe(false)
+
+    fireEvent.click(lens('todos'))
+    expect(names()).toEqual(['daily', 'sometime', 'fix tap', 'call the bank'])
+    expect(isMuted('fix tap')).toBe(true)
+    expect(isMuted('daily')).toBe(false)
+
+    fireEvent.click(lens('todos'))
+    expect(names()).toEqual(['daily', 'sometime'])
+
+    fireEvent.click(lens('todos'))
+    expect(names()).toEqual(['daily', 'sometime', 'fix tap', 'call the bank'])
+    expect(isMuted('fix tap')).toBe(false)
+    expect(isMuted('call the bank')).toBe(false)
+  })
+
+  it('the last press restores no earlier position', () => {
+    // Kimia's rule 2026-08-20: "off" un-hides and un-dims WHERE THEY
+    // STAND. The to-dos began scattered between the other habits; a full
+    // cycle later they are gathered at the bottom and stay there.
+    render(<App />)
+    scatteredTodos()
+    expect(names()).toEqual(['daily', 'fix tap', 'sometime', 'call the bank'])
+
+    for (let press = 0; press < 4; press++) fireEvent.click(lens('todos'))
+
+    expect(names()).toEqual(['daily', 'sometime', 'fix tap', 'call the bank'])
+  })
+
+  it('the hidden press locks the order and brings out un-hide all', () => {
+    render(<App />)
+    scatteredTodos()
+    expect(lens('unhide-all')).toBeNull()
+
+    fireEvent.click(lens('todos'))
+    fireEvent.click(lens('todos'))
+    fireEvent.click(lens('todos'))
+
+    expect(lens('unhide-all')).not.toBeNull()
+  })
+
+  it('un-hide all sends the cycle back to its start', () => {
+    // Kimia's call 2026-08-21. Un-hiding is what the third press did, so
+    // a control left standing there would spend its next press on "off",
+    // which un-hides — a press that appears to do nothing at all.
+    render(<App />)
+    scatteredTodos()
+    fireEvent.click(lens('todos'))
+    fireEvent.click(lens('todos'))
+    fireEvent.click(lens('todos'))
+
+    fireEvent.click(lens('unhide-all'))
+    expect(names()).toEqual(['daily', 'sometime', 'fix tap', 'call the bank'])
+
+    // Back at the start of the cycle: the next press gathers them at the
+    // top, rather than quietly spending itself on "off".
+    fireEvent.click(lens('todos'))
+    expect(names()).toEqual(['fix tap', 'call the bank', 'daily', 'sometime'])
+  })
+
+  it('the word is there even with no to-dos, and pressing it changes nothing', () => {
+    // Kimia's call 2026-08-21: permanent furniture, unlike `un-hide all`.
+    render(<App />)
+    createHabitViaUI('daily')
+    createHabitViaUI('sometime', { scheduleType: 'whenever' })
+
+    expect(lens('todos')).not.toBeNull()
+    fireEvent.click(lens('todos'))
+    expect(names()).toEqual(['daily', 'sometime'])
+  })
+})
+
 // The `prioritise` lens (T6.23c, spec §5b). Pinned to Thursday 16 July
 // 2026 like the rest (see beforeEach), so a Thursday habit is owed today
 // and a Monday one is not. The word itself is Kimia's, so the control is

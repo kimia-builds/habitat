@@ -498,13 +498,15 @@ region discovery expands what the Market can offer.
   library and the abode sky — the hair textures left with the flora they
   were being judged for, once the ordinary flora design closed.
 
-### The lenses (M6 · T6.23 — the eye, `today` and `prioritise` BUILT; tasks, the default view and design mode still to come)
+### The lenses (M6 · T6.23 — the eye, `today`, `prioritise` and `to-dos` BUILT; the default view and design mode still to come)
 
 Kimia's call 2026-08-20, after a long list made the two existing ways of
 looking at it — all of it, or one charm combination that forgets itself —
 both unusable. **A lens is a way of LOOKING at the habit list.** The
 charm filter is the first one; five more join it, and one of them
-remembers. They belong to the home screen alone: the field notes and the
+remembers. (The verb over the one-time to-dos is called **to-dos** — her
+renaming, 2026-08-21; it was drafted as `tasks`.) They belong to the home
+screen alone: the field notes and the
 check-in keep the charm lens they already carry and gain nothing else,
 because these are about arranging a list you are working through, not
 reading a record. Their look and their family rules are design-notes
@@ -531,7 +533,7 @@ put, still dim. And muting only ever sinks: a tile already lower than
 that landing spot does not move at all. Muted is "out of my eyeline",
 never "disabled": +1 still counts.
 
-**The three verbs — today · prioritise · tasks.** None of them holds a
+**The three verbs — today · prioritise · to-dos.** None of them holds a
 view. Each reaches into whatever is on screen, changes it, and lets go,
 so they stack in any order and never start over:
 
@@ -562,12 +564,25 @@ so they stack in any order and never start over:
   now. It sorts by what it knows **at the moment it is pressed**: tick a
   habit afterwards and it does not slide away under your hand; the list
   waits for the next press.
-- **tasks** cycles the one-time to-dos through four presses: to the top ·
-  to the bottom and muted · hidden · off. "Off" un-hides and un-dims
-  where they stand; it restores no earlier position. Inside design mode the cycle is
-  **three** presses — top · bottom and muted · off — because nothing
-  hides in there (below), and a hidden step that merely muted again
-  would be a press that appeared to do nothing.
+- **to-dos [BUILT — T6.23d, 2026-08-21]** cycles the one-time to-dos
+  through four presses: to the top · to the bottom and muted · hidden ·
+  off. It is the one lens that keeps a memory — the control remembers
+  which press comes next. The first press **only moves them** (Kimia's
+  call 2026-08-21): a to-do already dim arrives at the top still dim,
+  because un-dimming belongs to the last press and nothing else. The
+  second sinks them by the eye's own landing rule, the third hides them —
+  which locks the order and brings out **un-hide all** — and "off"
+  un-hides and un-dims **where they stand**, restoring no earlier
+  position: to-dos that began scattered through the list end the cycle
+  gathered at the bottom, plainly visible. **`un-hide all` sends the
+  cycle back to its start** (Kimia's call 2026-08-21), since un-hiding is
+  exactly what the third press did and a control left standing there
+  would spend its next press appearing to do nothing. The word is
+  permanent furniture, unlike `un-hide all`: it shows even with no
+  to-dos on the list, and pressing it then changes nothing. Inside design
+  mode the cycle is **three** presses — top · bottom and muted · off —
+  because nothing hides in there (below), and a hidden step that merely
+  muted again would be a press that appeared to do nothing.
 
 **un-hide all [BUILT — T6.23b, 2026-08-21]** un-hides everything and
 clears the charms, and leaves mutings alone. It is the way back to a

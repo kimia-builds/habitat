@@ -96,6 +96,7 @@ const en = {
   // §11f). These say their names on screen, in lower case like the rest
   // of Habitat's furniture.
   'lens.today': 'today',
+  'lens.todos': 'to-dos',
   'lens.prioritise': 'prioritise',
   'lens.unhideAll': 'un-hide all',
 
@@ -282,6 +283,7 @@ const fa = {
   'habits.unhideToReorder': '',
 
   'lens.today': '',
+  'lens.todos': '',
   'lens.prioritise': '',
   'lens.unhideAll': '',
 

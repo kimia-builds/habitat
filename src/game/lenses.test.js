@@ -5,7 +5,9 @@ import {
   orderedForScreen,
   prioritiseLens,
   sinkOnMute,
+  TODOS_LENS_STEPS,
   todayLens,
+  todosLens,
 } from './lenses.js'
 
 const habits = (...ids) => ids.map((id) => ({ id, name: id }))
@@ -287,5 +289,132 @@ describe('prioritiseLens (T6.23c)', () => {
     const once = prioritiseLens(list, [], MONDAY)
     const reordered = once.map((id) => list.find((h) => h.id === id))
     expect(prioritiseLens(reordered, [], MONDAY)).toEqual(once)
+  })
+})
+
+describe('todosLens (T6.23d)', () => {
+  const shaped = (id, type) => ({
+    id,
+    name: id,
+    schedule: { type },
+    scheduleHistory: [{ fromDay: '2020-01-01', schedule: { type } }],
+  })
+  const todo = (id) => shaped(id, 'oneTime')
+  const fresh = { muted: [], hidden: [] }
+  // To-dos scattered through the list, which is how they actually sit
+  // once a few have been added over a few days.
+  const scattered = () => [
+    shaped('daily', 'daily'),
+    todo('todoA'),
+    shaped('whenever', 'whenever'),
+    todo('todoB'),
+    shaped('thrice', 'nPerWeek'),
+  ]
+
+  it('the first press gathers the to-dos at the top, in their own order', () => {
+    const next = todosLens(scattered(), fresh, 'top')
+    expect(next.order).toEqual([
+      'todoA',
+      'todoB',
+      'daily',
+      'whenever',
+      'thrice',
+    ])
+    expect(next.muted).toEqual([])
+    expect(next.hidden).toEqual([])
+  })
+
+  it('the first press only MOVES: a dimmed to-do arrives at the top dim', () => {
+    // Kimia's call 2026-08-21: un-dimming is 'off's job and nothing
+    // else's, so the cycle's first press has no opinion about brightness.
+    const next = todosLens(scattered(), { muted: ['todoB'], hidden: [] }, 'top')
+    expect(next.order.slice(0, 2)).toEqual(['todoA', 'todoB'])
+    expect(next.muted).toEqual(['todoB'])
+  })
+
+  it('the second press sinks them under the live list and dims them', () => {
+    const next = todosLens(scattered(), fresh, 'bottom')
+    expect(next.order).toEqual([
+      'daily',
+      'whenever',
+      'thrice',
+      'todoA',
+      'todoB',
+    ])
+    expect(next.muted.sort()).toEqual(['todoA', 'todoB'])
+    expect(next.hidden).toEqual([])
+  })
+
+  it('the second press lands the block the right way up', () => {
+    // Sunk bottom-most first (todayLens's reason): each mute lands just
+    // ABOVE the one muted before it, so a top-down sink would invert them.
+    const list = [todo('one'), todo('two'), todo('three'), shaped('d', 'daily')]
+    expect(todosLens(list, fresh, 'bottom').order).toEqual([
+      'd',
+      'one',
+      'two',
+      'three',
+    ])
+  })
+
+  it('the third press hides them and leaves the order alone', () => {
+    const afterBottom = todosLens(scattered(), fresh, 'bottom')
+    const list = afterBottom.order.map((id) =>
+      scattered().find((h) => h.id === id),
+    )
+    const next = todosLens(list, afterBottom, 'hidden')
+    expect(next.hidden.sort()).toEqual(['todoA', 'todoB'])
+    expect(next.order).toEqual(afterBottom.order)
+  })
+
+  it('the whole cycle: scattered to-dos end gathered, visible, and NOT put back', () => {
+    // The scenario behind Kimia's rule of 2026-08-20 — "off un-hides and
+    // un-dims without restoring any earlier position". The to-dos began
+    // scattered through the list; four presses later they are together
+    // at the bottom, plainly visible, and nothing has been restored.
+    let arrangement = fresh
+    let list = scattered()
+    for (const step of TODOS_LENS_STEPS) {
+      arrangement = todosLens(list, arrangement, step)
+      list = arrangement.order.map((id) => list.find((h) => h.id === id))
+    }
+    expect(arrangement.order).toEqual([
+      'daily',
+      'whenever',
+      'thrice',
+      'todoA',
+      'todoB',
+    ])
+    expect(arrangement.muted).toEqual([])
+    expect(arrangement.hidden).toEqual([])
+  })
+
+  it('the last press un-dims a to-do muted by hand, and moves nothing', () => {
+    const list = scattered()
+    const next = todosLens(
+      list,
+      { muted: ['todoA', 'daily'], hidden: [] },
+      'off',
+    )
+    expect(next.order).toEqual(ids(list))
+    expect(next.muted).toEqual(['daily'])
+  })
+
+  it('a list with no to-dos in it is left exactly as it stands', () => {
+    const list = [shaped('daily', 'daily'), shaped('whenever', 'whenever')]
+    for (const step of TODOS_LENS_STEPS) {
+      const next = todosLens(list, fresh, step)
+      expect(next.order).toEqual(['daily', 'whenever'])
+      expect(next.muted).toEqual([])
+      expect(next.hidden).toEqual([])
+    }
+  })
+
+  it('mutates neither the habits nor the arrangement it was handed', () => {
+    const list = scattered()
+    const arrangement = { muted: ['todoA'], hidden: ['whenever'] }
+    todosLens(list, arrangement, 'bottom')
+    expect(ids(list)).toEqual(['daily', 'todoA', 'whenever', 'todoB', 'thrice'])
+    expect(arrangement).toEqual({ muted: ['todoA'], hidden: ['whenever'] })
   })
 })

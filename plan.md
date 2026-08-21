@@ -430,7 +430,7 @@ tracker. Everything after this is delight, informed by real use.
       call 2026-08-20; spec §5b "The lenses", design-notes §11f). A long
       list can only be looked at two ways today: all of it, or one charm
       combination that forgets itself the moment you reload. Five lenses
-      join the charms — **default · today · prioritise · tasks · un-hide
+      join the charms — **default · today · prioritise · to-dos · un-hide
       all** — plus a **padlock** and an **eye** on every tile. They are
       their own control family, not pebbles (§11e), and they belong to
       the home screen alone. **One sub-task per session, in this
@@ -441,11 +441,7 @@ tracker. Everything after this is delight, informed by real use.
   - [x] **T6.23a Muting — the eye on every tile.** _(2026-08-21)_
   - [x] **T6.23b The `today` lens.** _(2026-08-21)_
   - [x] **T6.23c The `prioritise` lens.** _(2026-08-21)_
-  - [ ] **T6.23d The `tasks` lens.** The four-press cycle over one-time
-        to-dos: top · bottom and muted · hidden · off. "Off" un-hides
-        and un-dims where they stand and restores no earlier position —
-        the scattered-tasks scenario in the decisions log is the test to
-        write.
+  - [x] **T6.23d The `to-dos` lens.** _(2026-08-21)_
   - [ ] **T6.23e The default view, the padlock and design mode.** The
         saved arrangement — order + charms + mutings, and only those —
         restored by the **default** lens, by a refresh and by the new

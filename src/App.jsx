@@ -83,8 +83,10 @@ import {
 import {
   orderedForScreen,
   prioritiseLens,
+  TODOS_LENS_STEPS,
   sinkOnMute,
   todayLens,
+  todosLens,
 } from './game/lenses.js'
 import {
   archivesWhenDone,
@@ -172,6 +174,12 @@ function AppBody({ data, setData }) {
   // what makes a mute forgettable by a refresh (spec §5b: the
   // arrangement is temporary until T6.23e gives it somewhere to live).
   const [screenOrder, setScreenOrder] = useState(null)
+  // Where the `to-dos` control stands in its four-press cycle (T6.23d):
+  // the index of the step the NEXT press will take. It is the one memory
+  // any lens keeps — the other verbs act and let go — and like every
+  // other piece of the arrangement it is thrown away by a refresh, by
+  // the day turn, and by `un-hide all`.
+  const [todosStep, setTodosStep] = useState(0)
   // What the form area is doing: null (closed), 'new', or a habit id.
   const [editing, setEditing] = useState(null)
   // Which charm a brand-new draft should open on, when something on
@@ -1113,14 +1121,36 @@ function AppBody({ data, setData }) {
     setScreenOrder(prioritiseLens(active, data.completions, today))
   }
 
+  // The `to-dos` lens (T6.23d, spec §5b). The one lens with a memory:
+  // each press takes the one-time to-dos one step further round their
+  // cycle — to the top, then to the bottom and dim, then out of sight,
+  // then back into view where they stand — and the control remembers
+  // which step comes next.
+  function handleTodosLens() {
+    const next = todosLens(
+      active,
+      { muted, hidden },
+      TODOS_LENS_STEPS[todosStep],
+    )
+    setScreenOrder(next.order)
+    setMuted(next.muted)
+    setHidden(next.hidden)
+    setTodosStep((todosStep + 1) % TODOS_LENS_STEPS.length)
+  }
+
   // `un-hide all` — the one press back to a re-orderable list. It brings
   // back everything a lens hid AND clears the charms, since both do the
   // hiding that locks the order. It deliberately leaves the mutings
   // alone: a muted tile is visible, so it never stopped the order being
   // knowable (Kimia's call 2026-08-20).
+  // It also sends the `to-dos` cycle back to its start (Kimia's call
+  // 2026-08-21). Un-hiding is exactly what that cycle's third press did,
+  // so leaving the control where it stood would make its next press —
+  // "off", which un-hides — appear to do nothing at all.
   function handleUnhideAll() {
     setHidden([])
     setFilter([])
+    setTodosStep(0)
   }
 
   // The day turn wipes the arrangement (spec §5b). At 3am the list is a
@@ -1132,6 +1162,7 @@ function AppBody({ data, setData }) {
     setMuted([])
     setHidden([])
     setScreenOrder(null)
+    setTodosStep(0)
   }, [today])
 
   function handleDelete(habit) {
@@ -1300,6 +1331,14 @@ function AppBody({ data, setData }) {
             onClick={handleTodayLens}
           >
             {t('lens.today')}
+          </button>
+          <button
+            type="button"
+            className="lens-word"
+            data-lens="todos"
+            onClick={handleTodosLens}
+          >
+            {t('lens.todos')}
           </button>
         </div>
         <section
