@@ -9,6 +9,7 @@ import {
   isWeekFulfilled,
   requiredPerDay,
   scheduleOn,
+  todayTier,
   weekProgress,
 } from './schedule.js'
 
@@ -61,6 +62,55 @@ describe('isScheduledOn', () => {
     expect(isScheduledOn(makeHabit({ type: 'oneTime' }), '2026-07-13')).toBe(
       false,
     )
+  })
+})
+
+describe("the today lens's three tiers (T6.23b)", () => {
+  // 2026-07-13 is a Monday, 2026-07-14 the Tuesday after it.
+  it('what is expected today APPLIES', () => {
+    expect(todayTier(makeHabit({ type: 'daily' }), '2026-07-13')).toBe(
+      'applies',
+    )
+    expect(todayTier(makeHabit({ type: 'nPerDay', n: 3 }), '2026-07-13')).toBe(
+      'applies',
+    )
+    expect(
+      todayTier(makeHabit({ type: 'weekdays', days: [1, 3] }), '2026-07-13'),
+    ).toBe('applies')
+  })
+
+  it('what has no particular day COULD apply today', () => {
+    // Today is as good a day as any for these, so they are muted to the
+    // bottom rather than hidden — including an N-per-week already at its
+    // number, which this file cannot even see: being ahead is not a
+    // reason to disappear, so completions never enter into it.
+    expect(todayTier(makeHabit({ type: 'nPerWeek', n: 3 }), '2026-07-13')).toBe(
+      'could',
+    )
+    expect(todayTier(makeHabit({ type: 'whenever' }), '2026-07-13')).toBe(
+      'could',
+    )
+    expect(todayTier(makeHabit({ type: 'oneTime' }), '2026-07-13')).toBe(
+      'could',
+    )
+  })
+
+  it('a weekday habit whose day this is not is the only NO', () => {
+    expect(
+      todayTier(makeHabit({ type: 'weekdays', days: [1, 3] }), '2026-07-14'),
+    ).toBe('no')
+  })
+
+  it('answers for the schedule in force on the day, like everything else', () => {
+    // Schedule edits are never retroactive (2026-07-16), so the tier a
+    // habit falls in is the tier its schedule THAT DAY puts it in.
+    const habit = changeSchedule(
+      makeHabit({ type: 'whenever' }),
+      { type: 'daily' },
+      '2026-07-14',
+    )
+    expect(todayTier(habit, '2026-07-13')).toBe('could')
+    expect(todayTier(habit, '2026-07-14')).toBe('applies')
   })
 })
 

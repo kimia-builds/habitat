@@ -498,7 +498,7 @@ region discovery expands what the Market can offer.
   library and the abode sky — the hair textures left with the flora they
   were being judged for, once the ordinary flora design closed.
 
-### The lenses (M6 · T6.23 — planned 2026-08-20, not built)
+### The lenses (M6 · T6.23 — the eye and `today` BUILT; prioritise, tasks, the default view and design mode still to come)
 
 Kimia's call 2026-08-20, after a long list made the two existing ways of
 looking at it — all of it, or one charm combination that forgets itself —
@@ -515,8 +515,9 @@ set of **muted** tiles (dimmed, still fully tappable), and a set of
 **hidden** ones. It starts each visit as the saved default view and is
 otherwise temporary — a refresh or the 3am day turn brings the default
 back. (The charm lens has always cleared on a reload; the day turn is
-the new half of the rule, and muting obeys both as of T6.23a. The charms
-join it when the default view itself is built, T6.23e.)
+the new half of the rule, and muting and hiding obey both as of T6.23a
+and T6.23b. The charms join it when the default view itself is built,
+T6.23e.)
 
 **The eye (muting) [BUILT — T6.23a, 2026-08-21].** The first of the
 three icons on every tile — the eye, then edit, then archive. Closed eye
@@ -534,11 +535,19 @@ never "disabled": +1 still counts.
 view. Each reaches into whatever is on screen, changes it, and lets go,
 so they stack in any order and never start over:
 
-- **today** keeps what applies today (daily, N-per-day, a weekday habit
-  whose day this is — including one already completed); mutes to the
-  bottom what could apply today (N-per-week, whenever, one-time tasks —
-  an N-per-week already at its number is muted like any other, never
-  hidden); and hides everything else.
+- **today [BUILT — T6.23b, 2026-08-21]** keeps what applies today
+  (daily, N-per-day, a weekday habit whose day this is — including one
+  already completed); mutes to the bottom what could apply today
+  (N-per-week, whenever, one-time tasks — an N-per-week already at its
+  number is muted like any other, never hidden); and hides everything
+  else. **What applies today comes back to full brightness** (Kimia's
+  call 2026-08-21): today is the day's list, so nothing belonging to it
+  is left dim — the one place a verb un-mutes. It does not un-hide,
+  though: a lens narrows what is on screen rather than re-deciding the
+  whole list, and **un-hide all** is the way back. The muted block sinks
+  by the eye's own rule, keeping the order it was already in, and sinks
+  past hidden tiles as well as live ones — invisible either way now, and
+  the tidier list once an un-hide brings them back.
 - **prioritise** re-orders into three tiers, **stably**: applies today ·
   applies this week (N-per-week) · everything else — whenever, a weekday
   habit whose day this is not, and one-time tasks, which have no
@@ -552,13 +561,14 @@ so they stack in any order and never start over:
   hides in there (below), and a hidden step that merely muted again
   would be a press that appeared to do nothing.
 
-**un-hide all** un-hides everything and clears the charms, and leaves
-mutings alone. It is the way back to a re-orderable list, and it shows
-only when it has work to do.
+**un-hide all [BUILT — T6.23b, 2026-08-21]** un-hides everything and
+clears the charms, and leaves mutings alone. It is the way back to a
+re-orderable list, and it shows only when it has work to do — which is
+exactly when the order is locked.
 
-**Nothing re-orders while anything is hidden** — the general form of the
-existing no-dragging-under-a-charm-filter rule (design-notes §12a),
-binding inside design mode too. A tile dropped into a list with gaps in
+**Nothing re-orders while anything is hidden [BUILT — T6.23b]** — the
+general form of the existing no-dragging-under-a-charm-filter rule
+(design-notes §12a), binding inside design mode too. A tile dropped into a list with gaps in
 it would make Habitat guess where it belongs in the full order, and the
 deliberate order must be exactly knowable at all times. Muted tiles never
 block dragging: they are visible.

@@ -131,13 +131,12 @@ function HabitRow({
       }
       data-habit-id={habit.id}
       // With the grip gone, this is where the "why won't it move?" answer
-      // lives: while a symbol filter is on, the list is a partial lens and
-      // nothing re-orders, so the tile itself says so on hover. No title
-      // at all the rest of the time — a tooltip on every tile would be
-      // noise.
-      title={
-        reorderDisabled ? 'clear the symbol filter to re-order' : undefined
-      }
+      // lives: while ANYTHING is hidden — by a charm or by a lens — the
+      // list is a partial view and nothing re-orders, so the tile itself
+      // says so on hover (T6.23b generalised this from the charm filter
+      // alone). No title at all the rest of the time — a tooltip on every
+      // tile would be noise. The words are Kimia's, in ui.js.
+      title={reorderDisabled ? t('habits.unhideToReorder') : undefined}
       onPointerDown={handlePointerDown}
       // A dragged tile follows the pointer and sits a touch larger while
       // it travels — picked up rather than pushed along. The stylesheet

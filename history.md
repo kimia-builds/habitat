@@ -2822,6 +2822,38 @@ return 0` right after the era is worked out, so a moment before the
   so the screen and the docs say one thing (`habits.mute` /
   `habits.unmute` in src/content/ui.js, hers to rewrite).
 
+- 2026-08-21 (Kimia, asked before building T6.23b): **`today` brings
+  what belongs to today back to full brightness.** A habit muted by hand
+  that DOES apply today is un-dimmed by the lens rather than left dim
+  where it stands. She chose this over the stricter reading of "keeps
+  what applies today", where a verb only ever keeps, mutes or hides and
+  never un-mutes: today is the day's list, so nothing belonging to the
+  day should be sitting in the corner of it. It stays the one thing a
+  verb un-does — `today` still never un-HIDES, because a lens narrows
+  what is on screen rather than re-deciding the whole list, and
+  **un-hide all** is the press that exists for that. Folded into spec
+  §5b.
+
+- 2026-08-21: **the drag-lock's hover line is Kimia's words now.** The
+  tile's "why won't this move?" message was the last interface sentence
+  living in a code file, hard-coded in HabitRow.jsx while every other
+  word sat in `src/content/ui.js`. Generalising it — the lock is no
+  longer about the charms alone — was the moment to move it, so it is a
+  named slot she can rewrite on GitHub like the rest. Her wording:
+  "un-hide everything to re-order". An App test that asserted the old
+  sentence word-for-word came out with it: it was exactly the
+  content-coupled assertion CLAUDE.md forbids, sitting there since
+  before the rule existed, and it now checks only THAT a tile explains
+  itself.
+
+- 2026-08-21: **a muted tile sinks past hidden ones, not just live
+  ones.** Found by a wrong expectation in a test rather than by
+  reasoning: a hidden tile is not drawn, so counting it as part of the
+  list to sink past cannot change what the sink looks like at the time —
+  and it is what leaves the dim tiles at the true bottom once `un-hide
+  all` brings everything back, instead of stranding a live habit
+  underneath a dim one it never asked to be under.
+
 ## T6.23a build notes — the eye on every tile (2026-08-21)
 
 The first of the five lenses, and the first visible piece of T6.23.
@@ -2878,6 +2910,66 @@ sank; a second mute landed above it; the dim tile took a +1 and showed
 ✓ 1/1; opening its eye again un-dimmed it exactly where it stood; and a
 refresh brought the stored order back with the completion still on the
 record.
+
+## T6.23b build notes — the `today` lens (2026-08-21)
+
+The first lens that HIDES, which is why it carries two rules that have
+nothing to do with today in particular.
+
+**`todayTier(habit, dayKey)` in schedule.js** — the classification, put
+beside `isScheduledOn` rather than in lenses.js because it is a question
+about a habit and a day and nothing else: no completions, no screen, no
+arrangement. `applies` when the day expects it, `no` for a weekday habit
+whose day this is not, `could` for everything left (N-per-week, whenever,
+one-time). It reads the schedule IN FORCE on the day, like every other
+question in that file, so a future-dated schedule edit cannot make today
+lie. An N-per-week already at its number is `could` like any other —
+this function cannot even see completions, which is the cleanest possible
+statement of "being ahead is not a reason to disappear".
+
+**`todayLens(habits, { muted, hidden }, dayKey)` in lenses.js** — one
+pass to sort the tiers, then the sink. Two details worth keeping:
+
+- the could-tier is sunk **bottom-most first**. Each mute lands just
+  ABOVE the one muted before it (T6.23a's rule), so muting the group
+  top-down would land it upside down at the floor;
+- an `applies` habit is deleted from the muted set — Kimia's call above
+  — and that happens BEFORE the sink, because un-muting changes who
+  counts as live and therefore where the block lands.
+
+Anything already hidden is skipped and stays hidden. The whole function
+returns a new arrangement and touches nothing else; a test asserts it
+mutates neither the habits nor the arrangement it was handed.
+
+**App** grew one more piece of screen state, `hidden` (ids), wiped by the
+day-turn effect alongside `muted` and `screenOrder`. Everything else
+hangs off one derived question — `anythingHidden`, true when a charm is
+chosen OR a lens has hidden something — which both locks the drag and
+shows `un-hide all`. One condition rather than two, because they are the
+same condition: the control appears exactly when the order is locked,
+which is exactly when it has work to do.
+
+**The lens line** is a three-column grid: a side, the charms, a side. A
+plain flex row would have shuffled the charms sideways every time
+`un-hide all` appeared or left. The charms' column is `auto` so a squeeze
+takes room from the words and never from the drawings. §11f's
+narrow-window wrap is deliberately not built — two words cannot crowd six
+charms at 740px, the narrowest the app runs at — and belongs with the
+task that fills the line.
+
+`lens-word` is classified in pebbles.test.js as a documented
+non-pebble: a lens leaves nothing behind, so it wears no frame. The test
+caught both new buttons the moment they appeared, which is what it is
+for.
+
+**Verified with real clicks** (CLAUDE.md's reachability rule) on the dev
+server, at real coordinates: `today` hid a Monday-only habit, kept the
+daily and the 2×/day bright at the top and dimmed the 3×/week, whenever
+and one-time to the bottom in their existing order; `un-hide all`
+appeared beside the charms without moving them, brought the Monday habit
+back to its own slot and left the three dim ones dim; and a habit muted
+by hand came back to full brightness on the next `today` without
+changing place.
 
 ## T6.22 build notes — the visit shows that it can be pressed (2026-08-20)
 

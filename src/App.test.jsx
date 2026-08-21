@@ -326,9 +326,11 @@ describe('the symbol filter (a temporary lens)', () => {
     // While filtered, re-ordering is off (partial view = ambiguous) and
     // the tile's own hover explains how to switch it back on. (The grip
     // that used to carry this was retired 2026-08-11 — the whole tile is
-    // the handle, so the whole tile answers for it.)
+    // the handle, so the whole tile answers for it.) The words moved into
+    // Kimia's ui.js in T6.23b, so this asks THAT there is a hover, never
+    // what it says.
     const filteredTile = document.querySelector('.habit-row')
-    expect(filteredTile.title).toBe('clear the symbol filter to re-order')
+    expect(filteredTile.title).toBeTruthy()
     expect(filteredTile.className).toContain('habit-row--fixed')
 
     fireEvent.click(filter.getByRole('button', { name: 'cherry' })) // toggle off
@@ -583,6 +585,129 @@ describe('re-ordering', () => {
       (el) => el.textContent,
     )
     expect(names).toEqual(['alpha', 'beta'])
+  })
+})
+
+// The `today` lens, and the un-hide that escapes it (T6.23b, spec §5b).
+//
+// The tests are pinned to Thursday 16 July 2026 (see beforeEach), so a
+// Thursday habit applies today and a Monday one does not. The lens words
+// come from Kimia's src/content/ui.js, so nothing here quotes them — the
+// controls are found by the data-lens name the code gives them.
+describe('the today lens (T6.23b)', () => {
+  const names = () =>
+    [...document.querySelectorAll('.habit-name')].map((el) => el.textContent)
+  const lens = (name) => document.querySelector(`[data-lens="${name}"]`)
+  const isMuted = (name) => tile(name).className.includes('habit-row--muted')
+  const eye = (name) =>
+    tile(name).querySelector('.row-buttons button:first-child')
+
+  // One of each tier: a daily that applies today, a Thursday one that
+  // also does, a whenever that only COULD, and a Monday one that cannot.
+  function oneOfEachTier() {
+    createHabitViaUI('daily')
+    createHabitViaUI('thursdays', { scheduleType: 'weekdays', days: ['Thu'] })
+    createHabitViaUI('sometime', { scheduleType: 'whenever' })
+    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['Mon'] })
+  }
+
+  it('keeps today, dims what could be today, and hides the rest', () => {
+    render(<App />)
+    oneOfEachTier()
+
+    fireEvent.click(lens('today'))
+
+    expect(names()).toEqual(['daily', 'thursdays', 'sometime'])
+    expect(isMuted('sometime')).toBe(true)
+    expect(isMuted('daily')).toBe(false)
+  })
+
+  it('brings a habit that applies today back to full brightness', () => {
+    // Kimia's call 2026-08-21: today is the day's list, so nothing that
+    // belongs to today is left dim.
+    render(<App />)
+    oneOfEachTier()
+    fireEvent.click(eye('daily'))
+    expect(isMuted('daily')).toBe(true)
+
+    fireEvent.click(lens('today'))
+    expect(isMuted('daily')).toBe(false)
+  })
+
+  it('a hidden habit stops the list re-ordering, and says so on the tile', () => {
+    // design-notes §12a: a tile dropped into a list with gaps would make
+    // Habitat guess where it belongs in the full order.
+    render(<App />)
+    oneOfEachTier()
+    expect(tile('daily').className).not.toContain('habit-row--fixed')
+
+    fireEvent.click(lens('today'))
+
+    expect(tile('daily').className).toContain('habit-row--fixed')
+    expect(tile('daily').getAttribute('title')).toBeTruthy()
+  })
+
+  it('un-hide all brings them back and unlocks the order', () => {
+    render(<App />)
+    oneOfEachTier()
+    fireEvent.click(lens('today'))
+
+    fireEvent.click(lens('unhide-all'))
+
+    expect(names()).toEqual(['daily', 'thursdays', 'mondays', 'sometime'])
+    expect(tile('daily').className).not.toContain('habit-row--fixed')
+  })
+
+  it('un-hide all leaves the mutings alone', () => {
+    // A muted tile is visible, so it never stopped the order being
+    // knowable — there is nothing for the un-hide to undo about it.
+    render(<App />)
+    oneOfEachTier()
+    fireEvent.click(lens('today'))
+
+    fireEvent.click(lens('unhide-all'))
+
+    expect(isMuted('sometime')).toBe(true)
+  })
+
+  it('un-hide all shows only when it has work to do', () => {
+    render(<App />)
+    oneOfEachTier()
+    expect(lens('unhide-all')).toBeNull()
+
+    fireEvent.click(lens('today'))
+    expect(lens('unhide-all')).not.toBeNull()
+
+    fireEvent.click(lens('unhide-all'))
+    expect(lens('unhide-all')).toBeNull()
+  })
+
+  it('appears for a charm filter too, and clears it', () => {
+    // The charms hide as surely as a lens does, so they lock the order
+    // the same way and the same press is the way out (Kimia 2026-08-20).
+    render(<App />)
+    createHabitViaUI('crowned', { symbol: 1 })
+    createHabitViaUI('cherried', { symbol: 2 })
+
+    fireEvent.click(screen.getAllByRole('button', { name: 'crown' })[0])
+    expect(names()).toEqual(['crowned'])
+    expect(lens('unhide-all')).not.toBeNull()
+
+    fireEvent.click(lens('unhide-all'))
+    expect(names()).toEqual(['crowned', 'cherried'])
+  })
+
+  it('is never written down — a reload brings the whole list back', () => {
+    // Nothing about an arrangement is saved until T6.23e.
+    const first = render(<App />)
+    oneOfEachTier()
+    fireEvent.click(lens('today'))
+    expect(names()).toEqual(['daily', 'thursdays', 'sometime'])
+
+    first.unmount()
+    render(<App />)
+    expect(names()).toEqual(['daily', 'thursdays', 'sometime', 'mondays'])
+    expect(isMuted('sometime')).toBe(false)
   })
 })
 

@@ -1167,7 +1167,7 @@ decision — make it a pebble, or name it in the list with its reason.
 
 ---
 
-### 11f. The lenses — Habitat's ways of LOOKING **[the eye BUILT — T6.23a, 2026-08-21; the rest TO-BUILD · T6.23b–e]**
+### 11f. The lenses — Habitat's ways of LOOKING **[the eye and `today` BUILT — T6.23a–b, 2026-08-21; the rest TO-BUILD · T6.23c–e]**
 
 **A third family, named because it is not the other two** (Kimia's call
 2026-08-20). §11e settled that a **pebble** says what it does and then
@@ -1185,10 +1185,10 @@ check-in):
 | the six **charms** | the original lens: show only these tags |
 | **default** | back to the saved default view |
 | the **padlock** | shut = the default is protected; open = design mode |
-| **today** | keep what applies today, mute what could, hide the rest |
+| **today** | keep what applies today, mute what could, hide the rest **[BUILT]** |
 | **prioritise** | re-order into three tiers, stably |
 | **tasks** | cycle the to-dos: top · bottom and muted · hidden · off (three steps in design mode — nothing hides there) |
-| **un-hide all** | un-hide everything, clear the charms, leave mutings |
+| **un-hide all** | un-hide everything, clear the charms, leave mutings **[BUILT]** |
 | the **eye**, on every tile | mute this one / un-mute it **[BUILT]** |
 
 **Two of them are wordless, and that is §12a, not an exception.** The
@@ -1219,11 +1219,18 @@ Beyond that, the look is Kimia's to judge on screen, not on paper
 (§0 and the T5.2c lesson): build the smallest visible piece and show
 her.
 
-**Placement, as a starting proposal.** One line, the charms centred,
-the word lenses flowing out to their left and right so the line reads
-evenly spaced; at a narrow window they fall to a second line **under**
-the charms rather than shuffling the charms out of the middle. Kimia
-will eyeball this before it settles.
+**Placement, as a starting proposal — now on screen (T6.23b).** One
+line, the charms centred, the word lenses flowing out to their left and
+right so the line reads evenly spaced; at a narrow window they fall to a
+second line **under** the charms rather than shuffling the charms out of
+the middle. Built as three columns with the charms in the middle one, so
+a word appearing or leaving — **un-hide all** comes and goes with the
+work it has to do — never shuffles the charms sideways. The narrow-window
+wrap is not built yet: two short words cannot crowd six charms at any
+width the app runs at (740px and up), so it belongs with the task that
+fills the line out. The words themselves are the plainest thing that
+could be there — no frame, quiet until the pointer is near. Kimia
+eyeballs the line as it fills.
 
 **Design mode's dress.** While the padlock is open, the window's edges
 **glow in colour** and the padlock itself **pulses** — the two signs
@@ -1252,10 +1259,10 @@ rules; this section carries the feel._
 Every action on the home screen becomes an **icon with a hover label**:
 edit (pencil), archive (box), delete forever (trash), add new habit
 (**+**), edit past days (pencil), view historical data (graph). The
-label appears on hover and nowhere else. Two more join them when T6.23
-lands: **mute** (an eye that opens and closes) on every tile, beside the
-pencil and the box, and the default view's **padlock** on the lens row
-(§11f).
+label appears on hover and nowhere else. Two more join them across T6.23: **mute** (an eye that
+opens and closes) on every tile, beside the pencil and the box — built
+in T6.23a — and the default view's **padlock** on the lens row (§11f),
+still to come.
 
 The rule outgrew the icons on 2026-08-12: **anything that needs
 explaining explains itself on hover**, icon or not. The two grey lines
@@ -1370,15 +1377,16 @@ other time. Desktop-only (T5.1b), so a plain pointer press is the only
 input supported — no touch path.
 
 **That filter-lock is the general rule, not a charm rule (Kimia
-2026-08-20, T6.23 — planned, not built).** Nothing re-orders while
+2026-08-20; BUILT T6.23b, 2026-08-21).** Nothing re-orders while
 ANYTHING is hidden, by a charm or by a lens (§11f), and the rule binds
 inside design mode too. A tile dropped into a list with gaps in it would
 make Habitat guess where it belongs in the full order, and the order is
 a record of deliberate choices — it must be exactly knowable at every
 moment. Muted tiles are the deliberate exception: they are visible, so
 they never block a drag, and a muted tile dragged back up the list stays
-where it is put. The hover message generalises with the rule, and
-**un-hide all** is the one-press way out of it.
+where it is put. The hover message generalises with the rule — and moved into
+`src/content/ui.js` with it (T6.23b), where every other interface word
+already lived — and **un-hide all** is the one-press way out.
 
 **The lifted tile floats (Kimia, 2026-08-11).** A dragged tile used to
 be welded to the cursor, which read as sharp and mechanical. Now it is

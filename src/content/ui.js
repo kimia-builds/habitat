@@ -87,6 +87,16 @@ const en = {
   'habits.archive': 'archive',
   'habits.unarchive': 'unarchive',
   'habits.deleteForever': 'delete forever',
+  // Why a tile won't move. Nothing re-orders while anything is hidden —
+  // by a charm or by a lens — because a list with gaps in it would make
+  // Habitat guess where a dropped tile belongs (design-notes §12a).
+  'habits.unhideToReorder': 'un-hide everything to re-order',
+
+  // The lenses — the ways of LOOKING at the habit list (design-notes
+  // §11f). These say their names on screen, in lower case like the rest
+  // of Habitat's furniture.
+  'lens.today': 'today',
+  'lens.unhideAll': 'un-hide all',
 
   // The habit form — the four prompts, then the two pebbles.
   'habitForm.name': 'write a good habit or task:',
@@ -268,6 +278,10 @@ const fa = {
   'habits.archive': '',
   'habits.unarchive': '',
   'habits.deleteForever': '',
+  'habits.unhideToReorder': '',
+
+  'lens.today': '',
+  'lens.unhideAll': '',
 
   'habitForm.name': '',
   'habitForm.detail': '',

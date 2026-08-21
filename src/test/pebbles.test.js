@@ -50,6 +50,11 @@ const NOT_PEBBLES = {
     'The eye is a LENS by family (design-notes §11f) rather than an ' +
     'action, but it is furniture on a tile and dresses like the pencil ' +
     'and the box it sits beside (T6.23a, 2026-08-21)',
+  'lens-word':
+    'a word lens (design-notes §11f) — today, un-hide all and their kin. ' +
+    'A pebble acts on the world and settles; a lens only changes how the ' +
+    'habit list is being LOOKED at, so it wears no frame of its own ' +
+    '(T6.23b, 2026-08-21)',
   'rail-icon': 'the left rail — icons as furniture, never a navbar',
   'arrival-hold': 'the drop object itself, pressed to hold it',
   'cameo-press':

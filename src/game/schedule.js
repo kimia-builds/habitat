@@ -38,6 +38,27 @@ export function isScheduledOn(habit, dayKey) {
   }
 }
 
+// Which tier a habit falls in for the `today` lens (spec §5b, T6.23b).
+// A question about a habit and a day, and nothing else — no completions,
+// no screen, no arrangement — which is why it lives here beside the rest
+// of the schedule questions.
+//
+//   'applies' — expected today: daily, N-per-day, or a weekday habit
+//               whose day this is. One already finished today counts
+//               too: a day view that drops what you have done is not a
+//               view of the day.
+//   'could'   — no particular day is its day, so today is as good as
+//               any: N-per-week (even one already at its number — being
+//               ahead is not a reason to disappear), whenever, and
+//               one-time tasks.
+//   'no'      — a weekday habit whose day this is NOT. The only shape
+//               today has nothing to say about, and the only one the
+//               lens hides.
+export function todayTier(habit, dayKey) {
+  if (isScheduledOn(habit, dayKey)) return 'applies'
+  return scheduleOn(habit, dayKey).type === 'weekdays' ? 'no' : 'could'
+}
+
 // One-time habits are to-dos: a single completion finishes them for
 // good, so the app archives them the moment they're done. Undoing that
 // completion (same day only) un-archives them again (Kimia's decision

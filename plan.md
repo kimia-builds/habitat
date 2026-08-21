@@ -439,14 +439,7 @@ tracker. Everything after this is delight, informed by real use.
       before it settles (the T5.2c rule): smallest visible piece first,
       never a finished system.
   - [x] **T6.23a Muting — the eye on every tile.** _(2026-08-21)_
-  - [ ] **T6.23b The `today` lens.** Keep what applies today; mute to
-        the bottom what could (N-per-week, whenever, one-time tasks —
-        including an N-per-week already at its number); hide the rest.
-        Pure schedule logic, so it lands in `src/game/` as functions
-        over a habit and a day key, tested there. This is the task that
-        first makes something HIDDEN, so it also brings the general
-        no-dragging-while-anything-is-hidden rule (design-notes §12a)
-        and the **un-hide all** lens that escapes it.
+  - [x] **T6.23b The `today` lens.** _(2026-08-21)_
   - [ ] **T6.23c The `prioritise` lens.** A stable three-tier sort —
         applies today · applies this week · everything else. _Done
         when:_ a test proves two habits of the same tier keep the order

@@ -80,7 +80,7 @@ import {
   unarchiveHabit,
   updateHabit,
 } from './game/habits.js'
-import { orderedForScreen, sinkOnMute } from './game/lenses.js'
+import { orderedForScreen, sinkOnMute, todayLens } from './game/lenses.js'
 import {
   archivesWhenDone,
   currentStreak,
@@ -155,6 +155,12 @@ function AppBody({ data, setData }) {
   // "Out of my eyeline", never "switched off": a muted tile dims and
   // sinks, and everything on it still works.
   const [muted, setMuted] = useState([])
+  // The hidden habits — ids, put out of sight by a lens (T6.23b). Not
+  // drawn at all, unlike a muted one, which is why hiding is what stops
+  // the list re-ordering: a tile dropped into a list with gaps in it
+  // would make Habitat guess where it belongs in the full order
+  // (design-notes §12a). Temporary like everything else here.
+  const [hidden, setHidden] = useState([])
   // The temporary arrangement the list is standing in: habit ids in
   // screen order, or null while nothing has rearranged anything. Muting
   // sinks a tile through THIS, not through the stored order — which is
@@ -264,7 +270,19 @@ function AppBody({ data, setData }) {
   // check-in pop-up → startup ceremony → (Sundays) field notes.
   const startupDue = shouldShowStartup(today, data.settings.startupShownOn)
   const active = orderedForScreen(activeHabits(data.habits), screenOrder)
-  const filtered = filterBySymbols(active, filter)
+  // Two ways of narrowing, in the order they were built: the charms,
+  // then whatever a lens has hidden (T6.23b). Both leave the habit
+  // exactly where it is in the arrangement — they only stop it being
+  // drawn — so un-hiding never has to remember a position.
+  const filtered = filterBySymbols(active, filter).filter(
+    (h) => !hidden.includes(h.id),
+  )
+  // Is anything out of sight? Two things hang off this one question: the
+  // list stops re-ordering (a tile dropped into a list with gaps would
+  // make Habitat guess where it belongs), and `un-hide all` appears,
+  // which is the one press back out of it. It shows exactly when it has
+  // work to do, which is exactly when the order is locked.
+  const anythingHidden = filter.length > 0 || hidden.length > 0
   // The archive answers to the same lens (Kimia's call 2026-08-11):
   // while charms are chosen, the dropdown holds only the archived habits
   // wearing them — and its count says how many that is. With no lens on,
@@ -946,9 +964,9 @@ function AppBody({ data, setData }) {
   // pointer on the WINDOW so the drag keeps tracking even when it leaves
   // the row, and read the landing slot off the TILE at the moment of
   // release (landingRowFor above). A press that never travels far enough
-  // stays a press and reorders nothing. Reordering is off while a symbol
-  // filter is on (the list is a partial lens), so no press starts a drag
-  // then. Desktop-only (T5.1b), so a single primary-button pointer press
+  // stays a press and reorders nothing. Reordering is off while anything
+  // is hidden — by a charm or by a lens — since the list is a partial
+  // view then, so no press starts a drag. Desktop-only (T5.1b), so a single primary-button pointer press
   // is all we handle.
   function handleReorderStart(habit, event) {
     if (event.button) return // left / primary only
@@ -1067,6 +1085,28 @@ function AppBody({ data, setData }) {
     }
   }
 
+  // The `today` lens (T6.23b, spec §5b). It reaches into the arrangement
+  // on screen, changes it, and lets go — there is no "today mode" to be
+  // in, and nothing here is remembered. All of the thinking is in
+  // todayLens; App's whole job is to hand it what is on screen and take
+  // the new arrangement back.
+  function handleTodayLens() {
+    const next = todayLens(active, { muted, hidden }, today)
+    setScreenOrder(next.order)
+    setMuted(next.muted)
+    setHidden(next.hidden)
+  }
+
+  // `un-hide all` — the one press back to a re-orderable list. It brings
+  // back everything a lens hid AND clears the charms, since both do the
+  // hiding that locks the order. It deliberately leaves the mutings
+  // alone: a muted tile is visible, so it never stopped the order being
+  // knowable (Kimia's call 2026-08-20).
+  function handleUnhideAll() {
+    setHidden([])
+    setFilter([])
+  }
+
   // The day turn wipes the arrangement (spec §5b). At 3am the list is a
   // new day's list, and yesterday's "I'm not looking at that today" has
   // nothing to say about it. A refresh does the same by simply being a
@@ -1074,6 +1114,7 @@ function AppBody({ data, setData }) {
   // stored.
   useEffect(() => {
     setMuted([])
+    setHidden([])
     setScreenOrder(null)
   }, [today])
 
@@ -1225,13 +1266,46 @@ function AppBody({ data, setData }) {
   // pop-up (below) dims this exact content behind itself.
   const listContent = (
     <>
-      <section
-        className="filter-view"
-        aria-label={t('habits.filterView')}
-        title={t('habits.filterView')}
-      >
-        <SymbolPicker selected={filter} onToggle={toggleFilter} />
-      </section>
+      {/* The lens line (design-notes §11f): the charms centred, the word
+          lenses flowing out to their left and right. A three-column grid
+          rather than a plain row, so the charms keep the middle of the
+          screen whether or not a word is showing beside them — `un-hide
+          all` comes and goes with the work it has to do, and the charms
+          must not shuffle sideways when it does. At a narrow window the
+          sides wrap underneath rather than pushing the charms out of the
+          centre. This is §11f's proposal, built so Kimia can judge the
+          placement on screen; it fills out as the other lenses land. */}
+      <div className="lens-row">
+        <div className="lens-row-side lens-row-side--left">
+          <button
+            type="button"
+            className="lens-word"
+            data-lens="today"
+            onClick={handleTodayLens}
+          >
+            {t('lens.today')}
+          </button>
+        </div>
+        <section
+          className="filter-view"
+          aria-label={t('habits.filterView')}
+          title={t('habits.filterView')}
+        >
+          <SymbolPicker selected={filter} onToggle={toggleFilter} />
+        </section>
+        <div className="lens-row-side lens-row-side--right">
+          {anythingHidden && (
+            <button
+              type="button"
+              className="lens-word"
+              data-lens="unhide-all"
+              onClick={handleUnhideAll}
+            >
+              {t('lens.unhideAll')}
+            </button>
+          )}
+        </div>
+      </div>
 
       <ul className="habit-list" ref={listRef}>
         {visible.map((habit) =>
@@ -1268,7 +1342,7 @@ function AppBody({ data, setData }) {
               required={requiredPerDay(habit, today)}
               fulfilled={isDayFulfilled(habit, data.completions, today)}
               muted={muted.includes(habit.id)}
-              reorderDisabled={filter.length > 0}
+              reorderDisabled={anythingHidden}
               dragging={reorderDrag?.id === habit.id}
               settling={settling?.id === habit.id}
               drifting={settling?.id === habit.id && settling.kind === 'mute'}
