@@ -85,5 +85,29 @@ export function friendSize(key, base) {
   return friendScale(key) * base
 }
 
+/*
+ * THE BASE AT WHICH THE SMALLEST FRIEND IS THIS BIG — the other way round,
+ * and the way Kimia settled screens should be sized (2026-08-21).
+ *
+ * A screen has to choose its base, and the ten are stretched over a wide
+ * range: the plip is a SEVENTH of the chitu. Sizing from the big end (the
+ * biggest friend fits comfortably, the rest follow) puts the plip at five or
+ * nine pixels — a speck, and the plip is the friend you meet most often. So
+ * the base is chosen from the SMALL end instead: say how big the smallest
+ * friend must be for its drawing to read, and this returns the base that
+ * makes it so. Everything else follows from the canon as it always did.
+ *
+ * This is design-bible §9c's rule in code — "if an asset is too small to
+ * judge at its canonical share of the page, the base size for that page goes
+ * UP; the ratios never bend."
+ *
+ * The smallest is looked up rather than named, so it stays right if the
+ * character sheet is ever redrawn.
+ */
+export function baseWhereSmallestIs(width) {
+  const smallest = Math.min(...Object.values(FRIEND_CANON))
+  return width / smallest
+}
+
 // The canon in ladder order, for anything that walks the whole cast.
 export const FRIEND_CANON_ORDER = FRIEND_CATEGORIES.map(({ key }) => key)

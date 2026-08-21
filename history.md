@@ -3094,6 +3094,93 @@ return 0` right after the era is worked out, so a moment before the
   the drops built, and a restored backup should restore the sky it was
   taken under.
 
+- 2026-08-21 (Kimia's call, T5.3h): **a screen sizes its friends up from
+  the SMALLEST, not down from the biggest.** The ten are stretched over a
+  wide range — a plip is a seventh of a chitu — so a screen's base can be
+  chosen from either end, and the two answers look nothing alike. Asked,
+  she chose the small end: say how big a plip must be before its drawing
+  reads, and let the biggest land wherever the canon puts it. Sizing from
+  the big end would have kept every screen's present size and left the plip
+  at five to nine pixels, and the plip is the friend you meet most often.
+  This is design-bible §9c's existing rule about the workbench — "if an
+  asset is too small to judge at its canonical share of the page, the base
+  goes UP; the ratios never bend" — turned into how every real screen is
+  sized, and it lives in code as `baseWhereSmallestIs` so no screen has to
+  do the arithmetic itself.
+
+- 2026-08-21 (Kimia's call, T5.3h): **the real friends go in one screen at
+  a time, the Guest Book first.** It is the only place the cast stands
+  together and it can be opened at will, so it is the cheapest screen to
+  judge sizes on — unlike the reveal and the cameo, which have to be waited
+  for. The design-slice rule (T5.2c's lesson) applied to the art itself.
+
+- 2026-08-21 (Kimia's call, T5.3h): **the Abode's party and the habit
+  list's arrival row wait for the flora.** Both stand a friend beside a
+  FLORA, and friends and flora are one shared size scale by construction
+  (floraCanon.js). The real flora art is finished but has reached no screen
+  yet, so putting real friends there now would set them beside placeholder
+  squares and teach exactly the wrong proportions. They go in with the
+  flora, in the task that puts the flora on the ground.
+
+## T5.3h build notes — the Guest Book gets the real friends (2026-08-21)
+
+**What changed on screen.** The Guest Book's friends are Kimia's drawings
+now, not the T4.4 placeholder line-art: the list shows each arrival at its
+canonical size in the colour this save dealt it, and the popup card shows
+the same friend larger with its signature animation playing. Nothing else
+in the app moved — the arrival reveal, the cameo, the Abode's party and the
+arrival row still wear the placeholder, and their CSS glow rules were left
+exactly as they were.
+
+**One component, three settled files.** `src/ui/Friend.jsx` is the whole of
+what code decides about a friend's looks, and it decides none of it itself:
+the DRAWING comes from tracedFriends.js, the SIZE from friendCanon.js and
+the COLOUR from friendColours.js, painted onto the trace's own greys by
+friendPalettes.js. Every screen that adopts the real art goes through it.
+
+**It cannot be asked for a size.** A screen hands it a BASE — how much room
+the largest friend gets here — and the component multiplies by the canon.
+There is deliberately no way to ask for a friend at a width of your own
+choosing, which is Kimia's "everywhere and always" rule made impossible to
+break by accident rather than merely written down. `Friend.test.jsx` walks
+the whole cast at one base and checks every width against FRIEND_CANON, and
+`GuestBookPage.test.jsx` checks the same holds on the real page.
+
+**tracedFriends.js stopped waiting.** It was written for the workbench
+shelves and sat unread from the day they came down (2026-08-17), kept only
+because it was the one record of which drawing is which species. Its header
+said it was waiting for the task that puts the real drawings on the real
+screens; this is that task. It is now keyed by SPECIES rather than by
+drawing number, friend 10 joined the other nine as its own header always
+promised, and the workbench's leftovers went: the shelf base size, the card
+labels and the three reward-stream tints, none of which anything in the game
+asks for. What it holds now is only the drawing.
+
+**The sizes, at the base this screen chose.** A plip reads at 1.5rem in the
+list, which puts the largest friends near 10.8rem, and the card is half
+again as big. Measured live on the dev server: plip 24px wide, zala 104px,
+chitu 173px, hamdi bulo 165px — the canon exactly.
+
+**The friends stand on one line.** The Guest Book's cards align along their
+bottoms now (`align-items: flex-end`), so a row of friends shares a ground
+line. At true relative size a chitu is seven plips across, and a shared
+floor is what makes that read as a size difference rather than as ragged
+spacing.
+
+**The glow is the drawing's own.** The placeholder wore a CSS halo
+(`drop-shadow` at one of the six glow steps); a real friend's aura is part
+of the artwork — its silhouette, blurred and filled in its body colour
+(design-bible §3, §7). So the list's halo rule went with the placeholder it
+dressed, and no new one replaced it. Which step of the §7 scale "full"
+means for the real art is still the open eyeball call it always was.
+
+**Verified in the browser, not only in jsdom.** jsdom paints nothing, so a
+save with twelve friendships across all ten species was seeded into
+localStorage on the dev server and the page opened for real: twelve
+drawings, two stacked SVG layers each, correct canon widths, Kimia's own
+names underneath, the card opening on a click with its animation running,
+and no console errors.
+
 ## T5.4 build notes (part 3) — the other three pages (2026-08-21)
 
 **The frame, and only the frame.** The Map, the Library and the Market

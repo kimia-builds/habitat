@@ -552,13 +552,24 @@ species you meet, the smallest and simplest, and friend 10 the rarest and
 most sophisticated. The numbers are workbench-only; the species key is the
 durable identity and outlives the shelf.
 
-The four screens that draw friends — Guest Book, arrival reveal, cameo,
-Abode — do NOT consult the canon yet, deliberately: they still draw the
-placeholder line-art of T4.4, so there is no archetype there to size. They
-each pick a base size and multiply in the task that swaps the real drawings
-in. (Their COLOUR is already the settled one — the placeholder line-art
-wears the dealt friend colour as of 2026-08-17, so only the shape is still
-standing in.)
+**How a screen picks its base (Kimia, 2026-08-21, T5.3h).** Size up from the
+SMALLEST friend, never down from the biggest: say how big a plip has to be
+before its drawing reads, and let the biggest land wherever the canon puts
+it. A plip is a seventh of a chitu, so choosing from the big end keeps a
+screen's present size and leaves the plip a five-pixel speck — and the plip
+is the friend met most often. `friendCanon.js` does the arithmetic
+(`baseWhereSmallestIs`) so no screen has to.
+
+**Which screens draw the real archetypes.** The Guest Book does, list and
+card, since 2026-08-21 — every friend there is Kimia's drawing at its
+canonical size in its dealt colour, assembled by `src/ui/Friend.jsx`, which
+takes a base and refuses to take a size. The arrival reveal, the cameo, the
+Abode's party and the habit list's arrival row still draw the T4.4
+placeholder line-art; they follow one at a time, and the last two wait for
+the real flora, since a friend standing beside a placeholder plant would
+show the shared friend/flora scale wrongly. (Their COLOUR has been the
+settled one since 2026-08-17 on every screen — the placeholder line-art
+wears the dealt friend colour too, so only the shape is still standing in.)
 
 **THE CANON HOLDS ON THE WORKBENCH TOO (Kimia, 2026-08-17).** "Everywhere
 and always" has no exception for scaffolding. The T5.3e colour shelves were

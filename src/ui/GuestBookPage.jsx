@@ -20,8 +20,25 @@ import { useState } from 'react'
 import { FRIEND_CATEGORIES } from '../game/constants.js'
 import { friendDisplayName } from '../content/names.js'
 import { narrationSlot } from '../content/narration.js'
-import FriendGlyph from './FriendGlyph.jsx'
+import Friend from './Friend.jsx'
+import { baseWhereSmallestIs } from './friendCanon.js'
 import { useText } from './language.jsx'
+
+// HOW MUCH ROOM THE FRIENDS GET HERE (2026-08-21, Kimia's call). A screen
+// picks ONE base — how big the largest friend may be — and the other nine
+// follow from friendCanon.js. Her rule for choosing it is to size up from the
+// SMALLEST friend: say how big a plip has to be before its drawing reads, and
+// let the chitu land wherever the canon puts it. Sizing from the big end
+// instead would have kept today's on-screen sizes and left the plip a
+// five-pixel speck — and the plip is the friend you meet most often.
+//
+// In the LIST a plip is 1.5rem, about the height of a line of text, which
+// makes the largest friends around 10.8rem — so the book reads as a gallery
+// of creatures at true relative size rather than a row of matching icons.
+// On the CARD, where you are looking at one friend on purpose, everyone is
+// half again as big.
+const LIST_BASE_REM = baseWhereSmallestIs(1.5)
+const CARD_BASE_REM = baseWhereSmallestIs(2.25)
 
 // A friend with no name yet (T6.1a: blank slots until Kimia writes
 // them) shows no name on screen — the art carries it. A screen reader
@@ -41,11 +58,13 @@ function FriendCard({ friend, worldSeed, onClose }) {
       aria-label={name ?? t('guestbook.unnamedFriend')}
     >
       <div className="spread-popup friend-card">
-        <FriendGlyph
+        <Friend
           category={friend.category}
           individual={friend.individual}
           worldSeed={worldSeed}
-          className={`reveal-glyph friend-anim-${key}`}
+          base={CARD_BASE_REM}
+          idPrefix="guestbook-card-"
+          className={`friend-anim-${key}`}
         />
         {name && <p className="arrival-caption">{name}</p>}
         {cardText && <p className="friend-card-text">{cardText}</p>}
@@ -77,10 +96,12 @@ function GuestBookPage({ friends, worldSeed, onBack }) {
                   onClick={() => setSelected(friend)}
                   aria-label={name ?? t('guestbook.unnamedFriend')}
                 >
-                  <FriendGlyph
+                  <Friend
                     category={friend.category}
                     individual={friend.individual}
                     worldSeed={worldSeed}
+                    base={LIST_BASE_REM}
+                    idPrefix="guestbook-list-"
                   />
                   {name && <span className="guestbook-name">{name}</span>}
                 </button>

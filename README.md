@@ -120,8 +120,11 @@ built on top of a live, in-use app.
   steps rather than fifteen numbers typed one at a time. The friends have
   their palette too — ten chosen colours, dealt to each friend at random
   when a game begins and never repeating within a species, so two
-  players' guest books look different. Still to come in M5 is the
-  creature, flora and object art itself.
+  players' guest books look different — and since 21 August the guest book
+  shows the creatures themselves: ten hand-drawn species, each at its true
+  size against the others, from a plip the height of a line of text to a
+  chitu seven times across. Still to come in M5 are the friends on the
+  rest of their screens, and the flora and object art.
 - **M6 — under way alongside M5.** Content pools, pacing tune-ups and
   portfolio polish are still ahead, but a good deal of it has shipped
   out of order, as things came up in daily use. The error-boundary

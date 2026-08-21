@@ -1003,7 +1003,11 @@ nothing a non-coder can't follow.
   honour it yet (flora sits at `--glow-faint`, a friend at
   `--glow-resting`) and deliberately won't until T5.3 replaces the
   placeholders with the real drawings — Kimia's call 2026-08-16, restating
-  §7. §7 now carries the step names so that spending is a lookup, not a
+  §7. **A real friend spends none of the scale (T5.3h, 2026-08-21):** its
+  aura is drawn INTO the artwork — the silhouette, blurred and filled in
+  its body colour — so the Guest Book's friends carry no CSS halo at all,
+  and the halo rule went with the placeholder it dressed. The scale still
+  waits on the flora and on the screens still wearing placeholders. §7 now carries the step names so that spending is a lookup, not a
   fresh argument.
 - **The charm colours are canonical here (Kimia's call 2026-07-21).**
   The six colours in §11a currently live in `src/ui/symbols.js` because

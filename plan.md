@@ -191,6 +191,32 @@ tracker. Everything after this is delight, informed by real use.
                   open), the Map marker and the keepsake cutting. Kimia
                   opens this in its own session. No screen may type a
                   landmark size in meanwhile.
+      - [ ] **T5.3h The friends reach the game** _(opened 2026-08-21 on
+            Kimia's call, "launch the friends into production")_ — the ten
+            drawings, their canon sizes and their dealt colours replace the
+            T4.4 placeholder line-art on every screen that shows a friend.
+            One screen at a time, each pushed and judged live before the
+            next is started (the design-slice rule).
+            **How a screen chooses its base (Kimia, 2026-08-21):** size up
+            from the SMALLEST friend — say how big a plip must be before
+            its drawing reads, and let the rest follow from friendCanon.js
+            (`baseWhereSmallestIs`). Sizing from the big end instead keeps
+            today's on-screen sizes and leaves the plip a five-pixel speck,
+            and the plip is the friend you meet most often.
+            - [x] **The Guest Book** _(done 2026-08-21 — the list and the
+                  popup card. `src/ui/Friend.jsx` is now the one component
+                  every screen goes through, and tracedFriends.js became the
+                  permanent roll-call it was always waiting to be. Build
+                  notes in history.md)_
+            - [ ] **The arrival reveal** — the full neon POP moment.
+            - [ ] **The cameo** — the rare home-screen visit.
+            - [ ] **The Abode's party and the arrival row** _(held on
+                  purpose, Kimia's call 2026-08-21: both stand a friend
+                  beside FLORA, and the flora are still placeholder glyphs.
+                  The two families share one size scale by construction, so
+                  real friends among placeholder plants would teach the
+                  wrong proportions. These wait for the task that puts the
+                  real flora on the ground, and go in with them.)_
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

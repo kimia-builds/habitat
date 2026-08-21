@@ -801,6 +801,11 @@ body {
   gap: var(--space-3);
   padding: 0;
   margin: 0;
+  /* The cards in a row line up along their BOTTOM, so the friends in them
+     stand on one ground line (2026-08-21, with the real drawings). At true
+     relative size a chitu is seven plips tall, and a shared floor is what
+     makes that read as a size difference rather than as ragged spacing. */
+  align-items: flex-end;
 }
 
 .guestbook-friend {
@@ -818,12 +823,6 @@ body {
 
 .guestbook-friend:hover {
   border-color: var(--border);
-}
-
-.guestbook-friend .friend-glyph {
-  width: 2.4rem;
-  height: 2.4rem;
-  filter: drop-shadow(0 0 var(--glow-resting) currentColor);
 }
 
 .guestbook-name {
@@ -1225,6 +1224,27 @@ body {
   color: var(--friendship);
 }
 
+/* A REAL FRIEND DRAWING (2026-08-21) — the two stacked svgs every assembled
+   friend ships as: a heavy static body and a featherweight overlay of blinking
+   eyes laid exactly over it (Friend.jsx). The wrapper carries the width and the
+   artwork's own shape; both layers fill it exactly, so the drawing sits in its
+   box with no padding of its own and its canonical size is the size you see.
+   No glow rule here: a friend's aura is part of the drawing. */
+.friend-art {
+  position: relative;
+  display: block;
+}
+
+.friend-art-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The T4.4 placeholder line-art, still worn by the screens the real drawings
+   have not reached yet: the arrival reveal, the cameo, the Abode's party and
+   the arrival row in the habit list. */
 .friend-glyph {
   width: 1.5rem;
   height: 1.5rem;

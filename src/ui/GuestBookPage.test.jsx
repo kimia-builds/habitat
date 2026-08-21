@@ -15,6 +15,7 @@ import {
   setSpeciesName,
 } from '../test/nameFixture.js'
 import GuestBookPage from './GuestBookPage.jsx'
+import { FRIEND_CANON } from './friendCanon.js'
 
 afterEach(cleanup)
 
@@ -192,5 +193,41 @@ describe('the popup card', () => {
     render(<GuestBookPage friends={[]} worldSeed="seed" onBack={onBack} />)
     fireEvent.click(screen.getByRole('button', { name: /back to the habits/ }))
     expect(onBack).toHaveBeenCalled()
+  })
+})
+
+describe('the size canon on the page', () => {
+  // Kimia's rule: the ten hold their proportions everywhere and always. The
+  // Guest Book is the first screen to draw the real archetypes, so this is
+  // where that rule is first checked against a real page rather than against
+  // the component alone.
+  const widthOf = (art) => parseFloat(art.style.width)
+
+  it('draws the cast at true relative size, list and card alike', () => {
+    const { container } = render(
+      <GuestBookPage
+        friends={[friend(0, 1, 'c1'), friend(9, 1, 'c2')]}
+        worldSeed="seed"
+        onBack={() => {}}
+      />,
+    )
+    const [plipArt, hamdiBuloArt] = container.querySelectorAll(
+      '.guestbook-friend .friend-art',
+    )
+    const listRatio = widthOf(plipArt) / widthOf(hamdiBuloArt)
+    expect(listRatio).toBeCloseTo(
+      FRIEND_CANON.plip / FRIEND_CANON['hamdi-bulo'],
+      5,
+    )
+
+    // The card is a bigger base, not a different scale: a plip opened on the
+    // card is larger than in the list, and still the same fraction of its
+    // biggest sibling.
+    fireEvent.click(screen.getByRole('button', { name: plip }))
+    const cardArt = screen
+      .getByRole('dialog', { name: plip })
+      .querySelector('.friend-art')
+    expect(widthOf(cardArt)).toBeGreaterThan(widthOf(plipArt))
+    expect(widthOf(cardArt) / widthOf(plipArt)).toBeCloseTo(2.25 / 1.5, 5)
   })
 })
