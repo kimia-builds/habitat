@@ -191,6 +191,34 @@
   --space-8: 2.5rem; /* 40px — the biggest room we ask for */
 
   /* =========================================================================
+   * THE WORLD-PAGE CANVAS (T5.4, 2026-08-21)
+   * -------------------------------------------------------------------------
+   * How big the picture is on the four gameplay pages — the Abode, the Map,
+   * the Library and the Market. One size for all four, so nothing resizes
+   * under you as you move between them.
+   *
+   * IT NEVER SHRINKS (Kimia's rule, 2026-08-21). A window too narrow to show
+   * the whole thing shows part of it and scrolls sideways; it does not squeeze
+   * the scene down to fit. An abode you have arranged has to stay arranged,
+   * and a scene that resizes with the window is a different scene on every
+   * screen. These are therefore plain PIXELS, not rem: they must not move when
+   * the browser's text size does, because they are the size of a PICTURE.
+   *
+   * These two are MIRRORED in src/ui/worldCanvas.js, which is where the SVG
+   * viewBox and the scene maths read them from; worldCanvas.test.js fails the
+   * suite if the two lists ever drift apart. Change one, change the other.
+   *
+   * The phone gets different numbers in M8 and they are deliberately not here
+   * yet — see worldCanvas.js.
+   * ========================================================================= */
+  --world-canvas-width: 1000px;
+  --world-canvas-height: 600px;
+  /* Room kept clear at each side of the canvas window, so a page wider than
+     the 40rem text column never slides under the fixed left rail (which ends
+     at 48px) and stays symmetric about the centre. */
+  --world-canvas-margin: 3.5rem;
+
+  /* =========================================================================
    * GLOW — the scale (T5.2e, 2026-08-16)
    * -------------------------------------------------------------------------
    * How far light spreads from a glowing thing. Habitat glows constantly —

@@ -3047,6 +3047,103 @@ return 0` right after the era is worked out, so a moment before the
   outcome worse than the bug. Stopping the stream from creating one is
   the whole job; the record stays readable whatever is in it.
 
+- 2026-08-21 (Kimia's call, T5.4): **the four gameplay pages hold one
+  fixed picture, and it never shrinks.** The Map, Abode, Library and
+  Market each get a canvas of **1000 x 600 CSS pixels**; a window too
+  narrow to show all of it shows part of it and scrolls, rather than the
+  scene squeezing down to fit. Her words: "if the window size is smaller,
+  then things get hidden and the user will need to scroll around to find
+  things, rather than for the size to shrink." The reason is the Abode
+  specifically — it is a place you ARRANGE, and until today its ground
+  was a 240-unit drawing stretched to whatever width the 40rem text
+  column offered, so the same abode was a different shape on every screen
+  and dragging the window narrower quietly rearranged everything you had
+  put down. An arrangement is only yours if it stays put. The other three
+  take the same size so that nothing resizes under you as you cross
+  between them, but only the FRAME is shared: each page still draws its
+  own shape inside it.
+
+- 2026-08-21 (Kimia's call, T5.4): **the phone's canvas is a different
+  size, and it is deliberately not decided.** M8's phone shell settles it
+  by eye on a real phone. 1000 x 600 shrunk to fit a portrait phone would
+  be a postage stamp, and shown at full size would be almost entirely
+  off-screen, so the desktop number is no starting point at all. Recorded
+  now so that it is not quietly invented later — the same discipline
+  floraCanon.js keeps about the landmark size class, and `worldCanvas.js`
+  carries a test that fails if a phone size appears in it.
+
+## T5.4 build notes — the Abode's canvas (2026-08-21)
+
+**What it replaces.** `AbodePage` drew its ground as an SVG with
+`viewBox="0 0 240 160"` and `width: 100%`, so the scene was 240 arbitrary
+units stretched across whatever the text column gave it — about 574px on
+a laptop, more on a monitor, less in a narrow window. Item places are
+stored as FRACTIONS of the scene (`game/abode.js`), so nothing was lost
+when the width changed, but everything moved: the gap between two flora,
+the distance from an edge, the whole composition. For a page whose entire
+point is that you arranged it, that is a bug wearing a layout's clothes.
+
+**What it is now.** One shared canvas, `1000 x 600` and fixed, with
+**one unit equal to one pixel** — the viewBox and the CSS box are the
+same numbers, so a coordinate in the scene lands on the pixel of that
+name. The numbers live in `src/tokens.css` (`--world-canvas-width` /
+`-height`, in px rather than rem on purpose: a picture must not resize
+when the reader's text size does) and are mirrored in the new
+`src/ui/worldCanvas.js` for the viewBox and the scene maths, because a
+module cannot read a CSS custom property. `worldCanvas.test.js` fails the
+suite if the two ever drift — the same guard tokens.test.js keeps over
+the symbols.js colour mirror, and for the same reason: two copies of one
+number drift silently, and a scene drawn 1000 wide in a box CSS quietly
+made 900 does not look broken, it just stretches, and every arrangement
+in it is a little wrong for ever after.
+
+**Three things had to give way for a fixed size to actually stay fixed:**
+
+1. **Flexbox squashes by default.** `.page-box` is a flex column, so the
+   canvas — a flex item wider than its container — would have been
+   shrunk to fit and the whole rule silently undone. `flex-shrink: 0` on
+   `.world-canvas` is load-bearing, not decoration.
+2. **`.app` is 40rem, and 1000px is not going to fit in 640.** The Abode
+   therefore breaks out of the text column using the same width +
+   symmetric-negative-margin trick §11f's lens row uses, so it stays dead
+   centre. Only `.abode` is on that list so far: a page widened before it
+   has a canvas inside it is just a bigger empty box.
+3. **The left rail is fixed at the window's edge.** A page allowed to
+   grow to `100vw` would slide underneath it, so `--world-canvas-margin`
+   (3.5rem) keeps a clear column at both sides. Verified at 800px: the
+   page starts at x=56 and the rail ends at 48.
+
+**The window that scrolls.** The canvas sits inside
+`.world-canvas-window`, which is `overflow-x: auto` and stretches to the
+page. Sideways only — vertical is left to the page's own scroll, because
+a second vertical scrollbar nested inside the first is a maze rather than
+a feature. Verified in the browser pane: at a 1280px window the canvas is
+1000 x 600 with no scrolling anywhere and the page centred with 123px
+each side; at 800px the canvas is still exactly 1000 x 600, the window is
+654px and scrollable, and the document itself still does not scroll
+sideways. The size is the same number in both — which is the entire
+claim the task makes.
+
+**The placeholders were scaled, on purpose, by 2.4.** Everything on the
+ground is still a stand-in until the T5.3 art pass, and every one of
+those sizes was written for the old 240-unit scene. Left alone they would
+have become 2.4x smaller relative to their surroundings; multiplied
+through, they keep the ON-SCREEN size they had before, so the visible
+change is the GROUND getting bigger rather than the whole picture
+zooming in and leaving no more room than before. `OLD_SCENE_SCALE` in
+AbodePage says so out loud, and the comment above it says all three
+numbers leave together when the real art arrives and takes its sizes
+from friendCanon.js / floraCanon.js. The held item's two lines of text
+went the same way: 7px and 6px in a scene rendered 2.4x larger were
+always ~17px and ~14px on screen, so they now simply say 17px and 14px —
+the numbers stopped lying when the scene became 1:1.
+
+**Not in this slice:** the nebula sky behind the ground, and the same
+canvas on the Map, the Library and the Market. Both are the remaining
+T5.4 sub-tasks. The ground is still transparent, so the app's starfield
+shows through it exactly as it did before — that is what the sky slice
+replaces.
+
 ## T6.1b build notes — the roster runs out (2026-08-21)
 
 **What was wrong.** Each friend species has a fixed roster — 10 plips,

@@ -453,6 +453,19 @@ region discovery expands what the Market can offer.
   dates. Titled **readers library**.
 - **Market** (via fungus meter or the rail): the rotating stall; buy and
   return objects. Titled **local market**.
+- **The four gameplay pages are one fixed size (T5.4, 2026-08-21):**
+  the **Map, Abode, Library and Market** — the pages you visit to look at
+  what you have — each hold a picture frame of **1000 x 600 CSS pixels**,
+  and that frame **never shrinks to fit the window**. A window too narrow
+  to show all of it shows part of it and scrolls sideways. Kimia's reason
+  is the Abode: it is a place you ARRANGE, and a ground that resized with
+  the browser put your flora in a different spot on every screen. The
+  other three share the size so nothing resizes under you as you move
+  between them; each still draws its own shape inside the frame (the
+  Map's planet stays round, the Market's stall stays a row). Layout in
+  design-notes §13e. **The phone's canvas is a different size and is
+  deliberately not decided yet** — M8 settles it by eye on a real phone
+  (§the phone, below); nothing may invent one meanwhile.
 - **Abode** (via the rail): open ground under sky (T4.3) — gathered
   flora and (since T4.3b) purchased objects freely draggable anywhere
   on the scene, each place remembered; a click holds an item, showing

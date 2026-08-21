@@ -1,6 +1,7 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import AbodePage from './AbodePage.jsx'
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from './worldCanvas.js'
 
 afterEach(cleanup)
 
@@ -412,5 +413,28 @@ describe('party mode (T4.4)', () => {
     fireEvent.pointerMove(window, { clientX: 180, clientY: 80 })
     fireEvent.pointerUp(window, { clientX: 180, clientY: 80 })
     expect(spies.onMove).toHaveBeenCalledWith('c1', { x: 0.75, y: 0.5 })
+  })
+})
+
+describe('the ground is a fixed canvas you scroll around (T5.4)', () => {
+  it('draws the scene at the shared world-page size, not a stretched one', () => {
+    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
+    const ground = screen.getByRole('group', { name: 'the ground' })
+    // The viewBox is the canvas exactly, so one unit is one pixel — the
+    // thing every position in the scene depends on.
+    expect(ground.getAttribute('viewBox')).toBe(
+      `0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`,
+    )
+    // And it wears the shared class the stylesheet sizes and refuses to
+    // let flexbox squash (index.css, .world-canvas).
+    expect(ground.classList.contains('world-canvas')).toBe(true)
+  })
+
+  it('sits inside a window, so a narrow screen scrolls instead of shrinking', () => {
+    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
+    const ground = screen.getByRole('group', { name: 'the ground' })
+    expect(ground.parentElement.classList.contains('world-canvas-window')).toBe(
+      true,
+    )
   })
 })

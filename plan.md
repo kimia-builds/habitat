@@ -191,6 +191,36 @@ tracker. Everything after this is delight, informed by real use.
                   opens this in its own session. No screen may type a
                   landmark size in meanwhile.
 
+- [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
+      call)_ — the Abode, the Map, the Library and the Market are the four
+      places you go to LOOK at what you have, and they are now one fixed
+      size: **1000 x 600 CSS pixels, which never shrinks**. A window too
+      narrow to hold it shows part of it and scrolls; it does not squeeze
+      the scene down. Her reason is the Abode: it is a place you ARRANGE,
+      and an arrangement is only yours if it stays put — a ground that
+      resized with the browser put your flora somewhere different on every
+      screen. The other three take the same size so nothing resizes under
+      you as you move between them; each still draws its own shape inside
+      that frame (the Map's planet stays round, the Market's stall stays a
+      row). Numbers in `src/tokens.css`, mirrored for the SVG viewBox in
+      `src/ui/worldCanvas.js` and guarded by `worldCanvas.test.js`.
+      **The phone gets DIFFERENT numbers and they are deliberately unset**
+      (her call, same day) — M8 decides them by eye on a real phone, and
+      nothing may invent one meanwhile, the same discipline floraCanon.js
+      keeps about the landmark class. Recorded in spec §5b and
+      design-notes §13e.
+      - [x] **The Abode's ground** _(done 2026-08-21 — the canvas, the
+            window that scrolls around it, and the page breaking out of
+            the 40rem text column. Build notes in history.md)_
+      - [ ] **The nebula sky behind it** — the four `AbodeSky` palettes
+            (design-bible §11a, on the workbench since 2026-07-24) become
+            the Abode's background: **opaque**, with everything on the
+            ground sitting cleanly on top, and Kimia able to flip between
+            the four while she arranges. The choice is remembered, so it
+            is a storage change too.
+      - [ ] **The other three pages** — the Map, the Library and the
+            Market take the same canvas.
+
 ## M6 — Hardening & content (ongoing)
 
 - [ ] **T6.1 Content pools** — write/name the actual flora, market

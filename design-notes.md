@@ -1669,7 +1669,7 @@ Soundless, as ever.
 
 ---
 
-## 13. Layout & atmosphere — the M5 layout pass **[§13a, §13b, §13c BUILT (T5.2d, 2026-08-12) · §13d BUILT (T5.2e, 2026-08-13)]**
+## 13. Layout & atmosphere — the M5 layout pass **[§13a, §13b, §13c BUILT (T5.2d, 2026-08-12) · §13d BUILT (T5.2e, 2026-08-13) · §13e BUILT for the Abode (T5.4, 2026-08-21)]**
 
 _Kimia's M5 layout spec, merged 2026-07-21. Net-new structural pieces
 for this design pass; they sit on top of the home screen §12 already
@@ -1879,6 +1879,61 @@ time; the workbench swatch on the design page is where she looked. That
 swatch came down on 2026-08-17 — the planet has played on the real
 startup screen since 2026-08-12, so the workbench had nothing left to
 show that the app itself does not (spec §5b: the page is a waiting room).
+
+### 13e. The gameplay-page canvas **[Abode BUILT — T5.4, 2026-08-21]**
+
+Four pages are places you go to LOOK at what you have rather than to
+mark a habit done: the **Abode, the Map, the Library and the Market**.
+Since 2026-08-21 all four hold the same picture frame — **1000 x 600 CSS
+pixels** — and that frame **never shrinks**.
+
+**Kimia's rule, in her words (2026-08-21):** "if the window size is
+smaller, then things get hidden and the user will need to scroll around
+to find things, rather than for the size to shrink."
+
+**Why it is a rule and not a preference.** The Abode is a place you
+_arrange_: flora and objects are dragged where you want them and their
+places are remembered. Before this, the ground was a 240-unit drawing
+stretched to whatever width the 40rem text column happened to offer, so
+the same abode was a different shape on every screen — a flora you put
+by the left edge on a monitor sat somewhere else on a laptop, and a
+window dragged narrower quietly rearranged everything you had done. An
+arrangement is only yours if it stays put. A fixed canvas is what makes
+that true, and scrolling is the price: the same bargain a paper map
+makes.
+
+**One unit is one pixel.** The SVG viewBox is `0 0 1000 600` and the CSS
+box is 1000px x 600px, so a position in the scene lands on the pixel of
+the same name and nothing has to be converted. They are PIXELS, not rem,
+deliberately: this is the size of a picture, and it must not move when
+the browser's text size does.
+
+**The other three take the same size** so that nothing resizes under you
+as you cross between them — but only the frame is shared. Each page
+still draws whatever shape it likes inside it: the Map's planet stays
+round in the middle of the frame, the Market's stall stays a row.
+
+**How it sits on the page.** 1000px does not fit inside `.app`'s 40rem,
+so these are the pages that break out of the text column — the same
+negative-margin trick §11f's lens row uses, so they stay dead centre.
+The canvas lives inside a **window** that scrolls sideways; up and down
+is left to the page's own scroll, because a second vertical scrollbar
+nested inside the first is a maze rather than a feature.
+`--world-canvas-margin` keeps the fixed left rail's column clear at both
+sides at every width the app runs at, so the scene never slides
+underneath it.
+
+**Where the numbers live.** `--world-canvas-width` / `-height` in
+tokens.css (the stylesheet sizes the box), mirrored as plain numbers in
+`src/ui/worldCanvas.js` (the viewBox and the scene maths can read those)
+— a mirror in the exact sense symbols.js is one, and guarded the same
+way: `worldCanvas.test.js` fails the suite if the two ever disagree.
+
+**The phone gets different numbers, and they are not set** (Kimia,
+2026-08-21). M8's phone shell (§14) will have its own canvas dimensions
+decided by eye on a real phone — not this one scaled down, which would
+be a postage stamp in portrait. Nothing may invent a phone size in the
+meantime; `worldCanvas.js` holds none, and its test says so.
 
 ## 14. The phone — limited on purpose **[TO-BUILD · M8]**
 

@@ -543,14 +543,61 @@ body {
   cursor: default;
 }
 
+/* THE WORLD-PAGE CANVAS (T5.4, 2026-08-21) — the fixed picture the four
+   gameplay pages share, and the window you look at it through.
+
+   The canvas is 1000 x 600 CSS pixels and STAYS 1000 x 600 (Kimia's rule,
+   2026-08-21): a window too narrow to hold it shows part of it and scrolls
+   sideways rather than squeezing the scene down. An abode you have arranged
+   has to stay arranged, and a scene that resizes with the browser is a
+   different scene on every screen — a flora by the left edge on a monitor
+   would sit somewhere else on a laptop. The numbers live in tokens.css and
+   are mirrored in src/ui/worldCanvas.js, which the SVG viewBox reads.
+
+   `flex-shrink: 0` is not decoration: .page-box is a flex column, and a flex
+   item is squashed by default when its container is narrower than it is,
+   which would undo the whole rule silently. */
+.world-canvas {
+  display: block;
+  flex-shrink: 0;
+  width: var(--world-canvas-width);
+  height: var(--world-canvas-height);
+}
+
+/* The window onto it. Sideways only — the page's own scroll takes care of
+   up and down, and a second vertical scrollbar nested inside the first is a
+   maze rather than a feature. */
+.world-canvas-window {
+  align-self: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* THE ONE PLACE A PAGE IS WIDER THAN THE TEXT COLUMN. `.app` is 40rem, and
+   a 1000px canvas is not going to fit inside 640px. The four gameplay pages
+   therefore break out of the column the same way the lens row does — a width
+   of their own and symmetric negative margins, so they stay dead centre —
+   while every other page is left exactly as it was.
+
+   The `min()` is what keeps it honest at small windows: the WINDOW narrows
+   (and starts scrolling), the CANVAS never does. --world-canvas-margin holds
+   the left rail's fixed column clear at both sides so the scene never slides
+   underneath it. */
+/* Only the Abode so far — the Map, the Library and the Market join this
+   list as each one gets its canvas. A page widened before it has a canvas
+   inside it is just a bigger empty box. */
+.abode {
+  --world-page-width: min(
+    calc(var(--world-canvas-width) + var(--space-4) * 2 + 2px),
+    calc(100vw - var(--world-canvas-margin) * 2)
+  );
+  width: var(--world-page-width);
+  margin-inline: calc((100% - var(--world-page-width)) / 2);
+}
+
 /* T4.3: the Abode proper — open ground under sky, quiet like the
    bookshelf: the scene never changes, only the flora move. The
    waiting-to-decide list keeps the T3.3 row styles below. */
-.abode-ground-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
 
 .abode-soil {
   fill: var(--wash-soil);
@@ -580,9 +627,13 @@ body {
   filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 
+/* The held item's words. These used to be 7px and 6px in a 240-unit
+   drawing that rendered about 2.4x larger than it was written, so what
+   reached the screen was ~17px and ~14px. Since T5.4 the scene is 1:1
+   with pixels, so the numbers say out loud what they always drew. */
 .abode-flora-name {
   fill: var(--text);
-  font-size: 7px;
+  font-size: 17px;
   text-anchor: middle;
 }
 
@@ -592,7 +643,7 @@ body {
   cursor: pointer;
   outline: none;
   fill: var(--text-quiet);
-  font-size: 6px;
+  font-size: 14px;
   text-anchor: middle;
   text-decoration: underline;
 }

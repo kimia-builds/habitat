@@ -41,26 +41,59 @@ import DropGlyph from './DropGlyph.jsx'
 import FriendGlyph from './FriendGlyph.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
 import { useText } from './language.jsx'
+import { CANVAS_HEIGHT, CANVAS_VIEWBOX, CANVAS_WIDTH } from './worldCanvas.js'
 
-// The drawing frame. The ground is constant — it never grows or
-// reshapes; crowding is solved by Kimia's own arranging (the bookshelf
+// The drawing frame (T5.4, 2026-08-21): the shared world-page canvas,
+// a fixed 1000 × 600 pixels that never shrinks to fit a window — see
+// worldCanvas.js for why, and index.css for the window that scrolls
+// around it. The ground is constant — it never grows or reshapes;
+// crowding is solved by Kimia's own arranging (the bookshelf
 // precedent). The horizon sits at the fraction game/abode.js exports,
 // so default spots land on the ground below it.
-const WIDTH = 240
-const HEIGHT = 160
+//
+// One unit here is one pixel, which it was not before: the ground used
+// to be a 240-unit drawing stretched to fill the text column.
+const WIDTH = CANVAS_WIDTH
+const HEIGHT = CANVAS_HEIGHT
 const HORIZON_Y = HEIGHT * HORIZON
+
+// EVERY SIZE BELOW IS A STAND-IN, AND ALL OF THEM LEAVE TOGETHER. The
+// flora, curiosities and friends on this ground are placeholder glyphs
+// until the T5.3 art pass; when the real drawings land they take their
+// sizes from friendCanon.js / floraCanon.js against one base size this
+// screen chooses, and these three numbers go with the glyphs.
+//
+// Until then they keep the ON-SCREEN size they had before the canvas
+// grew — the old 240-unit scene rendered about 574px wide, so a unit
+// there was 2.4 pixels here. That is deliberate: the visible change is
+// the GROUND getting bigger, which is the point of the canvas, rather
+// than the whole picture zooming in and leaving no more room than
+// before. The three keep their proportions to each other exactly.
+const OLD_SCENE_SCALE = 2.4
 
 // A standing item — flora sprig or curiosity; held, it grows a touch
 // to show it's in hand.
-const FLORA_SIZE = 20
-const HELD_SIZE = 26
+const FLORA_SIZE = 20 * OLD_SCENE_SCALE // 48px
+const HELD_SIZE = 26 * OLD_SCENE_SCALE // 62.4px
 
 // A press becomes a drag once the pointer travels this many pixels;
-// anything shorter is a click (hold ↔ settle back).
+// anything shorter is a click (hold ↔ settle back). A real screen
+// pixel, unrelated to the scene's units — it measures a finger, not a
+// drawing — though since T5.4 the two happen to be the same thing.
 const DRAG_THRESHOLD_PX = 4
 
 // A visiting friend in party mode: a little larger than a flora.
-const PARTY_FRIEND_SIZE = 22
+const PARTY_FRIEND_SIZE = 22 * OLD_SCENE_SCALE // 52.8px
+
+// The held item's label and its way back to the world, stacked above
+// it: how far in from an edge the centred text has to stay to remain
+// readable, how far the name sits above the item, and the gap down to
+// the compost / sell line. Scaled with everything else above, so the
+// words are the same size on screen as they were.
+const LABEL_EDGE_INSET = 26 * OLD_SCENE_SCALE
+const LABEL_LIFT = 7 * OLD_SCENE_SCALE
+const LABEL_CEILING = 8 * OLD_SCENE_SCALE
+const LABEL_LINE_GAP = 9 * OLD_SCENE_SCALE
 
 // The randomised formation (spec §5b): friends scattered across the
 // ground half of the scene. Deliberately UNseeded — a refresh (or a
@@ -320,135 +353,148 @@ function AbodePage({
           </>
         )}
 
-        <svg
-          ref={svgRef}
-          className="abode-ground-svg"
-          viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-          role="group"
-          aria-label={t('abode.ground')}
-          onPointerDown={() => setHeldId(null)}
-        >
-          {/* The constant scene: sky above, ground below the horizon. */}
-          <rect
-            className="abode-soil"
-            x="0"
-            y={HORIZON_Y}
-            width={WIDTH}
-            height={HEIGHT - HORIZON_Y}
-          />
-          <line
-            className="abode-horizon"
-            x1="0"
-            y1={HORIZON_Y}
-            x2={WIDTH}
-            y2={HORIZON_Y}
-          />
-          {ordered.map((item) => {
-            const isObject = item.kind === 'object'
-            const name = isObject ? t('abode.curiosity') : t('abode.floraFind')
-            const isHeld = item.id === heldId
-            const size = isHeld ? HELD_SIZE : FLORA_SIZE
-            const place = placeOf(item)
-            const cx = place.x * WIDTH
-            const base = place.y * HEIGHT
-            // The held item's name and its quiet way back stack above it,
-            // clamped so they stay readable at the scene's edges.
-            const textX = Math.min(WIDTH - 26, Math.max(26, cx))
-            const nameY = Math.max(8, base - size - 7)
-            const glyphClass = isHeld
-              ? 'abode-flora-glyph held'
-              : 'abode-flora-glyph'
-            return (
-              <g key={item.id} className="abode-flora">
-                <g
-                  role="button"
-                  tabIndex={0}
-                  aria-label={name}
-                  aria-pressed={isHeld}
-                  className="abode-flora-hold"
-                  onPointerDown={(event) => handlePointerDown(item, event)}
-                  onKeyDown={(event) => handleKeyDown(item, event)}
-                >
-                  {isObject ? (
-                    <ObjectGlyph
-                      objectKey={item.objectKey}
-                      worldSeed={worldSeed}
-                      className={glyphClass}
-                      x={cx - size / 2}
-                      y={base - size}
-                      width={size}
-                      height={size}
-                    />
-                  ) : (
-                    <DropGlyph
-                      kind="flora"
-                      className={glyphClass}
-                      x={cx - size / 2}
-                      y={base - size}
-                      width={size}
-                      height={size}
-                    />
-                  )}
-                </g>
-                {isHeld && (
-                  <>
-                    <text className="abode-flora-name" x={textX} y={nameY}>
-                      {name}
-                    </text>
-                    <text
-                      className="abode-compost"
-                      role="button"
-                      tabIndex={0}
-                      aria-label={
-                        isObject ? t('abode.sell') : t('abode.compost')
-                      }
-                      x={textX}
-                      y={nameY + 9}
-                      onPointerDown={(event) => event.stopPropagation()}
-                      onClick={() => {
-                        if (isObject) handleSell(item)
-                        else handleCompost(item)
-                      }}
-                      onKeyDown={(event) => {
-                        if (event.key !== 'Enter' && event.key !== ' ') return
-                        event.preventDefault()
-                        if (isObject) handleSell(item)
-                        else handleCompost(item)
-                      }}
-                    >
-                      {isObject ? t('abode.sell') : t('abode.compost')}
-                    </text>
-                  </>
-                )}
-              </g>
-            )
-          })}
-          {/* Party mode: the friends, simply present among the flora —
-            not draggable, not performing, never stored. */}
-          {party &&
-            formation.map(({ friend, x, y }) => {
-              const cx = x * WIDTH
-              const base = y * HEIGHT
+        {/* THE WINDOW ONTO THE GROUND (T5.4). The canvas inside is a
+          fixed 1000 x 600 and never shrinks, so on a narrow screen this
+          box is the part of it you can see and you scroll sideways to
+          reach the rest — Kimia's rule, 2026-08-21. Vertical is left to
+          the page's own scroll rather than nested here: two scrollbars
+          inside one another is a maze, and the page already scrolls. */}
+        <div className="world-canvas-window">
+          <svg
+            ref={svgRef}
+            className="abode-ground-svg world-canvas"
+            viewBox={CANVAS_VIEWBOX}
+            role="group"
+            aria-label={t('abode.ground')}
+            onPointerDown={() => setHeldId(null)}
+          >
+            {/* The constant scene: sky above, ground below the horizon. */}
+            <rect
+              className="abode-soil"
+              x="0"
+              y={HORIZON_Y}
+              width={WIDTH}
+              height={HEIGHT - HORIZON_Y}
+            />
+            <line
+              className="abode-horizon"
+              x1="0"
+              y1={HORIZON_Y}
+              x2={WIDTH}
+              y2={HORIZON_Y}
+            />
+            {ordered.map((item) => {
+              const isObject = item.kind === 'object'
+              const name = isObject
+                ? t('abode.curiosity')
+                : t('abode.floraFind')
+              const isHeld = item.id === heldId
+              const size = isHeld ? HELD_SIZE : FLORA_SIZE
+              const place = placeOf(item)
+              const cx = place.x * WIDTH
+              const base = place.y * HEIGHT
+              // The held item's name and its quiet way back stack above it,
+              // clamped so they stay readable at the scene's edges.
+              const textX = Math.min(
+                WIDTH - LABEL_EDGE_INSET,
+                Math.max(LABEL_EDGE_INSET, cx),
+              )
+              const nameY = Math.max(LABEL_CEILING, base - size - LABEL_LIFT)
+              const glyphClass = isHeld
+                ? 'abode-flora-glyph held'
+                : 'abode-flora-glyph'
               return (
-                <g
-                  key={friend.completionId}
-                  className="abode-party-friend"
-                  role="img"
-                  aria-label={t('abode.visitingFriend')}
-                >
-                  <FriendGlyph
-                    category={friend.category}
-                    individual={friend.individual}
-                    worldSeed={worldSeed}
-                    x={cx - PARTY_FRIEND_SIZE / 2}
-                    y={base - PARTY_FRIEND_SIZE}
-                    width={PARTY_FRIEND_SIZE}
-                    height={PARTY_FRIEND_SIZE}
-                  />
+                <g key={item.id} className="abode-flora">
+                  <g
+                    role="button"
+                    tabIndex={0}
+                    aria-label={name}
+                    aria-pressed={isHeld}
+                    className="abode-flora-hold"
+                    onPointerDown={(event) => handlePointerDown(item, event)}
+                    onKeyDown={(event) => handleKeyDown(item, event)}
+                  >
+                    {isObject ? (
+                      <ObjectGlyph
+                        objectKey={item.objectKey}
+                        worldSeed={worldSeed}
+                        className={glyphClass}
+                        x={cx - size / 2}
+                        y={base - size}
+                        width={size}
+                        height={size}
+                      />
+                    ) : (
+                      <DropGlyph
+                        kind="flora"
+                        className={glyphClass}
+                        x={cx - size / 2}
+                        y={base - size}
+                        width={size}
+                        height={size}
+                      />
+                    )}
+                  </g>
+                  {isHeld && (
+                    <>
+                      <text className="abode-flora-name" x={textX} y={nameY}>
+                        {name}
+                      </text>
+                      <text
+                        className="abode-compost"
+                        role="button"
+                        tabIndex={0}
+                        aria-label={
+                          isObject ? t('abode.sell') : t('abode.compost')
+                        }
+                        x={textX}
+                        y={nameY + LABEL_LINE_GAP}
+                        onPointerDown={(event) => event.stopPropagation()}
+                        onClick={() => {
+                          if (isObject) handleSell(item)
+                          else handleCompost(item)
+                        }}
+                        onKeyDown={(event) => {
+                          if (event.key !== 'Enter' && event.key !== ' ') return
+                          event.preventDefault()
+                          if (isObject) handleSell(item)
+                          else handleCompost(item)
+                        }}
+                      >
+                        {isObject ? t('abode.sell') : t('abode.compost')}
+                      </text>
+                    </>
+                  )}
                 </g>
               )
             })}
-        </svg>
+            {/* Party mode: the friends, simply present among the flora —
+            not draggable, not performing, never stored. */}
+            {party &&
+              formation.map(({ friend, x, y }) => {
+                const cx = x * WIDTH
+                const base = y * HEIGHT
+                return (
+                  <g
+                    key={friend.completionId}
+                    className="abode-party-friend"
+                    role="img"
+                    aria-label={t('abode.visitingFriend')}
+                  >
+                    <FriendGlyph
+                      category={friend.category}
+                      individual={friend.individual}
+                      worldSeed={worldSeed}
+                      x={cx - PARTY_FRIEND_SIZE / 2}
+                      y={base - PARTY_FRIEND_SIZE}
+                      width={PARTY_FRIEND_SIZE}
+                      height={PARTY_FRIEND_SIZE}
+                    />
+                  </g>
+                )
+              })}
+          </svg>
+        </div>
 
         <button className="pebble" onClick={onBack}>
           ← back to the habits
