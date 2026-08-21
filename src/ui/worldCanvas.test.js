@@ -15,6 +15,8 @@ import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
+import { ABODE_SKIES } from '../game/abode.js'
+import { SKY_TOKENS } from './sky.jsx'
 import { CANVAS_HEIGHT, CANVAS_VIEWBOX, CANVAS_WIDTH } from './worldCanvas.js'
 
 const tokens = readFileSync(join(process.cwd(), 'src', 'tokens.css'), 'utf8')
@@ -50,5 +52,23 @@ describe('the world-page canvas (T5.4)', () => {
       'utf8',
     ).replace(/\/\*[\s\S]*?\*\//g, '')
     expect(source).not.toMatch(/phone|mobile/i)
+  })
+})
+
+// The Abode's four skies are one roster (game/abode.js) wearing paint kept
+// beside the drawing (sky.jsx, per design-notes §11d). One list, so they
+// cannot drift — but a palette could still be deleted or misspelled, and a
+// sky with no paint renders as the fallback without complaining.
+describe("the Abode's four skies (T5.4)", () => {
+  it('gives every sky in the roster its own paint', () => {
+    const painted = Object.keys(SKY_TOKENS.abodePalettes)
+    expect(painted.slice().sort()).toEqual(ABODE_SKIES.slice().sort())
+  })
+
+  it('paints each sky with a full set of six colours', () => {
+    for (const sky of ABODE_SKIES) {
+      // [baseTop, baseBot, nebulaA, nebulaB, nebulaC, cloud]
+      expect(SKY_TOKENS.abodePalettes[sky]).toHaveLength(6)
+    }
   })
 })

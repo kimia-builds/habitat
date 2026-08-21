@@ -111,9 +111,10 @@ tracker. Everything after this is delight, informed by real use.
       went as scheduled: the night sky's three ground colours moved into
       tokens.css when §13c mounted NightSky as the app background
       (2026-08-12), and sky.jsx says so where they used to sit.
-      **Still to come:** AbodeSky on the real Abode screen (it is still
-      workbench-only), and the actual friend / flora / fungi / object /
-      region art that composes from these._
+      **AbodeSky reached the real Abode screen on 2026-08-21** under T5.4,
+      and its workbench shelf came down with it. **Still to come here:** the
+      actual friend / flora / fungi / object / region art that composes
+      from these._
       **Glow, when the art lands (design-bible §7, restated by Kimia
       2026-08-16):** the organic things — flora, fungi, friends — take the
       TOP of the glow scale, equally; publications glow less, curiosities
@@ -212,12 +213,13 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **The Abode's ground** _(done 2026-08-21 — the canvas, the
             window that scrolls around it, and the page breaking out of
             the 40rem text column. Build notes in history.md)_
-      - [ ] **The nebula sky behind it** — the four `AbodeSky` palettes
-            (design-bible §11a, on the workbench since 2026-07-24) become
-            the Abode's background: **opaque**, with everything on the
-            ground sitting cleanly on top, and Kimia able to flip between
-            the four while she arranges. The choice is remembered, so it
-            is a storage change too.
+      - [x] **The nebula sky behind it** _(done 2026-08-21 — the four
+            `AbodeSky` palettes are the Abode's background, opaque and edge
+            to edge; the soil and horizon line are gone on Kimia's call;
+            the chooser sits beside the quiet / party toggle and the choice
+            is remembered in storage v12. The workbench's sky shelf came
+            down with it, its question answered. Build notes in
+            history.md)_
       - [ ] **The other three pages** — the Map, the Library and the
             Market take the same canvas.
 

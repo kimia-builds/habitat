@@ -43,7 +43,6 @@
 // been given a sky yet.
 
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
-import { AbodeSky, ABODE_PALETTES } from './sky.jsx'
 
 // The §8 texture families still waiting to be judged, in the order the
 // design bible lists them, so the workbench reads like the catalogue.
@@ -132,20 +131,11 @@ function DesignPage({ onBack }) {
         </section>
       ))}
 
-      {/* The abode sky (T5.3, design-bible §11a), in all four palettes.
-          It lands here first for the eyeball pass before it dresses the
-          real Abode screen. */}
-      <section className="design-family" aria-label="abode sky">
-        <h3>abode sky</h3>
-        <ul className="sky-swatches">
-          {ABODE_PALETTES.map((palette) => (
-            <li key={palette} className="sky-swatch abode-sky-swatch">
-              <AbodeSky palette={palette} />
-              <span className="sky-swatch-name">{palette}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* The abode-sky shelf came down on 2026-08-21 (T5.4). Its question
+          — do these four palettes work? — was answered by putting them on
+          the real Abode as its four background choices, and this page is a
+          waiting room, not a gallery (spec §5b): a settled asset left here
+          is another screenful between Kimia and the one she came to see. */}
 
       <button className="pebble" onClick={onBack}>
         ← back to the habits

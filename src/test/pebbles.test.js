@@ -69,6 +69,9 @@ const NOT_PEBBLES = {
   // pebble does a thing and settles.
   'zoom-button': 'a graph zoom — a toggle set, with a pressed state',
   'abode-mode-switch': 'party mode — a switch, not an action',
+  'abode-sky-swatch':
+    "one of the Abode's four skies — the sky IS the button, and the four " +
+    'are one radio group answering one question, never four actions',
   // The one moment Habitat is allowed to shout (design-notes §5): this
   // button belongs to the reveal and wears its neon, not the chrome's.
   'reveal-button': 'dismisses a first-occurrence reveal or friend arrival',

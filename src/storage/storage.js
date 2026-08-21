@@ -3,7 +3,7 @@
 // single key, wrapped in a versioned envelope:
 //
 //   {
-//     schemaVersion: 11,
+//     schemaVersion: 12,
 //     habits:      [...],   // since v2 each carries scheduleHistory
 //                           // and archivedAt — see game/habits.js
 //     completions: [...],   // see game/completions.js — since v3 each
@@ -14,6 +14,8 @@
 //     settings:    { dayCutoffHour: 3,
 //                    language: 'en',          // which language the
 //                              // interface speaks — added in T6.13
+//                    abodeSky: 'ember',       // which of the four nebula
+//                              // skies the Abode wears — added in T5.4
 //                    fieldNotesShownOn: null,  // the last Sunday the
 //                              // field notes auto-opened — added in T2.3
 //                    startupShownOn: null,     // the last Habitat day
@@ -47,6 +49,12 @@
 //                              // — see game/market.js, added in T4.3b
 //   }
 //
+// Since v12 (T5.4) settings carry `abodeSky` — which of the four nebula
+// skies (game/abode.js's ABODE_SKIES) the Abode's background wears.
+// Kimia flips between them while she arranges, so it is a SETTING and not
+// a piece of the world: it rides in the envelope and travels in backups,
+// and restoring a backup restores the sky it was taken under.
+//
 // Since v11 (T6.13) settings carry `language` — 'en' or 'fa', which
 // interface language Habitat is speaking. It rides INSIDE the envelope,
 // and so travels in backups: restoring a backup restores the language
@@ -62,7 +70,11 @@
 // backups — upgradeData below does exactly that for v1.
 
 import { DEFAULT_LANGUAGE, isLanguage } from '../content/ui.js'
-import { validateAbodeLayout } from '../game/abode.js'
+import {
+  DEFAULT_ABODE_SKY,
+  isAbodeSky,
+  validateAbodeLayout,
+} from '../game/abode.js'
 import { validateCompletion } from '../game/completions.js'
 import { DEFAULT_DAY_CUTOFF_HOUR, SYMBOL_COUNT } from '../game/constants.js'
 import { validateBookcaseLayout } from '../game/bookcase.js'
@@ -79,7 +91,7 @@ const STORAGE_KEY = 'habitat-data'
 // Exported so tests can assert "the upgrade chain reaches the CURRENT
 // version" rather than hard-coding a number that has to be edited in
 // nine places on every schema bump.
-export const SCHEMA_VERSION = 11
+export const SCHEMA_VERSION = 12
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -100,6 +112,7 @@ export function emptyData() {
       startupShownOn: null,
       lastExportedOn: null,
       language: DEFAULT_LANGUAGE,
+      abodeSky: DEFAULT_ABODE_SKY,
     },
     checkedInThrough: null,
     worldSeed: newWorldSeed(),
@@ -119,14 +132,16 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV10toV11(
-    upgradeV9toV10(
-      upgradeV8toV9(
-        upgradeV7toV8(
-          upgradeV6toV7(
-            upgradeV5toV6(
-              upgradeV4toV5(
-                upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))),
+  return upgradeV11toV12(
+    upgradeV10toV11(
+      upgradeV9toV10(
+        upgradeV8toV9(
+          upgradeV7toV8(
+            upgradeV6toV7(
+              upgradeV5toV6(
+                upgradeV4toV5(
+                  upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))),
+                ),
               ),
             ),
           ),
@@ -298,6 +313,21 @@ function upgradeV10toV11(data) {
     typeof data.settings === 'object' && data.settings !== null
       ? { language: DEFAULT_LANGUAGE, ...data.settings }
       : data.settings
+  return { ...data, schemaVersion: 11, settings }
+}
+
+// v11 -> v12 (T5.4): settings gain `abodeSky` — which of the four nebula
+// skies the Abode wears (game/abode.js's ABODE_SKIES). A save written
+// before the choice existed has never made one, and the default is not a
+// guess standing in for an unknown: every abode before today looked the
+// same, and the first sky is the one they all become.
+function upgradeV11toV12(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 11) return data
+  const settings =
+    typeof data.settings === 'object' && data.settings !== null
+      ? { abodeSky: DEFAULT_ABODE_SKY, ...data.settings }
+      : data.settings
   return { ...data, schemaVersion: SCHEMA_VERSION, settings }
 }
 
@@ -319,6 +349,7 @@ function withDefaults(data) {
             startupShownOn: null,
             lastExportedOn: null,
             language: DEFAULT_LANGUAGE,
+            abodeSky: DEFAULT_ABODE_SKY,
           }
         : typeof data.settings === 'object' && data.settings !== null
           ? {
@@ -326,6 +357,7 @@ function withDefaults(data) {
               startupShownOn: null,
               lastExportedOn: null,
               language: DEFAULT_LANGUAGE,
+              abodeSky: DEFAULT_ABODE_SKY,
               ...data.settings,
             }
           : data.settings,
@@ -376,6 +408,9 @@ function validateData(data) {
   }
   if (!isLanguage(data.settings.language)) {
     throw new Error('This backup names a language Habitat does not speak.')
+  }
+  if (!isAbodeSky(data.settings.abodeSky)) {
+    throw new Error('This backup names a sky the Abode does not have.')
   }
   if (data.checkedInThrough !== null && !isValidDayKey(data.checkedInThrough)) {
     throw new Error('This backup has a broken check-in marker.')

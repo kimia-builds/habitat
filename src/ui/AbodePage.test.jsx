@@ -1,7 +1,14 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react'
 import AbodePage from './AbodePage.jsx'
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from './worldCanvas.js'
+import { ABODE_SKIES, DEFAULT_ABODE_SKY } from '../game/abode.js'
 
 afterEach(cleanup)
 
@@ -67,7 +74,8 @@ describe('the open ground', () => {
     )
     expect(screen.getByRole('heading', { name: 'your abode' })).toBeDefined()
     expect(screen.getByRole('group', { name: 'the ground' })).toBeDefined()
-    expect(container.querySelector('.abode-horizon')).not.toBeNull()
+    // The scene itself: since T5.4 that is the sky layer, not a horizon.
+    expect(container.querySelector('.abode-sky-layer')).not.toBeNull()
     expect(container.querySelectorAll('p')).toHaveLength(0)
     expect(screen.queryByRole('button', { name: 'a flora find' })).toBeNull()
   })
@@ -425,16 +433,92 @@ describe('the ground is a fixed canvas you scroll around (T5.4)', () => {
     expect(ground.getAttribute('viewBox')).toBe(
       `0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`,
     )
-    // And it wears the shared class the stylesheet sizes and refuses to
-    // let flexbox squash (index.css, .world-canvas).
-    expect(ground.classList.contains('world-canvas')).toBe(true)
+    // And the scene it sits in wears the shared class the stylesheet
+    // sizes and refuses to let flexbox squash (index.css, .world-canvas).
+    expect(ground.parentElement.classList.contains('world-canvas')).toBe(true)
   })
 
   it('sits inside a window, so a narrow screen scrolls instead of shrinking', () => {
     render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
     const ground = screen.getByRole('group', { name: 'the ground' })
-    expect(ground.parentElement.classList.contains('world-canvas-window')).toBe(
+    const scene = ground.parentElement
+    expect(scene.classList.contains('world-canvas')).toBe(true)
+    expect(scene.parentElement.classList.contains('world-canvas-window')).toBe(
       true,
+    )
+  })
+})
+
+describe('the four skies (T5.4)', () => {
+  it('offers one choice per sky, with the chosen one marked', () => {
+    render(
+      <AbodePage
+        finds={[]}
+        items={[]}
+        worldSeed="seed"
+        sky="violet"
+        {...handlers()}
+      />,
+    )
+    const group = screen.getByRole('radiogroup')
+    const choices = within(group).getAllByRole('radio')
+    expect(choices).toHaveLength(ABODE_SKIES.length)
+    // Exactly one is the answer in force — the whole point of a radio
+    // group, and what tells Kimia which sky she is looking at.
+    const chosen = choices.filter(
+      (c) => c.getAttribute('aria-checked') === 'true',
+    )
+    expect(chosen).toHaveLength(1)
+  })
+
+  it('asks for a new sky when one is pressed, and does not decide alone', () => {
+    const spies = handlers()
+    const onChooseSky = vi.fn()
+    render(
+      <AbodePage
+        finds={[]}
+        items={[]}
+        worldSeed="seed"
+        sky={DEFAULT_ABODE_SKY}
+        onChooseSky={onChooseSky}
+        {...spies}
+      />,
+    )
+    const choices = screen.getAllByRole('radio')
+    const other = choices.find(
+      (c) => c.getAttribute('aria-checked') === 'false',
+    )
+    fireEvent.click(other)
+    expect(onChooseSky).toHaveBeenCalledTimes(1)
+    // The name it reports back is one of the four the game knows, which
+    // is what storage will validate before it is saved.
+    expect(ABODE_SKIES).toContain(onChooseSky.mock.calls[0][0])
+    // Choosing a sky is not a move, a decision or a sale.
+    expect(spies.onMove).not.toHaveBeenCalled()
+    expect(spies.onDecide).not.toHaveBeenCalled()
+    expect(spies.onSell).not.toHaveBeenCalled()
+  })
+
+  it('draws no ground and no horizon — the sky is the whole scene', () => {
+    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
+    const ground = screen.getByRole('group', { name: 'the ground' })
+    // Kimia's call 2026-08-21: one opaque sky edge to edge, with
+    // everything sitting cleanly on top of it.
+    expect(ground.querySelector('.abode-soil')).toBeNull()
+    expect(ground.querySelector('.abode-horizon')).toBeNull()
+  })
+
+  it('puts the sky behind everything rather than inside the drawing', () => {
+    render(<AbodePage finds={[]} items={[]} worldSeed="seed" {...handlers()} />)
+    const scene = screen.getByRole('group', {
+      name: 'the ground',
+    }).parentElement
+    const layer = scene.querySelector('.abode-sky-layer')
+    expect(layer).not.toBeNull()
+    // It is a sibling BEFORE the ground drawing, so nothing Kimia
+    // arranges has to be drawn around it.
+    expect(layer.nextElementSibling).toBe(
+      screen.getByRole('group', { name: 'the ground' }),
     )
   })
 })

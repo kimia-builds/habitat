@@ -2925,7 +2925,9 @@ describe('the persistent rail, the design page and the cameo (2026-07-21)', () =
     // its asset still has a question open, so what it holds is the
     // texture library and the abode sky. DesignPage.test.jsx guards the
     // rest of the emptying; this only proves the door still works.
-    for (const name of ['textures — plant-like', 'abode sky']) {
+    // The abode sky left the workbench on 2026-08-21 (T5.4) — it is the
+    // real Abode's background now.
+    for (const name of ['textures — plant-like']) {
       expect(screen.getByRole('region', { name })).toBeDefined()
     }
     // The rail reaches this page too, and its back button leads home.

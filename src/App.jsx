@@ -513,6 +513,14 @@ function AppBody({ data, setData }) {
     save({ ...data, settings: { ...data.settings, language } })
   }
 
+  // Which of the four nebula skies the Abode wears (T5.4). A setting for
+  // the same reason the language is one: Kimia chooses it, it is not part
+  // of the world the drops built, and she should come back to the sky she
+  // arranged under — including after restoring a backup.
+  function chooseAbodeSky(abodeSky) {
+    save({ ...data, settings: { ...data.settings, abodeSky } })
+  }
+
   function save(next) {
     const floraDecisions = pruneFloraDecisions(
       next.floraDecisions,
@@ -1890,9 +1898,11 @@ function AppBody({ data, setData }) {
             )}
             friends={friendsFrom(played)}
             worldSeed={data.worldSeed}
+            sky={data.settings.abodeSky}
             onDecide={handleFloraDecision}
             onMove={handleItemMove}
             onSell={handleSell}
+            onChooseSky={chooseAbodeSky}
             onBack={() => setPage(null)}
           />
         </main>

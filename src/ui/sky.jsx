@@ -9,7 +9,11 @@
  *     §13c) — mounted once in main.jsx, inside the width gate, on a fixed
  *     full-bleed layer. It still renders on the workbench too, in its own
  *     bounded box.
- *   • AbodeSky moves onto the real Abode screen in a later T5.3 step.
+ *   • AbodeSky IS the Abode's background as of 2026-08-21 (T5.4,
+ *     design-notes §13e) — opaque, filling the whole 1000 x 600 canvas,
+ *     in whichever of the four palettes Kimia has chosen (storage v12's
+ *     settings.abodeSky). Its workbench shelf came down the same day, its
+ *     question answered.
  *
  * TWO assets live here, and the design bible treats them differently:
  *
@@ -44,6 +48,7 @@
  */
 
 import { useMemo, Fragment } from 'react'
+import { ABODE_SKIES, DEFAULT_ABODE_SKY } from '../game/abode.js'
 
 /* -----------------------------------------------------------------------------
  * COLOUR / TIMING TABLE  —  see the header for which of these move to
@@ -61,6 +66,9 @@ export const SKY_TOKENS = {
   twinkleMinS: 8, // slowest-safe blink (seconds)
   twinkleMaxS: 14,
   // Abode sky — four palettes: [baseTop, baseBot, nebulaA, nebulaB, nebulaC, cloud]
+  // KEYED BY game/abode.js's ABODE_SKIES (T5.4): that file is the roster of
+  // names a save may hold, this is the paint each one wears. skyRoster.test
+  // fails if a name here has no paint or a paint here has no name.
   abodePalettes: {
     ember: ['#1a0f14', '#0a0608', '#7a4450', '#835231', '#4a3350', '#2a2430'],
     teal: ['#08161a', '#04090c', '#245f5f', '#2f6f5b', '#2b4c66', '#24343a'],
@@ -208,7 +216,11 @@ function NebulaFilter({ id, params, tint }) {
   )
 }
 
-export function AbodeSky({ palette = 'ember', seed = 99 }) {
+// `label` is what a screen reader is told this is. The workbench passes one
+// because there the sky IS the subject; the Abode passes none, because there
+// it is the background behind everything and announcing it would put a
+// picture of the weather between Kimia and her own flora.
+export function AbodeSky({ palette = DEFAULT_ABODE_SKY, seed = 99, label }) {
   const [top, bot, nA, nB, nC, cloud] =
     SKY_TOKENS.abodePalettes[palette] || SKY_TOKENS.abodePalettes.ember
   const tints = [nA, nB, nC]
@@ -242,8 +254,10 @@ export function AbodeSky({ palette = 'ember', seed = 99 }) {
       width="100%"
       height="100%"
       preserveAspectRatio="xMidYMid slice"
-      role="img"
-      aria-label={`Abode sky, ${palette}`}
+      role={label ? 'img' : 'presentation'}
+      aria-label={label}
+      aria-hidden={label ? undefined : 'true'}
+      focusable="false"
     >
       <defs>
         <linearGradient id={`${uid}-bg`} x1="0" y1="0" x2="0" y2="1">
@@ -331,7 +345,7 @@ export function AbodeSky({ palette = 'ember', seed = 99 }) {
  * 3. MANIFEST — environment sky assets (design-bible §11a). ABODE_PALETTES is
  * the palette order the workbench draws (also the four allowed `palette` values).
  * =========================================================================== */
-export const ABODE_PALETTES = Object.keys(SKY_TOKENS.abodePalettes)
+export const ABODE_PALETTES = ABODE_SKIES
 
 export const SKY_ASSETS = [
   {

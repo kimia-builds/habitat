@@ -3072,6 +3072,92 @@ return 0` right after the era is worked out, so a moment before the
   floraCanon.js keeps about the landmark size class, and `worldCanvas.js`
   carries a test that fails if a phone size appears in it.
 
+- 2026-08-21 (Kimia's call, T5.4): **the Abode's background is one opaque
+  nebula sky, and the soil and horizon line are gone.** Asked what should
+  happen to the ground once an opaque sky sat behind it, she chose "nebula
+  only — no ground": the canvas is a single sky edge to edge, and
+  everything gathered or bought stands cleanly on top of it. Opaque is the
+  point rather than a detail — the app's own starfield (§13c) used to show
+  through the Abode's transparent ground, which is right behind a habit row
+  and wrong behind a place you have arranged. `game/abode.js`'s HORIZON
+  survives as the fraction default spots are laid out against, so a new
+  arrival still lands low in the scene; there is simply nothing drawn at
+  that fraction any more.
+
+- 2026-08-21 (Kimia's call, T5.4): **the four skies are hers to flip
+  between while she arranges, and the choice is remembered.** The chooser
+  sits beside the quiet / party toggle — the Abode's two choices side by
+  side — and each swatch is a live drawing of the sky it picks rather than
+  a coloured chip, because the four differ by nebula and cloud as much as
+  by hue. It is a SETTING (storage v12, `settings.abodeSky`), for the same
+  reason the language is one: Kimia chooses it, it is no part of the world
+  the drops built, and a restored backup should restore the sky it was
+  taken under.
+
+## T5.4 build notes (part 2) — the Abode's sky (2026-08-21)
+
+**Nothing was drawn in this slice.** `AbodeSky` has existed since
+2026-07-24 (design-bible §11a) and had waited on the design workbench for
+its eyeball pass ever since. All this did was put it where it was always
+going, and answer the two questions the shelf was standing there to ask:
+which palettes, and what happens to the ground behind them.
+
+**The sky is a LAYER, not a shape in the drawing.** `.abode-sky-layer`
+sits absolutely inside `.abode-scene`, with the interactive ground SVG
+absolutely on top of it filling the same box, so a coordinate means the
+same thing in both. Putting the sky inside the ground drawing would have
+worked and would have been wrong the first time anything needed to be
+drawn around it — this way the ground SVG holds nothing but the things
+Kimia has put there.
+
+**The soil and the horizon went, and so did their styles.** `.abode-soil`
+and `.abode-horizon` are gone from both the component and the stylesheet.
+`--wash-soil` and `--hairline` stay in tokens.css: the bookshelf still
+wears both.
+
+**One roster, not two lists.** The four sky NAMES live in
+`game/abode.js` as `ABODE_SKIES`, because that is the list of values a
+saved game may legally hold — the same class of fact as a schedule shape.
+Their COLOURS stay in `sky.jsx` beside the drawing they paint (§11d), and
+`sky.jsx` imports the roster to key its palette map, so there is exactly
+one list and no pair that can drift. `worldCanvas.test.js` still checks
+that every name has paint and that every palette is a full set of six.
+
+**Storage went to v12.** `settings.abodeSky`, with an upgrade for v11
+saves: they load wearing the first sky, which is not a guess standing in
+for an unknown — every abode before today looked the same, and this is
+what they all become. `validateData` refuses a save naming a sky that
+does not exist, and that check earns its place: an unknown name falls
+back to the first palette inside `AbodeSky` without complaining, so
+without it a corrupted save would quietly change sky on load and nothing
+would say why.
+
+**The chooser is a radio group, not four buttons.** Four answers to one
+question, exactly what a radio group is, one always in force — and arrow
+keys work between them for free. `pebbles.test.js` caught it the moment
+it appeared and refused to let it through unclassified, which is the test
+doing precisely its job; it is now a documented non-pebble in
+design-notes §11e (the sky IS the button).
+
+**A collision worth remembering.** The new swatch class `abode-sky-swatch`
+was the same name the workbench's shelf already used, and the workbench's
+rule sits later in index.css — so the first render put four 9rem posters
+where four 44px swatches belonged. The fix was not a rename: the shelf was
+coming down anyway (spec §5b's waiting-room rule — the sky's question has
+been answered), so its dead styles went with it and the name is now used
+by exactly one thing. Caught in the browser pane, not by a test; no test
+can see a CSS override.
+
+**Verified with a real click** (CLAUDE.md's rule, not `element.click()`
+and not a component test alone): pressing the third swatch at its actual
+coordinates switched the scene to violet, marked that swatch as the
+checked radio, wrote `abodeSky: 'violet'` into a v12 save, and survived a
+reload. The scene measured 1000 x 600 with no soil and no horizon in it.
+No console errors.
+
+**Still to come under T5.4:** the same canvas on the Map, the Library and
+the Market.
+
 ## T5.4 build notes — the Abode's canvas (2026-08-21)
 
 **What it replaces.** `AbodePage` drew its ground as an SVG with

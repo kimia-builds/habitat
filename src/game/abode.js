@@ -39,9 +39,40 @@ import { floraFinds } from './flora.js'
 // Fractions of the scene. The sky reaches down to the horizon; the
 // ground is everything below it. Default spots stand new arrivals on
 // three loose ground lines, front line first — 6 per line.
+// HORIZON is no longer DRAWN (T5.4, 2026-08-21): the Abode's background
+// became one opaque nebula sky filling the whole canvas, with no soil
+// half and no horizon line, so there is nothing on screen at this
+// fraction any more. It stays here because the default spots below are
+// still laid out against it — new arrivals land in the lower part of
+// the scene rather than floating in the middle of the sky, which is
+// what "the ground" means now that there is no ground to draw.
 export const HORIZON = 0.42
 export const GROUND_LINES = [0.58, 0.76, 0.94]
 export const SPOTS_PER_ROW = 6
+
+// ── The four skies (T5.4, 2026-08-21) ───────────────────────────────
+// Kimia picks which nebula sky her abode wears, and the choice is
+// remembered with the save. THE NAMES LIVE HERE, not with the paint,
+// because this is the list of values a stored game may legally hold —
+// the same class of fact as a schedule shape. Their COLOURS live in
+// src/ui/sky.jsx beside the drawing they paint (design-notes §11d),
+// which reads this list to key its palettes, so there is exactly one
+// roster and no pair of lists that can drift.
+//
+// These four words are Claude's from July, when the skies were made
+// for the workbench; they are interface copy like any other and live
+// in src/content/ui.js for Kimia to rename (`abode.skyEmber` and
+// friends). Renaming what a swatch SAYS costs nothing — a save stores
+// the key below, not the word.
+export const ABODE_SKIES = ['ember', 'teal', 'violet', 'ash']
+
+// The sky a new world starts in, and the answer for any save that
+// predates the choice existing.
+export const DEFAULT_ABODE_SKY = ABODE_SKIES[0]
+
+export function isAbodeSky(value) {
+  return ABODE_SKIES.includes(value)
+}
 
 const DEFAULT_CAPACITY = GROUND_LINES.length * SPOTS_PER_ROW
 

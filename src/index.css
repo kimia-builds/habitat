@@ -599,13 +599,81 @@ body {
    bookshelf: the scene never changes, only the flora move. The
    waiting-to-decide list keeps the T3.3 row styles below. */
 
-.abode-soil {
-  fill: var(--wash-soil);
+/* THE ABODE'S SCENE (T5.4, 2026-08-21): the sky layer and the things
+   standing on it, stacked inside one fixed canvas.
+
+   The soil rectangle and the horizon line that used to live here are gone
+   (Kimia's call): the background is now one opaque nebula sky filling the
+   whole canvas, edge to edge, with everything sitting cleanly on top of it.
+   Opaque is the point — the app's own starfield (§13c) used to show through
+   the Abode's transparent ground, which is fine behind a habit row and wrong
+   behind a place you have arranged. */
+.abode-scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
 }
 
-.abode-horizon {
-  stroke: var(--hairline);
-  stroke-width: 1;
+.abode-sky-layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* The ground drawing sits ON the sky, filling the same box exactly, so a
+   coordinate in the scene means the same thing in both layers. */
+.abode-scene .abode-ground-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The Abode's two choices, side by side above the scene: the quiet / party
+   toggle and the four skies. */
+.abode-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+/* THE FOUR SKIES. Each swatch is a live drawing of the sky it picks, not a
+   coloured chip standing for one — these four differ by nebula and cloud as
+   much as by hue, so a flat square could not tell you which is which. */
+.abode-skies {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.abode-sky-swatch {
+  width: 2.75rem;
+  height: 1.75rem;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: none;
+  cursor: pointer;
+  opacity: 0.6;
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.abode-sky-swatch:hover,
+.abode-sky-swatch:focus-visible {
+  opacity: 1;
+  outline: none;
+}
+
+/* The one in use. Quiet, like every other state in Habitat — it is lit and
+   fully opaque while the other three are dimmed back, never an alarm edge. */
+.abode-sky-swatch.chosen {
+  opacity: 1;
+  border-color: var(--text-dim-white);
+  box-shadow: 0 0 var(--glow-resting) var(--wash-ambient);
 }
 
 /* A gathered flora: the expedition stream's mint, glowing softly. */
@@ -3303,42 +3371,6 @@ body {
   animation: friend-blink 6.5s ease-in-out infinite;
 }
 
-/* TEMPORARY (T5.3, 2026-07-24): the environment-sky swatches (design-bible
-   §11a). Each swatch is a bounded, positioned box so NightSky (which fills
-   its positioned parent) and AbodeSky (100% of its box) have somewhere to
-   sit for the eyeball pass. Leaves with the workbench. */
-.sky-swatch {
-  position: relative;
-  overflow: hidden;
-  border-radius: 0.75rem;
-}
-
-.sky-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  list-style: none;
-  padding: 0;
-}
-
-.abode-sky-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  width: 9rem;
-  height: auto;
-}
-
-.abode-sky-swatch svg {
-  width: 9rem;
-  height: 6rem;
-  border-radius: 0.75rem;
-}
-
-.sky-swatch-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  color: var(--text-quieter);
-  text-align: center;
-}
+/* The workbench's environment-sky swatches left on 2026-08-21 with the
+   shelf they dressed (T5.4): the abode sky is a real screen's background
+   now, and its own chooser is styled up with the Abode. */

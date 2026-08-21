@@ -1143,6 +1143,12 @@ app:
 - **Switches.** The graph zooms (day / week / 4 weeks) and party mode
   hold a state; a pebble does a thing and settles. They keep their own
   pressed-state look.
+- **The Abode's four skies (T5.4, 2026-08-21).** Each swatch IS the sky
+  it picks — a small live drawing of it, since the four differ by nebula
+  and cloud as much as by hue and a flat chip could not tell you which is
+  which. They are a radio group, not four actions: four answers to one
+  question, one of them always in force, and the chosen one lit while the
+  other three dim back. Never an alarm edge.
 - **Lenses (T6.23, built 2026-08-21).** default, today, prioritise,
   to-dos, un-hide all and the tile eye — the whole of §11f. Same reason
   as the switches, and the reason the family needed its own section: a
@@ -1880,7 +1886,7 @@ swatch came down on 2026-08-17 — the planet has played on the real
 startup screen since 2026-08-12, so the workbench had nothing left to
 show that the app itself does not (spec §5b: the page is a waiting room).
 
-### 13e. The gameplay-page canvas **[Abode BUILT — T5.4, 2026-08-21]**
+### 13e. The gameplay-page canvas & the Abode's sky **[Abode BUILT — T5.4, 2026-08-21]**
 
 Four pages are places you go to LOOK at what you have rather than to
 mark a habit done: the **Abode, the Map, the Library and the Market**.
@@ -1928,6 +1934,30 @@ tokens.css (the stylesheet sizes the box), mirrored as plain numbers in
 `src/ui/worldCanvas.js` (the viewBox and the scene maths can read those)
 — a mirror in the exact sense symbols.js is one, and guarded the same
 way: `worldCanvas.test.js` fails the suite if the two ever disagree.
+
+**The Abode's canvas is filled by one opaque nebula sky** (Kimia's call,
+2026-08-21). The soil rectangle and the horizon line are gone: the
+background is a single sky edge to edge, and everything you have gathered
+or bought stands cleanly on top of it. **Opaque is the design, not an
+implementation detail** — the app's own starfield (§13c) used to show
+through the Abode's transparent ground, which is right behind a habit row
+and wrong behind a place you have arranged. The four palettes are the
+`AbodeSky` asset that had waited on the workbench since 2026-07-24
+(design-bible §11a), and putting them here is what answered the question
+that shelf was asking, so the shelf came down the same day.
+
+**Kimia flips between the four while she arranges**, from a chooser
+beside the quiet / party toggle — the Abode's two choices side by side.
+Each swatch is a live drawing of the sky it picks rather than a coloured
+chip, because the four differ by nebula and cloud as much as by hue
+(§11e). The choice is **remembered with the save** (storage v12,
+`settings.abodeSky`), so the sky you arranged under is the sky you come
+back to, and a restored backup restores the sky it was taken under.
+
+**`HORIZON` outlived the horizon.** game/abode.js still exports it and
+default spots are still laid out against it, so a new arrival lands low
+in the scene rather than adrift in the middle of it. There is simply
+nothing drawn at that fraction any more.
 
 **The phone gets different numbers, and they are not set** (Kimia,
 2026-08-21). M8's phone shell (§14) will have its own canvas dimensions

@@ -466,8 +466,13 @@ region discovery expands what the Market can offer.
   design-notes §13e. **The phone's canvas is a different size and is
   deliberately not decided yet** — M8 settles it by eye on a real phone
   (§the phone, below); nothing may invent one meanwhile.
-- **Abode** (via the rail): open ground under sky (T4.3) — gathered
-  flora and (since T4.3b) purchased objects freely draggable anywhere
+- **Abode** (via the rail): open ground under sky (T4.3). **Since T5.4
+  (2026-08-21) the ground is one opaque nebula sky filling the whole
+  canvas** — no soil, no horizon line — with everything standing cleanly
+  on top of it. Kimia picks which of **four skies** it wears, from a
+  chooser beside the quiet / party toggle, and the choice is remembered
+  with the save (storage v12) so it travels in backups. Gathered
+  flora and (since T4.3b) purchased objects are freely draggable anywhere
   on the scene, each place remembered; a click holds an item, showing
   its name and its quiet way back to the world — compost for a flora,
   sell for an object. Flora waiting to be decided
@@ -507,9 +512,10 @@ region discovery expands what the Market can offer.
   stands only while a question about that asset is still open, and comes
   down once she has answered it — every settled asset left on the page is
   another screenful between her and the one she came to look at. As of
-  2026-08-19 what waits there is the seven FILTER surfaces of the texture
-  library and the abode sky — the hair textures left with the flora they
-  were being judged for, once the ordinary flora design closed.
+  2026-08-21 what waits there is the seven FILTER surfaces of the texture
+  library alone — the hair textures left with the flora they were being
+  judged for once the ordinary flora design closed (2026-08-19), and the
+  abode sky left when T5.4 made it the real Abode's background.
 
 ### The lenses (M6 · T6.23 — BUILT)
 

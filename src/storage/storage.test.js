@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { createHabit } from '../game/habits.js'
+import { ABODE_SKIES, DEFAULT_ABODE_SKY } from '../game/abode.js'
 import {
   clearData,
   clearDefaultView,
@@ -974,6 +975,61 @@ describe('the v9 → v10 upgrade (T6.6)', () => {
     expect(() => importData(JSON.stringify(withStamp(false)))).toThrow(
       /pastGame/,
     )
+  })
+})
+
+describe('the v11 → v12 upgrade (T5.4)', () => {
+  it('a v11 save loads wearing the first sky — the one every abode had', () => {
+    // A hand-written v11 record, exactly as T6.13-era Habitat stored it:
+    // no abodeSky field, because the Abode had no sky to choose.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        schemaVersion: 11,
+        habits: [habit('a', 'Read')],
+        completions: [],
+        settings: {
+          dayCutoffHour: 3,
+          fieldNotesShownOn: null,
+          startupShownOn: null,
+          lastExportedOn: '2026-08-20',
+          language: 'en',
+        },
+        checkedInThrough: null,
+        worldSeed: 'seed',
+        floraDecisions: {},
+        bookcaseLayout: {},
+        abodeLayout: {},
+        purchases: [],
+      }),
+    )
+
+    const data = loadData()
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
+    expect(data.settings.abodeSky).toBe(DEFAULT_ABODE_SKY)
+    // Nothing else moved.
+    expect(data.settings.language).toBe('en')
+    expect(data.settings.lastExportedOn).toBe('2026-08-20')
+    expect(data.habits).toHaveLength(1)
+    // And the upgraded shape passes full validation on the next save.
+    expect(() => saveData(data)).not.toThrow()
+  })
+
+  it('keeps a sky that is already chosen', () => {
+    const chosen = ABODE_SKIES[ABODE_SKIES.length - 1]
+    const data = { ...emptyData() }
+    data.settings = { ...data.settings, abodeSky: chosen }
+    saveData(data)
+    expect(loadData().settings.abodeSky).toBe(chosen)
+  })
+
+  it('refuses a backup naming a sky the Abode does not have', () => {
+    // The failure this prevents is a silent one: an unknown name falls
+    // back to the first palette, so the abode would quietly change sky
+    // on load and nothing would say why.
+    const broken = { ...emptyData() }
+    broken.settings = { ...broken.settings, abodeSky: 'chartreuse' }
+    expect(() => saveData(broken)).toThrow(/sky/i)
   })
 })
 

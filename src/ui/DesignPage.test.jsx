@@ -12,7 +12,6 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
-import { ABODE_PALETTES } from './sky.jsx'
 
 afterEach(cleanup)
 
@@ -45,35 +44,22 @@ describe('DesignPage workbench', () => {
     }
   })
 
-  it('draws the abode sky in each of its four palettes', () => {
-    render(<DesignPage onBack={vi.fn()} />)
-    // One <svg role="img"> per palette, labelled by palette, so the single
-    // fixed composition can be compared colour-to-colour.
-    const labels = ABODE_PALETTES.map((p) => `Abode sky, ${p}`)
-    // getByRole throws if the labelled image is missing, so reaching the
-    // end with all four found is the assertion.
-    for (const label of labels) {
-      expect(
-        screen.getByRole('img', { name: label }).tagName.toLowerCase(),
-      ).toBe('svg')
-    }
-    expect(labels).toHaveLength(4)
-  })
-
   it('holds nothing but the families still waiting to be judged', () => {
     render(<DesignPage onBack={vi.fn()} />)
-    // The shelves are exactly the texture families plus the abode sky.
-    // Anything else standing here is an asset that has had its answer and
-    // should have left with the others (2026-08-17).
+    // The shelves are exactly the texture families now. Anything else
+    // standing here is an asset that has had its answer and should have
+    // left with the others (2026-08-17).
     const shelves = [...document.querySelectorAll('.design-family')].map((s) =>
       s.getAttribute('aria-label'),
     )
     // Hair is a family in the LIBRARY but no longer a shelf here: Kimia
     // judged it as the flora's surface on 2026-08-19 and it came down with
     // them (design-bible §8 still carries the textures themselves).
+    // The abode sky left on 2026-08-21 (T5.4): its question was answered
+    // by becoming the real Abode's four background choices.
     const waiting = ['plant-like', 'fungal', 'rock']
     expect(shelves.slice().sort()).toEqual(
-      [...waiting.map((f) => `textures — ${f}`), 'abode sky'].sort(),
+      waiting.map((f) => `textures — ${f}`).sort(),
     )
   })
 

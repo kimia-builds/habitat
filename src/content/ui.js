@@ -173,6 +173,15 @@ const en = {
   'abode.compost': 'compost',
   'abode.sky': 'Abode sky',
   'abode.skyLabel': 'Abode sky, {palette}',
+  // The four skies the Abode can wear (T5.4). These four words are
+  // Claude's from July, when the skies were drawn for the workbench —
+  // rename them freely, they are only what the swatch SAYS. A save
+  // stores the sky's key, never its word, so nothing breaks.
+  'abode.pickSky': 'pick your sky',
+  'abode.sky.ember': 'ember',
+  'abode.sky.teal': 'teal',
+  'abode.sky.violet': 'violet',
+  'abode.sky.ash': 'ash',
 
   // The Map.
   'map.planet': 'the planet, region by region',
@@ -348,6 +357,11 @@ const fa = {
   'abode.compost': '',
   'abode.sky': '',
   'abode.skyLabel': '',
+  'abode.pickSky': '',
+  'abode.sky.ember': '',
+  'abode.sky.teal': '',
+  'abode.sky.violet': '',
+  'abode.sky.ash': '',
 
   'map.planet': '',
 
