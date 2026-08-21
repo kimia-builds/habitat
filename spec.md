@@ -444,7 +444,8 @@ region discovery expands what the Market can offer.
   alike. (The home screen's own large date display is the exception it
   always was: it spells the calendar date out in full.)
 - **Map** (via expedition meter or the rail): the discovered planet so
-  far. Titled **map of N-Z-D**.
+  far, standing square and centred in the shared canvas — a round thing
+  does not become an oval to fill a wide window. Titled **map of N-Z-D**.
 - **Bookcase** (via literacy meter or the rail's _library_): one
   **constant bookshelf** (T4.2) holding every publication ever received
   — floating, draggable books, each spine or face-out, the arrangement

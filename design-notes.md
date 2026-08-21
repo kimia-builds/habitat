@@ -1916,8 +1916,22 @@ the browser's text size does.
 
 **The other three take the same size** so that nothing resizes under you
 as you cross between them — but only the frame is shared. Each page
-still draws whatever shape it likes inside it: the Map's planet stays
-round in the middle of the frame, the Market's stall stays a row.
+still draws whatever shape it likes inside it (all three built
+2026-08-21):
+
+- **The Library** fills the frame the way the Abode's ground does — the
+  shelf IS the canvas, three planks across the full 1000 x 600.
+- **The Map** keeps its own square and stands centred, as tall as the
+  frame allows, with sky either side. A round thing does not become an
+  oval to fill a wide window.
+- **The Market's** stall stands at the TOP of its frame rather than
+  floating in the middle: a row of things for sale reads as a stall laid
+  out, where a centred row in a tall empty box reads as a mistake.
+
+**What fills the three new frames is not settled** — only their size is.
+The placeholders in them were scaled to keep the on-screen size they had
+before, so nothing was redesigned unasked; two things Kimia's eye should
+judge are noted against T5.4 in plan.md.
 
 **How it sits on the page.** 1000px does not fit inside `.app`'s 40rem,
 so these are the pages that break out of the text column — the same

@@ -583,10 +583,11 @@ body {
    (and starts scrolling), the CANVAS never does. --world-canvas-margin holds
    the left rail's fixed column clear at both sides so the scene never slides
    underneath it. */
-/* Only the Abode so far — the Map, the Library and the Market join this
-   list as each one gets its canvas. A page widened before it has a canvas
-   inside it is just a bigger empty box. */
-.abode {
+/* All four gameplay pages, since 2026-08-21. */
+.abode,
+.map-page,
+.bookcase-page,
+.market {
   --world-page-width: min(
     calc(var(--world-canvas-width) + var(--space-4) * 2 + 2px),
     calc(100vw - var(--world-canvas-margin) * 2)
@@ -2117,10 +2118,30 @@ body {
   padding: var(--space-4);
 }
 
+/* The planet keeps its own square shape and stands in the middle of the
+   wide frame (T5.4) — a round thing does not become an oval to fill a
+   window. Its height is the frame's, so the planet is as big as the
+   canvas allows and the space either side is simply sky. */
+.map-scene,
+.market-scene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .map-svg {
   display: block;
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
+}
+
+/* The stall stands at the top of its frame rather than floating in the
+   middle of it: a row of things for sale reads as a stall laid out, and
+   a centred row in a tall empty box reads as a mistake. */
+.market-scene {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--space-4);
 }
 
 /* The faint outline (Kimia's decision 2026-07-19): the planet is
@@ -2178,21 +2199,22 @@ body {
 
 .bookshelf-svg {
   display: block;
-  width: 100%;
-  height: auto;
 }
 
 /* The frame and planks: quiet, barely-there — the shelf itself never
    changes; only the books move. */
+/* The shelf's lines. Since T5.4 the scene is 1:1 with pixels, so these
+   say the widths they always DREW: a 1-unit line in the old 240-unit
+   frame reached the screen 2.4px wide. Same picture, honest numbers. */
 .bookshelf-frame {
   fill: var(--wash-soil);
   stroke: var(--hairline);
-  stroke-width: 1;
+  stroke-width: 2.4;
 }
 
 .bookshelf-plank {
   stroke: var(--hairline);
-  stroke-width: 1;
+  stroke-width: 2.4;
 }
 
 /* A book: soft fill, glowing edge — the everyday pastel register. */
@@ -2210,7 +2232,7 @@ body {
   fill-opacity: 0.14;
   stroke: currentColor;
   stroke-opacity: 0.75;
-  stroke-width: 1.2;
+  stroke-width: 2.88;
   filter: drop-shadow(0 0 var(--glow-faint) currentColor);
 }
 
@@ -2225,7 +2247,7 @@ body {
   fill: none;
   stroke: currentColor;
   stroke-opacity: 0.8;
-  stroke-width: 1;
+  stroke-width: 2.4;
 }
 
 .book-eye circle:first-child {

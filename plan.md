@@ -220,8 +220,20 @@ tracker. Everything after this is delight, informed by real use.
             is remembered in storage v12. The workbench's sky shelf came
             down with it, its question answered. Build notes in
             history.md)_
-      - [ ] **The other three pages** — the Map, the Library and the
-            Market take the same canvas.
+      - [x] **The other three pages** _(done 2026-08-21 — the Map, the
+            Library and the Market hold the same 1000 x 600 frame. Only the
+            FRAME is shared: the planet keeps its own square shape and
+            stands centred, the shelf fills the frame like the Abode's
+            ground, the stall stands at the top of it. Build notes in
+            history.md)_
+      - [ ] **What FILLS the three new frames** — the frame is settled;
+            what stands in it is not, and it is Kimia's eye that decides.
+            Two known questions: a book now reaches about half its plank
+            gap rather than seven tenths, because the canvas is a wider
+            shape than the old shelf frame; and the Market's row of
+            curiosities sits in a frame far taller than it needs. Both are
+            deliberate holds — the placeholders were scaled to keep their
+            on-screen size and nothing was redesigned unasked.
 
 ## M6 — Hardening & content (ongoing)
 

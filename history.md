@@ -3094,6 +3094,59 @@ return 0` right after the era is worked out, so a moment before the
   the drops built, and a restored backup should restore the sky it was
   taken under.
 
+## T5.4 build notes (part 3) — the other three pages (2026-08-21)
+
+**The frame, and only the frame.** The Map, the Library and the Market
+now hold the same 1000 x 600 canvas the Abode does, inside the same
+scrolling window, so nothing resizes under you as you cross between the
+four gameplay pages. What stands INSIDE each frame stayed each page's own
+business:
+
+- **The Library** fills it the way the Abode's ground does — the shelf IS
+  the canvas, three planks across the full width. Straight swap of a
+  240 x 180 drawing for the shared one.
+- **The Map** keeps its own square viewBox and stands centred at the
+  frame's full height, with sky either side. Stretching a planet to fill
+  a wide window would make it an oval, which is a worse map. It is also
+  the page that gained most: the planet went from a third of the old
+  column's width to 600px tall.
+- **The Market** puts its stall at the TOP of the frame, not the middle.
+  A row of things for sale reads as a stall laid out; the same row
+  floating in the centre of a tall box reads as a mistake. The
+  `stall.length > 0` guard stayed exactly where it was — a bare stall is
+  still a bare frame, with no prose and no apology.
+
+**Every hand-written measurement in the Library was scaled by 2.4**, the
+same figure the Abode used and for the same reason: the old 240-unit
+drawing rendered about 574px wide. That is nine numbers — the book
+shapes, the plank inset, the corner radius, the cover glyph, and the four
+that draw the reading eye — plus three stroke widths in index.css, which
+now simply state the widths they always drew (a 1-unit line in a 2.4x
+scene was always a 2.4px line). `COVER_RATIO` was left alone: it is a
+pure ratio and the canvas cannot touch it.
+
+**TWO THINGS DELIBERATELY NOT FIXED, because they are Kimia's eye to
+make, not this task's:**
+
+1. **A book no longer nearly fills its plank gap.** The canvas is a wider
+   shape than the old shelf frame (1.67 against 1.33), so the shelf grew
+   3.3x in height while the books grew 2.4x. A book that stood seven
+   tenths of its gap now stands about half of it. Scaling the books by
+   3.3 instead would have kept the old picture exactly — and made the
+   shelf hold no more books than before, which is the opposite of the
+   point. Which of those two she wants is a look, and looks are settled
+   by her eye. Noted against T5.4 in plan.md, and in a comment in
+   BookcasePage.jsx so the next reader finds it there too.
+2. **The Market's stall sits in a frame far taller than it needs.** That
+   follows directly from her rule that the four pages are one size, and
+   the rule is right even where it costs something — but she should see
+   what it costs. Same note.
+
+Neither was quietly "improved". The rule this follows is the 2026-08-17
+one: a departure that is reasoned about, written down and flagged is
+still a departure. So nothing departed; the cost is simply visible and
+hers to price.
+
 ## T5.4 build notes (part 2) — the Abode's sky (2026-08-21)
 
 **Nothing was drawn in this slice.** `AbodeSky` has existed since

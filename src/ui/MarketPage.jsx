@@ -35,38 +35,52 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
     <section className="stub-page market">
       <h2 className="page-title">{t('page.market')}</h2>
       <div className="page-box">
-        {stall.length > 0 && (
-          <ul className="market-stall" aria-label={t('market.stall')}>
-            {stall.map((object) => {
-              const owned = ownedCounts.get(object.key) ?? 0
-              const affordable = wallet >= object.price
-              return (
-                <li key={object.key} className="market-item">
-                  <ObjectGlyph
-                    objectKey={object.key}
-                    worldSeed={worldSeed}
-                    className="market-glyph"
-                  />
-                  <span className="market-price">
-                    <DropGlyph kind="fungi" className="market-price-glyph" />
-                    {object.price}
-                  </span>
-                  {owned > 0 && (
-                    <span className="market-owned">×{owned} at home</span>
-                  )}
-                  <button
-                    className="market-buy pebble"
-                    aria-label={t('market.buyLabel', { price: object.price })}
-                    disabled={!affordable}
-                    onClick={() => onBuy(object)}
-                  >
-                    {t('market.buy')}
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        )}
+        {/* The shared world-page canvas (T5.4): the stall stands in the
+          same 1000 x 600 frame the Abode, the Library and the Map hold,
+          so the four gameplay pages are one size and nothing resizes
+          under you as you move between them. A bare stall is a bare
+          frame — no prose, no apology (Kimia's rule for these pages). */}
+        <div className="world-canvas-window">
+          <div className="market-scene world-canvas">
+            {stall.length > 0 && (
+              <ul className="market-stall" aria-label={t('market.stall')}>
+                {stall.map((object) => {
+                  const owned = ownedCounts.get(object.key) ?? 0
+                  const affordable = wallet >= object.price
+                  return (
+                    <li key={object.key} className="market-item">
+                      <ObjectGlyph
+                        objectKey={object.key}
+                        worldSeed={worldSeed}
+                        className="market-glyph"
+                      />
+                      <span className="market-price">
+                        <DropGlyph
+                          kind="fungi"
+                          className="market-price-glyph"
+                        />
+                        {object.price}
+                      </span>
+                      {owned > 0 && (
+                        <span className="market-owned">×{owned} at home</span>
+                      )}
+                      <button
+                        className="market-buy pebble"
+                        aria-label={t('market.buyLabel', {
+                          price: object.price,
+                        })}
+                        disabled={!affordable}
+                        onClick={() => onBuy(object)}
+                      >
+                        {t('market.buy')}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
 
         <button className="pebble" onClick={onBack}>
           ← back to the habits

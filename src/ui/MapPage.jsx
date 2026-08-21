@@ -35,39 +35,48 @@ function MapPage({
     <section className="map-page">
       <h2 className="page-title">{t('page.map')}</h2>
       <div className="page-box">
-        <svg
-          className="map-svg"
-          viewBox={`0 0 ${layout.size} ${layout.size}`}
-          role="img"
-          aria-label={t('map.planet')}
-        >
-          <path className="map-silhouette" d={layout.silhouettePath} />
-          {layout.regions.slice(0, known).map(({ region, path, hue }) => (
-            <path
-              key={region}
-              className={
-                region === known - 1
-                  ? 'map-region map-region-frontier'
-                  : 'map-region'
-              }
-              style={{ color: `hsl(${hue} 65% 62%)` }}
-              d={path}
-            />
-          ))}
-          {markers.map((marker) => {
-            const { x, y } = landmarkPoint(worldSeed, layout, marker)
-            return (
-              <g
-                key={marker.completionId}
-                className="map-landmark"
-                transform={`translate(${x} ${y})`}
-              >
-                <line x1="0" y1="7" x2="0" y2="-1" />
-                <circle cx="0" cy="-4" r="3.5" />
-              </g>
-            )
-          })}
-        </svg>
+        {/* The shared world-page canvas (T5.4): the same 1000 x 600 frame
+          the Abode and the Library hold, so nothing resizes under you as
+          you cross between the four gameplay pages. Only the FRAME is
+          shared — the planet keeps its own square shape and stands in the
+          middle of it, as a round thing in a wide window should. */}
+        <div className="world-canvas-window">
+          <div className="map-scene world-canvas">
+            <svg
+              className="map-svg"
+              viewBox={`0 0 ${layout.size} ${layout.size}`}
+              role="img"
+              aria-label={t('map.planet')}
+            >
+              <path className="map-silhouette" d={layout.silhouettePath} />
+              {layout.regions.slice(0, known).map(({ region, path, hue }) => (
+                <path
+                  key={region}
+                  className={
+                    region === known - 1
+                      ? 'map-region map-region-frontier'
+                      : 'map-region'
+                  }
+                  style={{ color: `hsl(${hue} 65% 62%)` }}
+                  d={path}
+                />
+              ))}
+              {markers.map((marker) => {
+                const { x, y } = landmarkPoint(worldSeed, layout, marker)
+                return (
+                  <g
+                    key={marker.completionId}
+                    className="map-landmark"
+                    transform={`translate(${x} ${y})`}
+                  >
+                    <line x1="0" y1="7" x2="0" y2="-1" />
+                    <circle cx="0" cy="-4" r="3.5" />
+                  </g>
+                )
+              })}
+            </svg>
+          </div>
+        </div>
         <p className="map-caption">
           {known} of {MAP_REGION_COUNT} regions known
         </p>
