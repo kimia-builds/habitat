@@ -203,14 +203,8 @@ tracker. Everything after this is delight, informed by real use.
             2026-08-10 — `src/content/names.js` holds 10 species slots
             and 55 individual slots, all blank; build notes in
             history.md)_
-      - [ ] **T6.1b Enforce the 55-friendship roster cap** (found
-            2026-08-10 while building T6.1a) — spec §5, design-bible §9c
-            and CLAUDE.md all say a category refills only until its
-            roster is exhausted, but `nextFriendDue` has no ceiling: it
-            would send an eleventh plip, for which no name slot
-            exists. `FRIEND_ROSTER` is now in constants.js; this makes
-            the code obey it, with tests for an exhausted category and
-            for every roster exhausted at once.
+      - [x] **T6.1b Enforce the 55-friendship roster cap** _(done
+            2026-08-21 — build notes in history.md)_
 - [ ] **T6.2 Pacing tune-up (recurring)** — after ~1 month of real use,
       then roughly **every 6 months** (Kimia's decision 2026-07-15): revisit
       all pacing constants against real historical averages (starting with

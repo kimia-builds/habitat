@@ -11,6 +11,7 @@ import {
   FRIEND_CATEGORIES,
   FRIEND_FIRST_DELAY_DAYS,
   FRIEND_REPEAT_GAP_DAYS,
+  FRIEND_ROSTER,
   LITERACY_MILESTONES,
 } from './constants.js'
 import { addDays } from './days.js'
@@ -178,6 +179,109 @@ describe("repeat friends (Kimia's decision 2026-07-20)", () => {
     const next = withFriendDrop(completion('t2', dueDay), after, SEED)
     expect(next.drops).toEqual([])
     expect(friendsFrom(after)).toHaveLength(1)
+  })
+})
+
+describe('the roster runs out (T6.1b — spec §5, design-bible §9c)', () => {
+  // Every door open on one day: 61 dictionaries is 732 literacy points,
+  // past the last milestone (730). They can all ride one completion —
+  // doorOpenDays walks the drops, not the days.
+  const allDoorsOpen = [
+    completion(
+      'read',
+      '2026-07-01',
+      Array.from({ length: 61 }, () => dictionary),
+    ),
+  ]
+
+  // `counts[category]` friends of each category, all arrived long ago,
+  // in category order. The days are far enough apart that no repeat gap
+  // is still running when the test looks.
+  function arrivals(counts) {
+    const rows = []
+    let day = '2026-07-02'
+    counts.forEach((count, category) => {
+      for (let individual = 1; individual <= count; individual++) {
+        rows.push(
+          completion(`f${category}-${individual}`, day, [
+            { kind: 'friend', category, individual },
+          ]),
+        )
+        day = addDays(day, 60) // past FRIEND_REPEAT_GAP_DAYS.max
+      }
+    })
+    return rows
+  }
+
+  const lastDay = '2030-01-01' // long after every arrival above
+
+  it('a spent category goes quiet — no eleventh plip, ever', () => {
+    // Only the plip door is open (10 magazines), and all ten plips have
+    // arrived. There is nobody left to send, however late the tap.
+    const onlyPlips = [
+      ...magazineRun('2026-07-01', 10),
+      ...arrivals([FRIEND_ROSTER[0]]),
+    ]
+    expect(friendsFrom(onlyPlips)).toHaveLength(FRIEND_ROSTER[0])
+    expect(nextFriendDue(onlyPlips, SEED)).toBeNull()
+
+    const tap = withFriendDrop(completion('t', lastDay), onlyPlips, SEED)
+    expect(tap.drops).toEqual([])
+  })
+
+  it('one short of the roster, that category is still sending', () => {
+    // The guard is a ceiling, not an off switch. Everyone has arrived
+    // except the tenth plip, so the tenth plip is who is owed — and
+    // nextFriendDue returns the EARLIEST due, so the other categories
+    // have to be spent for this to be a clean read of the plips.
+    const oneShort = FRIEND_ROSTER.map((count, category) =>
+      category === 0 ? count - 1 : count,
+    )
+    const all_but_one = [...allDoorsOpen, ...arrivals(oneShort)]
+    const stillOwed = nextFriendDue(all_but_one, SEED)
+    expect(stillOwed.category).toBe(0)
+    expect(stillOwed.individual).toBe(FRIEND_ROSTER[0])
+
+    // And that last plip really does arrive on a late-enough tap.
+    const tap = withFriendDrop(completion('t', lastDay), all_but_one, SEED)
+    expect(tap.drops).toEqual([
+      { kind: 'friend', category: 0, individual: FRIEND_ROSTER[0] },
+    ])
+  })
+
+  it('every roster spent → no next friend, and taps carry none for ever', () => {
+    const everyone = [...allDoorsOpen, ...arrivals(FRIEND_ROSTER)]
+    expect(friendsFrom(everyone)).toHaveLength(55)
+    expect(nextFriendDue(everyone, SEED)).toBeNull()
+
+    const tap = withFriendDrop(completion('t', lastDay), everyone, SEED)
+    expect(tap.drops).toEqual([])
+  })
+
+  it('played to the end, the stream delivers 55 friends and then stops', () => {
+    // Every door open, nobody arrived yet: tap on each friend's own due
+    // day, over and over, and let the whole community arrive. It has to
+    // END — that is the lifetime maximum, lived out rather than asserted.
+    let history = allDoorsOpen
+    let taps = 0
+    for (let due = nextFriendDue(history, SEED); due !== null; taps++) {
+      expect(taps).toBeLessThan(100) // a stream that never ends is the bug
+      history = [
+        ...history,
+        withFriendDrop(completion(`t${taps}`, due.dueDay), history, SEED),
+      ]
+      due = nextFriendDue(history, SEED)
+    }
+
+    const community = friendsFrom(history)
+    expect(community).toHaveLength(55)
+    // …and exactly the roster, category by category — no category
+    // over-sent and none left short.
+    FRIEND_CATEGORIES.forEach((_, category) => {
+      expect(
+        community.filter((friend) => friend.category === category),
+      ).toHaveLength(FRIEND_ROSTER[category])
+    })
   })
 })
 

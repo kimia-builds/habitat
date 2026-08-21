@@ -6,7 +6,9 @@
 // surprise drop 1–5 Habitat days later ("anticipation first, surprise
 // second"). Repeats are allowed (Kimia's decision 2026-07-20): each
 // NEXT friend of the same category waits a seeded 20–50 days after the
-// previous one actually arrived, so friends can never bunch up.
+// previous one actually arrived, so friends can never bunch up — but
+// only until that category's roster is spent (2026-07-24, enforced
+// here in T6.1b): FRIEND_ROSTER caps each one, 55 friendships in all.
 //
 // A friend arrives exactly like every other drop: rolled at tap time
 // and STORED on the completion as
@@ -27,6 +29,7 @@ import {
   FRIEND_CATEGORIES,
   FRIEND_FIRST_DELAY_DAYS,
   FRIEND_REPEAT_GAP_DAYS,
+  FRIEND_ROSTER,
   LITERACY_MILESTONES,
   LITERACY_POINTS,
 } from './constants.js'
@@ -113,9 +116,10 @@ export function friendDueDay(
 // The next friend waiting on this history: the earliest-due one whose
 // category's door is open and who hasn't arrived yet (ties settle on
 // the lower category — the lower door has waited longer by design).
-// Returns { category, individual, dueDay } or null when no door is
-// open. Whether the friend actually arrives depends on the tap's day —
-// withFriendDrop below compares.
+// Returns { category, individual, dueDay }, or null when there is
+// nobody left to send — no door open yet, or every open category has
+// emptied its roster. Whether the friend actually arrives depends on
+// the tap's day — withFriendDrop below compares.
 export function nextFriendDue(completions, worldSeed) {
   const doors = doorOpenDays(completions)
   const arrived = friendsFrom(completions)
@@ -124,6 +128,14 @@ export function nextFriendDue(completions, worldSeed) {
     if (doors[category] === null) continue
     const ofCategory = arrived.filter((friend) => friend.category === category)
     const individual = ofCategory.length + 1
+    // The roster is FIXED and finite (spec §5, design-bible §9c): a
+    // category refills only until its individuals run out — 10 plips,
+    // 9 baluhms, … 1 hamdi bulo, 55 friendships in a lifetime. Once
+    // that many have arrived the category goes quiet for ever, and
+    // when every open category is quiet there is no next friend at
+    // all. Without this the stream would keep counting upward and send
+    // an eleventh plip, for whom no name slot exists (T6.1b).
+    if (individual > FRIEND_ROSTER[category]) continue
     const dueDay = friendDueDay(
       worldSeed,
       doors[category],

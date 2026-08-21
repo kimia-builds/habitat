@@ -303,12 +303,13 @@ opening its own growing world:
   refills — the next friend arriving a seeded 20–50 days after the
   previous — **only until its roster is exhausted**; 55 friendships is
   the lifetime maximum (2026-07-24, amending the 2026-07-20
-  repeat-friends rule). The roster now exists in code as
-  `FRIEND_ROSTER`, and `src/content/names.js` carries exactly one name
-  slot per individual — but **the cap itself is not yet enforced**
-  (found 2026-08-10): `nextFriendDue` keeps sending a category's next
-  individual for ever. See the decisions log; it is a defect against
-  this rule, not a change to it.
+  repeat-friends rule). The roster lives in code as `FRIEND_ROSTER`,
+  `src/content/names.js` carries exactly one name slot per individual,
+  and **`nextFriendDue` obeys the ceiling** (T6.1b, 2026-08-21): a
+  category whose individuals have all arrived goes quiet for ever, and
+  when every open category is quiet no friend is due at all. Nothing
+  else about the stream changes — the doors, the delays and the
+  one-friend-per-tap rule are untouched.
 - Friendships live in the **Guest Book** — a page like the Abode, a
   record of everyone who has welcomed us. (We are the guest here, not
   the owner.) Titled **local community**. Clicking a character opens a

@@ -3034,6 +3034,71 @@ return 0` right after the era is worked out, so a moment before the
   fallback is a safety net nobody will see until M8's phone drops that
   gate — built anyway, because the rule is right.
 
+- 2026-08-21 (T6.1b): **the friendship stream now has an end, and it was
+  always supposed to.** No rule changed here — the 55-friendship ceiling
+  was decided 2026-07-24 and written into spec §5, design-bible §9c and
+  CLAUDE.md — but `nextFriendDue` had never been taught it (found
+  2026-08-10 while building T6.1a). The fix is a ceiling in the one place
+  that counts upward, and the decision worth recording is where it went:
+  **in the GENERATOR, not the validator.** `validateDrop` still accepts
+  any individual number, because it guards data that is already SAVED —
+  tightening it would mean a game that had somehow stored an
+  out-of-roster friend could no longer be loaded, which is the one
+  outcome worse than the bug. Stopping the stream from creating one is
+  the whole job; the record stays readable whatever is in it.
+
+## T6.1b build notes — the roster runs out (2026-08-21)
+
+**What was wrong.** Each friend species has a fixed roster — 10 plips,
+9 baluhms, down to a single hamdi bulo, 55 friendships in a lifetime —
+and `src/content/names.js` carries exactly that many name slots. But
+`nextFriendDue` worked out who was coming next as "however many of this
+species have arrived, plus one", with nothing to stop it. Given enough
+years it would have sent an eleventh plip: a friend with no name slot,
+who would have shown up wearing the species name and pushed the
+lifetime count past 55. Nobody could have hit it yet — ten plips is
+already several years of reading at the current pacing — which is
+exactly why it was worth fixing before anyone did.
+
+**The fix.** One line, in the one place that counts upward:
+
+```js
+if (individual > FRIEND_ROSTER[category]) continue
+```
+
+A species that has sent its whole roster is skipped when the code looks
+for who is due; when every open species is skipped, nobody is due at
+all and `nextFriendDue` returns null — which `withFriendDrop` already
+knew how to handle, because that is the same answer it gives before any
+door is open. So the ending needed no new path: the stream simply stops
+having anyone to send, the way it starts out with nobody to send.
+
+Nothing else moved. Doors still open on literacy milestones, first
+friends still wait a seeded 1–5 days, repeats still wait 20–50 days
+after the previous arrival, and a tap still carries at most one friend.
+
+**Not touched, deliberately:** `validateDrop`. It checks friend records
+that are already stored, and a stricter version could refuse to load a
+saved game — the reasoning is in the decisions log.
+
+_Tests:_ full suite 969 pass (three new, in `friends.test.js`). Each of
+the three was checked the honest way — the fix was removed and the
+suite re-run, and all three failed; a fourth draft passed without the
+fix and was rewritten until it didn't:
+
+- **a spent species goes quiet** — only the plip door open, all ten
+  plips arrived, and no eleventh is ever due however late the tap;
+- **every roster spent** — all ten doors open, all 55 arrived, nobody
+  due and taps carry nothing;
+- **played to the end** — starting from ten open doors and nobody
+  arrived, tap on each friend's own due day over and over until the
+  stream runs dry. It has to run dry (the loop fails the test if it
+  passes 100 taps), and what arrives is exactly the roster, species by
+  species: 55 friends, none over-sent, none left short.
+
+A fourth test guards the opposite mistake — nine plips in, the tenth is
+still owed — so the ceiling can never quietly become an off switch.
+
 ## T6.23e build notes — the default view, and the one press that saves it (2026-08-21)
 
 The last of the lenses, and the one that makes the others worth pressing:
