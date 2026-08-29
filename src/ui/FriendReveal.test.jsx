@@ -14,6 +14,7 @@ import {
   setSpeciesName,
 } from '../test/nameFixture.js'
 import FriendReveal from './FriendReveal.jsx'
+import { FRIEND_CANON } from './friendCanon.js'
 
 afterEach(cleanup)
 
@@ -134,6 +135,39 @@ describe('the friend arrival reveal', () => {
     } finally {
       Object.assign(intro, original)
     }
+  })
+
+  // T5.3h, 2026-08-29: the real drawing, at the Guest Book card's size,
+  // wearing only its own glow. These are Kimia's three calls, in order.
+  it('shows the real drawing and not the placeholder line-art', () => {
+    renderReveal()
+    const dialog = screen.getByRole('dialog')
+    expect(dialog.querySelector('.friend-art')).not.toBeNull()
+    expect(dialog.querySelector('.friend-glyph')).toBeNull()
+  })
+
+  it('stands the smallest friend at the Guest Book card’s 2.25rem, and the rest in canon', () => {
+    // The plip is the base's anchor: say how big IT must be and everyone
+    // else follows from the character sheet.
+    const widthOf = (art) => parseFloat(art.style.width)
+    renderReveal()
+    const plipArt = screen.getByRole('dialog').querySelector('.friend-art')
+    expect(widthOf(plipArt)).toBeCloseTo(2.25, 5)
+    cleanup()
+
+    // A different friend on the same screen keeps the sheet's proportion.
+    renderReveal({ arrival: arrival(8, 1) }) // the chitu, the largest
+    const chituArt = screen.getByRole('dialog').querySelector('.friend-art')
+    expect(widthOf(chituArt) / widthOf(plipArt)).toBeCloseTo(
+      FRIEND_CANON.chitu / FRIEND_CANON.plip,
+      5,
+    )
+  })
+
+  it('adds no CSS halo over the drawing’s own glow', () => {
+    renderReveal()
+    const art = screen.getByRole('dialog').querySelector('.friend-art')
+    expect(art.classList.contains('reveal-glyph')).toBe(false)
   })
 
   it('dismisses on its button', () => {

@@ -208,7 +208,10 @@ tracker. Everything after this is delight, informed by real use.
                   every screen goes through, and tracedFriends.js became the
                   permanent roll-call it was always waiting to be. Build
                   notes in history.md)_
-            - [ ] **The arrival reveal** — the full neon POP moment.
+            - [x] **The arrival reveal** _(done 2026-08-29 — the real
+                  drawing at the Guest Book card's own size, wearing only
+                  its own glow; the panel's neon rose is untouched. Build
+                  notes in history.md)_
             - [ ] **The cameo** — the rare home-screen visit.
             - [x] **The Abode's party** _(done 2026-08-21 — went in with
                   the flora under T5.3i, which is where it was always

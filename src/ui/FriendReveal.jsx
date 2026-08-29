@@ -11,12 +11,38 @@
 // momentary, so a category's later friends arrive wordless: the art,
 // the name and the animation carry the moment. An empty slot renders
 // nothing at all (the T3.4 rule). The overlay waits to be dismissed.
+//
+// THE REAL DRAWING LANDED HERE 2026-08-29 (T5.3h) — the T4.4 placeholder
+// line-art is gone from this moment and it goes through Friend.jsx like
+// every other screen that shows a friend. Two calls of Kimia's, both made
+// before it was built:
+//
+//   HOW BIG — the same size as the Guest Book card. A friend is the size it
+//   is wherever you meet it, so this screen chooses its base from the small
+//   end exactly as that card does (baseWhereSmallestIs, friendCanon.js) and
+//   the other nine follow from the character sheet. Sizing from the big end
+//   instead would leave the plip — the friend you meet most — a speck.
+//
+//   THE GLOW — the drawing's own, and nothing else. The placeholder wore a
+//   neon rose halo painted on in CSS (`.reveal-glyph`); the real art carries
+//   its aura inside itself, in the friend's own colour (design-bible §3, §7),
+//   so that halo would only tint the friend's light rose at the edges. The
+//   overlay CARD keeps its neon rose — that is the moment's colour, not the
+//   friend's.
 
 import { FRIEND_CATEGORIES } from '../game/constants.js'
 import { friendDisplayName } from '../content/names.js'
 import { narrationSlot } from '../content/narration.js'
-import FriendGlyph from './FriendGlyph.jsx'
+import Friend from './Friend.jsx'
+import { baseWhereSmallestIs } from './friendCanon.js'
 import { useText } from './language.jsx'
+
+// How big the LARGEST friend stands here — set by saying how big the SMALLEST
+// must be for its drawing to read. 2.25rem for a plip is the Guest Book card's
+// own figure, repeated deliberately rather than shared: each screen states its
+// own base (friendCanon.js), and these two agree because Kimia asked them to,
+// not because one is wired to the other.
+const REVEAL_BASE_REM = baseWhereSmallestIs(2.25)
 
 function FriendReveal({ arrival, worldSeed, firstOfCategory, onDismiss }) {
   const { t } = useText()
@@ -37,11 +63,13 @@ function FriendReveal({ arrival, worldSeed, firstOfCategory, onDismiss }) {
       aria-label={title ?? t('reveal.friendArrives')}
     >
       <div className="reveal reveal-friend">
-        <FriendGlyph
+        <Friend
           category={arrival.friend.category}
           individual={arrival.friend.individual}
           worldSeed={worldSeed}
-          className={`reveal-glyph friend-anim-${key}`}
+          base={REVEAL_BASE_REM}
+          idPrefix="reveal-"
+          className={`friend-anim-${key}`}
         />
         {name && <span className="reveal-friend-name">{name}</span>}
         {title && <h2 className="reveal-title">{title}</h2>}

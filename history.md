@@ -3229,6 +3229,78 @@ return 0` right after the era is worked out, so a moment before the
   half-and-half draws about 38% fewer paths. **The large flora are
   untouched, bit for bit** — this decision only ever moves the small class.
 
+- 2026-08-29 (Kimia's calls, asked before building T5.3h's arrival
+  reveal): **the reveal shows a friend at the Guest Book card's size, and
+  the friend's glow is the drawing's own.** Offered three bases — the
+  card's, a step bigger, and as big as the panel could be made to hold —
+  she took the card's: a friend is the size it is wherever you meet it.
+  So the reveal states its own `baseWhereSmallestIs(2.25)`, the same
+  figure the card states, repeated rather than shared — each screen names
+  its own base (friendCanon.js), and these two agree because she asked
+  them to, not because one is wired to the other. On the glow, offered the
+  drawing's own aura alone, that aura plus the placeholder's neon rose
+  halo, or a look at both live, she took the aura alone: the real art
+  carries its light inside itself in the friend's own colour
+  (design-bible §3, §7), so a rose halo could only tint that light at the
+  edges. **The overlay CARD keeps its neon rose** — `--pop-friend` is the
+  moment's colour, not the friend's, and nothing about it changed.
+
+## T5.3h build notes (part 2) — the arrival reveal (2026-08-29)
+
+The big overlay that plays when a new friend arrives now shows Kimia's real
+drawing. `FriendReveal.jsx` was the second-last file in the app still
+importing the T4.4 placeholder `FriendGlyph`; only `Cameo.jsx` still does.
+
+**The change is three lines of substance.** The placeholder was swapped for
+`Friend.jsx` — the one component every screen showing a friend goes through
+since the Guest Book slice — with a base, an `idPrefix` of its own so two
+drawings on a page can never borrow each other's glow filter, and the same
+`friend-anim-<key>` class it always carried. The signature category
+animation still plays here; this is one of its three permitted moments.
+
+**Why nothing else had to move.** The reveal panel is a flex column with
+`align-items: center`, a gap and padding — the same arrangement as
+`.spread-popup`, which the Guest Book card wears and which has been live
+and judged since 2026-08-21. So the layout was already proven for a real
+drawing; only the numbers needed checking.
+
+**The numbers, checked rather than eyeballed.** At
+`baseWhereSmallestIs(2.25)` the base is 16.172rem, and the widest of the
+ten is the chitu at exactly that — 259px. The panel is `max-width: 22rem`
+with `var(--space-6)` padding each side, leaving 19rem of content width, so
+the widest friend clears it by nearly 3rem and the panel simply grows from
+the narrow box the 4rem placeholder left it at. The tallest is the hamdi
+bulo at 18.72rem (299px), the drawing's own shape following from its
+viewBox. Nothing overflows and no rule needed loosening.
+
+**The halo came off.** `.reveal-glyph` (a 4rem box and a
+`drop-shadow` in the moment's neon rose) is no longer applied to the
+friend. The rule stays in the stylesheet — `FirstReveal.jsx` and
+`SpreadPopup.jsx` still put it on their `DropGlyph`s — it simply is not
+worn by a friend any more.
+
+**A stale comment fixed in passing** (the docs-disagree-with-code rule):
+`.friend-glyph`'s note in index.css still listed four screens wearing the
+placeholder, two of which took the real drawings on 2026-08-21. It now
+names the one that genuinely remains, the cameo, with the dates.
+
+**Tests:** 1024 pass, up from 1021 — three new ones, all here.
+`FriendReveal.test.jsx` gained: that the dialog holds a
+`.friend-art` and no `.friend-glyph`; that a plip stands at 2.25rem and a
+chitu at the character sheet's ratio to it, so the base can never be
+retyped by hand without the test noticing; and that no CSS halo class
+rides on the drawing. The five existing tests passed untouched, because
+they query the animation class and the wrapper's role rather than which
+component drew the picture — which is what the structure-not-wording rule
+buys.
+
+**Not verified in a browser, and why.** Forcing a friend arrival means
+seeding a save with a pending drop, several round trips for a swap whose
+layout is the Guest Book card's own, already live. The sizes were computed
+against the panel's real numbers instead. If it reads wrong, it reads wrong
+by Kimia's eye on the live site, which is where this call was always going
+to be settled.
+
 ## T5.3i build notes (part 3) — one fur, worn at one size (2026-08-21)
 
 **What changed on screen.** The hairs on a small flora are as thick and as
