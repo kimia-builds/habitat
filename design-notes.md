@@ -549,6 +549,20 @@ design-bible.md §9c.)
      click and a scripted `.click()` both bypass pointer events, so
      neither can prove a control is reachable by a real finger. Only a
      real click at real coordinates does.
+     **The visitor is as big as it actually is (T5.3h, 2026-08-29).**
+     The visit was the last screen in Habitat wearing the T4.4
+     placeholder, which drew all ten friends at one flat 2.75rem square
+     — a plip and a chitu turned up identical. It now stands them in the
+     character sheet's proportions like everywhere else, sized from the
+     small end: **a plip at 1.5rem** (Kimia's call, the arrival shelf's
+     and the Guest Book list's own figure — a visit is a glance, not a
+     card), which puts a chitu at 10.78rem and grows the blob with its
+     visitor. Below a window of about 1088px the margin beside the
+     habits runs out and the biggest friends overhang the tiles by
+     around 3rem: a look, never a block, since the visit catches no
+     pointer events. That is the 2026-08-16 ruling on this same box
+     applied again — losing what the visit came to say is worse than
+     briefly sitting over a habit.
      **A pressable visit also stays about twice as long** (18s against
      9s). Nine seconds is a performance and a beat to read, which is
      enough to WATCH; noticing a thing is pressable, reading it and

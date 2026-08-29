@@ -191,35 +191,17 @@ tracker. Everything after this is delight, informed by real use.
                   open), the Map marker and the keepsake cutting. Kimia
                   opens this in its own session. No screen may type a
                   landmark size in meanwhile.
-      - [ ] **T5.3h The friends reach the game** _(opened 2026-08-21 on
-            Kimia's call, "launch the friends into production")_ — the ten
-            drawings, their canon sizes and their dealt colours replace the
-            T4.4 placeholder line-art on every screen that shows a friend.
-            One screen at a time, each pushed and judged live before the
-            next is started (the design-slice rule).
-            **How a screen chooses its base (Kimia, 2026-08-21):** size up
-            from the SMALLEST friend — say how big a plip must be before
-            its drawing reads, and let the rest follow from friendCanon.js
-            (`baseWhereSmallestIs`). Sizing from the big end instead keeps
-            today's on-screen sizes and leaves the plip a five-pixel speck,
-            and the plip is the friend you meet most often.
-            - [x] **The Guest Book** _(done 2026-08-21 — the list and the
-                  popup card. `src/ui/Friend.jsx` is now the one component
-                  every screen goes through, and tracedFriends.js became the
-                  permanent roll-call it was always waiting to be. Build
-                  notes in history.md)_
-            - [x] **The arrival reveal** _(done 2026-08-29 — the real
-                  drawing at the Guest Book card's own size, wearing only
-                  its own glow; the panel's neon rose is untouched. Build
-                  notes in history.md)_
-            - [ ] **The cameo** — the rare home-screen visit.
-            - [x] **The Abode's party** _(done 2026-08-21 — went in with
-                  the flora under T5.3i, which is where it was always
-                  going: both families share one base on that ground.)_
-            - [x] **The habit list's arrival row** _(done 2026-08-21 —
-                  went in with T5.3i's second slice, where it belonged:
-                  a friend and a flora landing on one shelf share that
-                  shelf's one base.)_
+      - [x] **T5.3h The friends reach the game** _(done 2026-08-29 — the
+            ten drawings, their canon sizes and their dealt colours replaced
+            the T4.4 placeholder on every screen that shows a friend: the
+            Guest Book, the Abode's party and the habit list's arrival row
+            2026-08-21, the arrival reveal and the home-screen cameo
+            2026-08-29. `src/ui/Friend.jsx` is the one component they all go
+            through, and each screen states its own base by saying how big
+            the SMALLEST friend must be (`baseWhereSmallestIs`) — the rule
+            is written up in friendCanon.js. Nothing renders FriendGlyph.jsx
+            any more; retiring it is Kimia's call, not an art slice's.
+            Build notes in history.md, in three parts)_
 
       - [ ] **T5.3i The flora reach the game** _(opened 2026-08-21 on Kimia's
             call, "take the flora live into production")_ — the four

@@ -32,6 +32,33 @@
 //   • the friend's NAME is gone. The friend and the caption, nothing
 //     else: a visit is a moment, not a record card. Who came is
 //     something you see, and the Guest Book is where names live.
+//
+// THE REAL DRAWING LANDED HERE 2026-08-29 (T5.3h, the last slice) — the
+// T4.4 placeholder line-art is gone from Habitat entirely, and the visit
+// goes through Friend.jsx like every other screen that shows a friend.
+// Kimia's call, asked before it was built:
+//
+//   HOW BIG — a plip at 1.5rem, the same figure the arrival shelf and the
+//   Guest Book LIST already stand their friends at. A visit is a glance,
+//   not a card, so it takes the small figure rather than the Guest Book
+//   card's 2.25rem. The other nine follow from the character sheet, which
+//   puts the chitu at 10.78rem: the visit is now as big as its visitor,
+//   where the placeholder drew all ten at one flat 2.75rem square.
+//
+//   WHAT THAT MEANS FOR THE ROOM (said to Kimia before she chose). The
+//   visit lives in the margin beside the habit column, and that margin
+//   runs out below a window of about 1088px, where .cameo falls back to
+//   its --cameo-min floor. A chitu or a hamdi bulo turning up on a window
+//   that narrow overhangs the habit tiles by around 3rem. That is a LOOK,
+//   not a block: .cameo catches no clicks, so a habit underneath stays
+//   reachable, and Kimia's 2026-08-16 ruling on this same box already
+//   said a visit briefly sitting over a tile beats shrinking what it came
+//   to say.
+//
+//   THE GLOW is the drawing's own, as everywhere else — a friend's aura
+//   lives inside the artwork (design-bible §3, §7). The BLOB keeps its
+//   rose: that is the moment's colour, not the friend's, exactly as the
+//   arrival reveal's card kept its own.
 
 import { useEffect } from 'react'
 import {
@@ -42,8 +69,18 @@ import {
 import { narrationSlot } from '../content/narration.js'
 import Blob from './blob.jsx'
 import Firework from './firework.jsx'
-import FriendGlyph from './FriendGlyph.jsx'
+import Friend from './Friend.jsx'
+import { baseWhereSmallestIs } from './friendCanon.js'
 import { useText } from './language.jsx'
+
+// How big the LARGEST friend stands here — stated, as every screen states
+// it, by saying how big the SMALLEST must be and letting friendCanon.js
+// deal out the rest (Kimia's rule 2026-08-21). 1.5rem for a plip is the
+// arrival shelf's and the Guest Book list's own figure, repeated
+// deliberately rather than shared: each screen names its own base, and
+// these three agree because a friend is the size it is wherever you meet
+// it, not because one is wired to the others.
+const CAMEO_BASE_REM = baseWhereSmallestIs(1.5)
 
 // Which wins earn the firework (design-notes §5, Kimia's call
 // 2026-08-16): the two that mark something never done before. A big day
@@ -129,11 +166,13 @@ function Cameo({ win, worldSeed, onExpire, onOpen }) {
           id={`${win.type}-${win.friend.category}-${win.friend.individual}`}
           className="cameo-blob"
         />
-        <FriendGlyph
+        <Friend
           category={win.friend.category}
           individual={win.friend.individual}
           worldSeed={worldSeed}
-          className={`cameo-glyph friend-anim-${key}`}
+          base={CAMEO_BASE_REM}
+          idPrefix="cameo-"
+          className={`friend-anim-${key}`}
         />
       </span>
       {message && <p className="cameo-message">{message}</p>}

@@ -3245,6 +3245,92 @@ return 0` right after the era is worked out, so a moment before the
   edges. **The overlay CARD keeps its neon rose** — `--pop-friend` is the
   moment's colour, not the friend's, and nothing about it changed.
 
+- 2026-08-29 (Kimia's call, asked before building T5.3h's cameo — the
+  last slice of the task): **a visiting friend stands at a plip's
+  1.5rem, the arrival shelf's and the Guest Book list's own figure.**
+  Offered that, the Guest Book CARD's 2.25rem, and a 1rem that would
+  always fit whatever the window, she took 1.5rem. The reasoning it
+  follows: a visit is a glance rather than a card, and the shelf — which
+  also stands real friends inside blobs, at exactly this base, judged
+  live on 2026-08-21 — is the moment the cameo most resembles.
+  **What that costs, said before she chose rather than discovered
+  after.** The visit lives in the margin beside the habit column, and
+  that margin runs out below a window of about 1088px, where `.cameo`
+  falls back to its `--cameo-min` floor. Measured live at 800px: a chitu
+  reaches 48px past the column's left edge and covers a habit's name and
+  the corner of a pebble. That is a LOOK and not a block — probed with
+  `elementFromPoint` at four covered spots, every one of them hits the
+  page beneath, because `.cameo` catches no pointer events. Her
+  2026-08-16 ruling on this same box already said a visit briefly
+  sitting over a tile beats shrinking what it came to say.
+
+## T5.3h build notes (part 3) — the cameo, and the task closed (2026-08-29)
+
+The home-screen visit was the LAST screen in Habitat wearing the T4.4
+placeholder line-art. It now goes through `Friend.jsx` like every other
+screen that shows a friend, which finishes T5.3h: the ten drawings, their
+canon sizes and their dealt colours are in production everywhere.
+
+**What changed on screen.** A visiting friend is now as big as it actually
+is. The placeholder drew all ten at one flat `2.75rem` square, so a plip
+and a chitu turned up identical; the visit is now 1.5rem of plip up to
+10.78rem of chitu, and the blob — which has always stretched to whatever it
+is laid over (blob.jsx) — grows with its visitor.
+
+**The change is the same three lines the reveal was.** `FriendGlyph` out,
+`Friend.jsx` in, with a base, an `idPrefix` of its own so two drawings on a
+page can never borrow each other's glow filter, and the same
+`friend-anim-<key>` class it always carried. The signature animation still
+performs once here — this is the third of its three permitted moments.
+
+**One CSS rule had to lose two properties.** `.cameo .cameo-glyph` carried
+`width: 2.75rem; height: 2.75rem; animation-iteration-count: 1`. The size
+had to go — a width typed in at that end would silently flatten the ten
+back to one size, which is exactly what the placeholder did — but the
+iteration count is the scarcity rule and had to stay. So the rule is now
+`.cameo .friend-art`, holding the once-through performance and nothing
+else, with a note saying why no size may ever be added back to it.
+
+**Verified live, in the browser, because this one could not be computed.**
+The reveal slice reasoned from the panel's numbers and said so; here the
+blob is drawn AROUND the friend rather than beside it, so its shape is a
+consequence of the drawing's own aspect ratio and there was no arithmetic
+that would tell us what it looks like. A save was seeded straight into
+`localStorage` — eight habits marked today for a big day, one carrying an
+arrived friend, the world seed fixed — and the visit's fade paused and
+seeked so it could be photographed (the hidden-tab trick in these notes).
+Three things came out of it that no test would have shown:
+
+- the chitu renders as two stacked SVGs at 172.5 x 132.9px inside a
+  220.5 x 156.9px blob, and at a 1280px window the whole visit is 220px
+  wide against 272px of margin — it never reaches the habits at all;
+- the plip at 1.5rem still reads as a creature, in a small blob, which was
+  the whole reason for sizing from the small end;
+- at 800px the chitu overhangs by 48px, and `elementFromPoint` at four
+  covered spots returns the habit name and the pebbles underneath, never
+  the cameo. The overlap is visual only.
+
+**A fixture bug worth remembering, since it cost a round trip.** The seeded
+save named `abodeSky: 'dusk'`, which is not one of the four
+(`ember`, `teal`, `violet`, `ash`) — the app's own validation caught it and
+the error boundary took the whole page. That is the validation doing its
+job on a hand-written save; nothing in the app was wrong.
+
+**The placeholder is now dead code.** Nothing renders `FriendGlyph.jsx` any
+more, and `.friend-glyph` in index.css styles nothing. Both are left
+standing deliberately rather than pulled out inside an art slice — that is
+a retirement for Kimia to call, and the index.css comment now says exactly
+that instead of naming a screen that no longer wears it.
+
+**Tests:** 1028 pass, up from 1024 — four new ones, all in
+`Cameo.test.jsx`, plus one existing assertion moved off `.cameo-glyph` onto
+`.friend-art`. The new four pin: the real drawing present and the
+placeholder absent; a plip at exactly 1.5rem; a chitu at the character
+sheet's ratio to that plip, so the base can never be retyped by hand
+without the suite noticing; and no placeholder class riding on the drawing.
+The other nineteen passed untouched — they query roles, classes and
+behaviour rather than which component drew the picture.
+
 ## T5.3h build notes (part 2) — the arrival reveal (2026-08-29)
 
 The big overlay that plays when a new friend arrives now shows Kimia's real

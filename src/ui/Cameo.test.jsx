@@ -19,6 +19,7 @@ import {
   setNarrationSlot,
 } from '../test/narrationFixture.js'
 import Cameo from './Cameo.jsx'
+import { FRIEND_CANON } from './friendCanon.js'
 
 // A fixture name, never Kimia's real one (src/test/nameFixture.js).
 const zala = 'test species name'
@@ -53,7 +54,7 @@ describe('the cameo visit (T4.6)', () => {
   it('shows the celebrating friend, sitting in a blob', () => {
     render(<Cameo win={WIN} worldSeed="seed" onExpire={() => {}} />)
     const visit = screen.getByRole('status')
-    expect(visit.querySelector('.cameo-glyph')).not.toBeNull()
+    expect(visit.querySelector('.friend-art')).not.toBeNull()
     // The blob is the drop shelf's own shape language, shared through
     // blob.jsx (Kimia's call 2026-08-16) rather than redrawn here.
     expect(visit.querySelector('.cameo-blob path')).not.toBeNull()
@@ -68,6 +69,56 @@ describe('the cameo visit (T4.6)', () => {
     const visit = screen.getByRole('status')
     expect(visit.querySelector('.cameo-name')).toBeNull()
     expect(visit.textContent).not.toContain(zala)
+  })
+
+  // T5.3h, 2026-08-29 — the last slice: the visit gets the real drawing,
+  // at Kimia's chosen size. These pin her call and the rule under it.
+  describe('the real drawing (T5.3h)', () => {
+    const widthOf = (art) => parseFloat(art.style.width)
+
+    const visitBy = (category, individual = 1) => {
+      render(
+        <Cameo
+          win={{ ...WIN, friend: { category, individual } }}
+          worldSeed="seed"
+          onExpire={() => {}}
+        />,
+      )
+      return screen.getByRole('status').querySelector('.friend-art')
+    }
+
+    it('shows the real drawing and not the placeholder line-art', () => {
+      visitBy(3, 2)
+      const visit = screen.getByRole('status')
+      expect(visit.querySelector('.friend-art')).not.toBeNull()
+      expect(visit.querySelector('.friend-glyph')).toBeNull()
+    })
+
+    it('stands the smallest friend at 1.5rem, the shelf and list figure', () => {
+      // The plip is the base's anchor (friendCanon.js): say how big IT
+      // must be here and the other nine follow from the character sheet.
+      expect(widthOf(visitBy(0))).toBeCloseTo(1.5, 5)
+    })
+
+    it('keeps the character sheet\u2019s proportions between two visitors', () => {
+      // Kimia's "everywhere and always" rule: a tiny friend can never
+      // out-size a large one, on this screen or any other.
+      const plip = widthOf(visitBy(0))
+      cleanup()
+      const chitu = widthOf(visitBy(8))
+      expect(chitu / plip).toBeCloseTo(
+        FRIEND_CANON.chitu / FRIEND_CANON.plip,
+        5,
+      )
+    })
+
+    it('adds no CSS halo, and no size, over the drawing\u2019s own', () => {
+      // The aura lives inside the artwork (design-bible \u00a73, \u00a77), and the
+      // size comes from the canon \u2014 the placeholder class carried a flat
+      // 2.75rem square that would flatten all ten back to one size.
+      const art = visitBy(8)
+      expect(art.classList.contains('cameo-glyph')).toBe(false)
+    })
   })
 
   it("reads its message from Kimia's slot", () => {

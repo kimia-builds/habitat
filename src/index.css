@@ -1267,10 +1267,13 @@ body {
   height: 100%;
 }
 
-/* The T4.4 placeholder line-art, still worn by the one screen the real
-   drawings have not reached yet: the home-screen cameo. (The Abode's party
-   and the habit list's arrival row took the real drawings on 2026-08-21, the
-   arrival reveal on 2026-08-29.) */
+/* The T4.4 placeholder line-art. NO SCREEN WEARS IT ANY MORE: the Abode's
+   party and the habit list's arrival row took the real drawings on
+   2026-08-21, the Guest Book the same day, the arrival reveal and the
+   home-screen cameo on 2026-08-29 — which finished T5.3h. Nothing renders
+   FriendGlyph.jsx any more, so this rule now styles nothing; both are left
+   standing for Kimia to retire deliberately rather than pulled out inside
+   an art slice. */
 .friend-glyph {
   width: 1.5rem;
   height: 1.5rem;
@@ -1886,9 +1889,13 @@ body {
   filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 
-.cameo .cameo-glyph {
-  width: 2.75rem;
-  height: 2.75rem;
+/* THE PERFORMANCE HAPPENS ONCE. Scarcity is the mechanic (design-notes
+   §8): the signature animation plays through, the friend rests, and the
+   visit fades. Nothing else is left here — the drawing sizes itself from
+   the canon (Cameo.jsx names the base, Friend.jsx multiplies it out), so
+   a width typed in at this end would silently flatten the ten back to one
+   size, which is exactly what the placeholder did until 2026-08-29. */
+.cameo .friend-art {
   animation-iteration-count: 1;
 }
 
