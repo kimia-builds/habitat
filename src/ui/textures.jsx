@@ -54,6 +54,8 @@
 export const TEX_COLORS = {
   mossLight: '#63d79c', // TODO token: organic surface tint (green)
   barkLight: '#7fce9e', // TODO token
+  barkBrownLight: '#8a5c3a', // the columns' dark brown (T5.3j) — a curiosity's
+  // own colour, not the library's green: rock/made things do not have to glow (§7).
   poresTint: [0.34, 0.93, 0.72], // rgb 0–1 for the pore fill (feColorMatrix)
   spongeLight: '#5fc79a', // TODO token
   pumiceLight: '#a9bccd', // TODO token: rock surface tint (cool grey)
@@ -86,6 +88,63 @@ export const TEX_COLORS = {
  *   elevation      ↓ = grazing light = longer, more dramatic shadows in the relief.
  *   seed           = change to get a different-but-same-style instance.
  * =========================================================================== */
+/* -----------------------------------------------------------------------------
+ * BARK — ridged furrows, with its tint AND ITS DIRECTION parameterised (T5.3j).
+ *
+ * The grain is anisotropic: one axis of `baseFrequency` is slow (long features)
+ * and the other fast (tight ones), and which is which is the whole look. The
+ * library's original — 0.016 across, 0.11 down — varies slowly from side to
+ * side and quickly from top to bottom, so its furrows LIE DOWN: they run
+ * horizontally. (The old comment beside it said "vertical", which the drawing
+ * has never agreed with; it is corrected here rather than quietly kept.)
+ *
+ * KIMIA'S CALL (2026-09-01), for the columns: "twist the bark texture by 90
+ * degrees so the lines fall vertical rather than horizontal." That is exactly
+ * the two numbers swapped, which is what `turn: 'vertical'` does — no rotation
+ * transform, which would have turned the LIGHTING too and lit the column from
+ * an angle nothing else on the screen is lit from.
+ *
+ * The default instance is untouched in both respects — the same green, the same
+ * horizontal lie — so the swatch Kimia has already judged draws as it did.
+ *
+ * ON THE BROWN, AND ON §8. The bible's texture table let curiosities draw from
+ * Rock and Fungal only, never "plant-like", which is where bark is filed. Kimia
+ * settled that on 2026-09-01: "bark is just the internal name we've given a
+ * visual texture that fits this particular curiosity... my rules about what
+ * things can or should look like should not necessarily correspond to the names
+ * you've given textures." §8's table is amended to match. The name describes a
+ * LOOK; it does not decide what may wear it.
+ * --------------------------------------------------------------------------- */
+export function BarkFilter({
+  id = 'tex-bark',
+  light = TEX_COLORS.barkLight,
+  turn = 'horizontal',
+}) {
+  // Slow along the furrows, fast across them. Which axis gets which IS the turn.
+  const freq = turn === 'vertical' ? '0.11 0.016' : '0.016 0.11'
+  return (
+    <filter id={id} x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency={freq}
+        numOctaves="5"
+        seed="7"
+        result="n"
+      />
+      <feDiffuseLighting
+        in="n"
+        surfaceScale="2.6"
+        diffuseConstant="1.05"
+        lightingColor={light}
+        result="l"
+      >
+        <feDistantLight azimuth="220" elevation="48" />
+      </feDiffuseLighting>
+      <feComposite in="l" in2="SourceAlpha" operator="in" />
+    </filter>
+  )
+}
+
 /* -----------------------------------------------------------------------------
  * SPONGE — a porous holey mass, its tint PARAMETERISED. The discrete alpha
  * table PUNCHES HOLES (the 0s), then diffuse lighting gives the remaining walls
@@ -150,26 +209,9 @@ export function TextureDefs() {
         <feComposite in="l" in2="SourceAlpha" operator="in" />
       </filter>
 
-      {/* BARK — vertical ridged furrows (anisotropic: low x-freq, high y-freq). */}
-      <filter id="tex-bark" x="-15%" y="-15%" width="130%" height="130%">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.016 0.11"
-          numOctaves="5"
-          seed="7"
-          result="n"
-        />
-        <feDiffuseLighting
-          in="n"
-          surfaceScale="2.6"
-          diffuseConstant="1.05"
-          lightingColor={c.barkLight}
-          result="l"
-        >
-          <feDistantLight azimuth="220" elevation="48" />
-        </feDiffuseLighting>
-        <feComposite in="l" in2="SourceAlpha" operator="in" />
-      </filter>
+      {/* BARK — ridged furrows. The library's own green instance, lying the
+          way it always has; see BarkFilter for the tint and the turn. */}
+      <BarkFilter />
 
       {/* PORES — thresholded noise → scattered raised pore blobs. The big negative
           alpha bias in the last matrix row is the "threshold": push it more
@@ -708,7 +750,7 @@ export const TEXTURES = [
     family: 'plant-like',
     kind: 'filter',
     glow: true,
-    apply: 'filter="url(#tex-bark)"',
+    apply: 'filter="url(#tex-bark)" — or <BarkFilter turn="vertical" light=…/>',
   },
   {
     id: 'tex-pores',

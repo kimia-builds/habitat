@@ -41,7 +41,18 @@
 // palettes, so its one fixed composition can be compared colour to
 // colour. It is still workbench-only; the real Abode screen has not
 // been given a sky yet.
+//
+// CURIOSITIES (T5.3j, opened 2026-09-01) — the market objects, drawn
+// for real at last (objectCanon.js, Curiosity.jsx) and standing here to
+// be judged before they replace ObjectGlyph.jsx's placeholder line
+// drawings on the stall and in the Abode. They are shown AT ABODE SIZE:
+// Kimia gave their sizes in pixels read off the Abode, so the shelf
+// shows exactly what that ground will show, side by side and in the
+// friends' and flora's own scale.
 
+import Curiosity, { CuriosityDefs } from './Curiosity.jsx'
+import { OBJECT_CANON, objectSize } from './objectCanon.js'
+import { baseWhereSmallestIs } from './friendCanon.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
 
 // The §8 texture families still waiting to be judged, in the order the
@@ -106,6 +117,53 @@ function TextureSwatch({ tex }) {
   )
 }
 
+/*
+ * THE CURIOSITY SHELF'S BASE. Not a size of its own: it is the ABODE's base,
+ * copied, so an object on this shelf is the size it will be on that ground —
+ * which is the only question worth asking about a number Kimia read off the
+ * Abode in the first place. The same reasoning as AbodePage.jsx's SCENE_BASE,
+ * and the same 24px plip.
+ *
+ * The consequence, and it is deliberate: the shelf is far wider than the
+ * page, so it scrolls sideways. Design-bible §9c's rule is that the ratios
+ * never bend — a shelf that squared these into matching thumbnails would
+ * teach the eye the opposite of what the canon says, which is exactly the
+ * mistake the flat-width friend shelves made on 2026-08-17.
+ */
+const CURIO_BASE = baseWhereSmallestIs(24)
+
+// Every object drawn so far, smallest first — Curiosity.jsx knows which of
+// the canon's entries it has a recipe for, and only those are shown.
+const CURIOSITIES = ['column-thin', 'column-tall']
+
+// The shelf stands its objects on one ground line, so the tall column and the
+// thin one are read against each other rather than each floating in its own
+// box. The row is as tall as the tallest thing on it.
+function CuriosityShelf() {
+  const sizes = CURIOSITIES.map((key) => objectSize(key, CURIO_BASE))
+  const tallest = Math.max(...sizes.map(({ h }) => h))
+  return (
+    <section className="design-family" aria-label="curiosities">
+      <h3>curiosities</h3>
+      <CuriosityDefs keys={CURIOSITIES} />
+      <div className="curio-shelf-window">
+        <ul className="curio-shelf" style={{ height: `${tallest}px` }}>
+          {CURIOSITIES.map((key, i) => (
+            <li key={key} className="curio-item">
+              <Curiosity objectKey={key} base={CURIO_BASE} unit="px" />
+              <span className="curio-name">
+                {key} · {Math.round(OBJECT_CANON[key].w * CURIO_BASE)}×
+                {Math.round(sizes[i].h)}px · {OBJECT_CANON[key].h.toFixed(3)}{' '}
+                tall
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -130,6 +188,8 @@ function DesignPage({ onBack }) {
           </ul>
         </section>
       ))}
+
+      <CuriosityShelf />
 
       {/* The abode-sky shelf came down on 2026-08-21 (T5.4). Its question
           — do these four palettes work? — was answered by putting them on

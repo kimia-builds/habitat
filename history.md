@@ -3264,6 +3264,168 @@ return 0` right after the era is worked out, so a moment before the
   2026-08-16 ruling on this same box already said a visit briefly
   sitting over a tile beats shrinking what it came to say.
 
+- 2026-09-01 (Kimia's calls, T5.3j — the first real market objects):
+  **A TEXTURE'S NAME IS A CAPTION, NOT A RULE.** Asked for dark brown
+  columns "with bark texture", Claude flagged a collision: design-bible
+  §8's table let curiosities draw from Rock and Fungal only, "never
+  leafy, hairy, or fleshy", and bark is filed under Plant-like. Her
+  ruling: *"bark is just the internal name we've given a visual texture
+  that fits this particular curiosity. we can amend. my rules about what
+  things can or should look like should not necessarily correspond to
+  the names you've given textures that you presented me with on the
+  design shelf."* The seven surface names were Claude's descriptions of
+  what the filters LOOKED like when they first reached the workbench;
+  she judged the pictures, not the words, so the words never decided who
+  may wear a surface. §8's curiosities row is opened up accordingly, and
+  what survives of it is its intent — objects read as made rather than
+  grown — which §10a carries anyway. (Note the contrast with her
+  2026-08-17 ruling on the species names: words SHE coins are binding
+  everywhere in Habitat; words Claude coined are captions.)
+- 2026-09-01: **"hand-drawn" means organic wobble, not sketchiness.**
+  Her instruction was that "for all of our designs, the lines should not
+  be dead straight but rather hand-drawn", which sits directly against
+  §2's NEVER list ("make the world feel hand-sketched or illustrated,
+  except charms, icons and the map"). Offered the two readings she chose
+  the first: irregular, uneven, nothing ruler-straight or
+  machine-perfect — but no visible pencil stroke and no sketched look.
+  §2 is intact and §4's "few straight lines" is what this serves.
+  **Corners curve** rather than meeting sharp.
+- 2026-09-01: **surface detail is one size across an object family** —
+  "as with plants, make the texture size of the columns match". A bark
+  furrow is as wide on the small column as on the large one, and the
+  small object simply wears fewer of them. This is the flora's fur rule
+  (2026-08-21) applied to the objects.
+- 2026-09-01: **the market objects' sizes are canon**, in
+  `src/ui/objectCanon.js` — the third file in the one sizing scale,
+  which `floraCanon.js` had promised. Kimia gives a size in pixels read
+  off the Abode and it converts once into a ratio of the same 1 (a
+  chitu's width) the friends and flora count in. Six sizes set: two
+  columns (10x60 and 40x300), two oval discs (200x150 and 400x300), a
+  smoke and a stone (250x250 each). She confirmed, when asked, that the
+  two COLUMNS are two shapes rather than one shape at two sizes — 1:6
+  against 1:7.5 — while the two ovals are both 4:3 and so are a size
+  class in the flora's sense. Her list is explicitly not exhaustive.
+
+## T5.3j build notes — the columns (2026-09-01)
+
+The first market objects drawn for real, and the first slice of T5.3j.
+Kimia asked for five families at once — columns, oval discs, smoke,
+blob stones — and the design-slice rule (2026-08-12) says not to build
+a set end-to-end and present it finished, so only the COLUMNS were
+built, shown, and approved before the session closed. The rest are
+ticked out in plan.md against the same foundation.
+
+**What she asked for, verbatim:** "10x60px and 40x300px rectangular
+columns which are dark brown with bark texture (but twist the bark
+texture by 90 degrees so the lines fall vertical rather than
+horizontal). curve the edges rather than having sharp corners. as with
+plants, make the texture size of the columns match."
+
+**FOUR QUESTIONS WERE ASKED BEFORE ANY CODE**, and all four earned
+their round trip — three of them changed what got built:
+
+1. The §8 bark collision → she amended the rule (see the decisions log).
+2. Whether these are finished objects or building blocks → "each of my
+   descriptions (a column, a disc) will be their own object or
+   curiosity eventually", not exhaustive, all subject to her eyeball
+   test on the shelf. So they were built as whole curiosities and no
+   §10a "spikes, limbs, loops" character was invented on top of her
+   description.
+3. The blob sizes, which she had not given → all three the same, 250px.
+4. "Hand-drawn" against §2's NEVER → organic wobble, not sketchy.
+
+**`src/ui/objectCanon.js`** — the sizing table's third file. Her pixel
+numbers are stored verbatim and the ratios derived from them once,
+against the Abode's own base (`baseWhereSmallestIs(24)` = 172.5px per
+canon unit), because the Abode is the picture she measured on. That
+divisor is a FROZEN LITERAL rather than an import, and the header says
+why at length: a live import would run the arithmetic backwards, so
+that if the Abode ever gave a plip more room the objects would quietly
+shrink against the friends instead of growing with them.
+
+**Flagged, not smoothed: five of the six sizes are larger than anything
+alive on N-Z-D.** The tall column at 1.739 is half again the tallest
+friend; the large oval at 2.319 is twice a hamdi bulo. That is §10a's
+"wide size range" arriving for real, and it is the first time anything
+in Habitat out-sizes the cast. Nothing was rounded towards the friends
+to tidy the ladder. `objectCanon.test.js` pins it, along with each
+object's place among the flora and friends, rebuilt from those two canon
+files rather than trusted to a comment.
+
+**THE TEXTURE RULE, and the trick that wins it.** The flora win "one fur
+at one size" by growing the hair in a space scaled to the size class
+(Flora.jsx). The objects wear FILTER textures, whose grain is measured
+in the user units of whatever shape they are attached to, so the same
+rule is won more simply: **every object is drawn in a frame equal to its
+own size in Abode pixels.** A 60-unit frame for the 60px column, 300 for
+the 300px one. Both are then scaled to the screen by `base / 172.5`,
+which has nothing to do with which object it is — so one bark furrow is
+the same number of pixels wide on both columns, and a number written in
+a recipe (a corner radius, a wobble) means the same thing everywhere.
+The invariant is tested directly: every object's drawn-to-rendered
+factor must equal `objectUnitScale(base)`.
+
+**`src/ui/handDrawn.js`** — three shape generators (`wobblyRect`,
+`wobblyEllipse`, `wobblyBlob`) over one mechanism: build a ring of
+points, push each along its own outward normal by a seeded amount, and
+close the ring with a Catmull-Rom spline written out as cubics. Two
+details that matter:
+
+- **The offsets are smoothed around the ring** (a rolling average with
+  the two neighbours, wrapping at the join) and then renormalised back
+  to ±amp. Raw random numbers gave a sawtooth — noise, or a jagged edge,
+  never a hand. A hand drifts. Smoothing alone would have quietly turned
+  the wobble down as it turned the spikes off, hence the renormalise.
+- **Nothing is ever stroked, and no straight segment is ever emitted.**
+  Whatever the points do, what gets drawn between them is a curve. That
+  is what keeps §2's ban on a sketched world intact, and the test asserts
+  it by failing on any `L`, `H`, `V`, `Q` or `A` in the path data.
+
+**`src/ui/Curiosity.jsx`** — the twin of Flora.jsx and Friend.jsx: the
+one component every screen showing an object goes through. A recipe per
+object (outline + surface), a surface table that emits its filter under
+its own id and colour (SpongeFilter's arrangement, because a curiosity
+wears its own colour rather than the library's green), and
+`<CuriosityDefs keys=…/>` so a page pays only for the surfaces it draws.
+No glow: §7 lets an artificial object glow or not, and a dark brown
+column that lit itself would read as alive.
+
+**`BarkFilter`** — the bark surface parameterised for tint AND
+direction. The 90° turn is the two `baseFrequency` axes swapped
+(`0.11 0.016` instead of `0.016 0.11`), NOT a rotation transform, which
+would have turned the lighting too and lit the column from an angle
+nothing else on screen is lit from. **A correction went in beside it:**
+the library's bark carried a comment reading "vertical ridged furrows",
+which the drawing has never agreed with — a low x-frequency stretches
+the features sideways, so the original furrows lie horizontal. The
+comment was wrong, not the picture. The default instance is untouched in
+both tint and direction, so the green swatch Kimia judged in July draws
+exactly as it did.
+
+**TWO JUDGEMENT CALLS THAT WENT OPPOSITE WAYS**, and the first was got
+wrong on the first attempt and caught by looking at it:
+
+- **The corner is a FRACTION** of the narrow side (35%). A fixed radius
+  in drawing units was built first, for consistency with the texture
+  rule — and on screen it rounded the 10-wide column into a full capsule
+  while leaving the 40-wide one visibly square. The pair stopped reading
+  as one family. A corner is part of the SHAPE, and the shape is what she
+  gave two sizes of.
+- **The wobble is a SIZE** (2.5 units), so the same hand shows on both —
+  but **capped at a tenth of the narrow side**, or the 10px stick becomes
+  a squiggle rather than a column. Full hand where there is room for it,
+  a quieter one where there is not.
+
+**The shelf shows them at ABODE SIZE**, which is the only question worth
+asking about a number she read off the Abode. It therefore scrolls
+sideways rather than squaring the two into matching thumbnails — the
+mistake the flat-width friend shelves made on 2026-08-17, and
+design-bible §9c's rule is that a workbench gets no exemption. A test
+pins every drawing on that shelf to its canon size.
+
+**Shown as the app's own rendering**, lifted out of the live page rather
+than described: she approved on sight, first pass.
+
 ## T5.3h build notes (part 3) — the cameo, and the task closed (2026-08-29)
 
 The home-screen visit was the LAST screen in Habitat wearing the T4.4

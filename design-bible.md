@@ -183,8 +183,27 @@ mineral · weathered rock
 | Flora         | Plant-like, Fungal, Hair (any organic)                   |
 | Fungi         | Fungal (primary), Plant-like                             |
 | Friends       | Any organic — Plant-like, Fungal, Hair                   |
-| Curiosities   | **Rock and Fungal only** — never leafy, hairy, or fleshy |
+| Curiosities   | **Any texture that suits the object** (see the note below) |
 | Terrain / Map | Rock and Ground                                          |
+
+**The curiosities' row was opened up on 2026-09-01** (T5.3j, Kimia's
+call). It used to read "Rock and Fungal only — never leafy, hairy, or
+fleshy", and it blocked her first real object: dark brown columns
+wearing the bark surface, which is filed above under Plant-like. Her
+ruling:
+
+> "bark is just the internal name we've given a visual texture that fits
+> this particular curiosity. we can amend. my rules about what things can
+> or should look like should not necessarily correspond to the names
+> you've given textures that you presented me with on the design shelf."
+
+The names in this table describe what each filter LOOKS like — they were
+Claude's captions for the seven surfaces when they were first put on the
+workbench, and Kimia judged the pictures, not the words. So a name never
+decides who may wear a surface. What survives of the old row is its
+INTENT, which is §10a's and still stands: objects read as **less blobbish
+than living things — the line between made and grown** — and it is the
+object's form and finish that carry that, not a texture's label.
 
 **Surface colour** (revised 2026-07-25, T5.3b): an organic texture is
 **tinted to its wearer's body colour**, not a fixed green — a friend's
@@ -680,6 +699,38 @@ moments — spec §7.)
 
 **Scale & price.** Wide size range; **price correlates directly with
 physical size.**
+
+**Sizes are canon, and they live in `src/ui/objectCanon.js`** (T5.3j,
+2026-09-01) — the third file in the one sizing scale, beside
+`friendCanon.js` and `floraCanon.js`, exactly as `floraCanon.js`
+promised. Kimia gives an object's size in pixels read off the Abode and
+it is converted once into a ratio of the same 1 (a chitu's width) the
+other two families count in, so an object, a plant and a visitor
+standing on one ground are true to each other by construction. Nothing
+types an object size in by hand; a screen picks one base and every
+family answers to it. The first six sizes she set are two columns
+(0.058 × 0.348 and 0.232 × 1.739), two oval discs (1.159 × 0.870 and
+2.319 × 1.739 — one shape at two sizes), and a smoke and a stone at
+1.449 square. **Five of those six are larger than anything alive on
+N-Z-D**, which is this line's "wide size range" arriving for real.
+
+**Surface detail is one size across an object family** (Kimia,
+2026-09-01: "as with plants, make the texture size of the columns
+match"). A bark furrow is as wide on the small column as on the large
+one, and a pore is one pore on both discs; the small object simply wears
+fewer of them. This is §9a's fur rule applied to the objects, and it is
+won by drawing every object in a frame equal to its own Abode-pixel
+size, so one screen scales them all by the same factor.
+
+**Outlines are hand-drawn, never dead straight** (Kimia, 2026-09-01).
+Read carefully, because it sits next to a NEVER in §2: she means
+**organic wobble, not sketchiness** — an edge that is irregular and
+slightly uneven, with nothing ruler-straight or machine-perfect about
+it, but no visible pencil stroke and no sketched look. The shapes are
+built in `src/ui/handDrawn.js`, which pushes points off the perfect
+outline and then runs a spline through them, so what is drawn is always
+a curve. §2's ban on a hand-sketched world is intact; §4's "few straight
+lines" is what this serves. **Corners curve** rather than meeting sharp.
 
 **Purpose.** Never obvious — invites curiosity, not explanation.
 

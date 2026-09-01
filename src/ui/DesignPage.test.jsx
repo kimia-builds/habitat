@@ -12,6 +12,8 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import DesignPage from './DesignPage.jsx'
 import { TEXTURES } from './textures.jsx'
+import { OBJECT_CANON, objectDrawnBox, objectSize } from './objectCanon.js'
+import { baseWhereSmallestIs } from './friendCanon.js'
 
 afterEach(cleanup)
 
@@ -59,8 +61,43 @@ describe('DesignPage workbench', () => {
     // by becoming the real Abode's four background choices.
     const waiting = ['plant-like', 'fungal', 'rock']
     expect(shelves.slice().sort()).toEqual(
-      waiting.map((f) => `textures — ${f}`).sort(),
+      [...waiting.map((f) => `textures — ${f}`), 'curiosities'].sort(),
     )
+  })
+
+  it('stands the curiosities at their canon sizes, never at a shelf size', () => {
+    // Design-bible §9c, and the mistake the flat-width friend shelves made on
+    // 2026-08-17: a workbench gets no exemption from the canon. Every object
+    // here is drawn at the ratio objectCanon.js gives it, times the shelf's
+    // one base — which is the Abode's, so this shelf shows Abode sizes.
+    const { container } = render(<DesignPage onBack={vi.fn()} />)
+    const shelf = screen.getByLabelText('curiosities')
+    const drawings = [...shelf.querySelectorAll('.curio-item svg[viewBox]')]
+    expect(drawings.length).toBeGreaterThan(0)
+    const base = baseWhereSmallestIs(24)
+    // The drawn width of each, against what the canon says it should be. The
+    // key is read off the viewBox rather than assumed, so this keeps working
+    // as more of the 64 objects arrive.
+    for (const svg of drawings) {
+      const [, , w, h] = svg.getAttribute('viewBox').split(' ').map(Number)
+      // Matched on the drawn box, which IS Kimia's pixel measurement, so two
+      // objects that merely share an aspect ratio are never confused.
+      const key = Object.keys(OBJECT_CANON).find((k) => {
+        const box = objectDrawnBox(k)
+        return box.w === w && box.h === h
+      })
+      expect(key).toBeDefined()
+      const want = objectSize(key, base)
+      expect(Number.parseFloat(svg.getAttribute('width'))).toBeCloseTo(
+        want.w,
+        3,
+      )
+      expect(Number.parseFloat(svg.getAttribute('height'))).toBeCloseTo(
+        want.h,
+        3,
+      )
+    }
+    expect(container.querySelector('#curio-bark-vertical')).not.toBeNull()
   })
 
   it('leads back to the habits', () => {

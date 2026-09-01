@@ -236,6 +236,36 @@ tracker. Everything after this is delight, informed by real use.
                   ~1,700 drawn strands to ~430. Large flora untouched. Build
                   notes in history.md)_
             - [ ] **The landmark class** — see T5.3g; still Kimia's own session.
+      - [ ] **T5.3j The market objects** _(opened 2026-09-01 on Kimia's
+            call, "build or at least document some items for the market,
+            to show me on the design assets shelf")_ — the curiosities
+            (design-bible §10a) become real drawings, replacing
+            ObjectGlyph.jsx's four placeholder line forms. Runs as design
+            slices: one family drawn, shown, judged, then the next.
+            **The sizes are canon now** — `src/ui/objectCanon.js`, the
+            third file in the one scale beside friendCanon.js and
+            floraCanon.js, which is what floraCanon.js's header promised.
+            Kimia gives a size in pixels read off the Abode; it converts
+            once into a ratio of the same 1 the friends and flora count in.
+            **Her rules, settled 2026-09-01 and written into §8/§10a:**
+            texture NAMES are captions for a look and never decide who may
+            wear a surface (§8's curiosities row was opened up for the bark
+            columns); surface detail is ONE SIZE across a family, as the
+            flora's fur is; outlines are hand-drawn in the sense of organic
+            wobble, NOT sketchy, and corners curve.
+            **Her list is explicitly not exhaustive**, and every item is
+            subject to her eyeball test on the design-assets shelf, which is
+            where they stand until they pass.
+            - [x] **The columns** _(done 2026-09-01 — 10x60 and 40x300,
+                  dark brown, bark turned 90° so the grain falls vertical,
+                  curved corners, wobbled edges. `src/ui/handDrawn.js` and
+                  `src/ui/Curiosity.jsx` landed with them. Approved on
+                  sight. Build notes in history.md)_
+            - [ ] **The oval discs** — 200x150 and 400x300, orange, pore
+                  texture, one shape at two sizes.
+            - [ ] **The smoke** — 250x250, baby pink, semi-transparent.
+            - [ ] **The stones** — three blob shapes at 250x250, the
+                  cratered-stone colour and texture.
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four
