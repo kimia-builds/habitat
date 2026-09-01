@@ -205,6 +205,18 @@ INTENT, which is §10a's and still stands: objects read as **less blobbish
 than living things — the line between made and grown** — and it is the
 object's form and finish that carry that, not a texture's label.
 
+**A texture can be worn either way up** (2026-09-01, T5.3j). The pore
+surface paints its pores as raised blobs and leaves the gaps between them
+transparent, which is a fine SWATCH and an impossible OBJECT — a disc made
+only of pores would have see-through holes in it. Asked how the pores
+should read on a solid disc, Kimia chose darker SUNKEN PITS, so the same
+pore field is used inverted (`SunkenPoresFilter`): the threshold that
+stands a pore up is mirrored about its own crossing point, and every
+hollow on the discs is exactly a pore the swatch raises. It is one
+texture, worn the other way up — the same kind of parameter as the bark's
+`turn`, not an eighth surface. Both share one set of grain numbers in code
+so they can never drift apart.
+
 **Surface colour** (revised 2026-07-25, T5.3b): an organic texture is
 **tinted to its wearer's body colour**, not a fixed green — a friend's
 sponge/hair/etc. takes that friend's own colour (§3, §9c). In code the
@@ -731,6 +743,13 @@ built in `src/ui/handDrawn.js`, which pushes points off the perfect
 outline and then runs a spline through them, so what is drawn is always
 a curve. §2's ban on a hand-sketched world is intact; §4's "few straight
 lines" is what this serves. **Corners curve** rather than meeting sharp.
+
+**The first two families drawn** (T5.3j, 2026-09-01): the columns are
+dark brown and wear the bark surface turned 90° so its grain falls
+vertical; the discs are **bright tangerine** (her pick of three oranges)
+and wear the pores as sunken pits (§8). **Neither glows** — this line's
+"may glow or not" has so far always been answered "not", because a made
+thing that lights itself reads as alive.
 
 **Purpose.** Never obvious — invites curiosity, not explanation.
 

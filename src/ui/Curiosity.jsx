@@ -31,8 +31,8 @@
  */
 
 import { objectDrawnBox, objectSize } from './objectCanon.js'
-import { wobblyRect } from './handDrawn.js'
-import { BarkFilter } from './textures.jsx'
+import { wobblyEllipse, wobblyRect } from './handDrawn.js'
+import { BarkFilter, SunkenPoresFilter } from './textures.jsx'
 
 /*
  * THE RECIPES. One entry per object: how its outline is built, and what surface
@@ -62,7 +62,9 @@ const COLUMN_CORNER = 0.35
 
 /*
  * THE WOBBLE — "the lines should not be dead straight but rather hand-drawn."
- * In drawing units, so the same hand shows on both columns.
+ * In drawing units, so the same hand shows on every object: one number for the
+ * whole set, not one per family, because two curiosities standing on the same
+ * ground were drawn by the same person on the same day (handDrawn.js).
  *
  * CAPPED AT A TENTH OF THE NARROW SIDE, though, which is the one place the
  * hand has to give way. A deviation that reads as a drawn line on a 40-wide
@@ -70,10 +72,10 @@ const COLUMN_CORNER = 0.35
  * would stop being a column and start being a squiggle. So the cap: full hand
  * where there is room for it, a proportionally quieter one where there is not.
  */
-const COLUMN_WOBBLE = 2.5
+const OBJECT_WOBBLE = 2.5
 const WOBBLE_CAP = 0.1
 
-// The wobble this box actually gets — see COLUMN_WOBBLE for the cap's reason.
+// The wobble this box actually gets — see OBJECT_WOBBLE for the cap's reason.
 function wobbleFor({ w, h }, amp) {
   return Math.min(amp, Math.min(w, h) * WOBBLE_CAP)
 }
@@ -85,7 +87,27 @@ function columnOutline(box, seed) {
     ...box,
     r: Math.min(box.w, box.h) * COLUMN_CORNER,
     seed,
-    amp: wobbleFor(box, COLUMN_WOBBLE),
+    amp: wobbleFor(box, OBJECT_WOBBLE),
+  })
+}
+
+/*
+ * THE DISCS — "200x150px and 400x300px oval discs, orange, with pore texture."
+ * One shape at two sizes, which is what the two columns are NOT: both are 4:3,
+ * so the large disc is the small one enlarged, the way a large flora is a small
+ * one enlarged (objectCanon.js).
+ *
+ * They share a seed for that reason. The two outlines still are not the same
+ * curve traced twice, and deliberately: the hand is a SIZE (see above), so the
+ * larger disc carries the same little deviations across twice the distance and
+ * comes out the calmer of the two — a bigger thing drawn by the same hand,
+ * rather than a photograph of the small one blown up.
+ */
+function ovalOutline(box, seed) {
+  return wobblyEllipse({
+    ...box,
+    seed,
+    amp: wobbleFor(box, OBJECT_WOBBLE),
   })
 }
 
@@ -100,6 +122,16 @@ const RECIPES = {
     surface: 'bark-vertical',
     seed: 77,
   },
+  'oval-small': {
+    outline: ovalOutline,
+    surface: 'pores-sunken',
+    seed: 23,
+  },
+  'oval-large': {
+    outline: ovalOutline,
+    surface: 'pores-sunken',
+    seed: 23,
+  },
 }
 
 /*
@@ -113,11 +145,29 @@ const RECIPES = {
  */
 const BROWN = '#8a5c3a'
 
+/*
+ * The discs' orange: a bright tangerine (Kimia's pick of three, 2026-09-01).
+ * Bright, but not neon — spec §7 keeps neon for POP moments, and this is a
+ * thing that simply sits on the ground being orange.
+ *
+ * It is a LIGHTING colour, so what lands on screen is this hex dimmed by how
+ * the surface faces the light: the flat of the disc comes out close to it, and
+ * the inside of a pit much darker, which is what makes a pit look sunken.
+ */
+const TANGERINE = '#ff9445'
+
 const SURFACES = {
   'bark-vertical': {
     glow: false,
     colour: BROWN,
     Filter: ({ id }) => <BarkFilter id={id} light={BROWN} turn="vertical" />,
+  },
+  // Pores worn as pits rather than as raised bumps — Kimia's call when asked
+  // how they should read on a solid disc (textures.jsx says how it is done).
+  'pores-sunken': {
+    glow: false,
+    colour: TANGERINE,
+    Filter: ({ id }) => <SunkenPoresFilter id={id} light={TANGERINE} />,
   },
 }
 

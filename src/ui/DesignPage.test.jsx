@@ -97,7 +97,10 @@ describe('DesignPage workbench', () => {
         3,
       )
     }
+    // Both surfaces the shelf's objects wear are defined on the page: the
+    // columns' bark and the discs' pits (Curiosity.jsx).
     expect(container.querySelector('#curio-bark-vertical')).not.toBeNull()
+    expect(container.querySelector('#curio-pores-sunken')).not.toBeNull()
   })
 
   it('leads back to the habits', () => {

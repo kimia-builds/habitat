@@ -132,9 +132,11 @@ function TextureSwatch({ tex }) {
  */
 const CURIO_BASE = baseWhereSmallestIs(24)
 
-// Every object drawn so far, smallest first — Curiosity.jsx knows which of
-// the canon's entries it has a recipe for, and only those are shown.
-const CURIOSITIES = ['column-thin', 'column-tall']
+// Every object drawn so far, in the order Kimia named the families and
+// smallest-first inside each one, so a family's two sizes stand side by side
+// and can be read as one shape at two sizes. Curiosity.jsx knows which of the
+// canon's entries it has a recipe for, and only those are shown.
+const CURIOSITIES = ['column-thin', 'column-tall', 'oval-small', 'oval-large']
 
 // The shelf stands its objects on one ground line, so the tall column and the
 // thin one are read against each other rather than each floating in its own

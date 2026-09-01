@@ -146,6 +146,78 @@ export function BarkFilter({
 }
 
 /* -----------------------------------------------------------------------------
+ * PORES — the shared pore FIELD, so the library's swatch and the discs below
+ * scatter the same pores in the same places at the same size.
+ *
+ * These three numbers are the pore texture: how big a pore is (baseFrequency),
+ * how ragged its edge is (numOctaves) and which particular scatter it is
+ * (seed). They were the swatch's from the day Kimia judged it, and they are
+ * lifted out here rather than copied so that the two ways of WEARING the pores
+ * can never drift into two different textures.
+ * --------------------------------------------------------------------------- */
+const PORE_GRAIN = { freq: '0.19', octaves: '2', seed: '9' }
+
+/* -----------------------------------------------------------------------------
+ * PORES WORN AS SUNKEN PITS (T5.3j, Kimia 2026-09-01) — the oval discs.
+ *
+ * The library's own pores (`tex-pores`, below in TextureDefs) paint the pore
+ * blobs as flat colour and leave the gaps between them transparent, which is a
+ * fine swatch and an impossible OBJECT: a disc made only of pores would have
+ * see-through holes in it. Asked how the pores should read on a solid disc,
+ * Kimia chose DARKER SUNKEN PITS rather than raised bumps.
+ *
+ * So the same pore field is used the other way up. The threshold that made the
+ * pores stand out of the noise is inverted (`slope` negative), which makes them
+ * HOLLOWS instead; that hollowed field is then handed to diffuse lighting as a
+ * height map, exactly as the sponge does, so the surface comes out opaque, in
+ * this object's own colour, with the pits shaded where their walls turn away
+ * from the light. Everything on this screen is lit from the same azimuth, so a
+ * pit here is lit the way a bark furrow is on the columns.
+ *
+ * The pits are blurred a little first: an unblurred threshold gives a vertical
+ * cliff, which lights as a hard black ring and reads as a printed dot rather
+ * than a dent. The depth and the angle of the light were then settled by
+ * looking — deep enough that the pits are plainly dents, shallow enough that
+ * the disc does not turn crawly at 400px across. `light` has no default: the
+ * only things that wear this are curiosities, and design-bible §10a gives
+ * every curiosity its own colour.
+ * --------------------------------------------------------------------------- */
+export function SunkenPoresFilter({ id = 'tex-pores-sunken', light }) {
+  return (
+    <filter id={id} x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency={PORE_GRAIN.freq}
+        numOctaves={PORE_GRAIN.octaves}
+        seed={PORE_GRAIN.seed}
+        result="n"
+      />
+      {/* The swatch's own threshold, turned upside down. Its is
+          alpha = 5a - 1.1, which stands a pore UP wherever the noise runs
+          high; this is 2.1 - 5a, the same line mirrored about the same
+          crossing point, so exactly the pores the swatch raises are the
+          hollows this sinks. Getting the intercept wrong here does not fail
+          loudly, it just quietly draws a different, sparser texture — which
+          it did on the first attempt, and looked like freckles. */}
+      <feComponentTransfer in="n" result="pits">
+        <feFuncA type="linear" slope="-5" intercept="2.1" />
+      </feComponentTransfer>
+      <feGaussianBlur in="pits" stdDeviation="1.6" result="soft" />
+      <feDiffuseLighting
+        in="soft"
+        surfaceScale="4.5"
+        diffuseConstant="1.15"
+        lightingColor={light}
+        result="l"
+      >
+        <feDistantLight azimuth="220" elevation="50" />
+      </feDiffuseLighting>
+      <feComposite in="l" in2="SourceAlpha" operator="in" />
+    </filter>
+  )
+}
+
+/* -----------------------------------------------------------------------------
  * SPONGE — a porous holey mass, its tint PARAMETERISED. The discrete alpha
  * table PUNCHES HOLES (the 0s), then diffuse lighting gives the remaining walls
  * relief in `light`. Standalone (not inlined in TextureDefs) because organic
@@ -219,9 +291,9 @@ export function TextureDefs() {
       <filter id="tex-pores" x="-15%" y="-15%" width="130%" height="130%">
         <feTurbulence
           type="fractalNoise"
-          baseFrequency="0.19"
-          numOctaves="2"
-          seed="9"
+          baseFrequency={PORE_GRAIN.freq}
+          numOctaves={PORE_GRAIN.octaves}
+          seed={PORE_GRAIN.seed}
           result="n"
         />
         <feColorMatrix
@@ -758,7 +830,8 @@ export const TEXTURES = [
     family: 'fungal',
     kind: 'filter',
     glow: true,
-    apply: 'filter="url(#tex-pores)"',
+    apply:
+      'filter="url(#tex-pores)" — or <SunkenPoresFilter light=…/> for pits',
   },
   {
     id: 'tex-sponge',

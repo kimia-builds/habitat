@@ -3305,6 +3305,22 @@ return 0` right after the era is worked out, so a moment before the
   two COLUMNS are two shapes rather than one shape at two sizes — 1:6
   against 1:7.5 — while the two ovals are both 4:3 and so are a size
   class in the flora's sense. Her list is explicitly not exhaustive.
+- 2026-09-01: **a texture can be worn either way up.** The discs were
+  asked for as "orange, with pore texture", and the library's pores are a
+  scatter of coloured blobs with transparent gaps between them — a fine
+  swatch and an impossible object, since a disc made only of pores would
+  have see-through holes in it. Asked how the pores should read on a
+  solid disc, Kimia chose **darker sunken pits** over raised bumps. So
+  the same pore field is used inverted: the threshold that stands a pore
+  up is mirrored about its own crossing point, and every hollow on a disc
+  is exactly a pore the swatch raises. `SunkenPoresFilter` is the second
+  way of wearing one texture, as `BarkFilter`'s `turn` is for the
+  columns — not a second texture.
+- 2026-09-01: **the discs are bright tangerine and do not glow** — her
+  pick from three oranges (mid orange, burnt orange, bright tangerine),
+  and the same no-glow call the columns got. §10a lets a curiosity glow
+  or not; nothing artificial has lit itself yet, and neon stays reserved
+  for POP moments (spec §7).
 
 ## T5.3j build notes — the columns (2026-09-01)
 
@@ -3425,6 +3441,71 @@ pins every drawing on that shelf to its canon size.
 
 **Shown as the app's own rendering**, lifted out of the live page rather
 than described: she approved on sight, first pass.
+
+## T5.3j build notes — the oval discs (2026-09-01)
+
+The second slice of T5.3j, on the same foundation the columns landed:
+`objectCanon.js` already held both sizes, `handDrawn.js` already had
+`wobblyEllipse`, and `Curiosity.jsx` already knew how to put a size, an
+outline and a surface together. So this slice is two recipes, one new way
+of wearing an old texture, and the tuning that made it read.
+
+**THREE QUESTIONS WERE ASKED BEFORE ANY CODE**, and the first one is the
+only reason the discs are not wrong:
+
+1. How the pores should read on a solid disc — the library's pores leave
+   transparent gaps, so "orange disc with pore texture" has no literal
+   reading. She chose sunken pits. (Decisions log.)
+2. Glow or no glow → no glow, as the columns.
+3. Which orange → bright tangerine, `#ff9445`.
+
+**`SunkenPoresFilter` (textures.jsx)** — the pores worn upside down. The
+swatch's threshold is `alpha = 5a - 1.1`, which stands a pore up wherever
+the noise runs high; this is `2.1 - 5a`, the same line mirrored about the
+same crossing point, so exactly the pores the swatch raises are the
+hollows this sinks. That field is then handed to diffuse lighting as a
+height map — the sponge's arrangement — which is what makes the surface
+OPAQUE and lets a disc be a solid thing rather than a doily. The pits are
+blurred first (an unblurred threshold is a vertical cliff, and lights as a
+hard black ring — a printed dot, not a dent), and the pore field's three
+numbers were lifted out into `PORE_GRAIN`, shared with the library's own
+`tex-pores`, so the two ways of wearing the pores can never drift into two
+different textures.
+
+**THE INTERCEPT WAS WRONG FIRST TIME, and nothing failed.** At `1.1 - 5a`
+the mirror is about the wrong point: it sinks only the rare extreme of the
+noise instead of the pores, and the disc came out an orange thing with
+freckles — a plausible surface, a different texture, and no test anywhere
+could have known. It was caught by putting the disc next to the library's
+own pore swatch on the same screen and seeing that they were not the same
+texture. Depth and light angle were then settled the same way: deep enough
+that the pits are plainly dents, shallow enough that a 400px disc does not
+turn crawly.
+
+**The wobble is now `OBJECT_WOBBLE`, not `COLUMN_WOBBLE`** — one hand for
+the whole object set rather than one per family, which is what
+handDrawn.js's "drawn by one hand on one day" was always claiming. The
+number and the cap are unchanged, so the columns draw exactly as Kimia
+approved them.
+
+**The two discs share a seed, being one shape at two sizes** (the columns
+are not, and objectCanon.js says why). They still are not the same curve
+traced twice, and deliberately: the hand is a SIZE, so the large disc
+carries the same small deviations across twice the distance and comes out
+the calmer of the two — a bigger thing drawn by the same hand, not a
+photograph of the small one blown up. Flagged to her with the drawing
+rather than left to be discovered.
+
+**`Curiosity.test.jsx`** is new, and it holds the rules rather than the
+picture: every object drawn in a frame of its own Abode-pixel size and
+shown at its canon size, no straight segment and no stroke in any outline,
+the two discs sharing one surface and one colour, nothing at all drawn for
+an unknown key, and a page paying for only the surfaces it shows.
+
+**Shown before committing, as the app's own rendering** — the four
+objects lifted out of the live shelf at Abode size onto one standalone
+page, with the library's pore swatch beside them for reference. Approved
+on sight.
 
 ## T5.3h build notes (part 3) — the cameo, and the task closed (2026-08-29)
 

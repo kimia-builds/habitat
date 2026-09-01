@@ -261,8 +261,11 @@ tracker. Everything after this is delight, informed by real use.
                   curved corners, wobbled edges. `src/ui/handDrawn.js` and
                   `src/ui/Curiosity.jsx` landed with them. Approved on
                   sight. Build notes in history.md)_
-            - [ ] **The oval discs** — 200x150 and 400x300, orange, pore
-                  texture, one shape at two sizes.
+            - [x] **The oval discs** _(done 2026-09-01 — 200x150 and
+                  400x300, bright tangerine, the pore texture worn as
+                  sunken pits, one shape at two sizes. `SunkenPoresFilter`
+                  and `Curiosity.test.jsx` landed with them. Approved on
+                  sight. Build notes in history.md)_
             - [ ] **The smoke** — 250x250, baby pink, semi-transparent.
             - [ ] **The stones** — three blob shapes at 250x250, the
                   cratered-stone colour and texture.
