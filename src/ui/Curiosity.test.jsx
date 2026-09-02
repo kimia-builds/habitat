@@ -9,14 +9,27 @@
 
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import Curiosity, { CuriosityDefs, curiosityRecipe } from './Curiosity.jsx'
+import Curiosity, {
+  CuriosityDefs,
+  curiosityCanonKey,
+  curiosityRecipe,
+} from './Curiosity.jsx'
 import { objectDrawnBox, objectSize } from './objectCanon.js'
 
 afterEach(cleanup)
 
 // The objects that have a recipe so far. A new one arriving here is meant to
 // be added: every test below should hold for all of them.
-const DRAWN = ['column-thin', 'column-tall', 'oval-small', 'oval-large']
+const DRAWN = [
+  'column-thin',
+  'column-tall',
+  'oval-small',
+  'oval-large',
+  'smoke',
+  'stone-1',
+  'stone-2',
+  'stone-3',
+]
 
 function drawingFor(key, base = 100) {
   const { container } = render(
@@ -32,9 +45,11 @@ describe('a curiosity', () => {
     // every object on one screen is scaled by the same factor.
     for (const key of DRAWN) {
       const svg = drawingFor(key)
-      const box = objectDrawnBox(key)
+      // Via the recipe's canon key: the three stones are three objects at one
+      // canon size, so a stone's own key is not in the sizing table.
+      const box = objectDrawnBox(curiosityCanonKey(key))
       expect(svg.getAttribute('viewBox')).toBe(`0 0 ${box.w} ${box.h}`)
-      const want = objectSize(key, 100)
+      const want = objectSize(curiosityCanonKey(key), 100)
       expect(Number.parseFloat(svg.getAttribute('width'))).toBeCloseTo(
         want.w,
         6,
@@ -70,6 +85,25 @@ describe('a curiosity', () => {
     expect(fills[0]).toBe(fills[1])
   })
 
+  it('gives the three stones one size and one surface, and three shapes', () => {
+    // The discs' relationship upside down (Curiosity.jsx): the discs are one
+    // shape at two sizes, the stones three shapes at one size. So everything
+    // that says WHAT they are must match, and the outline must not.
+    const stones = ['stone-1', 'stone-2', 'stone-3']
+    const recipes = stones.map(curiosityRecipe)
+    for (const recipe of recipes) {
+      expect(recipe.surface).toBe(recipes[0].surface)
+      expect(recipe.outline).toBe(recipes[0].outline)
+      expect(recipe.canon).toBe('stone')
+    }
+    const drawings = stones.map(drawingFor)
+    const boxes = drawings.map((svg) => svg.getAttribute('viewBox'))
+    expect(boxes).toEqual(['0 0 250 250', '0 0 250 250', '0 0 250 250'])
+    const shapes = drawings.map((svg) => svg.querySelector('path'))
+    expect(new Set(shapes.map((p) => p.getAttribute('fill'))).size).toBe(1)
+    expect(new Set(shapes.map((p) => p.getAttribute('d'))).size).toBe(3)
+  })
+
   it('draws nothing at all for a key it has no recipe for', () => {
     // Better than substituting some other object: a wrong drawing on the
     // ground would be a bug you could look straight at and not see.
@@ -87,8 +121,31 @@ describe('the defs a page needs', () => {
     const { container } = render(<CuriosityDefs keys={DRAWN} />)
     const filters = [...container.querySelectorAll('filter')].map((f) => f.id)
     expect(filters.slice().sort()).toEqual(
-      ['curio-bark-vertical', 'curio-pores-sunken'].sort(),
+      [
+        'curio-bark-vertical',
+        'curio-pores-sunken',
+        'curio-smoke-pink',
+        'curio-stone-cratered',
+      ].sort(),
     )
+  })
+
+  it('lets the smoke out past its own edge, unlike every solid surface', () => {
+    // The smoke's defining property, and the only rule about it that can be
+    // checked without eyes: every other filter in the set finishes clipped to
+    // the shape wearing it, which is what keeps a texture inside its object.
+    // Clip the smoke and the blur that makes it a puff would be sliced off by
+    // a crisp edge — the one thing Kimia said it must not have.
+    const { container } = render(<CuriosityDefs keys={['smoke', 'stone-1']} />)
+    const clipped = (id) =>
+      [...container.querySelector(id).children].some(
+        (el) =>
+          el.localName === 'feComposite' &&
+          el.getAttribute('in2') === 'SourceAlpha' &&
+          el.getAttribute('operator') === 'in',
+      )
+    expect(clipped('#curio-stone-cratered')).toBe(true)
+    expect(clipped('#curio-smoke-pink')).toBe(false)
   })
 
   it('leaves out the surfaces this page does not draw', () => {

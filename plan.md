@@ -256,6 +256,15 @@ tracker. Everything after this is delight, informed by real use.
             **Her list is explicitly not exhaustive**, and every item is
             subject to her eyeball test on the design-assets shelf, which is
             where they stand until they pass.
+            **WHAT IS LEFT (2026-09-02):** all four families are drawn and
+            have passed, so the shelf's part is done — but the Market stall
+            and the Abode still draw ObjectGlyph.jsx's placeholder line
+            forms, which is the other half of this task's first sentence.
+            Putting the real drawings into production needs a call from
+            Kimia that has not been asked for yet: WHICH market objects
+            these six are, given the pool is 64 (§10a) and six drawings
+            cannot cover it. Flagged to her the day the stones landed; the
+            box stays open until she says.
             - [x] **The columns** _(done 2026-09-01 — 10x60 and 40x300,
                   dark brown, bark turned 90° so the grain falls vertical,
                   curved corners, wobbled edges. `src/ui/handDrawn.js` and
@@ -266,9 +275,17 @@ tracker. Everything after this is delight, informed by real use.
                   sunken pits, one shape at two sizes. `SunkenPoresFilter`
                   and `Curiosity.test.jsx` landed with them. Approved on
                   sight. Build notes in history.md)_
-            - [ ] **The smoke** — 250x250, baby pink, semi-transparent.
-            - [ ] **The stones** — three blob shapes at 250x250, the
-                  cratered-stone colour and texture.
+            - [x] **The smoke** _(done 2026-09-02 — 250x250, baby pink,
+                  semi-transparent, and the one object with no edge: a soft
+                  cloudy puff whose transparency varies. `SmokeFilter` landed
+                  with it. Two passes — the first was too busy inside, and she
+                  chose the flat centre over a domed one. Build notes in
+                  history.md)_
+            - [x] **The stones** _(done 2026-09-02 — three blob shapes at
+                  250x250, one size and three seeds, in the texture library's
+                  own cool grey. `CrateredFilter` lifted out of TextureDefs so
+                  they can wear it. Approved on sight. Build notes in
+                  history.md)_
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

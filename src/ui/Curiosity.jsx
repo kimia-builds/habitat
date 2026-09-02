@@ -31,8 +31,14 @@
  */
 
 import { objectDrawnBox, objectSize } from './objectCanon.js'
-import { wobblyEllipse, wobblyRect } from './handDrawn.js'
-import { BarkFilter, SunkenPoresFilter } from './textures.jsx'
+import { wobblyBlob, wobblyEllipse, wobblyRect } from './handDrawn.js'
+import {
+  BarkFilter,
+  CrateredFilter,
+  SmokeFilter,
+  SunkenPoresFilter,
+  TEX_COLORS,
+} from './textures.jsx'
 
 /*
  * THE RECIPES. One entry per object: how its outline is built, and what surface
@@ -111,6 +117,58 @@ function ovalOutline(box, seed) {
   })
 }
 
+/*
+ * THE SMOKE — "250x250px baby pink semi transparent smoke", and then, asked
+ * what its edge should do and what surface it should wear: "a soft cloudy
+ * puff" with no hard edge at all, and "just vary the level of transparency
+ * across the smoke like how real smoke would be".
+ *
+ * SO THE OUTLINE IS STILL DRAWN, and this is worth being clear about, because
+ * a puff with no edge sounds like a thing with no shape. The blob below is what
+ * decides where the smoke IS — where it bulges, where it draws in — and
+ * SmokeFilter (textures.jsx) then blurs that footprint away to nothing at the
+ * rim and eats holes in it, so no line is ever visible. Take the outline away
+ * and you would have a circle of fog; take the filter away and you would have a
+ * solid pink blob.
+ *
+ * A BIGGER LOBE than the stones get. A stone is a lump; smoke is pulled about,
+ * and a footprint that rolls further in and out is what gives the puff its
+ * uneven reach before the filter has done anything at all.
+ */
+function smokeOutline(box, seed) {
+  return wobblyBlob({
+    ...box,
+    seed,
+    lobe: 0.26,
+    amp: wobbleFor(box, OBJECT_WOBBLE),
+  })
+}
+
+/*
+ * THE STONES — "three of these should be organic random blob shapes", at 250
+ * square, in the cratered stone's own colour and texture (Kimia, 2026-09-01;
+ * asked on 2026-09-02 whether she wanted a colour of their own, as she picked
+ * the discs' tangerine, she kept the library's cool grey).
+ *
+ * THREE SHAPES AT ONE SIZE — which is the discs' relationship stood on its
+ * head, and it is why they are three recipes over ONE canon entry (see
+ * `canon` below). The discs are one shape at two sizes: same seed, so the
+ * large is the small enlarged. These are the opposite: one size, three seeds,
+ * so they are three different lumps that happen to be equally big — three
+ * stones off the same beach rather than one stone photographed three times.
+ *
+ * The lobes are what makes each one its own: `wobblyBlob` rides a few slow
+ * harmonics round the ring, so one side bulges where another draws in, and a
+ * different seed deals a different set of them (handDrawn.js).
+ */
+function stoneOutline(box, seed) {
+  return wobblyBlob({
+    ...box,
+    seed,
+    amp: wobbleFor(box, OBJECT_WOBBLE),
+  })
+}
+
 const RECIPES = {
   'column-thin': {
     outline: columnOutline,
@@ -131,6 +189,37 @@ const RECIPES = {
     outline: ovalOutline,
     surface: 'pores-sunken',
     seed: 23,
+  },
+  smoke: {
+    outline: smokeOutline,
+    surface: 'smoke-pink',
+    seed: 61,
+  },
+  /*
+   * `canon` — THE ONE PLACE A RECIPE'S KEY IS NOT THE CANON'S KEY. Kimia gave
+   * one stone size (250 square) and asked for three stones at it, so there are
+   * three objects sharing one entry in the sizing table. Pointing all three at
+   * `stone` rather than writing 'stone-1: 250x250' three times into
+   * objectCanon.js keeps that file exactly what it claims to be: the sizes she
+   * gave, once each, in her own numbers.
+   */
+  'stone-1': {
+    outline: stoneOutline,
+    surface: 'stone-cratered',
+    canon: 'stone',
+    seed: 5,
+  },
+  'stone-2': {
+    outline: stoneOutline,
+    surface: 'stone-cratered',
+    canon: 'stone',
+    seed: 12,
+  },
+  'stone-3': {
+    outline: stoneOutline,
+    surface: 'stone-cratered',
+    canon: 'stone',
+    seed: 31,
   },
 }
 
@@ -156,6 +245,25 @@ const BROWN = '#8a5c3a'
  */
 const TANGERINE = '#ff9445'
 
+/*
+ * THE SMOKE'S BABY PINK. Light and soft rather than hot — it is the colour of a
+ * pale cloud, and it is going to be seen at well under full opacity, so a pink
+ * chosen at the strength it looks right on paper comes out grey-ish on screen.
+ * Unlike the columns' brown and the discs' tangerine this is NOT a lighting
+ * colour: nothing lights the smoke, so what you see is this hex at whatever
+ * transparency that patch of the puff has.
+ */
+const BABY_PINK = '#ffc3d8'
+
+/*
+ * The stones keep the texture library's own cool grey (Kimia, 2026-09-02,
+ * asked whether she wanted to pick one as she picked the tangerine). It IS a
+ * lighting colour: the cratered surface is lit from the same azimuth as the
+ * bark furrows and the sunken pores, so a crater's far wall comes out much
+ * darker than this and its near wall close to it.
+ */
+const STONE_GREY = TEX_COLORS.crateredLight
+
 const SURFACES = {
   'bark-vertical': {
     glow: false,
@@ -169,10 +277,35 @@ const SURFACES = {
     colour: TANGERINE,
     Filter: ({ id }) => <SunkenPoresFilter id={id} light={TANGERINE} />,
   },
+  /*
+   * The one surface that is not a surface: the smoke has no skin, it has a
+   * varying amount of itself (textures.jsx). No glow, as everything else —
+   * a puff that lit itself would be a spirit rather than a thing you bought.
+   */
+  'smoke-pink': {
+    glow: false,
+    colour: BABY_PINK,
+    Filter: ({ id }) => <SmokeFilter id={id} colour={BABY_PINK} />,
+  },
+  'stone-cratered': {
+    glow: false,
+    colour: STONE_GREY,
+    Filter: ({ id }) => <CrateredFilter id={id} light={STONE_GREY} />,
+  },
 }
 
 export function curiosityRecipe(key) {
   return RECIPES[key]
+}
+
+/**
+ * Which entry in objectCanon.js this object takes its size from — its own key
+ * for all but the three stones, which share one (see RECIPES). Anything that
+ * needs an object's canon size by hand, like the shelf that labels it, asks
+ * this rather than assuming the two keys are the same word.
+ */
+export function curiosityCanonKey(key) {
+  return RECIPES[key]?.canon ?? key
 }
 
 /**
@@ -221,12 +354,16 @@ function Curiosity({
 }) {
   const recipe = RECIPES[objectKey]
   if (!recipe) return null
-  const box = objectDrawnBox(objectKey)
+  // Almost always the object's own key. The three stones are the exception:
+  // they are three objects at one canon size, so they say which entry they
+  // take their size from (see RECIPES).
+  const sizeKey = recipe.canon ?? objectKey
+  const box = objectDrawnBox(sizeKey)
   const surface = SURFACES[recipe.surface]
   const { w, h } = box
   // What this screen's base makes of it. The viewBox stays the drawn box, so
   // the scale from one to the other is the same for every object on the page.
-  const drawn = objectSize(objectKey, base)
+  const drawn = objectSize(sizeKey, base)
 
   /*
    * THE FRAME IS THE OBJECT'S SIZE IN ABODE PIXELS, and the whole texture rule

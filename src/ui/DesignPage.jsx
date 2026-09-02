@@ -50,7 +50,10 @@
 // shows exactly what that ground will show, side by side and in the
 // friends' and flora's own scale.
 
-import Curiosity, { CuriosityDefs } from './Curiosity.jsx'
+import Curiosity, {
+  CuriosityDefs,
+  curiosityCanonKey,
+} from './Curiosity.jsx'
 import { OBJECT_CANON, objectSize } from './objectCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
@@ -136,13 +139,26 @@ const CURIO_BASE = baseWhereSmallestIs(24)
 // smallest-first inside each one, so a family's two sizes stand side by side
 // and can be read as one shape at two sizes. Curiosity.jsx knows which of the
 // canon's entries it has a recipe for, and only those are shown.
-const CURIOSITIES = ['column-thin', 'column-tall', 'oval-small', 'oval-large']
+const CURIOSITIES = [
+  'column-thin',
+  'column-tall',
+  'oval-small',
+  'oval-large',
+  'smoke',
+  'stone-1',
+  'stone-2',
+  'stone-3',
+]
 
 // The shelf stands its objects on one ground line, so the tall column and the
 // thin one are read against each other rather than each floating in its own
 // box. The row is as tall as the tallest thing on it.
 function CuriosityShelf() {
-  const sizes = CURIOSITIES.map((key) => objectSize(key, CURIO_BASE))
+  // Via the recipe's canon key, because the three stones are three objects
+  // sharing one entry in the sizing table (Curiosity.jsx).
+  const sizes = CURIOSITIES.map((key) =>
+    objectSize(curiosityCanonKey(key), CURIO_BASE),
+  )
   const tallest = Math.max(...sizes.map(({ h }) => h))
   return (
     <section className="design-family" aria-label="curiosities">
@@ -154,9 +170,8 @@ function CuriosityShelf() {
             <li key={key} className="curio-item">
               <Curiosity objectKey={key} base={CURIO_BASE} unit="px" />
               <span className="curio-name">
-                {key} · {Math.round(OBJECT_CANON[key].w * CURIO_BASE)}×
-                {Math.round(sizes[i].h)}px · {OBJECT_CANON[key].h.toFixed(3)}{' '}
-                tall
+                {key} · {Math.round(sizes[i].w)}×{Math.round(sizes[i].h)}px ·{' '}
+                {OBJECT_CANON[curiosityCanonKey(key)].h.toFixed(3)} tall
               </span>
             </li>
           ))}

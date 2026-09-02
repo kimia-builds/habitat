@@ -744,12 +744,42 @@ outline and then runs a spline through them, so what is drawn is always
 a curve. §2's ban on a hand-sketched world is intact; §4's "few straight
 lines" is what this serves. **Corners curve** rather than meeting sharp.
 
-**The first two families drawn** (T5.3j, 2026-09-01): the columns are
-dark brown and wear the bark surface turned 90° so its grain falls
-vertical; the discs are **bright tangerine** (her pick of three oranges)
-and wear the pores as sunken pits (§8). **Neither glows** — this line's
-"may glow or not" has so far always been answered "not", because a made
-thing that lights itself reads as alive.
+**The four families drawn** (T5.3j, 2026-09-01 and 2026-09-02): the
+columns are dark brown and wear the bark surface turned 90° so its grain
+falls vertical; the discs are **bright tangerine** (her pick of three
+oranges) and wear the pores as sunken pits (§8); the three stones are
+three different lumps at one size, in the texture library's own cool grey
+(asked whether she wanted a colour of their own, she kept it); and the
+smoke is baby pink and see-through. **None of them glows** — this line's
+"may glow or not" has been answered "not" every time it has been asked,
+because a made thing that lights itself reads as alive.
+
+**One object has no outline at all, and it is the exception that proves
+§4** (Kimia, 2026-09-02). Asked what the smoke's edge should do she chose
+"a soft cloudy puff": no drawn edge anywhere, fading out into nothing at
+its rim. A wobbled blob is still what decides where the puff is — where it
+bulges and where it draws in — but the drawing is then blurred away to
+nothing and thinned unevenly, so no line is ever visible. It is also the
+only thing in the app allowed to spill past its own footprint; every
+texture in §8 is clipped to the shape wearing it, and clipping the smoke
+would give it the crisp edge it is defined by not having.
+
+**Its surface is not a texture but an amount of itself** (Kimia,
+2026-09-02): "just vary the level of transparency across the smoke like
+how real smoke would be". Shown a first version she called it too busy —
+"it should feel a bit more like a blob of SPRAY PAINT… the centre fill
+just needs to be simplified" — and the fix was not to weaken the noise
+(which would have cost the torn rim she liked) but to fill it in towards
+the middle, so the unevenness now shows only where the puff is already
+fading. Offered a flat centre and one that slopes gently away, **she
+chose the flat centre**: a spray-paint blob is even in the middle.
+
+**A family can be one shape at several sizes OR several shapes at one
+size.** The discs are the first (both 4:3, so the large is the small
+enlarged); the three stones are the second (one size, three sets of
+lobes). The stones are therefore three objects sharing a single entry in
+`objectCanon.js`, which keeps that file exactly what it claims to be: the
+sizes Kimia gave, once each, in her own numbers.
 
 **Purpose.** Never obvious — invites curiosity, not explanation.
 

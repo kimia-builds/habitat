@@ -3321,6 +3321,40 @@ return 0` right after the era is worked out, so a moment before the
   and the same no-glow call the columns got. §10a lets a curiosity glow
   or not; nothing artificial has lit itself yet, and neon stays reserved
   for POP moments (spec §7).
+- 2026-09-02: **the smoke has no edge at all.** Asked what its rim should
+  do — a soft cloudy puff, a see-through oval with a definite edge, or a
+  see-through lumpy blob — she chose the puff: it fades out into nothing,
+  the first and so far only thing in Habitat without a drawn outline. A
+  wobbled blob still decides where it is; the drawing is simply never
+  visible. It is also the only thing allowed to spill past its own
+  footprint, since clipping it would give it the edge it is defined by not
+  having. Folded into design-bible §10a.
+- 2026-09-02: **the smoke's surface is an AMOUNT rather than a texture** —
+  "just vary the level of transparency across the smoke like how real
+  smoke would be", her answer when offered a plain fill, a soft internal
+  cloudiness, or a library texture. Nothing in §8 is worn by it.
+- 2026-09-02: **"less complicated — more like a blob of spray paint."**
+  Shown the first puff she kept the shape, the colour, the maximum opacity
+  and (explicitly) the edge — "the edges currently look great" — and
+  rejected the INSIDE: too much variation in the middle, where she wanted
+  a smooth gradient from most to least opaque. The fix is in the build
+  notes below; what matters as a decision is that the mottling is now
+  allowed only where the puff is already fading.
+- 2026-09-02: **the flat centre over the domed one.** "A smoother gradient
+  from centre to edge" has two readings — a middle that is evenly opaque
+  with the fade in a band at the rim, or one whose opacity slopes down all
+  the way from the centre. Both were built and shown side by side; she
+  chose the FLAT centre. The dial that made the other one was deleted
+  rather than left in the code unused.
+- 2026-09-02: **the stones keep the texture library's own cool grey.**
+  Offered a colour of their own, as she picked the discs' tangerine, she
+  kept the grey the cratered-stone swatch already wears. §10a's "each
+  object may own its own distinct colours" is a permission, not a duty.
+- 2026-09-02: **a family may be one shape at several sizes OR several
+  shapes at one size.** The discs are the first; the three stones are the
+  second — one size, three sets of lobes. So the stones are three objects
+  sharing one entry in objectCanon.js, which keeps that file exactly what
+  it claims to be: the sizes Kimia gave, once each, in her own numbers.
 
 ## T5.3j build notes — the columns (2026-09-01)
 
@@ -3506,6 +3540,97 @@ an unknown key, and a page paying for only the surfaces it shows.
 objects lifted out of the live shelf at Abode size onto one standalone
 page, with the library's pore swatch beside them for reference. Approved
 on sight.
+
+## T5.3j build notes — the smoke and the stones (2026-09-02)
+
+The last two of the four families Kimia listed, and the first slice of
+T5.3j to need more than one pass. **Four questions were asked before any
+code**, on the pattern the discs set — three of them changed what got
+built, and the fourth (does the smoke glow?) got the same "no" everything
+else has.
+
+**THE STONES landed first time and are the small half of this slice.**
+Three blob outlines at 250 square, three seeds, one surface. Two things
+worth recording:
+
+- **`CrateredFilter` was lifted out of `TextureDefs`**, exactly as the
+  bark and the sponge were before it, so a stone carries its own filter in
+  its own <defs> instead of relying on the workbench page's library being
+  on screen. Its tint is a parameter now even though the stones pass the
+  default: §10a gives every object its own colour, and the next stone-like
+  thing may not be grey.
+- **Three objects, one canon entry.** Kimia gave one stone size and asked
+  for three stones at it, so the recipes carry a `canon` key pointing at
+  the size they share. The alternative — writing 250x250 into
+  objectCanon.js three times — would have made that file a list of
+  DRAWINGS rather than what it is, the list of sizes she gave.
+
+**THE SMOKE took two passes, and the second one is the interesting part.**
+
+The puff is two things multiplied: a FALLOFF (its own shape, blurred away
+to nothing, which is the soft edge) and a MOTTLE (slow noise, thick in
+places and thin in others, which tears the rim into wisps). Version one
+multiplied them flat — `alpha = s × m` — and Kimia's verdict was that the
+inside was too busy: the mottle was showing at full strength straight
+through the middle, and read as a texture rather than as smoke.
+
+**The fix is one line of arithmetic**, and it is the shape of the whole
+lesson: fill the mottle in towards the centre before using it.
+
+    m′ = m + s(1 − m)      then      alpha = s × m′
+
+In the middle `s` is 1, so `m′` is 1 whatever the noise says — the mottle
+is erased entirely and all that is left is the smooth falloff. At the rim
+`s` is small, so `m′` is very nearly `m` and the edge tears exactly as it
+did. In SVG this is the "screen" operation, `i1 + i2 − i1·i2`, which
+`feComposite` does in a single primitive with `k1 = −1, k2 = k3 = 1`.
+
+**THE FIRST ATTEMPT AT THE FIX WAS WRONG, and looking at it is what caught
+it.** It also calmed the noise itself down (4 octaves → 2, slower base
+frequency), on the reasoning that "less variation" meant less noise. It
+did simplify the centre — and it flattened the torn rim Kimia had just
+said looked great, so the puff came back a soft pink blob. Her complaint
+was never that the noise was wrong, only that it was showing where it had
+no business showing. The noise was restored to exactly what she approved
+and only the MIXING changed. Worth remembering as a shape: when a note
+praises one part and rejects another, the fix has to be provably local to
+the rejected part.
+
+**Both readings of the second half of her note were built and shown.**
+"A smoother gradient from most to least opaque from centre to edge" can
+mean a plateau with a soft rim or a genuine dome, and filling the mottle
+in only delivers the first. So a `dome` parameter was added, both versions
+were put side by side on the sky and on plain dark, and she chose the FLAT
+centre. **The parameter was then deleted rather than left in place** — it
+was a question, and the question has been answered; an unused dial in a
+filter is a decision waiting to be re-litigated.
+
+**The maximum opacity is now a constant of its own** (`SMOKE_MAX_OPACITY`,
+0.78, unchanged). It used to be the largest value in the mottle's table,
+which is a poor place for it: smoothing the mottle would have silently
+moved how see-through the smoke is, and she had asked for exactly one of
+those two things.
+
+**`Curiosity.test.jsx` gained the two rules that can be checked without
+eyes**: the three stones must stay one size, one surface and three
+distinct outlines, and the smoke's filter must NOT end clipped to its
+shape — the only mechanical statement of "it has no edge" there is.
+
+**Shown before committing, as the app's own rendering**, twice: the smoke
+over the Abode's ember sky and over a plain dark ground both times, since
+"semi-transparent" means nothing until you can see what is behind it. The
+live design page could not be clicked into from the browser pane (the
+pane's input path was orphaned after a tab was closed — see the
+browser-verification notes), so what was photographed is the real
+`Curiosity` component and the real filters rendered to a standalone page,
+not the shelf itself. The shelf's own new logic — the stones' canon-key
+lookup — is covered by tests instead.
+
+**What is NOT done, and is flagged in plan.md rather than assumed:** the
+Market stall and the Abode still draw ObjectGlyph.jsx's placeholder line
+forms. Putting the real drawings into production needs a call from Kimia
+about which market objects these six are, given the pool is 64. T5.3j's
+box stays open until she gives it.
 
 ## T5.3h build notes (part 3) — the cameo, and the task closed (2026-08-29)
 

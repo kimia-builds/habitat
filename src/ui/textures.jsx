@@ -255,6 +255,188 @@ export function SpongeFilter({
   )
 }
 
+/* -----------------------------------------------------------------------------
+ * CRATERED STONE — deep relief (high surfaceScale) + grazing light (low
+ * elevation) = pronounced craters. The demo "deep-crater rock". NO glow.
+ *
+ * Standalone, and its tint parameterised, for the same reason the sponge and
+ * the bark are: the STONES wear this (T5.3j), and a curiosity carries its
+ * surface's filter in its own <defs> rather than relying on the workbench
+ * page's library being on screen. Kimia kept the library's own cool grey for
+ * them (2026-09-02), so what the stones pass in is the default — but it is a
+ * parameter now, because design-bible §10a gives every object its own colour
+ * and the next stone-like thing may not be grey.
+ * --------------------------------------------------------------------------- */
+export function CrateredFilter({
+  id = 'tex-cratered',
+  light = TEX_COLORS.crateredLight,
+}) {
+  return (
+    <filter id={id} x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.055"
+        numOctaves="5"
+        seed="7"
+        result="n"
+      />
+      <feDiffuseLighting
+        in="n"
+        surfaceScale="3.4"
+        diffuseConstant="1.05"
+        lightingColor={light}
+        result="l"
+      >
+        <feDistantLight azimuth="235" elevation="42" />
+      </feDiffuseLighting>
+      <feComposite in="l" in2="SourceAlpha" operator="in" />
+    </filter>
+  )
+}
+
+/* -----------------------------------------------------------------------------
+ * SMOKE (T5.3j, Kimia 2026-09-01, and every ruling below 2026-09-02) — the one
+ * object in the set that has no edge.
+ *
+ * NOT A LIBRARY TEXTURE, and it is not in the TEXTURES list at the bottom of
+ * this file: the seven swatches are SURFACES, things a solid shape can be made
+ * of, and this is a way of drawing a BODY that is not solid. It lives here
+ * because this is where filters live.
+ *
+ * WHAT KIMIA ASKED FOR, over two passes:
+ *
+ *   "a soft cloudy puff" with no hard edge at all, and no texture — "just vary
+ *   the level of transparency across the smoke like how real smoke would be"
+ *
+ *   then, seeing the first one: "could we get the smoke to be less
+ *   complicated… it shouldn't really have as much variation in texture inside
+ *   of it as it does. it should feel a bit more like a blob of SPRAY PAINT.
+ *   variations in transparency should be a smoother gradient from most to
+ *   least opaque from centre to edge. the edges currently look great, the
+ *   centre fill just needs to be simplified. keep the maximum opacity level as
+ *   is, just smoothen it."
+ *
+ * So the puff is built out of two things, and the second pass is entirely about
+ * how they are mixed:
+ *
+ *   THE FALLOFF (s) — the shape's own alpha, blurred hard. Solid in the middle,
+ *   fading to nothing at the rim. This is the spray-paint gradient, and on its
+ *   own it is all the variation the centre gets.
+ *
+ *   THE MOTTLE (m) — a slow fractal noise, thick in some places and thin in
+ *   others. This is what tears the rim into wisps instead of leaving a soft
+ *   round stamp.
+ *
+ * THE FIRST VERSION MULTIPLIED THEM — alpha = s × m — which is why it came back
+ * too busy: the mottle then showed everywhere at full strength, straight
+ * through the middle of the puff, and read as a texture rather than as smoke.
+ *
+ * SO THE MOTTLE IS FILLED IN TOWARDS THE CENTRE before it is used:
+ *
+ *     m′ = m + s(1 − m)      the mottle, pulled towards solid by the falloff
+ *     alpha = s × m′
+ *
+ * Read it at the two ends and it is exactly her sentence. In the middle s is 1,
+ * so m′ is 1 whatever the noise says — the mottle is completely filled in and
+ * all that is left is the smooth falloff. Out at the rim s is small, so m′ is
+ * very nearly m — the noise survives in full and the edge tears exactly as it
+ * did before. Everything between is a gradual handover. The one line of
+ * arithmetic that does it is the "screen" operation, `i1 + i2 − i1·i2`, which
+ * feComposite can do in a single primitive.
+ *
+ * THE NOISE ITSELF IS UNTOUCHED, and that is the other half of her note: "the
+ * edges currently look great". Calming the mottle down was tried first — 4
+ * octaves to 2, a slower base frequency — and it did simplify the centre, but
+ * it also took the fine detail out of the rim, and the puff came back a soft
+ * pink blob with no torn edge at all. The complaint was never that the noise
+ * was wrong; it was that the noise was showing where it had no business
+ * showing. So the noise is exactly what she approved and only its MIXING
+ * changed.
+ *
+ * THE CENTRE IS FLAT ON PURPOSE, and it was put to her as a question rather
+ * than guessed at. Filling the mottle in leaves the middle one even pink, with
+ * the fade happening in a band at the rim — a plateau, not a gradient, which is
+ * arguably not what "a smoother gradient from most to least opaque from centre
+ * to edge" asks for. So both were built and shown side by side: the flat centre,
+ * and one whose opacity also slopes gently down from the middle out. Kimia
+ * chose the FLAT centre (2026-09-02), so the slope is gone rather than left in
+ * as an unused dial — a blob of spray paint held still is even in the middle.
+ *
+ * THE MAXIMUM OPACITY IS NOW A NUMBER OF ITS OWN, and unchanged at 0.78 — her
+ * "keep the maximum opacity level as is". It used to be buried in the mottle
+ * table (its highest value), which is a poor place for it: the two things have
+ * nothing to do with each other, and smoothing the one would have silently
+ * moved the other. The table now runs to 1 and the cap is applied at the end.
+ *
+ * IT IS THE ONLY THING HERE THAT DOES NOT END CLIPPED TO ITS SHAPE. Every other
+ * filter in this file finishes with `feComposite operator="in"` against
+ * SourceAlpha, which is what keeps a texture inside the thing wearing it. Smoke
+ * has to be allowed out past its own footprint or the blur would be sliced off
+ * by a crisp edge — the exact thing it is not supposed to have.
+ *
+ * NO LIGHTING, so no glow (her call, in line with the columns and the discs):
+ * the colour is flooded in flat and only its transparency varies. A puff shaded
+ * by a light source would have a near side and a far side, which is a solid.
+ * --------------------------------------------------------------------------- */
+const SMOKE_MAX_OPACITY = 0.78
+
+export function SmokeFilter({ id = 'tex-smoke', colour, seed = 3 }) {
+  return (
+    <filter id={id} x="-45%" y="-45%" width="190%" height="190%">
+      {/* THE MOTTLE — the field that tears the rim into wisps, and the same
+          one Kimia approved the edges of. Low frequency for big soft billows,
+          four octaves for the fine detail that does the tearing; in drawing
+          units, like every other grain in the object set, so a billow is one
+          size whatever the screen does. The table is the original curve with
+          its top at 1 rather than at 0.78: how see-through the smoke gets
+          overall is the cap at the end now, not something hidden in here. */}
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.012"
+        numOctaves="4"
+        seed={seed}
+        result="n"
+      />
+      <feComponentTransfer in="n" result="mottle">
+        <feFuncA type="table" tableValues="0.128 0.795 0.385 1 0.308" />
+      </feComponentTransfer>
+      {/* THE FALLOFF: the shape's own edge, blurred away to nothing. */}
+      <feGaussianBlur in="SourceAlpha" stdDeviation="17" result="soft" />
+      {/* m′ = m + s(1 − m). k1 = −1, k2 = k3 = 1 is i1 + i2 − i1·i2, so where
+          the falloff is solid the mottle is filled in to solid with it, and
+          where the falloff is fading the mottle comes through untouched. */}
+      <feComposite
+        in="soft"
+        in2="mottle"
+        operator="arithmetic"
+        k1="-1"
+        k2="1"
+        k3="1"
+        k4="0"
+        result="filled"
+      />
+      {/* alpha = s × m′ — arithmetic with k1 alone is a multiply. */}
+      <feComposite
+        in="soft"
+        in2="filled"
+        operator="arithmetic"
+        k1="1"
+        k2="0"
+        k3="0"
+        k4="0"
+        result="cloud"
+      />
+      {/* The one place the whole puff's transparency is set. */}
+      <feComponentTransfer in="cloud" result="capped">
+        <feFuncA type="linear" slope={SMOKE_MAX_OPACITY} />
+      </feComponentTransfer>
+      {/* The colour, flat, poured into that shape. */}
+      <feFlood floodColor={colour} result="pink" />
+      <feComposite in="pink" in2="capped" operator="in" />
+    </filter>
+  )
+}
+
 export function TextureDefs() {
   const c = TEX_COLORS
   const [pr, pg, pb] = c.poresTint
@@ -353,27 +535,9 @@ export function TextureDefs() {
         <feComposite in="l" in2="SourceAlpha" operator="in" />
       </filter>
 
-      {/* CRATERED STONE — deep relief (high surfaceScale) + grazing light (low
-          elevation) = pronounced craters. The demo "deep-crater rock". NO glow. */}
-      <filter id="tex-cratered" x="-15%" y="-15%" width="130%" height="130%">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.055"
-          numOctaves="5"
-          seed="7"
-          result="n"
-        />
-        <feDiffuseLighting
-          in="n"
-          surfaceScale="3.4"
-          diffuseConstant="1.05"
-          lightingColor={c.crateredLight}
-          result="l"
-        >
-          <feDistantLight azimuth="235" elevation="42" />
-        </feDiffuseLighting>
-        <feComposite in="l" in2="SourceAlpha" operator="in" />
-      </filter>
+      {/* CRATERED STONE — the library's own instance, in the grey it has always
+          worn; see CrateredFilter for the tint. */}
+      <CrateredFilter />
 
       {/* Support filters used by the hair generator's depth passes. */}
       <filter id="tex-soft3">
@@ -863,7 +1027,7 @@ export const TEXTURES = [
     family: 'rock',
     kind: 'filter',
     glow: false,
-    apply: 'filter="url(#tex-cratered)"',
+    apply: 'filter="url(#tex-cratered)" — or <CrateredFilter light=…/>',
   },
   {
     id: 'hair-curled',
