@@ -36,11 +36,13 @@
 //                              // bookshelf and which way it faces
 //                              // (no entry = default slot, spine)
 //                              // — see game/bookcase.js, added in T4.2
-//     abodeLayout: {},         // floraId | purchaseId → { x, y } — where
-//                              // each gathered flora (and, since T4.3b,
-//                              // each owned market object) stands on the
-//                              // Abode's open ground (no entry = default
-//                              // spot) — see game/abode.js, added in T4.3
+//     abodeLayout: {},         // floraId | purchaseId → { x, y, angle? }
+//                              // — where each gathered flora (and, since
+//                              // T4.3b, each owned market object) stands
+//                              // on the Abode's open ground (no entry =
+//                              // default spot), and how far it is turned
+//                              // (angle in degrees; none = upright, T5.5)
+//                              // — see game/abode.js, added in T4.3
 //     purchases: [],           // the owned market objects, one entry per
 //                              // instance: { id, objectKey, price,
 //                              // boughtAt } — duplicates allowed, the

@@ -3390,6 +3390,52 @@ return 0` right after the era is worked out, so a moment before the
   **save** keeps it, and a quiet **cancel** (her call when asked) drops it.
   The angle is stored beside the item's place, optional, so no storage
   version bump.
+- 2026-10-08: **turning a never-moved item writes its present place
+  beside the angle** (T5.5, my call while building, not Kimia's).
+  An item with no `abodeLayout` entry sits in a default spot that shifts as
+  others leave; an entry needs x and y, so the first turn pins the spot it
+  stood in — exactly what moving it would do. The only visible effect is
+  that item no longer steps forward when an earlier flora is composted.
+  Turning back to upright removes the angle and keeps the place.
+
+## T5.5 build notes — rotate (2026-10-08)
+
+Built in one session from Kimia's design, in three parts.
+
+1. **The rules, as pure functions** (`game/abode.js`, tested first):
+   `normalizeAngle` (degrees clockwise in [0, 360), to a tenth),
+   `dialAngle` (start angle + how far the pointer travelled around the
+   centre — never the pointer's absolute angle, which is why a press does
+   not jump the item), and `turnItem` (flora or object, refuses anything
+   not on the ground). Moving keeps the angle (`placeItem` spreads the old
+   entry), `abodeItems` reports `angle` (0 = upright), validation accepts
+   an optional finite angle in [0, 360), pruning is unchanged because the
+   angle lives inside the entry. No storage version bump: no angle means
+   upright, so every older save loads as it was.
+2. **The mode** (`ui/AbodePage.jsx`, words in `content/ui.js`
+   `abode.rotate` / `abode.turnSave` / `abode.turnCancel`, left blank for
+   Farsi like every other key): while turning, window-level pointer
+   listeners are the dial; items and the empty ground stop reacting; a
+   press on a real control (`DIAL_IGNORES`) is left to that control; a
+   press inside a 6px dead zone around the centre is ignored; text
+   selection is blocked for the duration. Everything else dims through
+   CSS only (`.abode-scene.turning`, `--turn-dim`). Save writes through
+   `handleItemTurn` in App.jsx; saving an unchanged angle writes nothing.
+3. **Verified with real input** in the browser pane (the new-control
+   rule): a real click on the held flora, on rotate, a real
+   click-drag a quarter-circle around it (stored 89.4° for a 90° gesture),
+   a real click on save, then a real drag of the turned flora — the angle
+   survived the move.
+
+**What the real click caught that the 41 component tests could not:**
+(a) rotate's line sat ON the flora — the two-word stack needed to start
+one line higher; (b) save and cancel overlapped because the stylesheet's
+`text-anchor: middle` beats the SVG attribute — fixed with two classes.
+Both are the kind of thing only eyes find.
+
+**Not done, on purpose:** keyboard turning (arrow keys). The plan did not
+ask for it; the words themselves are keyboard-reachable. Phone/touch
+turning waits for M8's canvas decision.
 
 ## T5.3j build notes — the columns (2026-09-01)
 

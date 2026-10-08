@@ -7,7 +7,7 @@
 // them anywhere and arranges them freely. Where each one sits lives in
 // ONE map, stored in the envelope (storage v6):
 //
-//   abodeLayout: { [itemId]: { x, y } }
+//   abodeLayout: { [itemId]: { x, y, angle? } }
 //
 //   - For a flora, itemId is the id of the completion whose tap dropped
 //     the find (at most one flora per completion — the same key
@@ -21,6 +21,12 @@
 //     deliberately free: gravity is not guaranteed on this planet
 //     (spec §5), so a flora or curiosity may hang wherever Kimia
 //     leaves it.
+//   - angle (T5.5, 2026-10-08) is how far Kimia has turned the item, in
+//     degrees clockwise, flat in the plane of the screen, about the
+//     item's own centre. It is OPTIONAL: no entry, or an entry with no
+//     angle, means upright — so every older save loads unchanged and the
+//     storage version did not move. An item turned back to upright
+//     simply loses the field. Moving an item keeps its angle.
 //
 // An item with NO entry sits in its default spot (defaultSpot below) —
 // an entry is written only once Kimia moves it, so the map stays tiny.
@@ -130,6 +136,7 @@ export function abodeItems(completions, decisions, layout, purchases = []) {
       ...item,
       x: stored?.x ?? spot.x,
       y: stored?.y ?? spot.y,
+      angle: stored?.angle ?? 0,
     }
   })
 }
@@ -168,9 +175,69 @@ function placeItem(layout, itemId, point) {
   ) {
     throw new Error('A place needs finite x and y fractions.')
   }
+  // Spread the old entry first so a move never forgets the turn.
   return {
     ...layout,
-    [itemId]: { x: clampUnit(point.x), y: clampUnit(point.y) },
+    [itemId]: {
+      ...layout[itemId],
+      x: clampUnit(point.x),
+      y: clampUnit(point.y),
+    },
+  }
+}
+
+// ── Turning things (T5.5, 2026-10-08) ───────────────────────────────
+// An angle is kept as degrees clockwise in [0, 360), to a tenth of a
+// degree — a turn of 370° is a turn of 10°, and a stored number never
+// carries more precision than a hand can give it.
+export function normalizeAngle(degrees) {
+  if (!Number.isFinite(degrees)) {
+    throw new Error('An angle needs a finite number of degrees.')
+  }
+  const wrapped = ((degrees % 360) + 360) % 360
+  const tenth = Math.round(wrapped * 10) / 10
+  return tenth >= 360 ? 0 : tenth
+}
+
+// The dial: where an item points after the pointer has circled it.
+// `centre` is the item's own centre, `from` where the pointer was when
+// the press began, `to` where it is now (all in the same units). The item
+// turns by how far the pointer has travelled AROUND the centre — not to
+// wherever the pointer happens to be — so a press that begins anywhere
+// leaves the item exactly where it was. Returns degrees, unwrapped.
+export function dialAngle(startAngle, centre, from, to) {
+  const around = (point) =>
+    Math.atan2(point.y - centre.y, point.x - centre.x) * (180 / Math.PI)
+  return startAngle + (around(to) - around(from))
+}
+
+// Keep one item's turn. Works for flora and objects alike (the ids can't
+// collide). Only an item actually standing on the ground can be turned —
+// a stale save must fail loudly, the placeFlora precedent. An item that
+// has never been moved has no entry to hang an angle on, so turning it
+// writes its present place alongside: the same thing moving it would do.
+// Turning back to upright removes the angle (and leaves the place).
+// Returns a NEW map.
+export function turnItem(
+  layout,
+  completions,
+  decisions,
+  purchases,
+  itemId,
+  degrees,
+) {
+  const item = abodeItems(completions, decisions, layout, purchases).find(
+    (candidate) => candidate.id === itemId,
+  )
+  if (!item) {
+    throw new Error('No item on the ground has this id.')
+  }
+  const angle = normalizeAngle(degrees)
+  if (angle === 0 && layout[itemId] === undefined) return layout
+  const { angle: _old, ...place } = layout[itemId] ?? { x: item.x, y: item.y }
+  return {
+    ...layout,
+    [itemId]: angle === 0 ? place : { ...place, angle },
   }
 }
 
@@ -218,6 +285,14 @@ export function validateAbodeLayout(layout) {
           `An abode place needs an ${axis} fraction between 0 and 1.`,
         )
       }
+    }
+    if (
+      place.angle !== undefined &&
+      (!Number.isFinite(place.angle) || place.angle < 0 || place.angle >= 360)
+    ) {
+      throw new Error(
+        'An abode angle needs a number of degrees from 0 up to 360.',
+      )
     }
   }
 }

@@ -734,6 +734,33 @@ body {
   fill: var(--text);
 }
 
+/* ROTATE MODE (T5.5). The held item keeps its magnified look and glow;
+   everything else — the sky, every other flora and curiosity, any visiting
+   friends — drops back to --turn-dim. The whole screen is the dial, so the
+   scene shows the grab cursor wherever the pointer is. */
+.abode-scene.turning {
+  cursor: grabbing;
+}
+
+.abode-scene.turning .abode-sky-layer,
+.abode-scene.turning .abode-flora:not(.turned),
+.abode-scene.turning .abode-party-layer {
+  opacity: var(--turn-dim);
+}
+
+/* "save" and "cancel" share one line, each leaning away from the middle. */
+.abode-turn-save {
+  text-anchor: end;
+}
+
+.abode-turn-cancel {
+  text-anchor: start;
+}
+
+.abode-scene.turning .abode-flora-hold {
+  cursor: grabbing;
+}
+
 /* T4.4: the quiet / party toggle — a switch with an icon on either
    side. Greyed until the first friend exists: "not yet", never
    "broken" — dimmed, not crossed out. */

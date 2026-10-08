@@ -171,6 +171,11 @@ const en = {
   'abode.curiosity': 'a curiosity',
   'abode.sell': 'sell',
   'abode.compost': 'compost',
+  // The third quiet word under a held item (T5.5), and the two that
+  // replace the held item's words while it is being turned.
+  'abode.rotate': 'rotate',
+  'abode.turnSave': 'save',
+  'abode.turnCancel': 'cancel',
   'abode.sky': 'Abode sky',
   'abode.skyLabel': 'Abode sky, {palette}',
   // The four skies the Abode can wear (T5.4). These four words are
@@ -355,6 +360,9 @@ const fa = {
   'abode.curiosity': '',
   'abode.sell': '',
   'abode.compost': '',
+  'abode.rotate': '',
+  'abode.turnSave': '',
+  'abode.turnCancel': '',
   'abode.sky': '',
   'abode.skyLabel': '',
   'abode.pickSky': '',

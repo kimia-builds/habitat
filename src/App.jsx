@@ -15,6 +15,7 @@ import {
   placeFlora,
   placeObject,
   pruneAbodeLayout,
+  turnItem,
 } from './game/abode.js'
 import {
   deliverDrops,
@@ -625,6 +626,23 @@ function AppBody({ data, setData }) {
             itemId,
             point,
           ),
+    })
+  }
+
+  // Turning something on the ground (T5.5): the angle Kimia saved,
+  // kept with the item's place. Flora and objects alike — the game
+  // module finds either by id and refuses anything not standing there.
+  function handleItemTurn(itemId, degrees) {
+    save({
+      ...data,
+      abodeLayout: turnItem(
+        data.abodeLayout,
+        data.completions,
+        data.floraDecisions,
+        data.purchases,
+        itemId,
+        degrees,
+      ),
     })
   }
 
@@ -1902,6 +1920,7 @@ function AppBody({ data, setData }) {
             sky={data.settings.abodeSky}
             onDecide={handleFloraDecision}
             onMove={handleItemMove}
+            onTurn={handleItemTurn}
             onSell={handleSell}
             onChooseSky={chooseAbodeSky}
             onBack={() => setPage(null)}

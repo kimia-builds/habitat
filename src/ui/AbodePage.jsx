@@ -24,6 +24,15 @@
 // until T6.1 names the species; objects are seeded curiosities
 // (ui/ObjectGlyph.jsx), generic ("a curiosity") on the same schedule.
 //
+// ROTATE (T5.5, Kimia's call 2026-10-08). A held flora or curiosity has a
+// third quiet word under it, "rotate". Pressing it is a MODE, not a menu:
+// the item stays at its held size and glow, everything else dims, and the
+// rest of the screen becomes the control — press and drag anywhere and the
+// item turns about its own centre, flat in the plane of the screen, by how
+// far the pointer circles it (a dial; game/abode.js's dialAngle). The
+// held item's words become "save" and a quiet "cancel". Nothing is stored
+// until save. The name and the words stay upright. Friends are not turned.
+//
 // PARTY MODE (T4.4, spec §5b): the quiet / party toggle — a switch
 // with an icon on either side — pops the friends we have made up
 // AMONG the flora in a randomised formation. The flora and objects
@@ -35,8 +44,13 @@
 // The toggle is greyed out, reading "not yet", until the first friend
 // exists.
 
-import { useRef, useState } from 'react'
-import { ABODE_SKIES, DEFAULT_ABODE_SKY } from '../game/abode.js'
+import { useEffect, useRef, useState } from 'react'
+import {
+  ABODE_SKIES,
+  DEFAULT_ABODE_SKY,
+  dialAngle,
+  normalizeAngle,
+} from '../game/abode.js'
 import Flora, { floraBox } from './Flora.jsx'
 import Friend from './Friend.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
@@ -115,6 +129,21 @@ const OBJECT_SIZE = 20 * OLD_SCENE_SCALE // 48px
 // drawing — though since T5.4 the two happen to be the same thing.
 const DRAG_THRESHOLD_PX = 4
 
+// A pointer this close to the item's centre has no direction to speak of
+// — a hair's move there swings the angle wildly — so a dial press that
+// begins inside it, or a move that passes through it, is left alone.
+const DIAL_DEAD_ZONE_PX = 6
+
+// What a dial press must NOT start a turn on: the page's real controls
+// (the rail, the pebbles, the sky swatches, the party switch) keep doing
+// their own job while the rest of the screen is the dial.
+const DIAL_IGNORES =
+  'button, a, input, select, textarea, [role="switch"], [role="radio"]'
+
+// The gap between "save" and "cancel" on the held item's line: each sits
+// this far to its own side of the item's middle.
+const TURN_WORDS_GAP = 5 * OLD_SCENE_SCALE
+
 // The held item's label and its way back to the world, stacked above
 // it: how far in from an edge the centred text has to stay to remain
 // readable, how far the name sits above the item, and the gap down to
@@ -136,6 +165,13 @@ function rollFormation(friends) {
   }))
 }
 
+// Enter / Space activates a word that is a button in all but element.
+function activateOnKey(event, action) {
+  if (event.key !== 'Enter' && event.key !== ' ') return
+  event.preventDefault()
+  action()
+}
+
 function clampUnit(value) {
   return Math.min(1, Math.max(0, value))
 }
@@ -148,6 +184,7 @@ function AbodePage({
   sky = DEFAULT_ABODE_SKY,
   onDecide,
   onMove,
+  onTurn,
   onSell,
   onChooseSky,
   onBack,
@@ -160,6 +197,13 @@ function AbodePage({
   // The item currently held (clicked): its name and its quiet way back
   // (compost / sell) show while this is set. Screen state only.
   const [heldId, setHeldId] = useState(null)
+  // Rotate mode (T5.5): which held item is being turned and the angle it
+  // shows right now. Nothing is stored until save — leaving the mode any
+  // other way simply forgets the turn. The ref carries what the window's
+  // dial listeners need: the item's centre (scene units), its live angle,
+  // and the press in progress.
+  const [turning, setTurning] = useState(null)
+  const turnRef = useRef(null)
   // Party mode (T4.4): off is the quiet Abode as ever. The formation
   // is re-rolled each time the mode is switched on — never stored.
   const [party, setParty] = useState(false)
@@ -183,6 +227,7 @@ function AbodePage({
   // can leave the item and still track), decide at release whether it
   // was a drag or a click. The bookcase's exact pattern.
   function handlePointerDown(item, event) {
+    if (turning) return // the whole screen is the dial now
     if (event.button) return // left / primary only
     // The scene's own press handler lets a held item go — a press on
     // an item must not double as that "anywhere else" click.
@@ -223,6 +268,7 @@ function AbodePage({
   }
 
   function handleKeyDown(item, event) {
+    if (turning) return
     if (event.key !== 'Enter' && event.key !== ' ') return
     event.preventDefault()
     setHeldId((held) => (held === item.id ? null : item.id))
@@ -237,6 +283,105 @@ function AbodePage({
     setHeldId(null)
     onSell(item.id)
   }
+
+  // How much room an item takes: a flora asks the canon (its shape and
+  // size class were dealt from the seed); a curiosity is still a
+  // placeholder glyph with no canon to ask.
+  function boxOf(item) {
+    return item.kind === 'object'
+      ? { width: OBJECT_SIZE, height: OBJECT_SIZE }
+      : floraBox(item.id, worldSeed, SCENE_BASE)
+  }
+
+  // Enter rotate mode on the held item. It turns about the middle of its
+  // HELD-size figure, the size it is shown at while you turn it.
+  function handleRotate(item) {
+    const box = boxOf(item)
+    turnRef.current = {
+      id: item.id,
+      centre: {
+        x: item.x * WIDTH,
+        y: item.y * HEIGHT - (box.height * HELD_SCALE) / 2,
+      },
+      angle: item.angle ?? 0,
+      press: null,
+    }
+    setTurning({ id: item.id, angle: item.angle ?? 0 })
+  }
+
+  function handleTurnSave(item) {
+    const angle = turnRef.current.angle
+    setTurning(null)
+    if (normalizeAngle(angle) !== normalizeAngle(item.angle ?? 0)) {
+      onTurn(item.id, angle)
+    }
+  }
+
+  function handleTurnCancel() {
+    setTurning(null)
+  }
+
+  // THE DIAL. While a turn is under way the window listens: a press
+  // anywhere (except on a real control) starts a gesture from the item's
+  // CURRENT angle, and the pointer circling the item's centre turns it by
+  // the same amount — so a press never makes the item jump.
+  const turningId = turning?.id
+  useEffect(() => {
+    if (!turningId) return undefined
+    function centreOnScreen() {
+      const rect = svgRef.current?.getBoundingClientRect()
+      if (!rect || rect.width === 0) return null
+      const scale = rect.width / WIDTH
+      const { centre } = turnRef.current
+      return {
+        x: rect.left + centre.x * scale,
+        y: rect.top + centre.y * scale,
+      }
+    }
+    function down(event) {
+      if (event.button) return
+      if (event.target?.closest?.(DIAL_IGNORES)) return
+      const centre = centreOnScreen()
+      if (!centre) return
+      const from = { x: event.clientX, y: event.clientY }
+      if (Math.hypot(from.x - centre.x, from.y - centre.y) < DIAL_DEAD_ZONE_PX)
+        return
+      turnRef.current.press = {
+        from,
+        startAngle: turnRef.current.angle,
+      }
+    }
+    function move(event) {
+      const turn = turnRef.current
+      if (!turn?.press) return
+      const centre = centreOnScreen()
+      if (!centre) return
+      const to = { x: event.clientX, y: event.clientY }
+      if (Math.hypot(to.x - centre.x, to.y - centre.y) < DIAL_DEAD_ZONE_PX)
+        return
+      turn.angle = dialAngle(turn.press.startAngle, centre, turn.press.from, to)
+      setTurning({ id: turn.id, angle: turn.angle })
+    }
+    function up() {
+      if (turnRef.current) turnRef.current.press = null
+    }
+    // A drag across the page must turn the item, never select its text.
+    function noSelect(event) {
+      event.preventDefault()
+    }
+    window.addEventListener('pointerdown', down)
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', up)
+    window.addEventListener('pointercancel', up)
+    window.addEventListener('selectstart', noSelect)
+    return () => {
+      window.removeEventListener('pointerdown', down)
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', up)
+      window.removeEventListener('pointercancel', up)
+      window.removeEventListener('selectstart', noSelect)
+    }
+  }, [turningId])
 
   // The quiet / party toggle (spec §5b): greyed out — "not yet", never
   // "broken" — until at least one friend exists. Switching on rolls a
@@ -439,7 +584,9 @@ function AbodePage({
           the page's own scroll rather than nested here: two scrollbars
           inside one another is a maze, and the page already scrolls. */}
         <div className="world-canvas-window">
-          <div className="abode-scene world-canvas">
+          <div
+            className={`abode-scene world-canvas${turning ? ' turning' : ''}`}
+          >
             {/* THE SKY (T5.4). Opaque, filling the whole canvas, and the
               only thing behind everything else — the app's own starfield
               never shows through the Abode any more. It is a separate
@@ -454,7 +601,9 @@ function AbodePage({
               viewBox={CANVAS_VIEWBOX}
               role="group"
               aria-label={t('abode.ground')}
-              onPointerDown={() => setHeldId(null)}
+              onPointerDown={() => {
+                if (!turning) setHeldId(null)
+              }}
             >
               {/* NO SOIL AND NO HORIZON LINE since T5.4 (Kimia's call,
               2026-08-21). The scene is one opaque nebula sky, edge to
@@ -470,31 +619,44 @@ function AbodePage({
                   ? t('abode.curiosity')
                   : t('abode.floraFind')
                 const isHeld = item.id === heldId
+                const isTurning = turning?.id === item.id
                 const place = placeOf(item)
                 const cx = place.x * WIDTH
                 const base = place.y * HEIGHT
-                // How much room this one takes. A flora asks the canon (its
-                // shape and size class were dealt from the seed); a curiosity
-                // is still a placeholder glyph with no canon to ask.
-                const box = isObject
-                  ? { width: OBJECT_SIZE, height: OBJECT_SIZE }
-                  : floraBox(item.id, worldSeed, SCENE_BASE)
+                const box = boxOf(item)
                 // Held, the whole figure grows a touch about its own foot, so
                 // it stays planted where you left it and its canon size is
                 // never re-typed as a second number.
-                const hold = isHeld
+                const grow = isHeld
                   ? `translate(${cx} ${base}) scale(${HELD_SCALE}) translate(${-cx} ${-base})`
-                  : undefined
+                  : ''
                 const drawnHeight = box.height * (isHeld ? HELD_SCALE : 1)
+                const drawnWidth = box.width * (isHeld ? HELD_SCALE : 1)
+                // Turned (T5.5): the figure, at the size it is drawn, turns
+                // about its own middle. While the dial is live that is the
+                // angle on show, not the saved one. Outermost in the list, so
+                // it turns the already-grown figure.
+                const angle = isTurning ? turning.angle : (item.angle ?? 0)
+                const middle = base - drawnHeight / 2
+                const turn = angle ? `rotate(${angle} ${cx} ${middle})` : ''
+                const hold = `${turn} ${grow}`.trim() || undefined
+                // The words sit above the figure's TURNED outline, upright.
+                const radians = (angle * Math.PI) / 180
+                const halfTall =
+                  (drawnHeight * Math.abs(Math.cos(radians)) +
+                    drawnWidth * Math.abs(Math.sin(radians))) /
+                  2
                 // The held item's name and its quiet way back stack above it,
                 // clamped so they stay readable at the scene's edges.
                 const textX = Math.min(
                   WIDTH - LABEL_EDGE_INSET,
                   Math.max(LABEL_EDGE_INSET, cx),
                 )
+                // Room for two lines under the name — compost / sell, then
+                // rotate — so the lowest word clears the figure.
                 const nameY = Math.max(
                   LABEL_CEILING,
-                  base - drawnHeight - LABEL_LIFT,
+                  middle - halfTall - LABEL_LIFT - LABEL_LINE_GAP,
                 )
                 // The placeholder curiosity wears its glow as a CSS halo;
                 // a real flora's aura is inside its own drawing (§3), so the
@@ -506,7 +668,10 @@ function AbodePage({
                   ? 'abode-flora-art held'
                   : 'abode-flora-art'
                 return (
-                  <g key={item.id} className="abode-flora">
+                  <g
+                    key={item.id}
+                    className={`abode-flora${isTurning ? ' turned' : ''}`}
+                  >
                     <g
                       role="button"
                       tabIndex={0}
@@ -544,30 +709,81 @@ function AbodePage({
                         <text className="abode-flora-name" x={textX} y={nameY}>
                           {name}
                         </text>
-                        <text
-                          className="abode-compost"
-                          role="button"
-                          tabIndex={0}
-                          aria-label={
-                            isObject ? t('abode.sell') : t('abode.compost')
-                          }
-                          x={textX}
-                          y={nameY + LABEL_LINE_GAP}
-                          onPointerDown={(event) => event.stopPropagation()}
-                          onClick={() => {
-                            if (isObject) handleSell(item)
-                            else handleCompost(item)
-                          }}
-                          onKeyDown={(event) => {
-                            if (event.key !== 'Enter' && event.key !== ' ')
-                              return
-                            event.preventDefault()
-                            if (isObject) handleSell(item)
-                            else handleCompost(item)
-                          }}
-                        >
-                          {isObject ? t('abode.sell') : t('abode.compost')}
-                        </text>
+                        {isTurning ? (
+                          <>
+                            <text
+                              className="abode-compost abode-turn-save"
+                              role="button"
+                              tabIndex={0}
+                              aria-label={t('abode.turnSave')}
+                              x={textX - TURN_WORDS_GAP}
+                              y={nameY + LABEL_LINE_GAP}
+                              onPointerDown={(event) => event.stopPropagation()}
+                              onClick={() => handleTurnSave(item)}
+                              onKeyDown={(event) =>
+                                activateOnKey(event, () => handleTurnSave(item))
+                              }
+                            >
+                              {t('abode.turnSave')}
+                            </text>
+                            <text
+                              className="abode-compost abode-turn-cancel"
+                              role="button"
+                              tabIndex={0}
+                              aria-label={t('abode.turnCancel')}
+                              x={textX + TURN_WORDS_GAP}
+                              y={nameY + LABEL_LINE_GAP}
+                              onPointerDown={(event) => event.stopPropagation()}
+                              onClick={handleTurnCancel}
+                              onKeyDown={(event) =>
+                                activateOnKey(event, handleTurnCancel)
+                              }
+                            >
+                              {t('abode.turnCancel')}
+                            </text>
+                          </>
+                        ) : (
+                          <>
+                            <text
+                              className="abode-compost"
+                              role="button"
+                              tabIndex={0}
+                              aria-label={
+                                isObject ? t('abode.sell') : t('abode.compost')
+                              }
+                              x={textX}
+                              y={nameY + LABEL_LINE_GAP}
+                              onPointerDown={(event) => event.stopPropagation()}
+                              onClick={() => {
+                                if (isObject) handleSell(item)
+                                else handleCompost(item)
+                              }}
+                              onKeyDown={(event) =>
+                                activateOnKey(event, () => {
+                                  if (isObject) handleSell(item)
+                                  else handleCompost(item)
+                                })
+                              }
+                            >
+                              {isObject ? t('abode.sell') : t('abode.compost')}
+                            </text>
+                            <text
+                              className="abode-compost"
+                              role="button"
+                              tabIndex={0}
+                              aria-label={t('abode.rotate')}
+                              x={textX}
+                              y={nameY + 2 * LABEL_LINE_GAP}
+                              onPointerDown={(event) => event.stopPropagation()}
+                              onClick={() => handleRotate(item)}
+                              onKeyDown={(event) =>
+                                activateOnKey(event, () => handleRotate(item))
+                              }
+                            >
+                              {t('abode.rotate')}
+                            </text>
+                          </>
+                        )}
                       </>
                     )}
                   </g>

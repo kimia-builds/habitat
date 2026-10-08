@@ -2,11 +2,14 @@ import { describe, expect, it } from 'vitest'
 import {
   abodeItems,
   defaultSpot,
+  dialAngle,
   GROUND_LINES,
+  normalizeAngle,
   placeFlora,
   placeObject,
   pruneAbodeLayout,
   SPOTS_PER_ROW,
+  turnItem,
   validateAbodeLayout,
 } from './abode.js'
 
@@ -258,5 +261,127 @@ describe('pruneAbodeLayout with owned objects', () => {
         p1: { x: 0.2, y: 0.8 },
       },
     )
+  })
+})
+
+describe('turning things (T5.5)', () => {
+  const completions = [floraDrop('c1'), floraDrop('c2')]
+  const decisions = { c1: 'gathered', c2: 'gathered' }
+  const purchases = [{ id: 'p1', objectKey: '0:1', price: 12, boughtAt: 5 }]
+
+  it('normalises any turn into [0, 360), to a tenth of a degree', () => {
+    expect(normalizeAngle(370)).toBe(10)
+    expect(normalizeAngle(-90)).toBe(270)
+    expect(normalizeAngle(720)).toBe(0)
+    expect(normalizeAngle(-0)).toBe(0)
+    expect(normalizeAngle(12.34)).toBe(12.3)
+    expect(normalizeAngle(359.97)).toBe(0)
+    expect(() => normalizeAngle(Number.NaN)).toThrow(/finite/)
+  })
+
+  it('the dial turns by how far the pointer circles, not to where it stands', () => {
+    const centre = { x: 100, y: 100 }
+    // A press at the item's right, dragged to directly below it: a quarter
+    // turn clockwise (screen y grows downward).
+    expect(
+      dialAngle(0, centre, { x: 150, y: 100 }, { x: 100, y: 150 }),
+    ).toBeCloseTo(90)
+    // Starting from an item already at 40°, pressing anywhere changes
+    // nothing until the pointer moves.
+    expect(dialAngle(40, centre, { x: 30, y: 70 }, { x: 30, y: 70 })).toBe(40)
+    // Distance from the centre is irrelevant, only the direction.
+    expect(
+      dialAngle(0, centre, { x: 110, y: 100 }, { x: 100, y: 400 }),
+    ).toBeCloseTo(90)
+    // Counter-clockwise is negative.
+    expect(
+      dialAngle(0, centre, { x: 150, y: 100 }, { x: 100, y: 50 }),
+    ).toBeCloseTo(-90)
+  })
+
+  it('items are upright (0) until turned, and read their stored angle', () => {
+    const upright = abodeItems(completions, decisions, {}, purchases)
+    expect(upright.every((item) => item.angle === 0)).toBe(true)
+    const layout = { c2: { x: 0.2, y: 0.3, angle: 45 }, p1: { x: 0.5, y: 0.5 } }
+    const items = abodeItems(completions, decisions, layout, purchases)
+    expect(items.find((i) => i.id === 'c2').angle).toBe(45)
+    expect(items.find((i) => i.id === 'p1').angle).toBe(0)
+  })
+
+  it('turns a flora or an object, returning a NEW map', () => {
+    const layout = { c1: { x: 0.2, y: 0.3 } }
+    const turned = turnItem(layout, completions, decisions, purchases, 'c1', 90)
+    expect(turned).toEqual({ c1: { x: 0.2, y: 0.3, angle: 90 } })
+    expect(layout).toEqual({ c1: { x: 0.2, y: 0.3 } })
+    const object = turnItem(
+      turned,
+      completions,
+      decisions,
+      purchases,
+      'p1',
+      -30,
+    )
+    expect(object.p1.angle).toBe(330)
+    expect(object.c1.angle).toBe(90)
+  })
+
+  it('turning a never-moved item writes the place it is standing in', () => {
+    const turned = turnItem({}, completions, decisions, purchases, 'c2', 10)
+    expect(turned.c2).toEqual({ ...defaultSpot(1), angle: 10 })
+  })
+
+  it('turning back to upright drops the angle but keeps the place', () => {
+    const layout = { c1: { x: 0.2, y: 0.3, angle: 90 } }
+    expect(
+      turnItem(layout, completions, decisions, purchases, 'c1', 360),
+    ).toEqual({ c1: { x: 0.2, y: 0.3 } })
+    // …and an upright item with no entry stays entry-less.
+    expect(turnItem({}, completions, decisions, purchases, 'c1', 0)).toEqual({})
+  })
+
+  it('refuses an item that is not on the ground', () => {
+    expect(() =>
+      turnItem({}, completions, decisions, purchases, 'ghost', 10),
+    ).toThrow(/No item/)
+    expect(() =>
+      turnItem({}, completions, { c1: 'composted' }, [], 'c1', 10),
+    ).toThrow(/No item/)
+  })
+
+  it('moving an item keeps its angle', () => {
+    const layout = { c1: { x: 0.2, y: 0.3, angle: 120 } }
+    const moved = placeFlora(layout, completions, decisions, 'c1', {
+      x: 0.6,
+      y: 0.7,
+    })
+    expect(moved.c1).toEqual({ x: 0.6, y: 0.7, angle: 120 })
+    const bought = { p1: { x: 0.1, y: 0.1, angle: 15 } }
+    expect(
+      placeObject(bought, purchases, 'p1', { x: 0.9, y: 0.9 }).p1.angle,
+    ).toBe(15)
+  })
+
+  it('pruning keeps an angle with its place, and drops it with the item', () => {
+    const layout = {
+      c1: { x: 0.2, y: 0.3, angle: 90 },
+      ghost: { x: 0.5, y: 0.5, angle: 10 },
+    }
+    expect(pruneAbodeLayout(layout, completions, decisions, purchases)).toEqual(
+      {
+        c1: { x: 0.2, y: 0.3, angle: 90 },
+      },
+    )
+  })
+
+  it('validation learns the field: optional, finite, from 0 up to 360', () => {
+    expect(() =>
+      validateAbodeLayout({ c1: { x: 0.2, y: 0.3, angle: 359.9 } }),
+    ).not.toThrow()
+    expect(() => validateAbodeLayout({ c1: { x: 0.2, y: 0.3 } })).not.toThrow()
+    for (const angle of [-1, 360, Number.NaN, '90', null]) {
+      expect(() =>
+        validateAbodeLayout({ c1: { x: 0.2, y: 0.3, angle } }),
+      ).toThrow(/angle/)
+    }
   })
 })

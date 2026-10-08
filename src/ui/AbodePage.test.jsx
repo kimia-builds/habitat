@@ -644,3 +644,185 @@ describe('the real flora on the ground', () => {
     )
   })
 })
+
+describe('rotating things (T5.5)', () => {
+  // A curiosity at (0.3, 0.58) on the 240 x 160 test frame: its held-size
+  // centre sits at about screen (72, 76).
+  const CENTRE = { x: 72, y: 76.032 }
+
+  function holdObject(over = {}) {
+    const spies = { ...defaults(), onTurn: vi.fn() }
+    render(<AbodePage finds={[]} items={[objectItem('p1', over)]} {...spies} />)
+    const thing = screen.getByRole('button', { name: 'a curiosity' })
+    fireEvent.pointerDown(thing, { clientX: 72, clientY: 90 })
+    fireEvent.pointerUp(window, { clientX: 72, clientY: 90 })
+    return spies
+  }
+
+  // The rotate(...) part of the held figure's transform, or null if upright.
+  const turnedBy = () =>
+    screen
+      .getByRole('button', { name: 'a curiosity' })
+      .getAttribute('transform')
+      ?.match(/rotate\([^)]*\)/)?.[0] ?? null
+
+  it('a held flora or curiosity offers rotate beneath compost / sell, and an unheld one does not', () => {
+    render(
+      <AbodePage
+        finds={[find('c1', 'gathered')]}
+        items={[item('c1'), objectItem('p1', { x: 0.7 })]}
+        {...defaults()}
+      />,
+    )
+    expect(screen.queryByRole('button', { name: 'rotate' })).toBeNull()
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: 'a flora find' }),
+      {
+        clientX: 72,
+        clientY: 90,
+      },
+    )
+    fireEvent.pointerUp(window)
+    expect(screen.getByRole('button', { name: 'compost' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'rotate' })).toBeDefined()
+  })
+
+  it('rotate mode swaps the words for save / cancel and dims everything else', () => {
+    holdObject()
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    expect(screen.getByRole('button', { name: 'save' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'cancel' })).toBeDefined()
+    expect(screen.queryByRole('button', { name: 'sell' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'rotate' })).toBeNull()
+    expect(document.querySelector('.abode-scene.turning')).not.toBeNull()
+    // The held item alone stays lit; the dimming is the stylesheet's job.
+    expect(document.querySelectorAll('.abode-flora.turned')).toHaveLength(1)
+  })
+
+  it('turns like a dial: by how far the pointer circles the item, never jumping', () => {
+    const spies = holdObject()
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    // Press far from the item, up and to the left — anywhere on screen.
+    fireEvent.pointerDown(window, { clientX: 20, clientY: 20 })
+    expect(turnedBy()).toBeNull() // pressing alone turns nothing
+    // Circle a quarter of the way round the item, clockwise from there.
+    fireEvent.pointerMove(window, { clientX: CENTRE.x + 40, clientY: CENTRE.y })
+    const before = turnedBy()
+    fireEvent.pointerMove(window, { clientX: CENTRE.x, clientY: CENTRE.y + 40 })
+    expect(turnedBy()).not.toBe(before)
+    expect(turnedBy()).toMatch(/^rotate\(/)
+    fireEvent.pointerUp(window)
+    expect(spies.onTurn).not.toHaveBeenCalled() // nothing stored yet
+  })
+
+  it('a quarter-turn of the pointer is a quarter-turn of the item', () => {
+    const spies = holdObject()
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    fireEvent.pointerDown(window, { clientX: CENTRE.x + 40, clientY: CENTRE.y })
+    fireEvent.pointerMove(window, { clientX: CENTRE.x, clientY: CENTRE.y + 40 })
+    fireEvent.pointerUp(window)
+    expect(turnedBy()).toMatch(/^rotate\(90 /)
+    fireEvent.click(screen.getByRole('button', { name: 'save' }))
+    expect(spies.onTurn).toHaveBeenCalledTimes(1)
+    const [id, degrees] = spies.onTurn.mock.calls[0]
+    expect(id).toBe('p1')
+    expect(degrees).toBeCloseTo(90)
+  })
+
+  it('a second press carries on from where the first left it', () => {
+    holdObject()
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    for (let go = 0; go < 2; go++) {
+      fireEvent.pointerDown(window, {
+        clientX: CENTRE.x + 40,
+        clientY: CENTRE.y,
+      })
+      fireEvent.pointerMove(window, {
+        clientX: CENTRE.x,
+        clientY: CENTRE.y + 40,
+      })
+      fireEvent.pointerUp(window)
+    }
+    expect(turnedBy()).toMatch(/^rotate\(180 /)
+  })
+
+  it('starts from the angle it already has', () => {
+    const spies = holdObject({ angle: 30 })
+    expect(turnedBy()).toMatch(/^rotate\(30 /)
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    fireEvent.pointerDown(window, { clientX: CENTRE.x + 40, clientY: CENTRE.y })
+    fireEvent.pointerMove(window, { clientX: CENTRE.x, clientY: CENTRE.y + 40 })
+    expect(turnedBy()).toMatch(/^rotate\(120 /)
+    fireEvent.click(screen.getByRole('button', { name: 'cancel' }))
+    expect(spies.onTurn).not.toHaveBeenCalled()
+  })
+
+  it('cancel drops the turn and restores the old angle', () => {
+    const spies = holdObject({ angle: 30 })
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    fireEvent.pointerDown(window, { clientX: CENTRE.x + 40, clientY: CENTRE.y })
+    fireEvent.pointerMove(window, { clientX: CENTRE.x, clientY: CENTRE.y + 40 })
+    fireEvent.pointerUp(window)
+    fireEvent.click(screen.getByRole('button', { name: 'cancel' }))
+    expect(spies.onTurn).not.toHaveBeenCalled()
+    expect(turnedBy()).toMatch(/^rotate\(30 /)
+    expect(document.querySelector('.abode-scene.turning')).toBeNull()
+    // Back to the held item's ordinary words.
+    expect(screen.getByRole('button', { name: 'sell' })).toBeDefined()
+  })
+
+  it('saving without turning stores nothing', () => {
+    const spies = holdObject()
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    fireEvent.click(screen.getByRole('button', { name: 'save' }))
+    expect(spies.onTurn).not.toHaveBeenCalled()
+  })
+
+  it('the dial does not start on the real controls, and nothing is draggable meanwhile', () => {
+    const spies = holdObject()
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    // A press on a pebble (here the way back) is the pebble's, not the dial's.
+    const back = screen.getByRole('button', { name: /back to the habits/ })
+    fireEvent.pointerDown(back, { clientX: CENTRE.x + 40, clientY: CENTRE.y })
+    fireEvent.pointerMove(window, { clientX: CENTRE.x, clientY: CENTRE.y + 40 })
+    expect(turnedBy()).toBeNull()
+    // The item itself is not draggable while it is being turned: a press on
+    // it begins a turn, never a move.
+    const thing = screen.getByRole('button', { name: 'a curiosity' })
+    fireEvent.pointerDown(thing, { clientX: 72, clientY: 90 })
+    fireEvent.pointerMove(window, { clientX: 150, clientY: 90 })
+    fireEvent.pointerUp(window)
+    expect(spies.onMove).not.toHaveBeenCalled()
+  })
+
+  it('a press on empty ground while turning does not let the item go', () => {
+    holdObject()
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    fireEvent.pointerDown(screen.getByRole('group', { name: 'the ground' }), {
+      clientX: 200,
+      clientY: 30,
+    })
+    expect(screen.getByRole('button', { name: 'save' })).toBeDefined()
+  })
+
+  it('the words stay upright: only the figure turns, never its name or buttons', () => {
+    holdObject({ angle: 90 })
+    const words = document.querySelector('.abode-flora-name')
+    expect(words.getAttribute('transform')).toBeNull()
+    expect(
+      screen.getByRole('button', { name: 'rotate' }).getAttribute('transform'),
+    ).toBeNull()
+  })
+
+  it('friends are not turnable: a held friend does not exist', () => {
+    render(
+      <AbodePage
+        finds={[]}
+        items={[]}
+        friends={[{ completionId: 'f1', category: 'plip', individual: 0 }]}
+        {...defaults()}
+      />,
+    )
+    expect(screen.queryByRole('button', { name: 'rotate' })).toBeNull()
+  })
+})

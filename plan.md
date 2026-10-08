@@ -334,31 +334,11 @@ tracker. Everything after this is delight, informed by real use.
             deliberate holds — the placeholders were scaled to keep their
             on-screen size and nothing was redesigned unasked.
 
-- [ ] **T5.5 Rotate things in the Abode** _(opened 2026-10-08 on Kimia's
-      call; one session; do AFTER T5.3k)_ — every flora and curiosity
-      standing on the Abode can be turned. Her design, in full:
-      - Under **compost** (flora) or **sell** (curiosity) on a held item
-        sits a third quiet word, **rotate**, in exactly the same style.
-      - Pressing it enters rotate mode: the item stays at its magnified
-        "held" size and glow, and **everything else dims**.
-      - She **presses and drags anywhere on the screen**; the item turns
-        about its own centre (flat, in the plane of the screen) following
-        the angle of the pointer **around the item, like a dial** — the
-        item turns by how far the pointer circles it, so it does not jump
-        where she first presses.
-      - **save** keeps the angle; a quiet **cancel** beside it drops the
-        turn and restores the old one (her call — nothing in Habitat traps
-        you).
-      - The name and the words stay upright. Friends are not part of this
-        (they cannot be dragged either).
-      - **Storage:** the angle rides on the item's entry in `abodeLayout`
-        as an optional number of degrees; no entry or no angle means
-        upright, so older saves load unchanged and no storage version bump
-        is needed. Moving an item keeps its angle; pruning, import and
-        validation learn the field. Words for the three controls go in
-        `content/ui.js`.
-      - Verified with a real click in the browser pane (the new-control
-        rule), and a real pointer circling the item.
+- [x] **T5.5 Rotate things in the Abode** _(done 2026-10-08 — a third
+      word, **rotate**, under compost / sell on a held flora or curiosity;
+      press and drag anywhere to turn it like a dial, **save** keeps the
+      angle, **cancel** drops it; the angle rides on `abodeLayout`, no
+      storage bump. Build notes in history.md)_
 
 ## M6 — Hardening & content (ongoing)
 

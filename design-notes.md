@@ -1998,7 +1998,7 @@ be a postage stamp in portrait. Nothing may invent a phone size in the
 meantime; `worldCanvas.js` holds none, and its test says so.
 
 
-**Turning things (decided 2026-10-08, T5.5 — not yet built).** A held
+**Turning things (decided and built 2026-10-08, T5.5).** A held
 item shows its name, then **compost** (flora) or **sell** (curiosity),
 then a third word, **rotate**, all in the same quiet underlined style.
 Pressing rotate is a mode, not a menu: the item stays at its slightly
@@ -2009,6 +2009,18 @@ angle around it like a dial (it starts from where it already is, so it
 never jumps). The held item's words become **save** and a quiet
 **cancel**. Nothing about the turn is stored until save. Flat rotation in
 the plane of the screen only — no tilting. Friends are not turnable.
+
+The words stack name, then compost / sell, then rotate — a held item's
+whole stack sits one line higher than it did before rotate existed, so the
+lowest word clears the figure — and stay upright above the item's TURNED
+outline. While turning, the name stays where it was and save / cancel
+share the compost / sell line, leaning away from the middle. Everything
+else — the sky, the other flora and curiosities, any visiting friends —
+drops to `--turn-dim` (0.3, a first proposal for Kimia's eye). A press
+within 6px of the item's centre is ignored (no direction to follow), as is
+a press on a real control (rail, pebbles, sky swatches, party switch), so
+those keep working while the rest of the screen is the dial. The item turns
+about the middle of its held-size figure.
 
 **Flora at rest (decided 2026-10-08, T5.3k).** Every flora glows at the
 level a clicked one used to brighten to; clicking now only magnifies it.
