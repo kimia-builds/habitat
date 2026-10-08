@@ -24,8 +24,8 @@ that; this file stays about the app's feel.
    This applies retroactively: the five built T3.2 reveals get
    slot-ified (plan T3.4), their current text kept only as a marked
    placeholder until Kimia replaces it. See §7. **Since 2026-07-19
-   this covers images too:** the reading-material spreads (plan T3.5)
-   are pictures Kimia provides — never AI-generated. Same shape:
+   this covers images too:** the reading-material texts and their
+   pictures (plan T3.5, T6.24) are Kimia's — never AI-generated. Same shape:
    Claude Code builds the keyed slots and the graceful empty state;
    Kimia makes the content.
 

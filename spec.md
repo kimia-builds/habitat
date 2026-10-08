@@ -260,18 +260,92 @@ opening its own growing world:
 
 - **Reading material drops** are **less predictable and rarer** than
   object finds — the surprise-reward stream:
-  - **Magazines** (common-ish)
+  - **Magazines** (common)
   - **Novels** (medium)
   - **Dictionaries** (rare)
 - Reading material is **never discarded** — every piece goes straight to
   the Bookcase and fills the **literacy meter**, our growing command of
   the local language.
+- **Two separate measures, two separate rewards (Kimia 2026-10-08).**
+  The **literacy level** (the bar) is fed by reading drops and decides
+  which **friend** drops can happen. The **reading stage** (new) is a
+  second measure with its own thresholds, fed by the same drop points,
+  and decides **what we get to see inside** our reading material —
+  which is a reward in itself. Neither replaces the other.
+- **Reading stages** (internal names, never shown in the app). Six,
+  building over time; Habitat's way of letting us pick up N-Z-D's
+  language, from total bafflement to full comprehension:
+  1. **Illiterate** — pictures only.
+  2. **Collecting words** — a random scatter of single-word captions,
+     each paired with a picture (e.g. "hello", "N-Z-D", "sale",
+     "baluhm"). The scatter is the point.
+  3. **Somewhat verbal** — words cobbled together, grammar still wonky;
+     still abstract, so the reader needs outside context (e.g. "baluhm
+     finds new stranger", "too many plips today").
+  4. **Grammar sorted** — basic, coherent, literal sentences (e.g. "a
+     plip school got hit by a meteor today. luckily the plips are not
+     injured."; "market goods are selling fast! purchase your objects
+     before the seller moves back to their hometown").
+  5. **Higher education** — more sophisticated expression of ideas
+     (e.g. "the skies began to change colour as the krupengk's mother
+     began to leave N-Z-D. be sure to continue my legacy, child! she
+     said on her way out. the plips cheered in ecstasy. a new era was
+     finally beginning.").
+  6. **Subtlety elite** — poetry, allegory, metaphor; fully
+     comprehensible text.
+- **Stage thresholds ride on the literacy meter's own points** (Kimia
+  2026-10-08) — the same drop points that move the literacy level, not
+  a separate count. **PROVISIONAL**, to be tuned with the drop
+  simulation (as the friend milestones were): stage 1 from the start,
+  then stages 2–6 at 30, 115, 260, 465 and 590 points.
+- **Drop rule.** A reading drop may come from the current reading stage
+  or any stage already passed — **never a higher one**. Early material
+  can keep recurring forever; stage 1 is always available, so we can
+  always begin. (Same shape as friend drops, on different thresholds.)
+- **The reading pool — 126 texts** (Kimia 2026-10-08): **6 dictionaries
+  (one per stage), 24 novels (4 per stage) and 96 magazines (16 per
+  stage)**, following the drop ratio of roughly 16 magazines : 4 novels
+  : 1 dictionary. Repeats are expected and accepted — the volume of
+  drops is very high and the effort to build this asset class is
+  deliberately ringfenced.
+- **What a text is.** Under **100 words**, always **English** text (never
+  an invented script, never presented as a translation), written by
+  **locals** — a journalist, a neighbourhood community callout, an
+  educational institution — never by foreigners like us. Subject matter
+  stays **varied at every stage**. The material **looks outward**: it is
+  not about our in-game persona, since the game already revolves around
+  our own habits. Meaning comes from the other discovery moments of play
+  (plips and baluhms are creature species met through the game), never
+  from a text explaining itself.
+- **Old stays old.** An early text keeps its original design forever and
+  is never re-read differently as the stage grows.
+- **Magazines** carry headlines, callouts, advertisements and
+  information; **novels** carry scenes and moments from fictional
+  stories; **dictionaries** carry definitions, encyclopedia entries and
+  data. Text-only entries are long-form only — in the early stages
+  free-floating words always pair with a picture.
+- **Early-stage pictures** look like **children's drawings**:
+  deliberately simpler versions of in-game objects (curiosities, flora,
+  friends, charms) — things we have met, are meeting, or are about to
+  meet — an extra layer of simplification on top of the already simple
+  in-game graphics, evenly across all pictures. A stylistic choice only.
+- **Texts and covers are separate (Kimia 2026-10-08).** A publication's
+  cover and spine are not canonically tied to the text inside. Each
+  received book remembers which text it holds, so re-reading from the
+  Bookcase always shows the same text. Revisit at the cover-design
+  phase (T6.1).
+- **Translation.** The in-book texts are translated for the Farsi
+  version like everything else, as the **lowest-priority** translation
+  work in the game.
+- **AI never writes the texts** — human-written by Kimia only (the
+  standing content rule); Claude Code builds the empty, keyed slots.
 - Each publication can be **read** (2026-07-19, plan T3.5): a popup
-  opens a double-page spread of it — an image Kimia provides, one per
-  publication (T6.1), never AI-generated. A held arrival offers **read
-  now / read later**; either way the piece is in the Bookcase, and any
-  publication is re-readable from there anytime. No read/unread
-  tracking exists anywhere.
+  opens a double-page spread of it — **the text for its stage, with its
+  pictures** (Kimia 2026-10-08, replacing the single provided image per
+  publication; images remain Kimia-provided, never AI-generated). A
+  held arrival offers **read now / read later**; either way the piece
+  is in the Bookcase, and any publication is re-readable from there
+  anytime. No read/unread tracking exists anywhere.
 - Literacy milestones unlock **friendships**, which also arrive **as
   drops** — the top of the reward hierarchy. A milestone **opens the
   door**: it makes that friend category possible, and the friend then

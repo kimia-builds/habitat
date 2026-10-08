@@ -3398,6 +3398,27 @@ return 0` right after the era is worked out, so a moment before the
   that item no longer steps forward when an earlier flora is composted.
   Turning back to upright removes the angle and keeps the place.
 
+- 2026-10-08 (Kimia, from her reading-materials design note): **reading
+  materials get a vision, a second measure and a text pool.** Folded
+  into spec §5 Stream 2 and design-bible §10b; built as plan T6.24.
+  Decided: (1) the **reading stage** (6 stages) is a second measure
+  beside the literacy level — literacy decides friend drops, stage
+  decides what is inside a text; (2) stage thresholds ride on the
+  literacy points (provisional 0 / 30 / 115 / 260 / 465 / 590, mine to
+  propose, to be tuned in the drop simulation); (3) drops may come from
+  the current stage or any passed one, never higher; (4) the pool is
+  **126 texts** — 6 dictionaries (one per stage), 24 novels, 96
+  magazines, from the 16 : 4 : 1 drop ratio; (5) a spread is now **text
+  plus pictures** (under 100 words, English, written by locals), no
+  longer one Kimia-provided image per publication — the images that
+  remain are Kimia-made, never AI-generated; (6) covers and texts are
+  **decoupled**, each received book remembering its text; revisit at
+  the cover-design phase; (7) rarity wording is common / medium / rare;
+  (8) in-book texts are translated for Farsi as the lowest-priority
+  translation work; (9) two typos in her note fixed ("kerplungk" →
+  krupengk, "ecstacy" → ecstasy). Supersedes the 30-publications-
+  with-a-spread-each count in the 2026-07-19 T3.5 decision.
+
 ## T5.5 build notes — rotate (2026-10-08)
 
 Built in one session from Kimia's design, in three parts.

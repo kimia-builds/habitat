@@ -800,9 +800,11 @@ years without ever being complete too early.
 
 **Types.** Magazines · novels · dictionaries.
 
-**Count — 30.** Ten of each type (~10 block colours × 3 types). Type
-governs **drop rarity** (spec §5), not count. At three canonical assets
-each (below), that is **90 image assets**.
+**Count — 30 covers.** Ten of each type (~10 block colours × 3 types).
+Type governs **drop rarity** (spec §5), not count. The cover count is
+**independent of the reading pool** (Kimia 2026-10-08): the texts inside
+are a separate pool of 126 (spec §5 Stream 2), not one per cover. The
+cover count is open to revisit at the cover-design phase.
 
 **Form.** Familiar Earth-like book forms read through Habitat's graphic
 style — recognisable silhouettes, no overly sharp lines in any view.
@@ -812,13 +814,17 @@ spectrum.
 
 **Light.** Glows **less** than living things (§7).
 
-**Three canonical assets per publication:**
+**Two canonical assets per publication:**
 
 1. **Spine view** — for the Bookcase shelf.
 2. **Front cover view** — for reveals and the shelf's face-out state.
-3. **Interior double-page spread** — the reading image opened from the
-   Bookcase. **Kimia-provided, one per publication, never
-   AI-generated** (the standing content rule, CLAUDE.md).
+
+**The reading pages are a separate pool, not a cover asset** (Kimia
+2026-10-08): 126 texts, each with its pictures where its stage has them.
+Early-stage pictures look like children's drawings — simplified
+versions of in-game objects, evenly simplified, a stylistic choice only.
+All of it is Kimia-made, never AI-generated (the standing content rule,
+CLAUDE.md). The cover is not canonically tied to the text inside.
 
 ### 11. Environment assets
 
@@ -876,7 +882,7 @@ than flora is what makes the family buildable at all — see §9a.
 | Friend categories   | 10    | 1 signature animation each                             |
 | Friend individuals  | 55    | body each (10 → 1 down the ladder)                     |
 | Curiosities         | 64    | body (4 per region × 16)                               |
-| Publications        | 30    | spine + cover + interior spread (10 per type)          |
+| Publications        | 30    | spine + cover (10 per type); reading pages are a separate pool of 126 texts |
 | Sky                 | 1     | Abode sky × 4 palettes (shared night sky is CSS, §11a) |
 | Terrain             | 1     | serves 3 screens                                       |
 | Map regions         | 16    | region art + 1 landmark marker each                    |

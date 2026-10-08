@@ -342,6 +342,17 @@ tracker. Everything after this is delight, informed by real use.
 
 ## M6 — Hardening & content (ongoing)
 
+- [ ] **T6.24 Reading stages and the reading pool** — build what spec §5
+      Stream 2 now describes (Kimia 2026-10-08): the second measure
+      "reading stage" (6 stages, thresholds on the literacy points, 0 /
+      30 / 115 / 260 / 465 / 590, provisional), drops capped at the
+      current stage, the 126-text pool (6 dictionaries, 24 novels, 96
+      magazines) as keyed empty slots Kimia fills, each received book
+      remembering which text it holds, and the spread popup showing text
+      plus pictures. Replaces the one-image-per-publication `spreads.js`
+      shape. The in-book texts are the lowest-priority Farsi translation.
+      Stage thresholds to be tuned in the drop simulation.
+
 - [ ] **T6.1 Content pools** — write/name the actual flora, market
       objects (with prices), reading material, and friends; assign objects
       to regions (collaborative, fun, ongoing). Decide here which flora
