@@ -7021,3 +7021,9 @@ and recorded in spec.md's decisions log._
   gone. The temporary "flora colours" workbench shelf, its CSS and test line
   came down. Textures stay in the library. Glow at the lifted level (step 3)
   and the docs/README pass (step 4) are still to do.
+
+- **T5.3k step 3 — the glow at the lifted level, always** (2026-10-08).
+  `Flora.jsx` gives every flora a `flora` class; one stylesheet rule puts
+  `--glow-lifted` on it, in the plant's own colour. The held/focus-only rule
+  is gone, so selecting a flora only magnifies it. The first-flora reveal
+  keeps its brighter POP glow.

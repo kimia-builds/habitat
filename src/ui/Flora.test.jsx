@@ -113,3 +113,11 @@ describe('the room a find needs', () => {
     expect(svg.getAttribute('height')).toBe(String(box.height))
   })
 })
+
+describe('the glow at rest', () => {
+  it('carries the shared flora class, which the stylesheet lights', () => {
+    const svg = draw('c1', { className: 'extra' })
+    expect(svg.classList.contains('flora')).toBe(true)
+    expect(svg.classList.contains('extra')).toBe(true)
+  })
+})

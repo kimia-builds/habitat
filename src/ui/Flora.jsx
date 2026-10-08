@@ -105,7 +105,7 @@ function Flora({
       y={y}
       width={`${floraWidth(sizeClass, silhouette, base)}${unit}`}
       height={`${floraHeight(sizeClass, base)}${unit}`}
-      className={className}
+      className={`flora ${className}`.trim()}
       // A FLORA CARRIES ITS OWN COLOUR as currentColor, so a stylesheet can
       // light one — a held plant's lift, say — in the plant's own light without
       // knowing which of the four it was dealt. §3: a living thing's glow is

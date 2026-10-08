@@ -698,12 +698,13 @@ body {
   filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 
-/* A REAL FLORA HAS NO CSS HALO AT REST (T5.3i): its aura is its own silhouette,
-   blurred and painted its own colour inside the drawing (design-bible §3, §7).
-   Held or focused, it lifts — and it lifts in the plant's own light, because
-   Flora.jsx puts the fill's colour on the element as currentColor. */
-.abode-flora-art.held,
-.abode-flora-hold:focus-visible .abode-flora-art {
+/* EVERY FLORA GLOWS AT THE LIFTED LEVEL, ALWAYS (Kimia, 2026-10-08, T5.3k):
+   the level a held plant used to brighten to is now where every one rests,
+   on every screen that draws one. Holding a flora still magnifies it and no
+   longer brightens it. Flora.jsx puts the plant's own colour on the element
+   as currentColor, so the light is the plant's own (design-bible §3). The
+   reveal below keeps its brighter POP, which comes later in this file. */
+.flora {
   filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 

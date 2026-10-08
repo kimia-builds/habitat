@@ -308,7 +308,7 @@ tracker. Everything after this is delight, informed by real use.
                ~16% colour, so no nebula star shows through), outline
                ~85%, constant on-screen thickness whatever the trace's size.
                Hair fields, `FIELDS` cache and `hairUnit` go.
-            3. **The glow at the selected level, always** — `--glow-lifted`
+            3. [x] **The glow at the selected level, always** _(done 2026-10-08)_ — `--glow-lifted`
                on every flora, on every screen that draws one; selecting
                still magnifies but no longer brightens.
             4. Tests (the deal now rolls from six; shapes and sizes
