@@ -90,7 +90,11 @@ function Friend({
       }}
       aria-hidden="true"
     >
-      <svg className="friend-art-layer" viewBox={box}>
+      <svg
+        className="friend-art-layer friend-art-body"
+        viewBox={box}
+        style={{ color: palette.glow }}
+      >
         <defs>
           <BodyDefs prefix={prefix} />
         </defs>

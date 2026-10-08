@@ -812,7 +812,7 @@ body {
 /* One visiting friend: simply present — no signature animation, never
    draggable. Its place is the formation's fraction of the scene, and it stands
    ON that point rather than centred over it, so friends and flora share one
-   ground line. No glow rule: a friend's aura is part of the drawing. */
+   ground line. Its glow comes from .friend-art-body. */
 .abode-party-friend {
   position: absolute;
   transform: translate(-50%, -100%);
@@ -1255,7 +1255,9 @@ body {
    eyes laid exactly over it (Friend.jsx). The wrapper carries the width and the
    artwork's own shape; both layers fill it exactly, so the drawing sits in its
    box with no padding of its own and its canonical size is the size you see.
-   No glow rule here: a friend's aura is part of the drawing. */
+   A friend's aura is part of the drawing; on top of it the body rests at the
+   same lifted glow as the flora (Kimia, 2026-10-08), in its own glow colour.
+   Only the body layer takes it, so a blink never re-blurs the glow. */
 .friend-art {
   position: relative;
   display: block;
@@ -1266,6 +1268,10 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
+}
+
+.friend-art-body {
+  filter: drop-shadow(0 0 var(--glow-lifted) currentColor);
 }
 
 /* The T4.4 placeholder line-art. NO SCREEN WEARS IT ANY MORE: the Abode's

@@ -92,3 +92,15 @@ describe('a friend', () => {
     expect(container.querySelector('.friend-art')).toBeNull()
   })
 })
+
+describe('the glow at rest', () => {
+  it('lights the body layer in the friend\'s own glow colour, not the eyes', () => {
+    const { container } = render(
+      <Friend category={0} individual={1} worldSeed="seed" base={5} />,
+    )
+    const layers = container.querySelectorAll('.friend-art-layer')
+    expect(layers[0].classList.contains('friend-art-body')).toBe(true)
+    expect(layers[0].style.color).not.toBe('')
+    expect(layers[1].classList.contains('friend-art-body')).toBe(false)
+  })
+})

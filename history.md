@@ -7027,3 +7027,14 @@ and recorded in spec.md's decisions log._
   `--glow-lifted` on it, in the plant's own colour. The held/focus-only rule
   is gone, so selecting a flora only magnifies it. The first-flora reveal
   keeps its brighter POP glow.
+
+- 2026-10-08: **friends glow like the flora** (T5.3k). Kimia asked for the
+  friends' glow to match the flora's: every friend's body layer now rests at
+  `--glow-lifted` in its own glow colour (the eyes layer is left out so a
+  blink never re-blurs it). Fungi are untouched.
+- **T5.3k step 4 — docs and tests** (2026-10-08). Tests for the six-colour
+  deal, the plain fill and the shared glow class were written alongside steps
+  2–3. Docs swept: design-bible §3/§9a/§9c no longer say "three greens, three
+  blues" or lean on the retired fur rule; design-notes notes friends' glow.
+  Gathered flora are re-dealt from the seed, so some changed colour (accepted).
+  Colour names are still Kimia's to choose.

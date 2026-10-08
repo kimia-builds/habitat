@@ -286,35 +286,10 @@ tracker. Everything after this is delight, informed by real use.
                   own cool grey. `CrateredFilter` lifted out of TextureDefs so
                   they can wear it. Approved on sight. Build notes in
                   history.md)_
-      - [ ] **T5.3k The flora lose their texture** _(opened 2026-10-08 on
-            Kimia's call; one session)_ — "remove the textures and keep the
-            colour, shape and size variations as they are." Reverses T5.3g's
-            fills (design-bible §9a has the full decision). Order of work,
-            each step judged by her before the next:
-            1. [x] **Pick the six colours** _(done 2026-10-08 — the
-               first four were judged too tame, so she chose ALL SIX from
-               scratch off the workbench, bioluminescent and neon, no
-               fixed green/blue split: `#00ff00` `#50f7d0` `#00ffff`
-               `#73c0f7` `#0ab9ee` `#0080ff`; design-bible §9a. Still to
-               do in the build session: write them into `floraColours.js`
-               replacing emerald / leaf / sky / azure, give them names
-               (hers to choose), and take the temporary "flora colours"
-               shelf off the workbench with its test line and CSS)_
-            2. [x] **The plain fill** _(done 2026-10-08 — build notes in
-               history.md)_ — `floraFills.js` collapses to the six
-               colours (a fill IS a colour now, rolled evenly, so 4 × 2 × 6
-               = 48 still holds); `Flora.jsx` draws the body like a
-               frontier Map region, the fill OPAQUE (near-black ground +
-               ~16% colour, so no nebula star shows through), outline
-               ~85%, constant on-screen thickness whatever the trace's size.
-               Hair fields, `FIELDS` cache and `hairUnit` go.
-            3. [x] **The glow at the selected level, always** _(done 2026-10-08)_ — `--glow-lifted`
-               on every flora, on every screen that draws one; selecting
-               still magnifies but no longer brightens.
-            4. Tests (the deal now rolls from six; shapes and sizes
-               unchanged), docs, and a note that gathered flora are
-               re-dealt, so some change colour.
-            - [ ] **The landmark class** is untouched by this.
+      - [x] **T5.3k The flora lose their texture** _(done 2026-10-08 — six
+            neon colours, a plain opaque fill with an outline, every flora
+            (and now every friend) glowing at the lifted level. Colour names
+            are still Kimia's to choose. Build notes in history.md)_
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

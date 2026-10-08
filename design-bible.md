@@ -91,7 +91,7 @@ Stated once so no asset family has to repeat them:
   (the pilot plip is deep blue, §9c); friend **eyes are the one fixed
   exception** — always yellow in a dark socket, and by rule always a
   different colour from the body. (**Flora** wear one of **six** colours as of
-  2026-10-08 — three greens and three blues, §9a (it was four from
+  2026-10-08 — green to blue, no fixed split, §9a (it was four from
   2026-08-19) — and glow it. **Fungi**
   colour is still the earlier green pending its own pass, T6.1.)
 - **Darkness is the default; nothing casts a shadow.**
@@ -147,8 +147,10 @@ than in numbers somebody has to re-guess per drawing:
   in every place a flora is drawn**, not only when selected. Selecting
   still magnifies it; it no longer changes the glow. This is the flora's
   settled rung, so the "which top step" eyeball call below is closed for
-  flora (friends and fungi are not covered by it). She considered
-  `--glow-max` and chose the selected level.
+  flora. She considered `--glow-max` and chose the selected level.
+  **Friends rest at the same level** (her call, the same day): the body
+  layer takes `--glow-lifted` in its own glow colour, on top of the aura
+  in the drawing. Fungi are not covered by it.
 - **Today's glows do NOT yet honour this, and that is expected.** Every
   organic thing on screen is a placeholder shape, not its finished
   drawing, so flora currently glows at `--glow-faint` and a friend at
@@ -736,7 +738,7 @@ N-Z-D**, which is this line's "wide size range" arriving for real.
 2026-09-01: "as with plants, make the texture size of the columns
 match"). A bark furrow is as wide on the small column as on the large
 one, and a pore is one pore on both discs; the small object simply wears
-fewer of them. This is §9a's fur rule applied to the objects, and it is
+fewer of them. This is the flora's old fur rule (retired 2026-10-08, §9a) applied to the objects, and it is
 won by drawing every object in a frame equal to its own Abode-pixel
 size, so one screen scales them all by the same factor.
 
@@ -868,7 +870,7 @@ than flora is what makes the family buildable at all — see §9a.
 | Family              | Count | Assets per unit                                        |
 | ------------------- | ----- | ------------------------------------------------------ |
 | Flora — silhouettes | 4     | one drawing each; 48 collectibles = 4 × 2 sizes × 6 colours |
-| Flora — colours     | 6     | three greens, three blues; a plain fill, no drawing or texture of their own |
+| Flora — colours     | 6     | green to blue, no fixed split; a plain fill, no drawing or texture of their own |
 | Flora — landmark    | 16    | 4 super-sized versions of each species; body + Map marker + one keepsake type |
 | Fungi               | 1     | single form                                            |
 | Friend categories   | 10    | 1 signature animation each                             |

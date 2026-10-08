@@ -2012,6 +2012,7 @@ the plane of the screen only — no tilting. Friends are not turnable.
 
 **Flora at rest (decided 2026-10-08, T5.3k).** Every flora glows at the
 level a clicked one used to brighten to; clicking now only magnifies it.
+Friends rest at that same level.
 A flora's body is a plain, opaque fill with a stronger outline (design-bible
 §9a), so no star of the sky shows through it.
 
