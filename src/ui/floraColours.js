@@ -69,4 +69,15 @@ export const FLORA_COLOUR_CANDIDATES = [
     hue: 'luminous',
     shades: HUES.map((h) => ({ name: `${h}b`, hex: hex(h, 1, 0.65) })),
   },
+  // Round three (Kimia asked for more along the blue spectrum, keeping the
+  // rows above): finer hue steps through cobalt, turquoise and aquamarine.
+  // Named "cobalt 224" etc. — the word, then the hue angle.
+  ...[
+    ['cobalt', [212, 218, 224, 230, 236, 242], 0.55],
+    ['turquoise', [166, 171, 176, 181, 186, 191], 0.5],
+    ['aquamarine', [146, 151, 156, 161, 166, 171], 0.62],
+  ].map(([hue, angles, l]) => ({
+    hue,
+    shades: angles.map((h) => ({ name: `${hue} ${h}`, hex: hex(h, 1, l) })),
+  })),
 ]
