@@ -39,62 +39,27 @@ export const FLORA_COLOURS = [
 ]
 
 /*
- * TEMPORARY (T5.3k, 2026-10-08): the second round. Kimia judged the first
- * round and the four settled colours too tame — bar `leaf`, none had enough
- * pop — and wants bioluminescent: neon, electric, luminous. So she picks all
- * six from scratch off a sweep of the blue-to-green range, with no fixed
- * split between greens and blues. Two rows: ELECTRIC (fully saturated) and
- * LUMINOUS (the same hues lifted toward white-hot). Each swatch is named by
- * its hue angle and row letter so she can call it by name ("150b"). Once she
- * picks, the six become FLORA_COLOURS and this list is deleted.
+ * TEMPORARY (T5.3k, 2026-10-08): the shortlist. After four rounds of
+ * candidates Kimia kept these eleven (names are from the earlier rounds:
+ * "120a" was a fully saturated hue-120 swatch, and so on) and dropped the
+ * rest. She picks the final six from here; then the six become
+ * FLORA_COLOURS and this list is deleted.
  */
-const hex = (h, s, l) => {
-  const k = (n) => (n + h / 30) % 12
-  const a = s * Math.min(l, 1 - l)
-  const f = (n) =>
-    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))
-  const to = (x) =>
-    Math.round(x * 255)
-      .toString(16)
-      .padStart(2, '0')
-  return `#${to(f(0))}${to(f(8))}${to(f(4))}`
-}
-const HUES = [120, 135, 150, 165, 180, 195, 210, 225, 240]
 export const FLORA_COLOUR_CANDIDATES = [
   {
-    hue: 'electric',
-    shades: HUES.map((h) => ({ name: `${h}a`, hex: hex(h, 1, 0.5) })),
-  },
-  {
-    hue: 'luminous',
-    shades: HUES.map((h) => ({ name: `${h}b`, hex: hex(h, 1, 0.65) })),
-  },
-  // Round three (Kimia asked for more along the blue spectrum, keeping the
-  // rows above): finer hue steps through cobalt, turquoise and aquamarine.
-  // Named "cobalt 224" etc. — the word, then the hue angle.
-  ...[
-    ['cobalt', [212, 218, 224, 230, 236, 242], 0.55],
-    ['turquoise', [166, 171, 176, 181, 186, 191], 0.5],
-    ['aquamarine', [146, 151, 156, 161, 166, 171], 0.62],
-  ].map(([hue, angles, l]) => ({
-    hue,
-    shades: angles.map((h) => ({ name: `${hue} ${h}`, hex: hex(h, 1, l) })),
-  })),
-  // Round four: eleven hand-picked hexes from Kimia, named by their hex.
-  {
-    hue: 'hers',
+    hue: 'shortlist',
     shades: [
-      '#25f7ff',
-      '#10e1eb',
-      '#0ab9f5',
-      '#0ab9ee',
-      '#50d5f6',
-      '#73c0f7',
-      '#2ba7e1',
-      '#6ee8f7',
-      '#21fd00',
-      '#00fd19',
-      '#50f7d0',
-    ].map((h) => ({ name: h, hex: h })),
+      { name: '120a', hex: '#00ff00' },
+      { name: '180a', hex: '#00ffff' },
+      { name: '195a', hex: '#00bfff' },
+      { name: '210a', hex: '#0080ff' },
+      { name: 'turquoise 191', hex: '#00d0ff' },
+      { name: 'aquamarine 171', hex: '#3dffe2' },
+      { name: '#50f7d0', hex: '#50f7d0' },
+      { name: '#0ab9f5', hex: '#0ab9f5' },
+      { name: '#0ab9ee', hex: '#0ab9ee' },
+      { name: '#6ee8f7', hex: '#6ee8f7' },
+      { name: '#73c0f7', hex: '#73c0f7' },
+    ],
   },
 ]
