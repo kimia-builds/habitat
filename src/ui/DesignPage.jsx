@@ -57,6 +57,7 @@ import Curiosity, {
 import { OBJECT_CANON, objectSize } from './objectCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
+import { FLORA_COLOURS, FLORA_COLOUR_CANDIDATES } from './floraColours.js'
 
 // The §8 texture families still waiting to be judged, in the order the
 // design bible lists them, so the workbench reads like the catalogue.
@@ -181,6 +182,26 @@ function CuriosityShelf() {
   )
 }
 
+// One flora colour: a square of the colour throwing a glow of that same
+// colour (a living thing's light IS its body colour, design-bible §3).
+// TEMPORARY (T5.3k) — the pick of two new colours; leaves once chosen.
+function FloraColourSwatch({ shade }) {
+  return (
+    <li className="flora-colour-swatch">
+      <div
+        className="flora-colour-square"
+        role="img"
+        aria-label={shade.name}
+        style={{
+          background: shade.hex,
+          boxShadow: `0 0 var(--glow-lifted) ${shade.hex}`,
+        }}
+      />
+      <span className="texture-swatch-name">{shade.name}</span>
+    </li>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -213,6 +234,31 @@ function DesignPage({ onBack }) {
           the real Abode as its four background choices, and this page is a
           waiting room, not a gallery (spec §5b): a settled asset left here
           is another screenful between Kimia and the one she came to see. */}
+
+      {/* TEMPORARY (T5.3k): the four settled flora colours, then
+          candidates for the two new ones — Kimia picks one green, one blue. */}
+      <section className="design-family" aria-label="flora colours">
+        <h3>flora colours</h3>
+        <ul
+          className="texture-swatches flora-colour-row"
+          aria-label="flora colours — the four we have"
+        >
+          {FLORA_COLOURS.map((shade) => (
+            <FloraColourSwatch key={shade.name} shade={shade} />
+          ))}
+        </ul>
+        {FLORA_COLOUR_CANDIDATES.map((group) => (
+          <ul
+            key={group.hue}
+            className="texture-swatches flora-colour-row"
+            aria-label={`flora colours — candidate ${group.hue}s`}
+          >
+            {group.shades.map((shade) => (
+              <FloraColourSwatch key={shade.name} shade={shade} />
+            ))}
+          </ul>
+        ))}
+      </section>
 
       <button className="pebble" onClick={onBack}>
         ← back to the habits

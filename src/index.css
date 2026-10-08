@@ -3496,3 +3496,17 @@ body {
   text-align: center;
   white-space: nowrap;
 }
+
+/* TEMPORARY (T5.3k, 2026-10-08): flora-colour swatches for picking the two
+   new colours by eye (design-bible §9a). Each square's colour and glow are
+   set inline from floraColours.js — artwork paint, not stylesheet colour
+   (§11d). Leaves when the six are chosen. */
+.flora-colour-row {
+  margin-block: var(--space-3);
+}
+
+.flora-colour-square {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 0.75rem;
+}

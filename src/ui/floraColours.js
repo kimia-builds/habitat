@@ -37,3 +37,31 @@ export const FLORA_COLOURS = [
   { name: 'sky', hex: '#3aa9ff' },
   { name: 'azure', hex: '#2f7dff' },
 ]
+
+/*
+ * TEMPORARY (T5.3k, 2026-10-08): candidates for the two NEW flora colours —
+ * one more green, one more blue, taking the palette from four to six. They
+ * stand on the workbench beside the four settled colours so Kimia can judge
+ * by eye. Once she picks, the winners join FLORA_COLOURS and this list is
+ * deleted.
+ */
+export const FLORA_COLOUR_CANDIDATES = [
+  {
+    hue: 'green',
+    shades: [
+      { name: 'fern', hex: '#1fbf5a' },
+      { name: 'mint', hex: '#8affc1' },
+      { name: 'lime', hex: '#b4f03c' },
+      { name: 'jade', hex: '#27d6a0' },
+    ],
+  },
+  {
+    hue: 'blue',
+    shades: [
+      { name: 'cobalt', hex: '#1b5fe0' },
+      { name: 'frost', hex: '#8fd0ff' },
+      { name: 'periwinkle', hex: '#6a8dff' },
+      { name: 'cyan', hex: '#4fc3ff' },
+    ],
+  },
+]
