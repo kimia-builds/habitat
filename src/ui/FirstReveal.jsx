@@ -11,7 +11,7 @@
 
 import { narrationSlot } from '../content/narration.js'
 import DropGlyph from './DropGlyph.jsx'
-import Flora, { FloraDefs } from './Flora.jsx'
+import Flora from './Flora.jsx'
 import { floraBaseWhereSmallestIs } from './floraCanon.js'
 import { useText } from './language.jsx'
 
@@ -43,17 +43,14 @@ function FirstReveal({ arrival, worldSeed, onDismiss }) {
     >
       <div className={`reveal reveal-${STREAMS[arrival.key]}`}>
         {arrival.key === 'flora' ? (
-          <>
-            <FloraDefs />
-            <Flora
-              completionId={arrival.completionId}
-              worldSeed={worldSeed}
-              base={REVEAL_BASE_REM}
-              unit="rem"
-              idPrefix="first-reveal-"
-              className="reveal-flora-art"
-            />
-          </>
+          <Flora
+            completionId={arrival.completionId}
+            worldSeed={worldSeed}
+            base={REVEAL_BASE_REM}
+            unit="rem"
+            idPrefix="first-reveal-"
+            className="reveal-flora-art"
+          />
         ) : (
           <DropGlyph kind={arrival.key} className="reveal-glyph" />
         )}

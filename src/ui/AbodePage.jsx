@@ -37,7 +37,7 @@
 
 import { useRef, useState } from 'react'
 import { ABODE_SKIES, DEFAULT_ABODE_SKY } from '../game/abode.js'
-import Flora, { FloraDefs, floraBox } from './Flora.jsx'
+import Flora, { floraBox } from './Flora.jsx'
 import Friend from './Friend.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
 import { floraBaseWhereSmallestIs } from './floraCanon.js'
@@ -275,7 +275,6 @@ function AbodePage({
       {/* The texture library's definitions, once for the whole page: every
         flora on it — the doorstep's and the ground's — paints its fill
         through them. */}
-      <FloraDefs />
       <div className="page-box">
         {/* The quiet / party toggle (T4.4): a switch with an icon either
           side. Greyed — "not yet" — until the first friend exists.

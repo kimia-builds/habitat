@@ -17,10 +17,10 @@
  * THE 48 ARE A CATALOGUE, NOT 48 UNIQUE PLANTS. Two finds that deal the same
  * shape, size and fill ARE the same flora, and they look identical on purpose —
  * that is what "4 silhouettes × 2 sizes × 6 fills = 48 collectible flora"
- * (design-bible §9a) means. Flora.jsx leans on this: it draws one hair field per
- * shape, fill and size and reuses it, which is both the truthful model and the
- * reason an Abode full of flora does not have to grow tens of thousands of
- * strands over again on every frame of a drag.
+ * (design-bible §9a) means. A fill is one of six plain colours since T5.3k
+ * (2026-10-08); the flora are re-dealt from them, so a find gathered earlier
+ * may now be a different colour. Shape and size are separate rolls and do not
+ * move.
  *
  * HALF AND HALF (Kimia, 2026-08-21). A find is as likely to be a large flora as
  * a small one. A large one stands 2.75× a small one, so the mix is what the
@@ -92,11 +92,9 @@ export function floraIdentity(completionId, worldSeed) {
   }
 }
 
-// The catalogue number of a dealt flora — "shape 3 in coat-sky", the pair that
+// The catalogue number of a dealt flora — "shape 3 in 00ffff", the pair that
 // says which FILL a flora wears. Size is not part of it, because size is not
-// part of what a fill is. (Flora.jsx caches its grown hair fields under this
-// plus the size class: since 2026-08-21 the two classes wear the same fur at
-// the same size on screen, which takes a field each.)
+// part of what a fill is.
 export function floraFillKey({ silhouette, fill }) {
   return `${silhouette.key}|${fill.id}`
 }

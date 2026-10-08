@@ -7009,3 +7009,15 @@ and recorded in spec.md's decisions log._
       naming properly, and naming them early would have named the
       leftovers); and the spec is not sacred — she cut §3 and moved the
       firework after reading her own words back.
+
+- **T5.3k step 2 — the plain fill** (2026-10-08). The six colours went into
+  `floraColours.js` (known by hex until Kimia names them); `floraFills.js`
+  became the same six, so a fill IS a colour and 4 × 2 × 6 = 48 still holds.
+  `Flora.jsx` now draws three layers: the blurred aura, an opaque near-black
+  ground, then the colour at the Map frontier's strengths (16% fill, 85%
+  outline) with a 1.2px outline set `non-scaling-stroke`, so it is the same
+  thickness on screen on every shape and size. Hair fields, the `FIELDS`
+  cache, `hairUnit`, the clip path and `FloraDefs` (and its three mounts) are
+  gone. The temporary "flora colours" workbench shelf, its CSS and test line
+  came down. Textures stay in the library. Glow at the lifted level (step 3)
+  and the docs/README pass (step 4) are still to do.

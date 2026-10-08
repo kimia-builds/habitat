@@ -39,7 +39,7 @@ import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import { arrivalLabel } from './arrivalText.js'
 import Blob from './blob.jsx'
 import DropGlyph from './DropGlyph.jsx'
-import Flora, { FloraDefs } from './Flora.jsx'
+import Flora from './Flora.jsx'
 import Friend from './Friend.jsx'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import StarShimmer, { SHIMMER_STAGGER_MS } from './shimmer.jsx'
@@ -232,7 +232,6 @@ function ArrivalShelf({
     >
       {/* The texture library's definitions, once for the shelf: an arriving
           flora paints its fill through them. */}
-      <FloraDefs />
       {/* Newest on top, older pushed down (Kimia's call 2026-08-13).
           Reversed here rather than with CSS so the reading order a
           screen reader hears matches the order on screen. */}

@@ -60,14 +60,8 @@ describe('DesignPage workbench', () => {
     // The abode sky left on 2026-08-21 (T5.4): its question was answered
     // by becoming the real Abode's four background choices.
     const waiting = ['plant-like', 'fungal', 'rock']
-    // 'flora colours' is TEMPORARY (T5.3k): the pick of the two new colours.
-    // Delete it here when the shelf leaves.
     expect(shelves.slice().sort()).toEqual(
-      [
-        ...waiting.map((f) => `textures — ${f}`),
-        'curiosities',
-        'flora colours',
-      ].sort(),
+      [...waiting.map((f) => `textures — ${f}`), 'curiosities'].sort(),
     )
   })
 

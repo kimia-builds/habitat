@@ -300,7 +300,8 @@ tracker. Everything after this is delight, informed by real use.
                replacing emerald / leaf / sky / azure, give them names
                (hers to choose), and take the temporary "flora colours"
                shelf off the workbench with its test line and CSS)_
-            2. **The plain fill** — `floraFills.js` collapses to the six
+            2. [x] **The plain fill** _(done 2026-10-08 — build notes in
+               history.md)_ — `floraFills.js` collapses to the six
                colours (a fill IS a colour now, rolled evenly, so 4 × 2 × 6
                = 48 still holds); `Flora.jsx` draws the body like a
                frontier Map region, the fill OPAQUE (near-black ground +

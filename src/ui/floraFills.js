@@ -1,42 +1,17 @@
 /*
  * floraFills.js — the six fills of N-Z-D's ordinary flora (design-bible §9a)
  * =============================================================================
- * WHAT A FILL IS. A collectible flora is a silhouette, a size and a **fill**,
- * where a fill is one texture worn in one colour. Six of them exist, and the
- * arithmetic is exact:
+ * A FILL IS A COLOUR (Kimia, 2026-10-08, T5.3k). A flora used to wear a hair
+ * texture in a colour; the textures are retired from the flora and what is left
+ * is the plain colour, so the six fills ARE the six colours and the arithmetic
+ * still holds:
  *
- *     4 silhouettes × 2 sizes × 6 fills = 48 collectible flora
+ *     4 silhouettes × 2 sizes × 6 colours = 48 collectible flora
  *
- * KIMIA'S CALLS (2026-08-19, T5.3g):
- *   • The fills are made from the HAIR textures only — none of the solid
- *     surfaces (moss, bark, pores, sponge). Flora are furred, not crusted.
- *   • All four hair modes are used, with **curly coat twice and dense underfur
- *     twice**: 1 + 2 + 1 + 2 = 6.
- *   • The hair is the fill INSIDE the silhouette — it never fringes out past
- *     the outline. Whatever draws a flora clips the field to its shape.
- *   • The four colours are settled in floraColours.js.
- *
- * THE PAIRING (proposed here, for her eye). The two doubled textures each take
- * one green and one blue, so no texture belongs to a single hue and the six
- * fills split three green / three blue. The two single-use textures take the
- * remaining ends of the palette.
+ * A find's fill is rolled evenly from these (floraDeal.js): every colour turns
+ * up one time in six.
  * =========================================================================== */
 
 import { FLORA_COLOURS } from './floraColours.js'
 
-const colour = (name) => {
-  const found = FLORA_COLOURS.find((c) => c.name === name)
-  // A fill naming a colour the palette does not have is a mistake worth
-  // stopping for, not one to paint in black and ship.
-  if (!found) throw new Error(`floraFills: no flora colour named "${name}"`)
-  return found
-}
-
-export const FLORA_FILLS = [
-  { id: 'curled-emerald', mode: 'curled', colour: colour('emerald') },
-  { id: 'coat-leaf', mode: 'coat', colour: colour('leaf') },
-  { id: 'coat-sky', mode: 'coat', colour: colour('sky') },
-  { id: 'wispy-azure', mode: 'wispy', colour: colour('azure') },
-  { id: 'underfur-emerald', mode: 'underfur', colour: colour('emerald') },
-  { id: 'underfur-azure', mode: 'underfur', colour: colour('azure') },
-]
+export const FLORA_FILLS = FLORA_COLOURS

@@ -1,7 +1,7 @@
 /*
- * A FLORA, DRAWN FOR REAL (T5.3i, 2026-08-21) — the one component every screen
- * that shows a flora goes through, and the end of the T3.2 placeholder sprig.
- * The twin of Friend.jsx, and deliberately built the same way.
+ * A FLORA, DRAWN FOR REAL (T5.3i, 2026-08-21; made a plain fill in T5.3k,
+ * 2026-10-08) — the one component every screen that shows a flora goes
+ * through. The twin of Friend.jsx, and deliberately built the same way.
  *
  * It puts together the four things the code knows about a flora, each settled
  * on its own and living in its own file:
@@ -9,8 +9,7 @@
  *   the SHAPE  — one of Kimia's four Inkscape traces (floraSilhouettes.js)
  *   the SIZE   — small or large, its place in the one scale the whole cast
  *                shares (floraCanon.js), never a number typed in by hand
- *   the FILL   — one hair texture worn in one of the four colours
- *                (floraFills.js, floraColours.js)
+ *   the FILL   — one of six colours, plain (floraFills.js, floraColours.js)
  *   WHICH ONE  — the three above dealt from the save's seed (floraDeal.js)
  *
  * A SCREEN CHOOSES A BASE, NOT A SIZE — the friends' rule, and the same `base`
@@ -19,116 +18,36 @@
  * a friend standing on the same ground are true to each other by construction
  * and there is no way to ask for a flora at a size of your own choosing.
  *
- * THE RECIPE, exactly as Kimia approved it on the workbench on 2026-08-19
- * (design-bible §9a, §3; the build notes are in history.md):
- *   1. the aura — her silhouette, blurred and painted the fill's OWN colour,
+ * THE RECIPE (Kimia, 2026-10-08; design-bible §9a). A flora is drawn like a
+ * frontier region on the Map — a light fill and a stronger outline, both in
+ * its own colour — with one change she made on the spot: the fill is OPAQUE.
+ *   1. the aura — her silhouette, blurred and painted the flora's OWN colour,
  *      because a living thing's light IS its body colour. It is SVG behind the
  *      shape, never a CSS halo around a box;
- *   2. a dark ground in the shape, so the hair reads as the fill itself rather
- *      than as a texture laid on top of a colour;
- *   3. the hair field, clipped to the outline so no strand fringes out past it.
- *
- * ONE HAIR FIELD PER FLORA, GROWN ONCE AND KEPT. Two finds that dealt the same
- * shape, fill and size are the same one of the 48 and look identical on purpose
- * (floraDeal.js) — so a field is generated the first time it is asked for and
- * reused everywhere after. That matters here more than anywhere: a large flora
- * is two to three THOUSAND drawn strands, and the Abode re-renders on every
- * pointer move of a drag. Without this, dragging one plant would regrow every
- * plant on the ground, sixty times a second.
+ *   2. a near-black ground in the shape, so no star of the nebula behind shows
+ *      through the body;
+ *   3. the colour laid over that ground at the Map's frontier strengths, with
+ *      the outline on top.
  */
 
-import { floraHeight, floraScale, floraWidth } from './floraCanon.js'
+import { floraHeight, floraWidth } from './floraCanon.js'
 import { floraFillKey, floraIdentity } from './floraDeal.js'
-import { TextureDefs, denseHairField } from './textures.jsx'
 
-// The near-black the hair is grown against — the same ground the fills were
+// The near-black ground under the colour — the same ground the fills were
 // judged on. Not a token: it is a value inside a drawing, which §11d leaves
 // beside the artwork.
 const FLORA_GROUND = '#0b0f14'
 
-// The hair modes were tuned on a 110-unit swatch and a strand's LENGTH is fixed
-// in drawing units, so dropping a field straight into a trace's own canvas would
-// make the fur a different size on every species — the four canvases run 95 to
-// 197 units tall. So the hair is grown in its own space and then scaled onto the
-// drawing, which makes a strand the same size on screen whichever shape wears
-// it. This is that space for a LARGE flora, the class the fills were judged at.
-const HAIR_UNIT = 110
-
-/*
- * ONE FUR, WORN AT ONE SIZE (Kimia, 2026-08-21).
- *
- * A small flora used to wear the large one's field shrunk to fit: the same two
- * to three thousand strands at 36% the size, so every hair on it was 2.75×
- * finer than on the plant standing beside it. Her call is that the fur is the
- * SAME fur on both — a hair is as thick and as long on a small flora as on a
- * large one, and a small plant simply wears fewer of them. That detail was
- * invisible at 36%, and it is where most of the drawn strands went: a small
- * flora is now a few hundred paths where it used to be a couple of thousand.
- *
- * The whole trick is the size of the space the hair is grown in. Grow it in a
- * space small/large as tall and every strand comes out that much bigger against
- * the drawing — which is exactly the amount the drawing is then shrunk by, so on
- * screen the hairs land at the large flora's size. The smaller strand count
- * follows on its own: density is strands per area, and there is less area.
- */
-function hairUnit(sizeClass) {
-  return HAIR_UNIT * (floraScale(sizeClass) / floraScale('large'))
-}
+// The Map's frontier region, which a flora is drawn like (index.css
+// .map-region-frontier): a light fill, a strong outline, and an outline 1.2px
+// thick. Values inside a drawing, so they stay beside it (§11d).
+const FILL_OPACITY = 0.16
+const OUTLINE_OPACITY = 0.85
+const OUTLINE_PX = 1.2
 
 // The blur that makes the aura, as a fraction of the drawing's own width — the
 // same fraction the friends use (friend04.jsx: 6.6 on a 391-wide canvas).
 const GLOW_FRACTION = 0.017
-
-// Every hair field grown so far, by shape-and-fill AND SIZE CLASS. React
-// elements are just immutable descriptions, so one field can be rendered in as
-// many places as there are flora wearing it. The size class is part of the key
-// because the two classes wear the same fur at the same size on screen
-// (`hairUnit` above), which takes a field each — 8 of them per fill rather than
-// 4, and the small ones are the cheap ones.
-const FIELDS = new Map()
-
-function hairFor(identity) {
-  const { silhouette, sizeClass, fill } = identity
-  const key = `${floraFillKey(identity)}|${sizeClass}`
-  const grown = FIELDS.get(key)
-  if (grown) return grown
-  const unit = hairUnit(sizeClass)
-  const aspect = silhouette.viewBox.w / silhouette.viewBox.h
-  // denseHairField grows the field bigger than the box asked for and repeats it,
-  // so the shape is cut from the MIDDLE of a dense field and never wears a thin
-  // band across its underside (its own comment has the why). All that is left
-  // here is to put it in the drawing's space.
-  const field = (
-    <g transform={`scale(${silhouette.viewBox.h / unit})`}>
-      {denseHairField({
-        mode: fill.mode,
-        x: 0,
-        y: 0,
-        w: unit * aspect,
-        h: unit,
-        seed: 42,
-        colour: fill.colour.hex,
-      })}
-    </g>
-  )
-  FIELDS.set(key, field)
-  return field
-}
-
-/*
- * THE SHARED TEXTURE DEFINITIONS. The hair paints itself through two filters
- * from the texture library, so a page that draws any flora must have the
- * library's <defs> in it exactly once. Screens mount this rather than importing
- * textures.jsx themselves — a screen should not have to know that flora are made
- * of hair.
- */
-export function FloraDefs() {
-  return (
-    <svg width="0" height="0" aria-hidden="true" className="texture-defs">
-      <TextureDefs />
-    </svg>
-  )
-}
 
 /**
  * How much room this find needs, for a caller that has to place it — the Abode
@@ -178,7 +97,6 @@ function Flora({
   // Kimia's trace, never redrawn — the transform is Inkscape's own and is kept
   // rather than folded into the coordinates, because folding it in would mean
   // editing her drawing.
-  const shape = <path d={d} transform={transform ?? undefined} />
 
   return (
     <svg
@@ -192,12 +110,11 @@ function Flora({
       // light one — a held plant's lift, say — in the plant's own light without
       // knowing which of the four it was dealt. §3: a living thing's glow is
       // its body colour, never a colour applied on top.
-      style={{ color: fill.colour.hex }}
+      style={{ color: fill.hex }}
       aria-hidden="true"
       {...rest}
     >
       <defs>
-        <clipPath id={`${id}-clip`}>{shape}</clipPath>
         <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%">
           <feGaussianBlur stdDeviation={viewBox.w * GLOW_FRACTION} />
         </filter>
@@ -206,14 +123,26 @@ function Flora({
       <path
         d={d}
         transform={transform ?? undefined}
-        fill={fill.colour.hex}
+        fill={fill.hex}
         opacity="0.8"
         filter={`url(#${id}-glow)`}
       />
-      {/* 2. the dark ground the hair is grown against */}
+      {/* 2. the opaque dark ground: nothing behind shows through the body */}
       <path d={d} transform={transform ?? undefined} fill={FLORA_GROUND} />
-      {/* 3. the fill itself, clipped so no strand escapes the outline */}
-      <g clipPath={`url(#${id}-clip)`}>{hairFor(identity)}</g>
+      {/* 3. the colour over it, and the outline. The outline is a fixed
+          number of SCREEN pixels whatever the trace's size — the four
+          drawings are different sizes, so a drawing-unit width would be a
+          different line on each. */}
+      <path
+        d={d}
+        transform={transform ?? undefined}
+        fill={fill.hex}
+        fillOpacity={FILL_OPACITY}
+        stroke={fill.hex}
+        strokeOpacity={OUTLINE_OPACITY}
+        strokeWidth={OUTLINE_PX}
+        vectorEffect="non-scaling-stroke"
+      />
     </svg>
   )
 }
