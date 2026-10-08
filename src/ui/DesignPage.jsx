@@ -57,7 +57,7 @@ import Curiosity, {
 import { OBJECT_CANON, objectSize } from './objectCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
-import { FLORA_COLOURS, FLORA_COLOUR_CANDIDATES } from './floraColours.js'
+import { FLORA_COLOUR_CANDIDATES } from './floraColours.js'
 
 // The §8 texture families still waiting to be judged, in the order the
 // design bible lists them, so the workbench reads like the catalogue.
@@ -235,23 +235,15 @@ function DesignPage({ onBack }) {
           waiting room, not a gallery (spec §5b): a settled asset left here
           is another screenful between Kimia and the one she came to see. */}
 
-      {/* TEMPORARY (T5.3k): the four settled flora colours, then
-          candidates for the two new ones — Kimia picks one green, one blue. */}
+      {/* TEMPORARY (T5.3k): a sweep of neon blue-to-green candidates;
+          Kimia picks all six from scratch. */}
       <section className="design-family" aria-label="flora colours">
         <h3>flora colours</h3>
-        <ul
-          className="texture-swatches flora-colour-row"
-          aria-label="flora colours — the four we have"
-        >
-          {FLORA_COLOURS.map((shade) => (
-            <FloraColourSwatch key={shade.name} shade={shade} />
-          ))}
-        </ul>
         {FLORA_COLOUR_CANDIDATES.map((group) => (
           <ul
             key={group.hue}
             className="texture-swatches flora-colour-row"
-            aria-label={`flora colours — candidate ${group.hue}s`}
+            aria-label={`flora colours — ${group.hue}`}
           >
             {group.shades.map((shade) => (
               <FloraColourSwatch key={shade.name} shade={shade} />

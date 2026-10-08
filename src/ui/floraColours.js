@@ -39,29 +39,34 @@ export const FLORA_COLOURS = [
 ]
 
 /*
- * TEMPORARY (T5.3k, 2026-10-08): candidates for the two NEW flora colours —
- * one more green, one more blue, taking the palette from four to six. They
- * stand on the workbench beside the four settled colours so Kimia can judge
- * by eye. Once she picks, the winners join FLORA_COLOURS and this list is
- * deleted.
+ * TEMPORARY (T5.3k, 2026-10-08): the second round. Kimia judged the first
+ * round and the four settled colours too tame — bar `leaf`, none had enough
+ * pop — and wants bioluminescent: neon, electric, luminous. So she picks all
+ * six from scratch off a sweep of the blue-to-green range, with no fixed
+ * split between greens and blues. Two rows: ELECTRIC (fully saturated) and
+ * LUMINOUS (the same hues lifted toward white-hot). Each swatch is named by
+ * its hue angle and row letter so she can call it by name ("150b"). Once she
+ * picks, the six become FLORA_COLOURS and this list is deleted.
  */
+const hex = (h, s, l) => {
+  const k = (n) => (n + h / 30) % 12
+  const a = s * Math.min(l, 1 - l)
+  const f = (n) =>
+    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))
+  const to = (x) =>
+    Math.round(x * 255)
+      .toString(16)
+      .padStart(2, '0')
+  return `#${to(f(0))}${to(f(8))}${to(f(4))}`
+}
+const HUES = [120, 135, 150, 165, 180, 195, 210, 225, 240]
 export const FLORA_COLOUR_CANDIDATES = [
   {
-    hue: 'green',
-    shades: [
-      { name: 'fern', hex: '#1fbf5a' },
-      { name: 'mint', hex: '#8affc1' },
-      { name: 'lime', hex: '#b4f03c' },
-      { name: 'jade', hex: '#27d6a0' },
-    ],
+    hue: 'electric',
+    shades: HUES.map((h) => ({ name: `${h}a`, hex: hex(h, 1, 0.5) })),
   },
   {
-    hue: 'blue',
-    shades: [
-      { name: 'cobalt', hex: '#1b5fe0' },
-      { name: 'frost', hex: '#8fd0ff' },
-      { name: 'periwinkle', hex: '#6a8dff' },
-      { name: 'cyan', hex: '#4fc3ff' },
-    ],
+    hue: 'luminous',
+    shades: HUES.map((h) => ({ name: `${h}b`, hex: hex(h, 1, 0.65) })),
   },
 ]
