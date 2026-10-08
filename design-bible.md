@@ -90,8 +90,9 @@ Stated once so no asset family has to repeat them:
   varies"): **friends** each carry their own body colour and glow it
   (the pilot plip is deep blue, §9c); friend **eyes are the one fixed
   exception** — always yellow in a dark socket, and by rule always a
-  different colour from the body. (**Flora** wear one of four colours as of
-  2026-08-19 — two greens and two blues, §9a — and glow it. **Fungi**
+  different colour from the body. (**Flora** wear one of **six** colours as of
+  2026-10-08 — three greens and three blues, §9a (it was four from
+  2026-08-19) — and glow it. **Fungi**
   colour is still the earlier green pending its own pass, T6.1.)
 - **Darkness is the default; nothing casts a shadow.**
 - **Palette by class:** organic life stays in the restrained palette;
@@ -140,6 +141,14 @@ than in numbers somebody has to re-guess per drawing:
 - **Publications and curiosities do not**, nor does the map. They sit
   lower on the scale — a publication below the organics, a curiosity
   wherever its object wants, or nowhere.
+- **FLORA GLOW AT THE SELECTED LEVEL, ALWAYS (Kimia, 2026-10-08).** She
+  watched a flora brighten when clicked in the Abode and decided that
+  brightness is simply how a flora looks: **`--glow-lifted` at all times,
+  in every place a flora is drawn**, not only when selected. Selecting
+  still magnifies it; it no longer changes the glow. This is the flora's
+  settled rung, so the "which top step" eyeball call below is closed for
+  flora (friends and fungi are not covered by it). She considered
+  `--glow-max` and chose the selected level.
 - **Today's glows do NOT yet honour this, and that is expected.** Every
   organic thing on screen is a placeholder shape, not its finished
   drawing, so flora currently glows at `--glow-faint` and a friend at
@@ -224,8 +233,8 @@ tint is a parameter (e.g. `<SpongeFilter light=…/>`); the library's
 default green instances are only the workbench swatches. The four HAIR
 modes have left that workbench (2026-08-19) — they were there to be judged
 as the flora's surface and were — but they remain fully part of the
-library, and `denseHairField()` beside them is how a shape is filled with
-hair (§9a).
+library. They no longer dress anything: the flora gave up their fur for a
+plain fill on 2026-10-08 (§9a).
 
 ### 9. Living assets
 
@@ -245,10 +254,13 @@ in body plan.)
 **FOUR SPECIES, AND ONLY FOUR (Kimia, 2026-08-19 — this replaces the
 first "64 species" reading).** N-Z-D grows **four flora silhouettes**.
 The 64 flora are not 64 drawings: they are those four shapes in
-different sizes and different fills, and the arithmetic is exact.
+different sizes and different colours, and the arithmetic is exact.
 
-- **48 collectible** — **4 silhouettes × 2 sizes × 6 fills = 48.** Each
-  species comes in two sizes, and every size wears any of the six fills.
+- **48 collectible** — **4 silhouettes × 2 sizes × 6 colours = 48.** Each
+  species comes in two sizes, and every size wears any of the six
+  colours. (Until 2026-10-08 the sixth factor was "fills" — a texture
+  worn in one of four colours. The textures were dropped and the colours
+  went from four to six so the 48 holds.)
   Placeable in the Abode, gatherable and compostable.
 - **16 landmark** — **4 super-sized versions of each of the four
   species.** Giant, too big to carry, **one per Map region, enforced**
@@ -308,60 +320,42 @@ collectible classes** (Kimia, 2026-08-19, `src/ui/floraCanon.js`):
 the third class belongs with the Map work. No screen may type one in
 meanwhile. See §9c's canon rule; it governs any family, not only friends.
 
-**The four colours (Kimia, 2026-08-19, T5.3g).** Rich and bioluminescent,
-in `src/ui/floraColours.js`: **emerald · leaf · sky · azure**. Note what
-that is — **two greens and two blues**. The hues were named on paper as
-green, blue, indigo and aqua; shown twelve candidates glowing on the dark
-ground she took two of each of the first two and none of the last two.
-There is no aqua and no indigo in Habitat's flora. This is also the other
-half of the friend/flora boundary: the flora colours are deep and vivid
-where the friend pastels are soft (`friendColours.js`).
+**The six colours (Kimia, 2026-08-19, T5.3g; widened 2026-10-08, T5.3k).**
+Rich and bioluminescent, in `src/ui/floraColours.js`. Since 2026-08-19 the
+flora wore four: **emerald · leaf · sky · azure** — **two greens and two
+blues**, picked by eye off twelve candidates glowing on the dark ground
+(the hues were named on paper as green, blue, indigo and aqua; the screen
+overruled the paper). **On 2026-10-08 she added two more, to six in all,
+keeping to the green and blue family** (target: three greens, three
+blues; the two new ones are chosen by eye on the design workbench, same
+way as the first four, and are not yet named). The count is set by the
+arithmetic: with textures gone (below) a colour IS the whole fill, and
+4 shapes × 2 sizes × 6 colours keeps the collectible total at 48. There is
+still no aqua and no indigo. This is also the other half of the
+friend/flora boundary: the flora colours are deep and vivid where the
+friend pastels are soft (`friendColours.js`).
 
-**A FILL is a texture worn in a colour, and there are six**
-(`src/ui/floraFills.js`). Kimia's calls:
+**ALL SIX COLOURS ARE EQUALLY COMMON (Kimia, 2026-10-08)** — as the four
+shapes are. A find's colour is rolled evenly from the six, so every
+colour turns up one time in six. Because the deal is made from the save's
+seed, **every flora already gathered is re-dealt: some change colour.**
+Shapes and sizes do not move (they are separate rolls). Accepted.
 
-- The fills come from the **hair textures only** — never moss, bark,
-  pores or sponge. Flora are furred, not crusted.
-- **All four hair modes are used, with curly coat and dense underfur
-  doubled**: 1 + 2 + 1 + 2 = 6.
-- **The hair FORMS the fill, inside the silhouette.** It never fringes
-  out past the outline, so whatever draws a flora clips the field to its
-  shape. (Hair is scattered by a generator that overruns its box by
-  design; the clip is what enforces the rule, and a test holds it.)
-- **CUT THE SHAPE OUT OF THE MIDDLE OF A DENSE FIELD (Kimia,
-  2026-08-19).** The generator grows every strand upward from a scattered
-  root, which leaves any field thin along its BOTTOM edge — a point near
-  the bottom is covered only by the few roots beneath it, where a point in
-  the middle has everything below it as well. On a square swatch nobody
-  minds; cut a flora out of one and the shape wears that thin band across
-  its underside, which is what she saw and rejected. So a flora is never
-  cut from a field its own size: the field is grown **larger than the
-  shape and denser than one pass**, and the shape is cookie-cut from the
-  middle of it. `denseHairField()` in `textures.jsx` is the rule made
-  code — enough room below for a whole strand's reach, plus repeat passes
-  to hold the tuned density over the bigger area — and a test measures the
-  bottom of every mode against its middle.
-  _(An earlier attempt at the same complaint, shrinking and softening the
-  dark ground so it never reached the outline, was built and rejected the
-  same day: it thinned the flora instead of filling them.)_
-- **ONE FUR, WORN AT ONE SIZE (Kimia, 2026-08-21).** The two size classes
-  wear the SAME fur: a hair is as thick and as long on a small flora as on
-  a large one, and a small plant simply wears fewer of them. It used to
-  wear the large one's field shrunk to fit — the same two to three thousand
-  strands at 36% the size, so every hair on it was 2.75x finer than on the
-  plant beside it. Her reason was the DATA (a small flora is now ~430 drawn
-  strands where it was ~1,700), and the look is truer for it: fur belongs
-  to the species, not to how big this one grew. In code the fur is grown in
-  a space whose height is the size class's own place in the canon, so the
-  rule needs no numbers of its own — see `hairUnit()` in `Flora.jsx`.
-
-- The pairing puts one green and one blue on each doubled texture, so no
-  texture belongs to a single hue and the six split three green / three
-  blue.
-
-Hair wears a colour through `hairRamp()` in `textures.jsx`, which rebuilds
-the whole five-part strand ramp from one hex — the same one-tone-in,
-whole-set-out idea as the friends' `paletteForTone()`.
+**A FLORA IS A PLAIN FILL, NOT A TEXTURE (Kimia, 2026-10-08, T5.3k).**
+The hair textures are retired from the flora. This reverses the
+2026-08-19 "a fill is a texture worn in a colour" rule and everything
+built on it: hair modes, the dense hair field cut from the middle, one fur
+at one size (all in history.md for the story). A flora is now drawn like a
+**frontier region on the Map**: a light fill and a stronger outline, both
+in the flora's own colour (about 16% fill and 85% outline), with one
+change she made on the spot — **the fill is OPAQUE.** Where a region on
+the Map lets the sky show through, a flora must not: **no star of the
+nebula behind may show through a flora's body.** The body is therefore the
+flora's near-black ground with the colour laid over it at about 16%,
+never a see-through tint. The outline's on-screen thickness is the same
+on every shape and both sizes (the four traces are different sizes, so
+the stroke is scaled to the drawing). The textures themselves stay in the
+library (§8) and on the workbench; only the flora stop wearing them.
 
 **Leaves.** A species may have leaves or not. Leaf shape is **consistent
 within** a species and can vary **wildly between** species — with only
@@ -372,7 +366,7 @@ an axis of variation.
 **exactly one** fruit type, in any rounded or blobby form.
 
 **WHICH OF THE 48 A FIND IS, IS DEALT (Kimia, 2026-08-21, T5.3i).** A flora
-drop stores nothing but the word `flora`; its shape, size and fill are rolled
+drop stores nothing but the word `flora`; its shape, size and colour are rolled
 from the save's own seed and the find's completion id (`src/ui/floraDeal.js`),
 the same trick that deals a friend its colour. Nothing new is written into a
 save, the answer never changes for a given find, and flora gathered before the
@@ -380,10 +374,9 @@ art existed get their looks too. **Large and small come half and half** (her
 call, same day) — a large flora stands 2.75x a small one, so the mix is what a
 ground looks like, and even odds is the flattest answer.
 
-**Two finds of the same shape and fill ARE the same flora** and look identical
-on purpose: that is what a catalogue of 48 means, rather than 48 templates for
-unique plants. `Flora.jsx` grows one hair field per shape-and-fill pair and
-reuses it everywhere, which is that fact made into code.
+**Two finds of the same shape, size and colour ARE the same flora** and look
+identical on purpose: that is what a catalogue of 48 means, rather than 48
+templates for unique plants.
 
 **THE FLORA REACHED THE GAME on 2026-08-21** (T5.3i): the Abode first — the
 ground and the doorstep list, with the party's friends going in beside them —
@@ -395,7 +388,7 @@ friends, and the same base serves both families because the two canons speak
 one scale: the Abode sizes up from the smallest thing that can stand on it,
 which is a plip and not a small flora.
 
-**Axes of variation: size and fill.** That is the whole list (2026-08-19
+**Axes of variation: size and colour.** That is the whole list (2026-08-19
 — it replaces the earlier "overall size · leaf shape · presence/absence
 of fruit · surface texture", which was written when there were 64 shapes
 to tell apart). **Not** varied: growth habit, body plan — and glow
@@ -861,8 +854,8 @@ than flora is what makes the family buildable at all — see §9a.
 
 | Family              | Count | Assets per unit                                        |
 | ------------------- | ----- | ------------------------------------------------------ |
-| Flora — silhouettes | 4     | one drawing each; 48 collectibles = 4 × 2 sizes × 6 fills |
-| Flora — fills       | 6     | hair texture × colour, no drawing of their own         |
+| Flora — silhouettes | 4     | one drawing each; 48 collectibles = 4 × 2 sizes × 6 colours |
+| Flora — colours     | 6     | three greens, three blues; a plain fill, no drawing or texture of their own |
 | Flora — landmark    | 16    | 4 super-sized versions of each species; body + Map marker + one keepsake type |
 | Fungi               | 1     | single form                                            |
 | Friend categories   | 10    | 1 signature animation each                             |

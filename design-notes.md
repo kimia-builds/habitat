@@ -1997,6 +1997,24 @@ decided by eye on a real phone — not this one scaled down, which would
 be a postage stamp in portrait. Nothing may invent a phone size in the
 meantime; `worldCanvas.js` holds none, and its test says so.
 
+
+**Turning things (decided 2026-10-08, T5.5 — not yet built).** A held
+item shows its name, then **compost** (flora) or **sell** (curiosity),
+then a third word, **rotate**, all in the same quiet underlined style.
+Pressing rotate is a mode, not a menu: the item stays at its slightly
+enlarged, brighter held look; **everything else on the canvas dims**; and
+the rest of the screen becomes the control — she presses and drags
+anywhere and the item turns about its own centre, following the pointer's
+angle around it like a dial (it starts from where it already is, so it
+never jumps). The held item's words become **save** and a quiet
+**cancel**. Nothing about the turn is stored until save. Flat rotation in
+the plane of the screen only — no tilting. Friends are not turnable.
+
+**Flora at rest (decided 2026-10-08, T5.3k).** Every flora glows at the
+level a clicked one used to brighten to; clicking now only magnifies it.
+A flora's body is a plain, opaque fill with a stronger outline (design-bible
+§9a), so no star of the sky shows through it.
+
 ## 14. The phone — limited on purpose **[TO-BUILD · M8]**
 
 Planned 2026-08-17, with Kimia. Spec scope in §5b; this is the feel.

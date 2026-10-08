@@ -475,8 +475,12 @@ region discovery expands what the Market can offer.
   with the save (storage v12) so it travels in backups. Gathered
   flora and (since T4.3b) purchased objects are freely draggable anywhere
   on the scene, each place remembered; a click holds an item, showing
-  its name and its quiet way back to the world — compost for a flora,
-  sell for an object. Flora waiting to be decided
+  its name and its quiet ways back — compost for a flora, sell for an
+  object — and a third word beneath, **rotate** (2026-10-08, T5.5):
+  pressing it keeps the item at its held size and glow, dims everything
+  else, and lets her press-and-drag anywhere to turn it like a dial
+  about its own centre; **save** keeps the angle, **cancel** drops it.
+  Each item's angle is remembered with its place. Flora waiting to be decided
   (gather / leave it) sit in a plain list above the ground. Bare ground
   when empty — no prose, no dates. Titled **your abode**. Carries the
   **quiet / party mode toggle** (below).

@@ -286,6 +286,29 @@ tracker. Everything after this is delight, informed by real use.
                   own cool grey. `CrateredFilter` lifted out of TextureDefs so
                   they can wear it. Approved on sight. Build notes in
                   history.md)_
+      - [ ] **T5.3k The flora lose their texture** _(opened 2026-10-08 on
+            Kimia's call; one session)_ — "remove the textures and keep the
+            colour, shape and size variations as they are." Reverses T5.3g's
+            fills (design-bible §9a has the full decision). Order of work,
+            each step judged by her before the next:
+            1. **Pick the two new colours** — a few candidate greens and
+               blues go on the design workbench as glowing swatches, she
+               picks by eye (target three greens, three blues), and
+               `floraColours.js` goes from four colours to six.
+            2. **The plain fill** — `floraFills.js` collapses to the six
+               colours (a fill IS a colour now, rolled evenly, so 4 × 2 × 6
+               = 48 still holds); `Flora.jsx` draws the body like a
+               frontier Map region, the fill OPAQUE (near-black ground +
+               ~16% colour, so no nebula star shows through), outline
+               ~85%, constant on-screen thickness whatever the trace's size.
+               Hair fields, `FIELDS` cache and `hairUnit` go.
+            3. **The glow at the selected level, always** — `--glow-lifted`
+               on every flora, on every screen that draws one; selecting
+               still magnifies but no longer brightens.
+            4. Tests (the deal now rolls from six; shapes and sizes
+               unchanged), docs, and a note that gathered flora are
+               re-dealt, so some change colour.
+            - [ ] **The landmark class** is untouched by this.
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four
@@ -329,6 +352,32 @@ tracker. Everything after this is delight, informed by real use.
             curiosities sits in a frame far taller than it needs. Both are
             deliberate holds — the placeholders were scaled to keep their
             on-screen size and nothing was redesigned unasked.
+
+- [ ] **T5.5 Rotate things in the Abode** _(opened 2026-10-08 on Kimia's
+      call; one session; do AFTER T5.3k)_ — every flora and curiosity
+      standing on the Abode can be turned. Her design, in full:
+      - Under **compost** (flora) or **sell** (curiosity) on a held item
+        sits a third quiet word, **rotate**, in exactly the same style.
+      - Pressing it enters rotate mode: the item stays at its magnified
+        "held" size and glow, and **everything else dims**.
+      - She **presses and drags anywhere on the screen**; the item turns
+        about its own centre (flat, in the plane of the screen) following
+        the angle of the pointer **around the item, like a dial** — the
+        item turns by how far the pointer circles it, so it does not jump
+        where she first presses.
+      - **save** keeps the angle; a quiet **cancel** beside it drops the
+        turn and restores the old one (her call — nothing in Habitat traps
+        you).
+      - The name and the words stay upright. Friends are not part of this
+        (they cannot be dragged either).
+      - **Storage:** the angle rides on the item's entry in `abodeLayout`
+        as an optional number of degrees; no entry or no angle means
+        upright, so older saves load unchanged and no storage version bump
+        is needed. Moving an item keeps its angle; pruning, import and
+        validation learn the field. Words for the three controls go in
+        `content/ui.js`.
+      - Verified with a real click in the browser pane (the new-control
+        rule), and a real pointer circling the item.
 
 ## M6 — Hardening & content (ongoing)
 

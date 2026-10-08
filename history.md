@@ -3355,6 +3355,32 @@ return 0` right after the era is worked out, so a moment before the
   second — one size, three sets of lobes. So the stones are three objects
   sharing one entry in objectCanon.js, which keeps that file exactly what
   it claims to be: the sizes Kimia gave, once each, in her own numbers.
+- 2026-10-08: **the flora give up their fur** (T5.3k). "i want us to
+  remove the textures and keep the colour, shape and size variations as
+  they are." A fill is now just a colour. Four colours would have made
+  4 × 2 × 4 = 32, so she **added colours to keep the 48** — six, in the
+  green and blue family, **all equally common** like the shapes (the two
+  new ones chosen by eye on the workbench). Consequence she accepted:
+  gathered flora are re-dealt from the seed, so some change colour.
+  Supersedes 2026-08-19 "a fill is a texture worn in a colour", the dense
+  hair field, and 2026-08-21 "one fur, worn at one size".
+- 2026-10-08: **a flora is drawn like a frontier Map region, but opaque.**
+  Plain fill lighter, outline stronger (about 16% / 85%). Her correction
+  to my reading: "do not allow the stars of the background nebula show
+  through the flora" — so the body is the near-black ground with the
+  colour over it, not a transparent tint.
+- 2026-10-08: **flora glow at the selected level, always.** Asked whether
+  "maximum glow" meant `--glow-max` or the brightness a clicked flora
+  already shows, she chose the second: `--glow-lifted`, on every flora in
+  every place, with selection still magnifying. Closes the bible's "which
+  top step" question for flora.
+- 2026-10-08: **rotate** (T5.5). A third word under compost/sell, same
+  style. Rotate mode keeps the item at held size and glow, dims the rest;
+  she drags anywhere and the item turns about its centre **following the
+  pointer's angle around it, like a dial** (chosen over left/right drag);
+  **save** keeps it, and a quiet **cancel** (her call when asked) drops it.
+  The angle is stored beside the item's place, optional, so no storage
+  version bump.
 
 ## T5.3j build notes — the columns (2026-09-01)
 
