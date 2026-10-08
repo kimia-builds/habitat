@@ -80,4 +80,21 @@ export const FLORA_COLOUR_CANDIDATES = [
     hue,
     shades: angles.map((h) => ({ name: `${hue} ${h}`, hex: hex(h, 1, l) })),
   })),
+  // Round four: eleven hand-picked hexes from Kimia, named by their hex.
+  {
+    hue: 'hers',
+    shades: [
+      '#25f7ff',
+      '#10e1eb',
+      '#0ab9f5',
+      '#0ab9ee',
+      '#50d5f6',
+      '#73c0f7',
+      '#2ba7e1',
+      '#6ee8f7',
+      '#21fd00',
+      '#00fd19',
+      '#50f7d0',
+    ].map((h) => ({ name: h, hex: h })),
+  },
 ]
