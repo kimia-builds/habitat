@@ -320,20 +320,33 @@ collectible classes** (Kimia, 2026-08-19, `src/ui/floraCanon.js`):
 the third class belongs with the Map work. No screen may type one in
 meanwhile. See §9c's canon rule; it governs any family, not only friends.
 
-**The six colours (Kimia, 2026-08-19, T5.3g; widened 2026-10-08, T5.3k).**
-Rich and bioluminescent, in `src/ui/floraColours.js`. Since 2026-08-19 the
-flora wore four: **emerald · leaf · sky · azure** — **two greens and two
-blues**, picked by eye off twelve candidates glowing on the dark ground
-(the hues were named on paper as green, blue, indigo and aqua; the screen
-overruled the paper). **On 2026-10-08 she added two more, to six in all,
-keeping to the green and blue family** (target: three greens, three
-blues; the two new ones are chosen by eye on the design workbench, same
-way as the first four, and are not yet named). The count is set by the
-arithmetic: with textures gone (below) a colour IS the whole fill, and
-4 shapes × 2 sizes × 6 colours keeps the collectible total at 48. There is
-still no aqua and no indigo. This is also the other half of the
-friend/flora boundary: the flora colours are deep and vivid where the
-friend pastels are soft (`friendColours.js`).
+**The six colours (Kimia, 2026-08-19, T5.3g; REPLACED 2026-10-08, T5.3k).**
+Bioluminescent: neon, electric, luminous. Chosen by eye off the design
+workbench, in `src/ui/floraColours.js` once built. **Since 2026-10-08 the
+flora wear these six, and none of the four colours before them survive**
+(emerald, leaf, sky and azure were judged too tame — "none of them have
+enough pop"):
+
+| hex | what it is |
+|---|---|
+| `#00ff00` | pure electric green |
+| `#50f7d0` | mint-aquamarine |
+| `#00ffff` | pure cyan |
+| `#73c0f7` | pale ice blue |
+| `#0ab9ee` | bright sky blue |
+| `#0080ff` | electric cobalt |
+
+The six are **not yet named** (Kimia names things; the old four were
+named by her picks). They run from green to blue with no fixed split —
+**two greens-ish, four blues-ish; she explicitly dropped the "three and
+three" target.** The count is set by the arithmetic: with textures gone a
+colour IS the whole fill, and 4 shapes × 2 sizes × 6 colours keeps the
+collectible total at 48. The colours are rich and vivid where the friend
+pastels are soft (`friendColours.js`), which is also the other half of the
+friend/flora boundary. They came from four rounds on the workbench (a
+sweep of the range, finer cobalt / turquoise / aquamarine steps, and
+eleven hexes of her own), narrowed to a shortlist of eleven and then to
+these six.
 
 **ALL SIX COLOURS ARE EQUALLY COMMON (Kimia, 2026-10-08)** — as the four
 shapes are. A find's colour is rolled evenly from the six, so every

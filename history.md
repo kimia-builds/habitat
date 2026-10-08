@@ -3364,6 +3364,15 @@ return 0` right after the era is worked out, so a moment before the
   gathered flora are re-dealt from the seed, so some change colour.
   Supersedes 2026-08-19 "a fill is a texture worn in a colour", the dense
   hair field, and 2026-08-21 "one fur, worn at one size".
+- 2026-10-08: **the flora's six colours, chosen from scratch** (T5.3k
+  step 1). She judged the existing four too tame ("none of them have
+  enough pop", bar leaf) and asked for bioluminescent: neon, electric,
+  luminous. After four rounds of candidates on the workbench she chose
+  `#00ff00` `#50f7d0` `#00ffff` `#73c0f7` `#0ab9ee` `#0080ff`. **Replaces**
+  emerald / leaf / sky / azure entirely, and the "three greens, three
+  blues" target — she is "not married" to a split. Not yet named. Written
+  into the docs only; the build is a later session. Supersedes the entry
+  below's "the two new ones chosen by eye".
 - 2026-10-08: **a flora is drawn like a frontier Map region, but opaque.**
   Plain fill lighter, outline stronger (about 16% / 85%). Her correction
   to my reading: "do not allow the stars of the background nebula show

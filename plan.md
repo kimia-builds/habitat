@@ -291,10 +291,15 @@ tracker. Everything after this is delight, informed by real use.
             colour, shape and size variations as they are." Reverses T5.3g's
             fills (design-bible §9a has the full decision). Order of work,
             each step judged by her before the next:
-            1. **Pick the two new colours** — a few candidate greens and
-               blues go on the design workbench as glowing swatches, she
-               picks by eye (target three greens, three blues), and
-               `floraColours.js` goes from four colours to six.
+            1. [x] **Pick the six colours** _(done 2026-10-08 — the
+               first four were judged too tame, so she chose ALL SIX from
+               scratch off the workbench, bioluminescent and neon, no
+               fixed green/blue split: `#00ff00` `#50f7d0` `#00ffff`
+               `#73c0f7` `#0ab9ee` `#0080ff`; design-bible §9a. Still to
+               do in the build session: write them into `floraColours.js`
+               replacing emerald / leaf / sky / azure, give them names
+               (hers to choose), and take the temporary "flora colours"
+               shelf off the workbench with its test line and CSS)_
             2. **The plain fill** — `floraFills.js` collapses to the six
                colours (a fill IS a colour now, rolled evenly, so 4 × 2 × 6
                = 48 still holds); `Flora.jsx` draws the body like a
