@@ -480,12 +480,14 @@ design-bible.md §9c.)
   congratulation gestures **read as** a wave / jump / dance but
   stylised and strange, never cute. Emotion through motion and light
   within an abstract body.
-- **One signature animation per category (10).** Each of the 10 friend
-  categories (plips … hamdi bulos) has one signature congratulation
-  animation; individuals within a category reuse it. Bounds the art
-  scope. (First built, T5.3b 2026-07-25: the **plip's is a slow
-  "drift-and-bob"** — floats up, hangs, settles back, its glow swelling
-  with the lift; `friend-drift` in index.css.)
+- **One shared animation for every friend (Kimia, 2026-10-09).** Every
+  friend, in all 10 categories (plips … hamdi bulos), uses the plip's
+  slow **"drift-and-bob"** — floats up, hangs, settles back, its glow
+  swelling with the lift (`friend-drift` in index.css, first built
+  T5.3b 2026-07-25). This replaces the old plan of one signature
+  animation per category; the nine others are not being made. Bounds
+  the art scope further, and the "signature" word below now means this
+  one movement.
 - **Where the signature animation is allowed to play (decided
   2026-07-20).** Exactly three moments, and nowhere else:
   1. **The arrival reveal** — the friend-drop moment. The first time you

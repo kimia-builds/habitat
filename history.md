@@ -7429,3 +7429,32 @@ and recorded in spec.md's decisions log._
   (the weekday-order test, the Jalali date line) now ask the deck for the
   Farsi word. The Gregorian month slots stay blank on purpose: Farsi mode
   shows Jalali dates, so they never appear.
+
+- 2026-10-09 (Kimia, sizing what is left for v1): **v1 loses two items and
+  keeps the rest.** T6.8 (more field-notes graphs) and T6.4c (automatic
+  export to a file) move out of v1 to v1.x; the reading pool (T6.24) and
+  the backup nudge (T6.4b) stay in. The Map work is the big remaining
+  piece and is sized in its own session, in her hours and Claude's. The
+  landmark flora are tied to it (one per region), so they are sized there
+  too. Plan.md T6.25 names the moved items.
+- 2026-10-09 (Kimia): **every friend shares the plip's drift-and-bob.**
+  The nine remaining per-category signature animations (T5.3f) are retired
+  unbuilt. It still plays only in the three moments (arrival reveal, Guest
+  Book card, home-screen cameos) and not in the Abode; asked, she kept that
+  rule. Folded into design-notes §8, design-bible §9 and its count table,
+  and spec §5's Guest Book line. AGENTS.md line 311 still says "signature
+  animation" and was left alone on purpose (Kimi K3's file); it reads
+  true enough, since the signature animation is now the one shared bob.
+- 2026-10-09 (Kimia): **the Market pool is 48 curiosities (3 per region),
+  not 64.** The code (MARKET_OBJECTS_PER_REGION = 3, one at each of the
+  6 / 12 / 18 price tiers) was right and design-bible §10a, §11c and the
+  count table (4 per region) were out of date; corrected there.
+- 2026-10-09 (Kimia): **the eight drawn curiosities go into the game now,
+  all eight on offer from the start.** The columns (2), discs (2), stones
+  (3) and smoke (1) replace ObjectGlyph.jsx's placeholder line forms on the
+  Market stall and in the Abode. The stall temporarily ignores the
+  one-region-at-a-time pool rule so she can play with them and learn what
+  to build next for the market; prices stay the placeholder tiers until
+  T6.1; the pool goes back to growing with the Map when the Map work lands.
+  (The plan had said "six drawings"; there are eight, on six canon sizes,
+  because the three stones share one size.)

@@ -395,7 +395,7 @@ opening its own growing world:
   record of everyone who has welcomed us. (We are the guest here, not
   the owner.) Titled **local community**. Clicking a character opens a
   **popup card** (2026-07-20): their art, their name, their **card
-  text**, and their signature category animation playing. The card text
+  text**, and the friends' shared drift-and-bob animation playing. The card text
   is a _second_ narration slot per friend, separate from the momentary
   arrival narration and re-readable any time — who they are, not the
   night you met them. Blank until Kimia writes it, and an empty slot

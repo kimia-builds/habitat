@@ -686,13 +686,14 @@ literacy, from 10 plips down to a single hamdi bulo:
 The roster is a **cap** (2026-07-24): a category refills only until its
 roster is exhausted — 55 friendships is the lifetime maximum (spec §5).
 
-Complexity broadly climbs the ladder. **One signature congratulation
-animation per category (10 total);** every individual in a category
-reuses its category's animation (design-notes §8).
+Complexity broadly climbs the ladder. **One shared congratulation
+animation for every friend — the plip's drift-and-bob** (Kimia,
+2026-10-09; it replaces the plan for ten signature animations,
+design-notes §8).
 
 **The silhouette test** (fungi & flora vs. friends): flora radiate from
 a still centre; friends have eyes and move. If a form is ambiguous, the
-eyes and the signature motion resolve it.
+eyes and the bob resolve it.
 
 ### 10. Object assets
 
@@ -791,8 +792,10 @@ sizes Kimia gave, once each, in her own numbers.
 
 **Purpose.** Never obvious — invites curiosity, not explanation.
 
-**Pool — 64 objects**, revealed gradually: **4 objects enter the
-Market's rotation pool with each of the 16 Map regions** (16 × 4 = 64 —
+**Pool — 48 objects**, revealed gradually: **3 objects enter the
+Market's rotation pool with each of the 16 Map regions** (16 × 3 = 48 —
+one at each price tier; corrected from 64 on 2026-10-09, when Kimia
+confirmed the code's 3 per region over this section's old 4 —
 spec §5's pool-grows-with-the-Map rule), so the Market expands over the
 years without ever being complete too early.
 
@@ -857,7 +860,7 @@ one per landmark flora (§9a). Each region:
 
 - carries **one permanent landmark-flora marker** — exactly one,
   enforced (§9a, spec §5);
-- **adds 4 curiosities to the Market pool** when unlocked (§10a).
+- **adds 3 curiosities to the Market pool** when unlocked (§10a).
 
 Region boundaries and reveal order are set with the content work
 (T6.1). The map is one of the Genome's three illustrated exemptions
@@ -879,9 +882,9 @@ than flora is what makes the family buildable at all — see §9a.
 | Flora — colours     | 6     | green to blue, no fixed split; a plain fill, no drawing or texture of their own |
 | Flora — landmark    | 16    | 4 super-sized versions of each species; body + Map marker + one keepsake type |
 | Fungi               | 1     | single form                                            |
-| Friend categories   | 10    | 1 signature animation each                             |
+| Friend categories   | 10    | one shared drift-and-bob, no per-category animation    |
 | Friend individuals  | 55    | body each (10 → 1 down the ladder)                     |
-| Curiosities         | 64    | body (4 per region × 16)                               |
+| Curiosities         | 48    | body (3 per region × 16)                               |
 | Publications        | 30    | spine + cover (10 per type); reading pages are a separate pool of 126 texts |
 | Sky                 | 1     | Abode sky × 4 palettes (shared night sky is CSS, §11a) |
 | Terrain             | 1     | serves 3 screens                                       |

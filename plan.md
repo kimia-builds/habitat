@@ -149,9 +149,9 @@ tracker. Everything after this is delight, informed by real use.
             session: the species keys renamed to the world's own names, and
             the workbench cleared to what is still waiting. design-bible §9c;
             build notes in history.md)_
-      - [ ] **T5.3f Animations** _(was T5.3e)_ — the 9 remaining
-            signature category animations (one per category,
-            design-notes §8).
+      - [x] **T5.3f Animations** _(was T5.3e; retired unbuilt 2026-10-09,
+            Kimia's call — all ten categories share the plip's drift-and-bob
+            instead of nine more signature animations; design-notes §8)_
       - [ ] **T5.3g The flora** _(was "the 8 new flora silhouettes";
             parked 2026-07-25, Kimia's call to start characters first;
             restarted 2026-08-19 and re-scoped by her calls that day —
@@ -236,6 +236,9 @@ tracker. Everything after this is delight, informed by real use.
                   ~1,700 drawn strands to ~430. Large flora untouched. Build
                   notes in history.md)_
             - [ ] **The landmark class** — see T5.3g; still Kimia's own session.
+                  It is tied to the Map work (each of the 16 regions carries
+                  one landmark), so it is sized with that, not on its own
+                  (2026-10-09).
       - [ ] **T5.3j The market objects** _(opened 2026-09-01 on Kimia's
             call, "build or at least document some items for the market,
             to show me on the design assets shelf")_ — the curiosities
@@ -260,11 +263,20 @@ tracker. Everything after this is delight, informed by real use.
             have passed, so the shelf's part is done — but the Market stall
             and the Abode still draw ObjectGlyph.jsx's placeholder line
             forms, which is the other half of this task's first sentence.
-            Putting the real drawings into production needs a call from
-            Kimia that has not been asked for yet: WHICH market objects
-            these six are, given the pool is 64 (§10a) and six drawings
-            cannot cover it. Flagged to her the day the stones landed; the
-            box stays open until she says.
+            **Answered 2026-10-09 (Kimia):** the pool is **48** (3 per
+            region × 16), not 64 (§10a corrected), and the **eight drawings
+            (2 columns, 2 discs, 3 stones, 1 smoke) go into production as
+            they are** — the Market stall and the Abode wear them in place
+            of ObjectGlyph.jsx's line forms, and **all eight are on offer
+            from the start**, a temporary state that deliberately ignores
+            the one-region-at-a-time pool so she can play with them in the
+            game and learn what the market needs next. Prices stay the
+            placeholder 6 / 12 / 18 tiers until T6.1. When the Map work
+            lands the stall goes back to growing region by region.
+            - [ ] **The curiosities reach the game** — the Market stall and
+                  the Abode draw the eight real drawings; all eight on offer
+                  from the start. Then a play period (Kimia's), after which
+                  she decides what to build for the market next.
             - [x] **The columns** _(done 2026-09-01 — 10x60 and 40x300,
                   dark brown, bark turned 90° so the grain falls vertical,
                   curved corners, wobbled edges. `src/ui/handDrawn.js` and
@@ -382,7 +394,8 @@ tracker. Everything after this is delight, informed by real use.
       - [ ] **T6.4b The nudge** — the periodic "export your data"
             prompt, now that the backup-age line gives it something to
             read. Quiet, and never a scold.
-      - [ ] **T6.4c Automatic export to a file** (candidate, Kimia's
+      - [ ] **T6.4c Automatic export to a file** **[MOVED OUT OF v1
+            2026-10-09, Kimia's call — v1.x]** (candidate, Kimia's
             call) — File System Access API: pick a backup file once,
             rewrite it on every launch. Points at an iCloud/Dropbox
             folder and backup stops being a chore. Chromium-only, so
@@ -512,7 +525,8 @@ tracker. Everything after this is delight, informed by real use.
       moments they play in. Overlaps T6.3's "demo-friendly first-run
       experience" — do this one first and let T6.3 inherit it. Also
       the natural home for whatever T6.6's new-game path should say.
-- [ ] **T6.8 Field notes — more graphs and data views** (Kimia's call
+- [ ] **T6.8 Field notes — more graphs and data views** **[MOVED OUT OF v1
+      2026-10-09, Kimia's call — v1.x]** (Kimia's call
       2026-08-11) — the weekly view (T2.3) and the per-habit line
       graphs (T2.4) are the whole of it today. Add more ways to look
       at the record: longer spans than one week, comparisons between
@@ -559,6 +573,13 @@ Added 2026-10-09 on Kimia's request. **v1 = M0–M6 finished** — sync (M7)
 and the phone version (M8) come after, as v1.x / v2. Do this only once
 every box in M0–M6 above is ticked (or Kimia has explicitly moved it
 out of v1).
+
+**Moved out of v1 (2026-10-09, Kimia):** T6.8 (more field-notes graphs)
+and T6.4c (automatic export to a file); they stay in M6 above, marked,
+for v1.x. **Staying in v1:** T6.24 (the reading pool), T6.4b (the backup
+nudge), and the Map work with the landmark flora. The Map work is the
+big one and gets sized, in both Kimia's hours and Claude's, in its own
+session.
 
 - [ ] **T6.25 Publish the v1 release on GitHub.** An official release on
       kimia-builds/habitat: (1) confirm all of M0–M6 is done and the
