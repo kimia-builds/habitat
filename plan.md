@@ -342,6 +342,9 @@ tracker. Everything after this is delight, informed by real use.
                   Abode scale, `LANDMARK_SCALE` in floraCanon.js; looks like
                   its ordinary flora, size is the only difference. Not yet
                   used by any screen. Build notes in history.md)_
+            - [ ] **Keepsake colours** — four reds / pinks / oranges, picked by
+                  eye from twelve candidates on the workbench shelf
+                  (Kimia's rule, 2026-10-09; design-bible §9a).
             - [ ] The 16 keepsake drawings,
                   the Map pictures, and the five-step arrival logic.
       - [ ] **T5.3m The 48 curiosities** _(opened on Kimia's call —

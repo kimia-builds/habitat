@@ -53,6 +53,7 @@
 import Curiosity, { CuriosityDefs, curiosityCanonKey } from './Curiosity.jsx'
 import { OBJECT_CANON, objectSize } from './objectCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
+import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
 
 // The §8 texture families still waiting to be judged, in the order the
@@ -178,6 +179,85 @@ function CuriosityShelf() {
   )
 }
 
+/*
+ * THE KEEPSAKE COLOUR SHELF (T5.3l, opened 2026-10-09) — one question: which
+ * FOUR reds / pinks / oranges do keepsakes wear? Twelve candidates, each drawn
+ * the way a flora is (an aura of its own colour, an opaque dark body, the
+ * colour at the frontier-region strengths with an outline), on a stand-in
+ * shape that is NOT a keepsake. Candidates only; nothing reads them.
+ */
+const KEEPSAKE_CANDIDATES = [
+  '#ff0000',
+  '#ff3b30',
+  '#ff4d6d',
+  '#ff2d95',
+  '#ff6ec7',
+  '#ff9ecb',
+  '#ff5e00',
+  '#ff7a1a',
+  '#ff9500',
+  '#ffa64d',
+  '#ff8080',
+  '#e8325a',
+]
+const KEEPSAKE_STAND_IN = FLORA_SILHOUETTES.find(({ key }) => key === '6')
+
+function KeepsakeSwatch({ hex }) {
+  const { w, h } = KEEPSAKE_STAND_IN.viewBox
+  const { d, transform } = KEEPSAKE_STAND_IN
+  const id = `ks-${hex.slice(1)}`
+  return (
+    <li className="curio-item">
+      <svg
+        viewBox={`0 0 ${w} ${h}`}
+        width={140}
+        height={(140 * h) / w}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter id={id} x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation={w * 0.017} />
+          </filter>
+        </defs>
+        <path
+          d={d}
+          transform={transform ?? undefined}
+          fill={hex}
+          opacity="0.8"
+          filter={`url(#${id})`}
+        />
+        <path d={d} transform={transform ?? undefined} fill="#0b0f14" />
+        <path
+          d={d}
+          transform={transform ?? undefined}
+          fill={hex}
+          fillOpacity="0.16"
+          stroke={hex}
+          strokeOpacity="0.85"
+          strokeWidth="1.2"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+      <span className="curio-name">{hex}</span>
+    </li>
+  )
+}
+
+function KeepsakeColourShelf() {
+  return (
+    <section className="design-family" aria-label="keepsake colours">
+      <h3>keepsake colours (pick four)</h3>
+      <div className="curio-shelf-window">
+        <ul className="curio-shelf">
+          {KEEPSAKE_CANDIDATES.map((hex) => (
+            <KeepsakeSwatch key={hex} hex={hex} />
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -204,6 +284,8 @@ function DesignPage({ onBack }) {
       ))}
 
       <CuriosityShelf />
+
+      <KeepsakeColourShelf />
 
       {/* The abode-sky shelf came down on 2026-08-21 (T5.4). Its question
           — do these four palettes work? — was answered by putting them on
