@@ -575,7 +575,7 @@ const DECK = {
   'market.buy': {
     note: 'Button to buy a curiosity.',
     en: 'buy',
-    fa: 'صفحه‌ها',
+    fa: 'خریدن',
   },
   'market.buyLabel': {
     note: 'Screen-reader name of the buy button. {price} is the cost in fungi.',
