@@ -1981,112 +1981,112 @@ const STORY_DECK = {
       'The word shown when map region 1 is discovered (the ' +
       'landing site in the middle of the map).',
     en: 'sahara',
-    fa: '',
+    fa: 'صحرا',
   },
   'story.mapRegions.region2': {
     note:
       'The word shown when map region 2 is discovered (in the ' +
       'ring around the landing site).',
     en: 'ari',
-    fa: '',
+    fa: 'آری',
   },
   'story.mapRegions.region3': {
     note:
       'The word shown when map region 3 is discovered (in the ' +
       'ring around the landing site).',
     en: 'lerato',
-    fa: '',
+    fa: 'لراتو',
   },
   'story.mapRegions.region4': {
     note:
       'The word shown when map region 4 is discovered (in the ' +
       'ring around the landing site).',
     en: 'sogol',
-    fa: '',
+    fa: 'سوگل',
   },
   'story.mapRegions.region5': {
     note:
       'The word shown when map region 5 is discovered (in the ' +
       'ring around the landing site).',
     en: 'kian',
-    fa: '',
+    fa: 'کیان',
   },
   'story.mapRegions.region6': {
     note:
       'The word shown when map region 6 is discovered (in the ' +
       'ring around the landing site).',
     en: 'ida',
-    fa: '',
+    fa: 'ایدا',
   },
   'story.mapRegions.region7': {
     note:
       'The word shown when map region 7 is discovered (in the ' +
       'outer ring).',
     en: 'sufi',
-    fa: '',
+    fa: 'صوفی',
   },
   'story.mapRegions.region8': {
     note:
       'The word shown when map region 8 is discovered (in the ' +
       'outer ring).',
     en: 'cyrus',
-    fa: '',
+    fa: 'سیروس',
   },
   'story.mapRegions.region9': {
     note:
       'The word shown when map region 9 is discovered (in the ' +
       'outer ring).',
     en: 'shiva',
-    fa: '',
+    fa: 'شیوا',
   },
   'story.mapRegions.region10': {
     note:
       'The word shown when map region 10 is discovered (in the ' +
       'outer ring).',
     en: 'oratile',
-    fa: '',
+    fa: 'اوراتیله',
   },
   'story.mapRegions.region11': {
     note:
       'The word shown when map region 11 is discovered (in the ' +
       'outer ring).',
     en: 'chaymae',
-    fa: '',
+    fa: 'شیماء',
   },
   'story.mapRegions.region12': {
     note:
       'The word shown when map region 12 is discovered (in the ' +
       'outer ring).',
     en: 'hamid',
-    fa: '',
+    fa: 'حمید',
   },
   'story.mapRegions.region13': {
     note:
       'The word shown when map region 13 is discovered (in the ' +
       'outer ring).',
     en: 'parnian',
-    fa: '',
+    fa: 'پرنیان',
   },
   'story.mapRegions.region14': {
     note:
       'The word shown when map region 14 is discovered (in the ' +
       'outer ring).',
     en: 'marie-simone',
-    fa: '',
+    fa: 'ماری-سیمون',
   },
   'story.mapRegions.region15': {
     note:
       'The word shown when map region 15 is discovered (in the ' +
       'outer ring).',
     en: 'tadiwa',
-    fa: '',
+    fa: 'تادیوا',
   },
   'story.mapRegions.region16': {
     note:
       'The word shown when map region 16 is discovered (in the ' +
       'outer ring).',
     en: 'lily',
-    fa: '',
+    fa: 'لی‌لی',
   },
 
   // ── The ten species ─────────────────────────────────────────────────────
@@ -2222,7 +2222,7 @@ const STORY_DECK = {
     note:
       'The personal name of baluhm number 2, in the order they ' + 'arrive.',
     en: 'nor',
-    fa: '',
+    fa: 'نور',
   },
   'name.individuals.baluhm.3': {
     note:
