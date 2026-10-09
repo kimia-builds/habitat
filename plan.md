@@ -482,6 +482,13 @@ tracker. Everything after this is delight, informed by real use.
       Story and names go last and get the most human attention: they
       carry the voice, and `narration.js` is the file where a machine
       would do the most damage.
+      **Working method (2026-10-09):** drafts wait in `fa-drafts.md`
+      (key, English, Farsi draft, how it sounds, a Verdict line and a
+      Finglish correction line for Kimia, who has no Farsi keyboard).
+      Only approved slots are copied into `ui.js`. Batch 1 (27 slots:
+      rail, page titles, meters, language switch, habit-tile words) is
+      drafted and awaiting her review; the Farsi size is tuned by eye
+      on it. Then the rest of the interface words, then story and names.
 - [x] **T6.20 The cameo tells the truth, and can be asked** _(done
       2026-08-20)_
 - [x] **T6.21 A past week's streak stops at that week** _(done

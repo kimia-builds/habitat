@@ -7367,3 +7367,17 @@ and recorded in spec.md's decisions log._
   app never shows two calendars at once. Tests in `days.test.js` pin
   Nowruz for 2020–2026, Esfand lengths (30 days in 1403, 29 in 1404) and
   29 Feb, so a browser that ever disagrees fails loudly.
+
+- 2026-10-09 (T6.19, started — Kimia's calls): **the review queue is a
+  file, `fa-drafts.md` at the project root.** One block per slot: key,
+  English, where it shows, Claude's Farsi draft, a Finglish "sounds like",
+  a back-translation, then a Verdict line (`ok` / `change` / `later`) and a
+  Finglish correction line. Kimia has no Farsi keyboard, so corrections
+  arrive as Finglish; Claude converts to script, shows it back beside her
+  Finglish, and only then moves the slot into `src/content/ui.js`. Nothing
+  is copied into the deck before her `ok`, so unreviewed slots keep
+  showing English. Order: small visible batch first (so the 112% Farsi
+  size can be tuned on real words), then the remaining interface words,
+  then story and names. Batch 1 drafted (27 slots) with one register
+  choice made for the whole batch — friendly "you", not formal "shoma" —
+  flagged for her to overrule.
