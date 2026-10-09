@@ -3180,14 +3180,14 @@ body {
   height: 1rem;
 }
 
-/* The invitation tile (Kimia's call 2026-08-12): what an empty habit
-   list holds instead of nothing. It IS a habit row — same baguette, same
-   charm classes — so it stands exactly where the first real habit will,
-   and its whole face is the button that opens the draft form. Neutral
-   with no lens on; in filter view one tile per chosen charm, each
-   wearing that charm's fill and edge, which the `.habit-row` rules
-   already hand down. Dimmer than a real tile and not grabbable: there is
-   nothing here to re-order yet. */
+/* The add baguette (Kimia's call 2026-08-12; always shown since
+   2026-10-09): the last tile of the habit list. It IS a habit row — same
+   baguette, same charm classes — so it stands exactly where the next
+   habit will, and its whole face is the button that opens the draft
+   form. Neutral with no charm or several in the lens; with exactly one
+   charm in the lens it wears that charm's fill and edge, which the
+   `.habit-row` rules already hand down. Dimmer than a real tile and not
+   grabbable. */
 .habit-row--empty {
   cursor: pointer;
   padding: 0;

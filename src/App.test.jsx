@@ -3392,11 +3392,11 @@ describe('the rail carries the doers too (2026-08-12)', () => {
   })
 })
 
-// The invitation tile (Kimia's call 2026-08-12): an empty habit list
-// holds a tile reading "add a habit or task…" rather than nothing, and
+// The add baguette (Kimia's call 2026-08-12, made permanent 2026-10-09):
+// a tile reading "add a habit or task…" always ends the habit list, and
 // clicking it is the same door as the rail's +.
-describe('the empty-list invitation tile (2026-08-12)', () => {
-  const tiles = () => screen.getAllByRole('button', { name: /add a habit/ })
+describe('the always-there add baguette (2026-10-09)', () => {
+  const tiles = () => screen.queryAllByRole('button', { name: /add a habit/ })
   const charmOf = (button) => button.closest('li').className
   const filterView = () =>
     within(screen.getByRole('region', { name: 'filter view' }))
@@ -3408,7 +3408,7 @@ describe('the empty-list invitation tile (2026-08-12)', () => {
       .getAllByRole('button', { pressed: true })
       .map((button) => button.querySelector('svg').getAttribute('aria-label'))
 
-  it('offers one neutral tile when there is nothing at all', () => {
+  it('offers one neutral baguette when there is nothing at all', () => {
     render(<App />)
     expect(tiles()).toHaveLength(1)
     // Neutral means no charm class on the row it sits in.
@@ -3421,46 +3421,52 @@ describe('the empty-list invitation tile (2026-08-12)', () => {
     expect(document.querySelector('form.habit-form')).not.toBeNull()
   })
 
-  it('goes away as soon as a habit exists, and comes back when none do', () => {
+  it('stays after habits exist, as the last tile of the list', () => {
     render(<App />)
     createHabitViaUI('walk')
-    expect(screen.queryByRole('button', { name: /add a habit/ })).toBeNull()
+    expect(tiles()).toHaveLength(1)
+    const rows = [...tiles()[0].closest('ul').children]
+    expect(rows.at(-1)).toBe(tiles()[0].closest('li'))
+    expect(rows.length).toBeGreaterThan(1)
+  })
 
-    vi.spyOn(window, 'confirm').mockReturnValue(true)
-    fireEvent.click(row('walk').getByRole('button', { name: 'archive' }))
-    settleFarewell()
-    // Archived, so the live list is empty again — the invitation returns.
+  it('steps aside while the new-habit form is open, then returns', () => {
+    render(<App />)
+    fireEvent.click(tiles()[0])
+    expect(tiles()).toHaveLength(0)
+    fireEvent.click(screen.getByRole('button', { name: /cancel/ }))
     expect(tiles()).toHaveLength(1)
   })
 
-  it('wears one tile per chosen charm while a lens is on', () => {
+  it('stays neutral when two or more charms are in the lens', () => {
     render(<App />)
     createHabitViaUI('walk', { symbol: 1 }) // crown
-    // Two charms neither of which any habit wears: the list is empty.
     fireEvent.click(filterView().getByRole('button', { name: 'cherry' })) // 2
     fireEvent.click(filterView().getByRole('button', { name: 'key' })) // 6
 
-    expect(tiles()).toHaveLength(2)
-    expect(tiles().map(charmOf).join(' ')).toMatch(/charm-2/)
-    expect(tiles().map(charmOf).join(' ')).toMatch(/charm-6/)
+    expect(tiles()).toHaveLength(1)
+    expect(charmOf(tiles()[0])).not.toMatch(/charm-\d/)
+    fireEvent.click(tiles()[0])
+    expect(draftCharm()).toEqual(['crown']) // the form's own default
   })
 
-  it('opens the draft on the charm of the tile that was clicked', () => {
+  it('wears the charm when exactly one is in the lens, even if it has no habits', () => {
     render(<App />)
-    createHabitViaUI('walk', { symbol: 1 })
-    fireEvent.click(filterView().getByRole('button', { name: 'cherry' })) // 2
+    createHabitViaUI('walk', { symbol: 1 }) // crown
     fireEvent.click(filterView().getByRole('button', { name: 'key' })) // 6
 
-    // Two charms on, so the lens itself is no hint — the TILE is.
-    const keyTile = tiles().find((t) => charmOf(t).includes('charm-6'))
-    fireEvent.click(keyTile)
+    expect(tiles()).toHaveLength(1)
+    expect(charmOf(tiles()[0])).toMatch(/charm-6/)
+    fireEvent.click(tiles()[0])
     expect(draftCharm()).toEqual(['key'])
   })
 
-  it('a neutral tile leaves the form on its own default', () => {
+  it('wears the charm when exactly one is in the lens and it has habits', () => {
     render(<App />)
-    fireEvent.click(tiles()[0])
-    expect(draftCharm()).toEqual(['crown']) // charm 1, the form's default
+    createHabitViaUI('walk', { symbol: 1 }) // crown
+    fireEvent.click(filterView().getByRole('button', { name: 'crown' }))
+
+    expect(charmOf(tiles()[0])).toMatch(/charm-1/)
   })
 })
 

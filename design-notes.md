@@ -1358,16 +1358,16 @@ principle survived the move: discreet, evenly weighted, none of them
 shouting. "Add new habit" is not a call to action; it is one of eight
 equal doors now instead of one of three.
 
-What replaced them at the foot is nothing at all — and where the list
-itself is empty, an **invitation tile** (Kimia's call 2026-08-12): a
-tile of the same baguette shape reading "add a habit or task…", which
-opens the draft form. It is the answer to the same question the icons
-answer, in the one place a beginner is actually looking. Neutral with
-no lens on; in filter view, one tile per chosen charm, each in that
-charm's colour, and clicking one starts the draft already on it — the
-colour is not decoration, it is the answer being carried forward. The
-old "nothing here yet" is gone: an empty screen should hold a door, not
-a status report.
+What replaced them at the foot is the **add baguette** (Kimia's call
+2026-08-12, made permanent 2026-10-09 because the rail's + was hard to
+find and confused new users): a tile of the same baguette shape reading
+"add a habit or task…", which opens the draft form. It always ends the
+habit list, standing where the next habit will land — the answer to the
+question the icons answer, in the one place a beginner is actually
+looking. Neutral with no lens or several charms; with exactly one charm
+in the lens it wears that charm's colour, and clicking it starts the
+draft already on it. It steps aside while the new-habit form is open.
+The rail's + stays as a second door.
 
 The **foot of the home screen** is now three clean buttons on one
 centred line — export · import · start a new game — and no text beside

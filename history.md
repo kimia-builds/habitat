@@ -3418,6 +3418,15 @@ return 0` right after the era is worked out, so a moment before the
   translation work; (9) two typos in her note fixed ("kerplungk" →
   krupengk, "ecstacy" → ecstasy). Supersedes the 30-publications-
   with-a-spread-each count in the 2026-07-19 T3.5 decision.
+- 2026-10-09 (Kimia): **the "add a habit or task…" baguette is always
+  there.** The rail's + was hard to find and confused new users, so the
+  invitation tile that used to show only on an empty list now always ends
+  the habit list. Neutral with no charm or several charms in the lens;
+  exactly one charm in the lens and it wears that charm (whether or not
+  that charm has habits) and opens the draft on it. It steps aside while
+  the new-habit form is open. The rail's + stays as a second door.
+  Supersedes 2026-08-12's "one tile per chosen charm" — several charms now
+  give one neutral baguette, and the form's own default.
 
 ## T5.5 build notes — rotate (2026-10-08)
 

@@ -499,14 +499,14 @@ region discovery expands what the Market can offer.
   Since 2026-07-21 the rail **persists on every screen but the
   check-in** (Kimia's call) — the check-in's done button stays the only
   exit there.
-- **An empty habit list invites (2026-08-12):** where the list would be
-  blank it holds a tile of the same shape reading **"add a habit or
-  task…"**, which opens the draft form — the same door as the rail's +.
-  Neutral with no lens on. **In filter view, one tile per chosen charm**,
-  each wearing that charm's colour; clicking one opens the draft already
-  on that charm. (The 2026-08-11 rule still applies underneath: with no
-  tile clicked, a lens showing exactly one charm is the hint, and two or
-  more falls back to the form's own default.)
+- **The add baguette is always there (2026-08-12; permanent 2026-10-09):**
+  the habit list always ends with a tile of the same shape reading
+  **"add a habit or task…"**, which opens the draft form — the same door
+  as the rail's +, which stays. With no charm or several charms in the
+  lens it is neutral and the form uses its own default charm. With
+  exactly one charm in the lens it wears that charm (even if that charm
+  has no habits yet) and the draft opens already on it. It steps aside
+  while the new-habit form is open.
 - **The foot of the home screen (2026-08-12):** three clean buttons on
   one centred line — **export backup · import backup · start a new
   game** — with no text beside any of them. The explanations they used to

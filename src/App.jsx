@@ -1371,16 +1371,16 @@ function AppBody({ data, setData }) {
     return 'backup imported'
   }
 
-  // What an empty list offers instead of nothing (Kimia's call
-  // 2026-08-12): a tile that reads "add a habit or task…" and opens the
-  // draft form when clicked — the same door as the rail's +. With no
-  // lens on, one neutral tile. In filter view, one tile per chosen charm,
-  // each wearing that charm's colour — so an empty cherry-and-key screen
-  // offers a cherry tile and a key tile, and clicking one opens a draft
-  // already on that charm. `null` here means "no charm": the neutral
-  // tile.
-  const emptyTiles =
-    visible.length > 0 ? [] : filter.length > 0 ? filter : [null]
+  // The "add a habit or task…" baguette (Kimia's call 2026-08-12, made
+  // permanent 2026-10-09): it always stands at the foot of the habit
+  // list — the same door as the rail's +, but where a beginner looks.
+  // Neutral when no charm or several charms are in the lens; when
+  // exactly one charm is, the baguette wears it and opens the draft
+  // already on it. It steps aside while the new-habit form is open, so
+  // there is never a second add button beside a form being filled in.
+  // `null` means "no charm": the neutral baguette.
+  const addTileSymbol = filter.length === 1 ? filter[0] : null
+  const showAddTile = editing !== 'new'
 
   // The foot of the page (Kimia's call 2026-08-12): three clean buttons
   // on one centred line — export, import, start a new game — and no
@@ -1570,24 +1570,22 @@ function AppBody({ data, setData }) {
             />
           ),
         )}
-        {/* An empty list is never blank (2026-08-12) — it holds the
-            invitation instead, as a tile of the same shape. It lives
-            inside the list so it stands exactly where a first habit
-            would; it carries no data-habit-id, so the reorder drag
-            never sees it. */}
-        {emptyTiles.map((symbol) => (
+        {/* The add baguette is always the last tile of the list
+            (2026-10-09), standing where the next habit will land. It
+            carries no data-habit-id, so the reorder drag never sees
+            it. */}
+        {showAddTile && (
           <li
-            key={symbol ?? 'none'}
-            className={`habit-row habit-row--empty${symbol ? ` charm-${symbol}` : ''}`}
+            className={`habit-row habit-row--empty${addTileSymbol ? ` charm-${addTileSymbol}` : ''}`}
           >
             <button
               className="empty-tile"
-              onClick={() => startNewHabit(symbol)}
+              onClick={() => startNewHabit(addTileSymbol)}
             >
               add a habit or task…
             </button>
           </li>
-        ))}
+        )}
       </ul>
 
       {editing === 'new' && (
