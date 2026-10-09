@@ -1,13 +1,27 @@
-// ui.js — every word the INTERFACE says, in one file.
+// ui.js — every word the INTERFACE says, in one file: the copy deck's
+// interface section.
 //
-// The companion to narration.js. That file holds the STORY (what N-Z-D
-// tells you); this one holds the FURNITURE (what the buttons, labels and
-// page titles say). They were split because they are written in
-// different voices and, from here on, translated on different clocks.
+// This file holds the FURNITURE (what the buttons, labels and page
+// titles say). narration.js holds the STORY. They are written in
+// different voices, so they are still separate files for now.
 //
 // THIS FILE IS KIMIA'S, like every other file in src/content/
 // (design-notes §7). Claude Code builds the keyed slots and the
 // plumbing; the words are human-written.
+//
+// ── HOW EACH ENTRY LOOKS ────────────────────────────────────────────
+//
+//   'market.buy': {
+//     note: 'Button to buy a curiosity.',
+//     en: 'buy',
+//     fa: '',
+//   },
+//
+// One entry per piece of copy. The `note` says in plain English what it
+// is and where it shows, so you never have to hunt through the app to
+// find a word. Each language sits right beside the others: to add a
+// language, add one line (`de: ''`) to every entry. Notes are for
+// people; the app never shows them.
 //
 // ── THE ONE RULE THAT DIFFERS FROM THE OTHER CONTENT FILES ──────────
 //
@@ -24,14 +38,17 @@
 // working in English until you get to it. Habitat is never half-broken,
 // only ever partly translated. Nothing is ever auto-translated — an
 // empty slot shows English, which is a real human's words, not a
-// machine's guess.
+// machine's guess. English itself must never be blank.
 //
 // ── HOW TO TRANSLATE ────────────────────────────────────────────────
 //
-// Find the key you want in the `fa` block at the bottom and put your
-// words between its quotes. That's the whole job.
+// Find the entry you want and put your words between the quotes of its
+// `fa:` line. That's the whole job. Two slots are pre-filled on purpose:
+// 'language.en' and 'language.fa' — each language names itself in its
+// own script, so the language switch reads the same in either language
+// and there is always a way back.
 //
-// ── ABOUT THE KEYS ON THE LEFT ('rail.pages', 'meters.steps', …) ────
+// ── ABOUT THE KEYS ('rail.pages', 'meters.steps', …) ────────────────
 //
 // Those are permanent internal ids, not words. They never appear on
 // screen and they never change when the words do. They are grouped by
@@ -46,693 +63,1359 @@
 // may move it anywhere the grammar wants it, which matters in Farsi,
 // where word order differs.
 
-// ── ENGLISH ─────────────────────────────────────────────────────────
-// The written-and-settled words Habitat has worn until now. These are
-// also the fallback for any Farsi slot left blank, so this block should
-// never contain a blank.
-const en = {
-  // The left icon rail (design-notes §12d). Each of these is a hover
-  // label AND the screen-reader name for that icon.
-  'rail.pages': 'pages',
-  'rail.addHabit': 'add new habit',
-  'rail.editPastDays': 'edit past days',
-  'rail.fieldNotes': 'view historical data',
+const DECK = {
+  // ── The left icon rail ────────────────────────────────────────────────
+  'rail.pages': {
+    note:
+      'Hover label and screen-reader name for the rail icon that opens the ' +
+      'habit list.',
+    en: 'pages',
+    fa: '',
+  },
+  'rail.addHabit': {
+    note:
+      'Hover label and screen-reader name for the rail icon that opens a ' +
+      'new-habit form.',
+    en: 'add new habit',
+    fa: '',
+  },
+  'rail.editPastDays': {
+    note:
+      'Hover label and screen-reader name for the rail icon that opens the ' +
+      'morning check-in for earlier days.',
+    en: 'edit past days',
+    fa: '',
+  },
+  'rail.fieldNotes': {
+    note:
+      'Hover label and screen-reader name for the rail icon that opens the ' +
+      'field notes (history).',
+    en: 'view historical data',
+    fa: '',
+  },
 
-  // Page titles. Each appears twice — on the rail icon that opens the
-  // page, and at the top of the page itself — so translating it once
-  // moves both.
-  'page.map': 'map of N-Z-D',
-  'page.abode': 'your abode',
-  'page.guestbook': 'local community',
-  'page.bookcase': 'readers library',
-  'page.market': 'local market',
-  'page.fieldNotes': 'field notes',
+  // ── Page titles ───────────────────────────────────────────────────────
+  'page.map': {
+    note:
+      'Title of the Map page. Shows on its rail icon and at the top of the ' +
+      'page.',
+    en: 'map of N-Z-D',
+    fa: '',
+  },
+  'page.abode': {
+    note:
+      'Title of the Abode page. Shows on its rail icon and at the top of the ' +
+      'page.',
+    en: 'your abode',
+    fa: '',
+  },
+  'page.guestbook': {
+    note:
+      'Title of the Guest Book page. Shows on its rail icon and at the top ' +
+      'of the page.',
+    en: 'local community',
+    fa: '',
+  },
+  'page.bookcase': {
+    note:
+      'Title of the library page. Shows on its rail icon and at the top of ' +
+      'the page.',
+    en: 'readers library',
+    fa: '',
+  },
+  'page.market': {
+    note:
+      'Title of the Market page. Shows on its rail icon and at the top of ' +
+      'the page.',
+    en: 'local market',
+    fa: '',
+  },
+  'page.fieldNotes': {
+    note:
+      'Title of the field notes page. Shows on its rail icon and at the top ' +
+      'of the page.',
+    en: 'field notes',
+    fa: '',
+  },
 
-  // The three meters. The `.bar` slots are screen-reader-only: they name
-  // the moving bar itself, where the plain slot names the meter.
-  'meters.region': 'meters',
-  'meters.steps': 'steps taken',
-  'meters.stepsBar': 'steps taken progress',
-  'meters.literacy': 'literacy level',
-  'meters.literacyBar': 'literacy level progress',
-  'meters.wallet': 'wallet balance',
-  'meters.walletBar': 'wallet balance progress',
+  // ── The three meters ──────────────────────────────────────────────────
+  'meters.region': {
+    note: 'Screen-reader name for the group of three meters at the top.',
+    en: 'meters',
+    fa: '',
+  },
+  'meters.steps': {
+    note: 'Name of the steps meter. Hover label and screen-reader name.',
+    en: 'steps taken',
+    fa: '',
+  },
+  'meters.stepsBar': {
+    note: 'Screen-reader-only name for the moving bar of the steps meter.',
+    en: 'steps taken progress',
+    fa: '',
+  },
+  'meters.literacy': {
+    note: 'Name of the literacy meter. Hover label and screen-reader name.',
+    en: 'literacy level',
+    fa: '',
+  },
+  'meters.literacyBar': {
+    note: 'Screen-reader-only name for the moving bar of the literacy meter.',
+    en: 'literacy level progress',
+    fa: '',
+  },
+  'meters.wallet': {
+    note: 'Name of the wallet meter. Hover label and screen-reader name.',
+    en: 'wallet balance',
+    fa: '',
+  },
+  'meters.walletBar': {
+    note: 'Screen-reader-only name for the moving bar of the wallet meter.',
+    en: 'wallet balance progress',
+    fa: '',
+  },
 
-  // The habit list and its tiles.
-  'habits.filterView': 'filter view',
-  'habits.markDone': 'mark done',
-  'habits.mute': 'mute',
-  'habits.unmute': 'unmute',
-  'habits.edit': 'edit',
-  'habits.archive': 'archive',
-  'habits.unarchive': 'unarchive',
-  'habits.deleteForever': 'delete forever',
-  // Why a tile won't move. Nothing re-orders while anything is hidden —
-  // by a charm or by a lens — because a list with gaps in it would make
-  // Habitat guess where a dropped tile belongs (design-notes §12a).
-  'habits.unhideToReorder': 'un-hide everything to re-order',
+  // ── The habit list and its tiles ──────────────────────────────────────
+  'habits.filterView': {
+    note: 'Label of the control that opens the lens choices above the habit list.',
+    en: 'filter view',
+    fa: '',
+  },
+  'habits.markDone': {
+    note: "Hover label on a habit tile's tick, to mark it done.",
+    en: 'mark done',
+    fa: '',
+  },
+  'habits.mute': {
+    note: 'Quiet word on a habit tile that hides it from today.',
+    en: 'mute',
+    fa: '',
+  },
+  'habits.unmute': {
+    note: 'Quiet word on a muted habit tile that brings it back.',
+    en: 'unmute',
+    fa: '',
+  },
+  'habits.edit': {
+    note: 'Quiet word on a habit tile that opens it for editing.',
+    en: 'edit',
+    fa: '',
+  },
+  'habits.archive': {
+    note: 'Quiet word on a habit tile that tucks it into the archive.',
+    en: 'archive',
+    fa: '',
+  },
+  'habits.unarchive': {
+    note: 'Quiet word on an archived habit that brings it back to the list.',
+    en: 'unarchive',
+    fa: '',
+  },
+  'habits.deleteForever': {
+    note: 'Quiet word on an archived habit that deletes it for good (asks first).',
+    en: 'delete forever',
+    fa: '',
+  },
+  'habits.unhideToReorder': {
+    note:
+      'Hover explanation of why a tile will not move while anything is ' +
+      'hidden by a charm or a lens.',
+    en: 'un-hide everything to re-order',
+    fa: '',
+  },
 
-  // The lenses — the ways of LOOKING at the habit list (design-notes
-  // §11f). These say their names on screen, in lower case like the rest
-  // of Habitat's furniture.
-  'lens.today': 'today',
-  'lens.todos': 'to-dos',
-  'lens.prioritise': 'prioritise',
-  'lens.unhideAll': 'un-hide all',
-  // The padlock: the one control on this line that is not a lens — it
-  // acts on the world and settles (design-notes §11e/§11f). Wordless,
-  // so this is its hover label and its screen-reader name, never text
-  // on screen.
-  'lens.saveAsDefault': 'save as default view',
-  // Asked before the default view is overwritten. Kimia's words
-  // throughout (2026-08-21).
-  'lens.saveAsDefaultConfirm':
-    'are you sure you want to save this as your default view? any ' +
-    'previous default view choices will be lost. refresh the page to ' +
-    'go back to previous default view.',
+  // ── The lenses (ways of looking at the habit list) ────────────────────
+  'lens.today': {
+    note: 'Lens button: show only what is due today.',
+    en: 'today',
+    fa: '',
+  },
+  'lens.todos': {
+    note: 'Lens button: show only one-time to-dos.',
+    en: 'to-dos',
+    fa: '',
+  },
+  'lens.prioritise': {
+    note: 'Lens button: show habits in priority order.',
+    en: 'prioritise',
+    fa: '',
+  },
+  'lens.unhideAll': {
+    note: 'Lens button: clear every hiding lens and charm.',
+    en: 'un-hide all',
+    fa: '',
+  },
+  'lens.saveAsDefault': {
+    note:
+      'Hover label and screen-reader name of the padlock. Never shown as ' +
+      'text on screen.',
+    en: 'save as default view',
+    fa: '',
+  },
+  'lens.saveAsDefaultConfirm': {
+    note: 'Question asked before the padlock overwrites the saved default view.',
+    en:
+      'are you sure you want to save this as your default view? any previous ' +
+      'default view choices will be lost. refresh the page to go back to ' +
+      'previous default view.',
+    fa: '',
+  },
 
-  // The habit form — the four prompts, then the two pebbles.
-  'habitForm.name': 'write a good habit or task:',
-  'habitForm.detail': 'add any details or specifications:',
-  'habitForm.difficulty': 'pick a difficulty per unit:',
-  'habitForm.schedule': 'specify the desired schedule or frequency:',
-  'habitForm.howMany': 'how many',
-  'habitForm.save': 'save',
-  'habitForm.cancel': 'cancel',
+  // ── The habit form ────────────────────────────────────────────────────
+  'habitForm.name': {
+    note: 'First prompt of the habit form, above the name box.',
+    en: 'write a good habit or task:',
+    fa: '',
+  },
+  'habitForm.detail': {
+    note: 'Second prompt of the habit form, above the details box.',
+    en: 'add any details or specifications:',
+    fa: '',
+  },
+  'habitForm.difficulty': {
+    note: 'Third prompt of the habit form, above the difficulty choices.',
+    en: 'pick a difficulty per unit:',
+    fa: '',
+  },
+  'habitForm.schedule': {
+    note: 'Fourth prompt of the habit form, above the schedule choices.',
+    en: 'specify the desired schedule or frequency:',
+    fa: '',
+  },
+  'habitForm.howMany': {
+    note: 'Label of the small number box for "n days a week" or "n times a day".',
+    en: 'how many',
+    fa: '',
+  },
+  'habitForm.save': {
+    note: 'Habit form button that saves the habit.',
+    en: 'save',
+    fa: '',
+  },
+  'habitForm.cancel': {
+    note: 'Habit form button that closes the form without saving.',
+    en: 'cancel',
+    fa: '',
+  },
 
-  // The morning check-in.
-  'checkin.region': 'check-in',
-  'checkin.prompt': 'what did you do yesterday?',
-  'checkin.earlierDays':
-    'update earlier days of this week before they freeze forever:',
-  'checkin.noHabits': 'no habits to show for this day',
-  'checkin.done': 'done',
+  // ── The morning check-in ──────────────────────────────────────────────
+  'checkin.region': {
+    note: 'Screen-reader name for the morning check-in panel.',
+    en: 'check-in',
+    fa: '',
+  },
+  'checkin.prompt': {
+    note: 'The question at the top of the morning check-in.',
+    en: 'what did you do yesterday?',
+    fa: '',
+  },
+  'checkin.earlierDays': {
+    note:
+      'Line above the earlier days of this week in the check-in, warning ' +
+      'they will soon freeze.',
+    en: 'update earlier days of this week before they freeze forever:',
+    fa: '',
+  },
+  'checkin.noHabits': {
+    note: 'Shown in the check-in when a day has no habits due.',
+    en: 'no habits to show for this day',
+    fa: '',
+  },
+  'checkin.done': {
+    note: 'Check-in button that finishes the check-in.',
+    en: 'done',
+    fa: '',
+  },
 
-  // The field notes.
-  'fieldNotes.nothingYet': 'nothing recorded yet',
-  'fieldNotes.stillUnfolding': 'still unfolding',
-  'fieldNotes.noHabitsThatWeek': 'No habits existed during this week.',
-  'fieldNotes.tasksCompleted': 'tasks completed',
-  'fieldNotes.graphs': 'graphs',
-  'fieldNotes.habitTooYoung': 'habit is too young',
-  'fieldNotes.graphLabel': '{habit}, completions {zoom}',
-  // What pressing a friend's visit is for. Never shown — the visit is a
-  // friend and a caption and nothing else — so these are the words a
-  // screen reader says (2026-08-20).
-  'cameo.open': 'see the record this is about',
-  // The streak reported beside a week's row, and the same words blown
-  // up in the spotlight a cameo sends you to (2026-08-20). The unit is
-  // its own entry because a language may not build "5-day" the way
-  // English does.
-  'fieldNotes.streak': '{n}-{unit} streak',
-  'fieldNotes.unitDay': 'day',
-  'fieldNotes.unitWeek': 'week',
-  // The blackout the cameo opens: what it announces, and how to leave.
-  'fieldNotes.spotlightTitle': 'a record fell today',
-  'fieldNotes.spotlightDismiss': 'close and see the week',
+  // ── The field notes ───────────────────────────────────────────────────
+  'fieldNotes.nothingYet': {
+    note: 'Shown on the field notes when no days are recorded yet.',
+    en: 'nothing recorded yet',
+    fa: '',
+  },
+  'fieldNotes.stillUnfolding': {
+    note: 'Label on a week that has not finished.',
+    en: 'still unfolding',
+    fa: '',
+  },
+  'fieldNotes.noHabitsThatWeek': {
+    note: 'Shown on a week in the field notes in which no habits existed.',
+    en: 'No habits existed during this week.',
+    fa: '',
+  },
+  'fieldNotes.tasksCompleted': {
+    note: 'Heading of the tasks-completed section of the field notes.',
+    en: 'tasks completed',
+    fa: '',
+  },
+  'fieldNotes.graphs': {
+    note: 'Heading of the graphs section of the field notes.',
+    en: 'graphs',
+    fa: '',
+  },
+  'fieldNotes.habitTooYoung': {
+    note: 'Shown instead of a graph for a habit that has too little history.',
+    en: 'habit is too young',
+    fa: '',
+  },
+  'fieldNotes.graphLabel': {
+    note:
+      "Screen-reader name of one habit's graph. {habit} is its name, {zoom} " +
+      'the zoom choice.',
+    en: '{habit}, completions {zoom}',
+    fa: '',
+  },
+  'cameo.open': {
+    note:
+      "Screen-reader name of a friend's visit that opens the record it is " +
+      'about. Never shown.',
+    en: 'see the record this is about',
+    fa: '',
+  },
+  'fieldNotes.streak': {
+    note:
+      "Streak beside a week's row and in the spotlight. {n} is a number, " +
+      '{unit} one of the two unit words below.',
+    en: '{n}-{unit} streak',
+    fa: '',
+  },
+  'fieldNotes.unitDay': {
+    note: 'The word "day" inside a streak.',
+    en: 'day',
+    fa: '',
+  },
+  'fieldNotes.unitWeek': {
+    note: 'The word "week" inside a streak.',
+    en: 'week',
+    fa: '',
+  },
+  'fieldNotes.spotlightTitle': {
+    note:
+      "Announcement of the blackout a friend's visit opens when a record " +
+      'fell.',
+    en: 'a record fell today',
+    fa: '',
+  },
+  'fieldNotes.spotlightDismiss': {
+    note: 'Button that closes that blackout and returns to the week.',
+    en: 'close and see the week',
+    fa: '',
+  },
 
-  // The arrival shelf — the drops waiting to be dealt with.
-  'arrivals.region': 'arrivals',
-  'arrivals.hold': 'click to hold',
-  'arrivals.gather': 'gather',
-  'arrivals.leave': 'leave it',
-  'arrivals.readNow': 'read now',
-  'arrivals.readLater': 'read later',
+  // ── The arrival shelf ─────────────────────────────────────────────────
+  'arrivals.region': {
+    note: 'Screen-reader name for the shelf of drops waiting to be dealt with.',
+    en: 'arrivals',
+    fa: '',
+  },
+  'arrivals.hold': {
+    note: 'Hover label on a drop: click to pick it up.',
+    en: 'click to hold',
+    fa: '',
+  },
+  'arrivals.gather': {
+    note: 'Button to take a drop into the Abode.',
+    en: 'gather',
+    fa: '',
+  },
+  'arrivals.leave': {
+    note: 'Button to leave a drop behind.',
+    en: 'leave it',
+    fa: '',
+  },
+  'arrivals.readNow': {
+    note: 'Button to open an arrived book and read it now.',
+    en: 'read now',
+    fa: '',
+  },
+  'arrivals.readLater': {
+    note: 'Button to shelve an arrived book for later.',
+    en: 'read later',
+    fa: '',
+  },
 
-  // The Abode.
-  'abode.ground': 'the ground',
-  'abode.waitingToDecide': 'waiting to decide',
-  'abode.floraFind': 'a flora find',
-  'abode.visitingFriend': 'a visiting friend',
-  'abode.partyMode': 'party mode',
-  'abode.quietude': 'quietude',
-  'abode.pickMood': 'pick your mood',
-  'abode.notYet': 'not yet',
-  'abode.curiosity': 'a curiosity',
-  'abode.sell': 'sell',
-  'abode.compost': 'compost',
-  // The third quiet word under a held item (T5.5), and the two that
-  // replace the held item's words while it is being turned.
-  'abode.rotate': 'rotate',
-  'abode.turnSave': 'save',
-  'abode.turnCancel': 'cancel',
-  'abode.sky': 'Abode sky',
-  'abode.skyLabel': 'Abode sky, {palette}',
-  // The four skies the Abode can wear (T5.4). These four words are
-  // Claude's from July, when the skies were drawn for the workbench —
-  // rename them freely, they are only what the swatch SAYS. A save
-  // stores the sky's key, never its word, so nothing breaks.
-  'abode.pickSky': 'pick your sky',
-  'abode.sky.ember': 'ember',
-  'abode.sky.teal': 'teal',
-  'abode.sky.violet': 'violet',
-  'abode.sky.ash': 'ash',
+  // ── The Abode ─────────────────────────────────────────────────────────
+  'abode.ground': {
+    note: "Screen-reader name for the Abode's ground.",
+    en: 'the ground',
+    fa: '',
+  },
+  'abode.waitingToDecide': {
+    note:
+      'Caption over items that have arrived but are not yet placed or sent ' +
+      'away.',
+    en: 'waiting to decide',
+    fa: '',
+  },
+  'abode.floraFind': {
+    note: 'Name of a flora drop in the Abode.',
+    en: 'a flora find',
+    fa: '',
+  },
+  'abode.visitingFriend': {
+    note: 'Name of a friend who is visiting.',
+    en: 'a visiting friend',
+    fa: '',
+  },
+  'abode.partyMode': {
+    note: 'Mood name: party.',
+    en: 'party mode',
+    fa: '',
+  },
+  'abode.quietude': {
+    note: 'Mood name: quiet.',
+    en: 'quietude',
+    fa: '',
+  },
+  'abode.pickMood': {
+    note: 'Prompt above the mood choices.',
+    en: 'pick your mood',
+    fa: '',
+  },
+  'abode.notYet': {
+    note: 'Quiet word on a held item to put it down for now.',
+    en: 'not yet',
+    fa: '',
+  },
+  'abode.curiosity': {
+    note: 'Name of a curiosity in the Abode.',
+    en: 'a curiosity',
+    fa: '',
+  },
+  'abode.sell': {
+    note: 'Quiet word under a held item: sell it.',
+    en: 'sell',
+    fa: '',
+  },
+  'abode.compost': {
+    note: 'Quiet word under a held item: compost it.',
+    en: 'compost',
+    fa: '',
+  },
+  'abode.rotate': {
+    note: 'Quiet word under a held item: turn it.',
+    en: 'rotate',
+    fa: '',
+  },
+  'abode.turnSave': {
+    note:
+      "Replaces the held item's words while it is being turned: keep the " +
+      'turn.',
+    en: 'save',
+    fa: '',
+  },
+  'abode.turnCancel': {
+    note:
+      "Replaces the held item's words while it is being turned: undo the " +
+      'turn.',
+    en: 'cancel',
+    fa: '',
+  },
+  'abode.sky': {
+    note: 'Name of the sky control in the Abode.',
+    en: 'Abode sky',
+    fa: '',
+  },
+  'abode.skyLabel': {
+    note: "Screen-reader name of one sky swatch. {palette} is that sky's name.",
+    en: 'Abode sky, {palette}',
+    fa: '',
+  },
+  'abode.pickSky': {
+    note: 'Prompt above the four sky swatches.',
+    en: 'pick your sky',
+    fa: '',
+  },
+  'abode.sky.ember': {
+    note:
+      'Name of the ember sky. Only what the swatch says; a save stores its ' +
+      'key.',
+    en: 'ember',
+    fa: '',
+  },
+  'abode.sky.teal': {
+    note:
+      'Name of the teal sky. Only what the swatch says; a save stores its ' +
+      'key.',
+    en: 'teal',
+    fa: '',
+  },
+  'abode.sky.violet': {
+    note:
+      'Name of the violet sky. Only what the swatch says; a save stores its ' +
+      'key.',
+    en: 'violet',
+    fa: '',
+  },
+  'abode.sky.ash': {
+    note: 'Name of the ash sky. Only what the swatch says; a save stores its key.',
+    en: 'ash',
+    fa: '',
+  },
 
-  // The Map.
-  'map.planet': 'the planet, region by region',
+  // ── The Map ───────────────────────────────────────────────────────────
+  'map.planet': {
+    note: 'Screen-reader name for the planet shown on the Map.',
+    en: 'the planet, region by region',
+    fa: '',
+  },
 
-  // The Market.
-  'market.stall': 'the stall',
-  'market.buy': 'buy',
-  'market.buyLabel': 'buy a curiosity for {price} fungi',
+  // ── The Market ────────────────────────────────────────────────────────
+  'market.stall': {
+    note: 'Screen-reader name for the stall of curiosities.',
+    en: 'the stall',
+    fa: '',
+  },
+  'market.buy': {
+    note: 'Button to buy a curiosity.',
+    en: 'buy',
+    fa: '',
+  },
+  'market.buyLabel': {
+    note: 'Screen-reader name of the buy button. {price} is the cost in fungi.',
+    en: 'buy a curiosity for {price} fungi',
+    fa: '',
+  },
 
-  // The library and the reading popup.
-  'bookcase.shelf': 'the bookshelf',
-  'bookcase.read': 'read {label}',
-  'bookcase.spread': 'the open double-page spread of {label}',
-  'bookcase.close': 'close',
+  // ── The library and the reading popup ─────────────────────────────────
+  'bookcase.shelf': {
+    note: 'Screen-reader name for the bookshelf.',
+    en: 'the bookshelf',
+    fa: '',
+  },
+  'bookcase.read': {
+    note: 'Screen-reader name of a book you can open. {label} is the book.',
+    en: 'read {label}',
+    fa: '',
+  },
+  'bookcase.spread': {
+    note: 'Screen-reader name of the open two-page view. {label} is the book.',
+    en: 'the open double-page spread of {label}',
+    fa: '',
+  },
+  'bookcase.close': {
+    note: 'Button that closes the reading popup.',
+    en: 'close',
+    fa: '',
+  },
 
-  // The Guest Book.
-  'guestbook.friends': 'friends',
-  'guestbook.unnamedFriend': 'friend',
-  'guestbook.close': 'close',
+  // ── The Guest Book ────────────────────────────────────────────────────
+  'guestbook.friends': {
+    note: 'Screen-reader name for the list of friends.',
+    en: 'friends',
+    fa: '',
+  },
+  'guestbook.unnamedFriend': {
+    note: 'Stand-in name for a friend who has no name yet.',
+    en: 'friend',
+    fa: '',
+  },
+  'guestbook.close': {
+    note: "Button that closes a friend's card.",
+    en: 'close',
+    fa: '',
+  },
 
-  // The reveals — the screen-reader names for the popups themselves.
-  // The words INSIDE them are story, and live in narration.js.
-  'reveal.firstArrival': 'a first arrival',
-  'reveal.friendArrives': 'a friend arrives',
-  'reveal.onward': 'onward',
-  'reveal.dropArrival': 'drop arrival',
+  // ── The reveal popups (names only; the words inside are story) ────────
+  'reveal.firstArrival': {
+    note: 'Screen-reader name of the popup for the very first arrival.',
+    en: 'a first arrival',
+    fa: '',
+  },
+  'reveal.friendArrives': {
+    note: 'Screen-reader name of the popup when a friend arrives.',
+    en: 'a friend arrives',
+    fa: '',
+  },
+  'reveal.onward': {
+    note: 'Button that dismisses a reveal popup and goes on.',
+    en: 'onward',
+    fa: '',
+  },
+  'reveal.dropArrival': {
+    note: 'Screen-reader name of the popup for an ordinary drop arriving.',
+    en: 'drop arrival',
+    fa: '',
+  },
 
-  // Backup and restore, at the foot of the habit list and the field
-  // notes. The `.age` slots are the hover on the export pebble — how
-  // stale the safety copy is.
-  'backup.export': 'export backup',
-  'backup.import': 'import backup',
-  'backup.file': 'backup file',
-  'backup.ageNone': 'no backup yet',
-  'backup.ageFuture': 'backed up',
-  'backup.ageToday': 'backed up today',
-  'backup.ageYesterday': 'backed up yesterday',
-  'backup.ageDays': 'backed up {days} days ago',
+  // ── Backup and restore ────────────────────────────────────────────────
+  'backup.export': {
+    note: 'Pebble that saves a backup file.',
+    en: 'export backup',
+    fa: '',
+  },
+  'backup.import': {
+    note: 'Pebble that loads a backup file.',
+    en: 'import backup',
+    fa: '',
+  },
+  'backup.file': {
+    note: 'Screen-reader name of the file chooser behind the import pebble.',
+    en: 'backup file',
+    fa: '',
+  },
+  'backup.ageNone': {
+    note: 'Hover on the export pebble when no backup was ever made.',
+    en: 'no backup yet',
+    fa: '',
+  },
+  'backup.ageFuture': {
+    note:
+      'Hover on the export pebble when the backup date is in the future ' +
+      '(clock oddity).',
+    en: 'backed up',
+    fa: '',
+  },
+  'backup.ageToday': {
+    note: 'Hover on the export pebble: last backup was today.',
+    en: 'backed up today',
+    fa: '',
+  },
+  'backup.ageYesterday': {
+    note: 'Hover on the export pebble: last backup was yesterday.',
+    en: 'backed up yesterday',
+    fa: '',
+  },
+  'backup.ageDays': {
+    note: 'Hover on the export pebble: last backup was {days} days ago.',
+    en: 'backed up {days} days ago',
+    fa: '',
+  },
 
-  // Starting over. Two doors, each with its plain warning and its
-  // afterword.
-  'newGame.start': 'start a new game',
-  'newGame.which': 'which type of restart?',
-  'newGame.refresh': 'total refresh',
-  'newGame.keep': 'keep habit data',
-  'newGame.notNow': 'not now',
-  'newGame.sure': 'are you sure?',
-  'newGame.yes': 'yes',
-  'newGame.no': 'no, take me back',
-  'newGame.backupFirst': 'export a backup first',
-  'newGame.refreshWarning':
-    'everything will be wiped: habits, completions, and game progress. ' +
-    'habitat will restart from day one. only a backup file you have ' +
-    'already exported can bring any of it back.',
-  'newGame.keepWarning':
-    'your gameplay will be wiped: flora, books, friends, fungi and ' +
-    'expedition progress. your historical habit data, streaks and graphs ' +
-    'will remain.',
-  'newGame.refreshDone':
-    'a new habitat has begun — everything starts from here',
-  'newGame.keepDone':
-    'a new game has begun — your habits and history are untouched',
+  // ── Starting over ─────────────────────────────────────────────────────
+  'newGame.start': {
+    note: 'Pebble that opens the start-a-new-game popup.',
+    en: 'start a new game',
+    fa: '',
+  },
+  'newGame.which': {
+    note: 'Heading above the two restart doors.',
+    en: 'which type of restart?',
+    fa: '',
+  },
+  'newGame.refresh': {
+    note: 'Door that wipes everything and starts again.',
+    en: 'total refresh',
+    fa: '',
+  },
+  'newGame.keep': {
+    note: 'Door that wipes the game but keeps habit data.',
+    en: 'keep habit data',
+    fa: '',
+  },
+  'newGame.notNow': {
+    note: 'Button that closes the popup without doing anything.',
+    en: 'not now',
+    fa: '',
+  },
+  'newGame.sure': {
+    note: 'Confirmation question after choosing a restart door.',
+    en: 'are you sure?',
+    fa: '',
+  },
+  'newGame.yes': {
+    note: 'Answer: go ahead with the restart.',
+    en: 'yes',
+    fa: '',
+  },
+  'newGame.no': {
+    note: 'Answer: step back from the restart.',
+    en: 'no, take me back',
+    fa: '',
+  },
+  'newGame.backupFirst': {
+    note: 'Button to export a backup before restarting.',
+    en: 'export a backup first',
+    fa: '',
+  },
+  'newGame.refreshWarning': {
+    note: 'Plain warning under the total-refresh door.',
+    en:
+      'everything will be wiped: habits, completions, and game progress. ' +
+      'habitat will restart from day one. only a backup file you have ' +
+      'already exported can bring any of it back.',
+    fa: '',
+  },
+  'newGame.keepWarning': {
+    note: 'Plain warning under the keep-habit-data door.',
+    en:
+      'your gameplay will be wiped: flora, books, friends, fungi and ' +
+      'expedition progress. your historical habit data, streaks and graphs ' +
+      'will remain.',
+    fa: '',
+  },
+  'newGame.refreshDone': {
+    note: 'Afterword shown once a total refresh has happened.',
+    en: 'a new habitat has begun — everything starts from here',
+    fa: '',
+  },
+  'newGame.keepDone': {
+    note: 'Afterword shown once a game-only restart has happened.',
+    en: 'a new game has begun — your habits and history are untouched',
+    fa: '',
+  },
 
-  // Words several pages share. The arrows (← ‹ ›) are NOT part of
-  // the words: each page draws its own arrow so it keeps its side, whichever
-  // way the words read (T6.16).
-  'nav.backToHabits': 'back to the habits',
-  'nav.earlier': 'earlier',
-  'nav.later': 'later',
+  // ── Words several pages share ─────────────────────────────────────────
+  'nav.backToHabits': {
+    note:
+      'Link back to the habit list. The arrow is drawn by the page, not part ' +
+      'of the words.',
+    en: 'back to the habits',
+    fa: '',
+  },
+  'nav.earlier': {
+    note:
+      'Button to move to an earlier page of days. The arrow is drawn by the ' +
+      'page.',
+    en: 'earlier',
+    fa: '',
+  },
+  'nav.later': {
+    note:
+      'Button to move to a later page of days. The arrow is drawn by the ' +
+      'page.',
+    en: 'later',
+    fa: '',
+  },
 
-  // The date line at the top of the home screen is built from these
-  // (T6.14). The weekday and month are written the way they show — capitals
-  // and all — and `date.line` sets their ORDER, so a language that puts
-  // the month before the day only has to move the holes.
-  'date.line': '{weekday} {day} {month} {year}',
-  'weekday.mon.long': 'MONDAY',
-  'weekday.tue.long': 'TUESDAY',
-  'weekday.wed.long': 'WEDNESDAY',
-  'weekday.thu.long': 'THURSDAY',
-  'weekday.fri.long': 'FRIDAY',
-  'weekday.sat.long': 'SATURDAY',
-  'weekday.sun.long': 'SUNDAY',
-  'month.jan': 'JAN',
-  'month.feb': 'FEB',
-  'month.mar': 'MAR',
-  'month.apr': 'APR',
-  'month.may': 'MAY',
-  'month.jun': 'JUN',
-  'month.jul': 'JUL',
-  'month.aug': 'AUG',
-  'month.sep': 'SEP',
-  'month.oct': 'OCT',
-  'month.nov': 'NOV',
-  'month.dec': 'DEC',
+  // ── The date line and the clock ───────────────────────────────────────
+  'date.line': {
+    note:
+      'Order of the date line at the top of the home screen. Holes: ' +
+      '{weekday} {day} {month} {year}. Move them to suit the grammar.',
+    en: '{weekday} {day} {month} {year}',
+    fa: '',
+  },
+  'weekday.mon.long': {
+    note: 'Monday, in full, on the date line.',
+    en: 'MONDAY',
+    fa: '',
+  },
+  'weekday.tue.long': {
+    note: 'Tuesday, in full, on the date line.',
+    en: 'TUESDAY',
+    fa: '',
+  },
+  'weekday.wed.long': {
+    note: 'Wednesday, in full, on the date line.',
+    en: 'WEDNESDAY',
+    fa: '',
+  },
+  'weekday.thu.long': {
+    note: 'Thursday, in full, on the date line.',
+    en: 'THURSDAY',
+    fa: '',
+  },
+  'weekday.fri.long': {
+    note: 'Friday, in full, on the date line.',
+    en: 'FRIDAY',
+    fa: '',
+  },
+  'weekday.sat.long': {
+    note: 'Saturday, in full, on the date line.',
+    en: 'SATURDAY',
+    fa: '',
+  },
+  'weekday.sun.long': {
+    note: 'Sunday, in full, on the date line.',
+    en: 'SUNDAY',
+    fa: '',
+  },
+  'month.jan': {
+    note: 'January, on the date line.',
+    en: 'JAN',
+    fa: '',
+  },
+  'month.feb': {
+    note: 'February, on the date line.',
+    en: 'FEB',
+    fa: '',
+  },
+  'month.mar': {
+    note: 'March, on the date line.',
+    en: 'MAR',
+    fa: '',
+  },
+  'month.apr': {
+    note: 'April, on the date line.',
+    en: 'APR',
+    fa: '',
+  },
+  'month.may': {
+    note: 'May, on the date line.',
+    en: 'MAY',
+    fa: '',
+  },
+  'month.jun': {
+    note: 'June, on the date line.',
+    en: 'JUN',
+    fa: '',
+  },
+  'month.jul': {
+    note: 'July, on the date line.',
+    en: 'JUL',
+    fa: '',
+  },
+  'month.aug': {
+    note: 'August, on the date line.',
+    en: 'AUG',
+    fa: '',
+  },
+  'month.sep': {
+    note: 'September, on the date line.',
+    en: 'SEP',
+    fa: '',
+  },
+  'month.oct': {
+    note: 'October, on the date line.',
+    en: 'OCT',
+    fa: '',
+  },
+  'month.nov': {
+    note: 'November, on the date line.',
+    en: 'NOV',
+    fa: '',
+  },
+  'month.dec': {
+    note: 'December, on the date line.',
+    en: 'DEC',
+    fa: '',
+  },
+  'date.cutoffNote': {
+    note:
+      'Note under the date, shown only between midnight and the day cutoff. ' +
+      '{time} is one of the two hour forms below.',
+    en: 'your habits will switch to a new day at {time}',
+    fa: '',
+  },
+  'time.hourAm': {
+    note: 'An hour before noon, e.g. "4 a.m.". {hour} is the number.',
+    en: '{hour} a.m.',
+    fa: '',
+  },
+  'time.hourPm': {
+    note: 'An hour after noon, e.g. "4 p.m.". {hour} is the number.',
+    en: '{hour} p.m.',
+    fa: '',
+  },
 
-  // The note under the date, shown only between midnight and the day
-  // cutoff, and the hour inside it. {time} is one of the two hour slots below.
-  'date.cutoffNote': 'your habits will switch to a new day at {time}',
-  'time.hourAm': '{hour} a.m.',
-  'time.hourPm': '{hour} p.m.',
+  // ── Weekday names, short and tiny ─────────────────────────────────────
+  'weekday.mon.short': {
+    note:
+      "Monday, short: habit form weekday boxes, a tile's schedule line and " +
+      'check-in day headings.',
+    en: 'mon',
+    fa: '',
+  },
+  'weekday.tue.short': {
+    note:
+      "Tuesday, short: habit form weekday boxes, a tile's schedule line and " +
+      'check-in day headings.',
+    en: 'tue',
+    fa: '',
+  },
+  'weekday.wed.short': {
+    note:
+      "Wednesday, short: habit form weekday boxes, a tile's schedule line " +
+      'and check-in day headings.',
+    en: 'wed',
+    fa: '',
+  },
+  'weekday.thu.short': {
+    note:
+      "Thursday, short: habit form weekday boxes, a tile's schedule line " +
+      'and check-in day headings.',
+    en: 'thu',
+    fa: '',
+  },
+  'weekday.fri.short': {
+    note:
+      "Friday, short: habit form weekday boxes, a tile's schedule line and " +
+      'check-in day headings.',
+    en: 'fri',
+    fa: '',
+  },
+  'weekday.sat.short': {
+    note:
+      "Saturday, short: habit form weekday boxes, a tile's schedule line " +
+      'and check-in day headings.',
+    en: 'sat',
+    fa: '',
+  },
+  'weekday.sun.short': {
+    note:
+      "Sunday, short: habit form weekday boxes, a tile's schedule line and " +
+      'check-in day headings.',
+    en: 'sun',
+    fa: '',
+  },
+  'weekday.mon.tiny': {
+    note: 'Monday, two letters: column head in the field notes.',
+    en: 'mo',
+    fa: '',
+  },
+  'weekday.tue.tiny': {
+    note: 'Tuesday, two letters: column head in the field notes.',
+    en: 'tu',
+    fa: '',
+  },
+  'weekday.wed.tiny': {
+    note: 'Wednesday, two letters: column head in the field notes.',
+    en: 'we',
+    fa: '',
+  },
+  'weekday.thu.tiny': {
+    note: 'Thursday, two letters: column head in the field notes.',
+    en: 'th',
+    fa: '',
+  },
+  'weekday.fri.tiny': {
+    note: 'Friday, two letters: column head in the field notes.',
+    en: 'fr',
+    fa: '',
+  },
+  'weekday.sat.tiny': {
+    note: 'Saturday, two letters: column head in the field notes.',
+    en: 'sa',
+    fa: '',
+  },
+  'weekday.sun.tiny': {
+    note: 'Sunday, two letters: column head in the field notes.',
+    en: 'su',
+    fa: '',
+  },
 
-  // Weekday names, short. These appear in the habit form's weekday
-  // boxes, in a habit tile's schedule ("mon/wed/fri") and in the morning
-  // check-in's day headings.
-  'weekday.mon.short': 'mon',
-  'weekday.tue.short': 'tue',
-  'weekday.wed.short': 'wed',
-  'weekday.thu.short': 'thu',
-  'weekday.fri.short': 'fri',
-  'weekday.sat.short': 'sat',
-  'weekday.sun.short': 'sun',
+  // ── Schedules and difficulty ──────────────────────────────────────────
+  'schedule.daily': {
+    note: 'Schedule choice in the habit form: every day.',
+    en: 'every day',
+    fa: '',
+  },
+  'schedule.weekdays': {
+    note: 'Schedule choice in the habit form: pick the days.',
+    en: 'specific weekdays',
+    fa: '',
+  },
+  'schedule.nPerWeek': {
+    note: 'Schedule choice in the habit form: a number of days each week.',
+    en: 'n days a week',
+    fa: '',
+  },
+  'schedule.nPerDay': {
+    note: 'Schedule choice in the habit form: a number of times each day.',
+    en: 'n times a day',
+    fa: '',
+  },
+  'schedule.whenever': {
+    note:
+      'Schedule choice in the habit form: no fixed schedule. Also the ' +
+      "tile's summary line.",
+    en: 'whenever',
+    fa: '',
+  },
+  'schedule.oneTime': {
+    note: 'Schedule choice in the habit form: a one-time to-do.',
+    en: 'one-time (a to-do)',
+    fa: '',
+  },
+  'schedule.summary.nPerWeek': {
+    note: 'Habit tile\'s summary line for "n days a week". {n} is the number.',
+    en: '{n}×/week',
+    fa: '',
+  },
+  'schedule.summary.nPerDay': {
+    note: 'Habit tile\'s summary line for "n times a day". {n} is the number.',
+    en: '{n}×/day',
+    fa: '',
+  },
+  'schedule.summary.oneTime': {
+    note: "Habit tile's summary line for a one-time to-do.",
+    en: 'one-time',
+    fa: '',
+  },
+  'difficulty.easy': {
+    note: 'Easiest difficulty choice in the habit form.',
+    en: 'easy',
+    fa: '',
+  },
+  'difficulty.medium': {
+    note: 'Middle difficulty choice in the habit form.',
+    en: 'medium',
+    fa: '',
+  },
+  'difficulty.difficult': {
+    note: 'Hardest difficulty choice in the habit form.',
+    en: 'difficult',
+    fa: '',
+  },
 
-  // Weekday names, two letters — the column heads of the field notes.
-  'weekday.mon.tiny': 'mo',
-  'weekday.tue.tiny': 'tu',
-  'weekday.wed.tiny': 'we',
-  'weekday.thu.tiny': 'th',
-  'weekday.fri.tiny': 'fr',
-  'weekday.sat.tiny': 'sa',
-  'weekday.sun.tiny': 'su',
+  // ── Graph zoom choices ────────────────────────────────────────────────
+  'fieldNotes.zoom.day': {
+    note: 'Graph zoom choice: one point per day.',
+    en: 'day by day',
+    fa: '',
+  },
+  'fieldNotes.zoom.week': {
+    note: 'Graph zoom choice: one point per week.',
+    en: 'week by week',
+    fa: '',
+  },
+  'fieldNotes.zoom.fourWeek': {
+    note: 'Graph zoom choice: one point per four weeks.',
+    en: '4 weeks at a time',
+    fa: '',
+  },
 
-  // How a habit's schedule is picked in the habit form.
-  'schedule.daily': 'every day',
-  'schedule.weekdays': 'specific weekdays',
-  'schedule.nPerWeek': 'n days a week',
-  'schedule.nPerDay': 'n times a day',
-  'schedule.whenever': 'whenever',
-  'schedule.oneTime': 'one-time (a to-do)',
+  // ── Small habit-list words ────────────────────────────────────────────
+  'habits.addPlaceholder': {
+    note: 'Invitation written in the empty tile at the end of the habit list.',
+    en: 'add a habit or task…',
+    fa: '',
+  },
+  'habits.archivedTag': {
+    note: "Small tag beside an archived habit's name.",
+    en: '(archived)',
+    fa: '',
+  },
+  'habits.archivedHeading': {
+    note: 'Heading of the archived drawer. {n} is how many are archived.',
+    en: 'archived ({n})',
+    fa: '',
+  },
+  'habits.doneOn': {
+    note: 'Line on a finished to-do. {day} is the date it was done.',
+    en: 'done {day}',
+    fa: '',
+  },
 
-  // The same schedules as a habit tile's quiet summary line. "every day"
-  // and "whenever" reuse the two slots above.
-  'schedule.summary.nPerWeek': '{n}×/week',
-  'schedule.summary.nPerDay': '{n}×/day',
-  'schedule.summary.oneTime': 'one-time',
+  // ── Counted units ─────────────────────────────────────────────────────
+  'count.day.one': {
+    note: 'A count of one day. {n} is the number.',
+    en: '{n} day',
+    fa: '',
+  },
+  'count.day.other': {
+    note:
+      'A count of several days. A language without plurals can fill both the ' +
+      'same.',
+    en: '{n} days',
+    fa: '',
+  },
+  'count.week.one': {
+    note: 'A count of one week.',
+    en: '{n} week',
+    fa: '',
+  },
+  'count.week.other': {
+    note: 'A count of several weeks.',
+    en: '{n} weeks',
+    fa: '',
+  },
 
-  // The three difficulty options in the habit form.
-  'difficulty.easy': 'easy',
-  'difficulty.medium': 'medium',
-  'difficulty.difficult': 'difficult',
+  // ── Confirm questions ─────────────────────────────────────────────────
+  'habits.scheduleChangeConfirm': {
+    note:
+      'Question before a schedule edit that restarts the streak. {habit} is ' +
+      'the name, {streak} a counted unit above.',
+    en:
+      'heads up: this schedule change switches how "{habit}"\'s streak is ' +
+      'counted, so the current streak ({streak}) starts fresh from today. ' +
+      'save anyway?',
+    fa: '',
+  },
+  'habits.deleteConfirm': {
+    note: 'Question before a habit is deleted for good. {habit} is its name.',
+    en:
+      'delete "{habit}" forever? its whole history goes with it. archiving ' +
+      '(already done) keeps the history.',
+    fa: '',
+  },
 
-  // The graph's zoom choices (design-notes §12c).
-  'fieldNotes.zoom.day': 'day by day',
-  'fieldNotes.zoom.week': 'week by week',
-  'fieldNotes.zoom.fourWeek': '4 weeks at a time',
+  // ── Importing a backup ────────────────────────────────────────────────
+  'backup.importConfirm': {
+    note: 'Question before an import replaces everything.',
+    en:
+      'importing replaces EVERYTHING currently in habitat with the backup ' +
+      'file. continue?',
+    fa: '',
+  },
+  'backup.importCancelled': {
+    note: 'Shown after the import question is answered no.',
+    en: 'import cancelled — nothing was changed',
+    fa: '',
+  },
+  'backup.imported': {
+    note: 'Shown after a backup is imported successfully.',
+    en: 'backup imported',
+    fa: '',
+  },
 
-  // Small habit-list words: the empty tile's invitation, the archived
-  // tag, the archived drawer's heading, and the line on a finished to-do.
-  // {n} is how many archived habits there are; {day} is the date it was done.
-  'habits.addPlaceholder': 'add a habit or task…',
-  'habits.archivedTag': '(archived)',
-  'habits.archivedHeading': 'archived ({n})',
-  'habits.doneOn': 'done {day}',
+  // ── Why an imported backup is refused ─────────────────────────────────
+  'backup.error.notABackup': {
+    note: 'Refusal: the file is not a Habitat backup.',
+    en: 'this file does not look like a habitat backup.',
+    fa: '',
+  },
+  'backup.error.notJson': {
+    note: 'Refusal: the file cannot be read at all.',
+    en: 'this file is not readable as a habitat backup (not JSON).',
+    fa: '',
+  },
+  'backup.error.wrongVersion': {
+    note:
+      'Refusal: wrong backup version. {found} and {expected} are version ' +
+      'numbers.',
+    en:
+      'this backup uses format version {found}, but this app expects version ' +
+      '{expected}.',
+    fa: '',
+  },
+  'backup.error.noHabits': {
+    note: 'Refusal: the habit list is missing.',
+    en: 'this backup is missing its habit list.',
+    fa: '',
+  },
+  'backup.error.badCompletions': {
+    note: 'Refusal: the completions list is broken.',
+    en: 'this backup has a broken completions list.',
+    fa: '',
+  },
+  'backup.error.badSettings': {
+    note: 'Refusal: the settings are broken.',
+    en: 'this backup has broken settings.',
+    fa: '',
+  },
+  'backup.error.badFieldNotes': {
+    note: 'Refusal: the field-notes marker is broken.',
+    en: 'this backup has a broken field-notes marker.',
+    fa: '',
+  },
+  'backup.error.badStartup': {
+    note: 'Refusal: the startup marker is broken.',
+    en: 'this backup has a broken startup marker.',
+    fa: '',
+  },
+  'backup.error.badBackupDate': {
+    note: 'Refusal: the backup-date marker is broken.',
+    en: 'this backup has a broken backup-date marker.',
+    fa: '',
+  },
+  'backup.error.badLanguage': {
+    note: 'Refusal: the file names a language Habitat does not speak.',
+    en: 'this backup names a language habitat does not speak.',
+    fa: '',
+  },
+  'backup.error.badSky': {
+    note: 'Refusal: the file names a sky the Abode does not have.',
+    en: 'this backup names a sky the abode does not have.',
+    fa: '',
+  },
+  'backup.error.badCheckin': {
+    note: 'Refusal: the check-in marker is broken.',
+    en: 'this backup has a broken check-in marker.',
+    fa: '',
+  },
+  'backup.error.noSeed': {
+    note: 'Refusal: the world seed is missing.',
+    en: 'this backup is missing its world seed.',
+    fa: '',
+  },
 
-  // Counted units, for the sentence below. English needs a singular
-  // and a plural; a language that does not can fill both the same.
-  'count.day.one': '{n} day',
-  'count.day.other': '{n} days',
-  'count.week.one': '{n} week',
-  'count.week.other': '{n} weeks',
+  // ── The habit form refusals ───────────────────────────────────────────
+  'habitForm.errorNoName': {
+    note: 'Refusal when saving a habit with no name.',
+    en: 'habit needs a name.',
+    fa: '',
+  },
+  'habitForm.errorNoWeekday': {
+    note: 'Refusal when a weekdays schedule has no day ticked.',
+    en: 'pick at least one day',
+    fa: '',
+  },
 
-  // The question asked before an edit changes how a streak is counted.
-  // {habit} is the habit's name and {streak} is one of the counted units above.
-  'habits.scheduleChangeConfirm':
-    'heads up: this schedule change switches how "{habit}"\'s streak ' +
-    'is counted, so the current streak ({streak}) starts fresh from ' +
-    'today. save anyway?',
+  // ── Small check-in words ──────────────────────────────────────────────
+  'checkin.tickDone': {
+    note: 'Tick on a check-in tile when the habit is already done.',
+    en: 'done',
+    fa: '',
+  },
+  'checkin.showFewer': {
+    note: 'Fold button that shortens a long day in the check-in.',
+    en: 'show fewer',
+    fa: '',
+  },
+  'checkin.showMore': {
+    note: 'Fold button that shows the rest of a long day. {n} is how many more.',
+    en: 'show {n} more',
+    fa: '',
+  },
 
-  // The question asked before a habit is deleted for good.
-  'habits.deleteConfirm':
-    'delete "{habit}" forever? its whole history goes with it. ' +
-    'archiving (already done) keeps the history.',
+  // ── Map caption and market tag ────────────────────────────────────────
+  'map.regionsKnown': {
+    note: 'Caption under the Map. {known} regions out of {total}.',
+    en: '{known} of {total} regions known',
+    fa: '',
+  },
+  'market.owned': {
+    note: 'Tag on a market curiosity you already have. {n} is how many.',
+    en: '×{n} at home',
+    fa: '',
+  },
 
-  // Importing a backup: the question, and the two outcomes.
-  'backup.importConfirm':
-    'importing replaces EVERYTHING currently in habitat with the ' +
-    'backup file. continue?',
-  'backup.importCancelled': 'import cancelled — nothing was changed',
-  'backup.imported': 'backup imported',
+  // ── The start-a-new-game questions ────────────────────────────────────
+  'newGame.askWipe': {
+    note: 'First question in the start-a-new-game popup.',
+    en:
+      'do you want to wipe all your habit history and play habitat from ' +
+      'total scratch?',
+    fa: '',
+  },
+  'newGame.askKeep': {
+    note: 'Second question in the start-a-new-game popup.',
+    en:
+      'or do you want to keep your habit history and restart the game? ' +
+      '(requires you to export a backup)',
+    fa: '',
+  },
 
-  // Why an imported file was refused. Each reads aloud under the import
-  // pebble when a backup is not usable. {found} and {expected} are version
-  // numbers.
-  'backup.error.notABackup': 'this file does not look like a habitat backup.',
-  'backup.error.notJson':
-    'this file is not readable as a habitat backup (not JSON).',
-  'backup.error.wrongVersion':
-    'this backup uses format version {found}, but this app expects ' +
-    'version {expected}.',
-  'backup.error.noHabits': 'this backup is missing its habit list.',
-  'backup.error.badCompletions': 'this backup has a broken completions list.',
-  'backup.error.badSettings': 'this backup has broken settings.',
-  'backup.error.badFieldNotes': 'this backup has a broken field-notes marker.',
-  'backup.error.badStartup': 'this backup has a broken startup marker.',
-  'backup.error.badBackupDate': 'this backup has a broken backup-date marker.',
-  'backup.error.badLanguage':
-    'this backup names a language habitat does not speak.',
-  'backup.error.badSky': 'this backup names a sky the abode does not have.',
-  'backup.error.badCheckin': 'this backup has a broken check-in marker.',
-  'backup.error.noSeed': 'this backup is missing its world seed.',
+  // ── Names for arriving drops ──────────────────────────────────────────
+  'arrival.flora': {
+    note: 'Plain name of an arriving flora drop.',
+    en: 'a flora find',
+    fa: '',
+  },
+  'arrival.magazine': {
+    note: 'Plain name of an arriving magazine.',
+    en: 'a magazine',
+    fa: '',
+  },
+  'arrival.novel': {
+    note: 'Plain name of an arriving novel.',
+    en: 'a novel',
+    fa: '',
+  },
+  'arrival.dictionary': {
+    note: 'Plain name of an arriving dictionary.',
+    en: 'a dictionary',
+    fa: '',
+  },
+  'arrival.fungusOne': {
+    note: 'Plain name of an arrival of exactly one fungus.',
+    en: '1 fungus',
+    fa: '',
+  },
+  'arrival.fungi': {
+    note: 'Plain name of an arrival of several fungi. {n} is how many.',
+    en: '{n} fungi',
+    fa: '',
+  },
+  'arrival.friend': {
+    note: 'Plain name of an arriving friend.',
+    en: 'a friend',
+    fa: '',
+  },
+  'arrival.something': {
+    note: 'Name used when the kind of drop is not known.',
+    en: 'something',
+    fa: '',
+  },
+  'arrival.and': {
+    note: 'The word that joins names in a list ("a novel and 3 fungi").',
+    en: 'and',
+    fa: '',
+  },
+  'arrival.note': {
+    note:
+      'Quiet note beside the tapped habit. {list} is the arrival names ' +
+      'joined by the word above.',
+    en: 'you came across {list}',
+    fa: '',
+  },
 
-  // The habit form's two refusals: no name, and a weekdays schedule with
-  // no day ticked.
-  'habitForm.errorNoName': 'habit needs a name.',
-  'habitForm.errorNoWeekday': 'pick at least one day',
+  // ── The six charm names ───────────────────────────────────────────────
+  'charm.1': {
+    note:
+      'Screen-reader name of the first charm (crown). Describes the drawing, ' +
+      'never shown.',
+    en: 'crown',
+    fa: '',
+  },
+  'charm.2': {
+    note:
+      'Screen-reader name of the second charm (cherry). Describes the ' +
+      'drawing, never shown.',
+    en: 'cherry',
+    fa: '',
+  },
+  'charm.3': {
+    note:
+      'Screen-reader name of the third charm (shell). Describes the drawing, ' +
+      'never shown.',
+    en: 'shell',
+    fa: '',
+  },
+  'charm.4': {
+    note:
+      'Screen-reader name of the fourth charm (anchor). Describes the ' +
+      'drawing, never shown.',
+    en: 'anchor',
+    fa: '',
+  },
+  'charm.5': {
+    note:
+      'Screen-reader name of the fifth charm (shield). Describes the ' +
+      'drawing, never shown.',
+    en: 'shield',
+    fa: '',
+  },
+  'charm.6': {
+    note:
+      'Screen-reader name of the sixth charm (key). Describes the drawing, ' +
+      'never shown.',
+    en: 'key',
+    fa: '',
+  },
 
-  // The morning check-in's small words: the tile's tick when a habit is
-  // already done, and the fold that shows fewer or more of a long day.
-  'checkin.tickDone': 'done',
-  'checkin.showFewer': 'show fewer',
-  'checkin.showMore': 'show {n} more',
+  // ── The design workbench door ─────────────────────────────────────────
+  'design.door': {
+    note:
+      'Temporary door to the design workbench at the foot of the home ' +
+      'screen. The workbench itself stays English.',
+    en: 'design assets',
+    fa: '',
+  },
 
-  // The Map's caption and the Market's "how many you own" tag.
-  'map.regionsKnown': '{known} of {total} regions known',
-  'market.owned': '×{n} at home',
-
-  // The two questions at the top of the start-a-new-game popup, before
-  // the two doors.
-  'newGame.askWipe':
-    'do you want to wipe all your habit history and play habitat ' +
-    'from total scratch?',
-  'newGame.askKeep':
-    'or do you want to keep your habit history and restart the ' +
-    'game? (requires you to export a backup)',
-
-  // Plain names for arriving drops (T3.2), used on the arrival shelf and
-  // in the quiet note beside the habit that was tapped. {list} is the names
-  // joined by the word in `arrival.and`.
-  'arrival.flora': 'a flora find',
-  'arrival.magazine': 'a magazine',
-  'arrival.novel': 'a novel',
-  'arrival.dictionary': 'a dictionary',
-  'arrival.fungusOne': '1 fungus',
-  'arrival.fungi': '{n} fungi',
-  'arrival.friend': 'a friend',
-  'arrival.something': 'something',
-  'arrival.and': 'and',
-  'arrival.note': 'you came across {list}',
-
-  // The six charms' names, for screen readers only — never on screen
-  // (spec §4.1: no words on the charm). They describe the DRAWING, not the
-  // habit's meaning. 1 is the first charm in the picker.
-  'charm.1': 'crown',
-  'charm.2': 'cherry',
-  'charm.3': 'shell',
-  'charm.4': 'anchor',
-  'charm.5': 'shield',
-  'charm.6': 'key',
-
-  // The temporary door to the design workbench at the foot of the home
-  // screen. The workbench BEHIND it is a working tool, not part of the
-  // game, and stays in English — but its door is on a page a player
-  // sees, so the door itself is copy.
-  'design.door': 'design assets',
-
-  // The language switch itself. Deliberately NOT translated in the fa
-  // block below: each language names itself in its own script, so the
-  // control reads the same whichever language is on, and you can always
-  // find your way back.
-  'language.switch': 'language',
-  'language.en': 'English',
-  'language.fa': 'فارسی',
+  // ── The language switch ───────────────────────────────────────────────
+  'language.switch': {
+    note: 'Name of the language switch.',
+    en: 'language',
+    fa: '',
+  },
+  'language.en': {
+    note:
+      'The English language names itself. Same in every language, so the way ' +
+      'back is always findable.',
+    en: 'English',
+    fa: 'English',
+  },
+  'language.fa': {
+    note: 'Farsi names itself in its own script. Same in every language.',
+    en: 'فارسی',
+    fa: 'فارسی',
+  },
 }
 
-// ── FARSI ───────────────────────────────────────────────────────────
-// TODO: written by Kimia.
-//
-// Every slot starts blank, and a blank slot shows the English word
-// above. So this file is safe to fill a little at a time, in any order,
-// and the app never breaks halfway.
-//
-// Two slots are deliberately pre-filled: 'language.en' and
-// 'language.fa'. Each language names itself in its own script in BOTH
-// blocks, so the switch reads identically either way and there is always
-// a way back.
-const fa = {
-  'rail.pages': '',
-  'rail.addHabit': '',
-  'rail.editPastDays': '',
-  'rail.fieldNotes': '',
-
-  'page.map': '',
-  'page.abode': '',
-  'page.guestbook': '',
-  'page.bookcase': '',
-  'page.market': '',
-  'page.fieldNotes': '',
-
-  'meters.region': '',
-  'meters.steps': '',
-  'meters.stepsBar': '',
-  'meters.literacy': '',
-  'meters.literacyBar': '',
-  'meters.wallet': '',
-  'meters.walletBar': '',
-
-  'habits.filterView': '',
-  'habits.markDone': '',
-  'habits.mute': '',
-  'habits.unmute': '',
-  'habits.edit': '',
-  'habits.archive': '',
-  'habits.unarchive': '',
-  'habits.deleteForever': '',
-  'habits.unhideToReorder': '',
-
-  'lens.today': '',
-  'lens.todos': '',
-  'lens.prioritise': '',
-  'lens.unhideAll': '',
-  'lens.saveAsDefault': '',
-  'lens.saveAsDefaultConfirm': '',
-
-  'habitForm.name': '',
-  'habitForm.detail': '',
-  'habitForm.difficulty': '',
-  'habitForm.schedule': '',
-  'habitForm.howMany': '',
-  'habitForm.save': '',
-  'habitForm.cancel': '',
-
-  'checkin.region': '',
-  'checkin.prompt': '',
-  'checkin.earlierDays': '',
-  'checkin.noHabits': '',
-  'checkin.done': '',
-
-  'fieldNotes.nothingYet': '',
-  'fieldNotes.stillUnfolding': '',
-  'fieldNotes.noHabitsThatWeek': '',
-  'fieldNotes.tasksCompleted': '',
-  'fieldNotes.graphs': '',
-  'fieldNotes.habitTooYoung': '',
-  'fieldNotes.graphLabel': '',
-  'cameo.open': '',
-  'fieldNotes.streak': '',
-  'fieldNotes.unitDay': '',
-  'fieldNotes.unitWeek': '',
-  'fieldNotes.spotlightTitle': '',
-  'fieldNotes.spotlightDismiss': '',
-
-  'arrivals.region': '',
-  'arrivals.hold': '',
-  'arrivals.gather': '',
-  'arrivals.leave': '',
-  'arrivals.readNow': '',
-  'arrivals.readLater': '',
-
-  'abode.ground': '',
-  'abode.waitingToDecide': '',
-  'abode.floraFind': '',
-  'abode.visitingFriend': '',
-  'abode.partyMode': '',
-  'abode.quietude': '',
-  'abode.pickMood': '',
-  'abode.notYet': '',
-  'abode.curiosity': '',
-  'abode.sell': '',
-  'abode.compost': '',
-  'abode.rotate': '',
-  'abode.turnSave': '',
-  'abode.turnCancel': '',
-  'abode.sky': '',
-  'abode.skyLabel': '',
-  'abode.pickSky': '',
-  'abode.sky.ember': '',
-  'abode.sky.teal': '',
-  'abode.sky.violet': '',
-  'abode.sky.ash': '',
-
-  'map.planet': '',
-
-  'market.stall': '',
-  'market.buy': '',
-  'market.buyLabel': '',
-
-  'bookcase.shelf': '',
-  'bookcase.read': '',
-  'bookcase.spread': '',
-  'bookcase.close': '',
-
-  'guestbook.friends': '',
-  'guestbook.unnamedFriend': '',
-  'guestbook.close': '',
-
-  'reveal.firstArrival': '',
-  'reveal.friendArrives': '',
-  'reveal.onward': '',
-  'reveal.dropArrival': '',
-
-  'backup.export': '',
-  'backup.import': '',
-  'backup.file': '',
-  'backup.ageNone': '',
-  'backup.ageFuture': '',
-  'backup.ageToday': '',
-  'backup.ageYesterday': '',
-  'backup.ageDays': '',
-
-  'newGame.start': '',
-  'newGame.which': '',
-  'newGame.refresh': '',
-  'newGame.keep': '',
-  'newGame.notNow': '',
-  'newGame.sure': '',
-  'newGame.yes': '',
-  'newGame.no': '',
-  'newGame.backupFirst': '',
-  'newGame.refreshWarning': '',
-  'newGame.keepWarning': '',
-  'newGame.refreshDone': '',
-  'newGame.keepDone': '',
-
-  'design.door': '',
-
-  'nav.backToHabits': '',
-  'nav.earlier': '',
-  'nav.later': '',
-
-  'date.line': '',
-  'weekday.mon.long': '',
-  'weekday.tue.long': '',
-  'weekday.wed.long': '',
-  'weekday.thu.long': '',
-  'weekday.fri.long': '',
-  'weekday.sat.long': '',
-  'weekday.sun.long': '',
-  'month.jan': '',
-  'month.feb': '',
-  'month.mar': '',
-  'month.apr': '',
-  'month.may': '',
-  'month.jun': '',
-  'month.jul': '',
-  'month.aug': '',
-  'month.sep': '',
-  'month.oct': '',
-  'month.nov': '',
-  'month.dec': '',
-
-  'date.cutoffNote': '',
-  'time.hourAm': '',
-  'time.hourPm': '',
-
-  'weekday.mon.short': '',
-  'weekday.tue.short': '',
-  'weekday.wed.short': '',
-  'weekday.thu.short': '',
-  'weekday.fri.short': '',
-  'weekday.sat.short': '',
-  'weekday.sun.short': '',
-
-  'weekday.mon.tiny': '',
-  'weekday.tue.tiny': '',
-  'weekday.wed.tiny': '',
-  'weekday.thu.tiny': '',
-  'weekday.fri.tiny': '',
-  'weekday.sat.tiny': '',
-  'weekday.sun.tiny': '',
-
-  'schedule.daily': '',
-  'schedule.weekdays': '',
-  'schedule.nPerWeek': '',
-  'schedule.nPerDay': '',
-  'schedule.whenever': '',
-  'schedule.oneTime': '',
-
-  'schedule.summary.nPerWeek': '',
-  'schedule.summary.nPerDay': '',
-  'schedule.summary.oneTime': '',
-
-  'difficulty.easy': '',
-  'difficulty.medium': '',
-  'difficulty.difficult': '',
-
-  'fieldNotes.zoom.day': '',
-  'fieldNotes.zoom.week': '',
-  'fieldNotes.zoom.fourWeek': '',
-
-  'habits.addPlaceholder': '',
-  'habits.archivedTag': '',
-  'habits.archivedHeading': '',
-  'habits.doneOn': '',
-
-  'count.day.one': '',
-  'count.day.other': '',
-  'count.week.one': '',
-  'count.week.other': '',
-
-  'habits.scheduleChangeConfirm': '',
-
-  'habits.deleteConfirm': '',
-
-  'backup.importConfirm': '',
-  'backup.importCancelled': '',
-  'backup.imported': '',
-
-  'backup.error.notABackup': '',
-  'backup.error.notJson': '',
-  'backup.error.wrongVersion': '',
-  'backup.error.noHabits': '',
-  'backup.error.badCompletions': '',
-  'backup.error.badSettings': '',
-  'backup.error.badFieldNotes': '',
-  'backup.error.badStartup': '',
-  'backup.error.badBackupDate': '',
-  'backup.error.badLanguage': '',
-  'backup.error.badSky': '',
-  'backup.error.badCheckin': '',
-  'backup.error.noSeed': '',
-
-  'habitForm.errorNoName': '',
-  'habitForm.errorNoWeekday': '',
-
-  'checkin.tickDone': '',
-  'checkin.showFewer': '',
-  'checkin.showMore': '',
-
-  'map.regionsKnown': '',
-  'market.owned': '',
-
-  'newGame.askWipe': '',
-  'newGame.askKeep': '',
-
-  'arrival.flora': '',
-  'arrival.magazine': '',
-  'arrival.novel': '',
-  'arrival.dictionary': '',
-  'arrival.fungusOne': '',
-  'arrival.fungi': '',
-  'arrival.friend': '',
-  'arrival.something': '',
-  'arrival.and': '',
-  'arrival.note': '',
-
-  'charm.1': '',
-  'charm.2': '',
-  'charm.3': '',
-  'charm.4': '',
-  'charm.5': '',
-  'charm.6': '',
-
-  // Pre-filled on purpose — see the note above this block.
-  'language.switch': '',
-  'language.en': 'English',
-  'language.fa': 'فارسی',
+// The deck, read the way the rest of the app has always read it: one
+// block per language, key → words. Derived, never edited by hand.
+// (Languages are listed in LANGUAGES below; each entry carries one line
+// per language.)
+function readLanguage(code) {
+  return Object.fromEntries(
+    Object.entries(DECK).map(([key, entry]) => [key, entry[code]]),
+  )
 }
+const en = readLanguage('en')
+const fa = readLanguage('fa')
 
 // The app's own name, in the top bar and on the home link. Kimia's call
 // (2026-08-16): it stays in LATIN LETTERS in every language, always. So

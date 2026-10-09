@@ -3463,6 +3463,15 @@ return 0` right after the era is worked out, so a moment before the
   weekday messages read technical ("1=Mon … 7=Sun") — left word for word
   for Kimia to reword. Check-in day headings still lower-case the short
   weekday in the page (harmless for Persian, which has no case).
+- 2026-10-09 (T6.14 slice 2, build notes): **`ui.js` is key-first.** Each
+  of the 230 entries is now `{ note, en, fa }` — a plain-English note
+  saying what the word is and where it shows, with the languages side by
+  side — under labelled section headers. Adding a language is one line
+  per entry. The app still reads the same `UI = { en, fa }` shape: it is
+  derived from the deck, so no component or test changed. Checked word
+  for word against the old file: all 460 slots identical. The notes are
+  first drafts by Claude for Kimia to correct; the file header explains
+  the layout and the blank-falls-back-to-English rule.
 - 2026-10-09 (Kimia, wording after T6.14 slice 1): **in-game weekday
   copy is lower case** — `mon`, `tue` … and the two-letter `mo`, `tu` …
   — like the rest of the interface; the all-caps date line (MONDAY) is

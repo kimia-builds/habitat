@@ -445,9 +445,10 @@ tracker. Everything after this is delight, informed by real use.
       (2026-10-09): built in four slices, missed words first (Kimia's
       order). Slice 1 DONE — the missed words are in `ui.js` and every
       component reads them, including the four-way weekday duplication
-      (one `WEEKDAY_KEYS` list now). STILL TO DO: slice 2 re-shape to
-      key-first with a `note` per entry; slice 3 absorb narration, names,
-      mishap, blocked; slice 4 the completeness test.** T6.13 built the
+      (one `WEEKDAY_KEYS` list now). Slice 2 DONE — `ui.js` is key-first,
+      a plain-English `note` on all 230 entries, English and Farsi side
+      by side. STILL TO DO: slice 3 absorb narration, names, mishap,
+      blocked; slice 4 the completeness test.** T6.13 built the
       mechanism but caught only about 55% of the copy, and framed the
       file as a TRANSLATION file rather than what it should be: the one
       place all copy lives, editable in any language including English,
