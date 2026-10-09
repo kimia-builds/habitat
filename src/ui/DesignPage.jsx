@@ -54,6 +54,11 @@ import Curiosity, { CuriosityDefs, curiosityCanonKey } from './Curiosity.jsx'
 import { OBJECT_CANON, objectSize } from './objectCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
+import Friend from './Friend.jsx'
+import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
+import { FLORA_COLOURS } from './floraColours.js'
+import { FLORA_CANON } from './floraCanon.js'
+import { CANVAS_HEIGHT } from './worldCanvas.js'
 
 // The §8 texture families still waiting to be judged, in the order the
 // design bible lists them, so the workbench reads like the catalogue.
@@ -178,6 +183,88 @@ function CuriosityShelf() {
   )
 }
 
+/*
+ * THE LANDMARK SIZE SHELF (T5.3l, opened 2026-10-09) — ONE question: how tall
+ * is a mother tree? The same shape is shown at three candidate heights beside
+ * things whose size is already settled (a large flora and the biggest friend),
+ * all at ABODE scale on one ground line, with a dashed line where the 1000x600
+ * canvas ends. The candidates are heights in canvas pixels, not canon numbers:
+ * nothing here is a decision, and nothing outside this page reads them.
+ * Shape '6' is only the roundest of the sixteen, so the three read as the same
+ * plant; the look of a mother tree is a later slice.
+ */
+const LANDMARK_CANDIDATES = [300, 450, CANVAS_HEIGHT]
+const LANDMARK_SHAPE = FLORA_SILHOUETTES.find(({ key }) => key === '6')
+const LANDMARK_HEX = FLORA_COLOURS[0].hex
+
+function LandmarkTree({ height }) {
+  const { w, h } = LANDMARK_SHAPE.viewBox
+  const { d, transform } = LANDMARK_SHAPE
+  return (
+    <svg
+      viewBox={`0 0 ${w} ${h}`}
+      width={(height * w) / h}
+      height={height}
+      aria-hidden="true"
+    >
+      <path
+        d={d}
+        transform={transform ?? undefined}
+        fill="#0b0f14"
+        stroke={LANDMARK_HEX}
+        strokeOpacity="0.85"
+        strokeWidth="1.2"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d={d}
+        transform={transform ?? undefined}
+        fill={LANDMARK_HEX}
+        fillOpacity="0.16"
+      />
+    </svg>
+  )
+}
+
+function LandmarkShelf() {
+  const largeFlora = FLORA_CANON.large * CURIO_BASE
+  const { w, h } = LANDMARK_SHAPE.viewBox
+  return (
+    <section className="design-family" aria-label="landmark size">
+      <h3>landmark size (the mother tree)</h3>
+      <div className="curio-shelf-window">
+        <ul
+          className="curio-shelf landmark-shelf"
+          style={{ height: CANVAS_HEIGHT }}
+        >
+          <li className="curio-item">
+            <Friend
+              category={9}
+              worldSeed="workbench"
+              base={CURIO_BASE}
+              unit="px"
+            />
+            <span className="curio-name">hamdi bulo, the biggest friend</span>
+          </li>
+          <li className="curio-item">
+            <LandmarkTree height={largeFlora} />
+            <span className="curio-name">a large flora (today's biggest)</span>
+          </li>
+          {LANDMARK_CANDIDATES.map((height) => (
+            <li key={height} className="curio-item">
+              <LandmarkTree height={height} />
+              <span className="curio-name">
+                candidate · {height}px tall · {Math.round((height * w) / h)}px
+                wide
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
@@ -204,6 +291,8 @@ function DesignPage({ onBack }) {
       ))}
 
       <CuriosityShelf />
+
+      <LandmarkShelf />
 
       {/* The abode-sky shelf came down on 2026-08-21 (T5.4). Its question
           — do these four palettes work? — was answered by putting them on

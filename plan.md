@@ -346,7 +346,11 @@ tracker. Everything after this is delight, informed by real use.
                   `src/ui/newFloraSilhouettes.js`; not yet dealt (the deal
                   keeps the original four until a shape is stored on the
                   drop). See history.md.
-            - [ ] The 16 keepsake drawings, the landmark size and look,
+            - [ ] **Landmark size** — a temporary workbench shelf shows one
+                  shape at three candidate heights (300 / 450 / 600px) beside
+                  a large flora and the biggest friend; waiting on Kimia's
+                  eyeball call. Nothing is wired into the game.
+            - [ ] The 16 keepsake drawings, the landmark look,
                   the Map pictures, and the five-step arrival logic.
       - [ ] **T5.3m The 48 curiosities** _(opened on Kimia's call —
             AFTER T5.3l)_ — the 48-item Market pool (3 per region) mostly

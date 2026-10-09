@@ -3624,6 +3624,17 @@ word.
   (mother tree) size and look, the Map pictures, and the game logic for the
   five-step arrival — built after the drawings, in their own sessions.
 
+## T5.3l build notes — the landmark size shelf (2026-10-09)
+
+First slice after the silhouettes: a temporary "landmark size" shelf on the
+design workbench (`DesignPage.jsx`). One shape (6, the roundest) is drawn at
+three candidate heights — 300, 450 and 600px (the full canvas height) —
+beside a large flora and the biggest friend (hamdi bulo), all at Abode scale
+on one ground line. The candidates are canvas pixels, not canon numbers, and
+nothing outside the page reads them; the landmark class stays out of
+`floraCanon.js` until Kimia picks. The workbench test lists the shelf by
+name. The size is NOT decided yet.
+
 ## T5.5 build notes — rotate (2026-10-08)
 
 Built in one session from Kimia's design, in three parts.
