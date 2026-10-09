@@ -286,7 +286,8 @@ different sizes and colours, and the arithmetic is exact.
   four colours in the reds, pinks and oranges**, dealt at random, and
   follows the **same laws of fill, border and glow strength as an ordinary
   flora** (a plain opaque fill with an outline, glowing at the lifted
-  level — §9a's recipe). The four colours are not chosen yet.
+  level — §9a's recipe). **The four colours are chosen** (2026-10-09, by eye): `#ff0000`,
+  `#ff2d95`, `#ff9ecb`, `#ff5e00` — `src/ui/keepsakeColours.js`.
   **Its copy (written by Kimia).** The first time one is found, the line
   is "[flora species name] has yielded …", then thereafter "you found a
   tendril" / "you found a peace branch". Her sixteen, complete as of

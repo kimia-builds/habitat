@@ -7535,6 +7535,11 @@ and recorded in spec.md's decisions log._
   design-bible §9a); the species names and the pairing of phrase to
   region are still hers to give. Not yet in `src/content/`.
 
+- 2026-10-09 (Kimia): **the four keepsake colours are `#ff0000`,
+  `#ff2d95`, `#ff9ecb` and `#ff5e00`**, picked off a twelve-candidate
+  workbench shelf (then removed). Held in `src/ui/keepsakeColours.js`;
+  nothing reads them until the keepsakes are drawn and dropping.
+
 ## T5.3j build notes — the curiosities reach the game (2026-10-09)
 
 The Market stall and the Abode now draw the eight finished curiosities
