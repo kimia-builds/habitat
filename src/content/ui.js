@@ -648,91 +648,91 @@ const DECK = {
   'backup.export': {
     note: 'Pebble that saves a backup file.',
     en: 'export backup',
-    fa: '',
+    fa: 'ذخیرهٔ پشتیبان',
   },
   'backup.import': {
     note: 'Pebble that loads a backup file.',
     en: 'import backup',
-    fa: '',
+    fa: 'بارگذاری پشتیبان',
   },
   'backup.file': {
     note: 'Screen-reader name of the file chooser behind the import pebble.',
     en: 'backup file',
-    fa: '',
+    fa: 'فایل پشتیبان',
   },
   'backup.ageNone': {
     note: 'Hover on the export pebble when no backup was ever made.',
     en: 'no backup yet',
-    fa: '',
+    fa: 'هنوز پشتیبانی گرفته نشده',
   },
   'backup.ageFuture': {
     note:
       'Hover on the export pebble when the backup date is in the future ' +
       '(clock oddity).',
     en: 'backed up',
-    fa: '',
+    fa: 'پشتیبان گرفته شد',
   },
   'backup.ageToday': {
     note: 'Hover on the export pebble: last backup was today.',
     en: 'backed up today',
-    fa: '',
+    fa: 'امروز پشتیبان گرفته شد',
   },
   'backup.ageYesterday': {
     note: 'Hover on the export pebble: last backup was yesterday.',
     en: 'backed up yesterday',
-    fa: '',
+    fa: 'دیروز پشتیبان گرفته شد',
   },
   'backup.ageDays': {
     note: 'Hover on the export pebble: last backup was {days} days ago.',
     en: 'backed up {days} days ago',
-    fa: '',
+    fa: '{days} روز پیش پشتیبان گرفته شد',
   },
 
   // ── Starting over ─────────────────────────────────────────────────────
   'newGame.start': {
     note: 'Pebble that opens the start-a-new-game popup.',
     en: 'start a new game',
-    fa: '',
+    fa: 'شروع بازی تازه',
   },
   'newGame.which': {
     note: 'Heading above the two restart doors.',
     en: 'which type of restart?',
-    fa: '',
+    fa: 'کدام نوع شروع دوباره؟',
   },
   'newGame.refresh': {
     note: 'Door that wipes everything and starts again.',
     en: 'total refresh',
-    fa: '',
+    fa: 'پاک‌سازی کامل',
   },
   'newGame.keep': {
     note: 'Door that wipes the game but keeps habit data.',
     en: 'keep habit data',
-    fa: '',
+    fa: 'نگه داشتن داده‌های عادت',
   },
   'newGame.notNow': {
     note: 'Button that closes the popup without doing anything.',
     en: 'not now',
-    fa: '',
+    fa: 'حالا نه',
   },
   'newGame.sure': {
     note: 'Confirmation question after choosing a restart door.',
     en: 'are you sure?',
-    fa: '',
+    fa: 'مطمئنی؟',
   },
   'newGame.yes': {
     note: 'Answer: go ahead with the restart.',
     en: 'yes',
-    fa: '',
+    fa: 'بله',
   },
   'newGame.no': {
     note: 'Answer: step back from the restart.',
     en: 'no, take me back',
-    fa: '',
+    fa: 'نه، برگردم',
   },
   'newGame.backupFirst': {
     note: 'Button to export a backup before restarting.',
     en: 'export a backup first',
-    fa: '',
+    fa: 'اول پشتیبان بگیر',
   },
   'newGame.refreshWarning': {
     note: 'Plain warning under the total-refresh door.',
@@ -740,7 +740,7 @@ const DECK = {
       'everything will be wiped: habits, completions, and game progress. ' +
       'habitat will restart from day one. only a backup file you have ' +
       'already exported can bring any of it back.',
-    fa: '',
+    fa: 'همه‌چیز پاک می‌شود: عادت‌ها، انجام‌ها و پیشرفت بازی. Habitat از روز اول دوباره شروع می‌شود. فقط فایل پشتیبانی که از قبل ذخیره کرده‌ای می‌تواند چیزی از این‌ها را برگرداند.',
   },
   'newGame.keepWarning': {
     note: 'Plain warning under the keep-habit-data door.',
@@ -748,17 +748,17 @@ const DECK = {
       'your gameplay will be wiped: flora, books, friends, fungi and ' +
       'expedition progress. your historical habit data, streaks and graphs ' +
       'will remain.',
-    fa: '',
+    fa: 'پیشرفت بازی‌ات پاک می‌شود: گیاه‌ها، کتاب‌ها، دوست‌ها، قارچ‌ها و پیشرفت اکتشاف. داده‌های تاریخی عادت‌ها، زنجیره‌ها و نمودارهایت می‌مانند.',
   },
   'newGame.refreshDone': {
     note: 'Afterword shown once a total refresh has happened.',
     en: 'a new habitat has begun — everything starts from here',
-    fa: '',
+    fa: 'یک Habitat تازه شروع شد — همه‌چیز از همین‌جا شروع می‌شود',
   },
   'newGame.keepDone': {
     note: 'Afterword shown once a game-only restart has happened.',
     en: 'a new game has begun — your habits and history are untouched',
-    fa: '',
+    fa: 'یک بازی تازه شروع شد — عادت‌ها و تاریخچه‌ات دست‌نخورده‌اند',
   },
 
   // ── Words several pages share ─────────────────────────────────────────
@@ -1227,29 +1227,29 @@ const DECK = {
     en:
       'importing replaces EVERYTHING currently in habitat with the backup ' +
       'file. continue?',
-    fa: '',
+    fa: 'با بارگذاری این پشتیبان، همهٔ چیزهایی که الان در Habitat هست جایگزین می‌شود. ادامه بدهم؟',
   },
   'backup.importCancelled': {
     note: 'Shown after the import question is answered no.',
     en: 'import cancelled — nothing was changed',
-    fa: '',
+    fa: 'بارگذاری لغو شد — هیچ چیز تغییر نکرد',
   },
   'backup.imported': {
     note: 'Shown after a backup is imported successfully.',
     en: 'backup imported',
-    fa: '',
+    fa: 'پشتیبان بارگذاری شد',
   },
 
   // ── Why an imported backup is refused ─────────────────────────────────
   'backup.error.notABackup': {
     note: 'Refusal: the file is not a Habitat backup.',
     en: 'this file does not look like a habitat backup.',
-    fa: '',
+    fa: 'به نظر نمی‌رسد این فایل یک پشتیبان Habitat باشد.',
   },
   'backup.error.notJson': {
     note: 'Refusal: the file cannot be read at all.',
     en: 'this file is not readable as a habitat backup (not JSON).',
-    fa: '',
+    fa: 'این فایل را نمی‌شود به‌عنوان پشتیبان Habitat خواند (JSON نیست).',
   },
   'backup.error.wrongVersion': {
     note:
@@ -1258,62 +1258,62 @@ const DECK = {
     en:
       'this backup uses format version {found}, but this app expects version ' +
       '{expected}.',
-    fa: '',
+    fa: 'این پشتیبان با قالب نسخهٔ {found} است، ولی این برنامه نسخهٔ {expected} را می‌خواهد.',
   },
   'backup.error.noHabits': {
     note: 'Refusal: the habit list is missing.',
     en: 'this backup is missing its habit list.',
-    fa: '',
+    fa: 'فهرست عادت‌ها در این پشتیبان نیست.',
   },
   'backup.error.badCompletions': {
     note: 'Refusal: the completions list is broken.',
     en: 'this backup has a broken completions list.',
-    fa: '',
+    fa: 'فهرست انجام‌ها در این پشتیبان خراب است.',
   },
   'backup.error.badSettings': {
     note: 'Refusal: the settings are broken.',
     en: 'this backup has broken settings.',
-    fa: '',
+    fa: 'تنظیمات این پشتیبان خراب است.',
   },
   'backup.error.badFieldNotes': {
     note: 'Refusal: the field-notes marker is broken.',
     en: 'this backup has a broken field-notes marker.',
-    fa: '',
+    fa: 'نشانهٔ داده‌های تاریخی در این پشتیبان خراب است.',
   },
   'backup.error.badStartup': {
     note: 'Refusal: the startup marker is broken.',
     en: 'this backup has a broken startup marker.',
-    fa: '',
+    fa: 'نشانهٔ شروع در این پشتیبان خراب است.',
   },
   'backup.error.badBackupDate': {
     note: 'Refusal: the backup-date marker is broken.',
     en: 'this backup has a broken backup-date marker.',
-    fa: '',
+    fa: 'نشانهٔ تاریخ پشتیبان در این پشتیبان خراب است.',
   },
   'backup.error.badLanguage': {
     note: 'Refusal: the file names a language Habitat does not speak.',
     en: 'this backup names a language habitat does not speak.',
-    fa: '',
+    fa: 'این پشتیبان زبانی را نام می‌برد که Habitat بلد نیست.',
   },
   'backup.error.badSky': {
     note: 'Refusal: the file names a sky the Abode does not have.',
     en: 'this backup names a sky the abode does not have.',
-    fa: '',
+    fa: 'این پشتیبان آسمانی را نام می‌برد که سرپناه ندارد.',
   },
   'backup.error.badWeekShape': {
     note: 'Refusal: the file names a week shape Habitat does not have.',
     en: 'this backup names a week shape habitat does not have.',
-    fa: '',
+    fa: 'این پشتیبان شکل هفته‌ای را نام می‌برد که Habitat ندارد.',
   },
   'backup.error.badCheckin': {
     note: 'Refusal: the check-in marker is broken.',
     en: 'this backup has a broken check-in marker.',
-    fa: '',
+    fa: 'نشانهٔ ثبت روزانه در این پشتیبان خراب است.',
   },
   'backup.error.noSeed': {
     note: 'Refusal: the world seed is missing.',
     en: 'this backup is missing its world seed.',
-    fa: '',
+    fa: 'بذر دنیا در این پشتیبان نیست.',
   },
 
   // ── The habit form refusals ───────────────────────────────────────────
@@ -1363,14 +1363,14 @@ const DECK = {
     en:
       'do you want to wipe all your habit history and play habitat from ' +
       'total scratch?',
-    fa: '',
+    fa: 'می‌خواهی کل تاریخچهٔ عادت‌هایت پاک شود و Habitat را از صفر بازی کنی؟',
   },
   'newGame.askKeep': {
     note: 'Second question in the start-a-new-game popup.',
     en:
       'or do you want to keep your habit history and restart the game? ' +
       '(requires you to export a backup)',
-    fa: '',
+    fa: 'یا می‌خواهی تاریخچهٔ عادت‌هایت بماند و فقط بازی از نو شروع شود؟ (باید اول یک پشتیبان بگیری)',
   },
 
   // ── Names for arriving drops ──────────────────────────────────────────

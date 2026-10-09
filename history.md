@@ -7416,3 +7416,16 @@ and recorded in spec.md's decisions log._
   is unmistakable. One more test (the language options keeping their own
   names) now looks at the language options only, because the week-shape
   pebble beside them is translated now.
+
+- 2026-10-09 (T6.19, batches 3–6 accepted): Kimia's replies took the rest of
+  the interface words live (232 slots in all). Her calls, now fixed for the
+  story and names too: a **drop** is always «جایزه» (jayize, prize); a
+  **task / to-do** is «یک‌باره» on its own, never «کار» (so the to-dos lens
+  is «یک‌باره‌ها»); a streak is «زنجیره»; party mode is «بزن و بکوب»; sell is
+  the imperative «بفروش»; compost is «بازیافت»; the stall is «غرفهٔ بازار»;
+  "×n at home" reads «در خانه {n}تا داری»; "a friend arrives" is «یک دوست
+  حضور دارد» (is present); the ash sky is «مه‌آلود» and the violet sky
+  «ارغوانی». Two older tests that looked for English words in Farsi mode
+  (the weekday-order test, the Jalali date line) now ask the deck for the
+  Farsi word. The Gregorian month slots stay blank on purpose: Farsi mode
+  shows Jalali dates, so they never appear.

@@ -486,10 +486,12 @@ tracker. Everything after this is delight, informed by real use.
       (key, English, where it shows, Farsi draft, and a Notes line for
       Kimia, who has no Farsi keyboard — Finglish is fine). No note means
       accepted; accepted slots are copied into `ui.js`, changed ones come
-      back in script to confirm. Batches 1 and 2 (52 slots, plus batches 3 to 5's 139 = 191 live: rail, page titles,
-      meters, language switch, habit tile, lenses, habit form, check-in,
-      week shape, safety messages) are accepted and live. Then the rest of the
-      interface words, then story and names.
+      back in script to confirm. Batches 1–6 (232 slots) are accepted and live: every interface word
+      except the six charm names (screen-reader only, left for last), the
+      Gregorian month names (never shown in Farsi mode) and the design
+      workbench door (stays English). **Still to do: story and names**
+      (`narration.js`, friend cards, map-region words, names), which carry
+      the voice and get the most human attention.
 - [x] **T6.20 The cameo tells the truth, and can be asked** _(done
       2026-08-20)_
 - [x] **T6.21 A past week's streak stops at that week** _(done
