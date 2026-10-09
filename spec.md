@@ -169,7 +169,8 @@ dailies/habits/to-dos distinction. Each habit has:
   chosen from a **"week shape" pebble** beside the language options at the
   foot of the home screen, which opens a small popup of the three shapes
   (Kimia's call 2026-10-09). The one thing the shape does
-  not drive is the **habit form's weekday boxes**: they follow the
+  not drive is the **habit form's weekday boxes and the habit list's
+  schedule line** (`tue/thu/sun`): they follow the
   language (Farsi starts on Shanbeh, English on Monday; Kimia 2026-10-09).
   The Sunday ritual stays tied to the literal Sunday for v1. The one exception is **calendar yesterday, which is always
   editable** — so a Monday-morning check-in can still fill in Sunday,

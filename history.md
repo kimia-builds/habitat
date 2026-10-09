@@ -7298,5 +7298,7 @@ and recorded in spec.md's decisions log._
   shape setting still decides the field notes grid, graphs and editable
   days, and stored weekday numbers never move. Map is
   `PICKER_SHAPE_BY_LANGUAGE` in `days.js`; `HabitForm` no longer takes a
-  `weekShape`. The habit list's weekday label ("mon, wed, fri") was not
-  part of this call and still keeps its stored order.
+  `weekShape`. **Same day, same rule for the habit list's schedule line**
+  (`mon/wed/fri` under a habit's name): it lists the chosen days in the
+  language's week order — English `tue/thu/sun`, Farsi starts its week on
+  Shanbeh — whatever the week shape or field-notes view says.

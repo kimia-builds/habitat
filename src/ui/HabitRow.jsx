@@ -9,13 +9,17 @@ import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import CharmSymbol from './CharmSymbol.jsx'
 import { useText } from './language.jsx'
 import { WEEKDAY_KEYS } from '../content/ui.js'
+import { PICKER_SHAPE_BY_LANGUAGE, weekdayOrder } from '../game/days.js'
 
-function scheduleSummary(schedule, t) {
+function scheduleSummary(schedule, t, language) {
   switch (schedule.type) {
     case 'daily':
       return t('schedule.daily')
     case 'weekdays':
-      return schedule.days
+      // Listed in the language's week order (Kimia 2026-10-09): Monday
+      // first in English, Shanbeh first in Farsi — not the week-shape setting.
+      return weekdayOrder(PICKER_SHAPE_BY_LANGUAGE[language])
+        .filter((d) => schedule.days.includes(d))
         .map((d) => t(`weekday.${WEEKDAY_KEYS[d - 1]}.short`))
         .join('/')
     case 'nPerWeek':
@@ -49,7 +53,7 @@ function HabitRow({
   onEdit,
   onArchive,
 }) {
-  const { t } = useText()
+  const { t, language } = useText()
   // Every repeating shape presents as a counter with an unlimited +1
   // and a quiet, always-available -1 (T3.2b — spec §4.1; the word
   // "undo" became "-1" in T4.5, 2026-07-20). Only one-time to-dos keep
@@ -156,7 +160,7 @@ function HabitRow({
           <span className="habit-description">{habit.description}</span>
         )}
         <span className="habit-meta">
-          {scheduleSummary(habit.schedule, t)} ·{' '}
+          {scheduleSummary(habit.schedule, t, language)} ·{' '}
           {t(`difficulty.${habit.difficulty}`)}
         </span>
       </span>

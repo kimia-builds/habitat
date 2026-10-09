@@ -1990,6 +1990,36 @@ describe('field notes (T2.3)', () => {
     ).toEqual([6])
   })
 
+  it("the habit list lists weekday habits in each language's own week order (2026-10-09)", () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 15, 9))
+    const weekdayHabit = {
+      id: 'gym',
+      name: 'gym',
+      description: '',
+      symbol: 1,
+      difficulty: 'easy',
+      schedule: { type: 'weekdays', days: [1, 6] }, // Monday and Saturday
+      archived: false,
+      createdAt: new Date(2026, 6, 13, 9).getTime(),
+    }
+    // English: Monday first. Farsi: Shanbeh first — the week shape ('mon')
+    // plays no part.
+    for (const [language, expected] of [
+      ['en', 'mon/sat'],
+      ['fa', 'sat/mon'],
+    ]) {
+      seed({
+        checkedInThrough: '2026-07-14',
+        habits: [weekdayHabit],
+        settings: { dayCutoffHour: 3, weekShape: 'mon', language },
+      })
+      const { unmount } = render(<App />)
+      expect(screen.getByText(`${expected} · easy`)).toBeDefined()
+      unmount()
+    }
+  })
+
   it('the habit list links to the field notes and back', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date(2026, 6, 15, 9)) // Wednesday the 15th
