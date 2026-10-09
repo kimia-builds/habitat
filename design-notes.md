@@ -412,6 +412,13 @@ header**:
 - **story and names** blanks stay **silent**, exactly as before. Never
   invented prose, never an invented name.
 
+**Farsi shape (2026-10-09).** Layout is identical in every language —
+only Farsi text runs right to left within its own box; nothing is
+mirrored or moved, so someone flipping to English to learn it finds
+everything where they left it. Farsi wears one plain typeface, enlarged a
+little so it reads the same size as the English; letterspacing and
+upper-case styling switch off for it.
+
 Translation (T6.19) is the one place the never-writes-the-copy rule
 bends, and only this far: a machine draft is a suggestion Kimia reviews,
 never a slot filled in her name. Unreviewed stays blank, and blank

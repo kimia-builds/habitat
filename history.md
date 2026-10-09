@@ -3427,6 +3427,47 @@ return 0` right after the era is worked out, so a moment before the
   the new-habit form is open. The rail's + stays as a second door.
   Supersedes 2026-08-12's "one tile per chosen charm" — several charms now
   give one neutral baguette, and the form's own default.
+- 2026-10-09 (Kimia, sizing the Farsi work): **the Farsi work was sized
+  at roughly 8–10 sessions, and five decisions narrowed it.**
+  1. **There is no copy deck yet.** T6.14 is still open: copy lives in
+     `ui.js` (248 entries), the story and name files, and strings written
+     straight into components. Building and completing the deck is
+     therefore the FIRST step, not a "check it is current" step. The
+     Farsi translation cannot start until it is complete.
+  2. **Right-to-left means TEXT direction only.** The intended Farsi user
+     also flips to English as a learning exercise, so layout must stay
+     put: the icon rail, every pebble and its position, the scenes and
+     the width gate do not move or mirror. Only Farsi words run right to
+     left inside their own box. Example: "← back to the habits" keeps its
+     arrow on the same side, still pointing left, in both languages — so
+     the arrow is pulled out of the translated words (it is typed into
+     the text today). T6.16 shrank from "1–2 sessions" to "about 1" and
+     lost its icon-rail and width-gate work.
+  3. **The typeface is a plain one, sized to match English.** Kimia is
+     not picky about the font; her one requirement is that Farsi text
+     reads roughly the same size as the English copy. Persian letters
+     render smaller at the same nominal size, so Farsi gets a small
+     enlargement. Letterspacing and upper-case styling switch off for
+     Farsi. Persian digits (۰–۹) are assumed in Farsi mode and Western
+     digits in English, until Kimia says otherwise.
+  4. **The Persian date needs no fetching.** Kimia asked whether future
+     dates need a lookup, since Nowruz falls on the 20th or the 21st
+     depending on the year. Tested rather than assumed: the browser's
+     built-in Persian calendar was compared with the real rule (Nowruz is
+     the day the spring equinox falls before noon in Tehran, otherwise
+     the next day) for every year 1990–2100. Zero mismatches; three years
+     (1992, 2091, 2095) fall within 20 minutes of noon, too close for the
+     test to settle. Leap days are not an issue because each date is
+     converted on its own. A test will pin known Nowruz dates and Esfand
+     lengths so a browser that ever disagrees fails loudly.
+  5. **The order of work is fixed**, keeping 2026-08-16's "infrastructure
+     first, translation last": copy deck (T6.14) → week setting (T6.15) →
+     text direction (T6.16) → typeface and digits (T6.17) → Persian date
+     (T6.18) → translation drafts for Kimia's review (T6.19) → a final
+     check that the English–Farsi switch holds up. Drafts go into a
+     review queue and nothing goes live until she approves it slot by
+     slot; the story and names go last and stay hers. In-book texts
+     (T6.24) do not exist yet and join the Farsi work once written.
 
 ## T5.5 build notes — rotate (2026-10-08)
 

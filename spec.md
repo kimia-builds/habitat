@@ -972,6 +972,17 @@ and nothing is lost by finding that out late.
 - **Languages (2026-08-16; T6.13 built the mechanism, T6.14–T6.19
   complete it).** Habitat is built to speak **more than two** languages:
   Farsi is the first additional one, not a special case.
+  - **Layout never changes with language (2026-10-09).** The Farsi user
+    also switches to English to learn it, so the icon rail, the controls
+    and the scenes sit in the same place in both. Only Farsi text runs
+    right to left inside its own box; the "←" in "back to the habits"
+    keeps its side and still points left. Farsi uses one plain typeface
+    sized to match the English copy, and Persian digits (۰–۹).
+  - **The Persian date is display only and computed, never fetched
+    (2026-10-09).** The day keys stay Gregorian and drive every streak.
+    The browser's own Persian calendar was checked against the
+    equinox-before-noon rule for 1990–2100 and agrees; a test pins known
+    Nowruz dates and Esfand lengths.
   - **One copy deck.** Every word Habitat says — interface, story,
     names, blocked and mishap messages — lives in ONE keyed file, which
     is Kimia's. It is a copy file first and a translation file second:

@@ -428,8 +428,22 @@ tracker. Everything after this is delight, informed by real use.
       Jalali calendar and the Saturday-start week are all still ahead,
       and the week change in particular is not a language question at
       all — see history.md. Build notes in history.md)_
+- **Farsi work: sizing and order (2026-10-09, about 8–10 sessions plus
+  Kimia's review time).** The T6.14–T6.19 tasks below run in this order,
+  because the deck must be complete before anything can be translated,
+  and layout surprises should surface before any words land:
+  T6.14 copy deck (2–3 sessions) → T6.15 week setting (1–2) → T6.16
+  text direction (about 1) → T6.17 typeface and digits (about 1) →
+  T6.18 Persian date (about 1) → T6.19 translation drafts (1–2 for the
+  drafting; Kimia's slot-by-slot review is the long part) → a final
+  check that the English–Farsi switch holds (it already saves, survives
+  reloads and rides in backups). In-book texts (T6.24) are not yet
+  written and join the Farsi work later. Decisions: history.md,
+  2026-10-09.
 - [ ] **T6.14 The copy deck — one home for every word Habitat says.**
-      _(Kimia's call 2026-08-16, after reviewing T6.13.)_ T6.13 built the
+      _(Kimia's call 2026-08-16, after reviewing T6.13.)_ **Still
+      unbuilt as of 2026-10-09 — there is no copy doc yet; this task
+      creates it and is the first step of the Farsi work.** T6.13 built the
       mechanism but caught only about 55% of the copy, and framed the
       file as a TRANSLATION file rather than what it should be: the one
       place all copy lives, editable in any language including English,
@@ -489,40 +503,55 @@ tracker. Everything after this is delight, informed by real use.
       Habit schedules are untouched: "walk on Mon/Wed/Fri" still means
       Mon/Wed/Fri. Only the boundary moves. The weekday PICKER reorders
       to match the chosen shape; the stored ISO numbers do not.
-- [ ] **T6.16 Habitat reads right to left.** The layout half of Farsi,
-      and the half that has nothing to do with words. `index.css` has 29
-      direction-specific rules (`left`, `right`, `margin-left`,
-      `text-align`) against 2 direction-neutral ones, plus 9
-      `translateX` moves that do not flip on their own; those become
-      logical properties. The icon rail is fixed to the window's left
-      edge and has to learn which edge is the start.
-      **The scenes do NOT mirror.** The Abode ground, the bookcase and
-      the map store real x/y positions Kimia arranged by hand; they are
-      pictures, not text. Rule, decided once, here: **text direction
-      flips, the world does not.**
-      Knock-on: `ViewportGate`'s 740px threshold was calculated from the
-      English wordmark plus the longest English date, so it becomes
-      language-dependent and needs re-deriving per language.
-- [ ] **T6.17 Farsi gets its own lettering.** Habitat's look leans on 18
-      letterspacing rules (up to 0.5em on the wordmark) and on
-      upper/lowercase styling. **Neither survives translation**: Persian
-      script is cursive, so letterspacing severs the joins and makes
-      text close to unreadable, and Persian has no letter case at all.
-      Both switch off for Farsi, which means Farsi Habitat needs its own
-      typographic identity rather than a copy of the English one — a
-      design slice for Kimia to see and react to, one visible change at
-      a time (design-notes §0), never a spec written up front.
-      Also Habitat's **first webfont**: `system-ui` does not render
-      Persian dependably. Vazirmatn or similar, ~150KB — the first thing
-      in Habitat that must download before text looks right, so its
-      loading behaviour is part of the task, not an afterthought.
+- [ ] **T6.16 Farsi text reads right to left — the layout does NOT
+      move.** _(Narrowed by Kimia 2026-10-09; about 1 session.)_ The
+      intended Farsi user also flips to English as a learning exercise,
+      so as few layout changes as possible: the icon rail, every pebble
+      and its position, the scenes and the `ViewportGate` all stay
+      exactly where they are in both languages. Only the WORDS change
+      direction — Farsi text runs right to left inside its own box, with
+      mixed text (numbers, Latin letters such as N-Z-D) kept from
+      scrambling its punctuation. Rule, decided once: **text direction
+      flips; the layout and the world do not.**
+      The one real trap is the arrow typed into "← back to the habits"
+      (AbodePage, BookcasePage, DesignPage, FieldNotes and any others):
+      inside a right-to-left sentence it would jump to the far end. Pull
+      the arrow out of the translated words so it keeps its side and
+      still points left. The old plan's direction-specific CSS rewrite,
+      the rail move and the width-gate re-derivation are NOT needed.
+- [ ] **T6.17 Farsi gets its own lettering — plain, and the same size.**
+      _(Kimia 2026-10-09: not picky about the font; one plain face is
+      fine; about 1 session.)_ Her one requirement: Farsi text reads
+      roughly the same size as the English copy. Persian letters render
+      smaller at the same nominal size, so Farsi gets a small
+      enlargement, tuned by eye with Kimia (design-notes §0: one visible
+      change at a time, never a spec up front).
+      Letterspacing (18 rules, up to 0.5em on the wordmark) and
+      upper/lowercase styling switch OFF for Farsi: Persian is cursive,
+      so spacing severs the joins, and it has no letter case.
+      Habitat's **first webfont**: `system-ui` does not render Persian
+      dependably. Vazirmatn or similar, ~150KB — the first thing that
+      must download before text looks right, so its loading behaviour is
+      part of the task.
+      **Digits:** Persian digits (۰–۹) in Farsi mode and Western digits
+      in English, for the date, meters, prices and streak counts —
+      assumed, not yet confirmed by Kimia.
 - [ ] **T6.18 The Jalali calendar.** Farsi speakers expect Jalali dates
       — today is 1405, not 2026. **Display only**: day keys stay
       `YYYY-MM-DD` Gregorian and go on driving every streak, so nothing
       in the record changes and no history is touched. Only the date
-      line and the field notes' labels render Jalali. Persian digits
-      (۰–۹) are the same question and belong here: the date, the meters,
-      prices and streak counts.
+      line and the field notes' labels render Jalali.
+      **No fetching and no lookup table (verified 2026-10-09).** The
+      browser computes the Persian date itself. Kimia's worry was that
+      Nowruz falls on the 20th or 21st depending on the year; the
+      browser's built-in Persian calendar was checked against the real
+      rule (Nowruz = the day the spring equinox is before noon in Tehran,
+      else the next day) for every year 1990–2100 with zero mismatches,
+      and 29 Feb is not an issue because each date converts on its own.
+      Caveats: it is a formula, not a live lookup, and 1992, 2091 and
+      2095 were too close to noon to settle. So: a test pins known
+      Nowruz dates and Esfand lengths (29 vs 30 days), failing loudly if
+      a browser ever disagrees. Persian digits belong to T6.17.
       Contained enough to ride WITH the language rather than needing its
       own setting — unlike the week, which is why they are separate
       tasks.
