@@ -415,7 +415,11 @@ header**:
 **Farsi shape (2026-10-09).** Layout is identical in every language —
 only Farsi text runs right to left within its own box; nothing is
 mirrored or moved, so someone flipping to English to learn it finds
-everything where they left it. Farsi wears one plain typeface (Vazirmatn,
+everything where they left it. The one place text alignment is pinned is
+the words on a habit tile (name, description, frequency · difficulty): all
+sit against the left edge in both languages, and Farsi's line spacing
+there is tightened so a tile is the same height in both (2026-10-09).
+Farsi wears one plain typeface (Vazirmatn,
 bundled with the site, ~43KB, fetched only once Farsi text is on screen —
 English never downloads it), drawn 12% larger so it reads the same size as
 the English; letterspacing and upper-case styling switch off for it, and

@@ -3425,6 +3425,16 @@ return 0` right after the era is worked out, so a moment before the
   text boxes) uses the same font file declared again without the digit
   range, so digits fall through to the system font. Site copy is
   unchanged.
+- 2026-10-09 (Kimia): **habit tiles keep their words on the left and stay
+  the same height in Farsi.** Farsi tiles had grown from 67px to 90px (the
+  typeface's built-in line room) and the frequency line sat on the right
+  while the name sat on the left. Now name, description and frequency ·
+  difficulty are all pinned to the left edge in every language
+  (`.habit-main > *`), and Farsi lines are set at `line-height: 1.17`, the
+  spacing English gets by default, so the tile measures the same in both.
+  Font size is unchanged. This is a deliberate, scoped exception to the
+  T6.16 "no fixed left alignment" guard; `language.test.jsx` now excludes
+  that one rule and still forbids it everywhere else.
 - 2026-10-09 (Kimia): **the "add a habit or task…" baguette is always
   there.** The rail's + was hard to find and confused new users, so the
   invitation tile that used to show only on an empty list now always ends

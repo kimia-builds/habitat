@@ -987,7 +987,11 @@ and nothing is lost by finding that out late.
     also switches to English to learn it, so the icon rail, the controls
     and the scenes sit in the same place in both. Only Farsi text runs
     right to left inside its own box; the "←" in "back to the habits"
-    keeps its side and still points left. Farsi uses one plain typeface
+    keeps its side and still points left. The words on a habit tile
+    (name, description, frequency · difficulty) are the one exception:
+    pinned to the left edge in both languages, with Farsi's line spacing
+    tightened so a tile is no taller than its English twin (Kimia
+    2026-10-09). Farsi uses one plain typeface
     sized to match the English copy, and Persian digits (۰–۹) — built in
     T6.17. Persian digits belong to Farsi only: a future Arabic mode
     would keep Western digits (Kimia 2026-10-09).

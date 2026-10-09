@@ -2878,6 +2878,24 @@ body {
   color: var(--text-quiet);
 }
 
+/* The words on a tile sit against the LEFT edge in every language (Kimia's
+   call 2026-10-09). In Farsi each line works out its own direction (see
+   `unicode-bidi: plaintext` above), and "start" then means the right-hand
+   side — so the name could sit left while the frequency line sat right.
+   Pinning the alignment keeps all of a tile's lines in one column. */
+.habit-main > * {
+  text-align: left;
+}
+
+/* Persian lettering is drawn with tall built-in line room, which made Farsi
+   tiles about a third taller than English ones (90px against 67px). With
+   Farsi on, the three lines are set at the same tight spacing English
+   gets from its own font, so a tile is the same height in both. The font
+   size is untouched — only the space between lines closes up. */
+:root[lang='fa'] .habit-main > * {
+  line-height: 1.17;
+}
+
 .completion-controls,
 .row-buttons,
 .symbol-picker,

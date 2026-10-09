@@ -28,8 +28,15 @@ describe('right-to-left text without a right-to-left layout', () => {
   })
 
   it('never flips the page or any box: no direction rules, no fixed left alignment', () => {
+    // The one pinned-left place is the words on a habit tile (Kimia,
+    // 2026-10-09), so every line of a tile shares one left edge in both
+    // languages. Anywhere else a fixed left alignment is still a bug.
+    const withoutTileText = css.replace(
+      /\.habit-main\s*>\s*\*\s*\{[^}]*\}/,
+      '',
+    )
     expect(css).not.toMatch(/direction\s*:\s*rtl/)
-    expect(css).not.toMatch(/text-align\s*:\s*left/)
+    expect(withoutTileText).not.toMatch(/text-align\s*:\s*left/)
   })
 })
 
