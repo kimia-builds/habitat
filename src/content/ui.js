@@ -18,7 +18,7 @@
 //   'market.buy': {
 //     note: 'Button to buy a curiosity.',
 //     en: 'buy',
-//     fa: '',
+//     fa: 'خرید',
 //   },
 //
 // One entry per piece of copy. The `note` says in plain English what it
@@ -417,51 +417,51 @@ const DECK = {
   'arrivals.hold': {
     note: 'Hover label on a drop: click to pick it up.',
     en: 'click to hold',
-    fa: '',
+    fa: 'برای نگه داشتن کلیک کن',
   },
   'arrivals.gather': {
     note: 'Button to take a drop into the Abode.',
     en: 'gather',
-    fa: '',
+    fa: 'جمع کردن',
   },
   'arrivals.leave': {
     note: 'Button to leave a drop behind.',
     en: 'leave it',
-    fa: '',
+    fa: 'رهایش کن',
   },
   'arrivals.readNow': {
     note: 'Button to open an arrived book and read it now.',
     en: 'read now',
-    fa: '',
+    fa: 'همین حالا بخوان',
   },
   'arrivals.readLater': {
     note: 'Button to shelve an arrived book for later.',
     en: 'read later',
-    fa: '',
+    fa: 'بعداً بخوان',
   },
 
   // ── The Abode ─────────────────────────────────────────────────────────
   'abode.ground': {
     note: "Screen-reader name for the Abode's ground.",
     en: 'the ground',
-    fa: '',
+    fa: 'زمین',
   },
   'abode.waitingToDecide': {
     note:
       'Caption over items that have arrived but are not yet placed or sent ' +
       'away.',
     en: 'waiting to decide',
-    fa: '',
+    fa: 'منتظر تصمیم',
   },
   'abode.floraFind': {
     note: 'Name of a flora drop in the Abode.',
     en: 'a flora find',
-    fa: '',
+    fa: 'یک یافتهٔ گیاهی',
   },
   'abode.visitingFriend': {
     note: 'Name of a friend who is visiting.',
     en: 'a visiting friend',
-    fa: '',
+    fa: 'یک دوست مهمان',
   },
   'abode.partyMode': {
     note: 'Mood name: party.',
@@ -471,22 +471,22 @@ const DECK = {
   'abode.quietude': {
     note: 'Mood name: quiet.',
     en: 'quietude',
-    fa: '',
+    fa: 'آرامش',
   },
   'abode.pickMood': {
     note: 'Prompt above the mood choices.',
     en: 'pick your mood',
-    fa: '',
+    fa: 'حال‌وهوایت را انتخاب کن',
   },
   'abode.notYet': {
     note: 'Quiet word on a held item to put it down for now.',
     en: 'not yet',
-    fa: '',
+    fa: 'هنوز نه',
   },
   'abode.curiosity': {
     note: 'Name of a curiosity in the Abode.',
     en: 'a curiosity',
-    fa: '',
+    fa: 'یک شگفتی',
   },
   'abode.sell': {
     note: 'Quiet word under a held item: sell it.',
@@ -501,50 +501,50 @@ const DECK = {
   'abode.rotate': {
     note: 'Quiet word under a held item: turn it.',
     en: 'rotate',
-    fa: '',
+    fa: 'چرخاندن',
   },
   'abode.turnSave': {
     note:
       "Replaces the held item's words while it is being turned: keep the " +
       'turn.',
     en: 'save',
-    fa: '',
+    fa: 'ذخیره',
   },
   'abode.turnCancel': {
     note:
       "Replaces the held item's words while it is being turned: undo the " +
       'turn.',
     en: 'cancel',
-    fa: '',
+    fa: 'لغو',
   },
   'abode.sky': {
     note: 'Name of the sky control in the Abode.',
     en: 'abode sky',
-    fa: '',
+    fa: 'آسمان سرپناه',
   },
   'abode.skyLabel': {
     note: "Screen-reader name of one sky swatch. {palette} is that sky's name.",
     en: 'abode sky, {palette}',
-    fa: '',
+    fa: 'آسمان سرپناه، {palette}',
   },
   'abode.pickSky': {
     note: 'Prompt above the four sky swatches.',
     en: 'pick your sky',
-    fa: '',
+    fa: 'آسمانت را انتخاب کن',
   },
   'abode.sky.ember': {
     note:
       'Name of the ember sky. Only what the swatch says; a save stores its ' +
       'key.',
     en: 'ember',
-    fa: '',
+    fa: 'اخگری',
   },
   'abode.sky.teal': {
     note:
       'Name of the teal sky. Only what the swatch says; a save stores its ' +
       'key.',
     en: 'teal',
-    fa: '',
+    fa: 'سبزآبی',
   },
   'abode.sky.violet': {
     note:
@@ -563,7 +563,7 @@ const DECK = {
   'map.planet': {
     note: 'Screen-reader name for the planet shown on the Map.',
     en: 'the planet, region by region',
-    fa: '',
+    fa: 'سیاره، منطقه به منطقه',
   },
 
   // ── The Market ────────────────────────────────────────────────────────
@@ -580,53 +580,53 @@ const DECK = {
   'market.buyLabel': {
     note: 'Screen-reader name of the buy button. {price} is the cost in fungi.',
     en: 'buy a curiosity for {price} fungi',
-    fa: '',
+    fa: 'خرید یک شگفتی با {price} قارچ',
   },
 
   // ── The library and the reading popup ─────────────────────────────────
   'bookcase.shelf': {
     note: 'Screen-reader name for the bookshelf.',
     en: 'the bookshelf',
-    fa: '',
+    fa: 'قفسهٔ کتاب',
   },
   'bookcase.read': {
     note: 'Screen-reader name of a book you can open. {label} is the book.',
     en: 'read {label}',
-    fa: '',
+    fa: 'خواندن {label}',
   },
   'bookcase.spread': {
     note: 'Screen-reader name of the open two-page view. {label} is the book.',
     en: 'the open double-page spread of {label}',
-    fa: '',
+    fa: 'دو صفحهٔ باز {label}',
   },
   'bookcase.close': {
     note: 'Button that closes the reading popup.',
     en: 'close',
-    fa: '',
+    fa: 'بستن',
   },
 
   // ── The Guest Book ────────────────────────────────────────────────────
   'guestbook.friends': {
     note: 'Screen-reader name for the list of friends.',
     en: 'friends',
-    fa: '',
+    fa: 'دوست‌ها',
   },
   'guestbook.unnamedFriend': {
     note: 'Stand-in name for a friend who has no name yet.',
     en: 'friend',
-    fa: '',
+    fa: 'دوست',
   },
   'guestbook.close': {
     note: "Button that closes a friend's card.",
     en: 'close',
-    fa: '',
+    fa: 'بستن',
   },
 
   // ── The reveal popups (names only; the words inside are story) ────────
   'reveal.firstArrival': {
     note: 'Screen-reader name of the popup for the very first arrival.',
     en: 'a first arrival',
-    fa: '',
+    fa: 'اولین رسیده',
   },
   'reveal.friendArrives': {
     note: 'Screen-reader name of the popup when a friend arrives.',
@@ -636,7 +636,7 @@ const DECK = {
   'reveal.onward': {
     note: 'Button that dismisses a reveal popup and goes on.',
     en: 'onward',
-    fa: '',
+    fa: 'ادامه',
   },
   'reveal.dropArrival': {
     note: 'Screen-reader name of the popup for an ordinary drop arriving.',
@@ -1349,7 +1349,7 @@ const DECK = {
   'map.regionsKnown': {
     note: 'Caption under the Map. {known} regions out of {total}.',
     en: '{known} of {total} regions known',
-    fa: '',
+    fa: '{known} منطقه از {total} منطقه شناخته شده',
   },
   'market.owned': {
     note: 'Tag on a market curiosity you already have. {n} is how many.',
@@ -1377,37 +1377,37 @@ const DECK = {
   'arrival.flora': {
     note: 'Plain name of an arriving flora drop.',
     en: 'a flora find',
-    fa: '',
+    fa: 'یک یافتهٔ گیاهی',
   },
   'arrival.magazine': {
     note: 'Plain name of an arriving magazine.',
     en: 'a magazine',
-    fa: '',
+    fa: 'یک مجله',
   },
   'arrival.novel': {
     note: 'Plain name of an arriving novel.',
     en: 'a novel',
-    fa: '',
+    fa: 'یک رمان',
   },
   'arrival.dictionary': {
     note: 'Plain name of an arriving dictionary.',
     en: 'a dictionary',
-    fa: '',
+    fa: 'یک فرهنگ لغت',
   },
   'arrival.fungusOne': {
     note: 'Plain name of an arrival of exactly one fungus.',
     en: '1 fungus',
-    fa: '',
+    fa: '1 قارچ',
   },
   'arrival.fungi': {
     note: 'Plain name of an arrival of several fungi. {n} is how many.',
     en: '{n} fungi',
-    fa: '',
+    fa: '{n} قارچ',
   },
   'arrival.friend': {
     note: 'Plain name of an arriving friend.',
     en: 'a friend',
-    fa: '',
+    fa: 'یک دوست',
   },
   'arrival.something': {
     note: 'Name used when the kind of drop is not known.',
@@ -1417,14 +1417,14 @@ const DECK = {
   'arrival.and': {
     note: 'The word that joins names in a list ("a novel and 3 fungi").',
     en: 'and',
-    fa: '',
+    fa: 'و',
   },
   'arrival.note': {
     note:
       'Quiet note beside the tapped habit. {list} is the arrival names ' +
       'joined by the word above.',
     en: 'you came across {list}',
-    fa: '',
+    fa: 'به {list} برخوردی',
   },
 
   // ── The six charm names ───────────────────────────────────────────────
