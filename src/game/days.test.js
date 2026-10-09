@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { translate } from '../content/ui.js'
 import {
   addDays,
   beforeCutoff,
@@ -269,7 +270,7 @@ describe('the Persian calendar — display only (T6.18)', () => {
   it('the Farsi date line and short dates are Jalali; English never is', () => {
     // 2026-10-09 is 17 Mehr 1405 (a Friday).
     expect(calendarDateLine(at(2026, 10, 9, 9), 'fa')).toBe(
-      'FRIDAY 17 Mehr 1405',
+      `${translate('fa', 'weekday.fri.long')} 17 ${translate('fa', 'jmonth.mehr')} 1405`,
     )
     expect(shortDate('2026-10-09', 'fa')).toBe('17-07-05')
     expect(shortDate('2026-10-09')).toBe('09-10-26')

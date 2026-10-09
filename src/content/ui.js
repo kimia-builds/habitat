@@ -337,75 +337,75 @@ const DECK = {
   'fieldNotes.nothingYet': {
     note: 'Shown on the field notes when no days are recorded yet.',
     en: 'nothing recorded yet',
-    fa: '',
+    fa: 'هنوز چیزی ثبت نشده',
   },
   'fieldNotes.stillUnfolding': {
     note: 'Label on a week that has not finished.',
     en: 'still unfolding',
-    fa: '',
+    fa: 'هنوز در جریان است',
   },
   'fieldNotes.noHabitsThatWeek': {
     note: 'Shown on a week in the field notes in which no habits existed.',
     en: 'No habits existed during this week.',
-    fa: '',
+    fa: 'در این هفته هیچ عادتی وجود نداشت.',
   },
   'fieldNotes.tasksCompleted': {
     note: 'Heading of the tasks-completed section of the field notes.',
     en: 'tasks completed',
-    fa: '',
+    fa: 'یک‌باره‌های انجام‌شده',
   },
   'fieldNotes.graphs': {
     note: 'Heading of the graphs section of the field notes.',
     en: 'graphs',
-    fa: '',
+    fa: 'نمودارها',
   },
   'fieldNotes.habitTooYoung': {
     note: 'Shown instead of a graph for a habit that has too little history.',
     en: 'habit is too young',
-    fa: '',
+    fa: 'این عادت هنوز خیلی تازه است',
   },
   'fieldNotes.graphLabel': {
     note:
       "Screen-reader name of one habit's graph. {habit} is its name, {zoom} " +
       'the zoom choice.',
     en: '{habit}, completions {zoom}',
-    fa: '',
+    fa: '{habit}، انجام‌ها: {zoom}',
   },
   'cameo.open': {
     note:
       "Screen-reader name of a friend's visit that opens the record it is " +
       'about. Never shown.',
     en: 'see the record this is about',
-    fa: '',
+    fa: 'دیدن رکوردی که این دیدار دربارهٔ آن است',
   },
   'fieldNotes.streak': {
     note:
       "Streak beside a week's row and in the spotlight. {n} is a number, " +
       '{unit} one of the two unit words below.',
     en: '{n}-{unit} streak',
-    fa: '',
+    fa: 'زنجیرهٔ {n} {unit}',
   },
   'fieldNotes.unitDay': {
     note: 'The word "day" inside a streak.',
     en: 'day',
-    fa: '',
+    fa: 'روز',
   },
   'fieldNotes.unitWeek': {
     note: 'The word "week" inside a streak.',
     en: 'week',
-    fa: '',
+    fa: 'هفته',
   },
   'fieldNotes.spotlightTitle': {
     note:
       "Announcement of the blackout a friend's visit opens when a record " +
       'fell.',
     en: 'a record fell today',
-    fa: '',
+    fa: 'امروز یک رکورد شکسته شد',
   },
   'fieldNotes.spotlightDismiss': {
     note: 'Button that closes that blackout and returns to the week.',
     en: 'close and see the week',
-    fa: '',
+    fa: 'بستن و دیدن هفته',
   },
 
   // ── The arrival shelf ─────────────────────────────────────────────────
@@ -795,121 +795,121 @@ const DECK = {
   'weekday.mon.long': {
     note: 'Monday, in full, on the date line.',
     en: 'MONDAY',
-    fa: '',
+    fa: 'دوشنبه',
   },
   'weekday.tue.long': {
     note: 'Tuesday, in full, on the date line.',
     en: 'TUESDAY',
-    fa: '',
+    fa: 'سه‌شنبه',
   },
   'weekday.wed.long': {
     note: 'Wednesday, in full, on the date line.',
     en: 'WEDNESDAY',
-    fa: '',
+    fa: 'چهارشنبه',
   },
   'weekday.thu.long': {
     note: 'Thursday, in full, on the date line.',
     en: 'THURSDAY',
-    fa: '',
+    fa: 'پنجشنبه',
   },
   'weekday.fri.long': {
     note: 'Friday, in full, on the date line.',
     en: 'FRIDAY',
-    fa: '',
+    fa: 'جمعه',
   },
   'weekday.sat.long': {
     note: 'Saturday, in full, on the date line.',
     en: 'SATURDAY',
-    fa: '',
+    fa: 'شنبه',
   },
   'weekday.sun.long': {
     note: 'Sunday, in full, on the date line.',
     en: 'SUNDAY',
-    fa: '',
+    fa: 'یکشنبه',
   },
   'jmonth.farvardin': {
     note:
       'The first month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Farvardin',
-    fa: '',
+    fa: 'فروردین',
   },
   'jmonth.ordibehesht': {
     note:
       'The second month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Ordibehesht',
-    fa: '',
+    fa: 'اردیبهشت',
   },
   'jmonth.khordad': {
     note:
       'The third month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Khordad',
-    fa: '',
+    fa: 'خرداد',
   },
   'jmonth.tir': {
     note:
       'The fourth month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Tir',
-    fa: '',
+    fa: 'تیر',
   },
   'jmonth.mordad': {
     note:
       'The fifth month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Mordad',
-    fa: '',
+    fa: 'مرداد',
   },
   'jmonth.shahrivar': {
     note:
       'The sixth month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Shahrivar',
-    fa: '',
+    fa: 'شهریور',
   },
   'jmonth.mehr': {
     note:
       'The seventh month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Mehr',
-    fa: '',
+    fa: 'مهر',
   },
   'jmonth.aban': {
     note:
       'The eighth month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Aban',
-    fa: '',
+    fa: 'آبان',
   },
   'jmonth.azar': {
     note:
       'The ninth month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Azar',
-    fa: '',
+    fa: 'آذر',
   },
   'jmonth.dey': {
     note:
       'The tenth month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Dey',
-    fa: '',
+    fa: 'دی',
   },
   'jmonth.bahman': {
     note:
       'The eleventh month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Bahman',
-    fa: '',
+    fa: 'بهمن',
   },
   'jmonth.esfand': {
     note:
       'The twelfth month of the Persian (Jalali) calendar, on the date line ' +
       'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
     en: 'Esfand',
-    fa: '',
+    fa: 'اسفند',
   },
   'month.jan': {
     note: 'January, on the date line.',
@@ -995,84 +995,84 @@ const DECK = {
       "Monday, short: habit form weekday boxes, a tile's schedule line and " +
       'check-in day headings.',
     en: 'mon',
-    fa: '',
+    fa: 'دوشنبه',
   },
   'weekday.tue.short': {
     note:
       "Tuesday, short: habit form weekday boxes, a tile's schedule line and " +
       'check-in day headings.',
     en: 'tue',
-    fa: '',
+    fa: 'سه‌شنبه',
   },
   'weekday.wed.short': {
     note:
       "Wednesday, short: habit form weekday boxes, a tile's schedule line " +
       'and check-in day headings.',
     en: 'wed',
-    fa: '',
+    fa: 'چهارشنبه',
   },
   'weekday.thu.short': {
     note:
       "Thursday, short: habit form weekday boxes, a tile's schedule line " +
       'and check-in day headings.',
     en: 'thu',
-    fa: '',
+    fa: 'پنجشنبه',
   },
   'weekday.fri.short': {
     note:
       "Friday, short: habit form weekday boxes, a tile's schedule line and " +
       'check-in day headings.',
     en: 'fri',
-    fa: '',
+    fa: 'جمعه',
   },
   'weekday.sat.short': {
     note:
       "Saturday, short: habit form weekday boxes, a tile's schedule line " +
       'and check-in day headings.',
     en: 'sat',
-    fa: '',
+    fa: 'شنبه',
   },
   'weekday.sun.short': {
     note:
       "Sunday, short: habit form weekday boxes, a tile's schedule line and " +
       'check-in day headings.',
     en: 'sun',
-    fa: '',
+    fa: 'یکشنبه',
   },
   'weekday.mon.tiny': {
     note: 'Monday, two letters: column head in the field notes.',
     en: 'mo',
-    fa: '',
+    fa: 'د',
   },
   'weekday.tue.tiny': {
     note: 'Tuesday, two letters: column head in the field notes.',
     en: 'tu',
-    fa: '',
+    fa: 'س',
   },
   'weekday.wed.tiny': {
     note: 'Wednesday, two letters: column head in the field notes.',
     en: 'we',
-    fa: '',
+    fa: 'چ',
   },
   'weekday.thu.tiny': {
     note: 'Thursday, two letters: column head in the field notes.',
     en: 'th',
-    fa: '',
+    fa: 'پ',
   },
   'weekday.fri.tiny': {
     note: 'Friday, two letters: column head in the field notes.',
     en: 'fr',
-    fa: '',
+    fa: 'ج',
   },
   'weekday.sat.tiny': {
     note: 'Saturday, two letters: column head in the field notes.',
     en: 'sa',
-    fa: '',
+    fa: 'ش',
   },
   'weekday.sun.tiny': {
     note: 'Sunday, two letters: column head in the field notes.',
     en: 'su',
-    fa: '',
+    fa: 'ی',
   },
 
   // ── Schedules and difficulty ──────────────────────────────────────────

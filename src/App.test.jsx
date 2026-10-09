@@ -2011,7 +2011,10 @@ describe('field notes (T2.3)', () => {
     // plays no part.
     for (const [language, expected] of [
       ['en', 'mon/sat'],
-      ['fa', 'sat/mon'],
+      [
+        'fa',
+        `${translate('fa', 'weekday.sat.short')}/${translate('fa', 'weekday.mon.short')}`,
+      ],
     ]) {
       seed({
         checkedInThrough: '2026-07-14',
