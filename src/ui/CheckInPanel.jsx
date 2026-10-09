@@ -28,8 +28,8 @@ import { WEEKDAY_KEYS } from '../content/ui.js'
 // lowercase like the rest of the interface, then the same day-first
 // short date the field notes already use (days.js shortDate).
 // The weekday word comes from the copy deck's short names.
-const dayLabel = (dayKey, t) =>
-  `${t(`weekday.${WEEKDAY_KEYS[isoWeekday(dayKey) - 1]}.short`)} ${shortDate(dayKey)}`
+const dayLabel = (dayKey, t, language) =>
+  `${t(`weekday.${WEEKDAY_KEYS[isoWeekday(dayKey) - 1]}.short`)} ${shortDate(dayKey, language)}`
 
 // Which habits a given past day offers, seen through the charm lens.
 // The lens is a view, never a filter on what counts: a hidden habit is
@@ -125,7 +125,7 @@ function CheckInPanel({
   onUnmark,
   onDone,
 }) {
-  const { t } = useText()
+  const { t, language } = useText()
   // The charm lens, and whether a long yesterday is showing in full.
   // Both are plain component state: a check-in is one sitting, and the
   // next one starts fresh with everything shown.
@@ -211,7 +211,7 @@ function CheckInPanel({
           <p className="habit-meta">{t('checkin.earlierDays')}</p>
           {older.map((day) => (
             <details key={day}>
-              <summary>{dayLabel(day, t)}</summary>
+              <summary>{dayLabel(day, t, language)}</summary>
               <DayRows
                 listed={listedOn(habits, completions, day, cutoffHour, filter)}
                 completions={completions}

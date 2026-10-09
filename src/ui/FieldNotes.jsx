@@ -104,7 +104,7 @@ function FieldNotes({
   spotlight = null,
   onDismissSpotlight = () => {},
 }) {
-  const { t } = useText()
+  const { t, language } = useText()
   const today = dayKeyFromTimestamp(now, cutoffHour)
   const thisWeek = weekStart(today, weekShape)
   const lastCompletedWeek = addDays(thisWeek, -7)
@@ -209,7 +209,8 @@ function FieldNotes({
             sit inline, where it lengthened the middle of the row enough
             to push "later" onto a second line and out of its corner. */}
           <span className="week-range">
-            {shortDate(notes.weekStartKey)} – {shortDate(notes.weekEnd)}
+            {shortDate(notes.weekStartKey, language)} –{' '}
+            {shortDate(notes.weekEnd, language)}
             {notes.isCurrent && (
               <em className="week-unfolding">
                 {t('fieldNotes.stillUnfolding')}

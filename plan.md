@@ -464,25 +464,10 @@ tracker. Everything after this is delight, informed by real use.
       T6.19; the number is `size-adjust` in index.css.)_ Vazirmatn,
       bundled, loaded only for Farsi; letterspacing and casing off for
       Farsi; digits show as ۰–۹ in Farsi mode.
-- [ ] **T6.18 The Jalali calendar.** Farsi speakers expect Jalali dates
-      — today is 1405, not 2026. **Display only**: day keys stay
-      `YYYY-MM-DD` Gregorian and go on driving every streak, so nothing
-      in the record changes and no history is touched. Only the date
-      line and the field notes' labels render Jalali.
-      **No fetching and no lookup table (verified 2026-10-09).** The
-      browser computes the Persian date itself. Kimia's worry was that
-      Nowruz falls on the 20th or 21st depending on the year; the
-      browser's built-in Persian calendar was checked against the real
-      rule (Nowruz = the day the spring equinox is before noon in Tehran,
-      else the next day) for every year 1990–2100 with zero mismatches,
-      and 29 Feb is not an issue because each date converts on its own.
-      Caveats: it is a formula, not a live lookup, and 1992, 2091 and
-      2095 were too close to noon to settle. So: a test pins known
-      Nowruz dates and Esfand lengths (29 vs 30 days), failing loudly if
-      a browser ever disagrees. Persian digits belong to T6.17.
-      Contained enough to ride WITH the language rather than needing its
-      own setting — unlike the week, which is why they are separate
-      tasks.
+- [x] **T6.18 The Jalali calendar.** _(done 2026-10-09; build notes in
+      history.md.)_ With Farsi on, the date line, the field notes' week
+      range and the check-in panel's day labels show Jalali dates, worked
+      out by the browser (no table, no fetching); day keys stay Gregorian.
 - [ ] **T6.19 The translation pass.** Last, on purpose: by here Habitat
       already WORKS in Farsi shape — right to left, right lettering,
       right calendar — so the words land in a finished frame and layout

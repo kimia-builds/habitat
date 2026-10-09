@@ -7353,3 +7353,17 @@ and recorded in spec.md's decisions log._
   (0–9). The digits come from the Farsi font, which only applies under
   `lang='fa'`, so an Arabic mode would get Western digits by default —
   it must simply never be given that font.
+
+- 2026-10-09 (T6.18, build notes): **Farsi shows Jalali dates.** Display
+  only: day keys stay Gregorian and drive every streak, nothing stored
+  changed. `jalaliDate()` in `days.js` asks the browser's own Persian
+  calendar (no table, no fetching); `shortDate` and `calendarDateLine`
+  take the language and switch calendar via `LANGUAGE_CALENDAR` in the
+  copy deck (en → Gregorian, fa → Jalali). **Kimia's calls:** the 12
+  Jalali month names go in the deck as `jmonth.*` slots with Latin
+  spellings in the English column (Farvardin … Esfand) and Farsi blank
+  for her T6.19 review — so Farsi mode reads e.g. "FRIDAY ۱۷ Mehr ۱۴۰۵"
+  until then; and the check-in panel's day labels go Jalali too, so the
+  app never shows two calendars at once. Tests in `days.test.js` pin
+  Nowruz for 2020–2026, Esfand lengths (30 days in 1403, 29 in 1404) and
+  29 Feb, so a browser that ever disagrees fails loudly.

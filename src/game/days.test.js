@@ -9,6 +9,7 @@ import {
   isValidDayKey,
   isoWeekday,
   shortDate,
+  jalaliDate,
   validateCutoffHour,
   weekStart,
   weekdayOrder,
@@ -230,5 +231,48 @@ describe('formatHourAmPm — how the note says the cutoff', () => {
     expect(() => formatHourAmPm(24)).toThrow()
     expect(() => formatHourAmPm(-1)).toThrow()
     expect(() => formatHourAmPm(3.5)).toThrow()
+  })
+})
+
+describe('the Persian calendar — display only (T6.18)', () => {
+  it('Nowruz (1 Farvardin) lands on the right Gregorian day', () => {
+    // Known real dates: the 20th in 2020 and 2024, the 21st otherwise.
+    const nowruz = [
+      [2020, 20, 1399],
+      [2021, 21, 1400],
+      [2022, 21, 1401],
+      [2023, 21, 1402],
+      [2024, 20, 1403],
+      [2025, 21, 1404],
+      [2026, 21, 1405],
+    ]
+    for (const [year, day, jalaliYear] of nowruz) {
+      expect(jalaliDate(year, 3, day)).toEqual({
+        year: jalaliYear,
+        month: 1,
+        day: 1,
+      })
+      // ...and the day before is the last day of the old year.
+      expect(jalaliDate(year, 3, day - 1).month).toBe(12)
+    }
+  })
+
+  it('Esfand is 30 days in a leap year and 29 otherwise', () => {
+    expect(jalaliDate(2025, 3, 20)).toEqual({ year: 1403, month: 12, day: 30 })
+    expect(jalaliDate(2026, 3, 20)).toEqual({ year: 1404, month: 12, day: 29 })
+  })
+
+  it('29 February converts like any other day', () => {
+    expect(jalaliDate(2024, 2, 29)).toEqual({ year: 1402, month: 12, day: 10 })
+  })
+
+  it('the Farsi date line and short dates are Jalali; English never is', () => {
+    // 2026-10-09 is 17 Mehr 1405 (a Friday).
+    expect(calendarDateLine(at(2026, 10, 9, 9), 'fa')).toBe(
+      'FRIDAY 17 Mehr 1405',
+    )
+    expect(shortDate('2026-10-09', 'fa')).toBe('17-07-05')
+    expect(shortDate('2026-10-09')).toBe('09-10-26')
+    expect(calendarDateLine(at(2026, 10, 9, 9))).toBe('FRIDAY 9 OCT 2026')
   })
 })

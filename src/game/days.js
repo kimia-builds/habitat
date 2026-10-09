@@ -13,6 +13,8 @@
 
 import {
   DEFAULT_LANGUAGE,
+  JALALI_MONTH_KEYS,
+  LANGUAGE_CALENDAR,
   MONTH_KEYS,
   WEEKDAY_KEYS,
   translate,
@@ -157,10 +159,42 @@ export function weekStart(dayKey, shape = DEFAULT_WEEK_SHAPE) {
 // enough that a whole week range fits on one line between the field
 // notes' earlier / later buttons. Pure string surgery: a day key is
 // already a local calendar date, so there is no clock to consult.
-export function shortDate(dayKey) {
+export function shortDate(dayKey, language = DEFAULT_LANGUAGE) {
   validateDayKey(dayKey)
   const [year, month, day] = dayKey.split('-')
+  if (LANGUAGE_CALENDAR[language] === 'jalali') {
+    const j = jalaliDate(Number(year), Number(month), Number(day))
+    const two = (n) => String(n).padStart(2, '0')
+    return `${two(j.day)}-${two(j.month)}-${two(j.year % 100)}`
+  }
   return `${day}-${month}-${year.slice(2)}`
+}
+
+// --- The Persian (Jalali) calendar (T6.18) -----------------------------
+//
+// Display only. The browser already knows the Persian calendar, so we
+// ask it rather than keeping a table of year lengths: Nowruz moves
+// between the 20th and 21st of March and Esfand has 29 or 30 days, and
+// the browser works both out per date. Each date converts on its own,
+// so leap days need no special care. A test pins known Nowruz dates and
+// Esfand lengths, so a browser that ever disagrees fails loudly.
+// Everything is read in UTC at noon: the Gregorian date is already
+// decided by the caller, and noon keeps clock changes out of it.
+const PERSIAN_CALENDAR = new Intl.DateTimeFormat('en-u-ca-persian-nu-latn', {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  timeZone: 'UTC',
+})
+
+// A Gregorian year / month (1–12) / day as { year, month, day } in the
+// Jalali calendar, e.g. (2026, 10, 9) → 1405, 7, 17.
+export function jalaliDate(year, month, day) {
+  const parts = PERSIAN_CALENDAR.formatToParts(
+    new Date(Date.UTC(year, month - 1, day, 12)),
+  )
+  const get = (type) => Number(parts.find((p) => p.type === type).value)
+  return { year: get('year'), month: get('month'), day: get('day') }
 }
 
 // --- The calendar date display (T4.5) ----------------------------------
@@ -192,6 +226,22 @@ const SUNDAY_FIRST_KEYS = ['sun', ...WEEKDAY_KEYS.slice(0, 6)]
 // parts is the deck's `date.line` slot.
 export function calendarDateLine(timestampMs, language = DEFAULT_LANGUAGE) {
   const moment = new Date(timestampMs)
+  if (LANGUAGE_CALENDAR[language] === 'jalali') {
+    const j = jalaliDate(
+      moment.getFullYear(),
+      moment.getMonth() + 1,
+      moment.getDate(),
+    )
+    return translate(language, 'date.line', {
+      weekday: translate(
+        language,
+        `weekday.${SUNDAY_FIRST_KEYS[moment.getDay()]}.long`,
+      ),
+      day: j.day,
+      month: translate(language, `jmonth.${JALALI_MONTH_KEYS[j.month - 1]}`),
+      year: j.year,
+    })
+  }
   return translate(language, 'date.line', {
     weekday: translate(
       language,

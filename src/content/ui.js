@@ -827,6 +827,90 @@ const DECK = {
     en: 'SUNDAY',
     fa: '',
   },
+  'jmonth.farvardin': {
+    note:
+      'The first month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Farvardin',
+    fa: '',
+  },
+  'jmonth.ordibehesht': {
+    note:
+      'The second month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Ordibehesht',
+    fa: '',
+  },
+  'jmonth.khordad': {
+    note:
+      'The third month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Khordad',
+    fa: '',
+  },
+  'jmonth.tir': {
+    note:
+      'The fourth month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Tir',
+    fa: '',
+  },
+  'jmonth.mordad': {
+    note:
+      'The fifth month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Mordad',
+    fa: '',
+  },
+  'jmonth.shahrivar': {
+    note:
+      'The sixth month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Shahrivar',
+    fa: '',
+  },
+  'jmonth.mehr': {
+    note:
+      'The seventh month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Mehr',
+    fa: '',
+  },
+  'jmonth.aban': {
+    note:
+      'The eighth month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Aban',
+    fa: '',
+  },
+  'jmonth.azar': {
+    note:
+      'The ninth month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Azar',
+    fa: '',
+  },
+  'jmonth.dey': {
+    note:
+      'The tenth month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Dey',
+    fa: '',
+  },
+  'jmonth.bahman': {
+    note:
+      'The eleventh month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Bahman',
+    fa: '',
+  },
+  'jmonth.esfand': {
+    note:
+      'The twelfth month of the Persian (Jalali) calendar, on the date line ' +
+      'when Farsi is on. A blank Farsi slot shows the Latin spelling.',
+    en: 'Esfand',
+    fa: '',
+  },
   'month.jan': {
     note: 'January, on the date line.',
     en: 'JAN',
@@ -2459,6 +2543,27 @@ export const MONTH_KEYS = [
   'nov',
   'dec',
 ]
+
+// The twelve months of the Persian (Jalali) calendar, as the key
+// fragments the jmonth.* slots are named with (T6.18).
+export const JALALI_MONTH_KEYS = [
+  'farvardin',
+  'ordibehesht',
+  'khordad',
+  'tir',
+  'mordad',
+  'shahrivar',
+  'mehr',
+  'aban',
+  'azar',
+  'dey',
+  'bahman',
+  'esfand',
+]
+
+// Which calendar each language shows dates in. Display only: day keys
+// stay Gregorian and drive every streak whatever is chosen here.
+export const LANGUAGE_CALENDAR = { en: 'gregorian', fa: 'jalali' }
 
 // Is this a language Habitat actually speaks?
 export function isLanguage(value) {
