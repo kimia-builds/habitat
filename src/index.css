@@ -595,6 +595,12 @@ body {
 .market-stall {
   list-style: none;
   display: flex;
+  /* Eight real drawings of very different sizes (the playtest stall,
+     2026-10-09): they sit side by side and wrap onto a second row
+     rather than squeezing each one to an equal share. */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
   gap: var(--space-3);
   padding: 0;
   margin: 0;
@@ -602,7 +608,8 @@ body {
 }
 
 .market-item {
-  flex: 1;
+  flex: 0 0 auto;
+  min-width: 7.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -610,6 +617,15 @@ body {
   border: 1px solid var(--border-quiet);
   border-radius: 0.4rem;
   padding: var(--space-4) var(--space-2);
+}
+
+/* The drawn curiosities stand on one line so their prices line up; the
+   room is as tall as the tallest (a 300px column at half scale = 150px). */
+.market-figure {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 160px;
 }
 
 .market-glyph {

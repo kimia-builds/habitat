@@ -2611,7 +2611,9 @@ describe('the Market (T4.3b)', () => {
     fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
     expect(screen.getByRole('heading', { name: 'local market' })).toBeDefined()
     fireEvent.click(
-      screen.getByRole('button', { name: 'buy a curiosity for 12 fungi' }),
+      screen.getAllByRole('button', {
+        name: 'buy a curiosity for 12 fungi',
+      })[0],
     )
     expect(wallet()).toBe('2') // the wallet falls by exactly the price
     expect(screen.getByText('×1 at home')).toBeDefined()
@@ -2642,23 +2644,28 @@ describe('the Market (T4.3b)', () => {
     render(<App />)
     fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
     expect(
-      screen.getByRole('button', { name: 'buy a curiosity for 18 fungi' })
+      screen.getAllByRole('button', { name: 'buy a curiosity for 18 fungi' })[0]
         .disabled,
     ).toBe(true)
     fireEvent.click(
-      screen.getByRole('button', { name: 'buy a curiosity for 6 fungi' }),
+      screen.getAllByRole('button', { name: 'buy a curiosity for 6 fungi' })[0],
     )
     expect(wallet()).toBe('8')
     expect(stored().purchases).toHaveLength(1)
   })
 
-  it('a fresh world shows a bare stall — no prose, nothing to buy', () => {
-    seedWorld('market-seed') // no completions at all: no lived days, no regions
+  // TEMPORARY (Kimia, 2026-10-09): until the Map work lands, even a
+  // fresh world's stall carries all eight drawn curiosities. When the
+  // stall goes back to growing with the regions, this test goes back to
+  // asserting a bare stall for a world with no lived days.
+  it('a fresh world shows all eight drawn curiosities, none affordable', () => {
+    seedWorld('market-seed') // no completions at all: an empty wallet
     render(<App />)
     fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
     expect(screen.getByRole('heading', { name: 'local market' })).toBeDefined()
-    expect(screen.queryByRole('list')).toBeNull()
-    expect(screen.queryByRole('button', { name: /buy/ })).toBeNull()
+    const buttons = screen.getAllByRole('button', { name: /^buy a curiosity/ })
+    expect(buttons).toHaveLength(8)
+    expect(buttons.every((button) => button.disabled)).toBe(true)
   })
 })
 

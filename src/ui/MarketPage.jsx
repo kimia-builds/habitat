@@ -15,9 +15,17 @@
 // rotation itself is never explained on the page: nothing here is
 // missable, so there is nothing to countdown to (no FOMO, spec §5).
 
+import { DRAWN_CURIOSITIES } from '../game/market.js'
+import Curiosity, { CuriosityDefs } from './Curiosity.jsx'
 import DropGlyph from './DropGlyph.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
 import { useText } from './language.jsx'
+
+// THE STALL'S BASE: half the Abode's, so a large oval stands 200px wide
+// here against 400 at home, and all eight fit the 1000-wide frame in two
+// rows. Every curiosity answers to this one number, so they stay true to
+// each other (objectCanon.js); only the Abode shows them at full size.
+const MARKET_BASE_PX = 172.5 / 2
 
 function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
   const { t } = useText()
@@ -42,6 +50,9 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
           frame — no prose, no apology (Kimia's rule for these pages). */}
         <div className="world-canvas-window">
           <div className="market-scene world-canvas">
+            <CuriosityDefs
+              keys={stall.map((object) => DRAWN_CURIOSITIES[object.key])}
+            />
             {stall.length > 0 && (
               <ul className="market-stall" aria-label={t('market.stall')}>
                 {stall.map((object) => {
@@ -49,11 +60,21 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
                   const affordable = wallet >= object.price
                   return (
                     <li key={object.key} className="market-item">
-                      <ObjectGlyph
-                        objectKey={object.key}
-                        worldSeed={worldSeed}
-                        className="market-glyph"
-                      />
+                      {DRAWN_CURIOSITIES[object.key] ? (
+                        <span className="market-figure">
+                          <Curiosity
+                            objectKey={DRAWN_CURIOSITIES[object.key]}
+                            base={MARKET_BASE_PX}
+                            unit="px"
+                          />
+                        </span>
+                      ) : (
+                        <ObjectGlyph
+                          objectKey={object.key}
+                          worldSeed={worldSeed}
+                          className="market-glyph"
+                        />
+                      )}
                       <span className="market-price">
                         <DropGlyph
                           kind="fungi"

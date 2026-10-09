@@ -7458,3 +7458,35 @@ and recorded in spec.md's decisions log._
   T6.1; the pool goes back to growing with the Map when the Map work lands.
   (The plan had said "six drawings"; there are eight, on six canon sizes,
   because the three stones share one size.)
+
+## T5.3j build notes — the curiosities reach the game (2026-10-09)
+
+The Market stall and the Abode now draw the eight finished curiosities
+instead of ObjectGlyph.jsx's line forms. What was built:
+
+- **Which slot wears which drawing** — `DRAWN_CURIOSITIES` in
+  `game/market.js` maps the first eight pool slots (all of regions 0 and 1,
+  the first two of region 2) to the eight recipe keys. Within a region the
+  slot's index is its price tier, so the placeholder prices are 6 / 12 / 18
+  per region: thin column 6, smoke 12, tall column 18; stone 6, small oval
+  12, large oval 18; stone 6, stone 12. (The two stones in the last region
+  are the same size at different prices — a placeholder wrinkle for T6.1,
+  which prices by size.) Slots with no drawing, and any placeholder object
+  already owned, still draw the old glyph.
+- **The temporary stall** — `playtestStall()` returns all eight, always;
+  App.jsx uses it in place of the pool and rotation. The real pool and
+  rotation code is untouched and tested. Delete the one function and restore
+  the two lines in App.jsx when the Map work lands.
+- **The Market** shows them at half the Abode's scale (a large oval 200px
+  wide against 400 at home) so all eight fit the 1000px frame, on a row of
+  six and a row of two; the stall wraps rather than squeezing items to equal
+  shares.
+- **The Abode** draws them at full canon size from the same table as the
+  flora and friends. A thin column is 10px wide, so each gets an invisible
+  44px-wide target behind it to be pickable. Rotate, sell and the held
+  growth work as for anything else.
+- Tests: the rotate tests now use an undrawn slot (`5:1`) to keep their
+  fixed centre; one App test now expects eight on a fresh world; the buy
+  tests take the first of several same-priced buttons; new tests cover the
+  playtest stall, the slot-to-recipe map, and a drawn curiosity's canon size
+  in the Abode. Whole suite 1141 passing.

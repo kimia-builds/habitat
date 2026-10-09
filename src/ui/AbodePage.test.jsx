@@ -39,7 +39,9 @@ const item = (completionId, over = {}) => ({
 const objectItem = (id, over = {}) => ({
   kind: 'object',
   id,
-  objectKey: '0:1',
+  // A slot with no drawing yet, so these tests keep the placeholder
+  // glyph's known size; the drawn curiosities have their own tests below.
+  objectKey: '5:1',
   price: 12,
   boughtAt: 5000,
   x: 0.3,
@@ -241,6 +243,23 @@ describe('owned objects on the ground (T4.3b)', () => {
     )
     expect(screen.getByRole('button', { name: 'a flora find' })).toBeDefined()
     expect(screen.getByRole('button', { name: 'a curiosity' })).toBeDefined()
+  })
+
+  it('stands a DRAWN curiosity at its canon size, true to the flora around it', () => {
+    // '1:2' is the large oval: 400 x 300 where the Abode's base is 172.5.
+    render(
+      <AbodePage
+        finds={[]}
+        items={[objectItem('p1', { objectKey: '1:2' })]}
+        worldSeed="seed"
+        {...defaults()}
+      />,
+    )
+    const drawing = screen
+      .getByRole('button', { name: 'a curiosity' })
+      .querySelector('svg')
+    expect(Number(drawing.getAttribute('width'))).toBeCloseTo(400, 0)
+    expect(Number(drawing.getAttribute('height'))).toBeCloseTo(300, 0)
   })
 
   it('a click holds an object, revealing its name and the quiet sell button — never compost', () => {

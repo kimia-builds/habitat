@@ -11,10 +11,13 @@ import {
   validatePurchases,
   walletBalance,
   walletTrueBalance,
+  DRAWN_CURIOSITIES,
+  playtestStall,
 } from './market.js'
 import {
   MAP_REGION_COUNT,
   MARKET_OBJECTS_PER_REGION,
+  MARKET_PRICE_TIERS,
   MARKET_STALL_SIZE,
 } from './constants.js'
 
@@ -324,5 +327,23 @@ describe('validatePurchases', () => {
         { id: 'p1', objectKey: '0:2', price: 18, boughtAt: 2 },
       ]),
     ).toThrow(/share an id/)
+  })
+})
+
+// TEMPORARY (Kimia, 2026-10-09): the stall of all eight drawn curiosities.
+// Delete with playtestStall() when the Map work lands.
+describe('the playtest stall', () => {
+  it('offers exactly the eight drawn curiosities, each once, at a real tier', () => {
+    const stall = playtestStall()
+    expect(stall).toHaveLength(8)
+    expect(new Set(stall.map((object) => object.key)).size).toBe(8)
+    for (const object of stall) {
+      expect(DRAWN_CURIOSITIES[object.key]).toBeDefined()
+      expect(MARKET_PRICE_TIERS).toContain(object.price)
+    }
+  })
+
+  it('draws the eight different looks, none twice', () => {
+    expect(new Set(Object.values(DRAWN_CURIOSITIES)).size).toBe(8)
   })
 })

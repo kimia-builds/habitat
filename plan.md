@@ -273,10 +273,14 @@ tracker. Everything after this is delight, informed by real use.
             game and learn what the market needs next. Prices stay the
             placeholder 6 / 12 / 18 tiers until T6.1. When the Map work
             lands the stall goes back to growing region by region.
-            - [ ] **The curiosities reach the game** — the Market stall and
-                  the Abode draw the eight real drawings; all eight on offer
-                  from the start. Then a play period (Kimia's), after which
-                  she decides what to build for the market next.
+            - [x] **The curiosities reach the game** _(done 2026-10-09 — the
+                  Market stall and the Abode draw the eight real drawings, all
+                  eight on offer from the start; TEMPORARY, see below. Build
+                  notes in history.md)_
+            - [ ] **Play period, then decide** — Kimia lives with them for a
+                  while and decides what to build for the market next. When
+                  the Map work lands, delete `playtestStall()` and put the
+                  stall back on its pool and rotation.
             - [x] **The columns** _(done 2026-09-01 — 10x60 and 40x300,
                   dark brown, bark turned 90° so the grain falls vertical,
                   curved corners, wobbled edges. `src/ui/handDrawn.js` and

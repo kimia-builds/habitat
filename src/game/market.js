@@ -143,6 +143,38 @@ export function stallObjects(pool, rotation) {
   return stall
 }
 
+// ── The drawn curiosities, and the TEMPORARY playtest stall ─────────
+
+// Which pool slot wears which of Kimia's eight finished drawings
+// (ui/Curiosity.jsx's recipe keys). The first eight slots of the pool
+// — all of regions 0 and 1, and the first two of region 2 — are real
+// drawings now; every other slot is still the seeded placeholder glyph.
+// Within a region the index sets the price tier, so the order here is
+// also the (placeholder) pricing: the cheap, mid and dear of each region.
+export const DRAWN_CURIOSITIES = {
+  '0:0': 'column-thin',
+  '0:1': 'smoke',
+  '0:2': 'column-tall',
+  '1:0': 'stone-1',
+  '1:1': 'oval-small',
+  '1:2': 'oval-large',
+  '2:0': 'stone-2',
+  '2:1': 'stone-3',
+}
+
+// TEMPORARY (Kimia, 2026-10-09). Until the Map work lands, the stall
+// shows ALL EIGHT drawn curiosities, always — no pool growth with the
+// regions, no rotation — so she can live with them in the game and learn
+// what the market needs next. When the Map work lands, delete this and
+// App.jsx goes back to `stallObjects(marketPool(...), rotation)`; the
+// real pool code above is untouched and still tested.
+export function playtestStall() {
+  return Object.keys(DRAWN_CURIOSITIES).map((key) => {
+    const { region, objectIndex } = parseObjectKey(key)
+    return catalogObject(region, objectIndex)
+  })
+}
+
 // ── Purchases (stored in the envelope, storage v7) ──────────────────
 
 function validateObject(object) {

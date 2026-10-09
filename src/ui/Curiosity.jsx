@@ -23,11 +23,12 @@
  * they "may glow or not (no obligation)"; and their size range is wide, with
  * price correlating directly with physical size.
  *
- * WHERE IT IS UP TO. This is a WORKBENCH asset (spec §5b): the shapes stand on
- * the design-assets shelf to be judged, and they replace ObjectGlyph.jsx's
- * placeholder line-drawings on the stall and in the Abode only once Kimia has
- * passed them. The pool is 64 objects (§10a); these are the first of them, and
- * Kimia's list is explicitly not exhaustive.
+ * WHERE IT IS UP TO. All eight shapes passed Kimia's eye and went into the game
+ * on 2026-10-09: the Market stall and the Abode draw them (game/market.js's
+ * DRAWN_CURIOSITIES says which pool slot wears which), and ObjectGlyph.jsx's
+ * placeholder line-drawings remain only for the pool slots with no drawing yet.
+ * The pool is 48 objects (§10a); these are the first of them, and Kimia's list
+ * is explicitly not exhaustive.
  */
 
 import { objectDrawnBox, objectSize } from './objectCanon.js'

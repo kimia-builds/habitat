@@ -417,6 +417,11 @@ opening its own growing world:
   rotating every **4 weeks of lived days** — 28 _lived days_, not
   calendar days. Days with no habits marked don't advance the rotation
   clock.
+- **TEMPORARY (2026-10-09):** until the Map work lands, the stall shows
+  the eight drawn curiosities all at once, from the start, ignoring the
+  rotation and the pool's growth, so they can be played with in the game
+  (`playtestStall()` in `game/market.js`). Nothing below changes: it all
+  applies again the day that function is deleted.
 - **The stall's pool grows with the Map:** newly discovered regions add
   their goods to the rotation pool, so the Market gets _more_
   surprising over the years, never less. (Deliberate soft link:

@@ -56,16 +56,12 @@ import {
 import { friendsFrom, withFriendDrop } from './game/friends.js'
 import {
   buyObject,
-  livedDayCount,
-  marketPool,
-  rotationIndex,
+  playtestStall,
   sellObject,
-  stallObjects,
   walletBalance,
   walletTrueBalance,
 } from './game/market.js'
-import { discoveredRegionCount } from './game/map.js'
-import { expeditionSteps, meterReading } from './game/meters.js'
+import { meterReading } from './game/meters.js'
 import { gameCompletions, startNewGame } from './game/newgame.js'
 import {
   activeHabits,
@@ -2025,15 +2021,17 @@ function AppBody({ data, setData }) {
   // with history, undo and all. Only the purchases list remembers what
   // Kimia owns; the wallet is the same derivation, drops minus owned.
   if (page === 'market') {
-    const rotation = rotationIndex(livedDayCount(played))
-    const pool = marketPool(discoveredRegionCount(expeditionSteps(played)))
+    // TEMPORARY (Kimia, 2026-10-09): the stall shows all eight drawn
+    // curiosities from the start instead of the rotating, region-grown
+    // pool — see playtestStall() in game/market.js, which goes when the
+    // Map work lands (and the rotation and pool derivations come back).
     return (
       <>
         {appHeader}
         <main className="app">
           {overlays}
           <MarketPage
-            stall={stallObjects(pool, rotation)}
+            stall={playtestStall()}
             purchases={data.purchases}
             wallet={walletBalance(played, data.purchases)}
             worldSeed={data.worldSeed}

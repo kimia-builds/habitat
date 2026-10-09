@@ -154,3 +154,14 @@ describe('the defs a page needs', () => {
     expect(filters).toEqual(['curio-pores-sunken'])
   })
 })
+
+// The market page and the Abode pick a drawing by pool slot (game/market.js).
+// A slot naming a recipe that does not exist would draw nothing at all.
+describe('the pool slots that wear drawings', () => {
+  it('every drawn slot names a real recipe, and every recipe has a slot', async () => {
+    const { DRAWN_CURIOSITIES } = await import('../game/market.js')
+    const named = Object.values(DRAWN_CURIOSITIES)
+    for (const key of named) expect(curiosityRecipe(key)).toBeDefined()
+    expect([...named].sort()).toEqual([...DRAWN].sort())
+  })
+})

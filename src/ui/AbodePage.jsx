@@ -51,12 +51,15 @@ import {
   dialAngle,
   normalizeAngle,
 } from '../game/abode.js'
+import { DRAWN_CURIOSITIES } from '../game/market.js'
+import Curiosity, { CuriosityDefs, curiosityCanonKey } from './Curiosity.jsx'
 import Flora, { floraBox } from './Flora.jsx'
 import Friend from './Friend.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
 import { floraBaseWhereSmallestIs } from './floraCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import { useText } from './language.jsx'
+import { objectSize } from './objectCanon.js'
 import { AbodeSky } from './sky.jsx'
 import { CANVAS_HEIGHT, CANVAS_VIEWBOX, CANVAS_WIDTH } from './worldCanvas.js'
 
@@ -115,12 +118,10 @@ const HELD_SCALE = 26 / 20
 // list that squared them into matching thumbnails would teach the opposite.
 const DOORSTEP_BASE = floraBaseWhereSmallestIs(1.6)
 
-// A curiosity is still a placeholder glyph, and keeps the placeholder's
-// size. It is the one thing on this ground with NO canon to ask: the
-// objects are not drawn yet and design-bible §10a gives them no sizes,
-// only "price correlates with size". Nothing here invents one — when
-// they are drawn they take their places in the same table the flora and
-// the friends already share.
+// A curiosity that has no drawing yet is still a placeholder glyph, and
+// keeps the placeholder's size. The eight DRAWN ones (game/market.js's
+// DRAWN_CURIOSITIES) ask the canon instead — objectCanon.js, the same
+// table the flora and the friends share — so nothing here invents a size.
 const OBJECT_SIZE = 20 * OLD_SCENE_SCALE // 48px
 
 // A press becomes a drag once the pointer travels this many pixels;
@@ -288,9 +289,13 @@ function AbodePage({
   // size class were dealt from the seed); a curiosity is still a
   // placeholder glyph with no canon to ask.
   function boxOf(item) {
-    return item.kind === 'object'
-      ? { width: OBJECT_SIZE, height: OBJECT_SIZE }
-      : floraBox(item.id, worldSeed, SCENE_BASE)
+    if (item.kind !== 'object') return floraBox(item.id, worldSeed, SCENE_BASE)
+    const drawn = DRAWN_CURIOSITIES[item.objectKey]
+    if (drawn) {
+      const { w, h } = objectSize(curiosityCanonKey(drawn), SCENE_BASE)
+      return { width: w, height: h }
+    }
+    return { width: OBJECT_SIZE, height: OBJECT_SIZE }
   }
 
   // Enter rotate mode on the held item. It turns about the middle of its
@@ -587,6 +592,10 @@ function AbodePage({
           <div
             className={`abode-scene world-canvas${turning ? ' turning' : ''}`}
           >
+            {/* The surfaces the drawn curiosities on the ground wear. */}
+            <CuriosityDefs
+              keys={ordered.map((item) => DRAWN_CURIOSITIES[item.objectKey])}
+            />
             {/* THE SKY (T5.4). Opaque, filling the whole canvas, and the
               only thing behind everything else — the app's own starfield
               never shows through the Abode any more. It is a separate
@@ -682,7 +691,26 @@ function AbodePage({
                       onPointerDown={(event) => handlePointerDown(item, event)}
                       onKeyDown={(event) => handleKeyDown(item, event)}
                     >
-                      {isObject ? (
+                      {isObject && DRAWN_CURIOSITIES[item.objectKey] ? (
+                        <>
+                          {/* An invisible, finger-sized target behind it: the
+                          thinnest column is 10px wide and would be nearly
+                          impossible to pick up otherwise. */}
+                          <rect
+                            x={cx - Math.max(box.width, 44) / 2}
+                            y={base - box.height}
+                            width={Math.max(box.width, 44)}
+                            height={box.height}
+                            fill="transparent"
+                          />
+                          <Curiosity
+                            objectKey={DRAWN_CURIOSITIES[item.objectKey]}
+                            base={SCENE_BASE}
+                            x={cx - box.width / 2}
+                            y={base - box.height}
+                          />
+                        </>
+                      ) : isObject ? (
                         <ObjectGlyph
                           objectKey={item.objectKey}
                           worldSeed={worldSeed}
