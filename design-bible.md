@@ -289,11 +289,12 @@ different sizes and colours, and the arithmetic is exact.
   level — §9a's recipe). The four colours are not chosen yet.
   **Its copy (written by Kimia).** The first time one is found, the line
   is "[flora species name] has yielded …", then thereafter "you found a
-  tendril" / "you found a peace branch". Her twelve so far, which are NOT
-  yet bound to a species or region (and 16 are needed): nutritious
+  tendril" / "you found a peace branch". Her sixteen, complete as of
+  2026-10-09 but NOT yet bound to a species or region: nutritious
   edibles · fresh berries · colourful leaves · seasonal blossoms · a
   peace branch · a tendril · reproductive baubles · juicy treats ·
-  tropical mist · barbed decoratives · magical seeds · an organic ribbon.
+  tropical mist · barbed decoratives · magical seeds · an organic ribbon
+  · fragrant spawn · scented biomes · protective thorns · fruit.
 
 **A region's flora arrives in five steps, in this order:** (1) a picture
 or symbol of it on the newly discovered region of the Map; (2) a

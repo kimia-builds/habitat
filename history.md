@@ -7531,9 +7531,9 @@ and recorded in spec.md's decisions log._
   section of their flora's silhouette, wear one of **four reds / pinks /
   oranges** dealt at random, and follow the flora's fill, border and glow
   rules. First-find copy is "[species] has yielded …", later finds "you
-  found a …". She supplied twelve of the sixteen noun phrases (listed in
-  design-bible §9a); the other four, the species names and the pairing of
-  phrase to region are still hers to give. Not yet in `src/content/`.
+  found a …". She supplied all sixteen noun phrases the same day (listed in
+  design-bible §9a); the species names and the pairing of phrase to
+  region are still hers to give. Not yet in `src/content/`.
 
 ## T5.3j build notes — the curiosities reach the game (2026-10-09)
 
