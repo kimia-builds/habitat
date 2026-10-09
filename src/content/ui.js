@@ -412,7 +412,7 @@ const DECK = {
   'arrivals.region': {
     note: 'Screen-reader name for the shelf of drops waiting to be dealt with.',
     en: 'arrivals',
-    fa: '',
+    fa: 'جایزه‌های رسیده',
   },
   'arrivals.hold': {
     note: 'Hover label on a drop: click to pick it up.',
@@ -466,7 +466,7 @@ const DECK = {
   'abode.partyMode': {
     note: 'Mood name: party.',
     en: 'party mode',
-    fa: '',
+    fa: 'بزن و بکوب',
   },
   'abode.quietude': {
     note: 'Mood name: quiet.',
@@ -491,12 +491,12 @@ const DECK = {
   'abode.sell': {
     note: 'Quiet word under a held item: sell it.',
     en: 'sell',
-    fa: '',
+    fa: 'بفروش',
   },
   'abode.compost': {
     note: 'Quiet word under a held item: compost it.',
     en: 'compost',
-    fa: '',
+    fa: 'بازیافت',
   },
   'abode.rotate': {
     note: 'Quiet word under a held item: turn it.',
@@ -551,12 +551,12 @@ const DECK = {
       'Name of the violet sky. Only what the swatch says; a save stores its ' +
       'key.',
     en: 'violet',
-    fa: '',
+    fa: 'ارغوانی',
   },
   'abode.sky.ash': {
     note: 'Name of the ash sky. Only what the swatch says; a save stores its key.',
     en: 'ash',
-    fa: '',
+    fa: 'مه‌آلود',
   },
 
   // ── The Map ───────────────────────────────────────────────────────────
@@ -570,7 +570,7 @@ const DECK = {
   'market.stall': {
     note: 'Screen-reader name for the stall of curiosities.',
     en: 'the stall',
-    fa: '',
+    fa: 'غرفهٔ بازار',
   },
   'market.buy': {
     note: 'Button to buy a curiosity.',
@@ -631,7 +631,7 @@ const DECK = {
   'reveal.friendArrives': {
     note: 'Screen-reader name of the popup when a friend arrives.',
     en: 'a friend arrives',
-    fa: '',
+    fa: 'یک دوست حضور دارد',
   },
   'reveal.onward': {
     note: 'Button that dismisses a reveal popup and goes on.',
@@ -641,7 +641,7 @@ const DECK = {
   'reveal.dropArrival': {
     note: 'Screen-reader name of the popup for an ordinary drop arriving.',
     en: 'drop arrival',
-    fa: '',
+    fa: 'رسیدن یک جایزه',
   },
 
   // ── Backup and restore ────────────────────────────────────────────────
@@ -1354,7 +1354,7 @@ const DECK = {
   'market.owned': {
     note: 'Tag on a market curiosity you already have. {n} is how many.',
     en: '×{n} at home',
-    fa: '',
+    fa: 'در خانه {n}تا داری',
   },
 
   // ── The start-a-new-game questions ────────────────────────────────────
@@ -1412,7 +1412,7 @@ const DECK = {
   'arrival.something': {
     note: 'Name used when the kind of drop is not known.',
     en: 'something',
-    fa: '',
+    fa: 'چیزی',
   },
   'arrival.and': {
     note: 'The word that joins names in a list ("a novel and 3 fungi").',
