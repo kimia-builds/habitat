@@ -19,7 +19,7 @@
 // translated one slot at a time — see the long note at the top of
 // src/content/ui.js.
 
-import { createContext, useContext, useMemo } from 'react'
+import { createContext, useContext, useEffect, useMemo } from 'react'
 
 import { DEFAULT_LANGUAGE, isLanguage, translate } from '../content/ui.js'
 
@@ -36,6 +36,12 @@ export function LanguageProvider({ language, children }) {
   // An unrecognised language reads as English rather than throwing: a
   // corrupted setting should never be able to take the app down.
   const safe = isLanguage(language) ? language : DEFAULT_LANGUAGE
+  // Tell the page itself which language it is in (T6.16). index.css keys
+  // the right-to-left rule off this attribute, and it is also what lets a
+  // screen reader pronounce Farsi as Farsi.
+  useEffect(() => {
+    document.documentElement.lang = safe
+  }, [safe])
   return (
     <LanguageContext.Provider value={safe}>{children}</LanguageContext.Provider>
   )

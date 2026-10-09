@@ -7302,3 +7302,25 @@ and recorded in spec.md's decisions log._
   (`mon/wed/fri` under a habit's name): it lists the chosen days in the
   language's week order — English `tue/thu/sun`, Farsi starts its week on
   Shanbeh — whatever the week shape or field-notes view says.
+
+- 2026-10-09 (T6.16, build notes): **Farsi text reads right to left; the
+  layout does not move.** One stylesheet rule, switched on only when the
+  page language is Farsi: `:root[lang='fa'] * { unicode-bidi: plaintext }`.
+  It leaves the page's own direction left-to-right (so the rail, pebbles,
+  flex rows and scenes never flip) and lets each piece of text choose its
+  reading direction from its own first letter — Farsi runs right to left,
+  English and bare numbers stay left to right, and each box's text is
+  walled off from its neighbours so "N-Z-D", digits and punctuation do not
+  scramble a Farsi sentence. `LanguageProvider` now sets
+  `<html lang>` to the chosen language (it is what the rule keys off, and
+  what lets a screen reader say Farsi as Farsi). The arrows beside words
+  ("← back to the habits" on seven pages, "‹ earlier", "later ›", "field
+  notes →") now wrap the translated word in its own `<span>`, so the word
+  is walled off and the arrow keeps its side. Three fixed `text-align:
+  left` rules became `start` so Farsi in those boxes sits against the
+  right edge. Checked in a real browser with a Farsi sentence containing
+  N-Z-D: arrow on the left, sentence right to left, layout unmoved. Tests
+  (`src/ui/language.test.jsx`): the page language follows the setting, the
+  rule exists, and the stylesheet never sets `direction: rtl` or
+  `text-align: left`. Not done here, by design: lettering, size and digits
+  (T6.17), the Persian date (T6.18), the words (T6.19).

@@ -19,6 +19,20 @@
   box-sizing: border-box;
 }
 
+/* Farsi reads right to left, but the LAYOUT never moves (T6.16, spec §
+   Languages). So the page's own direction stays left-to-right — rail,
+   pebbles, scenes and every flex row sit where they always do — and only
+   the WORDS are told to work out their own direction. `plaintext` makes
+   each piece of text pick its reading direction from its own first
+   letter, so Farsi runs right to left and English (or a bare number)
+   stays left to right, inside the same box. It also walls each box's
+   text off from its neighbours, which is what keeps "N-Z-D", digits and
+   punctuation from scrambling a Farsi sentence. Only switched on for
+   Farsi: English is untouched. */
+:root[lang='fa'] * {
+  unicode-bidi: plaintext;
+}
+
 body {
   background-color: var(--bg);
   color: var(--text);
@@ -243,7 +257,7 @@ body {
   border-radius: 0.5rem;
   cursor: pointer;
   font: inherit;
-  text-align: left;
+  text-align: start;
 }
 
 .meter:hover {
@@ -1005,7 +1019,7 @@ body {
 }
 
 .week-grid th[scope='row'] {
-  text-align: left;
+  text-align: start;
 }
 
 .week-grid thead th {
@@ -3216,7 +3230,7 @@ body {
 
 .empty-tile {
   flex: 1;
-  text-align: left;
+  text-align: start;
   font: inherit;
   color: var(--text-quiet);
   background: none;

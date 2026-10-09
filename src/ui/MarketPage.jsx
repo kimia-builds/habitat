@@ -85,7 +85,7 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
         </div>
 
         <button className="pebble" onClick={onBack}>
-          ← {t('nav.backToHabits')}
+          ← <span>{t('nav.backToHabits')}</span>
         </button>
       </div>
     </section>

@@ -452,22 +452,12 @@ tracker. Everything after this is delight, informed by real use.
       Sun–Sat or Sat–Fri as its own saved setting, independent of
       language, chosen from a "week shape" pebble beside the language
       options; the marks never change, only how they are grouped.
-- [ ] **T6.16 Farsi text reads right to left — the layout does NOT
-      move.** _(Narrowed by Kimia 2026-10-09; about 1 session.)_ The
-      intended Farsi user also flips to English as a learning exercise,
-      so as few layout changes as possible: the icon rail, every pebble
-      and its position, the scenes and the `ViewportGate` all stay
-      exactly where they are in both languages. Only the WORDS change
-      direction — Farsi text runs right to left inside its own box, with
-      mixed text (numbers, Latin letters such as N-Z-D) kept from
-      scrambling its punctuation. Rule, decided once: **text direction
-      flips; the layout and the world do not.**
-      The one real trap is the arrow typed into "← back to the habits"
-      (AbodePage, BookcasePage, DesignPage, FieldNotes and any others):
-      inside a right-to-left sentence it would jump to the far end. Pull
-      the arrow out of the translated words so it keeps its side and
-      still points left. The old plan's direction-specific CSS rewrite,
-      the rail move and the width-gate re-derivation are NOT needed.
+- [x] **T6.16 Farsi text reads right to left — the layout does NOT
+      move.** _(done 2026-10-09, narrowed by Kimia the same day; build
+      notes in history.md.)_ With Farsi on, every piece of text works out
+      its own direction while the page, rail, pebbles and scenes stay
+      exactly where they are; the "←", "‹", "›" and "→" beside translated
+      words keep their sides.
 - [ ] **T6.17 Farsi gets its own lettering — plain, and the same size.**
       _(Kimia 2026-10-09: not picky about the font; one plain face is
       fine; about 1 session.)_ Her one requirement: Farsi text reads

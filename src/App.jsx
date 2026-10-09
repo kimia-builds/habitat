@@ -1724,7 +1724,7 @@ function AppBody({ data, setData }) {
           other. Being a direct child of the app column is what makes it
           full width — exactly how the back button gets its width. */}
       <button className="pebble" onClick={() => setPage('fieldnotes')}>
-        {t('rail.fieldNotes')} →
+        <span>{t('rail.fieldNotes')}</span> →
       </button>
 
       {footer}

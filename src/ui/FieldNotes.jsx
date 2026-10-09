@@ -153,7 +153,7 @@ function FieldNotes({
 
   const back = (
     <button className="pebble" onClick={onBack}>
-      ← {t('nav.backToHabits')}
+      ← <span>{t('nav.backToHabits')}</span>
     </button>
   )
 
@@ -202,7 +202,7 @@ function FieldNotes({
             onClick={() => setWeek(addDays(week, -7))}
             disabled={week <= firstWeek}
           >
-            ‹ {t('nav.earlier')}
+            ‹ <span>{t('nav.earlier')}</span>
           </button>
           {/* The week range, and — on its own line under it — the note that
             this week is not finished yet (Kimia, 2026-08-11). It used to
@@ -221,7 +221,7 @@ function FieldNotes({
             onClick={() => setWeek(addDays(week, +7))}
             disabled={week >= thisWeek}
           >
-            {t('nav.later')} ›
+            <span>{t('nav.later')}</span> ›
           </button>
         </div>
 

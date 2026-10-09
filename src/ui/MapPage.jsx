@@ -81,7 +81,7 @@ function MapPage({
           {t('map.regionsKnown', { known, total: MAP_REGION_COUNT })}
         </p>
         <button className="pebble" onClick={onBack}>
-          ← {t('nav.backToHabits')}
+          ← <span>{t('nav.backToHabits')}</span>
         </button>
       </div>
     </section>
