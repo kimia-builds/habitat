@@ -7324,3 +7324,29 @@ and recorded in spec.md's decisions log._
   rule exists, and the stylesheet never sets `direction: rtl` or
   `text-align: left`. Not done here, by design: lettering, size and digits
   (T6.17), the Persian date (T6.18), the words (T6.19).
+
+- 2026-10-09 (T6.17, build notes): **Farsi gets its own lettering.**
+  Habitat's first font: Vazirmatn, in its "Farsi digits, non-Latin" cut
+  (Light and Regular, ~21KB each, OFL licence copied beside them in
+  `src/fonts/`). That cut draws Persian letters and turns the digits 0–9
+  into ۰–۹ by itself, and has no Latin letters, so English words inside
+  Farsi still come from the system font and no code had to convert a
+  single number — one font rule covers the date, meters, prices and
+  streaks everywhere. **Loading:** bundled with the site (no outside
+  server learns Habitat was opened, keeping §11c's promise), named only
+  under `:root[lang='fa']`, so a browser fetches it only once Farsi is on
+  — English readers download nothing; `font-display: swap` shows words in
+  the fallback straight away and swaps when the font lands. **Size:**
+  `size-adjust: 112%` on the font itself, so only Farsi letters grow and
+  English is untouched; 112% is a first guess, to be tuned by eye with
+  Kimia once real Farsi words exist (nothing is translated yet, so the
+  only Farsi text on screen today is the digits and the language name).
+  **Spacing and casing:** with Farsi on, letter-spacing is 0 and
+  text-transform none everywhere except the h1s, which are only ever the
+  HABITAT wordmark (Latin in every language). Verified in a real browser:
+  both weights load, date reads FRIDAY ۹ OCT ۲۰۲۶, wordmark keeps its
+  spacing. Tests in `src/ui/language.test.jsx`: font files exist and are
+  bundled (no outside URLs), the Farsi font is applied only under
+  lang='fa', spacing/casing reset with the wordmark spared, size-adjust
+  above 100%. Assumption still unconfirmed by Kimia: Persian digits in
+  Farsi mode (flagged in 2026-10-09's decisions).

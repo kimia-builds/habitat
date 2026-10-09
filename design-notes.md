@@ -415,9 +415,12 @@ header**:
 **Farsi shape (2026-10-09).** Layout is identical in every language —
 only Farsi text runs right to left within its own box; nothing is
 mirrored or moved, so someone flipping to English to learn it finds
-everything where they left it. Farsi wears one plain typeface, enlarged a
-little so it reads the same size as the English; letterspacing and
-upper-case styling switch off for it.
+everything where they left it. Farsi wears one plain typeface (Vazirmatn,
+bundled with the site, ~43KB, fetched only once Farsi text is on screen —
+English never downloads it), drawn 12% larger so it reads the same size as
+the English; letterspacing and upper-case styling switch off for it, and
+only the HABITAT wordmark keeps its spacing. Digits show as ۰–۹ in Farsi
+mode, courtesy of the font itself.
 
 Translation (T6.19) is the one place the never-writes-the-copy rule
 bends, and only this far: a machine draft is a suggestion Kimia reviews,
@@ -924,7 +927,8 @@ was built on 2026-08-12 and Kimia rejected all of it on sight; the
 build was reverted the same day and the plan retired with it. What
 follows is not an aspiration, it is a description of the app.
 
-- **One family: the system font stack** —
+- **One family: the system font stack** (for English; Farsi alone swaps
+  in a bundled Persian face — see the Farsi shape note in §0) —
   `system-ui, -apple-system, 'Segoe UI', sans-serif`, set on `body` and
   inherited everywhere. Nothing is downloaded, which was the one thing
   the two-typeface plan and this have in common: Habitat looks the same

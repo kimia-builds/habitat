@@ -2,7 +2,7 @@
 // speaks, and the stylesheet never flips the layout.
 
 import { render } from '@testing-library/react'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { LanguageProvider } from './language.jsx'
@@ -30,5 +30,41 @@ describe('right-to-left text without a right-to-left layout', () => {
   it('never flips the page or any box: no direction rules, no fixed left alignment', () => {
     expect(css).not.toMatch(/direction\s*:\s*rtl/)
     expect(css).not.toMatch(/text-align\s*:\s*left/)
+  })
+})
+
+describe('Farsi lettering', () => {
+  const css = readFileSync(join(process.cwd(), 'src', 'index.css'), 'utf8')
+
+  it('bundles its font files with the site and asks no outside server for them', () => {
+    const urls = [...css.matchAll(/url\('([^']+)'\)/g)].map((m) => m[1])
+    expect(urls.length).toBeGreaterThan(0)
+    for (const url of urls) {
+      expect(url).toMatch(/^\.\/fonts\/.+\.woff2$/)
+      expect(existsSync(join(process.cwd(), 'src', url))).toBe(true)
+    }
+    expect(css).not.toMatch(/https?:\/\/[^\s)'"]*\.(woff2?|ttf)/)
+  })
+
+  it('wears the Farsi typeface only when Farsi is on', () => {
+    expect(css).toMatch(
+      /:root\[lang='fa'\]\s+body\s*\{[^}]*font-family:\s*'Vazirmatn FD NL'/,
+    )
+    // The plain rule on <body> stays the system font for English.
+    expect(css).not.toMatch(/\nbody\s*\{[^}]*Vazirmatn/)
+  })
+
+  it('switches letterspacing and re-casing off for Farsi, sparing the wordmark', () => {
+    expect(css).toMatch(
+      /:root\[lang='fa'\]\s+\*:not\(h1,\s*h1\s+\*\)\s*\{[^}]*letter-spacing:\s*0[^}]*text-transform:\s*none/,
+    )
+  })
+
+  it('makes Farsi letters larger than their nominal size, for that font alone', () => {
+    const sizes = [...css.matchAll(/size-adjust:\s*(\d+)%/g)].map((m) =>
+      Number(m[1]),
+    )
+    expect(sizes.length).toBeGreaterThan(0)
+    for (const size of sizes) expect(size).toBeGreaterThan(100)
   })
 })

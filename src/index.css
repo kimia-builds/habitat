@@ -33,6 +33,57 @@
   unicode-bidi: plaintext;
 }
 
+/* Farsi lettering (T6.17, spec § Languages). Habitat's first and only
+   downloaded font: Vazirmatn, in its "Farsi digits, non-Latin" cut — it
+   draws Persian letters AND turns the digits 0–9 into ۰–۹, and has no
+   Latin letters at all, so English words that appear inside Farsi still
+   come from the system font. It is bundled with the site (no outside
+   server is asked for it) and the browser fetches it only once Farsi
+   text is actually on screen — English readers never download a byte.
+   `swap` means words show at once in the fallback and change to the
+   real font when it lands. Two weights, because Habitat has exactly two:
+   300 (display moments) and 400 (everything else).
+   `size-adjust` is the "same size as English" dial: Persian letters sit
+   smaller than Latin ones at the same nominal size, so this font alone
+   is drawn a little larger. Tuned by eye with Kimia; English is never
+   touched by it. */
+@font-face {
+  font-family: 'Vazirmatn FD NL';
+  src: url('./fonts/Vazirmatn-FD-NL-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 112%;
+}
+
+@font-face {
+  font-family: 'Vazirmatn FD NL';
+  src: url('./fonts/Vazirmatn-FD-NL-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 112%;
+}
+
+/* Persian is cursive: letters join, so spacing them apart severs the
+   words, and it has no upper or lower case. So with Farsi on, every
+   letterspacing goes and no text is re-cased. The one exception is the
+   HABITAT wordmark (the only h1s): it is Latin in every language and
+   keeps its wide spacing. */
+:root[lang='fa'] *:not(h1, h1 *) {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:root[lang='fa'] body {
+  font-family:
+    'Vazirmatn FD NL',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+}
+
 body {
   background-color: var(--bg);
   color: var(--text);

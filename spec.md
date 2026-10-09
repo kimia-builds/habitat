@@ -983,7 +983,8 @@ and nothing is lost by finding that out late.
     and the scenes sit in the same place in both. Only Farsi text runs
     right to left inside its own box; the "←" in "back to the habits"
     keeps its side and still points left. Farsi uses one plain typeface
-    sized to match the English copy, and Persian digits (۰–۹).
+    sized to match the English copy, and Persian digits (۰–۹) — built in
+    T6.17.
   - **The Persian date is display only and computed, never fetched
     (2026-10-09).** The day keys stay Gregorian and drive every streak.
     The browser's own Persian calendar was checked against the

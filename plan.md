@@ -458,23 +458,12 @@ tracker. Everything after this is delight, informed by real use.
       its own direction while the page, rail, pebbles and scenes stay
       exactly where they are; the "←", "‹", "›" and "→" beside translated
       words keep their sides.
-- [ ] **T6.17 Farsi gets its own lettering — plain, and the same size.**
-      _(Kimia 2026-10-09: not picky about the font; one plain face is
-      fine; about 1 session.)_ Her one requirement: Farsi text reads
-      roughly the same size as the English copy. Persian letters render
-      smaller at the same nominal size, so Farsi gets a small
-      enlargement, tuned by eye with Kimia (design-notes §0: one visible
-      change at a time, never a spec up front).
-      Letterspacing (18 rules, up to 0.5em on the wordmark) and
-      upper/lowercase styling switch OFF for Farsi: Persian is cursive,
-      so spacing severs the joins, and it has no letter case.
-      Habitat's **first webfont**: `system-ui` does not render Persian
-      dependably. Vazirmatn or similar, ~150KB — the first thing that
-      must download before text looks right, so its loading behaviour is
-      part of the task.
-      **Digits:** Persian digits (۰–۹) in Farsi mode and Western digits
-      in English, for the date, meters, prices and streak counts —
-      assumed, not yet confirmed by Kimia.
+- [x] **T6.17 Farsi gets its own lettering — plain, and the same size.**
+      _(done 2026-10-09; build notes in history.md. Kimia still tunes the
+      12% enlargement by eye once real Farsi words are on screen in
+      T6.19; the number is `size-adjust` in index.css.)_ Vazirmatn,
+      bundled, loaded only for Farsi; letterspacing and casing off for
+      Farsi; digits show as ۰–۹ in Farsi mode.
 - [ ] **T6.18 The Jalali calendar.** Farsi speakers expect Jalali dates
       — today is 1405, not 2026. **Display only**: day keys stay
       `YYYY-MM-DD` Gregorian and go on driving every streak, so nothing
