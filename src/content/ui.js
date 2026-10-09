@@ -1925,7 +1925,7 @@ const STORY_DECK = {
       "The text on a chitu's Guest Book card — who they are. " +
       'Re-readable any time.',
     en:
-      'shy, interovered chitus are N-Z-D"s finest poets. they ' +
+      'shy, introverted chitus are N-Z-D"s finest poets. they ' +
       'are deeply fond of their local culture and language, ' +
       'and masters of art.',
     fa: 'چیتوهای خجالتیِ درون‌گرا بهترین شاعرانِ N-Z-D هستند. عمیقاً به فرهنگ و زبانِ محلی‌شان علاقه دارند و استادِ هنرند.',
@@ -2072,7 +2072,7 @@ const STORY_DECK = {
       'The word shown when map region 14 is discovered (in the ' +
       'outer ring).',
     en: 'marie-simone',
-    fa: 'ماری-سیمون',
+    fa: 'ماری‌سیمون',
   },
   'story.mapRegions.region15': {
     note:
@@ -2165,58 +2165,58 @@ const STORY_DECK = {
   'name.individuals.plip.1': {
     note: 'The personal name of plip number 1, in the order they ' + 'arrive.',
     en: 'bi',
-    fa: '',
+    fa: 'بی',
   },
   'name.individuals.plip.2': {
     note: 'The personal name of plip number 2, in the order they ' + 'arrive.',
     en: 'ti',
-    fa: '',
+    fa: 'تی',
   },
   'name.individuals.plip.3': {
     note: 'The personal name of plip number 3, in the order they ' + 'arrive.',
     en: 'ki',
-    fa: '',
+    fa: 'قی',
   },
   'name.individuals.plip.4': {
     note: 'The personal name of plip number 4, in the order they ' + 'arrive.',
     en: 'zi',
-    fa: '',
+    fa: 'ظی',
   },
   'name.individuals.plip.5': {
     note: 'The personal name of plip number 5, in the order they ' + 'arrive.',
     en: 'mi',
-    fa: '',
+    fa: 'می',
   },
   'name.individuals.plip.6': {
     note: 'The personal name of plip number 6, in the order they ' + 'arrive.',
     en: 'ri',
-    fa: '',
+    fa: 'ری',
   },
   'name.individuals.plip.7': {
     note: 'The personal name of plip number 7, in the order they ' + 'arrive.',
     en: 'ji',
-    fa: '',
+    fa: 'جی',
   },
   'name.individuals.plip.8': {
     note: 'The personal name of plip number 8, in the order they ' + 'arrive.',
     en: 'li',
-    fa: '',
+    fa: 'لی',
   },
   'name.individuals.plip.9': {
     note: 'The personal name of plip number 9, in the order they ' + 'arrive.',
     en: 'wi',
-    fa: '',
+    fa: 'وی',
   },
   'name.individuals.plip.10': {
     note: 'The personal name of plip number 10, in the order they ' + 'arrive.',
     en: 'di',
-    fa: '',
+    fa: 'ضی',
   },
   'name.individuals.baluhm.1': {
     note:
       'The personal name of baluhm number 1, in the order they ' + 'arrive.',
     en: 'owa',
-    fa: '',
+    fa: 'اووا',
   },
   'name.individuals.baluhm.2': {
     note:
@@ -2228,252 +2228,252 @@ const STORY_DECK = {
     note:
       'The personal name of baluhm number 3, in the order they ' + 'arrive.',
     en: 'dulu',
-    fa: '',
+    fa: 'دولو',
   },
   'name.individuals.baluhm.4': {
     note:
       'The personal name of baluhm number 4, in the order they ' + 'arrive.',
     en: 'feh',
-    fa: '',
+    fa: 'فح',
   },
   'name.individuals.baluhm.5': {
     note:
       'The personal name of baluhm number 5, in the order they ' + 'arrive.',
     en: 'swa',
-    fa: '',
+    fa: 'سوا',
   },
   'name.individuals.baluhm.6': {
     note:
       'The personal name of baluhm number 6, in the order they ' + 'arrive.',
     en: 'rou',
-    fa: '',
+    fa: 'رو',
   },
   'name.individuals.baluhm.7': {
     note:
       'The personal name of baluhm number 7, in the order they ' + 'arrive.',
     en: 'loi',
-    fa: '',
+    fa: 'لوی',
   },
   'name.individuals.baluhm.8': {
     note:
       'The personal name of baluhm number 8, in the order they ' + 'arrive.',
     en: 'momo',
-    fa: '',
+    fa: 'مومو',
   },
   'name.individuals.baluhm.9': {
     note:
       'The personal name of baluhm number 9, in the order they ' + 'arrive.',
     en: 'sah',
-    fa: '',
+    fa: 'ساه',
   },
   'name.individuals.krupengk.1': {
     note:
       'The personal name of krupengk number 1, in the order ' + 'they arrive.',
     en: 'chok',
-    fa: '',
+    fa: 'چوک',
   },
   'name.individuals.krupengk.2': {
     note:
       'The personal name of krupengk number 2, in the order ' + 'they arrive.',
     en: 'draktam',
-    fa: '',
+    fa: 'دراکتام',
   },
   'name.individuals.krupengk.3': {
     note:
       'The personal name of krupengk number 3, in the order ' + 'they arrive.',
     en: 'su-chuch',
-    fa: '',
+    fa: 'سو‌چوچ',
   },
   'name.individuals.krupengk.4': {
     note:
       'The personal name of krupengk number 4, in the order ' + 'they arrive.',
     en: 'glongk',
-    fa: '',
+    fa: 'گلونگک',
   },
   'name.individuals.krupengk.5': {
     note:
       'The personal name of krupengk number 5, in the order ' + 'they arrive.',
     en: 'ach-tek',
-    fa: '',
+    fa: 'آچ‌تک',
   },
   'name.individuals.krupengk.6': {
     note:
       'The personal name of krupengk number 6, in the order ' + 'they arrive.',
     en: 'papo-palat',
-    fa: '',
+    fa: 'پاپو‌پالات',
   },
   'name.individuals.krupengk.7': {
     note:
       'The personal name of krupengk number 7, in the order ' + 'they arrive.',
     en: 'serchu',
-    fa: '',
+    fa: 'سرچو',
   },
   'name.individuals.krupengk.8': {
     note:
       'The personal name of krupengk number 8, in the order ' + 'they arrive.',
     en: 'klist',
-    fa: '',
+    fa: 'کلیست',
   },
   'name.individuals.zala.1': {
     note: 'The personal name of zala number 1, in the order they ' + 'arrive.',
     en: 'joo',
-    fa: '',
+    fa: 'جو',
   },
   'name.individuals.zala.2': {
     note: 'The personal name of zala number 2, in the order they ' + 'arrive.',
     en: 'ri-mapa',
-    fa: '',
+    fa: 'ری‌ماپا',
   },
   'name.individuals.zala.3': {
     note: 'The personal name of zala number 3, in the order they ' + 'arrive.',
     en: 'foyon',
-    fa: '',
+    fa: 'فویون',
   },
   'name.individuals.zala.4': {
     note: 'The personal name of zala number 4, in the order they ' + 'arrive.',
     en: 'ulu-wumu',
-    fa: '',
+    fa: 'اولو‌وومو',
   },
   'name.individuals.zala.5': {
     note: 'The personal name of zala number 5, in the order they ' + 'arrive.',
     en: 'sidakuza',
-    fa: '',
+    fa: 'سیداکوزا',
   },
   'name.individuals.zala.6': {
     note: 'The personal name of zala number 6, in the order they ' + 'arrive.',
     en: 'fente',
-    fa: '',
+    fa: 'فنته',
   },
   'name.individuals.zala.7': {
     note: 'The personal name of zala number 7, in the order they ' + 'arrive.',
     en: 'lujaa',
-    fa: '',
+    fa: 'لوجا',
   },
   'name.individuals.liwi-bi-jiji.1': {
     note:
       'The personal name of liwi bi-jiji number 1, in the ' +
       'order they arrive.',
     en: 'dugo linowa',
-    fa: '',
+    fa: 'دوگو لینووا',
   },
   'name.individuals.liwi-bi-jiji.2': {
     note:
       'The personal name of liwi bi-jiji number 2, in the ' +
       'order they arrive.',
     en: 'sirid umaan',
-    fa: '',
+    fa: 'سیرید اومان',
   },
   'name.individuals.liwi-bi-jiji.3': {
     note:
       'The personal name of liwi bi-jiji number 3, in the ' +
       'order they arrive.',
     en: 'so-lono chapina',
-    fa: '',
+    fa: 'سو‌لونو چاپینا',
   },
   'name.individuals.liwi-bi-jiji.4': {
     note:
       'The personal name of liwi bi-jiji number 4, in the ' +
       'order they arrive.',
     en: 'indiz aku-tata',
-    fa: '',
+    fa: 'ایندیز آکو‌تاتا',
   },
   'name.individuals.liwi-bi-jiji.5': {
     note:
       'The personal name of liwi bi-jiji number 5, in the ' +
       'order they arrive.',
     en: 'fo-kocho panu-baa',
-    fa: '',
+    fa: 'فو‌کوچو پانو‌با',
   },
   'name.individuals.liwi-bi-jiji.6': {
     note:
       'The personal name of liwi bi-jiji number 6, in the ' +
       'order they arrive.',
     en: 'rolo mu-nino',
-    fa: '',
+    fa: 'رولو مو‌نینو',
   },
   'name.individuals.meuhy.1': {
     note: 'The personal name of meuhy number 1, in the order they ' + 'arrive.',
     en: 'auhya',
-    fa: '',
+    fa: 'آوحیا',
   },
   'name.individuals.meuhy.2': {
     note: 'The personal name of meuhy number 2, in the order they ' + 'arrive.',
     en: 'uwo',
-    fa: '',
+    fa: 'اوو',
   },
   'name.individuals.meuhy.3': {
     note: 'The personal name of meuhy number 3, in the order they ' + 'arrive.',
     en: 'yawy',
-    fa: '',
+    fa: 'یاوی',
   },
   'name.individuals.meuhy.4': {
     note: 'The personal name of meuhy number 4, in the order they ' + 'arrive.',
     en: 'wuyo',
-    fa: '',
+    fa: 'وویو',
   },
   'name.individuals.meuhy.5': {
     note: 'The personal name of meuhy number 5, in the order they ' + 'arrive.',
     en: 'nii',
-    fa: '',
+    fa: 'نیی',
   },
   'name.individuals.rassatt.1': {
     note:
       'The personal name of rassatt number 1, in the order ' + 'they arrive.',
     en: 'batta du',
-    fa: '',
+    fa: 'باتا دو',
   },
   'name.individuals.rassatt.2': {
     note:
       'The personal name of rassatt number 2, in the order ' + 'they arrive.',
     en: 'sikki chi',
-    fa: '',
+    fa: 'سیکی چی',
   },
   'name.individuals.rassatt.3': {
     note:
       'The personal name of rassatt number 3, in the order ' + 'they arrive.',
     en: 'zuchi naffi',
-    fa: '',
+    fa: 'زوچی نفّی',
   },
   'name.individuals.rassatt.4': {
     note:
       'The personal name of rassatt number 4, in the order ' + 'they arrive.',
     en: 'appatta',
-    fa: '',
+    fa: 'اپاطا',
   },
   'name.individuals.woigolp.1': {
     note:
       'The personal name of woigolp number 1, in the order ' + 'they arrive.',
     en: 'mogo',
-    fa: '',
+    fa: 'موگو',
   },
   'name.individuals.woigolp.2': {
     note:
       'The personal name of woigolp number 2, in the order ' + 'they arrive.',
     en: 'unt',
-    fa: '',
+    fa: 'اونت',
   },
   'name.individuals.woigolp.3': {
     note:
       'The personal name of woigolp number 3, in the order ' + 'they arrive.',
     en: 'rori',
-    fa: '',
+    fa: 'روری',
   },
   'name.individuals.chitu.1': {
     note: 'The personal name of chitu number 1, in the order they ' + 'arrive.',
     en: 'ayalit salong',
-    fa: '',
+    fa: 'آیالیت صالونگ',
   },
   'name.individuals.chitu.2': {
     note: 'The personal name of chitu number 2, in the order they ' + 'arrive.',
     en: 'ayalit sumachi',
-    fa: '',
+    fa: 'آیالیت سوماچی',
   },
   'name.individuals.hamdi-bulo.1': {
     note:
       'The personal name of hamdi bulo number 1, in the order ' +
       'they arrive.',
     en: 'pikimi bulo',
-    fa: '',
+    fa: 'پیکیمی بولو',
   },
 }
 

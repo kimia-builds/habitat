@@ -489,9 +489,9 @@ tracker. Everything after this is delight, informed by real use.
       back in script to confirm. Batches 1–6 (232 slots) are accepted and live: every interface word
       except the six charm names (screen-reader only, left for last), the
       Gregorian month names (never shown in Farsi mode) and the design
-      workbench door (stays English). **Still to do: story and names**
-      (`narration.js`, friend cards, map-region words, names), which carry
-      the voice and get the most human attention.
+      workbench door (stays English). **Story and names are done too** (batches 7–8, 2026-10-09): all
+      that is left blank is the Gregorian months and the design door,
+      on purpose.
 - [x] **T6.20 The cameo tells the truth, and can be asked** _(done
       2026-08-20)_
 - [x] **T6.21 A past week's streak stops at that week** _(done
