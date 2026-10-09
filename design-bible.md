@@ -281,6 +281,19 @@ different sizes and colours, and the arithmetic is exact.
   branch, blossom or the like, from that region's mother tree. A keepsake
   is its OWN drop, extra to the region's flora finds. It is a real new
   Abode collectible, so these are 16 more drawings.
+  **What a keepsake looks like (Kimia, 2026-10-09):** in most cases a
+  **variation on a section of its flora's silhouette**. It wears **one of
+  four colours in the reds, pinks and oranges**, dealt at random, and
+  follows the **same laws of fill, border and glow strength as an ordinary
+  flora** (a plain opaque fill with an outline, glowing at the lifted
+  level — §9a's recipe). The four colours are not chosen yet.
+  **Its copy (written by Kimia).** The first time one is found, the line
+  is "[flora species name] has yielded …", then thereafter "you found a
+  tendril" / "you found a peace branch". Her twelve so far, which are NOT
+  yet bound to a species or region (and 16 are needed): nutritious
+  edibles · fresh berries · colourful leaves · seasonal blossoms · a
+  peace branch · a tendril · reproductive baubles · juicy treats ·
+  tropical mist · barbed decoratives · magical seeds · an organic ribbon.
 
 **A region's flora arrives in five steps, in this order:** (1) a picture
 or symbol of it on the newly discovered region of the Map; (2) a
