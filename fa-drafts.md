@@ -36,375 +36,431 @@ changes means accepted.
 
 ## Waiting for review
 
-**Batch 7 — charms, species names, story** (61 slots). Map-region words and the 55 individual names are NOT here yet (they are people's names / made-up names; see the question at the bottom).
+**Batch 8 — names.** Batch 7 is accepted and live (with your changes: بالوهم, میوحی, رسّاط, سماروغ). Names are spelled letter by letter, no pronunciation guessing; Persian names get their traditional spelling.
 
-### charm.1
-- **English:** crown
-- **Where it shows:** Screen-reader name of the first charm (never shown)
-- **Draft:** تاج
+### story.mapRegions.region1
+- **English:** sahara
+- **Where it shows:** Word shown when map region 1 is discovered
+- **Draft:** صحرا
+- **Notes:** sahara is the Persian word for desert and a girl's name, so the traditional spelling
+
+### story.mapRegions.region2
+- **English:** ari
+- **Where it shows:** Word shown when map region 2 is discovered
+- **Draft:** آری
+- **Notes:** Persian «ari» (yes) spelling; say if she's spelled differently
+
+### story.mapRegions.region3
+- **English:** lerato
+- **Where it shows:** Word shown when map region 3 is discovered
+- **Draft:** لراتو
 - **Notes:** 
 
-### charm.2
-- **English:** cherry
-- **Where it shows:** Screen-reader name of the second charm (never shown)
-- **Draft:** گیلاس
+### story.mapRegions.region4
+- **English:** sogol
+- **Where it shows:** Word shown when map region 4 is discovered
+- **Draft:** سوگل
+- **Notes:** traditional
+
+### story.mapRegions.region5
+- **English:** kian
+- **Where it shows:** Word shown when map region 5 is discovered
+- **Draft:** کیان
+- **Notes:** traditional
+
+### story.mapRegions.region6
+- **English:** ida
+- **Where it shows:** Word shown when map region 6 is discovered
+- **Draft:** ایدا
 - **Notes:** 
 
-### charm.3
-- **English:** shell
-- **Where it shows:** Screen-reader name of the third charm (never shown)
-- **Draft:** صدف
+### story.mapRegions.region7
+- **English:** sufi
+- **Where it shows:** Word shown when map region 7 is discovered
+- **Draft:** صوفی
+- **Notes:** traditional
+
+### story.mapRegions.region8
+- **English:** cyrus
+- **Where it shows:** Word shown when map region 8 is discovered
+- **Draft:** کوروش
+- **Notes:** the traditional Persian form of Cyrus
+
+### story.mapRegions.region9
+- **English:** shiva
+- **Where it shows:** Word shown when map region 9 is discovered
+- **Draft:** شیوا
+- **Notes:** traditional
+
+### story.mapRegions.region10
+- **English:** oratile
+- **Where it shows:** Word shown when map region 10 is discovered
+- **Draft:** اوراتیله
 - **Notes:** 
 
-### charm.4
-- **English:** anchor
-- **Where it shows:** Screen-reader name of the fourth charm (never shown)
-- **Draft:** لنگر
+### story.mapRegions.region11
+- **English:** chaymae
+- **Where it shows:** Word shown when map region 11 is discovered
+- **Draft:** شیماء
+- **Notes:** Arabic spelling (with the hamza at the end)
+
+### story.mapRegions.region12
+- **English:** hamid
+- **Where it shows:** Word shown when map region 12 is discovered
+- **Draft:** حمید
+- **Notes:** traditional
+
+### story.mapRegions.region13
+- **English:** parnian
+- **Where it shows:** Word shown when map region 13 is discovered
+- **Draft:** پرنیان
+- **Notes:** traditional
+
+### story.mapRegions.region14
+- **English:** marie-simone
+- **Where it shows:** Word shown when map region 14 is discovered
+- **Draft:** ماری-سیمون
 - **Notes:** 
 
-### charm.5
-- **English:** shield
-- **Where it shows:** Screen-reader name of the fifth charm (never shown)
-- **Draft:** سپر
+### story.mapRegions.region15
+- **English:** tadiwa
+- **Where it shows:** Word shown when map region 15 is discovered
+- **Draft:** تادیوا
 - **Notes:** 
 
-### charm.6
-- **English:** key
-- **Where it shows:** Screen-reader name of the sixth charm (never shown)
-- **Draft:** کلید
+### story.mapRegions.region16
+- **English:** lily
+- **Where it shows:** Word shown when map region 16 is discovered
+- **Draft:** لیلی
+- **Notes:** Leyli (لیلی) is the Persian form. If you meant the flower-name Lily, say so and I'll spell it «لیلی» differently, e.g. «لی‌لی».
+
+### name.individuals.plip.1
+- **English:** bi
+- **Where it shows:** Personal name of plip number 1
+- **Draft:** بی
 - **Notes:** 
 
-### name.species.plip
-- **English:** plip
-- **Where it shows:** What one plip is called: Guest Book, arrival, shelf, cameo
-- **Draft:** پلیپ
-- **Notes:** Sounded out letter by letter. Say the sound you want if it's off.
-
-### name.species.baluhm
-- **English:** baluhm
-- **Where it shows:** What one baluhm is called
-- **Draft:** بالوم
+### name.individuals.plip.2
+- **English:** ti
+- **Where it shows:** Personal name of plip number 2
+- **Draft:** تی
 - **Notes:** 
 
-### name.species.krupengk
-- **English:** krupengk
-- **Where it shows:** What one krupengk is called
-- **Draft:** کروپنگک
+### name.individuals.plip.3
+- **English:** ki
+- **Where it shows:** Personal name of plip number 3
+- **Draft:** کی
 - **Notes:** 
 
-### name.species.zala
-- **English:** zala
-- **Where it shows:** What one zala is called
-- **Draft:** زالا
+### name.individuals.plip.4
+- **English:** zi
+- **Where it shows:** Personal name of plip number 4
+- **Draft:** زی
 - **Notes:** 
 
-### name.species.liwi-bi-jiji
-- **English:** liwi bi-jiji
-- **Where it shows:** What one liwi bi-jiji is called
-- **Draft:** لیوی بی‌جیجی
+### name.individuals.plip.5
+- **English:** mi
+- **Where it shows:** Personal name of plip number 5
+- **Draft:** می
 - **Notes:** 
 
-### name.species.meuhy
-- **English:** meuhy
-- **Where it shows:** What one meuhy is called
-- **Draft:** مئوهی
-- **Notes:** Question: how do you say it? «مئوهی» (me-oo-hee) avoids looking like «میوه» (fruit). Tell me the sound in Finglish.
-
-### name.species.rassatt
-- **English:** rassatt
-- **Where it shows:** What one rassatt is called
-- **Draft:** راسات
+### name.individuals.plip.6
+- **English:** ri
+- **Where it shows:** Personal name of plip number 6
+- **Draft:** ری
 - **Notes:** 
 
-### name.species.woigolp
-- **English:** woigolp
-- **Where it shows:** What one woigolp is called
-- **Draft:** ووی‌گولپ
-- **Notes:** Question: is it «voy-golp» (like this) or «wo-i-golp»?
-
-### name.species.chitu
-- **English:** chitu
-- **Where it shows:** What one chitu is called
-- **Draft:** چیتو
+### name.individuals.plip.7
+- **English:** ji
+- **Where it shows:** Personal name of plip number 7
+- **Draft:** جی
 - **Notes:** 
 
-### name.species.hamdi-bulo
-- **English:** hamdi bulo
-- **Where it shows:** What one hamdi bulo is called
-- **Draft:** همدی بولو
+### name.individuals.plip.8
+- **English:** li
+- **Where it shows:** Personal name of plip number 8
+- **Draft:** لی
 - **Notes:** 
 
-### story.firstReveals.flora.title
-- **English:** you found an indigenous plant
-- **Where it shows:** Big line, first time you find a native plant
-- **Draft:** یک گیاه بومی پیدا کردی
+### name.individuals.plip.9
+- **English:** wi
+- **Where it shows:** Personal name of plip number 9
+- **Draft:** وی
 - **Notes:** 
 
-### story.firstReveals.flora.line
-- **English:** after walking around N-Z-D for some time, you got enough steps in to discover the native flora. this land holds life, just like you.
-- **Where it shows:** Story line under it
-- **Draft:** بعد از کمی قدم زدن در N-Z-D، آن‌قدر قدم جمع کردی که گیاهان بومی را پیدا کنی. این سرزمین زندگی در خودش دارد، درست مثل تو.
+### name.individuals.plip.10
+- **English:** di
+- **Where it shows:** Personal name of plip number 10
+- **Draft:** دی
 - **Notes:** 
 
-### story.firstReveals.magazine.title
-- **English:** what is this? reading material?
-- **Where it shows:** Big line, first magazine
-- **Draft:** این چیه؟ چیزی برای خواندن؟
+### name.individuals.baluhm.1
+- **English:** owa
+- **Where it shows:** Personal name of baluhm number 1
+- **Draft:** اوا
 - **Notes:** 
 
-### story.firstReveals.magazine.line
-- **English:** printed pages of local cultural phenomena. interesting stuff. hard to tell what language means on this planet. images help.
-- **Where it shows:** Story line, first magazine
-- **Draft:** صفحه‌های چاپ‌شده از پدیده‌های فرهنگیِ این‌جا. جالب است. سخت است بفهمی زبان در این سیاره یعنی چه. عکس‌ها کمک می‌کنند.
+### name.individuals.baluhm.2
+- **English:** nor
+- **Where it shows:** Personal name of baluhm number 2
+- **Draft:** نُر
+- **Notes:** «نُر» (not «نور», which means light) — or tell me.
+
+### name.individuals.baluhm.3
+- **English:** dulu
+- **Where it shows:** Personal name of baluhm number 3
+- **Draft:** دولو
 - **Notes:** 
 
-### story.firstReveals.novel.title
-- **English:** more pages; heavier. a novel?
-- **Where it shows:** Big line, first novel
-- **Draft:** صفحه‌های بیشتر، سنگین‌تر. یک رمان؟
+### name.individuals.baluhm.4
+- **English:** feh
+- **Where it shows:** Personal name of baluhm number 4
+- **Draft:** فه
 - **Notes:** 
 
-### story.firstReveals.novel.line
-- **English:** N-Z-D is a cultured place; it is you who must raise your literacy level. perhaps this is the reading challenge you need.
-- **Where it shows:** Story line, first novel
-- **Draft:** N-Z-D جای فرهیخته‌ای است؛ این تو هستی که باید سطح سوادت را بالا ببری. شاید این همان چالشِ خواندنی باشد که لازم داشتی.
+### name.individuals.baluhm.5
+- **English:** swa
+- **Where it shows:** Personal name of baluhm number 5
+- **Draft:** سوا
 - **Notes:** 
 
-### story.firstReveals.dictionary.title
-- **English:** you found a dictionary
-- **Where it shows:** Big line, first dictionary
-- **Draft:** یک فرهنگ لغت پیدا کردی
+### name.individuals.baluhm.6
+- **English:** rou
+- **Where it shows:** Personal name of baluhm number 6
+- **Draft:** رو
 - **Notes:** 
 
-### story.firstReveals.dictionary.line
-- **English:** finally! a point of reference. a form of translation. a rare treasure that will open doors to deeper friendships.
-- **Where it shows:** Story line, first dictionary
-- **Draft:** بالاخره! یک مرجع. نوعی ترجمه. گنجی کمیاب که درهای دوستی‌های عمیق‌تر را به رویت باز می‌کند.
+### name.individuals.baluhm.7
+- **English:** loi
+- **Where it shows:** Personal name of baluhm number 7
+- **Draft:** لوی
 - **Notes:** 
 
-### story.firstReveals.fungi.title
-- **English:** you earned a fungible token
-- **Where it shows:** Big line, first fungi
-- **Draft:** یک توکن تعویض‌پذیر به دست آوردی
-- **Notes:** Question: «fungi» sounds like «fungible» in English (a mushroom pun). In Farsi the pun is lost unless you want a mushroom word («قارچ») in there. Want one?
-
-### story.firstReveals.fungi.line
-- **English:** do not eat these: they are very valuable and inedible. buy and sell objects for the same price at the local market.
-- **Where it shows:** Story line, first fungi
-- **Draft:** این‌ها را نخور: خیلی باارزش‌اند و خوردنی نیستند. در بازار محلی چیزها را با یک قیمت بخر و بفروش.
+### name.individuals.baluhm.8
+- **English:** momo
+- **Where it shows:** Personal name of baluhm number 8
+- **Draft:** مومو
 - **Notes:** 
 
-### story.spreadPopup.emptyState
-- **English:** something will be here soon. check in later.
-- **Where it shows:** Reading popup when a publication has no spread yet
-- **Draft:** به‌زودی این‌جا چیزی هست. بعداً سر بزن.
+### name.individuals.baluhm.9
+- **English:** sah
+- **Where it shows:** Personal name of baluhm number 9
+- **Draft:** ساه
 - **Notes:** 
 
-### story.friendIntros.plip.title
-- **English:** a plip!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک پلیپ!
+### name.individuals.krupengk.1
+- **English:** chok
+- **Where it shows:** Personal name of krupengk number 1
+- **Draft:** چوک
 - **Notes:** 
 
-### story.friendIntros.plip.line
-- **English:** plips are a wordless creature on N-Z-D. they are friendly, and love having company.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** پلیپ‌ها موجوداتِ بی‌کلامِ N-Z-D هستند. مهربان‌اند و همنشینی را دوست دارند.
+### name.individuals.krupengk.2
+- **English:** draktam
+- **Where it shows:** Personal name of krupengk number 2
+- **Draft:** دراکتام
 - **Notes:** 
 
-### story.friendIntros.baluhm.title
-- **English:** a baluhm!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک بالوم!
+### name.individuals.krupengk.3
+- **English:** su-chuch
+- **Where it shows:** Personal name of krupengk number 3
+- **Draft:** سو-چوچ
 - **Notes:** 
 
-### story.friendIntros.baluhm.line
-- **English:** curious and kind, baluhms gravitate towards strangers, communicating mostly through gesture.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** بالوم‌ها کنجکاو و مهربان‌اند، به سمتِ غریبه‌ها کشیده می‌شوند و بیشتر با اشاره و حرکت حرف می‌زنند.
+### name.individuals.krupengk.4
+- **English:** glongk
+- **Where it shows:** Personal name of krupengk number 4
+- **Draft:** گلونگک
 - **Notes:** 
 
-### story.friendIntros.krupengk.title
-- **English:** a krupengk!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک کروپنگک!
+### name.individuals.krupengk.5
+- **English:** ach-tek
+- **Where it shows:** Personal name of krupengk number 5
+- **Draft:** آچ-تک
 - **Notes:** 
 
-### story.friendIntros.krupengk.line
-- **English:** the observant krupengk loves to gather information, saving it all for analysis later.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** کروپنگکِ تیزبین عاشقِ جمع‌کردنِ اطلاعات است و همه‌اش را نگه می‌دارد تا بعداً تحلیل کند.
+### name.individuals.krupengk.6
+- **English:** papo-palat
+- **Where it shows:** Personal name of krupengk number 6
+- **Draft:** پاپو-پالات
 - **Notes:** 
 
-### story.friendIntros.zala.title
-- **English:** a zala!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک زالا!
+### name.individuals.krupengk.7
+- **English:** serchu
+- **Where it shows:** Personal name of krupengk number 7
+- **Draft:** سرچو
 - **Notes:** 
 
-### story.friendIntros.zala.line
-- **English:** although zalas can be stand-offish, you may see them often because they move too slow to escape small talk.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** زالاها شاید کمی دورهم‌نشین نباشند، ولی احتمالاً زیاد می‌بینی‌شان، چون آن‌قدر آهسته حرکت می‌کنند که نمی‌توانند از حرفِ الکی فرار کنند.
+### name.individuals.krupengk.8
+- **English:** klist
+- **Where it shows:** Personal name of krupengk number 8
+- **Draft:** کلیست
 - **Notes:** 
 
-### story.friendIntros.liwi-bi-jiji.title
-- **English:** a liwi bi-jiji!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک لیوی بی‌جیجی!
+### name.individuals.zala.1
+- **English:** joo
+- **Where it shows:** Personal name of zala number 1
+- **Draft:** جو
 - **Notes:** 
 
-### story.friendIntros.liwi-bi-jiji.line
-- **English:** the fastest creatures on N-Z-D. known for their sense of humour. fans of scavenging competitions and chit chat.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** سریع‌ترین موجوداتِ N-Z-D. به شوخ‌طبعی معروف‌اند. عاشقِ مسابقه‌های جمع‌آوری و گپ‌زدن.
+### name.individuals.zala.2
+- **English:** ri-mapa
+- **Where it shows:** Personal name of zala number 2
+- **Draft:** ری-ماپا
 - **Notes:** 
 
-### story.friendIntros.meuhy.title
-- **English:** a meuhy!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک مئوهی!
+### name.individuals.zala.3
+- **English:** foyon
+- **Where it shows:** Personal name of zala number 3
+- **Draft:** فویون
 - **Notes:** 
 
-### story.friendIntros.meuhy.line
-- **English:** meuhys are N-Z-D"s most loyal creatures. it takes them long to trust, but when they do, it"s forever. lucky you!
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** مئوهی‌ها وفادارترین موجوداتِ N-Z-D هستند. دیر اعتماد می‌کنند، ولی وقتی کردند، برای همیشه است. خوش‌به‌حالت!
+### name.individuals.zala.4
+- **English:** ulu-wumu
+- **Where it shows:** Personal name of zala number 4
+- **Draft:** اولو-وومو
 - **Notes:** 
 
-### story.friendIntros.rassatt.title
-- **English:** a rassatt!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک راسات!
+### name.individuals.zala.5
+- **English:** sidakuza
+- **Where it shows:** Personal name of zala number 5
+- **Draft:** سیداکوزا
 - **Notes:** 
 
-### story.friendIntros.rassatt.line
-- **English:** rassatts are rarely found in this layer of the atmosphere, but they are friendly and talkative. they enjoy teasing and roasting.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** راسات‌ها را کم می‌شود در این لایه از جو پیدا کرد، ولی مهربان و پرحرف‌اند. از سربه‌سر گذاشتن و تیکه انداختن لذت می‌برند.
+### name.individuals.zala.6
+- **English:** fente
+- **Where it shows:** Personal name of zala number 6
+- **Draft:** فنته
 - **Notes:** 
 
-### story.friendIntros.woigolp.title
-- **English:** a woigolp!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک ووی‌گولپ!
+### name.individuals.zala.7
+- **English:** lujaa
+- **Where it shows:** Personal name of zala number 7
+- **Draft:** لوجا
 - **Notes:** 
 
-### story.friendIntros.woigolp.line
-- **English:** moody and temperamental, woigolps rarely emerge from their quarters, but when they do it"s to fight or to eat. friendship with them is unusual.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** ووی‌گولپ‌ها بدخلق و زودرنج‌اند و کم از لانه‌شان بیرون می‌آیند، ولی وقتی بیایند یا برای دعواست یا برای غذا. دوستی با آن‌ها کمیاب است.
+### name.individuals.liwi-bi-jiji.1
+- **English:** dugo linowa
+- **Where it shows:** Personal name of liwi bi jiji number 1
+- **Draft:** دوگو لینووا
 - **Notes:** 
 
-### story.friendIntros.chitu.title
-- **English:** a chitu!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک چیتو!
+### name.individuals.liwi-bi-jiji.2
+- **English:** sirid umaan
+- **Where it shows:** Personal name of liwi bi jiji number 2
+- **Draft:** سیرید اومان
 - **Notes:** 
 
-### story.friendIntros.chitu.line
-- **English:** shy chitus are N-Z-D"s finest poets. they are deeply fond of their local culture and language. their introversion keeps them mostly hidden and out of sight.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** چیتوهای خجالتی بهترین شاعرانِ N-Z-D هستند. عمیقاً به فرهنگ و زبانِ محلی‌شان علاقه دارند. درون‌گرایی باعث می‌شود بیشترِ وقت پنهان و دور از چشم باشند.
+### name.individuals.liwi-bi-jiji.3
+- **English:** so-lono chapina
+- **Where it shows:** Personal name of liwi bi jiji number 3
+- **Draft:** سو-لونو چاپینا
 - **Notes:** 
 
-### story.friendIntros.hamdi-bulo.title
-- **English:** a hamdi bulo!
-- **Where it shows:** Big line, your first of this species
-- **Draft:** یک همدی بولو!
+### name.individuals.liwi-bi-jiji.4
+- **English:** indiz aku-tata
+- **Where it shows:** Personal name of liwi bi jiji number 4
+- **Draft:** ایندیز آکو-تاتا
 - **Notes:** 
 
-### story.friendIntros.hamdi-bulo.line
-- **English:** wow! you befriended N-Z-D"s one and only hamdi bulo. these long-living creatures are wise like oracles and have seen more than anyone else on the planet. there is no higher or more honourable friendship here on N-Z-D. congratulations! this suggests your level of literacy has reached an unbelievable standard, for a non-native. all those novels and dictionaries that you read earned you this. well done.
-- **Where it shows:** Story line under it (first arrival only)
-- **Draft:** وای! با تنها همدی بولوی N-Z-D دوست شدی. این موجودات بلندعمر مثل غیب‌گوها فرزانه‌اند و بیشتر از هر کس دیگر در این سیاره دیده‌اند. این‌جا در N-Z-D دوستی‌ای بالاتر یا باشرافت‌تر از این نیست. تبریک! این نشان می‌دهد سطح سوادت، برای کسی که بومی نیست، به استانداردی باورنکردنی رسیده. همهٔ آن رمان‌ها و فرهنگ‌های لغتی که خواندی این را برایت به دست آورد. آفرین.
+### name.individuals.liwi-bi-jiji.5
+- **English:** fo-kocho panu-baa
+- **Where it shows:** Personal name of liwi bi jiji number 5
+- **Draft:** فو-کوچو پانو-با
 - **Notes:** 
 
-### story.friendCards.plip
-- **English:** plips are a wordless creature on N-Z-D. they love company.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** پلیپ‌ها موجوداتِ بی‌کلامِ N-Z-D هستند. همنشینی را دوست دارند.
+### name.individuals.liwi-bi-jiji.6
+- **English:** rolo mu-nino
+- **Where it shows:** Personal name of liwi bi jiji number 6
+- **Draft:** رولو مو-نینو
 - **Notes:** 
 
-### story.friendCards.baluhm
-- **English:** curious baluhms gravitate towards strangers, communicating mostly through gesture.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** بالوم‌های کنجکاو به سمتِ غریبه‌ها کشیده می‌شوند و بیشتر با اشاره و حرکت حرف می‌زنند.
+### name.individuals.meuhy.1
+- **English:** auhya
+- **Where it shows:** Personal name of meuhy number 1
+- **Draft:** اوهیا
 - **Notes:** 
 
-### story.friendCards.krupengk
-- **English:** the observant krupengk loves to gather information, saving it all for analysis later.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** کروپنگکِ تیزبین عاشقِ جمع‌کردنِ اطلاعات است و همه‌اش را نگه می‌دارد تا بعداً تحلیل کند.
+### name.individuals.meuhy.2
+- **English:** uwo
+- **Where it shows:** Personal name of meuhy number 2
+- **Draft:** اوو
 - **Notes:** 
 
-### story.friendCards.zala
-- **English:** zalas can be stand-offish, but you may see them often because they move slowly.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** زالاها شاید کمی سرد باشند، ولی احتمالاً زیاد می‌بینی‌شان، چون آهسته حرکت می‌کنند.
+### name.individuals.meuhy.3
+- **English:** yawy
+- **Where it shows:** Personal name of meuhy number 3
+- **Draft:** یاوی
 - **Notes:** 
 
-### story.friendCards.liwi-bi-jiji
-- **English:** the fastest creatures on N-Z-D are liwi bi-jijis, fans of scavenging competitions and chit chat.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** سریع‌ترین موجوداتِ N-Z-D لیوی بی‌جیجی‌ها هستند، عاشقِ مسابقه‌های جمع‌آوری و گپ‌زدن.
+### name.individuals.meuhy.4
+- **English:** wuyo
+- **Where it shows:** Personal name of meuhy number 4
+- **Draft:** وویو
 - **Notes:** 
 
-### story.friendCards.meuhy
-- **English:** meuhys are N-Z-D"s most loyal creatures. it takes them long to trust, but when they do, it"s forever.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** مئوهی‌ها وفادارترین موجوداتِ N-Z-D هستند. دیر اعتماد می‌کنند، ولی وقتی کردند، برای همیشه است.
+### name.individuals.meuhy.5
+- **English:** nii
+- **Where it shows:** Personal name of meuhy number 5
+- **Draft:** نیی
 - **Notes:** 
 
-### story.friendCards.rassatt
-- **English:** rassatts live in a different layer of the atmosphere. they are friendly and talkative. they enjoy teasing and roasting.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** راسات‌ها در لایه‌ای دیگر از جو زندگی می‌کنند. مهربان و پرحرف‌اند. از سربه‌سر گذاشتن و تیکه انداختن لذت می‌برند.
+### name.individuals.rassatt.1
+- **English:** batta du
+- **Where it shows:** Personal name of rassatt number 1
+- **Draft:** باتا دو
 - **Notes:** 
 
-### story.friendCards.woigolp
-- **English:** woigolps rarely emerge from their quarters, but when they do it"s to fight or to eat. they are moody and aggressive.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** ووی‌گولپ‌ها کم از لانه‌شان بیرون می‌آیند، ولی وقتی بیایند یا برای دعواست یا برای غذا. بدخلق و پرخاشگرند.
+### name.individuals.rassatt.2
+- **English:** sikki chi
+- **Where it shows:** Personal name of rassatt number 2
+- **Draft:** سیکی چی
 - **Notes:** 
 
-### story.friendCards.chitu
-- **English:** shy, interovered chitus are N-Z-D"s finest poets. they are deeply fond of their local culture and language, and masters of art.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** چیتوهای خجالتیِ درون‌گرا بهترین شاعرانِ N-Z-D هستند. عمیقاً به فرهنگ و زبانِ محلی‌شان علاقه دارند و استادِ هنرند.
-- **Notes:** FYI the English says «interovered», a typo; I read it as «introverted». 
-
-### story.friendCards.hamdi-bulo
-- **English:** N-Z-D currently hosts only one hamdi bulo. these long-living creatures are wise like oracles and have seen more than anyone else on the planet.
-- **Where it shows:** Guest Book card text, re-readable
-- **Draft:** N-Z-D فعلاً فقط یک همدی بولو دارد. این موجودات بلندعمر مثل غیب‌گوها فرزانه‌اند و بیشتر از هر کس دیگر در این سیاره دیده‌اند.
+### name.individuals.rassatt.3
+- **English:** zuchi naffi
+- **Where it shows:** Personal name of rassatt number 3
+- **Draft:** زوچی نافی
 - **Notes:** 
 
-### story.cameos.bigDay
-- **English:** {n} steps in one day!
-- **Where it shows:** What a visiting friend says after a big day
-- **Draft:** {n} قدم در یک روز!
+### name.individuals.rassatt.4
+- **English:** appatta
+- **Where it shows:** Personal name of rassatt number 4
+- **Draft:** اپاتا
 - **Notes:** 
 
-### story.cameos.streakRecordFirst
-- **English:** {n}-{unit} {habit} streak record!
-- **Where it shows:** Friend says it after a habit's first streak record
-- **Draft:** رکوردِ زنجیرهٔ {habit}: {n} {unit}!
-- **Notes:** The {unit} word is filled in by the app (day/week…). Tell me if the order reads oddly.
-
-### story.cameos.streakRecord
-- **English:** {n}-{unit} {habit} streak record! your old best was {previous}.
-- **Where it shows:** Friend says it when a habit beats its own record
-- **Draft:** رکوردِ زنجیرهٔ {habit}: {n} {unit}! رکوردِ قبلی‌ات {previous} بود.
+### name.individuals.woigolp.1
+- **English:** mogo
+- **Where it shows:** Personal name of woigolp number 1
+- **Draft:** موگو
 - **Notes:** 
 
-### story.cameos.livedDays
-- **English:** {n} lived days!
-- **Where it shows:** Friend says it at a lived-day milestone
-- **Draft:** {n} روزِ زندگی‌شده!
+### name.individuals.woigolp.2
+- **English:** unt
+- **Where it shows:** Personal name of woigolp number 2
+- **Draft:** اونت
 - **Notes:** 
 
-### Question for the end of the batch: map regions and individual names
-- Map regions (sahara, ari, lerato, sogol, kian, ida, sufi, cyrus, shiva, oratile, chaymae, hamid, parnian, marie-simone, tadiwa, lily) and the 55 friend names (bi, ti, owa, nor…) are names, not translations.
-- **Options:** (a) leave them in Latin letters in Farsi mode, (b) write them in Farsi script by sound (e.g. «کیان», «پرنیان», «سوگل» for the Persian ones), (c) mixed: Persian names in script, the rest stay Latin. Which do you want?
-- **Notes:**
+### name.individuals.woigolp.3
+- **English:** rori
+- **Where it shows:** Personal name of woigolp number 3
+- **Draft:** روری
+- **Notes:** 
+
+### name.individuals.chitu.1
+- **English:** ayalit salong
+- **Where it shows:** Personal name of chitu number 1
+- **Draft:** آیالیت سالونگ
+- **Notes:** 
+
+### name.individuals.chitu.2
+- **English:** ayalit sumachi
+- **Where it shows:** Personal name of chitu number 2
+- **Draft:** آیالیت سوماچی
+- **Notes:** 
+
+### name.individuals.hamdi-bulo.1
+- **English:** pikimi bulo
+- **Where it shows:** Personal name of hamdi bulo number 1
+- **Draft:** پیکیمی بولو
+- **Notes:** 
+

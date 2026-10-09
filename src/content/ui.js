@@ -575,7 +575,7 @@ const DECK = {
   'market.buy': {
     note: 'Button to buy a curiosity.',
     en: 'buy',
-    fa: '',
+    fa: 'صفحه‌ها',
   },
   'market.buyLabel': {
     note: 'Screen-reader name of the buy button. {price} is the cost in fungi.',
@@ -1433,42 +1433,42 @@ const DECK = {
       'Screen-reader name of the first charm (crown). Describes the drawing, ' +
       'never shown.',
     en: 'crown',
-    fa: '',
+    fa: 'تاج',
   },
   'charm.2': {
     note:
       'Screen-reader name of the second charm (cherry). Describes the ' +
       'drawing, never shown.',
     en: 'cherry',
-    fa: '',
+    fa: 'گیلاس',
   },
   'charm.3': {
     note:
       'Screen-reader name of the third charm (shell). Describes the drawing, ' +
       'never shown.',
     en: 'shell',
-    fa: '',
+    fa: 'صدف',
   },
   'charm.4': {
     note:
       'Screen-reader name of the fourth charm (anchor). Describes the ' +
       'drawing, never shown.',
     en: 'anchor',
-    fa: '',
+    fa: 'لنگر',
   },
   'charm.5': {
     note:
       'Screen-reader name of the fifth charm (shield). Describes the ' +
       'drawing, never shown.',
     en: 'shield',
-    fa: '',
+    fa: 'سپر',
   },
   'charm.6': {
     note:
       'Screen-reader name of the sixth charm (key). Describes the drawing, ' +
       'never shown.',
     en: 'key',
-    fa: '',
+    fa: 'کلید',
   },
 
   // ── The design workbench door ─────────────────────────────────────────
@@ -1584,7 +1584,7 @@ const STORY_DECK = {
       'The big line on the screen that appears the first time ' +
       'you find a native plant.',
     en: 'you found an indigenous plant',
-    fa: '',
+    fa: 'یک گیاه بومی پیدا کردی',
   },
   'story.firstReveals.flora.line': {
     note:
@@ -1594,14 +1594,14 @@ const STORY_DECK = {
       'after walking around N-Z-D for some time, you got ' +
       'enough steps in to discover the native flora. this land ' +
       'holds life, just like you.',
-    fa: '',
+    fa: 'بعد از کمی قدم زدن در N-Z-D، آن‌قدر قدم جمع کردی که گیاهان بومی را پیدا کنی. این سرزمین زندگی در خودش دارد، درست مثل تو.',
   },
   'story.firstReveals.magazine.title': {
     note:
       'The big line on the screen that appears the first time ' +
       'you find a magazine.',
     en: 'what is this? reading material?',
-    fa: '',
+    fa: 'این چیه؟ چیزی برای خواندن؟',
   },
   'story.firstReveals.magazine.line': {
     note:
@@ -1611,14 +1611,14 @@ const STORY_DECK = {
       'printed pages of local cultural phenomena. interesting ' +
       'stuff. hard to tell what language means on this planet. ' +
       'images help.',
-    fa: '',
+    fa: 'صفحه‌های چاپ‌شده از پدیده‌های فرهنگیِ این‌جا. جالب است. سخت است بفهمی زبان در این سیاره یعنی چه. عکس‌ها کمک می‌کنند.',
   },
   'story.firstReveals.novel.title': {
     note:
       'The big line on the screen that appears the first time ' +
       'you find a novel.',
     en: 'more pages; heavier. a novel?',
-    fa: '',
+    fa: 'صفحه‌های بیشتر، سنگین‌تر. یک رمان؟',
   },
   'story.firstReveals.novel.line': {
     note:
@@ -1628,14 +1628,14 @@ const STORY_DECK = {
       'N-Z-D is a cultured place; it is you who must raise ' +
       'your literacy level. perhaps this is the reading ' +
       'challenge you need.',
-    fa: '',
+    fa: 'N-Z-D جای فرهیخته‌ای است؛ این تو هستی که باید سطح سوادت را بالا ببری. شاید این همان چالشِ خواندنی باشد که لازم داشتی.',
   },
   'story.firstReveals.dictionary.title': {
     note:
       'The big line on the screen that appears the first time ' +
       'you find a dictionary.',
     en: 'you found a dictionary',
-    fa: '',
+    fa: 'یک فرهنگ لغت پیدا کردی',
   },
   'story.firstReveals.dictionary.line': {
     note:
@@ -1645,14 +1645,14 @@ const STORY_DECK = {
       'finally! a point of reference. a form of translation. a ' +
       'rare treasure that will open doors to deeper ' +
       'friendships.',
-    fa: '',
+    fa: 'بالاخره! یک مرجع. نوعی ترجمه. گنجی کمیاب که درهای دوستی‌های عمیق‌تر را به رویت باز می‌کند.',
   },
   'story.firstReveals.fungi.title': {
     note:
       'The big line on the screen that appears the first time ' +
       'you find fungi (the fungible tokens).',
     en: 'you earned a fungible token',
-    fa: '',
+    fa: 'یک سماروغ به دست آوردی',
   },
   'story.firstReveals.fungi.line': {
     note:
@@ -1662,7 +1662,7 @@ const STORY_DECK = {
       'do not eat these: they are very valuable and inedible. ' +
       'buy and sell objects for the same price at the local ' +
       'market.',
-    fa: '',
+    fa: 'این‌ها را نخور: خیلی باارزش‌اند و خوردنی نیستند. در بازار محلی چیزها را با یک قیمت بخر و بفروش.',
   },
 
   // ── The reading popup ───────────────────────────────────────────────────
@@ -1671,7 +1671,7 @@ const STORY_DECK = {
       'Shown inside the reading popup when a publication has ' +
       'no double-page spread written yet.',
     en: 'something will be here soon. check in later.',
-    fa: '',
+    fa: 'به‌زودی این‌جا چیزی هست. بعداً سر بزن.',
   },
 
   // ── Friend introductions ────────────────────────────────────────────────
@@ -1680,7 +1680,7 @@ const STORY_DECK = {
       'The big line when you meet your first plip (played ' +
       'once, on that first arrival).',
     en: 'a plip!',
-    fa: '',
+    fa: 'یک پلیپ!',
   },
   'story.friendIntros.plip.line': {
     note:
@@ -1689,14 +1689,14 @@ const STORY_DECK = {
     en:
       'plips are a wordless creature on N-Z-D. they are ' +
       'friendly, and love having company.',
-    fa: '',
+    fa: 'پلیپ‌ها موجوداتِ بی‌کلامِ N-Z-D هستند. مهربان‌اند و همنشینی را دوست دارند.',
   },
   'story.friendIntros.baluhm.title': {
     note:
       'The big line when you meet your first baluhm (played ' +
       'once, on that first arrival).',
     en: 'a baluhm!',
-    fa: '',
+    fa: 'یک بالوهم!',
   },
   'story.friendIntros.baluhm.line': {
     note:
@@ -1705,14 +1705,14 @@ const STORY_DECK = {
     en:
       'curious and kind, baluhms gravitate towards strangers, ' +
       'communicating mostly through gesture.',
-    fa: '',
+    fa: 'بالوهم‌ها کنجکاو و مهربان‌اند، به سمتِ غریبه‌ها کشیده می‌شوند و بیشتر با اشاره و حرکت حرف می‌زنند.',
   },
   'story.friendIntros.krupengk.title': {
     note:
       'The big line when you meet your first krupengk (played ' +
       'once, on that first arrival).',
     en: 'a krupengk!',
-    fa: '',
+    fa: 'یک کروپنگک!',
   },
   'story.friendIntros.krupengk.line': {
     note:
@@ -1721,14 +1721,14 @@ const STORY_DECK = {
     en:
       'the observant krupengk loves to gather information, ' +
       'saving it all for analysis later.',
-    fa: '',
+    fa: 'کروپنگکِ تیزبین عاشقِ جمع‌کردنِ اطلاعات است و همه‌اش را نگه می‌دارد تا بعداً تحلیل کند.',
   },
   'story.friendIntros.zala.title': {
     note:
       'The big line when you meet your first zala (played ' +
       'once, on that first arrival).',
     en: 'a zala!',
-    fa: '',
+    fa: 'یک زالا!',
   },
   'story.friendIntros.zala.line': {
     note:
@@ -1737,14 +1737,14 @@ const STORY_DECK = {
     en:
       'although zalas can be stand-offish, you may see them ' +
       'often because they move too slow to escape small talk.',
-    fa: '',
+    fa: 'زالاها شاید کمی دورهم‌نشین نباشند، ولی احتمالاً زیاد می‌بینی‌شان، چون آن‌قدر آهسته حرکت می‌کنند که نمی‌توانند از حرفِ الکی فرار کنند.',
   },
   'story.friendIntros.liwi-bi-jiji.title': {
     note:
       'The big line when you meet your first liwi bi-jiji ' +
       '(played once, on that first arrival).',
     en: 'a liwi bi-jiji!',
-    fa: '',
+    fa: 'یک لیوی بی‌جیجی!',
   },
   'story.friendIntros.liwi-bi-jiji.line': {
     note:
@@ -1754,14 +1754,14 @@ const STORY_DECK = {
       'the fastest creatures on N-Z-D. known for their sense ' +
       'of humour. fans of scavenging competitions and chit ' +
       'chat.',
-    fa: '',
+    fa: 'سریع‌ترین موجوداتِ N-Z-D. به شوخ‌طبعی معروف‌اند. عاشقِ مسابقه‌های جمع‌آوری و گپ‌زدن.',
   },
   'story.friendIntros.meuhy.title': {
     note:
       'The big line when you meet your first meuhy (played ' +
       'once, on that first arrival).',
     en: 'a meuhy!',
-    fa: '',
+    fa: 'یک میوحی!',
   },
   'story.friendIntros.meuhy.line': {
     note:
@@ -1771,14 +1771,14 @@ const STORY_DECK = {
       'meuhys are N-Z-D"s most loyal creatures. it takes them ' +
       'long to trust, but when they do, it"s forever. lucky ' +
       'you!',
-    fa: '',
+    fa: 'میوحی‌ها وفادارترین موجوداتِ N-Z-D هستند. دیر اعتماد می‌کنند، ولی وقتی کردند، برای همیشه است. خوش‌به‌حالت!',
   },
   'story.friendIntros.rassatt.title': {
     note:
       'The big line when you meet your first rassatt (played ' +
       'once, on that first arrival).',
     en: 'a rassatt!',
-    fa: '',
+    fa: 'یک رسّاط!',
   },
   'story.friendIntros.rassatt.line': {
     note:
@@ -1788,14 +1788,14 @@ const STORY_DECK = {
       'rassatts are rarely found in this layer of the ' +
       'atmosphere, but they are friendly and talkative. they ' +
       'enjoy teasing and roasting.',
-    fa: '',
+    fa: 'رسّاط‌ها را کم می‌شود در این لایه از جو پیدا کرد، ولی مهربان و پرحرف‌اند. از سربه‌سر گذاشتن و تیکه انداختن لذت می‌برند.',
   },
   'story.friendIntros.woigolp.title': {
     note:
       'The big line when you meet your first woigolp (played ' +
       'once, on that first arrival).',
     en: 'a woigolp!',
-    fa: '',
+    fa: 'یک ووی‌گولپ!',
   },
   'story.friendIntros.woigolp.line': {
     note:
@@ -1805,14 +1805,14 @@ const STORY_DECK = {
       'moody and temperamental, woigolps rarely emerge from ' +
       'their quarters, but when they do it"s to fight or to ' +
       'eat. friendship with them is unusual.',
-    fa: '',
+    fa: 'ووی‌گولپ‌ها بدخلق و زودرنج‌اند و کم از لانه‌شان بیرون می‌آیند، ولی وقتی بیایند یا برای دعواست یا برای غذا. دوستی با آن‌ها کمیاب است.',
   },
   'story.friendIntros.chitu.title': {
     note:
       'The big line when you meet your first chitu (played ' +
       'once, on that first arrival).',
     en: 'a chitu!',
-    fa: '',
+    fa: 'یک چیتو!',
   },
   'story.friendIntros.chitu.line': {
     note:
@@ -1822,14 +1822,14 @@ const STORY_DECK = {
       'shy chitus are N-Z-D"s finest poets. they are deeply ' +
       'fond of their local culture and language. their ' +
       'introversion keeps them mostly hidden and out of sight. ',
-    fa: '',
+    fa: 'چیتوهای خجالتی بهترین شاعرانِ N-Z-D هستند. عمیقاً به فرهنگ و زبانِ محلی‌شان علاقه دارند. درون‌گرایی باعث می‌شود بیشترِ وقت پنهان و دور از چشم باشند.',
   },
   'story.friendIntros.hamdi-bulo.title': {
     note:
       'The big line when you meet your first hamdi bulo ' +
       '(played once, on that first arrival).',
     en: 'a hamdi bulo!',
-    fa: '',
+    fa: 'یک همدی بولو!',
   },
   'story.friendIntros.hamdi-bulo.line': {
     note:
@@ -1844,7 +1844,7 @@ const STORY_DECK = {
       'has reached an unbelievable standard, for a non-native. ' +
       'all those novels and dictionaries that you read earned ' +
       'you this. well done. ',
-    fa: '',
+    fa: 'وای! با تنها همدی بولوی N-Z-D دوست شدی. این موجودات بلندعمر مثل غیب‌گوها فرزانه‌اند و بیشتر از هر کس دیگر در این سیاره دیده‌اند. این‌جا در N-Z-D دوستی‌ای بالاتر یا باشرافت‌تر از این نیست. تبریک! این نشان می‌دهد سطح سوادت، برای کسی که بومی نیست، به استانداردی باورنکردنی رسیده. همهٔ آن رمان‌ها و فرهنگ‌های لغتی که خواندی این را برایت به دست آورد. آفرین.',
   },
 
   // ── Friend cards ────────────────────────────────────────────────────────
@@ -1853,7 +1853,7 @@ const STORY_DECK = {
       "The text on a plip's Guest Book card — who they are. " +
       'Re-readable any time.',
     en: 'plips are a wordless creature on N-Z-D. they love ' + 'company.',
-    fa: '',
+    fa: 'پلیپ‌ها موجوداتِ بی‌کلامِ N-Z-D هستند. همنشینی را دوست دارند.',
   },
   'story.friendCards.baluhm': {
     note:
@@ -1862,7 +1862,7 @@ const STORY_DECK = {
     en:
       'curious baluhms gravitate towards strangers, ' +
       'communicating mostly through gesture.',
-    fa: '',
+    fa: 'بالوهم‌های کنجکاو به سمتِ غریبه‌ها کشیده می‌شوند و بیشتر با اشاره و حرکت حرف می‌زنند.',
   },
   'story.friendCards.krupengk': {
     note:
@@ -1871,7 +1871,7 @@ const STORY_DECK = {
     en:
       'the observant krupengk loves to gather information, ' +
       'saving it all for analysis later.',
-    fa: '',
+    fa: 'کروپنگکِ تیزبین عاشقِ جمع‌کردنِ اطلاعات است و همه‌اش را نگه می‌دارد تا بعداً تحلیل کند.',
   },
   'story.friendCards.zala': {
     note:
@@ -1880,7 +1880,7 @@ const STORY_DECK = {
     en:
       'zalas can be stand-offish, but you may see them often ' +
       'because they move slowly.',
-    fa: '',
+    fa: 'زالاها شاید کمی سرد باشند، ولی احتمالاً زیاد می‌بینی‌شان، چون آهسته حرکت می‌کنند.',
   },
   'story.friendCards.liwi-bi-jiji': {
     note:
@@ -1889,7 +1889,7 @@ const STORY_DECK = {
     en:
       'the fastest creatures on N-Z-D are liwi bi-jijis, fans ' +
       'of scavenging competitions and chit chat.',
-    fa: '',
+    fa: 'سریع‌ترین موجوداتِ N-Z-D لیوی بی‌جیجی‌ها هستند، عاشقِ مسابقه‌های جمع‌آوری و گپ‌زدن.',
   },
   'story.friendCards.meuhy': {
     note:
@@ -1898,7 +1898,7 @@ const STORY_DECK = {
     en:
       'meuhys are N-Z-D"s most loyal creatures. it takes them ' +
       'long to trust, but when they do, it"s forever.',
-    fa: '',
+    fa: 'میوحی‌ها وفادارترین موجوداتِ N-Z-D هستند. دیر اعتماد می‌کنند، ولی وقتی کردند، برای همیشه است.',
   },
   'story.friendCards.rassatt': {
     note:
@@ -1908,7 +1908,7 @@ const STORY_DECK = {
       'rassatts live in a different layer of the atmosphere. ' +
       'they are friendly and talkative. they enjoy teasing and ' +
       'roasting.',
-    fa: '',
+    fa: 'رسّاط‌ها در لایه‌ای دیگر از جو زندگی می‌کنند. مهربان و پرحرف‌اند. از سربه‌سر گذاشتن و تیکه انداختن لذت می‌برند.',
   },
   'story.friendCards.woigolp': {
     note:
@@ -1918,7 +1918,7 @@ const STORY_DECK = {
       'woigolps rarely emerge from their quarters, but when ' +
       'they do it"s to fight or to eat. they are moody and ' +
       'aggressive.',
-    fa: '',
+    fa: 'ووی‌گولپ‌ها کم از لانه‌شان بیرون می‌آیند، ولی وقتی بیایند یا برای دعواست یا برای غذا. بدخلق و پرخاشگرند.',
   },
   'story.friendCards.chitu': {
     note:
@@ -1928,7 +1928,7 @@ const STORY_DECK = {
       'shy, interovered chitus are N-Z-D"s finest poets. they ' +
       'are deeply fond of their local culture and language, ' +
       'and masters of art.',
-    fa: '',
+    fa: 'چیتوهای خجالتیِ درون‌گرا بهترین شاعرانِ N-Z-D هستند. عمیقاً به فرهنگ و زبانِ محلی‌شان علاقه دارند و استادِ هنرند.',
   },
   'story.friendCards.hamdi-bulo': {
     note:
@@ -1938,7 +1938,7 @@ const STORY_DECK = {
       'N-Z-D currently hosts only one hamdi bulo. these ' +
       'long-living creatures are wise like oracles and have ' +
       'seen more than anyone else on the planet.',
-    fa: '',
+    fa: 'N-Z-D فعلاً فقط یک همدی بولو دارد. این موجودات بلندعمر مثل غیب‌گوها فرزانه‌اند و بیشتر از هر کس دیگر در این سیاره دیده‌اند.',
   },
 
   // ── Cameo messages ──────────────────────────────────────────────────────
@@ -1948,7 +1948,7 @@ const STORY_DECK = {
       'big day of steps. Holes are filled in from the win ' +
       'itself.',
     en: '{n} steps in one day!',
-    fa: '',
+    fa: '{n} قدم در یک روز!',
   },
   'story.cameos.streakRecordFirst': {
     note:
@@ -1956,7 +1956,7 @@ const STORY_DECK = {
       'first streak record a habit ever sets. Holes are filled ' +
       'in from the win itself.',
     en: '{n}-{unit} {habit} streak record!',
-    fa: '',
+    fa: 'رکوردِ زنجیرهٔ {habit}: {n} {unit}!',
   },
   'story.cameos.streakRecord': {
     note:
@@ -1964,7 +1964,7 @@ const STORY_DECK = {
       'habit beating its own earlier streak record. Holes are ' +
       'filled in from the win itself.',
     en: '{n}-{unit} {habit} streak record! your old best was ' + '{previous}.',
-    fa: '',
+    fa: 'رکوردِ زنجیرهٔ {habit}: {n} {unit}! رکوردِ قبلی‌ات {previous} بود.',
   },
   'story.cameos.livedDays': {
     note:
@@ -1972,7 +1972,7 @@ const STORY_DECK = {
       'crossing a lived-day milestone. Holes are filled in ' +
       'from the win itself.',
     en: '{n} lived days!',
-    fa: '',
+    fa: '{n} روزِ زندگی‌شده!',
   },
 
   // ── Map regions ─────────────────────────────────────────────────────────
@@ -2095,70 +2095,70 @@ const STORY_DECK = {
       'What one plip is called on screen: Guest Book, arrival, ' +
       'shelf and cameo visits.',
     en: 'plip',
-    fa: '',
+    fa: 'پلیپ',
   },
   'name.species.baluhm': {
     note:
       'What one baluhm is called on screen: Guest Book, ' +
       'arrival, shelf and cameo visits.',
     en: 'baluhm',
-    fa: '',
+    fa: 'بالوهم',
   },
   'name.species.krupengk': {
     note:
       'What one krupengk is called on screen: Guest Book, ' +
       'arrival, shelf and cameo visits.',
     en: 'krupengk',
-    fa: '',
+    fa: 'کروپنگک',
   },
   'name.species.zala': {
     note:
       'What one zala is called on screen: Guest Book, arrival, ' +
       'shelf and cameo visits.',
     en: 'zala',
-    fa: '',
+    fa: 'زالا',
   },
   'name.species.liwi-bi-jiji': {
     note:
       'What one liwi bi-jiji is called on screen: Guest Book, ' +
       'arrival, shelf and cameo visits.',
     en: 'liwi bi-jiji',
-    fa: '',
+    fa: 'لیوی بی‌جیجی',
   },
   'name.species.meuhy': {
     note:
       'What one meuhy is called on screen: Guest Book, ' +
       'arrival, shelf and cameo visits.',
     en: 'meuhy',
-    fa: '',
+    fa: 'میوحی',
   },
   'name.species.rassatt': {
     note:
       'What one rassatt is called on screen: Guest Book, ' +
       'arrival, shelf and cameo visits.',
     en: 'rassatt',
-    fa: '',
+    fa: 'رسّاط',
   },
   'name.species.woigolp': {
     note:
       'What one woigolp is called on screen: Guest Book, ' +
       'arrival, shelf and cameo visits.',
     en: 'woigolp',
-    fa: '',
+    fa: 'ووی‌گولپ',
   },
   'name.species.chitu': {
     note:
       'What one chitu is called on screen: Guest Book, ' +
       'arrival, shelf and cameo visits.',
     en: 'chitu',
-    fa: '',
+    fa: 'چیتو',
   },
   'name.species.hamdi-bulo': {
     note:
       'What one hamdi bulo is called on screen: Guest Book, ' +
       'arrival, shelf and cameo visits.',
     en: 'hamdi bulo',
-    fa: '',
+    fa: 'همدی بولو',
   },
 
   // ── The individuals ─────────────────────────────────────────────────────
