@@ -3596,6 +3596,34 @@ return 0` right after the era is worked out, so a moment before the
   matter more than the release date, so nothing is cut from v1 to hit it.
   Folded into spec §5 and design-bible §9a / §12.
 
+## T5.3l build notes — the twelve silhouettes
+
+Kimia drew the twelve new flora and they were traced into flat single-path
+SVGs. Each is one solid shape (holes kept, e.g. the ring and the ginkgo's
+gaps); the screenshots she drew from were small, so the traces are slightly
+soft-edged. Shapes 04 and 08 had thin, dashed arms, and at her request were
+fattened and their small gaps filled — a deliberate step away from the
+original ink ("don't worry too much about straying from the original
+shape"). The first, thinner versions of those two were discarded at her
+word.
+
+- **Where they live:** `src/ui/newFloraSilhouettes.js`, twelve entries keyed
+  `n01`..`n12` in the order of her files, same shape as
+  `floraSilhouettes.js` (a `viewBox` and a path `d`, no group transform).
+  Labels are working handles only (`new-01`..); the species have no names
+  yet and the names come from her (T6.1).
+- **Why a separate file and not the existing list:** `floraDeal.js` rolls
+  a find's shape from `FLORA_SILHOUETTES`. Appending twelve would have
+  re-rolled the shape of every flora already gathered, which the plan rules
+  out (existing finds keep the look they have now; only new drops store a
+  shape). So the twelve are drawn, tested and ready, and **nothing reads
+  them yet**. `newFloraSilhouettes.test.js` pins this: if the deal ever
+  starts handing out a new shape before the stored-on-the-drop logic exists,
+  it fails.
+- **Still to do in T5.3l:** the 16 keepsake drawings, the landmark
+  (mother tree) size and look, the Map pictures, and the game logic for the
+  five-step arrival — built after the drawings, in their own sessions.
+
 ## T5.5 build notes — rotate (2026-10-08)
 
 Built in one session from Kimia's design, in three parts.

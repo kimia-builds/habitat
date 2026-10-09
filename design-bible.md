@@ -256,7 +256,8 @@ in body plan.)
 **SIXTEEN SPECIES, ONE PER MAP REGION (Kimia — this replaces the
 earlier "four species" reading, which itself replaced "64
 species").** N-Z-D grows **sixteen flora silhouettes**: the four chosen
-in T5.3g plus **twelve new ones** (T5.3l). Each Map region has **one
+in T5.3g plus **twelve new ones** (T5.3l — drawn and held in
+`src/ui/newFloraSilhouettes.js`, not yet dealt). Each Map region has **one
 distinct native flora**. Colours are plain fills and textures are gone, so
 **silhouette is the only thing that tells one species from another** —
 which is why the count is 16 and not 4. The flora are those shapes in

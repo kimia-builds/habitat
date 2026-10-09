@@ -342,6 +342,12 @@ tracker. Everything after this is delight, informed by real use.
             Runs as design slices like the rest of T5.3: one family drawn,
             shown, judged, next. **The game logic for the five steps is
             built after the drawings**, in its own sessions.
+            - [x] **The 12 new silhouettes** — drawn, traced and held in
+                  `src/ui/newFloraSilhouettes.js`; not yet dealt (the deal
+                  keeps the original four until a shape is stored on the
+                  drop). See history.md.
+            - [ ] The 16 keepsake drawings, the landmark size and look,
+                  the Map pictures, and the five-step arrival logic.
       - [ ] **T5.3m The 48 curiosities** _(opened on Kimia's call —
             AFTER T5.3l)_ — the 48-item Market pool (3 per region) mostly
             **recycles things already drawn or about to be**: charms, smoke,
