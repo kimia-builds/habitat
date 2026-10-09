@@ -436,7 +436,10 @@ function AppBody({ data, setData }) {
     requestPersistentStorage()
   }, [data.habits.length, data.completions.length])
 
-  const pastDaysEditable = editablePastDays(today).some(
+  const pastDaysEditable = editablePastDays(
+    today,
+    data.settings.weekShape,
+  ).some(
     (day) =>
       habitsOn(data.habits, data.completions, day, data.settings.dayCutoffHour)
         .length > 0,
@@ -495,6 +498,7 @@ function AppBody({ data, setData }) {
         now,
         data.settings.dayCutoffHour,
         played,
+        data.settings.weekShape,
       )
 
   // Every change goes through here: validate-and-persist, then render.
@@ -775,6 +779,7 @@ function AppBody({ data, setData }) {
           data.completions,
           now,
           data.settings.dayCutoffHour,
+          data.settings.weekShape,
         )
         if (streak >= 1) {
           const counted = t(
@@ -890,7 +895,14 @@ function AppBody({ data, setData }) {
     // button, so answering yesterday stays distraction-free.
     const completion = withFriendDrop(
       deliverDrops(
-        recordRetroCompletion(habit.id, dayKey, data.settings.dayCutoffHour),
+        recordRetroCompletion(
+          habit.id,
+          dayKey,
+          data.settings.dayCutoffHour,
+          undefined,
+          undefined,
+          data.settings.weekShape,
+        ),
         habit,
         played,
         data.worldSeed,
@@ -1173,7 +1185,9 @@ function AppBody({ data, setData }) {
   // call 2026-08-21). Tick a habit afterwards and it does not slide away
   // under your hand — the list only re-sorts when you ask it to again.
   function handlePrioritiseLens() {
-    setScreenOrder(prioritiseLens(active, data.completions, today))
+    setScreenOrder(
+      prioritiseLens(active, data.completions, today, data.settings.weekShape),
+    )
   }
 
   // The `to-dos` lens (T6.23d, spec §5b). The one lens with a memory:
@@ -1546,6 +1560,7 @@ function AppBody({ data, setData }) {
             <li key={habit.id}>
               <HabitForm
                 initial={habit}
+                weekShape={data.settings.weekShape}
                 onSave={(fields) => handleEdit(habit, fields)}
                 onCancel={() => setEditing(null)}
               />
@@ -1607,6 +1622,7 @@ function AppBody({ data, setData }) {
         // you are about to write is almost always that charm. Two or more
         // charms and nothing implied, and the form uses its own default.
         <HabitForm
+          weekShape={data.settings.weekShape}
           defaultSymbol={
             draftSymbol ?? (filter.length === 1 ? filter[0] : undefined)
           }
@@ -1762,6 +1778,7 @@ function AppBody({ data, setData }) {
             completions={data.completions}
             todayKey={today}
             cutoffHour={data.settings.dayCutoffHour}
+            weekShape={data.settings.weekShape}
             onMark={handleRetroMark}
             onUnmark={handleRetroUndo}
             onDone={handleCheckInDone}
@@ -1888,6 +1905,7 @@ function AppBody({ data, setData }) {
             habits={data.habits}
             completions={data.completions}
             cutoffHour={data.settings.dayCutoffHour}
+            weekShape={data.settings.weekShape}
             now={now}
             filter={filter}
             onToggleFilter={toggleFilter}

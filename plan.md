@@ -447,31 +447,11 @@ tracker. Everything after this is delight, informed by real use.
       a plain-English note on each entry; the weekday duplication is one
       list; and `src/test/copydeck.test.js` fails the suite when a
       component grows a hardcoded user-facing word.
-- [ ] **T6.15 The week gets a shape you choose.** _(Kimia's call
-      2026-08-16.)_ Three options — **Mon–Sun, Sun–Sat, Sat–Fri** — as
-      its own setting, **independent of language**. A Farsi speaker who
-      wants Monday weeks can have them; English with Saturday weeks is
-      equally fine.
-      **Nothing in the record changes — only the unit of analysis**
-      (Kimia's framing). The same marks are re-grouped: a Sunday spike
-      moves into a different bar because the bars are drawn differently,
-      not because the data moved. No migration, no rewrite, and
-      switching back and forth is lossless.
-      The code is small — `weekStart()` in `game/days.js` is a single
-      function with ~7 call sites (`graphs.js`, `schedule.js`,
-      `fieldnotes.js`, `cameos.js`) — but three things ride on it and
-      each needs its own test: which days an N-per-week habit's streak
-      is judged across, how the field notes slice history, and **which
-      past days are still editable**, since the freeze rule is written
-      against the week. Switching may therefore freeze or unfreeze a day
-      at the boundary; that is the same principle, not an exception.
-      **Reword the guardrail first.** CLAUDE.md and spec §4.2 both say
-      past days are editable "while their Mon–Sun week is the current
-      one". That has to become "their current week shape" before the
-      code can honestly contradict it.
-      Habit schedules are untouched: "walk on Mon/Wed/Fri" still means
-      Mon/Wed/Fri. Only the boundary moves. The weekday PICKER reorders
-      to match the chosen shape; the stored ISO numbers do not.
+- [x] **T6.15 The week gets a shape you choose.** _(done 2026-10-09,
+      Kimia's call 2026-08-16; build notes in history.md.)_ Mon–Sun,
+      Sun–Sat or Sat–Fri as its own saved setting, independent of
+      language, chosen from a "week shape" pebble beside the language
+      options; the marks never change, only how they are grouped.
 - [ ] **T6.16 Farsi text reads right to left — the layout does NOT
       move.** _(Narrowed by Kimia 2026-10-09; about 1 session.)_ The
       intended Farsi user also flips to English as a learning exercise,

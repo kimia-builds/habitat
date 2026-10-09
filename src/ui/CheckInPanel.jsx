@@ -120,6 +120,7 @@ function CheckInPanel({
   completions,
   todayKey,
   cutoffHour,
+  weekShape,
   onMark,
   onUnmark,
   onDone,
@@ -139,7 +140,9 @@ function CheckInPanel({
     )
 
   const yesterday = addDays(todayKey, -1)
-  const older = editablePastDays(todayKey).filter((day) => day !== yesterday)
+  const older = editablePastDays(todayKey, weekShape).filter(
+    (day) => day !== yesterday,
+  )
 
   const yesterdayRows = listedOn(
     habits,

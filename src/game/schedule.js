@@ -8,7 +8,13 @@
 // (see habits.js) says which schedule that was.
 
 import { countOn } from './completions.js'
-import { addDays, dayKeyFromTimestamp, isoWeekday, weekStart } from './days.js'
+import {
+  DEFAULT_WEEK_SHAPE,
+  addDays,
+  dayKeyFromTimestamp,
+  isoWeekday,
+  weekStart,
+} from './days.js'
 
 // The schedule in force on a given day: the latest history entry that
 // had taken effect by then. Days before the first entry (i.e. before
@@ -84,15 +90,20 @@ export function isDayFulfilled(habit, completions, dayKey) {
 }
 
 // For N-per-week habits: how many DISTINCT days of this day's week
-// (Monday–Sunday) have at least one completion. Three completions on
+// (in the chosen week shape, T6.15) have at least one completion. Three completions on
 // one day advance the week by one, not three (Kimia's decision
 // 2026-07-13). Note that "which week" follows each completion's
 // attributed day, so 1am on Sunday night still lands in the old week.
-export function weekProgress(habit, completions, dayKey) {
-  const monday = weekStart(dayKey)
+export function weekProgress(
+  habit,
+  completions,
+  dayKey,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
+  const first = weekStart(dayKey, weekShape)
   let fulfilledDays = 0
   for (let i = 0; i < 7; i++) {
-    if (isDayFulfilled(habit, completions, addDays(monday, i))) {
+    if (isDayFulfilled(habit, completions, addDays(first, i))) {
       fulfilledDays += 1
     }
   }
@@ -103,12 +114,22 @@ export function weekProgress(habit, completions, dayKey) {
 // change to the n applies from the day of the change onward, so what
 // the week is finally judged by is where it ended up (never
 // retroactively harsher OR kinder than what was asked while it ran).
-export function isWeekFulfilled(habit, completions, dayKey) {
-  const weekEndSchedule = scheduleOn(habit, addDays(weekStart(dayKey), 6))
+export function isWeekFulfilled(
+  habit,
+  completions,
+  dayKey,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
+  const weekEndSchedule = scheduleOn(
+    habit,
+    addDays(weekStart(dayKey, weekShape), 6),
+  )
   if (weekEndSchedule.type !== 'nPerWeek') {
     throw new Error('Week fulfilment only applies to N-per-week habits.')
   }
-  return weekProgress(habit, completions, dayKey) >= weekEndSchedule.n
+  return (
+    weekProgress(habit, completions, dayKey, weekShape) >= weekEndSchedule.n
+  )
 }
 
 // Which tier a habit falls in for the `prioritise` lens (spec §5b,
@@ -130,12 +151,19 @@ export function isWeekFulfilled(habit, completions, dayKey) {
 // nothing here watches the record, so a habit ticked after the press
 // stays where it is until the lens is pressed again (Kimia, 2026-08-21).
 // That is a property of WHEN this is called, not of what it answers.
-export function priorityTier(habit, completions, dayKey) {
+export function priorityTier(
+  habit,
+  completions,
+  dayKey,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   if (isScheduledOn(habit, dayKey)) {
     return isDayFulfilled(habit, completions, dayKey) ? 'rest' : 'today'
   }
   if (scheduleOn(habit, dayKey).type !== 'nPerWeek') return 'rest'
-  return isWeekFulfilled(habit, completions, dayKey) ? 'rest' : 'week'
+  return isWeekFulfilled(habit, completions, dayKey, weekShape)
+    ? 'rest'
+    : 'week'
 }
 
 // Streaks come in two counting units: day-based schedules (daily,
@@ -184,7 +212,13 @@ export function currentKindStart(habit, firstDay) {
 //
 // A day (or week) still in progress never counts AGAINST the streak;
 // it just doesn't count FOR it until it's fulfilled.
-export function currentStreak(habit, completions, now, cutoffHour) {
+export function currentStreak(
+  habit,
+  completions,
+  now,
+  cutoffHour,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   const kind = streakKind(habit.schedule.type)
   if (kind === null) return null
 
@@ -205,13 +239,16 @@ export function currentStreak(habit, completions, now, cutoffHour) {
   if (today < eraStart) return 0
 
   if (kind === 'week') {
-    const firstWeek = weekStart(eraStart)
-    let week = weekStart(today)
-    if (!isWeekFulfilled(habit, completions, week)) {
+    const firstWeek = weekStart(eraStart, weekShape)
+    let week = weekStart(today, weekShape)
+    if (!isWeekFulfilled(habit, completions, week, weekShape)) {
       week = addDays(week, -7) // this week is still in progress
     }
     let streak = 0
-    while (week >= firstWeek && isWeekFulfilled(habit, completions, week)) {
+    while (
+      week >= firstWeek &&
+      isWeekFulfilled(habit, completions, week, weekShape)
+    ) {
       streak += 1
       week = addDays(week, -7)
     }

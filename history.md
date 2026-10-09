@@ -7250,3 +7250,39 @@ and recorded in spec.md's decisions log._
   blues" or lean on the retired fur rule; design-notes notes friends' glow.
   Gathered flora are re-dealt from the seed, so some changed colour (accepted).
   Colour names are still Kimia's to choose.
+
+- 2026-10-09 (Kimia, T6.15): **the week shape is chosen from a "week
+  shape" pebble beside the language options.** It opens a small popup of
+  the three shapes (mon – sun, sun – sat, sat – fri) in the same card as
+  "start a new game"; choosing one saves and closes it. It sits on the
+  language line, not in the three-pebble row, which stays pinned at three.
+- 2026-10-09 (T6.15, build notes): **built in three slices.**
+  1. *The setting.* `settings.weekShape` ('mon' | 'sun' | 'sat', default
+     'mon'; schema v13 — every older save was judged in Monday weeks, so
+     the upgrade is honest, not a guess). `days.js` gains `WEEK_SHAPES`,
+     `isWeekShape`, `weekdayOrder(shape)` and `weekStart(dayKey, shape)`;
+     the shape is optional everywhere and defaults to Monday, so every
+     existing caller kept its behaviour. Backups carry the setting and
+     refuse an unknown shape. While there, the v9→v10 and v11→v12 upgrade
+     rungs were fixed: they stamped the NEWEST schema version instead of
+     their own, so a very old save skipped the later rungs (and the
+     settings those add).
+  2. *The pebble* (`WeekShapeControl.jsx`, `weekShape.*` slots in the
+     deck, English drafted, Farsi blank). `LanguageSwitch` now wraps its
+     language group and takes the pebble as a child, so the group still
+     holds only languages.
+  3. *The logic.* The shape is threaded through `weekProgress`,
+     `isWeekFulfilled`, `priorityTier`/`prioritiseLens`, `currentStreak`,
+     `canRecordRetroOn` (so which past days stay editable),
+     `recordRetroCompletion`, `editablePastDays`, `graphSeries`,
+     `earliestWeek`, `weekNotes` and the cameo walk (`weekStreaks`,
+     `streakStatus`, `cameoWin`). The field-notes column heads and the
+     habit form's weekday boxes follow the shape; the stored ISO numbers
+     do not move. Tests in `src/game/weekshape.test.js` pin the three
+     things the plan named — N-per-week judging, the field-notes slice,
+     and the editable window — plus lossless switching back and forth.
+  **Left as it was, on purpose (open for Kimia):** the "Sunday ritual" —
+  the field notes opening on the first visit of each Sunday, and the
+  startup planet's Sunday colour — is still tied to the literal weekday
+  Sunday, not to the last day of the chosen week. The habit list's
+  weekday label ("mon, wed, fri") also keeps its stored order.

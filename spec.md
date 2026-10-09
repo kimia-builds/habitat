@@ -165,7 +165,10 @@ dailies/habits/to-dos distinction. Each habit has:
   so which days are frozen moves with it. Changing the shape re-groups
   the same marks and rewrites none of them: the unit of analysis moves,
   the record does not. A Sunday spike lands in a different bar because
-  the bars are drawn differently, not because anything was edited. The one exception is **calendar yesterday, which is always
+  the bars are drawn differently, not because anything was edited. It is
+  chosen from a **"week shape" pebble** beside the language options at the
+  foot of the home screen, which opens a small popup of the three shapes
+  (Kimia's call 2026-10-09). The one exception is **calendar yesterday, which is always
   editable** — so a Monday-morning check-in can still fill in Sunday,
   and last week's numbers simply update. Days never filled in just
   count as **not done**, which (as always) is neutral data, not a
@@ -852,7 +855,6 @@ live on the laptop:**
 - see the field notes, including the graphs
 - edit any past day other than yesterday's check-in
 - change any time-shape setting — the day cutoff, and the week shape
-  when T6.15 builds it
 
 The line is **marking versus editing**, not "some of the app versus the
 rest". A phone adds to the record; only a laptop can rewrite it. That is

@@ -12,11 +12,17 @@
 //   - One-time to-dos get no graph.
 //   - An archived habit keeps its graph, frozen at the archive day.
 //   - The x-axis is the habit's whole life, squeezed to fit.
-//   - Week buckets are the app's Mon–Sun weeks; 4-week buckets count
+//   - Week buckets are the app's weeks, in the chosen week shape (T6.15); 4-week buckets count
 //     in groups of four from the habit's first week.
 
 import { GRAPH_UNLOCK_AGE_DAYS } from './constants.js'
-import { addDays, dayKeyFromTimestamp, daysBetween, weekStart } from './days.js'
+import {
+  DEFAULT_WEEK_SHAPE,
+  addDays,
+  dayKeyFromTimestamp,
+  daysBetween,
+  weekStart,
+} from './days.js'
 import { archivesWhenDone } from './schedule.js'
 
 // Finest first; the UI opens on the LAST unlocked one (coarsest —
@@ -70,11 +76,18 @@ export function unlockedZooms(habit, now, cutoffHour) {
 // order, zero-count buckets included — silence is data too.
 //
 // Day buckets start at the habit's first day; week and 4-week buckets
-// start at the Monday of its first week (so every bucket is a real
-// Mon–Sun week, or four of them). A completion somehow recorded before
+// start at the first day of its first week (so every bucket is a real
+// week in the chosen shape, or four of them). A completion somehow recorded before
 // the habit's creation day (defensive — check-in marks shouldn't
 // produce one) extends the graph back rather than being dropped.
-export function graphSeries(habit, completions, zoom, now, cutoffHour) {
+export function graphSeries(
+  habit,
+  completions,
+  zoom,
+  now,
+  cutoffHour,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   const span = BUCKET_DAYS[zoom]
   if (span === undefined) {
     throw new Error(`Unknown graph zoom "${zoom}".`)
@@ -88,7 +101,7 @@ export function graphSeries(habit, completions, zoom, now, cutoffHour) {
     if (c.dayKey < first) first = c.dayKey
     countByDay.set(c.dayKey, (countByDay.get(c.dayKey) ?? 0) + 1)
   }
-  if (zoom !== 'day') first = weekStart(first)
+  if (zoom !== 'day') first = weekStart(first, weekShape)
 
   const series = []
   for (let start = first; start <= end; start = addDays(start, span)) {

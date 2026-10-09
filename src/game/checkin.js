@@ -5,7 +5,7 @@
 // The rules (spec §4.2, decided 2026-07-14):
 //   - Yesterday must always be answerable — even on a Monday, when
 //     yesterday (Sunday) belongs to last week.
-//   - Other past days are editable only while their Mon–Sun week is
+//   - Other past days are editable only while their week is
 //     still the current week; a finished week is frozen history.
 //   - A day left unfilled simply counts as not done — neutral data,
 //     never a punishment. There is no separate "no data" state.
@@ -16,16 +16,17 @@
 // else is derived from habits and completions.
 
 import { canRecordRetroOn, countOn } from './completions.js'
-import { addDays, dayKeyFromTimestamp } from './days.js'
+import { DEFAULT_WEEK_SHAPE, addDays, dayKeyFromTimestamp } from './days.js'
 import { archivesWhenDone, isDayFulfilled, isScheduledOn } from './schedule.js'
 
 // Every past day that may still be edited, oldest first, ending at
-// yesterday. On a Monday that is just [Sunday]; on a Sunday it is
-// Monday through Saturday of the same week.
-export function editablePastDays(todayKey) {
+// yesterday. In Mon–Sun weeks, on a Monday that is just [Sunday]; on a
+// Sunday it is Monday through Saturday of the same week. Other week
+// shapes (T6.15) move the boundary the same way.
+export function editablePastDays(todayKey, weekShape = DEFAULT_WEEK_SHAPE) {
   const days = []
   for (let day = addDays(todayKey, -7); day < todayKey; day = addDays(day, 1)) {
-    if (canRecordRetroOn(day, todayKey)) days.push(day)
+    if (canRecordRetroOn(day, todayKey, weekShape)) days.push(day)
   }
   return days
 }

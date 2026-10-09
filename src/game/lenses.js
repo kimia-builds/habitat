@@ -15,6 +15,7 @@
 // down by one press of `save as default` (T6.23e, at the foot of this
 // file). Dragging never writes anything: that is the whole point of it.
 
+import { DEFAULT_WEEK_SHAPE } from './days.js'
 import { priorityTier, todayTier } from './schedule.js'
 
 // The habits in the order the SCREEN is showing them.
@@ -140,10 +141,15 @@ export function todayLens(habits, { muted, hidden }, dayKey) {
 // some older order nobody can account for.
 //
 // `habits` are the habit objects in SCREEN order.
-export function prioritiseLens(habits, completions, dayKey) {
+export function prioritiseLens(
+  habits,
+  completions,
+  dayKey,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   const tiers = { today: [], week: [], rest: [] }
   for (const habit of habits) {
-    tiers[priorityTier(habit, completions, dayKey)].push(habit.id)
+    tiers[priorityTier(habit, completions, dayKey, weekShape)].push(habit.id)
   }
   return [...tiers.today, ...tiers.week, ...tiers.rest]
 }

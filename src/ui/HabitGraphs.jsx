@@ -89,7 +89,7 @@ function GraphLine({ series, color, habitName, zoom }) {
   )
 }
 
-function HabitGraph({ habit, completions, now, cutoffHour }) {
+function HabitGraph({ habit, completions, now, cutoffHour, weekShape }) {
   const { t } = useText()
   const zooms = unlockedZooms(habit, now, cutoffHour)
   // Coarsest unlocked zoom first (Kimia's decision 2026-07-18): the
@@ -123,7 +123,14 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
             </div>
           )}
           <GraphLine
-            series={graphSeries(habit, completions, zoom, now, cutoffHour)}
+            series={graphSeries(
+              habit,
+              completions,
+              zoom,
+              now,
+              cutoffHour,
+              weekShape,
+            )}
             color={SYMBOL_COLORS[habit.symbol]}
             habitName={habit.name}
             zoom={zoom}
@@ -134,7 +141,7 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
   )
 }
 
-function HabitGraphs({ habits, completions, now, cutoffHour }) {
+function HabitGraphs({ habits, completions, now, cutoffHour, weekShape }) {
   const { t } = useText()
   const graphable = habits.filter(hasGraph)
   if (graphable.length === 0) return null
@@ -147,6 +154,7 @@ function HabitGraphs({ habits, completions, now, cutoffHour }) {
           key={habit.id}
           habit={habit}
           completions={completions}
+          weekShape={weekShape}
           now={now}
           cutoffHour={cutoffHour}
         />

@@ -16,6 +16,7 @@ import {
   dayKeyFromTimestamp,
   shortDate,
   weekStart,
+  weekdayOrder,
 } from '../game/days.js'
 import { earliestWeek, weekNotes } from '../game/fieldnotes.js'
 import { filterBySymbols } from '../game/habits.js'
@@ -91,6 +92,7 @@ function FieldNotes({
   habits,
   completions,
   cutoffHour,
+  weekShape,
   now,
   // No lens unless one is handed down — App always hands one down; the
   // empty list means "show everything", exactly as it does on the list.
@@ -104,7 +106,7 @@ function FieldNotes({
 }) {
   const { t } = useText()
   const today = dayKeyFromTimestamp(now, cutoffHour)
-  const thisWeek = weekStart(today)
+  const thisWeek = weekStart(today, weekShape)
   const lastCompletedWeek = addDays(thisWeek, -7)
   // The lens, applied once at the top: everything below — how far back
   // the browsing reaches, the grid, the completed tasks, the graphs —
@@ -114,7 +116,12 @@ function FieldNotes({
   const shownHabits = filterBySymbols(habits, filter)
   const shownIds = new Set(shownHabits.map((h) => h.id))
   const shownCompletions = completions.filter((c) => shownIds.has(c.habitId))
-  const firstWeek = earliestWeek(shownHabits, shownCompletions, cutoffHour)
+  const firstWeek = earliestWeek(
+    shownHabits,
+    shownCompletions,
+    cutoffHour,
+    weekShape,
+  )
   // Default to the last completed week; a Habitat whose whole history
   // is this week starts on the current week instead.
   //
@@ -173,7 +180,14 @@ function FieldNotes({
         ? thisWeek
         : chosenWeek
 
-  const notes = weekNotes(shownHabits, shownCompletions, week, now, cutoffHour)
+  const notes = weekNotes(
+    shownHabits,
+    shownCompletions,
+    week,
+    now,
+    cutoffHour,
+    weekShape,
+  )
 
   return (
     <>
@@ -216,8 +230,8 @@ function FieldNotes({
             <thead>
               <tr>
                 <th></th>
-                {WEEKDAY_KEYS.map((d) => (
-                  <th key={d}>{t(`weekday.${d}.tiny`)}</th>
+                {weekdayOrder(weekShape).map((n) => (
+                  <th key={n}>{t(`weekday.${WEEKDAY_KEYS[n - 1]}.tiny`)}</th>
                 ))}
                 <th></th>
               </tr>
@@ -286,6 +300,7 @@ function FieldNotes({
         completions={shownCompletions}
         now={now}
         cutoffHour={cutoffHour}
+        weekShape={weekShape}
       />
 
       {back}

@@ -4,7 +4,8 @@
 // (spec §3); nothing here scores, grades or nags.
 //
 // The rules (Kimia's decisions, 2026-07-16):
-//   - Weeks are the same Mon–Sun weeks the rest of the app uses.
+//   - Weeks are the same weeks the rest of the app uses — in the shape
+//     the user chose (T6.15).
 //   - The page opens on the last COMPLETED week; the current week is
 //     browsable too, clearly marked as still unfolding.
 //   - Streaks appear only when notable (1 or more) — a broken streak
@@ -19,6 +20,7 @@
 
 import { countOn } from './completions.js'
 import {
+  DEFAULT_WEEK_SHAPE,
   addDays,
   dayKeyFromTimestamp,
   isoWeekday,
@@ -37,9 +39,14 @@ import {
 const bornDay = (habit, cutoffHour) =>
   dayKeyFromTimestamp(habit.createdAt, cutoffHour)
 
-// The Monday of the earliest week with anything to show — how far back
+// The first day of the earliest week with anything to show — how far back
 // the field notes can browse. Null on a truly empty Habitat.
-export function earliestWeek(habits, completions, cutoffHour) {
+export function earliestWeek(
+  habits,
+  completions,
+  cutoffHour,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   let earliest = null
   for (const habit of habits) {
     const day = bornDay(habit, cutoffHour)
@@ -50,7 +57,7 @@ export function earliestWeek(habits, completions, cutoffHour) {
       earliest = completion.dayKey
     }
   }
-  return earliest === null ? null : weekStart(earliest)
+  return earliest === null ? null : weekStart(earliest, weekShape)
 }
 
 // Everything the field-notes page needs to draw one week:
@@ -72,12 +79,19 @@ export function earliestWeek(habits, completions, cutoffHour) {
 //     outside,      before creation, after archiving, or still in the
 //                   future — drawn as blank nothing
 //   }
-export function weekNotes(habits, completions, weekStartKey, now, cutoffHour) {
+export function weekNotes(
+  habits,
+  completions,
+  weekStartKey,
+  now,
+  cutoffHour,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   const weekEnd = addDays(weekStartKey, 6)
   const today = dayKeyFromTimestamp(now, cutoffHour)
-  const isCurrent = weekStart(today) === weekStartKey
+  const isCurrent = weekStart(today, weekShape) === weekStartKey
   // Streaks are reported "as of" the week on show: for a finished
-  // week, late on the Monday right after it — so its Sunday counts as
+  // week, late on the day right after it — so its last day counts as
   // concluded; for the current week, right now.
   const asOf = isCurrent ? now : timestampAtHour(addDays(weekEnd, 1), 23)
   // …and "as of" has to mean it (2026-08-20). The moment was right but
@@ -148,7 +162,7 @@ export function weekNotes(habits, completions, weekStartKey, now, cutoffHour) {
     // An archived habit's streak is over by definition — not notable.
     const streak = habit.archived
       ? null
-      : currentStreak(habit, asOfCompletions, asOf, cutoffHour)
+      : currentStreak(habit, asOfCompletions, asOf, cutoffHour, weekShape)
     rows.push({
       habit,
       days,

@@ -16,6 +16,7 @@ import { DIFFICULTIES } from '../game/constants.js'
 import SymbolPicker from './SymbolPicker.jsx'
 import { useText } from './language.jsx'
 import { WEEKDAY_KEYS } from '../content/ui.js'
+import { weekdayOrder } from '../game/days.js'
 
 // The schedule kinds the picker offers, in order; each one's words are
 // the `schedule.<kind>` slot in the copy deck.
@@ -40,7 +41,13 @@ function buildSchedule(type, weekdayFlags, n) {
   return { type }
 }
 
-function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
+function HabitForm({
+  initial,
+  defaultSymbol = 1,
+  weekShape,
+  onSave,
+  onCancel,
+}) {
   const { t } = useText()
   const [name, setName] = useState(initial?.name ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
@@ -136,22 +143,28 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
       </label>
       {scheduleType === 'weekdays' && (
         <div className="weekday-boxes">
-          {WEEKDAY_KEYS.map((day, i) => (
-            <label key={day}>
-              <input
-                type="checkbox"
-                checked={weekdayFlags[i]}
-                onChange={(e) =>
-                  setWeekdayFlags(
-                    weekdayFlags.map((on, j) =>
-                      j === i ? e.target.checked : on,
-                    ),
-                  )
-                }
-              />
-              {t(`weekday.${day}.short`)}
-            </label>
-          ))}
+          {/* The boxes follow the chosen week shape (T6.15); the flags and
+              the stored numbers stay in ISO order — only the order shown moves. */}
+          {weekdayOrder(weekShape).map((n) => {
+            const i = n - 1
+            const day = WEEKDAY_KEYS[i]
+            return (
+              <label key={day}>
+                <input
+                  type="checkbox"
+                  checked={weekdayFlags[i]}
+                  onChange={(e) =>
+                    setWeekdayFlags(
+                      weekdayFlags.map((on, j) =>
+                        j === i ? e.target.checked : on,
+                      ),
+                    )
+                  }
+                />
+                {t(`weekday.${day}.short`)}
+              </label>
+            )
+          })}
         </div>
       )}
       {(scheduleType === 'nPerWeek' || scheduleType === 'nPerDay') && (

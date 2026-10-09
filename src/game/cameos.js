@@ -36,7 +36,12 @@ import {
   CAMEO_STREAK_RECORD_MIN,
   CAMEO_STREAK_RECORD_STEP,
 } from './constants.js'
-import { addDays, dayKeyFromTimestamp, weekStart } from './days.js'
+import {
+  DEFAULT_WEEK_SHAPE,
+  addDays,
+  dayKeyFromTimestamp,
+  weekStart,
+} from './days.js'
 import { randomUnit } from './drops.js'
 import { friendsFrom } from './friends.js'
 import { livedDayCount } from './market.js'
@@ -97,16 +102,22 @@ function dayStreaks(habit, counts, today, cutoffHour) {
 // force at that week's END — the isWeekFulfilled rule (the era's first
 // week may reach back before eraStart, judging those days by the
 // schedule each one lived under, exactly as weekProgress does).
-function weekStreaks(habit, counts, today, cutoffHour) {
+function weekStreaks(
+  habit,
+  counts,
+  today,
+  cutoffHour,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   const eraStart = currentKindStart(
     habit,
     dayKeyFromTimestamp(habit.createdAt, cutoffHour),
   )
-  const thisWeek = weekStart(today)
+  const thisWeek = weekStart(today, weekShape)
   let run = 0
   let record = 0
   for (
-    let week = weekStart(eraStart);
+    let week = weekStart(eraStart, weekShape);
     week <= thisWeek;
     week = addDays(week, 7)
   ) {
@@ -178,14 +189,20 @@ function isCelebrationPoint(current, record, kind) {
 // the word for its unit, the habit's own name, and the best it beat
 // (0 when this is the habit's first record — the two cases have their
 // own narration slots, since there is no old best to name).
-function streakRecordWin(habits, counts, today, cutoffHour) {
+function streakRecordWin(
+  habits,
+  counts,
+  today,
+  cutoffHour,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   const streaks = []
   for (const habit of habits) {
     const kind = streakKind(habit.schedule.type)
     if (kind === null) continue
     const { current, record } =
       kind === 'week'
-        ? weekStreaks(habit, counts, today, cutoffHour)
+        ? weekStreaks(habit, counts, today, cutoffHour, weekShape)
         : dayStreaks(habit, counts, today, cutoffHour)
     if (!isCelebrationPoint(current, record, kind)) continue
     streaks.push({
@@ -223,13 +240,19 @@ function pickCameoFriend(friends, worldSeed, today, type) {
 // record maths directly (and check the walk stays equivalent to
 // schedule.js's currentStreak): { current, record }, or null for a
 // streakless schedule type (whenever / one-time).
-export function streakStatus(habit, completions, now, cutoffHour) {
+export function streakStatus(
+  habit,
+  completions,
+  now,
+  cutoffHour,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   const kind = streakKind(habit.schedule.type)
   if (kind === null) return null
   const today = dayKeyFromTimestamp(now, cutoffHour)
   const counts = countMap(completions)
   return kind === 'week'
-    ? weekStreaks(habit, counts, today, cutoffHour)
+    ? weekStreaks(habit, counts, today, cutoffHour, weekShape)
     : dayStreaks(habit, counts, today, cutoffHour)
 }
 
@@ -260,13 +283,20 @@ export function cameoWin(
   now,
   cutoffHour,
   played = completions,
+  weekShape = DEFAULT_WEEK_SHAPE,
 ) {
   const friends = friendsFrom(played)
   if (friends.length === 0) return null
   const today = dayKeyFromTimestamp(now, cutoffHour)
   const win =
     livedDayWin(played, today) ??
-    streakRecordWin(habits, countMap(completions), today, cutoffHour) ??
+    streakRecordWin(
+      habits,
+      countMap(completions),
+      today,
+      cutoffHour,
+      weekShape,
+    ) ??
     bigDayWin(completions, today)
   if (win === null) return null
   return {

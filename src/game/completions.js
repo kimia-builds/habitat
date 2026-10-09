@@ -30,6 +30,7 @@ import {
   isValidDayKey,
   validateDayKey,
   weekStart,
+  DEFAULT_WEEK_SHAPE,
 } from './days.js'
 import { validateDrop } from './drops.js'
 
@@ -87,14 +88,18 @@ export function recordCompletion(
 // retroactive mark still target this day? Calendar yesterday: always —
 // that's the morning check-in, even when yesterday was last week
 // (Monday filling in Sunday). Any other past day: only while its week
-// (Mon–Sun) is still the current week. Once a week has passed, its
+// (in the chosen week shape, T6.15) is still the current week. Once a week has passed, its
 // days are frozen history. Today and the future are never "retro".
-export function canRecordRetroOn(dayKey, todayKey) {
+export function canRecordRetroOn(
+  dayKey,
+  todayKey,
+  weekShape = DEFAULT_WEEK_SHAPE,
+) {
   validateDayKey(dayKey)
   validateDayKey(todayKey)
   if (dayKey >= todayKey) return false
   if (dayKey === addDays(todayKey, -1)) return true
-  return weekStart(dayKey) === weekStart(todayKey)
+  return weekStart(dayKey, weekShape) === weekStart(todayKey, weekShape)
 }
 
 // A retroactive completion — the morning check-in (T1.4) saying "I did
@@ -107,6 +112,7 @@ export function recordRetroCompletion(
   cutoffHour,
   now = Date.now(),
   id = crypto.randomUUID(),
+  weekShape = DEFAULT_WEEK_SHAPE,
 ) {
   validateDayKey(dayKey)
   const today = dayKeyFromTimestamp(now, cutoffHour)
@@ -116,7 +122,7 @@ export function recordRetroCompletion(
         'for today, record it normally.',
     )
   }
-  if (!canRecordRetroOn(dayKey, today)) {
+  if (!canRecordRetroOn(dayKey, today, weekShape)) {
     throw new Error(
       'This day can no longer be filled in — once a week has passed, ' +
         'its days are frozen (only the current week and yesterday stay ' +

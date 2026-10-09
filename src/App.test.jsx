@@ -30,7 +30,7 @@ import { floraTargetStep, rollFungi, rollReading } from './game/drops.js'
 import { backupAgeLabel } from './game/backup.js'
 import { addDays, dayKeyFromTimestamp } from './game/days.js'
 import { loadData, loadDefaultView, SCHEMA_VERSION } from './storage/storage.js'
-import { LANGUAGES } from './content/ui.js'
+import { LANGUAGES, translate } from './content/ui.js'
 import { narrationSlot } from './content/narration.js'
 import {
   blankAllNames,
@@ -1918,6 +1918,49 @@ describe('field notes (T2.3)', () => {
 
   afterEach(() => {
     vi.useRealTimers()
+  })
+
+  it('the week shape reorders the grid and the weekday picker (T6.15)', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 15, 9)) // Wednesday the 15th
+    seed({
+      checkedInThrough: '2026-07-14',
+      settings: { dayCutoffHour: 3, weekShape: 'sat' },
+    })
+    render(<App />)
+
+    // The weekday picker lists the days from the shape's first day…
+    fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
+    fireEvent.change(field('schedule'), { target: { value: 'weekdays' } })
+    const boxes = [
+      ...document.querySelectorAll('.weekday-boxes input[type="checkbox"]'),
+    ]
+    expect(boxes).toHaveLength(7)
+    // …and ticking the FIRST box (Saturday) stores ISO 6, not 1.
+    fireEvent.click(boxes[0])
+    fireEvent.change(field('name'), { target: { value: 'sat walk' } })
+    fireEvent.click(
+      within(document.querySelector('form.habit-form')).getByRole('button', {
+        name: 'save',
+      }),
+    )
+    const saved = stored().habits.find((h) => h.name === 'sat walk')
+    expect(saved.schedule.days).toEqual([6])
+
+    // The field notes grid starts on Saturday: the week on show ends on
+    // the Friday before today's Saturday-started week (11-07 → 17-07).
+    fireEvent.click(
+      screen.getByRole('button', { name: 'view historical data' }),
+    )
+    expect(screen.getByText(/04-07-26 – 10-07-26/)).toBeDefined()
+    // (The first header cell is the empty corner above the habit names.)
+    const heads = [...document.querySelectorAll('th')]
+      .map((th) => th.textContent.trim())
+      .slice(1)
+    // First column is Saturday, last is Friday — read from the deck, so
+    // the test never quotes a word.
+    expect(heads[0]).toBe(translate('en', 'weekday.sat.tiny'))
+    expect(heads[6]).toBe(translate('en', 'weekday.fri.tiny'))
   })
 
   it('the habit list links to the field notes and back', () => {
