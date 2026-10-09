@@ -1560,7 +1560,6 @@ function AppBody({ data, setData }) {
             <li key={habit.id}>
               <HabitForm
                 initial={habit}
-                weekShape={data.settings.weekShape}
                 onSave={(fields) => handleEdit(habit, fields)}
                 onCancel={() => setEditing(null)}
               />
@@ -1622,7 +1621,6 @@ function AppBody({ data, setData }) {
         // you are about to write is almost always that charm. Two or more
         // charms and nothing implied, and the form uses its own default.
         <HabitForm
-          weekShape={data.settings.weekShape}
           defaultSymbol={
             draftSymbol ?? (filter.length === 1 ? filter[0] : undefined)
           }

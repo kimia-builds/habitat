@@ -130,6 +130,12 @@ export function isWeekShape(value) {
   return WEEK_SHAPES.includes(value)
 }
 
+// Which week shape the habit form's weekday boxes use in each language
+// (Kimia's call 2026-10-09): Farsi lists Shanbeh first, English Monday.
+// This is only about the order of the boxes — it is NOT the week-shape
+// setting, which still decides the grid, the graphs and the editable days.
+export const PICKER_SHAPE_BY_LANGUAGE = { en: 'mon', fa: 'sat' }
+
 // The ISO weekdays (1 = Monday … 7 = Sunday) in the order a week of this
 // shape lists them — the weekday picker uses it. The stored numbers
 // never change; only the order they are shown in.

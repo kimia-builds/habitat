@@ -1929,14 +1929,15 @@ describe('field notes (T2.3)', () => {
     })
     render(<App />)
 
-    // The weekday picker lists the days from the shape's first day…
+    // The weekday picker follows the LANGUAGE, not the shape (Kimia's call
+    // 2026-10-09): English lists Monday first even in a Saturday week…
     fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
     fireEvent.change(field('schedule'), { target: { value: 'weekdays' } })
     const boxes = [
       ...document.querySelectorAll('.weekday-boxes input[type="checkbox"]'),
     ]
     expect(boxes).toHaveLength(7)
-    // …and ticking the FIRST box (Saturday) stores ISO 6, not 1.
+    // …and ticking the FIRST box (Monday) stores ISO 1.
     fireEvent.click(boxes[0])
     fireEvent.change(field('name'), { target: { value: 'sat walk' } })
     fireEvent.click(
@@ -1945,7 +1946,7 @@ describe('field notes (T2.3)', () => {
       }),
     )
     const saved = stored().habits.find((h) => h.name === 'sat walk')
-    expect(saved.schedule.days).toEqual([6])
+    expect(saved.schedule.days).toEqual([1])
 
     // The field notes grid starts on Saturday: the week on show ends on
     // the Friday before today's Saturday-started week (11-07 → 17-07).
@@ -1961,6 +1962,32 @@ describe('field notes (T2.3)', () => {
     // the test never quotes a word.
     expect(heads[0]).toBe(translate('en', 'weekday.sat.tiny'))
     expect(heads[6]).toBe(translate('en', 'weekday.fri.tiny'))
+  })
+
+  it('in Farsi the weekday picker starts on Shanbeh (2026-10-09)', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2026, 6, 15, 9))
+    seed({
+      checkedInThrough: '2026-07-14',
+      settings: { dayCutoffHour: 3, weekShape: 'mon', language: 'fa' },
+    })
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
+    fireEvent.change(field('schedule'), { target: { value: 'weekdays' } })
+    const boxes = [
+      ...document.querySelectorAll('.weekday-boxes input[type="checkbox"]'),
+    ]
+    fireEvent.click(boxes[0])
+    fireEvent.change(field('name'), { target: { value: 'sat walk' } })
+    fireEvent.click(
+      within(document.querySelector('form.habit-form')).getByRole('button', {
+        name: 'save',
+      }),
+    )
+    // The first box is Saturday, whatever the week shape says.
+    expect(
+      stored().habits.find((h) => h.name === 'sat walk').schedule.days,
+    ).toEqual([6])
   })
 
   it('the habit list links to the field notes and back', () => {

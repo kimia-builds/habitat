@@ -7286,3 +7286,17 @@ and recorded in spec.md's decisions log._
   startup planet's Sunday colour — is still tied to the literal weekday
   Sunday, not to the last day of the chosen week. The habit list's
   weekday label ("mon, wed, fri") also keeps its stored order.
+
+- 2026-10-09 (Kimia, answering the two open questions above): **the Sunday
+  ritual stays exactly as it is** — tied to the literal Sunday, not the
+  week's last day. It is a small, quiet feature that suits her more than
+  the average user. Someday it is removed or the user picks its day;
+  either is beyond v1 scope.
+- 2026-10-09 (Kimia): **the habit form's weekday boxes follow the
+  language, not the week shape.** Farsi lists Shanbeh first (Sat–Fri),
+  English Monday first. Only the order of the boxes changes — the week
+  shape setting still decides the field notes grid, graphs and editable
+  days, and stored weekday numbers never move. Map is
+  `PICKER_SHAPE_BY_LANGUAGE` in `days.js`; `HabitForm` no longer takes a
+  `weekShape`. The habit list's weekday label ("mon, wed, fri") was not
+  part of this call and still keeps its stored order.

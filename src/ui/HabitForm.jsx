@@ -16,7 +16,7 @@ import { DIFFICULTIES } from '../game/constants.js'
 import SymbolPicker from './SymbolPicker.jsx'
 import { useText } from './language.jsx'
 import { WEEKDAY_KEYS } from '../content/ui.js'
-import { weekdayOrder } from '../game/days.js'
+import { PICKER_SHAPE_BY_LANGUAGE, weekdayOrder } from '../game/days.js'
 
 // The schedule kinds the picker offers, in order; each one's words are
 // the `schedule.<kind>` slot in the copy deck.
@@ -44,11 +44,10 @@ function buildSchedule(type, weekdayFlags, n) {
 function HabitForm({
   initial,
   defaultSymbol = 1,
-  weekShape,
   onSave,
   onCancel,
 }) {
-  const { t } = useText()
+  const { t, language } = useText()
   const [name, setName] = useState(initial?.name ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
   // Editing shows the habit's own charm. A brand-new draft starts on
@@ -143,9 +142,10 @@ function HabitForm({
       </label>
       {scheduleType === 'weekdays' && (
         <div className="weekday-boxes">
-          {/* The boxes follow the chosen week shape (T6.15); the flags and
-              the stored numbers stay in ISO order — only the order shown moves. */}
-          {weekdayOrder(weekShape).map((n) => {
+          {/* The boxes follow the LANGUAGE (Kimia's call 2026-10-09), not the
+              week-shape setting; the flags and the stored numbers stay in
+              ISO order — only the order shown moves. */}
+          {weekdayOrder(PICKER_SHAPE_BY_LANGUAGE[language]).map((n) => {
             const i = n - 1
             const day = WEEKDAY_KEYS[i]
             return (
