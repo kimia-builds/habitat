@@ -2019,7 +2019,11 @@ describe('field notes (T2.3)', () => {
         settings: { dayCutoffHour: 3, weekShape: 'mon', language },
       })
       const { unmount } = render(<App />)
-      expect(screen.getByText(`${expected} · easy`)).toBeDefined()
+      expect(
+        screen.getByText(
+          `${expected} · ${translate(language, 'difficulty.easy')}`,
+        ),
+      ).toBeDefined()
       unmount()
     }
   })

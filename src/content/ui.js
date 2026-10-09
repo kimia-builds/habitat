@@ -185,7 +185,7 @@ const DECK = {
   'habits.filterView': {
     note: 'Label of the control that opens the lens choices above the habit list.',
     en: 'filter view',
-    fa: '',
+    fa: 'فیلتر نما',
   },
   'habits.markDone': {
     note: "Hover label on a habit tile's tick, to mark it done.",
@@ -767,14 +767,14 @@ const DECK = {
       'Link back to the habit list. The arrow is drawn by the page, not part ' +
       'of the words.',
     en: 'back to the habits',
-    fa: '',
+    fa: 'برگشت به عادت‌ها',
   },
   'nav.earlier': {
     note:
       'Button to move to an earlier page of days. The arrow is drawn by the ' +
       'page.',
     en: 'earlier',
-    fa: '',
+    fa: 'قبل‌تر',
   },
   'nav.later': {
     note:
@@ -790,7 +790,7 @@ const DECK = {
       'Order of the date line at the top of the home screen. Holes: ' +
       '{weekday} {day} {month} {year}. Move them to suit the grammar.',
     en: '{weekday} {day} {month} {year}',
-    fa: '',
+    fa: '{weekday} {day} {month} {year}',
   },
   'weekday.mon.long': {
     note: 'Monday, in full, on the date line.',
@@ -976,17 +976,17 @@ const DECK = {
       'Note under the date, shown only between midnight and the day cutoff. ' +
       '{time} is one of the two hour forms below.',
     en: 'your habits will switch to a new day at {time}',
-    fa: '',
+    fa: 'عادت‌هایت ساعت {time} به روز جدید می‌روند',
   },
   'time.hourAm': {
     note: 'An hour before noon, e.g. "4 a.m.". {hour} is the number.',
     en: '{hour} a.m.',
-    fa: '',
+    fa: '{hour} صبح',
   },
   'time.hourPm': {
     note: 'An hour after noon, e.g. "4 p.m.". {hour} is the number.',
     en: '{hour} p.m.',
-    fa: '',
+    fa: '{hour} بعدازظهر',
   },
 
   // ── Weekday names, short and tiny ─────────────────────────────────────
@@ -1079,29 +1079,29 @@ const DECK = {
   'schedule.daily': {
     note: 'Schedule choice in the habit form: every day.',
     en: 'every day',
-    fa: '',
+    fa: 'هر روز',
   },
   'schedule.weekdays': {
     note: 'Schedule choice in the habit form: pick the days.',
     en: 'specific weekdays',
-    fa: '',
+    fa: 'روزهای مشخصی از هفته',
   },
   'schedule.nPerWeek': {
     note: 'Schedule choice in the habit form: a number of days each week.',
     en: 'n days a week',
-    fa: '',
+    fa: 'n روز در هفته',
   },
   'schedule.nPerDay': {
     note: 'Schedule choice in the habit form: a number of times each day.',
     en: 'n times a day',
-    fa: '',
+    fa: 'n بار در روز',
   },
   'schedule.whenever': {
     note:
       'Schedule choice in the habit form: no fixed schedule. Also the ' +
       "tile's summary line.",
     en: 'whenever',
-    fa: '',
+    fa: 'هر وقت شد',
   },
   'schedule.oneTime': {
     note: 'Schedule choice in the habit form: a one-time to-do.',
@@ -1121,39 +1121,39 @@ const DECK = {
   'schedule.summary.oneTime': {
     note: "Habit tile's summary line for a one-time to-do.",
     en: 'one-time',
-    fa: '',
+    fa: 'یک‌باره',
   },
   'difficulty.easy': {
     note: 'Easiest difficulty choice in the habit form.',
     en: 'easy',
-    fa: '',
+    fa: 'آسان',
   },
   'difficulty.medium': {
     note: 'Middle difficulty choice in the habit form.',
     en: 'medium',
-    fa: '',
+    fa: 'متوسط',
   },
   'difficulty.difficult': {
     note: 'Hardest difficulty choice in the habit form.',
     en: 'difficult',
-    fa: '',
+    fa: 'سخت',
   },
 
   // ── Graph zoom choices ────────────────────────────────────────────────
   'fieldNotes.zoom.day': {
     note: 'Graph zoom choice: one point per day.',
     en: 'day by day',
-    fa: '',
+    fa: 'روز به روز',
   },
   'fieldNotes.zoom.week': {
     note: 'Graph zoom choice: one point per week.',
     en: 'week by week',
-    fa: '',
+    fa: 'هفته به هفته',
   },
   'fieldNotes.zoom.fourWeek': {
     note: 'Graph zoom choice: one point per four weeks.',
     en: '4 weeks at a time',
-    fa: '',
+    fa: 'هر چهار هفته',
   },
 
   // ── Small habit-list words ────────────────────────────────────────────
@@ -1165,41 +1165,41 @@ const DECK = {
   'habits.archivedTag': {
     note: "Small tag beside an archived habit's name.",
     en: '(archived)',
-    fa: '',
+    fa: '(بایگانی‌شده)',
   },
   'habits.archivedHeading': {
     note: 'Heading of the archived drawer. {n} is how many are archived.',
     en: 'archived ({n})',
-    fa: '',
+    fa: 'بایگانی‌شده‌ها ({n})',
   },
   'habits.doneOn': {
     note: 'Line on a finished to-do. {day} is the date it was done.',
     en: 'done {day}',
-    fa: '',
+    fa: 'انجام‌شده در {day}',
   },
 
   // ── Counted units ─────────────────────────────────────────────────────
   'count.day.one': {
     note: 'A count of one day. {n} is the number.',
     en: '{n} day',
-    fa: '',
+    fa: '{n} روز',
   },
   'count.day.other': {
     note:
       'A count of several days. A language without plurals can fill both the ' +
       'same.',
     en: '{n} days',
-    fa: '',
+    fa: '{n} روز',
   },
   'count.week.one': {
     note: 'A count of one week.',
     en: '{n} week',
-    fa: '',
+    fa: '{n} هفته',
   },
   'count.week.other': {
     note: 'A count of several weeks.',
     en: '{n} weeks',
-    fa: '',
+    fa: '{n} هفته',
   },
 
   // ── Confirm questions ─────────────────────────────────────────────────
@@ -1211,7 +1211,7 @@ const DECK = {
       'heads up: this schedule change switches how "{habit}"\'s streak is ' +
       'counted, so the current streak ({streak}) starts fresh from today. ' +
       'save anyway?',
-    fa: '',
+    fa: 'حواست باشد: این تغییر برنامه روش شمارش زنجیرهٔ «{habit}» را عوض می‌کند، برای همین زنجیرهٔ فعلی ({streak}) از امروز از نو شروع می‌شود. باز هم ذخیره شود؟',
   },
   'habits.deleteConfirm': {
     note: 'Question before a habit is deleted for good. {habit} is its name.',
@@ -1320,29 +1320,29 @@ const DECK = {
   'habitForm.errorNoName': {
     note: 'Refusal when saving a habit with no name.',
     en: 'habit needs a name.',
-    fa: '',
+    fa: 'عادت باید اسم داشته باشد.',
   },
   'habitForm.errorNoWeekday': {
     note: 'Refusal when a weekdays schedule has no day ticked.',
     en: 'pick at least one day',
-    fa: '',
+    fa: 'دست‌کم یک روز انتخاب کن',
   },
 
   // ── Small check-in words ──────────────────────────────────────────────
   'checkin.tickDone': {
     note: 'Tick on a check-in tile when the habit is already done.',
     en: 'done',
-    fa: '',
+    fa: 'انجام شده',
   },
   'checkin.showFewer': {
     note: 'Fold button that shortens a long day in the check-in.',
     en: 'show fewer',
-    fa: '',
+    fa: 'کمتر نشان بده',
   },
   'checkin.showMore': {
     note: 'Fold button that shows the rest of a long day. {n} is how many more.',
     en: 'show {n} more',
-    fa: '',
+    fa: '{n} مورد دیگر نشان بده',
   },
 
   // ── Map caption and market tag ────────────────────────────────────────
