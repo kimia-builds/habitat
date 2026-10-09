@@ -11,6 +11,9 @@ import {
   shortDate,
   validateCutoffHour,
   weekStart,
+  weekdayOrder,
+  isWeekShape,
+  WEEK_SHAPES,
 } from './days.js'
 
 // Build a timestamp from local-clock parts, exactly like the user's
@@ -115,6 +118,44 @@ describe('weeks (Monday-start, ISO weekday numbers)', () => {
     expect(isoWeekday('2026-07-13')).toBe(1)
     expect(isoWeekday('2026-07-12')).toBe(7)
     expect(isoWeekday('2026-07-15')).toBe(3) // Wednesday
+  })
+
+  it('weekStart follows the chosen week shape', () => {
+    // 2026-07-15 is a Wednesday.
+    expect(weekStart('2026-07-15', 'mon')).toBe('2026-07-13')
+    expect(weekStart('2026-07-15', 'sun')).toBe('2026-07-12')
+    expect(weekStart('2026-07-15', 'sat')).toBe('2026-07-11')
+    // A shape's own first day starts its own week.
+    expect(weekStart('2026-07-12', 'sun')).toBe('2026-07-12')
+    expect(weekStart('2026-07-11', 'sat')).toBe('2026-07-11')
+    // A Sunday belongs to the week that just ended in Mon–Sun, but opens
+    // a new one in Sun–Sat.
+    expect(weekStart('2026-07-19', 'mon')).toBe('2026-07-13')
+    expect(weekStart('2026-07-19', 'sun')).toBe('2026-07-19')
+  })
+
+  it('every shape groups seven days, and rolls over month and year', () => {
+    for (const shape of WEEK_SHAPES) {
+      const starts = new Set()
+      for (let i = 0; i < 7; i++) {
+        starts.add(weekStart(addDays('2026-07-13', i), shape))
+      }
+      expect(starts.size).toBeLessThanOrEqual(2)
+    }
+    expect(weekStart('2027-01-01', 'sat')).toBe('2026-12-26')
+  })
+
+  it("weekdayOrder lists the weekdays from the shape's first day", () => {
+    expect(weekdayOrder('mon')).toEqual([1, 2, 3, 4, 5, 6, 7])
+    expect(weekdayOrder('sun')).toEqual([7, 1, 2, 3, 4, 5, 6])
+    expect(weekdayOrder('sat')).toEqual([6, 7, 1, 2, 3, 4, 5])
+    expect(weekdayOrder()).toEqual([1, 2, 3, 4, 5, 6, 7])
+  })
+
+  it('recognises only the three shapes', () => {
+    expect(WEEK_SHAPES.every(isWeekShape)).toBe(true)
+    expect(isWeekShape('fri')).toBe(false)
+    expect(isWeekShape(undefined)).toBe(false)
   })
 
   it('weekStart names the week by its Monday', () => {

@@ -14,6 +14,8 @@
 //     settings:    { dayCutoffHour: 3,
 //                    language: 'en',          // which language the
 //                              // interface speaks — added in T6.13
+//                    weekShape: 'mon',        // which day the week starts
+//                              // on: 'mon', 'sun' or 'sat' — added in T6.15
 //                    abodeSky: 'ember',       // which of the four nebula
 //                              // skies the Abode wears — added in T5.4
 //                    fieldNotesShownOn: null,  // the last Sunday the
@@ -51,6 +53,11 @@
 //                              // — see game/market.js, added in T4.3b
 //   }
 //
+// Since v13 (T6.15) settings carry `weekShape` — 'mon', 'sun' or 'sat',
+// the day each week starts on. A setting, independent of language; it
+// rides in the envelope and travels in backups like the others. Changing
+// it rewrites no mark: the same record is simply grouped differently.
+//
 // Since v12 (T5.4) settings carry `abodeSky` — which of the four nebula
 // skies (game/abode.js's ABODE_SKIES) the Abode's background wears.
 // Kimia flips between them while she arranges, so it is a SETTING and not
@@ -81,8 +88,10 @@ import { validateCompletion } from '../game/completions.js'
 import { DEFAULT_DAY_CUTOFF_HOUR, SYMBOL_COUNT } from '../game/constants.js'
 import { validateBookcaseLayout } from '../game/bookcase.js'
 import {
+  DEFAULT_WEEK_SHAPE,
   dayKeyFromTimestamp,
   isValidDayKey,
+  isWeekShape,
   validateCutoffHour,
 } from '../game/days.js'
 import { validateFloraDecisions } from '../game/flora.js'
@@ -93,7 +102,7 @@ const STORAGE_KEY = 'habitat-data'
 // Exported so tests can assert "the upgrade chain reaches the CURRENT
 // version" rather than hard-coding a number that has to be edited in
 // nine places on every schema bump.
-export const SCHEMA_VERSION = 12
+export const SCHEMA_VERSION = 13
 
 // The world seed: the one random act in the whole drops system —
 // everything after it is a pure function of this string (T3.1's
@@ -115,6 +124,7 @@ export function emptyData() {
       lastExportedOn: null,
       language: DEFAULT_LANGUAGE,
       abodeSky: DEFAULT_ABODE_SKY,
+      weekShape: DEFAULT_WEEK_SHAPE,
     },
     checkedInThrough: null,
     worldSeed: newWorldSeed(),
@@ -134,15 +144,17 @@ export function emptyData() {
 // upgrade moment stands in. Anything malformed is left untouched for
 // validateData to complain about properly.
 function upgradeData(data, now = Date.now()) {
-  return upgradeV11toV12(
-    upgradeV10toV11(
-      upgradeV9toV10(
-        upgradeV8toV9(
-          upgradeV7toV8(
-            upgradeV6toV7(
-              upgradeV5toV6(
-                upgradeV4toV5(
-                  upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))),
+  return upgradeV12toV13(
+    upgradeV11toV12(
+      upgradeV10toV11(
+        upgradeV9toV10(
+          upgradeV8toV9(
+            upgradeV7toV8(
+              upgradeV6toV7(
+                upgradeV5toV6(
+                  upgradeV4toV5(
+                    upgradeV3toV4(upgradeV2toV3(upgradeV1toV2(data, now))),
+                  ),
                 ),
               ),
             ),
@@ -301,7 +313,7 @@ function upgradeV8toV9(data) {
 function upgradeV9toV10(data) {
   if (typeof data !== 'object' || data === null) return data
   if (data.schemaVersion !== 9) return data
-  return { ...data, schemaVersion: SCHEMA_VERSION }
+  return { ...data, schemaVersion: 10 }
 }
 
 // v10 -> v11 (T6.13): settings gain `language` — which language the
@@ -330,6 +342,20 @@ function upgradeV11toV12(data) {
     typeof data.settings === 'object' && data.settings !== null
       ? { abodeSky: DEFAULT_ABODE_SKY, ...data.settings }
       : data.settings
+  return { ...data, schemaVersion: 12, settings }
+}
+
+// v12 -> v13 (T6.15): settings gain `weekShape` — which day the week
+// starts on ('mon', 'sun' or 'sat'). Every save before the choice
+// existed was judged in Monday weeks, so 'mon' is the honest answer, not
+// a guess — and nothing in the record changes.
+function upgradeV12toV13(data) {
+  if (typeof data !== 'object' || data === null) return data
+  if (data.schemaVersion !== 12) return data
+  const settings =
+    typeof data.settings === 'object' && data.settings !== null
+      ? { weekShape: DEFAULT_WEEK_SHAPE, ...data.settings }
+      : data.settings
   return { ...data, schemaVersion: SCHEMA_VERSION, settings }
 }
 
@@ -352,6 +378,7 @@ function withDefaults(data) {
             lastExportedOn: null,
             language: DEFAULT_LANGUAGE,
             abodeSky: DEFAULT_ABODE_SKY,
+            weekShape: DEFAULT_WEEK_SHAPE,
           }
         : typeof data.settings === 'object' && data.settings !== null
           ? {
@@ -360,6 +387,7 @@ function withDefaults(data) {
               lastExportedOn: null,
               language: DEFAULT_LANGUAGE,
               abodeSky: DEFAULT_ABODE_SKY,
+              weekShape: DEFAULT_WEEK_SHAPE,
               ...data.settings,
             }
           : data.settings,
@@ -422,6 +450,9 @@ function validateData(data) {
   }
   if (!isLanguage(data.settings.language)) {
     throw backupProblem('backup.error.badLanguage')
+  }
+  if (!isWeekShape(data.settings.weekShape)) {
+    throw backupProblem('backup.error.badWeekShape')
   }
   if (!isAbodeSky(data.settings.abodeSky)) {
     throw backupProblem('backup.error.badSky')

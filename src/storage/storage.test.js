@@ -1175,3 +1175,72 @@ describe('the default view', () => {
     expect(loadDefaultView()).toEqual({ charms: [3], muted: ['h1'] })
   })
 })
+
+describe('the v12 → v13 upgrade (T6.15)', () => {
+  function v12Save(settings) {
+    return JSON.stringify({
+      schemaVersion: 12,
+      habits: [habit('a', 'Read')],
+      completions: [],
+      settings: {
+        dayCutoffHour: 3,
+        fieldNotesShownOn: null,
+        startupShownOn: null,
+        lastExportedOn: null,
+        language: 'en',
+        abodeSky: 'ember',
+        ...settings,
+      },
+      checkedInThrough: null,
+      worldSeed: 'seed',
+      floraDecisions: {},
+      bookcaseLayout: {},
+      abodeLayout: {},
+      purchases: [],
+    })
+  }
+
+  it('a v12 save keeps Monday weeks — the shape it was judged in', () => {
+    localStorage.setItem('habitat-data', v12Save({}))
+    const data = loadData()
+    expect(data.schemaVersion).toBe(SCHEMA_VERSION)
+    expect(data.settings.weekShape).toBe('mon')
+    expect(data.habits).toHaveLength(1)
+    expect(() => saveData(data)).not.toThrow()
+  })
+
+  it('a v9 save still climbs every rung to the current shape', () => {
+    // Guards the old rung that jumped straight to the newest version and
+    // skipped the settings added since.
+    localStorage.setItem(
+      'habitat-data',
+      JSON.stringify({
+        ...JSON.parse(v12Save({})),
+        schemaVersion: 9,
+        settings: {
+          dayCutoffHour: 3,
+          fieldNotesShownOn: null,
+          startupShownOn: null,
+          lastExportedOn: null,
+        },
+      }),
+    )
+    const data = loadData()
+    expect(data.settings.language).toBe('en')
+    expect(data.settings.abodeSky).toBeTruthy()
+    expect(data.settings.weekShape).toBe('mon')
+  })
+
+  it('keeps a week shape that is already there', () => {
+    const data = { ...emptyData() }
+    data.settings = { ...data.settings, weekShape: 'sat' }
+    saveData(data)
+    expect(loadData().settings.weekShape).toBe('sat')
+  })
+
+  it('refuses a backup naming a week shape Habitat does not have', () => {
+    const broken = { ...emptyData() }
+    broken.settings = { ...broken.settings, weekShape: 'fri' }
+    expect(() => saveData(broken)).toThrow(/week/i)
+  })
+})

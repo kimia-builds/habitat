@@ -111,10 +111,39 @@ export function isoWeekday(dayKey) {
   return ((atNoon(dayKey).getDay() + 6) % 7) + 1
 }
 
-// The Monday that begins this day's week. Weeks run Monday–Sunday, and
-// this key doubles as the week's name (equal week starts = same week).
-export function weekStart(dayKey) {
-  return addDays(dayKey, 1 - isoWeekday(dayKey))
+// --- The shape of the week (T6.15) -------------------------------------
+//
+// Which day a week STARTS on is a setting, not a constant (Kimia's call
+// 2026-08-16), and it is independent of language. Three shapes:
+//   'mon' — Monday to Sunday (the default; how Habitat began)
+//   'sun' — Sunday to Saturday
+//   'sat' — Saturday to Friday
+// Each is named by the ISO weekday its week starts on (Mon = 1 … Sun = 7).
+// Choosing a shape moves only the boundary: the marks themselves are
+// never touched, they are simply grouped differently.
+export const WEEK_SHAPES = ['mon', 'sun', 'sat']
+export const DEFAULT_WEEK_SHAPE = 'mon'
+
+const WEEK_FIRST_DAY = { mon: 1, sun: 7, sat: 6 }
+
+export function isWeekShape(value) {
+  return WEEK_SHAPES.includes(value)
+}
+
+// The ISO weekdays (1 = Monday … 7 = Sunday) in the order a week of this
+// shape lists them — the weekday picker uses it. The stored numbers
+// never change; only the order they are shown in.
+export function weekdayOrder(shape = DEFAULT_WEEK_SHAPE) {
+  const first = WEEK_FIRST_DAY[shape]
+  return Array.from({ length: 7 }, (_, i) => ((first - 1 + i) % 7) + 1)
+}
+
+// The day that begins this day's week, in the chosen shape. This key
+// doubles as the week's name (equal week starts = same week). Always ask
+// this function — never assume a week starts on Monday.
+export function weekStart(dayKey, shape = DEFAULT_WEEK_SHAPE) {
+  const sinceStart = (isoWeekday(dayKey) - WEEK_FIRST_DAY[shape] + 7) % 7
+  return addDays(dayKey, -sinceStart)
 }
 
 // A day key written the short way: '2026-07-06' → '06-07-26' (DD-MM-YY,

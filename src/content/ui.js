@@ -1216,6 +1216,11 @@ const DECK = {
     en: 'this backup names a sky the abode does not have.',
     fa: '',
   },
+  'backup.error.badWeekShape': {
+    note: 'Refusal: the file names a week shape Habitat does not have.',
+    en: 'this backup names a week shape habitat does not have.',
+    fa: '',
+  },
   'backup.error.badCheckin': {
     note: 'Refusal: the check-in marker is broken.',
     en: 'this backup has a broken check-in marker.',
