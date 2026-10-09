@@ -7348,5 +7348,8 @@ and recorded in spec.md's decisions log._
   spacing. Tests in `src/ui/language.test.jsx`: font files exist and are
   bundled (no outside URLs), the Farsi font is applied only under
   lang='fa', spacing/casing reset with the wordmark spared, size-adjust
-  above 100%. Assumption still unconfirmed by Kimia: Persian digits in
-  Farsi mode (flagged in 2026-10-09's decisions).
+  above 100%. **Confirmed by Kimia the same day:** Persian digits stay in
+  Farsi mode; if an Arabic mode is ever added it keeps Western digits
+  (0–9). The digits come from the Farsi font, which only applies under
+  `lang='fa'`, so an Arabic mode would get Western digits by default —
+  it must simply never be given that font.
