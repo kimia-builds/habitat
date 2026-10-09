@@ -76,28 +76,28 @@ const DECK = {
       'Hover label and screen-reader name for the rail icon that opens the ' +
       'habit list.',
     en: 'pages',
-    fa: '',
+    fa: 'صفحه‌ها',
   },
   'rail.addHabit': {
     note:
       'Hover label and screen-reader name for the rail icon that opens a ' +
       'new-habit form.',
     en: 'add new habit',
-    fa: '',
+    fa: 'افزودن عادت جدید',
   },
   'rail.editPastDays': {
     note:
       'Hover label and screen-reader name for the rail icon that opens the ' +
       'morning check-in for earlier days.',
     en: 'edit past days',
-    fa: '',
+    fa: 'ویرایش روزهای گذشته',
   },
   'rail.fieldNotes': {
     note:
       'Hover label and screen-reader name for the rail icon that opens the ' +
       'field notes (history).',
     en: 'view historical data',
-    fa: '',
+    fa: 'دیدن داده‌های پیشین',
   },
 
   // ── Page titles ───────────────────────────────────────────────────────
@@ -106,7 +106,7 @@ const DECK = {
       'Title of the Map page. Shows on its rail icon and at the top of the ' +
       'page.',
     en: 'map of N-Z-D',
-    fa: '',
+    fa: 'نقشهٔ N-Z-D',
   },
   'page.abode': {
     note:
@@ -120,7 +120,7 @@ const DECK = {
       'Title of the Guest Book page. Shows on its rail icon and at the top ' +
       'of the page.',
     en: 'local community',
-    fa: '',
+    fa: 'جامعهٔ محلی',
   },
   'page.bookcase': {
     note:
@@ -148,7 +148,7 @@ const DECK = {
   'meters.region': {
     note: 'Screen-reader name for the group of three meters at the top.',
     en: 'meters',
-    fa: '',
+    fa: 'شاخص‌ها',
   },
   'meters.steps': {
     note: 'Name of the steps meter. Hover label and screen-reader name.',
@@ -190,7 +190,7 @@ const DECK = {
   'habits.markDone': {
     note: "Hover label on a habit tile's tick, to mark it done.",
     en: 'mark done',
-    fa: '',
+    fa: 'انجام شد',
   },
   'habits.mute': {
     note: 'Quiet word on a habit tile that hides it from today.',
@@ -200,34 +200,34 @@ const DECK = {
   'habits.unmute': {
     note: 'Quiet word on a muted habit tile that brings it back.',
     en: 'unmute',
-    fa: '',
+    fa: 'روشن',
   },
   'habits.edit': {
     note: 'Quiet word on a habit tile that opens it for editing.',
     en: 'edit',
-    fa: '',
+    fa: 'ویرایش',
   },
   'habits.archive': {
     note: 'Quiet word on a habit tile that tucks it into the archive.',
     en: 'archive',
-    fa: '',
+    fa: 'بایگانی',
   },
   'habits.unarchive': {
     note: 'Quiet word on an archived habit that brings it back to the list.',
     en: 'unarchive',
-    fa: '',
+    fa: 'بازگردانی',
   },
   'habits.deleteForever': {
     note: 'Quiet word on an archived habit that deletes it for good (asks first).',
     en: 'delete forever',
-    fa: '',
+    fa: 'حذف برای همیشه',
   },
   'habits.unhideToReorder': {
     note:
       'Hover explanation of why a tile will not move while anything is ' +
       'hidden by a charm or a lens.',
     en: 'un-hide everything to re-order',
-    fa: '',
+    fa: 'برای جابه‌جایی، همه‌چیز را نمایان کن',
   },
 
   // ── The lenses (ways of looking at the habit list) ────────────────────
@@ -1484,7 +1484,7 @@ const DECK = {
   'language.switch': {
     note: 'Name of the language switch.',
     en: 'language',
-    fa: '',
+    fa: 'زبان',
   },
   'language.en': {
     note:

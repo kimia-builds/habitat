@@ -1972,7 +1972,11 @@ describe('field notes (T2.3)', () => {
       settings: { dayCutoffHour: 3, weekShape: 'mon', language: 'fa' },
     })
     render(<App />)
-    fireEvent.click(screen.getByRole('button', { name: 'add new habit' }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: translate('fa', 'rail.addHabit'),
+      }),
+    )
     fireEvent.change(field('schedule'), { target: { value: 'weekdays' } })
     const boxes = [
       ...document.querySelectorAll('.weekday-boxes input[type="checkbox"]'),
@@ -1981,7 +1985,7 @@ describe('field notes (T2.3)', () => {
     fireEvent.change(field('name'), { target: { value: 'sat walk' } })
     fireEvent.click(
       within(document.querySelector('form.habit-form')).getByRole('button', {
-        name: 'save',
+        name: translate('fa', 'habitForm.save'),
       }),
     )
     // The first box is Saturday, whatever the week shape says.

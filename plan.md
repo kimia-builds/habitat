@@ -483,12 +483,14 @@ tracker. Everything after this is delight, informed by real use.
       carry the voice, and `narration.js` is the file where a machine
       would do the most damage.
       **Working method (2026-10-09):** drafts wait in `fa-drafts.md`
-      (key, English, Farsi draft, how it sounds, a Verdict line and a
-      Finglish correction line for Kimia, who has no Farsi keyboard).
-      Only approved slots are copied into `ui.js`. Batch 1 (26 slots:
-      rail, page titles, meters, language switch, habit-tile words) is
-      drafted and awaiting her review; the Farsi size is tuned by eye
-      on it. Then the rest of the interface words, then story and names.
+      (key, English, where it shows, Farsi draft, and a Notes line for
+      Kimia, who has no Farsi keyboard — Finglish is fine). No note means
+      accepted; accepted slots are copied into `ui.js`, changed ones come
+      back in script to confirm. Batch 1 (26 slots: rail, page titles,
+      meters, language switch, habit-tile words): 15 live, 11 awaiting
+      her confirmation. Batch 2 (26 slots: lenses, habit form, check-in,
+      week shape, safety messages) is drafted. Then the rest of the
+      interface words, then story and names.
 - [x] **T6.20 The cameo tells the truth, and can be asked** _(done
       2026-08-20)_
 - [x] **T6.21 A past week's streak stops at that week** _(done

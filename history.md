@@ -7381,3 +7381,20 @@ and recorded in spec.md's decisions log._
   then story and names. Batch 1 drafted (26 slots) with one register
   choice made for the whole batch — friendly "you", not formal "shoma" —
   flagged for her to overrule.
+
+- 2026-10-09 (T6.19, Kimia's calls on the review file): **the format is
+  now four lines plus Notes** — key, English, where it shows, Farsi
+  draft, Notes. The "Sounds like" and "Meaning back in English" lines
+  were dropped (she never asked for them) and the Verdict line went too:
+  **no note means accepted**, a note suggests a change or a direction
+  ("less formal", "shorter", Finglish for the word she wants). Batch 1
+  came back: 15 slots accepted and copied into the deck (rail icons, Map
+  and Guest Book titles, the meters' screen-reader name, the language
+  switch, six habit-tile words and the un-hide hint); 11 changed, and
+  come back in script for her to confirm before they go in. She also
+  asked for grander wording for the library, history-flavoured wording
+  for the field notes page, shorter meter names (steps, literacy,
+  wallet), «سرپناه» (sarpanah) for the Abode and a "faded" word
+  (کم‌رنگ) for mute. One test that looked for the English "add new
+  habit" button in Farsi mode now asks the deck for the Farsi word
+  instead, so it survives translation. Batch 2 drafted (26 slots).

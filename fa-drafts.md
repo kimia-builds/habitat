@@ -9,34 +9,22 @@ English for that slot, which is the safe way to be wrong.
 
 Each slot below looks like this:
 
-    ### rail.pages
-    - **English:** pages
-    - **Where it shows:** (plain-English note from the copy deck)
-    - **Draft:** صفحه‌ها
-    - **Sounds like:** safhe-ha
-    - **Meaning back in English:** "pages" (plural)
-    - **Verdict:**
-    - **Your Finglish:**
+```
+### rail.pages
+- **English:** pages
+- **Where it shows:** (plain-English note from the copy deck)
+- **Draft:** صفحه‌ها
+- **Notes:**
+```
 
-Fill in **Verdict** with one of:
+Fill in Notes by suggesting a change or a direction of change ("less
+formal", "shorter", or a Finglish version of the word you want). No
+changes means accepted.
 
-- `ok` — use my draft exactly as written.
-- `change` — I got it wrong; put your version in **Your Finglish**.
-- `later` — not sure yet, leave it blank for now.
+## Choices made once, for the whole file (change any of these and I redo the lot)
 
-**Your Finglish** is for corrections only. Write it however you naturally
-would in Latin letters ("khaneh-at", "khuneh at", "khune-ye man" — all fine).
-Claude turns it into Farsi script, shows you the script back next to your
-Finglish so you can check it, and only then does it go in. If a word could be
-read two ways, Claude asks rather than guesses.
-
-You can also leave a note anywhere on a slot's lines — a comment, a worry,
-"too formal". Claude reads every line.
-
-## Choices made once, for the whole batch (change any of these and I redo the lot)
-
-- **Register:** friendly "you" (تو / ـت), the way you'd talk to a friend, not the
-  formal "shoma". e.g. "your abode" → «خانه‌ات».
+- **Register:** friendly "you" (تو / ـت), the way you'd talk to a friend, not
+  the formal "shoma". e.g. «دیروز چه کردی؟».
 - **Word spelling:** standard written Farsi, with the half-space (the little
   gap that keeps a word's two halves apart, like in «صفحه‌ها»).
 - **N-Z-D** stays in Latin letters, since it is the world's name and not a
@@ -46,253 +34,252 @@ You can also leave a note anywhere on a slot's lines — a comment, a worry,
 
 ---
 
-## Batch 1 — the first things you see (26 slots)
+## Batch 1 — your corrections, in Farsi script, to confirm
 
-The rail, the page titles, the three meters, the language switch and the
-words on a habit tile. This is also the batch where you tune the Farsi size
-(`size-adjust` in `src/index.css`, currently 112%) once real words are on
-screen.
-
-### The left icon rail
-
-### rail.pages
-- **English:** pages
-- **Where it shows:** hover label and screen-reader name for the rail icon that opens the habit list
-- **Draft:** صفحه‌ها
-- **Sounds like:** safhe-ha
-- **Meaning back in English:** "pages" (plural)
-- **Verdict:**
-- **Your Finglish:**
-
-### rail.addHabit
-- **English:** add new habit
-- **Where it shows:** hover label for the rail icon that opens a new-habit form
-- **Draft:** افزودن عادت جدید
-- **Sounds like:** afzudan-e adat-e jadid
-- **Meaning back in English:** "adding a new habit"
-- **Verdict:**
-- **Your Finglish:**
-
-### rail.editPastDays
-- **English:** edit past days
-- **Where it shows:** hover label for the rail icon that opens the morning check-in for earlier days
-- **Draft:** ویرایش روزهای گذشته
-- **Sounds like:** virayesh-e ruz-ha-ye gozashte
-- **Meaning back in English:** "editing past days"
-- **Verdict:**
-- **Your Finglish:**
-
-### rail.fieldNotes
-- **English:** view historical data
-- **Where it shows:** hover label for the rail icon that opens the field notes (history)
-- **Draft:** دیدن داده‌های پیشین
-- **Sounds like:** didan-e dade-ha-ye pishin
-- **Meaning back in English:** "seeing earlier data"
-- **Verdict:**
-- **Your Finglish:**
-
-### Page titles
-
-### page.map
-- **English:** map of N-Z-D
-- **Where it shows:** title of the Map page, on its rail icon and at the top of the page
-- **Draft:** نقشهٔ N-Z-D
-- **Sounds like:** naghshe-ye N-Z-D
-- **Meaning back in English:** "the map of N-Z-D"
-- **Verdict:**
-- **Your Finglish:**
+15 of batch 1's 26 slots were accepted as drafted and are now live. The other
+11 are below with your changes turned into script. Where you asked me to
+find a word, there is an **Also possible** line with other options. No
+changes means accepted.
 
 ### page.abode
 - **English:** your abode
 - **Where it shows:** title of the Abode page
-- **Draft:** خانه‌ات
-- **Sounds like:** khane-at
-- **Meaning back in English:** "your home" (warm and short; «سرپناه» sarpanah = "shelter" is the alternative if "home" feels too ordinary for "abode")
-- **Verdict:**
-- **Your Finglish:**
-
-### page.guestbook
-- **English:** local community
-- **Where it shows:** title of the Guest Book page
-- **Draft:** جامعهٔ محلی
-- **Sounds like:** jame'e-ye mahalli
-- **Meaning back in English:** "the local community"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** سرپناه
+- **Notes:**
 
 ### page.bookcase
 - **English:** readers library
 - **Where it shows:** title of the library page
-- **Draft:** کتابخانهٔ خوانندگان
-- **Sounds like:** ketabkhane-ye khandegan
-- **Meaning back in English:** "the readers' library"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** گنجینهٔ خواندنی‌ها
+- **Also possible:** دارالکتب (old and grand, "house of books"), تالار کتاب‌ها ("hall of books")
+- **Notes:**
 
 ### page.market
 - **English:** local market
 - **Where it shows:** title of the Market page
-- **Draft:** بازار محلی
-- **Sounds like:** bazar-e mahalli
-- **Meaning back in English:** "the local market"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** بازارچهٔ محلی
+- **Notes:**
 
 ### page.fieldNotes
 - **English:** field notes
 - **Where it shows:** title of the field notes page
-- **Draft:** یادداشت‌های میدانی
-- **Sounds like:** yaddasht-ha-ye meydani
-- **Meaning back in English:** "field notes" (notes taken out in the field)
-- **Verdict:**
-- **Your Finglish:**
-
-### The three meters
-
-### meters.region
-- **English:** meters
-- **Where it shows:** screen-reader name for the group of three meters at the top (not shown on screen)
-- **Draft:** شاخص‌ها
-- **Sounds like:** shakhes-ha
-- **Meaning back in English:** "indicators / gauges"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** داده‌های تاریخی
+- **Also possible:** پیشینه ("background / past record")
+- **Notes:**
 
 ### meters.steps
 - **English:** steps taken
 - **Where it shows:** name of the steps meter, hover label
-- **Draft:** قدم‌های برداشته‌شده
-- **Sounds like:** ghadam-ha-ye bardashte-shode
-- **Meaning back in English:** "steps that have been taken"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** قدم‌ها
+- **Also possible:** گام‌ها (a slightly more formal "steps")
+- **Notes:**
 
 ### meters.stepsBar
 - **English:** steps taken progress
 - **Where it shows:** screen-reader-only name for the moving bar of the steps meter
-- **Draft:** پیشرفت قدم‌های برداشته‌شده
-- **Sounds like:** pishraft-e ghadam-ha-ye bardashte-shode
-- **Meaning back in English:** "progress of the steps taken"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** قدم‌های برداشته‌شده
+- **Notes:**
 
 ### meters.literacy
 - **English:** literacy level
 - **Where it shows:** name of the literacy meter, hover label
-- **Draft:** سطح سواد
-- **Sounds like:** sath-e savad
-- **Meaning back in English:** "literacy level"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** سواد
+- **Notes:**
 
 ### meters.literacyBar
 - **English:** literacy level progress
 - **Where it shows:** screen-reader-only name for the moving bar of the literacy meter
-- **Draft:** پیشرفت سطح سواد
-- **Sounds like:** pishraft-e sath-e savad
-- **Meaning back in English:** "progress of the literacy level"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** سطح سواد
+- **Notes:**
 
 ### meters.wallet
 - **English:** wallet balance
 - **Where it shows:** name of the wallet meter, hover label
-- **Draft:** موجودی کیف پول
-- **Sounds like:** mojudi-ye kif-e pul
-- **Meaning back in English:** "what's in the wallet"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** موجودی
+- **Notes:**
 
 ### meters.walletBar
 - **English:** wallet balance progress
 - **Where it shows:** screen-reader-only name for the moving bar of the wallet meter
-- **Draft:** پیشرفت موجودی کیف پول
-- **Sounds like:** pishraft-e mojudi-ye kif-e pul
-- **Meaning back in English:** "progress of the wallet balance"
-- **Verdict:**
-- **Your Finglish:**
-
-### The language switch
-
-### language.switch
-- **English:** language
-- **Where it shows:** name of the language switch
-- **Draft:** زبان
-- **Sounds like:** zaban
-- **Meaning back in English:** "language"
-- **Verdict:**
-- **Your Finglish:**
-
-### Words on a habit tile
-
-### habits.markDone
-- **English:** mark done
-- **Where it shows:** hover label on a habit tile's tick
-- **Draft:** انجام شد
-- **Sounds like:** anjam shod
-- **Meaning back in English:** "it's done" (a statement, the way a tick reads, rather than a command)
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** موجودی مالی
+- **Question:** you wrote "mojudi-e mal". I read it as "mojudi-ye mali" (financial balance). Did you mean that, or something else?
+- **Notes:**
 
 ### habits.mute
 - **English:** mute
 - **Where it shows:** quiet word on a habit tile that hides it from today
-- **Draft:** خاموش
-- **Sounds like:** khamush
-- **Meaning back in English:** "switch off / quiet"
-- **Verdict:**
-- **Your Finglish:**
+- **Draft:** کم‌رنگ
+- **Notes:**
 
-### habits.unmute
-- **English:** unmute
-- **Where it shows:** quiet word on a muted habit tile that brings it back
-- **Draft:** روشن
-- **Sounds like:** roshan
-- **Meaning back in English:** "switch on" (the natural opposite of «خاموش»)
-- **Verdict:**
-- **Your Finglish:**
+---
 
-### habits.edit
-- **English:** edit
-- **Where it shows:** quiet word on a habit tile that opens it for editing
-- **Draft:** ویرایش
-- **Sounds like:** virayesh
-- **Meaning back in English:** "edit"
-- **Verdict:**
-- **Your Finglish:**
+## Batch 2 — the rest of the habit screen (26 slots)
 
-### habits.archive
-- **English:** archive
-- **Where it shows:** quiet word on a habit tile that tucks it into the archive
-- **Draft:** بایگانی
-- **Sounds like:** bayegani
-- **Meaning back in English:** "archive"
-- **Verdict:**
-- **Your Finglish:**
+The lens buttons, the habit form, the morning check-in, the week-shape popup
+and the two safety messages.
 
-### habits.unarchive
-- **English:** unarchive
-- **Where it shows:** quiet word on an archived habit that brings it back to the list
-- **Draft:** بازگردانی
-- **Sounds like:** bazgardani
-- **Meaning back in English:** "restore / bring back"
-- **Verdict:**
-- **Your Finglish:**
+### The lenses
 
-### habits.deleteForever
-- **English:** delete forever
-- **Where it shows:** quiet word on an archived habit that deletes it for good (asks first)
-- **Draft:** حذف برای همیشه
-- **Sounds like:** hazf baraye hamishe
-- **Meaning back in English:** "delete for ever"
-- **Verdict:**
-- **Your Finglish:**
+### lens.today
+- **English:** today
+- **Where it shows:** lens button: show only what is due today
+- **Draft:** امروز
+- **Notes:**
 
-### habits.unhideToReorder
-- **English:** un-hide everything to re-order
-- **Where it shows:** hover explanation of why a tile will not move while anything is hidden
-- **Draft:** برای جابه‌جایی، همه‌چیز را نمایان کن
-- **Sounds like:** baraye jabejayi, hame-chiz ra namayan kon
-- **Meaning back in English:** "to move things around, show everything"
-- **Verdict:**
-- **Your Finglish:**
+### lens.todos
+- **English:** to-dos
+- **Where it shows:** lens button: show only one-time to-dos
+- **Draft:** کارهای یک‌باره
+- **Notes:**
+
+### lens.prioritise
+- **English:** prioritise
+- **Where it shows:** lens button: show habits in priority order
+- **Draft:** اولویت‌بندی
+- **Notes:**
+
+### lens.unhideAll
+- **English:** un-hide all
+- **Where it shows:** lens button: clear every hiding lens and charm
+- **Draft:** نمایان کردن همه
+- **Notes:**
+
+### lens.saveAsDefault
+- **English:** save as default view
+- **Where it shows:** hover label and screen-reader name of the padlock (never shown as text)
+- **Draft:** ذخیره به‌عنوان نمای پیش‌فرض
+- **Notes:**
+
+### lens.saveAsDefaultConfirm
+- **English:** are you sure you want to save this as your default view? any previous default view choices will be lost. refresh the page to go back to previous default view.
+- **Where it shows:** question asked before the padlock overwrites the saved default view
+- **Draft:** مطمئنی که می‌خواهی این را نمای پیش‌فرضت ذخیره کنی؟ انتخاب‌های پیش‌فرض قبلی از بین می‌روند. برای برگشتن به نمای پیش‌فرض قبلی، صفحه را دوباره بارگذاری کن.
+- **Notes:**
+
+### The habit form
+
+### habitForm.name
+- **English:** write a good habit or task:
+- **Where it shows:** first prompt of the habit form, above the name box
+- **Draft:** یک عادت یا کار خوب بنویس:
+- **Notes:**
+
+### habitForm.detail
+- **English:** add any details or specifications:
+- **Where it shows:** second prompt of the habit form, above the details box
+- **Draft:** هر جزئیات یا توضیحی که می‌خواهی اضافه کن:
+- **Notes:**
+
+### habitForm.difficulty
+- **English:** pick a difficulty per unit:
+- **Where it shows:** third prompt of the habit form, above the difficulty choices
+- **Draft:** برای هر واحد یک سطح دشواری انتخاب کن:
+- **Notes:**
+
+### habitForm.schedule
+- **English:** specify the desired schedule or frequency:
+- **Where it shows:** fourth prompt of the habit form, above the schedule choices
+- **Draft:** برنامه یا تناوب دلخواه را مشخص کن:
+- **Notes:**
+
+### habitForm.howMany
+- **English:** how many
+- **Where it shows:** label of the small number box for "n days a week" or "n times a day"
+- **Draft:** چندتا
+- **Notes:**
+
+### habitForm.save
+- **English:** save
+- **Where it shows:** habit form button that saves the habit
+- **Draft:** ذخیره
+- **Notes:**
+
+### habitForm.cancel
+- **English:** cancel
+- **Where it shows:** habit form button that closes the form without saving
+- **Draft:** لغو
+- **Notes:**
+
+### The morning check-in
+
+### checkin.region
+- **English:** check-in
+- **Where it shows:** screen-reader name for the morning check-in panel
+- **Draft:** ثبت روزانه
+- **Notes:**
+
+### checkin.prompt
+- **English:** what did you do yesterday?
+- **Where it shows:** the question at the top of the morning check-in
+- **Draft:** دیروز چه کردی؟
+- **Notes:**
+
+### checkin.earlierDays
+- **English:** update earlier days of this week before they freeze forever:
+- **Where it shows:** line above the earlier days of this week in the check-in, warning they will soon freeze
+- **Draft:** پیش از آنکه برای همیشه قفل شوند، روزهای قبلی این هفته را به‌روز کن:
+- **Notes:**
+
+### checkin.noHabits
+- **English:** no habits to show for this day
+- **Where it shows:** shown in the check-in when a day has no habits due
+- **Draft:** برای این روز عادتی نیست
+- **Notes:**
+
+### checkin.done
+- **English:** done
+- **Where it shows:** check-in button that finishes the check-in
+- **Draft:** تمام
+- **Notes:**
+
+### The week shape
+
+### weekShape.button
+- **English:** week shape
+- **Where it shows:** the pebble beside the language switch that opens the week shapes
+- **Draft:** شکل هفته
+- **Notes:**
+
+### weekShape.title
+- **English:** which day does your week start on?
+- **Where it shows:** the question at the top of the week-shape popup
+- **Draft:** هفتهٔ تو از چه روزی شروع می‌شود؟
+- **Notes:**
+
+### weekShape.mon
+- **English:** mon – sun
+- **Where it shows:** week shape: Monday first, Sunday last
+- **Draft:** دوشنبه – یکشنبه
+- **Notes:**
+
+### weekShape.sun
+- **English:** sun – sat
+- **Where it shows:** week shape: Sunday first, Saturday last
+- **Draft:** یکشنبه – شنبه
+- **Notes:**
+
+### weekShape.sat
+- **English:** sat – fri
+- **Where it shows:** week shape: Saturday first, Friday last
+- **Draft:** شنبه – جمعه
+- **Notes:**
+
+### weekShape.close
+- **English:** close
+- **Where it shows:** closes the week-shape popup without changing anything
+- **Draft:** بستن
+- **Notes:**
+
+### The safety screens
+
+### blocked.message
+- **English:** N-Z-D is currently only a habitat that can be experienced on a big browser, like a laptop or desktop computer. check back in on the big screen!
+- **Where it shows:** the one message shown when Habitat is opened on a screen too narrow for it (phone or tablet)
+- **Draft:** N-Z-D فعلاً زیستگاهی است که فقط روی صفحهٔ بزرگ مرورگر، مثل لپ‌تاپ یا رایانهٔ رومیزی، تجربه می‌شود. روی صفحهٔ بزرگ دوباره سر بزن!
+- **Notes:**
+
+### mishap.message
+- **English:** something seems to have gone wrong: please inform the maker. refresh page to get back to habits.
+- **Where it shows:** the one message shown if something unexpected breaks and a screen cannot draw
+- **Draft:** به نظر می‌رسد مشکلی پیش آمده: لطفاً به سازنده خبر بده. صفحه را دوباره بارگذاری کن تا به عادت‌ها برگردی.
+- **Notes:**
