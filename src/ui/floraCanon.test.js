@@ -5,7 +5,10 @@ import {
   floraScale,
   floraHeight,
   floraWidth,
+  LANDMARK_SCALE,
+  landmarkHeight,
 } from './floraCanon.js'
+import { baseWhereSmallestIs } from './friendCanon.js'
 import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
 import { FRIEND_CANON, FRIEND_CANON_ORDER } from './friendCanon.js'
 import { FRIEND01_VIEWBOX } from './friend01.jsx'
@@ -67,11 +70,18 @@ function sizingTable() {
 
 describe('the flora size canon', () => {
   test('has exactly the two size classes, and no third', () => {
-    // The landmark super-size is deliberately unset (design-bible §9a). If a
-    // third class ever appears it must be because Kimia asked for it, which
-    // means this test changes in the same breath.
+    // The landmark (LANDMARK_SCALE) is set apart on purpose: a find is never
+    // dealt one. If a third DEALT class ever appears it must be because Kimia
+    // asked for it, which means this test changes in the same breath.
     expect(Object.keys(FLORA_CANON).sort()).toEqual(['large', 'small'])
     expect(FLORA_SIZE_CLASSES).toEqual(['small', 'large'])
+  })
+
+  test('the landmark is set apart from the dealt classes and towers over them', () => {
+    expect(LANDMARK_SCALE).toBeGreaterThan(FLORA_CANON.large)
+    expect(FLORA_SIZE_CLASSES).not.toContain('landmark')
+    // 300px where a plip is 24px (Kimia, 2026-10-09).
+    expect(landmarkHeight(baseWhereSmallestIs(24))).toBeCloseTo(300, -1)
   })
 
   test('every size is a positive number, and large is the larger', () => {

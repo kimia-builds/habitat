@@ -3624,16 +3624,20 @@ word.
   (mother tree) size and look, the Map pictures, and the game logic for the
   five-step arrival — built after the drawings, in their own sessions.
 
-## T5.3l build notes — the landmark size shelf (2026-10-09)
+## T5.3l build notes — the landmark size (2026-10-09)
 
-First slice after the silhouettes: a temporary "landmark size" shelf on the
-design workbench (`DesignPage.jsx`). One shape (6, the roundest) is drawn at
-three candidate heights — 300, 450 and 600px (the full canvas height) —
-beside a large flora and the biggest friend (hamdi bulo), all at Abode scale
-on one ground line. The candidates are canvas pixels, not canon numbers, and
-nothing outside the page reads them; the landmark class stays out of
-`floraCanon.js` until Kimia picks. The workbench test lists the shelf by
-name. The size is NOT decided yet.
+A temporary workbench shelf showed one shape at 300 / 450 / 600px beside a
+large flora and the biggest friend. Kimia's calls: the mother tree is
+**300px tall** at Abode scale (plip 24px), **looks exactly like its ordinary
+flora** (size is its only distinguishing factor, also in the discovery
+dialogue), and its Map picture is a symbol, not true to size.
+
+- `LANDMARK_SCALE = 1.74` and `landmarkHeight(base)` in `floraCanon.js` —
+  300px / (24px / plip's 0.13913), rounded as the flora's numbers were.
+  Kept **outside `FLORA_CANON`** so `FLORA_SIZE_CLASSES` and the deal stay
+  small/large only; the floraDeal test that pins this still passes.
+- The shelf came down with the answer (waiting-room rule). No screen uses
+  the landmark yet — that comes with the five-step arrival logic.
 
 ## T5.5 build notes — rotate (2026-10-08)
 

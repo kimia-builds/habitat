@@ -9,8 +9,8 @@
  * KIMIA'S CALLS (2026-08-19):
  *   • There are exactly TWO size classes, and all four silhouettes share them.
  *     A species is not big or small; a flora is. (The landmark super-size is a
- *     third class and is deliberately not set here yet — it belongs with the
- *     Map work. Nothing may invent one in the meantime.)
+ *     third size, set below as LANDMARK_SCALE — and deliberately NOT a class
+ *     of FLORA_CANON, so the deal can never hand one out as a find.)
  *   • A flora's size is its HEIGHT. Not its width, not its bulk: how tall it
  *     stands next to you is what "size" means for a plant.
  *   • **The two sizes are places in the whole table, not one friend's height
@@ -85,6 +85,19 @@
 export const FLORA_CANON = {
   small: 0.28,
   large: 0.77,
+}
+
+// THE LANDMARK — the mother tree, one per Map region (design-bible §9a). Kimia,
+// 2026-10-09: it stands 300px tall on the Abode's ground (where a plip is 24px),
+// which is 1.74 in this scale — about 2.3x a large flora. Its look is the
+// ordinary flora's, unchanged; size is its ONLY distinguishing factor. It is
+// kept apart from FLORA_CANON on purpose: FLORA_CANON is the sizes a find may be
+// DEALT, and a landmark is too big to carry, so it must never join that list.
+export const LANDMARK_SCALE = 1.74
+
+// How TALL a mother tree is where the largest friend is `base` wide.
+export function landmarkHeight(base) {
+  return LANDMARK_SCALE * base
 }
 
 // The two classes in order, for anything that walks them both.

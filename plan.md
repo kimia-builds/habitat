@@ -184,13 +184,9 @@ tracker. Everything after this is delight, informed by real use.
                   flora holds a PLACE in the whole sizing table, not one
                   friend's height. **Locked 2026-08-19**, and the
                   comparison shelf came down with them.
-            - [ ] **The landmark class** — the big flora: the third size
-                  class, still unset (2026-08-19, her call to settle the
-                  collectibles first), plus what makes the four versions
-                  of a landmark species differ (design-bible §9a leaves it
-                  open), the Map marker and the keepsake cutting. Kimia
-                  opens this in its own session. No screen may type a
-                  landmark size in meanwhile.
+            - [x] **The landmark class** _(size set 2026-10-09 under T5.3l:
+                  300px, same look as its ordinary flora; the Map picture,
+                  keepsakes and arrival logic continue there)_
       - [x] **T5.3h The friends reach the game** _(done 2026-08-29 — the
             ten drawings, their canon sizes and their dealt colours replaced
             the T4.4 placeholder on every screen that shows a friend: the
@@ -217,9 +213,9 @@ tracker. Everything after this is delight, informed by real use.
             and half** (her call, same day). Two finds that deal the same shape
             and fill ARE the same one of the 48 and look identical, which is what
             the catalogue means.
-            **The landmark class stays out**, and must: its size is still unset
-            and `LANDMARK_FLORA` is still empty, so every find is dealt an
-            ordinary collectible. A test pins that, so a landmark class joining
+            **The landmark class stays out**, and must: it is kept outside the
+            dealt sizes (`LANDMARK_SCALE`) and `LANDMARK_FLORA` is still empty,
+            so every find is dealt an ordinary collectible. A test pins that, so a landmark class joining
             the canon fails the suite rather than quietly handing out giants.
             - [x] **The Abode** _(done 2026-08-21 — the ground and the doorstep
                   list, plus T5.3h's held party friends, which share this
@@ -235,10 +231,7 @@ tracker. Everything after this is delight, informed by real use.
                   one's size, and fewer hairs, which cut a small flora from
                   ~1,700 drawn strands to ~430. Large flora untouched. Build
                   notes in history.md)_
-            - [ ] **The landmark class** — see T5.3g; still Kimia's own session.
-                  It is tied to the Map work (each of the 16 regions carries
-                  one landmark), so it is sized with that, not on its own
-                  (2026-10-09).
+            - [x] **The landmark class** — sized under T5.3l (2026-10-09).
       - [ ] **T5.3j The market objects** _(opened 2026-09-01 on Kimia's
             call, "build or at least document some items for the market,
             to show me on the design assets shelf")_ — the curiosities
@@ -336,8 +329,7 @@ tracker. Everything after this is delight, informed by real use.
             (agreed):** once a region's mother tree is found, roughly one
             keepsake for every 3–4 flora finds — flat and patient; the
             real number is tuned later in constants.js. The
-            landmark's size, the 16 keepsake drawings and the mother-tree
-            look are this task's design work. The Map itself is
+            16 keepsake drawings are this task's remaining design work. The Map itself is
             **hand-drawn**.
             Runs as design slices like the rest of T5.3: one family drawn,
             shown, judged, next. **The game logic for the five steps is
@@ -346,11 +338,11 @@ tracker. Everything after this is delight, informed by real use.
                   `src/ui/newFloraSilhouettes.js`; not yet dealt (the deal
                   keeps the original four until a shape is stored on the
                   drop). See history.md.
-            - [ ] **Landmark size** — a temporary workbench shelf shows one
-                  shape at three candidate heights (300 / 450 / 600px) beside
-                  a large flora and the biggest friend; waiting on Kimia's
-                  eyeball call. Nothing is wired into the game.
-            - [ ] The 16 keepsake drawings, the landmark look,
+            - [x] **Landmark size and look** _(done 2026-10-09 — 300px tall at
+                  Abode scale, `LANDMARK_SCALE` in floraCanon.js; looks like
+                  its ordinary flora, size is the only difference. Not yet
+                  used by any screen. Build notes in history.md)_
+            - [ ] The 16 keepsake drawings,
                   the Map pictures, and the five-step arrival logic.
       - [ ] **T5.3m The 48 curiosities** _(opened on Kimia's call —
             AFTER T5.3l)_ — the 48-item Market pool (3 per region) mostly

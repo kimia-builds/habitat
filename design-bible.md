@@ -271,7 +271,12 @@ different sizes and colours, and the arithmetic is exact.
   (mechanics in spec §5): its discovery shows a **permanent marker on the
   Map**; gathering one (optional, like all flora) collects a **keepsake**
   that goes to the Abode, while the tree itself stays on the Map
-  regardless. Landmark size: still unset (T5.3l).
+  regardless. **Landmark size: 300px tall on the Abode's ground (a plip is
+  24px there) — 1.74 in the shared scale, `LANDMARK_SCALE` in
+  `floraCanon.js` (Kimia, 2026-10-09).** Its look is the ordinary
+  flora's, unchanged: size is its only distinguishing factor, in the
+  discovery dialogue and on the Map alike (the Map picture is a symbol,
+  not true to size).
 - **16 keepsake** — **one variety per region**: a tendril, fruit, leaf,
   branch, blossom or the like, from that region's mother tree. A keepsake
   is its OWN drop, extra to the region's flora finds. It is a real new
@@ -328,9 +333,9 @@ collectible classes** (Kimia, 2026-08-19, `src/ui/floraCanon.js`):
   is its WIDTH (its drawing gives the height), a flora's is its HEIGHT
   (its drawing gives the width). Neither is ever stretched.
 
-**The landmark super-size is still unset** (2026-08-19) — deliberately, as
-the third class belongs with the Map work. No screen may type one in
-meanwhile. See §9c's canon rule; it governs any family, not only friends.
+**The landmark super-size is SET** (Kimia, 2026-10-09): 300px tall at
+Abode scale, `LANDMARK_SCALE` in `floraCanon.js`, deliberately outside
+`FLORA_CANON` so a find can never be dealt one. See §9c's canon rule.
 
 **The six colours (Kimia, 2026-08-19, T5.3g; REPLACED 2026-10-08, T5.3k).**
 Bioluminescent: neon, electric, luminous. Chosen by eye off the design
