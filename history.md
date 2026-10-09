@@ -3581,6 +3581,21 @@ return 0` right after the era is worked out, so a moment before the
      slot; the story and names go last and stay hers. In-book texts
      (T6.24) do not exist yet and join the Farsi work once written.
 
+- (Kimia, sizing the Map work): **the flora get a second
+  round before any Map work.** The Map is hand-drawn. Each of the 16
+  regions has one distinct native flora, and silhouette is the only thing
+  that tells species apart now, so there are **16 shapes: the 4 we have
+  plus 12 new**. A region's flora arrives in five steps (Map picture →
+  reveal → local shape drops → mother-tree discovery about midway through
+  the region → one-variety keepsake drops as an EXTRA drop); known shapes
+  keep dropping but the local one is always the most common. **The shape is
+  stored on the drop** (replacing the dealt shape). The 48 curiosities
+  mostly **recycle** charms, smoke, discs, reading-material graphics and
+  simply-described objects. Opened as plan.md T5.3l (NEXT, ahead of the
+  Map) and T5.3m (after it). Scope stays whole: story and design coherence
+  matter more than the release date, so nothing is cut from v1 to hit it.
+  Folded into spec §5 and design-bible §9a / §12.
+
 ## T5.5 build notes — rotate (2026-10-08)
 
 Built in one session from Kimia's design, in three parts.

@@ -242,26 +242,30 @@ opening its own growing world:
   money.
 - Gathered flora live in the **Abode**, arrangeable like everything
   else there.
-- **Landmark flora (2026-07-19, for T4.1/T6.1):** some flora are
-  large and tree-like — too big to carry home. These special finds
-  are **revealed on the Map** the moment they drop, placed in the
-  region the expedition was passing through at that step, and the
-  marker is **permanent** — the Map records that we came to know this
-  tree, like discovery itself. (The one exception, consistent with
-  all drops: undoing the very completion that dropped it takes the
-  reveal back.) Landmark flora are still gatherable like any flora —
-  but gathering one means collecting a **branch, fruit or leaf** from
-  it, never the tree itself: the cutting goes to the Abode and is
-  compostable as usual, while the tree stays where it grows, on the
-  Map, regardless. This is a rule for the special ones only — small
-  flora don't appear on the Map. There are **16 landmarks — one
-  per Map region, enforced (2026-07-24)**: the drop seeding guarantees
-  each region receives exactly its own landmark tree, placed as the
-  expedition passes through it. The 16 are **four super-sized versions of
-  each of N-Z-D's four flora species** (2026-08-19, design-bible §9a) —
-  "landmark" is a size and a role, not a separate species. What tells the
-  four versions of one species apart is decided with the content pools
-  (T6.1).
+- **Each region's native flora and its mother tree.** Every Map region
+  has **one distinct native flora** — 16 silhouettes in all (design-bible
+  §9a) — and silhouette is what tells species apart. A region's flora
+  arrives in five steps, in order: (1) a picture or symbol of it appears
+  on the newly discovered region of the Map; (2) a **new-flora reveal**
+  dialogue; (3) its **shape starts dropping**, in the same two sizes and
+  six colours as every flora; (4) about **midway through the region**, a
+  **discovery dialogue** for the region's **mother tree** — the same
+  species at super-size, too big to carry — whose **marker is revealed on
+  the Map and is permanent** (undoing the very completion that dropped it
+  takes the reveal back, consistent with all drops); (5) the region's
+  **keepsake** starts dropping — a tendril, fruit, leaf, branch or blossom,
+  **one variety per region**, an **extra** drop rather than one of the
+  region's flora finds. Gathering from a mother tree means collecting the
+  keepsake, never the tree itself: the keepsake goes to the Abode and is
+  compostable as usual, while the tree stays where it grows, on the Map,
+  regardless. Small flora don't appear on the Map. There are **16 mother
+  trees — exactly one per Map region, enforced**: the drop seeding
+  guarantees each region receives its own, placed as the expedition passes
+  through it.
+  Shapes and keepsakes already discovered **keep dropping for the rest of
+  the game**, but a region's **local flora is always the most common** in
+  that region. **A flora drop stores its shape** (one of the 16, from the
+  regions discovered so far); size and colour are dealt.
 
 ### Stream 2 — Literacy & society: earning our place
 

@@ -306,6 +306,49 @@ tracker. Everything after this is delight, informed by real use.
             neon colours, a plain opaque fill with an outline, every flora
             (and now every friend) glowing at the lifted level. Colour names
             are still Kimia's to choose. Build notes in history.md)_
+      - [ ] **T5.3l The flora, again: sixteen** _(opened on Kimia's call
+            while sizing the Map work — NEXT, before any Map work)_ — four
+            flora shapes are not enough: **each of the 16 Map regions has
+            one distinct native flora**, and with textures gone and the six
+            colours not very distinctive in play, **silhouette is what
+            tells one species from another**. So: **12 new silhouettes**
+            beside the 4 we have (16 in all). Replaces T5.3g's open
+            "landmark class" line and widens it.
+            **How a region's flora arrives, in order (Kimia):**
+            1. a picture or symbol of the local flora appears on the newly
+               discovered region of the Map;
+            2. a **new-flora reveal** dialogue;
+            3. the local shape starts dropping, in the existing 2 sizes and
+               6 colours, as flora do now;
+            4. about **midway through the region**, a **discovery dialogue**
+               for the region's **mother tree** — the landmark, the same
+               species at super-size (copy to be written);
+            5. the **keepsake** (tendril, fruit, leaf, branch, blossom — ONE
+               variety per region) starts dropping. It is an **EXTRA** drop,
+               not one of the region's flora finds (Kimia's preference).
+            Already-discovered shapes and keepsakes keep dropping for the
+            rest of the game, but the **local flora is always the most
+            common** in its own region.
+            **The shape is STORED ON THE DROP** (Kimia's call), replacing
+            floraDeal.js's shape roll; size and colour stay dealt. Finds
+            that already exist have no stored shape and **keep the look
+            they have now**; only new drops store one. **Keepsake rate
+            (agreed):** once a region's mother tree is found, roughly one
+            keepsake for every 3–4 flora finds — flat and patient; the
+            real number is tuned later in constants.js. The
+            landmark's size, the 16 keepsake drawings and the mother-tree
+            look are this task's design work. The Map itself is
+            **hand-drawn**.
+            Runs as design slices like the rest of T5.3: one family drawn,
+            shown, judged, next. **The game logic for the five steps is
+            built after the drawings**, in its own sessions.
+      - [ ] **T5.3m The 48 curiosities** _(opened on Kimia's call —
+            AFTER T5.3l)_ — the 48-item Market pool (3 per region) mostly
+            **recycles things already drawn or about to be**: charms, smoke,
+            discs, reading-material graphics — plus simple objects that are
+            easy to describe. So this is mainly a listing-and-assigning job
+            with a little new drawing, not 40 new drawings. Which objects
+            go in which region is decided here (part of T6.1).
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

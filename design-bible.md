@@ -253,27 +253,36 @@ hierarchy. Low gravity allows sprawling, unsupported forms. (This holds
 at every size — a "tree-like" landmark is tree-like in **scale**, not
 in body plan.)
 
-**FOUR SPECIES, AND ONLY FOUR (Kimia, 2026-08-19 — this replaces the
-first "64 species" reading).** N-Z-D grows **four flora silhouettes**.
-The 64 flora are not 64 drawings: they are those four shapes in
-different sizes and different colours, and the arithmetic is exact.
+**SIXTEEN SPECIES, ONE PER MAP REGION (Kimia — this replaces the
+earlier "four species" reading, which itself replaced "64
+species").** N-Z-D grows **sixteen flora silhouettes**: the four chosen
+in T5.3g plus **twelve new ones** (T5.3l). Each Map region has **one
+distinct native flora**. Colours are plain fills and textures are gone, so
+**silhouette is the only thing that tells one species from another** —
+which is why the count is 16 and not 4. The flora are those shapes in
+different sizes and colours, and the arithmetic is exact.
 
-- **48 collectible** — **4 silhouettes × 2 sizes × 6 colours = 48.** Each
-  species comes in two sizes, and every size wears any of the six
-  colours. (Until 2026-10-08 the sixth factor was "fills" — a texture
-  worn in one of four colours. The textures were dropped and the colours
-  went from four to six so the 48 holds.)
-  Placeable in the Abode, gatherable and compostable.
-- **16 landmark** — **4 super-sized versions of each of the four
-  species.** Giant, too big to carry, **one per Map region, enforced**
-  (2026-07-24; mechanics in spec §5): the moment one drops it reveals a
-  **permanent marker on the regional Map**; gathering one (optional,
-  like all flora) collects a **keepsake** cutting — leaf, branch, or
-  fruit — that goes to the Abode, while the tree itself stays on the Map
-  regardless. Art per landmark: body + Map marker + one keepsake type.
-  _Open (T6.1): what makes the four versions of a landmark species
-  differ from one another — fill is the obvious answer but has not been
-  decided._
+- **192 collectible** — **16 silhouettes × 2 sizes × 6 colours = 192.**
+  Every species comes in two sizes, and every size wears any of the six
+  colours. Placeable in the Abode, gatherable and compostable.
+- **16 landmark ("mother tree")** — **each species' one super-sized
+  tree.** Giant, too big to carry, **one per Map region, enforced**
+  (mechanics in spec §5): its discovery shows a **permanent marker on the
+  Map**; gathering one (optional, like all flora) collects a **keepsake**
+  that goes to the Abode, while the tree itself stays on the Map
+  regardless. Landmark size: still unset (T5.3l).
+- **16 keepsake** — **one variety per region**: a tendril, fruit, leaf,
+  branch, blossom or the like, from that region's mother tree. A keepsake
+  is its OWN drop, extra to the region's flora finds. It is a real new
+  Abode collectible, so these are 16 more drawings.
+
+**A region's flora arrives in five steps, in this order:** (1) a picture
+or symbol of it on the newly discovered region of the Map; (2) a
+new-flora reveal dialogue; (3) its shape begins to drop, in the existing
+two sizes and six colours; (4) about **midway through the region**, a
+discovery dialogue for its mother tree; (5) its keepsake begins to drop.
+Known shapes and keepsakes keep dropping for the rest of the game, but
+**the local flora is always the most common in its own region.**
 
 **THE FOUR SILHOUETTES ARE CHOSEN (Kimia, 2026-08-19, T5.3g).** They are
 flora **1, 2, 3 and 6** of the eight she drew and traced in July — her
@@ -380,12 +389,14 @@ an axis of variation.
 **Fruit.** Tiny shrubs may bear none; larger flora may. Each species has
 **exactly one** fruit type, in any rounded or blobby form.
 
-**WHICH OF THE 48 A FIND IS, IS DEALT (Kimia, 2026-08-21, T5.3i).** A flora
-drop stores nothing but the word `flora`; its shape, size and colour are rolled
-from the save's own seed and the find's completion id (`src/ui/floraDeal.js`),
-the same trick that deals a friend its colour. Nothing new is written into a
-save, the answer never changes for a given find, and flora gathered before the
-art existed get their looks too. **Large and small come half and half** (her
+**THE SHAPE IS STORED ON THE DROP; SIZE AND COLOUR ARE DEALT (Kimia).** A
+flora drop records its **shape** (one of the 16, chosen from the shapes of
+the regions discovered so far, weighted toward the local one); its size and
+colour are still rolled from the save's own seed and the find's completion
+id (`src/ui/floraDeal.js`), the same trick that deals a friend its colour.
+Storing the shape means a find keeps its species even if an earlier tap is
+undone at a region boundary. (Until T5.3l is built the code still deals
+all three.) **Large and small come half and half** (her
 call, same day) — a large flora stands 2.75x a small one, so the mix is what a
 ground looks like, and even odds is the flattest answer.
 
@@ -878,9 +889,10 @@ than flora is what makes the family buildable at all — see §9a.
 
 | Family              | Count | Assets per unit                                        |
 | ------------------- | ----- | ------------------------------------------------------ |
-| Flora — silhouettes | 4     | one drawing each; 48 collectibles = 4 × 2 sizes × 6 colours |
+| Flora — silhouettes | 16    | 4 drawn, 12 new; one drawing each; 192 collectibles = 16 × 2 sizes × 6 colours |
 | Flora — colours     | 6     | green to blue, no fixed split; a plain fill, no drawing or texture of their own |
-| Flora — landmark    | 16    | 4 super-sized versions of each species; body + Map marker + one keepsake type |
+| Flora — landmark    | 16    | each species' one mother tree, super-sized; body + Map marker |
+| Flora — keepsake    | 16    | one variety per region; its own drop, extra to the flora finds |
 | Fungi               | 1     | single form                                            |
 | Friend categories   | 10    | one shared drift-and-bob, no per-category animation    |
 | Friend individuals  | 55    | body each (10 → 1 down the ladder)                     |
