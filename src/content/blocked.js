@@ -1,17 +1,21 @@
-// blocked.js — the one message shown when Habitat is opened on a screen
-// too narrow for its layout (spec §3, the T5.1b width gate). Habitat is
-// built for wide screens; below MIN_APP_WIDTH (740px since 2026-08-12)
-// the whole app is replaced by this.
+// blocked.js — the reader for the one message shown when Habitat is
+// opened on a screen too narrow for its layout (spec §3, the T5.1b width
+// gate). Habitat is built for wide screens; below MIN_APP_WIDTH (740px
+// since 2026-08-12) the whole app is replaced by this.
 //
-// THIS FILE IS KIMIA'S (design-notes §7): Claude Code builds the slot
-// and the plumbing; the words are human-written. Put your message
-// between the quotes. Left blank, the block screen simply shows nothing
-// rather than inventing copy — so this slot is worth filling.
+// THE WORDS NO LONGER LIVE HERE. Since T6.14 slice 3 the message is the
+// `blocked.message` entry in the copy deck, src/content/ui.js — edit it
+// there. Left blank, the block screen simply shows nothing rather than
+// inventing copy, so this slot is worth filling.
+//
+// Blank-rule: a safety screen, so it follows the INTERFACE rule (a blank
+// in another language falls back to English) and sits in the interface
+// half of the deck.
+
+import { UI } from './ui.js'
 
 export const BLOCKED = {
-  // TODO: written by Kimia — the message a phone/tablet visitor sees.
-  message:
-    'N-Z-D is currently only a habitat that can be experienced on a big browser, like a laptop or desktop computer. check back in on the big screen!',
+  message: UI.en['blocked.message'],
 }
 
 // The message text, trimmed, or null when the slot is still blank — so

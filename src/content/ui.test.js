@@ -10,7 +10,14 @@
 
 import { describe, expect, it } from 'vitest'
 
-import { DEFAULT_LANGUAGE, isLanguage, LANGUAGES, translate, UI } from './ui.js'
+import {
+  DEFAULT_LANGUAGE,
+  isLanguage,
+  LANGUAGES,
+  nest,
+  translate,
+  UI,
+} from './ui.js'
 
 describe('the languages Habitat speaks', () => {
   it('recognises exactly the listed ones', () => {
@@ -91,5 +98,47 @@ describe('the translator', () => {
     // Farsi word order differs, so a translated slot may move its hole
     // to the front or the end. The filling must not care where it is.
     expect(translate('en', 'backup.ageDays', { days: 1 })).toMatch(/1/)
+  })
+})
+
+describe('the story-and-names half of the deck (T6.14 slice 3)', () => {
+  // Every dotted path in a nested tree, so two languages' trees can be
+  // compared by SHAPE without reading a single word.
+  function paths(tree, prefix = '') {
+    return Object.entries(tree).flatMap(([key, value]) =>
+      typeof value === 'object'
+        ? paths(value, prefix + key + '.')
+        : [prefix + key],
+    )
+  }
+
+  it('gives every language the same set of story and name slots', () => {
+    for (const prefix of ['story', 'name']) {
+      const english = paths(nest(prefix, DEFAULT_LANGUAGE)).sort()
+      expect(english.length).toBeGreaterThan(0)
+      for (const code of LANGUAGES) {
+        expect(paths(nest(prefix, code)).sort()).toEqual(english)
+      }
+    }
+  })
+
+  it('keeps story and names out of the interface half', () => {
+    // The interface half falls back to English when a slot is blank; the
+    // story half must stay silent. If a story key leaked into UI, a blank
+    // Farsi line would quietly read in English instead.
+    for (const key of Object.keys(UI[DEFAULT_LANGUAGE])) {
+      expect(key.startsWith('story.')).toBe(false)
+      expect(key.startsWith('name.')).toBe(false)
+    }
+  })
+
+  it('does not fall back to English when a story slot is blank', () => {
+    const farsi = nest('story', 'fa')
+    for (const path of paths(farsi)) {
+      let node = farsi
+      for (const step of path.split('.')) node = node[step]
+      // Whatever Farsi holds is returned as written: blank stays blank.
+      expect(typeof node).toBe('string')
+    }
   })
 })

@@ -1,143 +1,38 @@
-// names.js — what the beings of N-Z-D are called (T6.1a).
+// names.js — the reader for what the beings of N-Z-D are called
+// (T6.1a, T6.14).
 //
-// THIS FILE IS KIMIA'S (design-notes §7): Claude Code builds the keyed
-// slots and the plumbing; every word is human-written. To name
-// something, put your words between its quotes. A slot left as '' shows
-// nothing in the app rather than inventing a name.
+// THE NAMES NO LONGER LIVE HERE. Since T6.14 slice 3 every name is an
+// entry in the copy deck, src/content/ui.js (the `name.*` entries) —
+// write and change them there. This file only reads them.
 //
-// WHY IT EXISTS (Kimia's call, 2026-08-10). The ten species had
-// Claude-drafted names living in src/game/constants.js as game data.
-// They are words a player reads, so they are copy, and copy is hers.
-// The drafts are gone from the app; the slots below are where the real
-// names go.
+// Blank-rule (names half of the deck): a slot left as '' shows nothing
+// in the app rather than inventing a name, and never falls back to
+// another language.
 //
-// ABOUT THE KEYS ON THE LEFT (plip:, baluhm:, …). Those are internal
-// ids, not the names themselves — they are how the code, the CSS
-// animations and the narration slots in narration.js find each species,
-// and they never appear on screen. They used to be the Claude drafts
-// (Claude's draft words); on 2026-08-17 Kimia ruled that no word her world
-// does not use belongs anywhere in Habitat, not even in a place only the
-// code reads, so they now carry the species' real names. The one on the
-// RIGHT is still the only thing a player sees, and still yours to
-// rewrite whenever you like — rename a species and only the right-hand
-// side needs to change. They are listed low to high on the literacy
-// ladder, so `plip` is the first species you meet and `hamdi-bulo` the
-// last. (The two two-word names are hyphenated and quoted on the left
-// purely because that is what the code needs; the name itself, on the
-// right, keeps its space.)
+// ABOUT THE KEYS (plip, baluhm, …). Those are internal ids, not the
+// names themselves — they are how the code, the CSS animations and the
+// narration slots find each species, and they never appear on screen.
+// Since 2026-08-17 they carry the species' real names (no word N-Z-D
+// does not use belongs anywhere in Habitat). The text beside each id in
+// the deck is the only thing a player sees. They run low to high on the
+// literacy ladder: `plip` is the first species you meet, `hamdi-bulo`
+// the last. The two two-word names are hyphenated purely because the
+// code needs it; the name itself keeps its space.
 //
 // HOW A FRIEND GETS ITS NAME ON SCREEN, in order:
-//   1. its own individual name below, if you have written one;
+//   1. its own individual name, if one is written;
 //   2. otherwise its species name;
 //   3. otherwise nothing at all — just the art.
-// So filling the ten species names is enough to name every friend in the
-// game; individual names are the finer pass on top, and can come later,
-// one at a time.
+// Each species has a FIXED roster (design-bible §9c): 10 plips down to
+// a single hamdi bulo, 55 friendships in a lifetime; the number is the
+// order they arrive in.
 
-export const NAMES = {
-  // ── the ten species ────────────────────────────────────────────────
-  // What ONE of them is called, exactly as it should read on screen —
-  // include the article if you want one ("a plip", "an ember").
-  // Shown on the Guest Book list and card, the arrival reveal, the
-  // arrival shelf, and the home-screen cameo visits.
-  // TODO: written by Kimia.
-  species: {
-    plip: 'plip',
-    baluhm: 'baluhm',
-    krupengk: 'krupengk',
-    zala: 'zala',
-    'liwi-bi-jiji': 'liwi bi-jiji',
-    meuhy: 'meuhy',
-    rassatt: 'rassatt',
-    woigolp: 'woigolp',
-    chitu: 'chitu',
-    'hamdi-bulo': 'hamdi bulo',
-  },
+import { nest } from './ui.js'
 
-  // ── the individuals ────────────────────────────────────────────────
-  // Each species has a FIXED roster (design-bible §9c): 10 plips down
-  // to a single hamdi bulo, 55 friendships in a lifetime. The number is the
-  // order they arrive in — plip 1 is the first plip you ever meet.
-  // Naming these is optional and endless; an unnamed friend simply wears
-  // its species name. TODO: written by Kimia.
-  individuals: {
-    plip: {
-      1: 'bi',
-      2: 'ti',
-      3: 'ki',
-      4: 'zi',
-      5: 'mi',
-      6: 'ri',
-      7: 'ji',
-      8: 'li',
-      9: 'wi',
-      10: 'di',
-    },
-    baluhm: {
-      1: 'owa',
-      2: 'nor',
-      3: 'dulu',
-      4: 'feh',
-      5: 'swa',
-      6: 'rou',
-      7: 'loi',
-      8: 'momo',
-      9: 'sah',
-    },
-    krupengk: {
-      1: 'chok',
-      2: 'draktam',
-      3: 'su-chuch',
-      4: 'glongk',
-      5: 'ach-tek',
-      6: 'papo-palat',
-      7: 'serchu',
-      8: 'klist',
-    },
-    zala: {
-      1: 'joo',
-      2: 'ri-mapa',
-      3: 'foyon',
-      4: 'ulu-wumu',
-      5: 'sidakuza',
-      6: 'fente',
-      7: 'lujaa',
-    },
-    'liwi-bi-jiji': {
-      1: 'dugo linowa',
-      2: 'sirid umaan',
-      3: 'so-lono chapina',
-      4: 'indiz aku-tata',
-      5: 'fo-kocho panu-baa',
-      6: 'rolo mu-nino',
-    },
-    meuhy: {
-      1: 'auhya',
-      2: 'uwo',
-      3: 'yawy',
-      4: 'wuyo',
-      5: 'nii',
-    },
-    rassatt: {
-      1: 'batta du',
-      2: 'sikki chi',
-      3: 'zuchi naffi',
-      4: 'appatta',
-    },
-    woigolp: {
-      1: 'mogo',
-      2: 'unt',
-      3: 'rori',
-    },
-    chitu: {
-      1: 'ayalit salong',
-      2: 'ayalit sumachi',
-    },
-    'hamdi-bulo': {
-      1: 'pikimi bulo',
-    },
-  },
-}
+// English names, derived from the deck: { species: { plip: … },
+// individuals: { plip: { 1: … } } }. Tests may overwrite slots, so this
+// is a plain mutable object.
+export const NAMES = nest('name', 'en')
 
 // ─────────────────────────── the plumbing ────────────────────────────
 // Both readers return the trimmed words or null when a slot is blank,

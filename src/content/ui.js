@@ -1,9 +1,13 @@
-// ui.js — every word the INTERFACE says, in one file: the copy deck's
-// interface section.
+// ui.js — the copy deck: every word Habitat says, in one file.
 //
-// This file holds the FURNITURE (what the buttons, labels and page
-// titles say). narration.js holds the STORY. They are written in
-// different voices, so they are still separate files for now.
+// This is THE copy deck: every word Habitat says lives in this one file.
+// It has two halves, with two different blank-rules (see below):
+//   1. the INTERFACE (buttons, labels, titles, messages) — the first
+//      half, `DECK`;
+//   2. STORY AND NAMES (narration, friend cards, map-region words, the
+//      names of the beings) — the second half, `STORY_DECK`.
+// narration.js, names.js, mishap.js and blocked.js still exist, but only
+// as readers: they hold no words, and read them from here.
 //
 // THIS FILE IS KIMIA'S, like every other file in src/content/
 // (design-notes §7). Claude Code builds the keyed slots and the
@@ -23,13 +27,15 @@
 // language, add one line (`de: ''`) to every entry. Notes are for
 // people; the app never shows them.
 //
-// ── THE ONE RULE THAT DIFFERS FROM THE OTHER CONTENT FILES ──────────
+// ── TWO BLANK-RULES, ONE PER HALF ───────────────────────────────────
 //
-// Everywhere else in src/content/, a blank slot shows NOTHING — better
-// silence than invented copy. That rule cannot hold here: a blank
-// button is not restraint, it is a broken control.
+// In the story-and-names half (further down), a blank slot shows
+// NOTHING — better silence than invented copy. That rule cannot hold
+// in the interface half: a blank button is not restraint, it is a
+// broken control.
 //
-// So for interface copy, and only here:
+// So for interface copy (including the two safety-screen messages at the
+// end of this half), and only here:
 //
 //     a blank Farsi slot falls back to the English word.
 //
@@ -1403,6 +1409,951 @@ const DECK = {
     en: 'فارسی',
     fa: 'فارسی',
   },
+
+  // ── Safety screens ──────────────────────────────────────────────────────
+  'blocked.message': {
+    note:
+      'The one message shown when Habitat is opened on a ' +
+      'screen too narrow for it (phone or tablet).',
+    en:
+      'N-Z-D is currently only a habitat that can be ' +
+      'experienced on a big browser, like a laptop or desktop ' +
+      'computer. check back in on the big screen!',
+    fa: '',
+  },
+  'mishap.message': {
+    note:
+      'The one message shown if something unexpected breaks ' +
+      'and a screen cannot draw. Never leave this blank.',
+    en:
+      'something seems to have gone wrong: please inform the ' +
+      'maker. refresh page to get back to habits.',
+    fa: '',
+  },
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// STORY AND NAMES — the second half of the deck.
+//
+// BLANK-RULE FOR THIS HALF: a blank slot stays SILENT. The app shows
+// nothing there — never invented prose, never an invented name, and no
+// fallback to English. (The interface half above does the opposite: a
+// blank falls back to English, because a blank button is broken.) Story
+// and names are Kimia's own words in every language, so a language that
+// has not been written yet is quiet rather than guessed at.
+//
+// Same entry shape as above: a plain-English note, then each language.
+// The keys are permanent internal ids: story.* entries are narration,
+// name.* entries are what the beings of N-Z-D are called. In
+// name.species.* and name.individuals.* the id after the dot is the
+// species' internal id (never shown), and the English line is what a
+// player reads. A friend wears its own name if it has one, else its
+// species name, else nothing.
+//
+// Narration is momentary — it plays once and is never stored — except
+// the friend cards, which are re-readable on the Guest Book. Some lines
+// here are still Claude-written placeholders from T3.2 and stay only
+// until Kimia replaces them.
+// ═══════════════════════════════════════════════════════════════════════
+
+const STORY_DECK = {
+  // ── First discoveries ───────────────────────────────────────────────────
+  'story.firstReveals.flora.title': {
+    note:
+      'The big line on the screen that appears the first time ' +
+      'you find a native plant.',
+    en: 'you found an indigenous plant',
+    fa: '',
+  },
+  'story.firstReveals.flora.line': {
+    note:
+      'The story line beneath the big line, on the same ' +
+      'first-time screen for a native plant.',
+    en:
+      'after walking around N-Z-D for some time, you got ' +
+      'enough steps in to discover the native flora. this land ' +
+      'holds life, just like you.',
+    fa: '',
+  },
+  'story.firstReveals.magazine.title': {
+    note:
+      'The big line on the screen that appears the first time ' +
+      'you find a magazine.',
+    en: 'what is this? reading material?',
+    fa: '',
+  },
+  'story.firstReveals.magazine.line': {
+    note:
+      'The story line beneath the big line, on the same ' +
+      'first-time screen for a magazine.',
+    en:
+      'printed pages of local cultural phenomena. interesting ' +
+      'stuff. hard to tell what language means on this planet. ' +
+      'images help.',
+    fa: '',
+  },
+  'story.firstReveals.novel.title': {
+    note:
+      'The big line on the screen that appears the first time ' +
+      'you find a novel.',
+    en: 'more pages; heavier. a novel?',
+    fa: '',
+  },
+  'story.firstReveals.novel.line': {
+    note:
+      'The story line beneath the big line, on the same ' +
+      'first-time screen for a novel.',
+    en:
+      'N-Z-D is a cultured place; it is you who must raise ' +
+      'your literacy level. perhaps this is the reading ' +
+      'challenge you need.',
+    fa: '',
+  },
+  'story.firstReveals.dictionary.title': {
+    note:
+      'The big line on the screen that appears the first time ' +
+      'you find a dictionary.',
+    en: 'you found a dictionary',
+    fa: '',
+  },
+  'story.firstReveals.dictionary.line': {
+    note:
+      'The story line beneath the big line, on the same ' +
+      'first-time screen for a dictionary.',
+    en:
+      'finally! a point of reference. a form of translation. a ' +
+      'rare treasure that will open doors to deeper ' +
+      'friendships.',
+    fa: '',
+  },
+  'story.firstReveals.fungi.title': {
+    note:
+      'The big line on the screen that appears the first time ' +
+      'you find fungi (the fungible tokens).',
+    en: 'you earned a fungible token',
+    fa: '',
+  },
+  'story.firstReveals.fungi.line': {
+    note:
+      'The story line beneath the big line, on the same ' +
+      'first-time screen for fungi (the fungible tokens).',
+    en:
+      'do not eat these: they are very valuable and inedible. ' +
+      'buy and sell objects for the same price at the local ' +
+      'market.',
+    fa: '',
+  },
+
+  // ── The reading popup ───────────────────────────────────────────────────
+  'story.spreadPopup.emptyState': {
+    note:
+      'Shown inside the reading popup when a publication has ' +
+      'no double-page spread written yet.',
+    en: 'something will be here soon. check in later.',
+    fa: '',
+  },
+
+  // ── Friend introductions ────────────────────────────────────────────────
+  'story.friendIntros.plip.title': {
+    note:
+      'The big line when you meet your first plip (played ' +
+      'once, on that first arrival).',
+    en: 'a plip!',
+    fa: '',
+  },
+  'story.friendIntros.plip.line': {
+    note:
+      'The story line beneath it for the plip. Later plips ' +
+      'arrive wordless.',
+    en:
+      'plips are a wordless creature on N-Z-D. they are ' +
+      'friendly, and love having company.',
+    fa: '',
+  },
+  'story.friendIntros.baluhm.title': {
+    note:
+      'The big line when you meet your first baluhm (played ' +
+      'once, on that first arrival).',
+    en: 'a baluhm!',
+    fa: '',
+  },
+  'story.friendIntros.baluhm.line': {
+    note:
+      'The story line beneath it for the baluhm. Later baluhms ' +
+      'arrive wordless.',
+    en:
+      'curious and kind, baluhms gravitate towards strangers, ' +
+      'communicating mostly through gesture.',
+    fa: '',
+  },
+  'story.friendIntros.krupengk.title': {
+    note:
+      'The big line when you meet your first krupengk (played ' +
+      'once, on that first arrival).',
+    en: 'a krupengk!',
+    fa: '',
+  },
+  'story.friendIntros.krupengk.line': {
+    note:
+      'The story line beneath it for the krupengk. Later ' +
+      'krupengks arrive wordless.',
+    en:
+      'the observant krupengk loves to gather information, ' +
+      'saving it all for analysis later.',
+    fa: '',
+  },
+  'story.friendIntros.zala.title': {
+    note:
+      'The big line when you meet your first zala (played ' +
+      'once, on that first arrival).',
+    en: 'a zala!',
+    fa: '',
+  },
+  'story.friendIntros.zala.line': {
+    note:
+      'The story line beneath it for the zala. Later zalas ' +
+      'arrive wordless.',
+    en:
+      'although zalas can be stand-offish, you may see them ' +
+      'often because they move too slow to escape small talk.',
+    fa: '',
+  },
+  'story.friendIntros.liwi-bi-jiji.title': {
+    note:
+      'The big line when you meet your first liwi bi-jiji ' +
+      '(played once, on that first arrival).',
+    en: 'a liwi bi-jiji!',
+    fa: '',
+  },
+  'story.friendIntros.liwi-bi-jiji.line': {
+    note:
+      'The story line beneath it for the liwi bi-jiji. Later ' +
+      'liwi bi-jijis arrive wordless.',
+    en:
+      'the fastest creatures on N-Z-D. known for their sense ' +
+      'of humour. fans of scavenging competitions and chit ' +
+      'chat.',
+    fa: '',
+  },
+  'story.friendIntros.meuhy.title': {
+    note:
+      'The big line when you meet your first meuhy (played ' +
+      'once, on that first arrival).',
+    en: 'a meuhy!',
+    fa: '',
+  },
+  'story.friendIntros.meuhy.line': {
+    note:
+      'The story line beneath it for the meuhy. Later meuhys ' +
+      'arrive wordless.',
+    en:
+      'meuhys are N-Z-D"s most loyal creatures. it takes them ' +
+      'long to trust, but when they do, it"s forever. lucky ' +
+      'you!',
+    fa: '',
+  },
+  'story.friendIntros.rassatt.title': {
+    note:
+      'The big line when you meet your first rassatt (played ' +
+      'once, on that first arrival).',
+    en: 'a rassatt!',
+    fa: '',
+  },
+  'story.friendIntros.rassatt.line': {
+    note:
+      'The story line beneath it for the rassatt. Later ' +
+      'rassatts arrive wordless.',
+    en:
+      'rassatts are rarely found in this layer of the ' +
+      'atmosphere, but they are friendly and talkative. they ' +
+      'enjoy teasing and roasting.',
+    fa: '',
+  },
+  'story.friendIntros.woigolp.title': {
+    note:
+      'The big line when you meet your first woigolp (played ' +
+      'once, on that first arrival).',
+    en: 'a woigolp!',
+    fa: '',
+  },
+  'story.friendIntros.woigolp.line': {
+    note:
+      'The story line beneath it for the woigolp. Later ' +
+      'woigolps arrive wordless.',
+    en:
+      'moody and temperamental, woigolps rarely emerge from ' +
+      'their quarters, but when they do it"s to fight or to ' +
+      'eat. friendship with them is unusual.',
+    fa: '',
+  },
+  'story.friendIntros.chitu.title': {
+    note:
+      'The big line when you meet your first chitu (played ' +
+      'once, on that first arrival).',
+    en: 'a chitu!',
+    fa: '',
+  },
+  'story.friendIntros.chitu.line': {
+    note:
+      'The story line beneath it for the chitu. Later chitus ' +
+      'arrive wordless.',
+    en:
+      'shy chitus are N-Z-D"s finest poets. they are deeply ' +
+      'fond of their local culture and language. their ' +
+      'introversion keeps them mostly hidden and out of sight. ',
+    fa: '',
+  },
+  'story.friendIntros.hamdi-bulo.title': {
+    note:
+      'The big line when you meet your first hamdi bulo ' +
+      '(played once, on that first arrival).',
+    en: 'a hamdi bulo!',
+    fa: '',
+  },
+  'story.friendIntros.hamdi-bulo.line': {
+    note:
+      'The story line beneath it for the hamdi bulo. Later ' +
+      'hamdi bulos arrive wordless.',
+    en:
+      'wow! you befriended N-Z-D"s one and only hamdi bulo. ' +
+      'these long-living creatures are wise like oracles and ' +
+      'have seen more than anyone else on the planet. there is ' +
+      'no higher or more honourable friendship here on N-Z-D. ' +
+      'congratulations! this suggests your level of literacy ' +
+      'has reached an unbelievable standard, for a non-native. ' +
+      'all those novels and dictionaries that you read earned ' +
+      'you this. well done. ',
+    fa: '',
+  },
+
+  // ── Friend cards ────────────────────────────────────────────────────────
+  'story.friendCards.plip': {
+    note:
+      "The text on a plip's Guest Book card — who they are. " +
+      'Re-readable any time.',
+    en: 'plips are a wordless creature on N-Z-D. they love ' + 'company.',
+    fa: '',
+  },
+  'story.friendCards.baluhm': {
+    note:
+      "The text on a baluhm's Guest Book card — who they are. " +
+      'Re-readable any time.',
+    en:
+      'curious baluhms gravitate towards strangers, ' +
+      'communicating mostly through gesture.',
+    fa: '',
+  },
+  'story.friendCards.krupengk': {
+    note:
+      "The text on a krupengk's Guest Book card — who they " +
+      'are. Re-readable any time.',
+    en:
+      'the observant krupengk loves to gather information, ' +
+      'saving it all for analysis later.',
+    fa: '',
+  },
+  'story.friendCards.zala': {
+    note:
+      "The text on a zala's Guest Book card — who they are. " +
+      'Re-readable any time.',
+    en:
+      'zalas can be stand-offish, but you may see them often ' +
+      'because they move slowly.',
+    fa: '',
+  },
+  'story.friendCards.liwi-bi-jiji': {
+    note:
+      "The text on a liwi bi-jiji's Guest Book card — who they " +
+      'are. Re-readable any time.',
+    en:
+      'the fastest creatures on N-Z-D are liwi bi-jijis, fans ' +
+      'of scavenging competitions and chit chat.',
+    fa: '',
+  },
+  'story.friendCards.meuhy': {
+    note:
+      "The text on a meuhy's Guest Book card — who they are. " +
+      'Re-readable any time.',
+    en:
+      'meuhys are N-Z-D"s most loyal creatures. it takes them ' +
+      'long to trust, but when they do, it"s forever.',
+    fa: '',
+  },
+  'story.friendCards.rassatt': {
+    note:
+      "The text on a rassatt's Guest Book card — who they are. " +
+      'Re-readable any time.',
+    en:
+      'rassatts live in a different layer of the atmosphere. ' +
+      'they are friendly and talkative. they enjoy teasing and ' +
+      'roasting.',
+    fa: '',
+  },
+  'story.friendCards.woigolp': {
+    note:
+      "The text on a woigolp's Guest Book card — who they are. " +
+      'Re-readable any time.',
+    en:
+      'woigolps rarely emerge from their quarters, but when ' +
+      'they do it"s to fight or to eat. they are moody and ' +
+      'aggressive.',
+    fa: '',
+  },
+  'story.friendCards.chitu': {
+    note:
+      "The text on a chitu's Guest Book card — who they are. " +
+      'Re-readable any time.',
+    en:
+      'shy, interovered chitus are N-Z-D"s finest poets. they ' +
+      'are deeply fond of their local culture and language, ' +
+      'and masters of art.',
+    fa: '',
+  },
+  'story.friendCards.hamdi-bulo': {
+    note:
+      "The text on a hamdi bulo's Guest Book card — who they " +
+      'are. Re-readable any time.',
+    en:
+      'N-Z-D currently hosts only one hamdi bulo. these ' +
+      'long-living creatures are wise like oracles and have ' +
+      'seen more than anyone else on the planet.',
+    fa: '',
+  },
+
+  // ── Cameo messages ──────────────────────────────────────────────────────
+  'story.cameos.bigDay': {
+    note:
+      'What a visiting friend says on the habit list after a ' +
+      'big day of steps. Holes are filled in from the win ' +
+      'itself.',
+    en: '{n} steps in one day!',
+    fa: '',
+  },
+  'story.cameos.streakRecordFirst': {
+    note:
+      'What a visiting friend says on the habit list after the ' +
+      'first streak record a habit ever sets. Holes are filled ' +
+      'in from the win itself.',
+    en: '{n}-{unit} {habit} streak record!',
+    fa: '',
+  },
+  'story.cameos.streakRecord': {
+    note:
+      'What a visiting friend says on the habit list after a ' +
+      'habit beating its own earlier streak record. Holes are ' +
+      'filled in from the win itself.',
+    en: '{n}-{unit} {habit} streak record! your old best was ' + '{previous}.',
+    fa: '',
+  },
+  'story.cameos.livedDays': {
+    note:
+      'What a visiting friend says on the habit list after ' +
+      'crossing a lived-day milestone. Holes are filled in ' +
+      'from the win itself.',
+    en: '{n} lived days!',
+    fa: '',
+  },
+
+  // ── Map regions ─────────────────────────────────────────────────────────
+  'story.mapRegions.region1': {
+    note:
+      'The word shown when map region 1 is discovered (the ' +
+      'landing site in the middle of the map).',
+    en: 'sahara',
+    fa: '',
+  },
+  'story.mapRegions.region2': {
+    note:
+      'The word shown when map region 2 is discovered (in the ' +
+      'ring around the landing site).',
+    en: 'ari',
+    fa: '',
+  },
+  'story.mapRegions.region3': {
+    note:
+      'The word shown when map region 3 is discovered (in the ' +
+      'ring around the landing site).',
+    en: 'lerato',
+    fa: '',
+  },
+  'story.mapRegions.region4': {
+    note:
+      'The word shown when map region 4 is discovered (in the ' +
+      'ring around the landing site).',
+    en: 'sogol',
+    fa: '',
+  },
+  'story.mapRegions.region5': {
+    note:
+      'The word shown when map region 5 is discovered (in the ' +
+      'ring around the landing site).',
+    en: 'kian',
+    fa: '',
+  },
+  'story.mapRegions.region6': {
+    note:
+      'The word shown when map region 6 is discovered (in the ' +
+      'ring around the landing site).',
+    en: 'ida',
+    fa: '',
+  },
+  'story.mapRegions.region7': {
+    note:
+      'The word shown when map region 7 is discovered (in the ' +
+      'outer ring).',
+    en: 'sufi',
+    fa: '',
+  },
+  'story.mapRegions.region8': {
+    note:
+      'The word shown when map region 8 is discovered (in the ' +
+      'outer ring).',
+    en: 'cyrus',
+    fa: '',
+  },
+  'story.mapRegions.region9': {
+    note:
+      'The word shown when map region 9 is discovered (in the ' +
+      'outer ring).',
+    en: 'shiva',
+    fa: '',
+  },
+  'story.mapRegions.region10': {
+    note:
+      'The word shown when map region 10 is discovered (in the ' +
+      'outer ring).',
+    en: 'oratile',
+    fa: '',
+  },
+  'story.mapRegions.region11': {
+    note:
+      'The word shown when map region 11 is discovered (in the ' +
+      'outer ring).',
+    en: 'chaymae',
+    fa: '',
+  },
+  'story.mapRegions.region12': {
+    note:
+      'The word shown when map region 12 is discovered (in the ' +
+      'outer ring).',
+    en: 'hamid',
+    fa: '',
+  },
+  'story.mapRegions.region13': {
+    note:
+      'The word shown when map region 13 is discovered (in the ' +
+      'outer ring).',
+    en: 'parnian',
+    fa: '',
+  },
+  'story.mapRegions.region14': {
+    note:
+      'The word shown when map region 14 is discovered (in the ' +
+      'outer ring).',
+    en: 'marie-simone',
+    fa: '',
+  },
+  'story.mapRegions.region15': {
+    note:
+      'The word shown when map region 15 is discovered (in the ' +
+      'outer ring).',
+    en: 'tadiwa',
+    fa: '',
+  },
+  'story.mapRegions.region16': {
+    note:
+      'The word shown when map region 16 is discovered (in the ' +
+      'outer ring).',
+    en: 'lily',
+    fa: '',
+  },
+
+  // ── The ten species ─────────────────────────────────────────────────────
+  'name.species.plip': {
+    note:
+      'What one plip is called on screen: Guest Book, arrival, ' +
+      'shelf and cameo visits.',
+    en: 'plip',
+    fa: '',
+  },
+  'name.species.baluhm': {
+    note:
+      'What one baluhm is called on screen: Guest Book, ' +
+      'arrival, shelf and cameo visits.',
+    en: 'baluhm',
+    fa: '',
+  },
+  'name.species.krupengk': {
+    note:
+      'What one krupengk is called on screen: Guest Book, ' +
+      'arrival, shelf and cameo visits.',
+    en: 'krupengk',
+    fa: '',
+  },
+  'name.species.zala': {
+    note:
+      'What one zala is called on screen: Guest Book, arrival, ' +
+      'shelf and cameo visits.',
+    en: 'zala',
+    fa: '',
+  },
+  'name.species.liwi-bi-jiji': {
+    note:
+      'What one liwi bi-jiji is called on screen: Guest Book, ' +
+      'arrival, shelf and cameo visits.',
+    en: 'liwi bi-jiji',
+    fa: '',
+  },
+  'name.species.meuhy': {
+    note:
+      'What one meuhy is called on screen: Guest Book, ' +
+      'arrival, shelf and cameo visits.',
+    en: 'meuhy',
+    fa: '',
+  },
+  'name.species.rassatt': {
+    note:
+      'What one rassatt is called on screen: Guest Book, ' +
+      'arrival, shelf and cameo visits.',
+    en: 'rassatt',
+    fa: '',
+  },
+  'name.species.woigolp': {
+    note:
+      'What one woigolp is called on screen: Guest Book, ' +
+      'arrival, shelf and cameo visits.',
+    en: 'woigolp',
+    fa: '',
+  },
+  'name.species.chitu': {
+    note:
+      'What one chitu is called on screen: Guest Book, ' +
+      'arrival, shelf and cameo visits.',
+    en: 'chitu',
+    fa: '',
+  },
+  'name.species.hamdi-bulo': {
+    note:
+      'What one hamdi bulo is called on screen: Guest Book, ' +
+      'arrival, shelf and cameo visits.',
+    en: 'hamdi bulo',
+    fa: '',
+  },
+
+  // ── The individuals ─────────────────────────────────────────────────────
+  'name.individuals.plip.1': {
+    note: 'The personal name of plip number 1, in the order they ' + 'arrive.',
+    en: 'bi',
+    fa: '',
+  },
+  'name.individuals.plip.2': {
+    note: 'The personal name of plip number 2, in the order they ' + 'arrive.',
+    en: 'ti',
+    fa: '',
+  },
+  'name.individuals.plip.3': {
+    note: 'The personal name of plip number 3, in the order they ' + 'arrive.',
+    en: 'ki',
+    fa: '',
+  },
+  'name.individuals.plip.4': {
+    note: 'The personal name of plip number 4, in the order they ' + 'arrive.',
+    en: 'zi',
+    fa: '',
+  },
+  'name.individuals.plip.5': {
+    note: 'The personal name of plip number 5, in the order they ' + 'arrive.',
+    en: 'mi',
+    fa: '',
+  },
+  'name.individuals.plip.6': {
+    note: 'The personal name of plip number 6, in the order they ' + 'arrive.',
+    en: 'ri',
+    fa: '',
+  },
+  'name.individuals.plip.7': {
+    note: 'The personal name of plip number 7, in the order they ' + 'arrive.',
+    en: 'ji',
+    fa: '',
+  },
+  'name.individuals.plip.8': {
+    note: 'The personal name of plip number 8, in the order they ' + 'arrive.',
+    en: 'li',
+    fa: '',
+  },
+  'name.individuals.plip.9': {
+    note: 'The personal name of plip number 9, in the order they ' + 'arrive.',
+    en: 'wi',
+    fa: '',
+  },
+  'name.individuals.plip.10': {
+    note: 'The personal name of plip number 10, in the order they ' + 'arrive.',
+    en: 'di',
+    fa: '',
+  },
+  'name.individuals.baluhm.1': {
+    note:
+      'The personal name of baluhm number 1, in the order they ' + 'arrive.',
+    en: 'owa',
+    fa: '',
+  },
+  'name.individuals.baluhm.2': {
+    note:
+      'The personal name of baluhm number 2, in the order they ' + 'arrive.',
+    en: 'nor',
+    fa: '',
+  },
+  'name.individuals.baluhm.3': {
+    note:
+      'The personal name of baluhm number 3, in the order they ' + 'arrive.',
+    en: 'dulu',
+    fa: '',
+  },
+  'name.individuals.baluhm.4': {
+    note:
+      'The personal name of baluhm number 4, in the order they ' + 'arrive.',
+    en: 'feh',
+    fa: '',
+  },
+  'name.individuals.baluhm.5': {
+    note:
+      'The personal name of baluhm number 5, in the order they ' + 'arrive.',
+    en: 'swa',
+    fa: '',
+  },
+  'name.individuals.baluhm.6': {
+    note:
+      'The personal name of baluhm number 6, in the order they ' + 'arrive.',
+    en: 'rou',
+    fa: '',
+  },
+  'name.individuals.baluhm.7': {
+    note:
+      'The personal name of baluhm number 7, in the order they ' + 'arrive.',
+    en: 'loi',
+    fa: '',
+  },
+  'name.individuals.baluhm.8': {
+    note:
+      'The personal name of baluhm number 8, in the order they ' + 'arrive.',
+    en: 'momo',
+    fa: '',
+  },
+  'name.individuals.baluhm.9': {
+    note:
+      'The personal name of baluhm number 9, in the order they ' + 'arrive.',
+    en: 'sah',
+    fa: '',
+  },
+  'name.individuals.krupengk.1': {
+    note:
+      'The personal name of krupengk number 1, in the order ' + 'they arrive.',
+    en: 'chok',
+    fa: '',
+  },
+  'name.individuals.krupengk.2': {
+    note:
+      'The personal name of krupengk number 2, in the order ' + 'they arrive.',
+    en: 'draktam',
+    fa: '',
+  },
+  'name.individuals.krupengk.3': {
+    note:
+      'The personal name of krupengk number 3, in the order ' + 'they arrive.',
+    en: 'su-chuch',
+    fa: '',
+  },
+  'name.individuals.krupengk.4': {
+    note:
+      'The personal name of krupengk number 4, in the order ' + 'they arrive.',
+    en: 'glongk',
+    fa: '',
+  },
+  'name.individuals.krupengk.5': {
+    note:
+      'The personal name of krupengk number 5, in the order ' + 'they arrive.',
+    en: 'ach-tek',
+    fa: '',
+  },
+  'name.individuals.krupengk.6': {
+    note:
+      'The personal name of krupengk number 6, in the order ' + 'they arrive.',
+    en: 'papo-palat',
+    fa: '',
+  },
+  'name.individuals.krupengk.7': {
+    note:
+      'The personal name of krupengk number 7, in the order ' + 'they arrive.',
+    en: 'serchu',
+    fa: '',
+  },
+  'name.individuals.krupengk.8': {
+    note:
+      'The personal name of krupengk number 8, in the order ' + 'they arrive.',
+    en: 'klist',
+    fa: '',
+  },
+  'name.individuals.zala.1': {
+    note: 'The personal name of zala number 1, in the order they ' + 'arrive.',
+    en: 'joo',
+    fa: '',
+  },
+  'name.individuals.zala.2': {
+    note: 'The personal name of zala number 2, in the order they ' + 'arrive.',
+    en: 'ri-mapa',
+    fa: '',
+  },
+  'name.individuals.zala.3': {
+    note: 'The personal name of zala number 3, in the order they ' + 'arrive.',
+    en: 'foyon',
+    fa: '',
+  },
+  'name.individuals.zala.4': {
+    note: 'The personal name of zala number 4, in the order they ' + 'arrive.',
+    en: 'ulu-wumu',
+    fa: '',
+  },
+  'name.individuals.zala.5': {
+    note: 'The personal name of zala number 5, in the order they ' + 'arrive.',
+    en: 'sidakuza',
+    fa: '',
+  },
+  'name.individuals.zala.6': {
+    note: 'The personal name of zala number 6, in the order they ' + 'arrive.',
+    en: 'fente',
+    fa: '',
+  },
+  'name.individuals.zala.7': {
+    note: 'The personal name of zala number 7, in the order they ' + 'arrive.',
+    en: 'lujaa',
+    fa: '',
+  },
+  'name.individuals.liwi-bi-jiji.1': {
+    note:
+      'The personal name of liwi bi-jiji number 1, in the ' +
+      'order they arrive.',
+    en: 'dugo linowa',
+    fa: '',
+  },
+  'name.individuals.liwi-bi-jiji.2': {
+    note:
+      'The personal name of liwi bi-jiji number 2, in the ' +
+      'order they arrive.',
+    en: 'sirid umaan',
+    fa: '',
+  },
+  'name.individuals.liwi-bi-jiji.3': {
+    note:
+      'The personal name of liwi bi-jiji number 3, in the ' +
+      'order they arrive.',
+    en: 'so-lono chapina',
+    fa: '',
+  },
+  'name.individuals.liwi-bi-jiji.4': {
+    note:
+      'The personal name of liwi bi-jiji number 4, in the ' +
+      'order they arrive.',
+    en: 'indiz aku-tata',
+    fa: '',
+  },
+  'name.individuals.liwi-bi-jiji.5': {
+    note:
+      'The personal name of liwi bi-jiji number 5, in the ' +
+      'order they arrive.',
+    en: 'fo-kocho panu-baa',
+    fa: '',
+  },
+  'name.individuals.liwi-bi-jiji.6': {
+    note:
+      'The personal name of liwi bi-jiji number 6, in the ' +
+      'order they arrive.',
+    en: 'rolo mu-nino',
+    fa: '',
+  },
+  'name.individuals.meuhy.1': {
+    note: 'The personal name of meuhy number 1, in the order they ' + 'arrive.',
+    en: 'auhya',
+    fa: '',
+  },
+  'name.individuals.meuhy.2': {
+    note: 'The personal name of meuhy number 2, in the order they ' + 'arrive.',
+    en: 'uwo',
+    fa: '',
+  },
+  'name.individuals.meuhy.3': {
+    note: 'The personal name of meuhy number 3, in the order they ' + 'arrive.',
+    en: 'yawy',
+    fa: '',
+  },
+  'name.individuals.meuhy.4': {
+    note: 'The personal name of meuhy number 4, in the order they ' + 'arrive.',
+    en: 'wuyo',
+    fa: '',
+  },
+  'name.individuals.meuhy.5': {
+    note: 'The personal name of meuhy number 5, in the order they ' + 'arrive.',
+    en: 'nii',
+    fa: '',
+  },
+  'name.individuals.rassatt.1': {
+    note:
+      'The personal name of rassatt number 1, in the order ' + 'they arrive.',
+    en: 'batta du',
+    fa: '',
+  },
+  'name.individuals.rassatt.2': {
+    note:
+      'The personal name of rassatt number 2, in the order ' + 'they arrive.',
+    en: 'sikki chi',
+    fa: '',
+  },
+  'name.individuals.rassatt.3': {
+    note:
+      'The personal name of rassatt number 3, in the order ' + 'they arrive.',
+    en: 'zuchi naffi',
+    fa: '',
+  },
+  'name.individuals.rassatt.4': {
+    note:
+      'The personal name of rassatt number 4, in the order ' + 'they arrive.',
+    en: 'appatta',
+    fa: '',
+  },
+  'name.individuals.woigolp.1': {
+    note:
+      'The personal name of woigolp number 1, in the order ' + 'they arrive.',
+    en: 'mogo',
+    fa: '',
+  },
+  'name.individuals.woigolp.2': {
+    note:
+      'The personal name of woigolp number 2, in the order ' + 'they arrive.',
+    en: 'unt',
+    fa: '',
+  },
+  'name.individuals.woigolp.3': {
+    note:
+      'The personal name of woigolp number 3, in the order ' + 'they arrive.',
+    en: 'rori',
+    fa: '',
+  },
+  'name.individuals.chitu.1': {
+    note: 'The personal name of chitu number 1, in the order they ' + 'arrive.',
+    en: 'ayalit salong',
+    fa: '',
+  },
+  'name.individuals.chitu.2': {
+    note: 'The personal name of chitu number 2, in the order they ' + 'arrive.',
+    en: 'ayalit sumachi',
+    fa: '',
+  },
+  'name.individuals.hamdi-bulo.1': {
+    note:
+      'The personal name of hamdi bulo number 1, in the order ' +
+      'they arrive.',
+    en: 'pikimi bulo',
+    fa: '',
+  },
 }
 
 // The deck, read the way the rest of the app has always read it: one
@@ -1425,6 +2376,25 @@ const fa = readLanguage('fa')
 export const WORDMARK = 'HABITAT'
 
 export const UI = { en, fa }
+
+// The story-and-names half of the deck, nested the way the readers walk
+// it: nest('story', 'en') turns the flat key
+// 'story.firstReveals.flora.title' into
+// { firstReveals: { flora: { title: '…' } } }. narration.js and names.js
+// build their tables from this — those files hold no words any more.
+// Only the language asked for is read, and there is NO fallback: a blank
+// stays blank, and the readers show nothing for it (the half's rule).
+export function nest(prefix, code) {
+  const tree = {}
+  for (const [key, entry] of Object.entries(STORY_DECK)) {
+    if (!key.startsWith(prefix + '.')) continue
+    const path = key.slice(prefix.length + 1).split('.')
+    let node = tree
+    for (const step of path.slice(0, -1)) node = node[step] ??= {}
+    node[path[path.length - 1]] = entry[code]
+  }
+  return tree
+}
 
 // The languages Habitat speaks, in the order the switch offers them.
 // 'en' first because it is the fallback: the one block that must never

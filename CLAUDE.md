@@ -142,7 +142,8 @@ Kimia is a non-coder. Therefore:
   like every drop. Categories refill only until their fixed roster is
   exhausted — 10 plips down to 1 hamdi bulo, 55 friendships lifetime max
   (2026-07-24); every species and individual is named by Kimia in
-  `src/content/names.js` (T6.1a), and the code's own species keys carry
+  the copy deck `src/content/ui.js` (`name.*`; T6.1a, moved there in
+  T6.14), and the code's own species keys carry
   those same names as of 2026-08-17 — never a drafted English word. Every
   arrival is a reveal; the signature animation plays in exactly three moments —
   arrival reveal, Guest Book card, big-win home-screen cameos (T4.6) —

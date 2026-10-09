@@ -447,8 +447,9 @@ tracker. Everything after this is delight, informed by real use.
       component reads them, including the four-way weekday duplication
       (one `WEEKDAY_KEYS` list now). Slice 2 DONE — `ui.js` is key-first,
       a plain-English `note` on all 230 entries, English and Farsi side
-      by side. STILL TO DO: slice 3 absorb narration, names, mishap,
-      blocked; slice 4 the completeness test.** T6.13 built the
+      by side. Slice 3 DONE — story, names, mishap and blocked words all
+      live in `ui.js` now (128 more entries); the four old files only
+      read them. STILL TO DO: slice 4 the completeness test.** T6.13 built the
       mechanism but caught only about 55% of the copy, and framed the
       file as a TRANSLATION file rather than what it should be: the one
       place all copy lives, editable in any language including English,

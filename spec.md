@@ -356,8 +356,8 @@ opening its own growing world:
   N-Z-D has a whole ecology of beings reachable at different depths of
   language. The ladder below is a WORKING DESCRIPTION, not the names:
   the ten species names are Kimia's to write (T6.1a, 2026-08-10), and
-  they live in `src/content/names.js` alongside a slot for each of the
-  55 individuals. What "plips", "baluhms" … name here is the RUNG —
+  they live in the copy deck (`src/content/ui.js`, the `name.*` entries)
+  alongside a slot for each of the 55 individuals. What "plips", "baluhms" … name here is the RUNG —
   each species' place on the literacy ladder and what it is like — and
   those same words survive in code as permanent internal ids that are
   never shown on screen. A species with a blank name slot simply shows
@@ -378,7 +378,7 @@ opening its own growing world:
   previous — **only until its roster is exhausted**; 55 friendships is
   the lifetime maximum (2026-07-24, amending the 2026-07-20
   repeat-friends rule). The roster lives in code as `FRIEND_ROSTER`,
-  `src/content/names.js` carries exactly one name slot per individual,
+  the copy deck carries exactly one name slot per individual,
   and **`nextFriendDue` obeys the ceiling** (T6.1b, 2026-08-21): a
   category whose individuals have all arrived goes quiet for ever, and
   when every open category is quiet no friend is due at all. Nothing

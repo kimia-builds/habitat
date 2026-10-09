@@ -1,20 +1,23 @@
-// mishap.js — the one message shown if Habitat ever hits an unexpected
-// error and a screen can't finish drawing (the ErrorBoundary safety net,
-// added 2026-07-27). Without it React unmounts everything and the page
-// goes black with no explanation.
+// mishap.js — the reader for the one message shown if Habitat ever hits
+// an unexpected error and a screen can't finish drawing (the
+// ErrorBoundary safety net, added 2026-07-27). Without it React unmounts
+// everything and the page goes black with no explanation.
 //
-// THIS FILE IS KIMIA'S (design-notes §7): Claude Code builds the slot
-// and the plumbing; the words are human-written. Unlike the other
-// content slots, please don't leave this one blank — a blank slot here
-// means a wordless screen, which is the very thing the net exists to
-// prevent. Nothing is lost when this shows: your habits are saved, and
-// a refresh returns to the habits list.
+// THE WORDS NO LONGER LIVE HERE. Since T6.14 slice 3 the message is the
+// `mishap.message` entry in the copy deck, src/content/ui.js — edit it
+// there. Please don't leave it blank: a blank slot here means a wordless
+// screen, which is the very thing the net exists to prevent. Nothing is
+// lost when this shows: your habits are saved, and a refresh returns to
+// the habits list.
+//
+// Blank-rule: this is a safety screen, so it follows the INTERFACE rule
+// (a blank in another language falls back to English). It sits in the
+// interface half of the deck for that reason.
+
+import { UI } from './ui.js'
 
 export const MISHAP = {
-  // Written by Kimia, 2026-07-27.
-  message:
-    'something seems to have gone wrong: please inform the maker. ' +
-    'refresh page to get back to habits.',
+  message: UI.en['mishap.message'],
 }
 
 // The message text, trimmed, or null when the slot is blank — mirrors

@@ -3472,6 +3472,27 @@ return 0` right after the era is worked out, so a moment before the
   for word against the old file: all 460 slots identical. The notes are
   first drafts by Claude for Kimia to correct; the file header explains
   the layout and the blank-falls-back-to-English rule.
+- 2026-10-09 (T6.14 slice 3, build notes): **story, names, mishap and
+  blocked fold into the deck.** 128 new entries in `ui.js`, each with a
+  plain-English note and `en`/`fa` side by side: first discoveries (10),
+  the reading-popup empty line (1), friend introductions (20), friend
+  cards (10), cameo messages (4), map regions (16), species names (10),
+  individual names (55), plus the blocked and mishap messages. The
+  entries were generated from the old files, and checked identical word
+  for word before and after (typos and all — they are Kimia's). The four
+  old files remain as thin READERS holding no words, so no screen or
+  test import changed; `NARRATION`, `NAMES`, `MISHAP` and `BLOCKED` are
+  derived from the deck. **Two halves, two blank-rules, stated in the
+  file:** the interface half falls back to English; the story-and-names
+  half (`STORY_DECK`, keys `story.*` and `name.*`) stays silent, and a
+  test pins that story keys never leak into the interface half.
+  **Decision for Kimia to confirm:** the blocked and mishap messages sit
+  in the INTERFACE half (blank falls back to English), because a
+  wordless safety screen is a broken screen. English behaviour is
+  unchanged. Not done yet, on purpose: the screens still read the
+  English story and names — choosing the Farsi ones is T6.19. `literacyEras`
+  (an empty placeholder) is gone. `AGENTS.md` still lists `narration.js`
+  as holding the slots — left for Kimia, as it is intentional.
 - 2026-10-09 (Kimia, wording after T6.14 slice 1): **in-game weekday
   copy is lower case** — `mon`, `tue` … and the two-letter `mo`, `tu` …
   — like the rest of the interface; the all-caps date line (MONDAY) is

@@ -429,8 +429,9 @@ wrongly translated.
   narrated moment (each first-occurrence reveal, each friend
   intro/welcome, each map region, each literacy era). Slots ship blank
   / `TODO: written by Kimia`; the app renders gracefully when empty
-  and never invents copy. **Built in T3.4 (2026-07-19):** the file is
-  `src/content/narration.js`; the five T3.2 reveals read from it —
+  and never invents copy. **Built in T3.4 (2026-07-19):** the file was
+  `src/content/narration.js` (since T6.14 the words live in the copy deck,
+  `src/content/ui.js`, and that file only reads them); the five T3.2 reveals read from it —
   titles too — their Claude-written text kept only as a marked
   placeholder until Kimia replaces it, and an empty slot shows
   nothing at all.
