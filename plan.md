@@ -486,10 +486,9 @@ tracker. Everything after this is delight, informed by real use.
       (key, English, where it shows, Farsi draft, and a Notes line for
       Kimia, who has no Farsi keyboard — Finglish is fine). No note means
       accepted; accepted slots are copied into `ui.js`, changed ones come
-      back in script to confirm. Batch 1 (26 slots: rail, page titles,
-      meters, language switch, habit-tile words): 15 live, 11 awaiting
-      her confirmation. Batch 2 (26 slots: lenses, habit form, check-in,
-      week shape, safety messages) is drafted. Then the rest of the
+      back in script to confirm. Batches 1 and 2 (52 slots: rail, page titles,
+      meters, language switch, habit tile, lenses, habit form, check-in,
+      week shape, safety messages) are accepted and live. Then the rest of the
       interface words, then story and names.
 - [x] **T6.20 The cameo tells the truth, and can be asked** _(done
       2026-08-20)_

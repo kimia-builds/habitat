@@ -113,7 +113,7 @@ const DECK = {
       'Title of the Abode page. Shows on its rail icon and at the top of the ' +
       'page.',
     en: 'your abode',
-    fa: '',
+    fa: 'سرپناه',
   },
   'page.guestbook': {
     note:
@@ -127,21 +127,21 @@ const DECK = {
       'Title of the library page. Shows on its rail icon and at the top of ' +
       'the page.',
     en: 'readers library',
-    fa: '',
+    fa: 'دارالکتب',
   },
   'page.market': {
     note:
       'Title of the Market page. Shows on its rail icon and at the top of ' +
       'the page.',
     en: 'local market',
-    fa: '',
+    fa: 'بازارچهٔ محلی',
   },
   'page.fieldNotes': {
     note:
       'Title of the field notes page. Shows on its rail icon and at the top ' +
       'of the page.',
     en: 'field notes',
-    fa: '',
+    fa: 'داده‌های تاریخی',
   },
 
   // ── The three meters ──────────────────────────────────────────────────
@@ -153,32 +153,32 @@ const DECK = {
   'meters.steps': {
     note: 'Name of the steps meter. Hover label and screen-reader name.',
     en: 'steps taken',
-    fa: '',
+    fa: 'قدم‌ها',
   },
   'meters.stepsBar': {
     note: 'Screen-reader-only name for the moving bar of the steps meter.',
     en: 'steps taken progress',
-    fa: '',
+    fa: 'قدم‌های برداشته‌شده',
   },
   'meters.literacy': {
     note: 'Name of the literacy meter. Hover label and screen-reader name.',
     en: 'literacy level',
-    fa: '',
+    fa: 'سواد',
   },
   'meters.literacyBar': {
     note: 'Screen-reader-only name for the moving bar of the literacy meter.',
     en: 'literacy level progress',
-    fa: '',
+    fa: 'سطح سواد',
   },
   'meters.wallet': {
     note: 'Name of the wallet meter. Hover label and screen-reader name.',
     en: 'wallet balance',
-    fa: '',
+    fa: 'موجودی',
   },
   'meters.walletBar': {
     note: 'Screen-reader-only name for the moving bar of the wallet meter.',
     en: 'wallet balance progress',
-    fa: '',
+    fa: 'موجودی مالی',
   },
 
   // ── The habit list and its tiles ──────────────────────────────────────
@@ -195,7 +195,7 @@ const DECK = {
   'habits.mute': {
     note: 'Quiet word on a habit tile that hides it from today.',
     en: 'mute',
-    fa: '',
+    fa: 'کم‌رنگ',
   },
   'habits.unmute': {
     note: 'Quiet word on a muted habit tile that brings it back.',
@@ -234,29 +234,29 @@ const DECK = {
   'lens.today': {
     note: 'Lens button: show only what is due today.',
     en: 'today',
-    fa: '',
+    fa: 'امروز',
   },
   'lens.todos': {
     note: 'Lens button: show only one-time to-dos.',
     en: 'to-dos',
-    fa: '',
+    fa: 'کارهای یک‌باره',
   },
   'lens.prioritise': {
     note: 'Lens button: show habits in priority order.',
     en: 'prioritise',
-    fa: '',
+    fa: 'اولویت‌بندی',
   },
   'lens.unhideAll': {
     note: 'Lens button: clear every hiding lens and charm.',
     en: 'un-hide all',
-    fa: '',
+    fa: 'نمایان کردن همه',
   },
   'lens.saveAsDefault': {
     note:
       'Hover label and screen-reader name of the padlock. Never shown as ' +
       'text on screen.',
     en: 'save as default view',
-    fa: '',
+    fa: 'ذخیره به‌عنوان نمای پیش‌فرض',
   },
   'lens.saveAsDefaultConfirm': {
     note: 'Question asked before the padlock overwrites the saved default view.',
@@ -264,73 +264,73 @@ const DECK = {
       'are you sure you want to save this as your default view? any previous ' +
       'default view choices will be lost. refresh the page to go back to ' +
       'previous default view.',
-    fa: '',
+    fa: 'مطمئنی که می‌خواهی این را نمای پیش‌فرضت ذخیره کنی؟ انتخاب‌های پیش‌فرض قبلی از بین می‌روند. برای برگشتن به نمای پیش‌فرض قبلی، صفحه را دوباره بارگذاری کن (refresh).',
   },
 
   // ── The habit form ────────────────────────────────────────────────────
   'habitForm.name': {
     note: 'First prompt of the habit form, above the name box.',
     en: 'write a good habit or task:',
-    fa: '',
+    fa: 'یک عادت خوب یا کار یک‌باره بنویس:',
   },
   'habitForm.detail': {
     note: 'Second prompt of the habit form, above the details box.',
     en: 'add any details or specifications:',
-    fa: '',
+    fa: 'هر جزئیات یا توضیحی که می‌خواهی اضافه کن:',
   },
   'habitForm.difficulty': {
     note: 'Third prompt of the habit form, above the difficulty choices.',
     en: 'pick a difficulty per unit:',
-    fa: '',
+    fa: 'برای هر واحد یک سطح دشواری انتخاب کن:',
   },
   'habitForm.schedule': {
     note: 'Fourth prompt of the habit form, above the schedule choices.',
     en: 'specify the desired schedule or frequency:',
-    fa: '',
+    fa: 'برنامه یا تناوب دلخواه را مشخص کن:',
   },
   'habitForm.howMany': {
     note: 'Label of the small number box for "n days a week" or "n times a day".',
     en: 'how many',
-    fa: '',
+    fa: 'چندتا',
   },
   'habitForm.save': {
     note: 'Habit form button that saves the habit.',
     en: 'save',
-    fa: '',
+    fa: 'ذخیره',
   },
   'habitForm.cancel': {
     note: 'Habit form button that closes the form without saving.',
     en: 'cancel',
-    fa: '',
+    fa: 'لغو',
   },
 
   // ── The morning check-in ──────────────────────────────────────────────
   'checkin.region': {
     note: 'Screen-reader name for the morning check-in panel.',
     en: 'check-in',
-    fa: '',
+    fa: 'ثبت روزانه',
   },
   'checkin.prompt': {
     note: 'The question at the top of the morning check-in.',
     en: 'what did you do yesterday?',
-    fa: '',
+    fa: 'دیروز چه کردی؟',
   },
   'checkin.earlierDays': {
     note:
       'Line above the earlier days of this week in the check-in, warning ' +
       'they will soon freeze.',
     en: 'update earlier days of this week before they freeze forever:',
-    fa: '',
+    fa: 'پیش از آنکه برای همیشه قفل شوند، روزهای قبلی این هفته را به‌روز کن:',
   },
   'checkin.noHabits': {
     note: 'Shown in the check-in when a day has no habits due.',
     en: 'no habits to show for this day',
-    fa: '',
+    fa: 'برای این روز عادتی نیست',
   },
   'checkin.done': {
     note: 'Check-in button that finishes the check-in.',
     en: 'done',
-    fa: '',
+    fa: 'تمام',
   },
 
   // ── The field notes ───────────────────────────────────────────────────
@@ -1503,32 +1503,32 @@ const DECK = {
   'weekShape.button': {
     note: 'The pebble beside the language switch that opens the week shapes.',
     en: 'week shape',
-    fa: '',
+    fa: 'شکل هفته',
   },
   'weekShape.title': {
     note: 'The question at the top of the week-shape popup.',
     en: 'which day does your week start on?',
-    fa: '',
+    fa: 'هفتهٔ تو از چه روزی شروع می‌شود؟',
   },
   'weekShape.mon': {
     note: 'Week shape: Monday first, Sunday last.',
     en: 'mon – sun',
-    fa: '',
+    fa: 'دوشنبه – یکشنبه',
   },
   'weekShape.sun': {
     note: 'Week shape: Sunday first, Saturday last.',
     en: 'sun – sat',
-    fa: '',
+    fa: 'یکشنبه – شنبه',
   },
   'weekShape.sat': {
     note: 'Week shape: Saturday first, Friday last.',
     en: 'sat – fri',
-    fa: '',
+    fa: 'شنبه – جمعه',
   },
   'weekShape.close': {
     note: 'Closes the week-shape popup without changing anything.',
     en: 'close',
-    fa: '',
+    fa: 'بستن',
   },
 
   // ── Safety screens ──────────────────────────────────────────────────────
@@ -1540,7 +1540,7 @@ const DECK = {
       'N-Z-D is currently only a habitat that can be ' +
       'experienced on a big browser, like a laptop or desktop ' +
       'computer. check back in on the big screen!',
-    fa: '',
+    fa: 'N-Z-D فعلاً زیستگاهی است که فقط روی صفحهٔ بزرگ مرورگر، مثل لپ‌تاپ یا رایانهٔ رومیزی، تجربه می‌شود. روی صفحهٔ بزرگ دوباره سر بزن!',
   },
   'mishap.message': {
     note:
@@ -1549,7 +1549,7 @@ const DECK = {
     en:
       'something seems to have gone wrong: please inform the ' +
       'maker. refresh page to get back to habits.',
-    fa: '',
+    fa: 'به نظر می‌رسد مشکلی پیش آمده: لطفاً به سازنده خبر بده. صفحه را دوباره بارگذاری کن (refresh) تا به عادت‌ها برگردی.',
   },
 }
 

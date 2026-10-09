@@ -7398,3 +7398,14 @@ and recorded in spec.md's decisions log._
   (کم‌رنگ) for mute. One test that looked for the English "add new
   habit" button in Farsi mode now asks the deck for the Farsi word
   instead, so it survives translation. Batch 2 drafted (26 slots).
+
+- 2026-10-09 (T6.19, batches 1–2 accepted): Kimia's replies took all of
+  batch 1 and batch 2 live (52 slots). Her calls: the library page is
+  «دارالکتب» (the old grand "house of books"); «موجودی مالی» stays for the
+  wallet bar; the habit-form's first prompt reads "write a good habit or
+  one-time task" (her Finglish: yek adat-e khob ya kar-e yek-bare
+  benevis); the two sentences that tell you to reload the page keep the
+  English word "(refresh)" in brackets after the Farsi, so the instruction
+  is unmistakable. One more test (the language options keeping their own
+  names) now looks at the language options only, because the week-shape
+  pebble beside them is translated now.

@@ -3688,12 +3688,12 @@ describe('the language switch (T6.13)', () => {
     render(<App />)
     createHabitViaUI('walk')
     const before = [
-      ...document.querySelectorAll('.language-switch button'),
+      ...document.querySelectorAll('.language-options button'),
     ].map((b) => b.textContent)
     switchTo('fa')
-    const after = [...document.querySelectorAll('.language-switch button')].map(
-      (b) => b.textContent,
-    )
+    const after = [
+      ...document.querySelectorAll('.language-options button'),
+    ].map((b) => b.textContent)
     expect(after).toEqual(before)
   })
 
