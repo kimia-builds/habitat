@@ -36,56 +36,6 @@ changes means accepted.
 
 ## Waiting for review
 
-Batch 3: 32 of 38 slots accepted and live (84 slots in all). The other 6 are
-below with your changes in script. Two of them wait on one open question.
-
-### Question: a cozier word for "task"
-
-You don't like «کار» for "task". It is in two slots below and in two live
-slots from earlier (`lens.todos` «کارهای یک‌باره» and `habitForm.name`
-«... یا کار یک‌باره بنویس»), which I'll redo with whatever you pick. Options:
-
-- **«یک‌باره»** on its own as the noun (a "one-timer"): light and cozy,
-  and you already like it. My pick.
-- **«وظیفه»** (vazife): "duty/task", a bit formal.
-- **«تکلیف»** (taklif): "assignment", feels like homework.
-- **«گام»** (gam): "a step", friendly, but also means a step in a habit.
-- **«مأموریت»** (ma'muriyyat): "mission", playful but big.
-
-Tell me which in Notes under any slot below.
-
-### habits.addPlaceholder
-- **English:** add a habit or task…
-- **Where it shows:** Invitation written in the empty tile at the end of the habit list.
-- **Draft:** یک عادت خوب یا کار یک‌باره اضافه کن…
-- **Notes:**
-
-### habits.deleteConfirm
-- **English:** delete "{habit}" forever? its whole history goes with it. archiving (already done) keeps the history.
-- **Where it shows:** Question before a habit is deleted for good. {habit} is its name.
-- **Draft:** «{habit}» برای همیشه حذف شود؟ همهٔ تاریخچه‌اش هم همراهش می‌رود. بایگانی (که قبلاً برای «{habit}» انجام شده) تاریخچه را نگه می‌دارد.
-- **Notes:**
-
-### schedule.oneTime
-- **English:** one-time (a to-do)
-- **Where it shows:** Schedule choice in the habit form: a one-time to-do.
-- **Draft:** یک‌باره
-- **Notes:**
-
-### schedule.summary.nPerWeek
-- **English:** {n}×/week
-- **Where it shows:** Habit tile's summary line for "n days a week". {n} is the number.
-- **Draft:** {n} بار در هفته
-- **Notes:**
-
-### schedule.summary.nPerDay
-- **English:** {n}×/day
-- **Where it shows:** Habit tile's summary line for "n times a day". {n} is the number.
-- **Draft:** {n} بار در روز
-- **Notes:**
-
-### nav.later
-- **English:** later
-- **Where it shows:** Button to move to a later page of days. The arrow is drawn by the page.
-- **Draft:** جدیدتر
-- **Notes:**
+Batch 3 is complete: all 38 slots are live (90 slots in all). «کار» for "task"
+is gone: the one-time to-do is now «یک‌باره» on its own, including in the
+to-dos lens and the habit form's prompt. The next batch will land here.

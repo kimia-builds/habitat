@@ -185,7 +185,7 @@ const DECK = {
   'habits.filterView': {
     note: 'Label of the control that opens the lens choices above the habit list.',
     en: 'filter view',
-    fa: 'فیلتر نما',
+    fa: 'فیلتر نماها',
   },
   'habits.markDone': {
     note: "Hover label on a habit tile's tick, to mark it done.",
@@ -239,7 +239,7 @@ const DECK = {
   'lens.todos': {
     note: 'Lens button: show only one-time to-dos.',
     en: 'to-dos',
-    fa: 'کارهای یک‌باره',
+    fa: 'یک‌باره‌ها',
   },
   'lens.prioritise': {
     note: 'Lens button: show habits in priority order.',
@@ -271,7 +271,7 @@ const DECK = {
   'habitForm.name': {
     note: 'First prompt of the habit form, above the name box.',
     en: 'write a good habit or task:',
-    fa: 'یک عادت خوب یا کار یک‌باره بنویس:',
+    fa: 'یک عادت خوب یا یک‌باره بنویس:',
   },
   'habitForm.detail': {
     note: 'Second prompt of the habit form, above the details box.',
@@ -781,7 +781,7 @@ const DECK = {
       'Button to move to a later page of days. The arrow is drawn by the ' +
       'page.',
     en: 'later',
-    fa: '',
+    fa: 'جدیدتر',
   },
 
   // ── The date line and the clock ───────────────────────────────────────
@@ -1106,17 +1106,17 @@ const DECK = {
   'schedule.oneTime': {
     note: 'Schedule choice in the habit form: a one-time to-do.',
     en: 'one-time (a to-do)',
-    fa: '',
+    fa: 'یک‌باره',
   },
   'schedule.summary.nPerWeek': {
     note: 'Habit tile\'s summary line for "n days a week". {n} is the number.',
     en: '{n}×/week',
-    fa: '',
+    fa: '{n} بار در هفته',
   },
   'schedule.summary.nPerDay': {
     note: 'Habit tile\'s summary line for "n times a day". {n} is the number.',
     en: '{n}×/day',
-    fa: '',
+    fa: '{n} بار در روز',
   },
   'schedule.summary.oneTime': {
     note: "Habit tile's summary line for a one-time to-do.",
@@ -1160,7 +1160,7 @@ const DECK = {
   'habits.addPlaceholder': {
     note: 'Invitation written in the empty tile at the end of the habit list.',
     en: 'add a habit or task…',
-    fa: '',
+    fa: 'یک عادت خوب یا یک‌باره اضافه کن…',
   },
   'habits.archivedTag': {
     note: "Small tag beside an archived habit's name.",
@@ -1218,7 +1218,7 @@ const DECK = {
     en:
       'delete "{habit}" forever? its whole history goes with it. archiving ' +
       '(already done) keeps the history.',
-    fa: '',
+    fa: '«{habit}» برای همیشه حذف شود؟ همهٔ تاریخچه‌اش هم همراهش می‌رود. بایگانی (که قبلاً برای «{habit}» انجام شده) تاریخچه را نگه می‌دارد.',
   },
 
   // ── Importing a backup ────────────────────────────────────────────────
