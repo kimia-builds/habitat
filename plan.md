@@ -635,6 +635,28 @@ tracker. Everything after this is delight, informed by real use.
         press; presentation settled the same day. Original design in
         history.md)_
 
+## M6.5 — v1 release (1 session)
+
+Added 2026-10-09 on Kimia's request. **v1 = M0–M6 finished** — sync (M7)
+and the phone version (M8) come after, as v1.x / v2. Do this only once
+every box in M0–M6 above is ticked (or Kimia has explicitly moved it
+out of v1).
+
+- [ ] **T6.25 Publish the v1 release on GitHub.** An official release on
+      kimia-builds/habitat: (1) confirm all of M0–M6 is done and the
+      tests pass; (2) make sure README's Status section and spec.md
+      describe what v1 really is — CLAUDE.md's doc-sync rule; (3) bump
+      `package.json` `version` from `0.0.0` to `1.0.0`; (4) add a
+      LICENSE file if Kimia wants one (ask — her call, none exists
+      today); (5) write short release notes in plain language — what
+      Habitat is, what v1 includes, what is not in it yet (sync, phone);
+      (6) tag `v1.0.0` and create the GitHub Release with those notes.
+      **Tagging and publishing are public and hard to undo — Claude
+      shows Kimia the exact notes and tag name and waits for a clear yes
+      before pushing the tag or creating the release.**
+
+---
+
 ## M7 — Two devices (sync) (5–6 sessions)
 
 Planned 2026-08-17. Spec §8 holds the architecture; decisions in

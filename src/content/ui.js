@@ -513,12 +513,12 @@ const DECK = {
   },
   'abode.sky': {
     note: 'Name of the sky control in the Abode.',
-    en: 'Abode sky',
+    en: 'abode sky',
     fa: '',
   },
   'abode.skyLabel': {
     note: "Screen-reader name of one sky swatch. {palette} is that sky's name.",
-    en: 'Abode sky, {palette}',
+    en: 'abode sky, {palette}',
     fa: '',
   },
   'abode.pickSky': {
