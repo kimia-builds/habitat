@@ -350,46 +350,46 @@ const en = {
   // The question asked before an edit changes how a streak is counted.
   // {habit} is the habit's name and {streak} is one of the counted units above.
   'habits.scheduleChangeConfirm':
-    'Heads up: this schedule change switches how "{habit}"\'s streak ' +
+    'heads up: this schedule change switches how "{habit}"\'s streak ' +
     'is counted, so the current streak ({streak}) starts fresh from ' +
-    'today. Save anyway?',
+    'today. save anyway?',
 
   // The question asked before a habit is deleted for good.
   'habits.deleteConfirm':
-    'Delete "{habit}" forever? Its whole history goes with it. ' +
-    'Archiving (already done) keeps the history.',
+    'delete "{habit}" forever? its whole history goes with it. ' +
+    'archiving (already done) keeps the history.',
 
   // Importing a backup: the question, and the two outcomes.
   'backup.importConfirm':
-    'Importing replaces EVERYTHING currently in Habitat with the ' +
-    'backup file. Continue?',
+    'importing replaces EVERYTHING currently in habitat with the ' +
+    'backup file. continue?',
   'backup.importCancelled': 'import cancelled — nothing was changed',
   'backup.imported': 'backup imported',
 
   // Why an imported file was refused. Each reads aloud under the import
   // pebble when a backup is not usable. {found} and {expected} are version
   // numbers.
-  'backup.error.notABackup': 'This file does not look like a Habitat backup.',
+  'backup.error.notABackup': 'this file does not look like a habitat backup.',
   'backup.error.notJson':
-    'This file is not readable as a Habitat backup (not JSON).',
+    'this file is not readable as a habitat backup (not JSON).',
   'backup.error.wrongVersion':
-    'This backup uses format version {found}, but this app expects ' +
+    'this backup uses format version {found}, but this app expects ' +
     'version {expected}.',
-  'backup.error.noHabits': 'This backup is missing its habit list.',
-  'backup.error.badCompletions': 'This backup has a broken completions list.',
-  'backup.error.badSettings': 'This backup has broken settings.',
-  'backup.error.badFieldNotes': 'This backup has a broken field-notes marker.',
-  'backup.error.badStartup': 'This backup has a broken startup marker.',
-  'backup.error.badBackupDate': 'This backup has a broken backup-date marker.',
+  'backup.error.noHabits': 'this backup is missing its habit list.',
+  'backup.error.badCompletions': 'this backup has a broken completions list.',
+  'backup.error.badSettings': 'this backup has broken settings.',
+  'backup.error.badFieldNotes': 'this backup has a broken field-notes marker.',
+  'backup.error.badStartup': 'this backup has a broken startup marker.',
+  'backup.error.badBackupDate': 'this backup has a broken backup-date marker.',
   'backup.error.badLanguage':
-    'This backup names a language Habitat does not speak.',
-  'backup.error.badSky': 'This backup names a sky the Abode does not have.',
-  'backup.error.badCheckin': 'This backup has a broken check-in marker.',
-  'backup.error.noSeed': 'This backup is missing its world seed.',
+    'this backup names a language habitat does not speak.',
+  'backup.error.badSky': 'this backup names a sky the abode does not have.',
+  'backup.error.badCheckin': 'this backup has a broken check-in marker.',
+  'backup.error.noSeed': 'this backup is missing its world seed.',
 
   // The habit form's two refusals: no name, and a weekdays schedule with
   // no day ticked.
-  'habitForm.errorNoName': 'Habit needs a name.',
+  'habitForm.errorNoName': 'habit needs a name.',
   'habitForm.errorNoWeekday': 'pick at least one day',
 
   // The morning check-in's small words: the tile's tick when a habit is
