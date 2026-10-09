@@ -66,7 +66,7 @@ function DayRows({ listed, completions, dayKey, onMark, onUnmark }) {
           <li key={habit.id} className={`habit-row charm-${habit.symbol}`}>
             <CharmSymbol symbol={habit.symbol} className="symbol" />
             <span className="habit-main">
-              <span className="habit-name">{habit.name}</span>
+              <span className="habit-name user-text">{habit.name}</span>
             </span>
             {oneTime ? (
               <span className="completion-controls">

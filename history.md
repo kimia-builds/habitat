@@ -3418,6 +3418,13 @@ return 0` right after the era is worked out, so a moment before the
   translation work; (9) two typos in her note fixed ("kerplungk" →
   krupengk, "ecstacy" → ecstasy). Supersedes the 30-publications-
   with-a-spread-each count in the 2026-07-19 T3.5 decision.
+- 2026-10-09 (Kimia): **user-typed text keeps its digits in Farsi
+  mode.** Persian digits came from the Vazirmatn font itself, so habit
+  names and descriptions typed with 0–9 showed as ۰–۹. Fix: a `.user-text`
+  class on every place a habit name/description shows (and the form's two
+  text boxes) uses the same font file declared again without the digit
+  range, so digits fall through to the system font. Site copy is
+  unchanged.
 - 2026-10-09 (Kimia): **the "add a habit or task…" baguette is always
   there.** The rail's + was hard to find and confused new users, so the
   invitation tile that used to show only on an empty list now always ends

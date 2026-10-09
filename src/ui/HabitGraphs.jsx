@@ -99,7 +99,8 @@ function HabitGraph({ habit, completions, now, cutoffHour, weekShape }) {
   return (
     <details className="habit-graph">
       <summary>
-        <CharmSymbol symbol={habit.symbol} className="symbol" /> {habit.name}
+        <CharmSymbol symbol={habit.symbol} className="symbol" />{}
+        <span className="user-text">{habit.name}</span>
         {habit.archived && (
           <span className="habit-meta"> {t('habits.archivedTag')}</span>
         )}

@@ -99,6 +99,7 @@ function HabitForm({
         {t('habitForm.name')}
         <input
           name="name"
+          className="user-text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoFocus
@@ -108,6 +109,7 @@ function HabitForm({
         {t('habitForm.detail')}
         <input
           name="description"
+          className="user-text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />

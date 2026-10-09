@@ -986,6 +986,9 @@ and nothing is lost by finding that out late.
     sized to match the English copy, and Persian digits (۰–۹) — built in
     T6.17. Persian digits belong to Farsi only: a future Arabic mode
     would keep Western digits (Kimia 2026-10-09).
+    **Only site copy gets Persian digits (2026-10-09).** What the user
+    types — habit names and descriptions — shows exactly as typed, in
+    every language, never converted to ۰–۹.
   - **The Persian date is display only and computed, never fetched
     (2026-10-09).** The day keys stay Gregorian and drive every streak.
     The browser's own Persian calendar was checked against the

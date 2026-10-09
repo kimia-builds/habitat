@@ -155,9 +155,9 @@ function HabitRow({
     >
       <CharmSymbol symbol={habit.symbol} className="symbol" />
       <span className="habit-main">
-        <span className="habit-name">{habit.name}</span>
+        <span className="habit-name user-text">{habit.name}</span>
         {habit.description && (
-          <span className="habit-description">{habit.description}</span>
+          <span className="habit-description user-text">{habit.description}</span>
         )}
         <span className="habit-meta">
           {scheduleSummary(habit.schedule, t, language)} ·{' '}

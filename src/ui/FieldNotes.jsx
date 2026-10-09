@@ -242,7 +242,7 @@ function FieldNotes({
                 <tr key={habit.id}>
                   <th scope="row">
                     <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
-                    {habit.name}
+                    <span className="user-text">{habit.name}</span>
                     {habit.archived && (
                       <span className="habit-meta">
                         {' '}
@@ -279,7 +279,7 @@ function FieldNotes({
               {notes.tasksCompleted.map(({ habit, dayKey }) => (
                 <li key={habit.id}>
                   <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
-                  {habit.name} — {dayKey}
+                  <span className="user-text">{habit.name}</span> — {dayKey}
                 </li>
               ))}
             </ul>

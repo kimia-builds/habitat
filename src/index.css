@@ -75,6 +75,41 @@
   text-transform: none;
 }
 
+/* What Kimia (or any user) types is hers, not site copy: habit names and
+   descriptions keep the digits exactly as typed. The Farsi font above
+   turns 0–9 into ۰–۹, so user text gets the SAME font file declared a
+   second time with the digit range left out — the browser reuses the
+   one download, and digits fall through to the system font. Letters
+   still come out in Vazirmatn. Site copy keeps its Persian digits. */
+@font-face {
+  font-family: 'Vazirmatn User';
+  src: url('./fonts/Vazirmatn-FD-NL-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 112%;
+  unicode-range: U+0000-002F, U+003A-10FFFF;
+}
+
+@font-face {
+  font-family: 'Vazirmatn User';
+  src: url('./fonts/Vazirmatn-FD-NL-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 112%;
+  unicode-range: U+0000-002F, U+003A-10FFFF;
+}
+
+:root[lang='fa'] .user-text {
+  font-family:
+    'Vazirmatn User',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+}
+
 :root[lang='fa'] body {
   font-family:
     'Vazirmatn FD NL',

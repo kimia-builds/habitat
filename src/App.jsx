@@ -1651,7 +1651,7 @@ function AppBody({ data, setData }) {
                   className={`archived-row charm-${habit.symbol}`}
                 >
                   <CharmSymbol symbol={habit.symbol} className="symbol" />
-                  <span>{habit.name}</span>
+                  <span className="user-text">{habit.name}</span>
                   {doneForGood ? (
                     countOn(data.completions, habit.id, today) > 0 ? (
                       <button
