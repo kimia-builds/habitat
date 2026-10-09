@@ -107,7 +107,12 @@ export function EyeDefs({ prefix = '' }) {
 export function Eye({ cx, cy, r, prefix = '' }) {
   return (
     <g>
-      <circle cx={cx} cy={cy} r={r * HALO_SCALE} fill={`url(#${haloId(prefix)})`} />
+      <circle
+        cx={cx}
+        cy={cy}
+        r={r * HALO_SCALE}
+        fill={`url(#${haloId(prefix)})`}
+      />
       <circle cx={cx} cy={cy} r={r} fill={`url(#${coreId(prefix)})`} />
       <circle
         cx={cx - r * 0.32}

@@ -25,31 +25,35 @@
 import { LANGUAGES } from '../content/ui.js'
 import { useText } from './language.jsx'
 
-function LanguageSwitch({ onChoose }) {
+function LanguageSwitch({ onChoose, children }) {
   const { t, language } = useText()
 
   return (
-    <div
-      className="language-switch"
-      aria-label={t('language.switch')}
-      role="group"
-    >
-      {LANGUAGES.map((code) => (
-        <button
-          key={code}
-          type="button"
-          className={`pebble language-option${
-            code === language ? ' language-option-on' : ''
-          }`}
-          // The pressed state is what says "you are here", so it needs
-          // to reach a screen reader too, not just the eye.
-          aria-pressed={code === language}
-          lang={code}
-          onClick={() => onChoose(code)}
-        >
-          {t(`language.${code}`)}
-        </button>
-      ))}
+    <div className="language-switch">
+      <div
+        className="language-options"
+        aria-label={t('language.switch')}
+        role="group"
+      >
+        {LANGUAGES.map((code) => (
+          <button
+            key={code}
+            type="button"
+            className={`pebble language-option${
+              code === language ? ' language-option-on' : ''
+            }`}
+            // The pressed state is what says "you are here", so it needs
+            // to reach a screen reader too, not just the eye.
+            aria-pressed={code === language}
+            lang={code}
+            onClick={() => onChoose(code)}
+          >
+            {t(`language.${code}`)}
+          </button>
+        ))}
+      </div>
+      {/* The week-shape pebble rides on the same line (2026-10-09). */}
+      {children}
     </div>
   )
 }

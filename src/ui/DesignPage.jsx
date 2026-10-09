@@ -50,10 +50,7 @@
 // shows exactly what that ground will show, side by side and in the
 // friends' and flora's own scale.
 
-import Curiosity, {
-  CuriosityDefs,
-  curiosityCanonKey,
-} from './Curiosity.jsx'
+import Curiosity, { CuriosityDefs, curiosityCanonKey } from './Curiosity.jsx'
 import { OBJECT_CANON, objectSize } from './objectCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'

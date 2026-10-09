@@ -1415,6 +1415,38 @@ const DECK = {
     fa: 'فارسی',
   },
 
+  // ── The week shape ────────────────────────────────────────────────────
+  'weekShape.button': {
+    note: 'The pebble beside the language switch that opens the week shapes.',
+    en: 'week shape',
+    fa: '',
+  },
+  'weekShape.title': {
+    note: 'The question at the top of the week-shape popup.',
+    en: 'which day does your week start on?',
+    fa: '',
+  },
+  'weekShape.mon': {
+    note: 'Week shape: Monday first, Sunday last.',
+    en: 'mon – sun',
+    fa: '',
+  },
+  'weekShape.sun': {
+    note: 'Week shape: Sunday first, Saturday last.',
+    en: 'sun – sat',
+    fa: '',
+  },
+  'weekShape.sat': {
+    note: 'Week shape: Saturday first, Friday last.',
+    en: 'sat – fri',
+    fa: '',
+  },
+  'weekShape.close': {
+    note: 'Closes the week-shape popup without changing anything.',
+    en: 'close',
+    fa: '',
+  },
+
   // ── Safety screens ──────────────────────────────────────────────────────
   'blocked.message': {
     note:

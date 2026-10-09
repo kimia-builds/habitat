@@ -61,9 +61,7 @@ describe('a flora drawn for real', () => {
   it('keeps its outline the same thickness on screen whatever its size', () => {
     const small = draw('c1')
     const body = (svg) => svg.querySelectorAll('path')[2]
-    expect(body(small).getAttribute('vector-effect')).toBe(
-      'non-scaling-stroke',
-    )
+    expect(body(small).getAttribute('vector-effect')).toBe('non-scaling-stroke')
     // Same fixed width on every flora: the property, not the drawing, scales.
     const other = draw('c2')
     expect(body(other).getAttribute('stroke-width')).toBe(

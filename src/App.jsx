@@ -131,6 +131,7 @@ import HabitForm from './ui/HabitForm.jsx'
 import HabitRow from './ui/HabitRow.jsx'
 import IconRail from './ui/IconRail.jsx'
 import LanguageSwitch from './ui/LanguageSwitch.jsx'
+import WeekShapeControl from './ui/WeekShapeControl.jsx'
 import { WORDMARK } from './content/ui.js'
 import { LanguageProvider, useText } from './ui/language.jsx'
 import MapPage from './ui/MapPage.jsx'
@@ -518,6 +519,10 @@ function AppBody({ data, setData }) {
   // the same reason the language is one: Kimia chooses it, it is not part
   // of the world the drops built, and she should come back to the sky she
   // arranged under — including after restoring a backup.
+  function chooseWeekShape(weekShape) {
+    save({ ...data, settings: { ...data.settings, weekShape } })
+  }
+
   function chooseAbodeSky(abodeSky) {
     save({ ...data, settings: { ...data.settings, abodeSky } })
   }
@@ -1412,7 +1417,12 @@ function AppBody({ data, setData }) {
           shape (Kimia's call 2026-08-12) and a test pins it at three, so
           the language switch gets its own quiet line underneath rather
           than becoming a fourth. */}
-      <LanguageSwitch onChoose={chooseLanguage} />
+      <LanguageSwitch onChoose={chooseLanguage}>
+        <WeekShapeControl
+          weekShape={data.settings.weekShape}
+          onChoose={chooseWeekShape}
+        />
+      </LanguageSwitch>
     </>
   )
 

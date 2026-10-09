@@ -3524,13 +3524,38 @@ describe('the language switch (T6.13)', () => {
   it('offers one option per language, with the current one marked', () => {
     render(<App />)
     createHabitViaUI('walk')
-    const options = [...document.querySelectorAll('.language-switch button')]
+    const options = [...document.querySelectorAll('.language-options button')]
     expect(options).toHaveLength(LANGUAGES.length)
     const pressed = options.filter(
       (b) => b.getAttribute('aria-pressed') === 'true',
     )
     expect(pressed).toHaveLength(1)
     expect(pressed[0].lang).toBe('en')
+  })
+
+  it('puts a week-shape pebble beside the language options (T6.15)', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    const line = document.querySelector('.language-switch')
+    const open = line.querySelector('.week-shape-open')
+    expect(open).not.toBeNull()
+    // It sits OUTSIDE the language group, so the group stays "languages".
+    expect(line.querySelector('.language-options').contains(open)).toBe(false)
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
+
+    fireEvent.click(open)
+    const dialog = screen.getByRole('dialog')
+    const shapes = dialog.querySelectorAll('.week-shape-option')
+    expect(shapes).toHaveLength(3)
+    // Monday weeks are the starting shape.
+    expect(
+      [...shapes].filter((b) => b.getAttribute('aria-pressed') === 'true'),
+    ).toHaveLength(1)
+
+    // Choosing one saves it and closes the popup.
+    fireEvent.click(shapes[1])
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(loadData().settings.weekShape).toBe('sun')
   })
 
   it('records the choice in settings, where a backup will carry it', () => {
