@@ -7378,6 +7378,6 @@ and recorded in spec.md's decisions log._
   is copied into the deck before her `ok`, so unreviewed slots keep
   showing English. Order: small visible batch first (so the 112% Farsi
   size can be tuned on real words), then the remaining interface words,
-  then story and names. Batch 1 drafted (27 slots) with one register
+  then story and names. Batch 1 drafted (26 slots) with one register
   choice made for the whole batch — friendly "you", not formal "shoma" —
   flagged for her to overrule.

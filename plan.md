@@ -485,7 +485,7 @@ tracker. Everything after this is delight, informed by real use.
       **Working method (2026-10-09):** drafts wait in `fa-drafts.md`
       (key, English, Farsi draft, how it sounds, a Verdict line and a
       Finglish correction line for Kimia, who has no Farsi keyboard).
-      Only approved slots are copied into `ui.js`. Batch 1 (27 slots:
+      Only approved slots are copied into `ui.js`. Batch 1 (26 slots:
       rail, page titles, meters, language switch, habit-tile words) is
       drafted and awaiting her review; the Farsi size is tuned by eye
       on it. Then the rest of the interface words, then story and names.

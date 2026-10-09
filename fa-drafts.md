@@ -46,7 +46,7 @@ You can also leave a note anywhere on a slot's lines — a comment, a worry,
 
 ---
 
-## Batch 1 — the first things you see (27 slots)
+## Batch 1 — the first things you see (26 slots)
 
 The rail, the page titles, the three meters, the language switch and the
 words on a habit tile. This is also the batch where you tune the Farsi size
