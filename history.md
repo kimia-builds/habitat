@@ -3463,6 +3463,11 @@ return 0` right after the era is worked out, so a moment before the
   weekday messages read technical ("1=Mon … 7=Sun") — left word for word
   for Kimia to reword. Check-in day headings still lower-case the short
   weekday in the page (harmless for Persian, which has no case).
+- 2026-10-09 (Kimia, wording after T6.14 slice 1): **in-game weekday
+  copy is lower case** — `mon`, `tue` … and the two-letter `mo`, `tu` …
+  — like the rest of the interface; the all-caps date line (MONDAY) is
+  unchanged. The habit form's no-day-ticked refusal now reads "pick at
+  least one day". Sentence-initial capitals do not apply in Habitat.
 - 2026-10-09 (Kimia, sizing the Farsi work): **the Farsi work was sized
   at roughly 8–10 sessions, and five decisions narrowed it.**
   1. **There is no copy deck yet.** T6.14 is still open: copy lives in

@@ -200,8 +200,8 @@ describe('creating habits', () => {
 
   it('a weekdays habit shows its chosen days', () => {
     render(<App />)
-    createHabitViaUI('gym', { scheduleType: 'weekdays', days: ['Mon', 'Wed'] })
-    expect(screen.getByText('Mon/Wed · medium')).toBeDefined()
+    createHabitViaUI('gym', { scheduleType: 'weekdays', days: ['mon', 'wed'] })
+    expect(screen.getByText('mon/wed · medium')).toBeDefined()
   })
 })
 
@@ -296,7 +296,7 @@ describe('every repeating shape is an unlimited counter (T3.2b)', () => {
   it('a weekdays habit gets the same counter on its scheduled day', () => {
     // The pinned clock is Thursday, so schedule Thursdays.
     render(<App />)
-    createHabitViaUI('gym', { scheduleType: 'weekdays', days: ['Thu'] })
+    createHabitViaUI('gym', { scheduleType: 'weekdays', days: ['thu'] })
     expect(row('gym').getByText('0/1')).toBeDefined()
     fireEvent.click(row('gym').getByRole('button', { name: '+1' }))
     fireEvent.click(row('gym').getByRole('button', { name: '+1' }))
@@ -612,9 +612,9 @@ describe('the today lens (T6.23b)', () => {
   // also does, a whenever that only COULD, and a Monday one that cannot.
   function oneOfEachTier() {
     createHabitViaUI('daily')
-    createHabitViaUI('thursdays', { scheduleType: 'weekdays', days: ['Thu'] })
+    createHabitViaUI('thursdays', { scheduleType: 'weekdays', days: ['thu'] })
     createHabitViaUI('sometime', { scheduleType: 'whenever' })
-    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['Mon'] })
+    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['mon'] })
   }
 
   it('keeps today, dims what could be today, and hides the rest', () => {
@@ -835,8 +835,8 @@ describe('the prioritise lens (T6.23c)', () => {
     createHabitViaUI('sometime', { scheduleType: 'whenever' })
     createHabitViaUI('thrice', { scheduleType: 'nPerWeek', n: 3 })
     createHabitViaUI('daily')
-    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['Mon'] })
-    createHabitViaUI('thursdays', { scheduleType: 'weekdays', days: ['Thu'] })
+    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['mon'] })
+    createHabitViaUI('thursdays', { scheduleType: 'weekdays', days: ['thu'] })
 
     fireEvent.click(lens('prioritise'))
 
@@ -3730,7 +3730,7 @@ describe('the default view (T6.23e)', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(true)
     const first = render(<App />)
     createHabitViaUI('daily')
-    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['Mon'] })
+    createHabitViaUI('mondays', { scheduleType: 'weekdays', days: ['mon'] })
 
     fireEvent.click(lens('today')) // Thursday: 'mondays' is hidden
     expect(names()).toEqual(['daily'])

@@ -289,24 +289,24 @@ const en = {
   'time.hourPm': '{hour} p.m.',
 
   // Weekday names, short. These appear in the habit form's weekday
-  // boxes, in a habit tile's schedule ("Mon/Wed/Fri") and, lower-cased by the
-  // page, in the morning check-in's day headings.
-  'weekday.mon.short': 'Mon',
-  'weekday.tue.short': 'Tue',
-  'weekday.wed.short': 'Wed',
-  'weekday.thu.short': 'Thu',
-  'weekday.fri.short': 'Fri',
-  'weekday.sat.short': 'Sat',
-  'weekday.sun.short': 'Sun',
+  // boxes, in a habit tile's schedule ("mon/wed/fri") and in the morning
+  // check-in's day headings.
+  'weekday.mon.short': 'mon',
+  'weekday.tue.short': 'tue',
+  'weekday.wed.short': 'wed',
+  'weekday.thu.short': 'thu',
+  'weekday.fri.short': 'fri',
+  'weekday.sat.short': 'sat',
+  'weekday.sun.short': 'sun',
 
   // Weekday names, two letters — the column heads of the field notes.
-  'weekday.mon.tiny': 'Mo',
-  'weekday.tue.tiny': 'Tu',
-  'weekday.wed.tiny': 'We',
-  'weekday.thu.tiny': 'Th',
-  'weekday.fri.tiny': 'Fr',
-  'weekday.sat.tiny': 'Sa',
-  'weekday.sun.tiny': 'Su',
+  'weekday.mon.tiny': 'mo',
+  'weekday.tue.tiny': 'tu',
+  'weekday.wed.tiny': 'we',
+  'weekday.thu.tiny': 'th',
+  'weekday.fri.tiny': 'fr',
+  'weekday.sat.tiny': 'sa',
+  'weekday.sun.tiny': 'su',
 
   // How a habit's schedule is picked in the habit form.
   'schedule.daily': 'every day',
@@ -390,8 +390,7 @@ const en = {
   // The habit form's two refusals: no name, and a weekdays schedule with
   // no day ticked.
   'habitForm.errorNoName': 'Habit needs a name.',
-  'habitForm.errorNoWeekday':
-    'A weekdays schedule needs a non-empty list of days (1=Mon … ' + '7=Sun).',
+  'habitForm.errorNoWeekday': 'pick at least one day',
 
   // The morning check-in's small words: the tile's tick when a habit is
   // already done, and the fold that shows fewer or more of a long day.

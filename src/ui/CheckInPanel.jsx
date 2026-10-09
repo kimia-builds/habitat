@@ -27,10 +27,9 @@ import { WEEKDAY_KEYS } from '../content/ui.js'
 // Kimia's date convention (2026-08-12): "mon DD-MM-YY" — the weekday
 // lowercase like the rest of the interface, then the same day-first
 // short date the field notes already use (days.js shortDate).
-// The weekday word comes from the copy deck's short names, lower-cased
-// here (Persian has no letter case, so lower-casing leaves it alone).
+// The weekday word comes from the copy deck's short names.
 const dayLabel = (dayKey, t) =>
-  `${t(`weekday.${WEEKDAY_KEYS[isoWeekday(dayKey) - 1]}.short`).toLowerCase()} ${shortDate(dayKey)}`
+  `${t(`weekday.${WEEKDAY_KEYS[isoWeekday(dayKey) - 1]}.short`)} ${shortDate(dayKey)}`
 
 // Which habits a given past day offers, seen through the charm lens.
 // The lens is a view, never a filter on what counts: a hidden habit is
