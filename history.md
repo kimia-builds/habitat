@@ -3493,6 +3493,27 @@ return 0` right after the era is worked out, so a moment before the
   English story and names — choosing the Farsi ones is T6.19. `literacyEras`
   (an empty placeholder) is gone. `AGENTS.md` still lists `narration.js`
   as holding the slots — left for Kimia, as it is intentional.
+- 2026-10-09 (T6.14 slice 4, build notes): **the completeness test.**
+  `src/test/copydeck.test.js` reads every component with a real parser
+  (so it sees words inside conditions and template strings, not just
+  between tags) and fails the suite on any hardcoded user-facing word:
+  text between tags, the attributes a person reads or hears (aria-label,
+  title, placeholder, alt), words chosen inside braces, and any
+  two-word string parked in a variable. It deliberately ignores class
+  names, drawing attributes, CSS in `<style>` blocks and console lines,
+  since none reach the screen. Checked by planting a stray word in a real
+  screen: the suite failed naming the file and line. Three exemptions,
+  each with its reason in the test: the design workbench
+  (`DesignPage.jsx`, English by decision) and the sky and texture
+  catalogues (`sky.jsx`, `textures.jsx`, workbench listing data, exempt
+  from the sentence check only). The error screen's console line
+  ("Habitat hit an unexpected error") needs no exemption, being
+  console-only. A new word now needs a `ui.js` entry; the fix is
+  always one of those two choices. Known limit: the scan reads `.jsx`
+  screens, so a word written straight into a plain `.js` helper that a
+  screen then displays is not caught; slices 1 to 3 emptied those
+  helpers, and the structural tests keep them honest. T6.14 is DONE.
+
 - 2026-10-09 (Kimia, wording after T6.14 slice 1): **in-game weekday
   copy is lower case** — `mon`, `tue` … and the two-letter `mo`, `tu` …
   — like the rest of the interface; the all-caps date line (MONDAY) is

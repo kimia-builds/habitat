@@ -440,50 +440,13 @@ tracker. Everything after this is delight, informed by real use.
   reloads and rides in backups). In-book texts (T6.24) are not yet
   written and join the Farsi work later. Decisions: history.md,
   2026-10-09.
-- [ ] **T6.14 The copy deck — one home for every word Habitat says.**
-      _(Kimia's call 2026-08-16, after reviewing T6.13.)_ **In progress
-      (2026-10-09): built in four slices, missed words first (Kimia's
-      order). Slice 1 DONE — the missed words are in `ui.js` and every
-      component reads them, including the four-way weekday duplication
-      (one `WEEKDAY_KEYS` list now). Slice 2 DONE — `ui.js` is key-first,
-      a plain-English `note` on all 230 entries, English and Farsi side
-      by side. Slice 3 DONE — story, names, mishap and blocked words all
-      live in `ui.js` now (128 more entries); the four old files only
-      read them. STILL TO DO: slice 4 the completeness test.** T6.13 built the
-      mechanism but caught only about 55% of the copy, and framed the
-      file as a TRANSLATION file rather than what it should be: the one
-      place all copy lives, editable in any language including English,
-      so nothing has to be hunted for in a component ever again.
-      - **Restructure to key-first.** Each piece of copy is ONE entry
-        carrying a plain-English `note` (what it is and where it shows)
-        and every language beside each other. Adding a language is
-        adding a line per entry, not a new block — this is what makes
-        further languages cheap.
-      - **Absorb the other content files.** `narration.js`, `names.js`,
-        `mishap.js` and `blocked.js` fold into the deck, in labelled
-        sections. Two blank-rules live side by side and each section
-        says which it follows: **interface** blanks fall back to
-        English (a blank button is broken); **story and names** blanks
-        stay silent (unchanged — never invent prose, never invent a
-        name). The rule is per section, stated in the section header.
-      - **Complete it — the ~110 slots T6.13 missed**, all four
-        categories confirmed by Kimia: arrival & cameo text
-        (`arrivalText.js`); weekday and month names and a.m./p.m.;
-        backup and import error messages; confirm dialogs and the
-        schedule-change warning; charm names; difficulty options; graph
-        zoom labels; field-notes navigation; the empty-tile invitation.
-      - **Fix the four-way weekday duplication** it exposes: `days.js`,
-        `HabitRow`, `HabitForm` and `CheckInPanel` each keep their own
-        copy of Mon–Sun today, so changing a weekday name means finding
-        four files. One entry in the deck, read by all four.
-      - **A test that the deck is COMPLETE**, not just consistent: a
-        source scan that fails the suite when a component grows a new
-        hardcoded user-facing string, the way `pebbles.test.js` guards
-        buttons. Without it the deck drifts back out of date, which is
-        the exact problem this task exists to end.
-      - The wordmark is NOT in the deck and never will be — HABITAT
-        stays in Latin letters in every language (Kimia 2026-08-16), so
-        it is a constant with no key to translate.
+- [x] **T6.14 The copy deck — one home for every word Habitat says.**
+      _(Kimia's call 2026-08-16; built in four slices 2026-10-09, build
+      notes in history.md.)_ Every interface word, the story, names,
+      mishap and blocked words live in `src/content/ui.js`, key-first with
+      a plain-English note on each entry; the weekday duplication is one
+      list; and `src/test/copydeck.test.js` fails the suite when a
+      component grows a hardcoded user-facing word.
 - [ ] **T6.15 The week gets a shape you choose.** _(Kimia's call
       2026-08-16.)_ Three options — **Mon–Sun, Sun–Sat, Sat–Fri** — as
       its own setting, **independent of language**. A Farsi speaker who
