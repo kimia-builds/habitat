@@ -250,6 +250,192 @@ const en = {
   'newGame.keepDone':
     'a new game has begun — your habits and history are untouched',
 
+  // Words several pages share. The arrows (← ‹ ›) are NOT part of
+  // the words: each page draws its own arrow so it keeps its side, whichever
+  // way the words read (T6.16).
+  'nav.backToHabits': 'back to the habits',
+  'nav.earlier': 'earlier',
+  'nav.later': 'later',
+
+  // The date line at the top of the home screen is built from these
+  // (T6.14). The weekday and month are written the way they show — capitals
+  // and all — and `date.line` sets their ORDER, so a language that puts
+  // the month before the day only has to move the holes.
+  'date.line': '{weekday} {day} {month} {year}',
+  'weekday.mon.long': 'MONDAY',
+  'weekday.tue.long': 'TUESDAY',
+  'weekday.wed.long': 'WEDNESDAY',
+  'weekday.thu.long': 'THURSDAY',
+  'weekday.fri.long': 'FRIDAY',
+  'weekday.sat.long': 'SATURDAY',
+  'weekday.sun.long': 'SUNDAY',
+  'month.jan': 'JAN',
+  'month.feb': 'FEB',
+  'month.mar': 'MAR',
+  'month.apr': 'APR',
+  'month.may': 'MAY',
+  'month.jun': 'JUN',
+  'month.jul': 'JUL',
+  'month.aug': 'AUG',
+  'month.sep': 'SEP',
+  'month.oct': 'OCT',
+  'month.nov': 'NOV',
+  'month.dec': 'DEC',
+
+  // The note under the date, shown only between midnight and the day
+  // cutoff, and the hour inside it. {time} is one of the two hour slots below.
+  'date.cutoffNote': 'your habits will switch to a new day at {time}',
+  'time.hourAm': '{hour} a.m.',
+  'time.hourPm': '{hour} p.m.',
+
+  // Weekday names, short. These appear in the habit form's weekday
+  // boxes, in a habit tile's schedule ("Mon/Wed/Fri") and, lower-cased by the
+  // page, in the morning check-in's day headings.
+  'weekday.mon.short': 'Mon',
+  'weekday.tue.short': 'Tue',
+  'weekday.wed.short': 'Wed',
+  'weekday.thu.short': 'Thu',
+  'weekday.fri.short': 'Fri',
+  'weekday.sat.short': 'Sat',
+  'weekday.sun.short': 'Sun',
+
+  // Weekday names, two letters — the column heads of the field notes.
+  'weekday.mon.tiny': 'Mo',
+  'weekday.tue.tiny': 'Tu',
+  'weekday.wed.tiny': 'We',
+  'weekday.thu.tiny': 'Th',
+  'weekday.fri.tiny': 'Fr',
+  'weekday.sat.tiny': 'Sa',
+  'weekday.sun.tiny': 'Su',
+
+  // How a habit's schedule is picked in the habit form.
+  'schedule.daily': 'every day',
+  'schedule.weekdays': 'specific weekdays',
+  'schedule.nPerWeek': 'n days a week',
+  'schedule.nPerDay': 'n times a day',
+  'schedule.whenever': 'whenever',
+  'schedule.oneTime': 'one-time (a to-do)',
+
+  // The same schedules as a habit tile's quiet summary line. "every day"
+  // and "whenever" reuse the two slots above.
+  'schedule.summary.nPerWeek': '{n}×/week',
+  'schedule.summary.nPerDay': '{n}×/day',
+  'schedule.summary.oneTime': 'one-time',
+
+  // The three difficulty options in the habit form.
+  'difficulty.easy': 'easy',
+  'difficulty.medium': 'medium',
+  'difficulty.difficult': 'difficult',
+
+  // The graph's zoom choices (design-notes §12c).
+  'fieldNotes.zoom.day': 'day by day',
+  'fieldNotes.zoom.week': 'week by week',
+  'fieldNotes.zoom.fourWeek': '4 weeks at a time',
+
+  // Small habit-list words: the empty tile's invitation, the archived
+  // tag, the archived drawer's heading, and the line on a finished to-do.
+  // {n} is how many archived habits there are; {day} is the date it was done.
+  'habits.addPlaceholder': 'add a habit or task…',
+  'habits.archivedTag': '(archived)',
+  'habits.archivedHeading': 'archived ({n})',
+  'habits.doneOn': 'done {day}',
+
+  // Counted units, for the sentence below. English needs a singular
+  // and a plural; a language that does not can fill both the same.
+  'count.day.one': '{n} day',
+  'count.day.other': '{n} days',
+  'count.week.one': '{n} week',
+  'count.week.other': '{n} weeks',
+
+  // The question asked before an edit changes how a streak is counted.
+  // {habit} is the habit's name and {streak} is one of the counted units above.
+  'habits.scheduleChangeConfirm':
+    'Heads up: this schedule change switches how "{habit}"\'s streak ' +
+    'is counted, so the current streak ({streak}) starts fresh from ' +
+    'today. Save anyway?',
+
+  // The question asked before a habit is deleted for good.
+  'habits.deleteConfirm':
+    'Delete "{habit}" forever? Its whole history goes with it. ' +
+    'Archiving (already done) keeps the history.',
+
+  // Importing a backup: the question, and the two outcomes.
+  'backup.importConfirm':
+    'Importing replaces EVERYTHING currently in Habitat with the ' +
+    'backup file. Continue?',
+  'backup.importCancelled': 'import cancelled — nothing was changed',
+  'backup.imported': 'backup imported',
+
+  // Why an imported file was refused. Each reads aloud under the import
+  // pebble when a backup is not usable. {found} and {expected} are version
+  // numbers.
+  'backup.error.notABackup': 'This file does not look like a Habitat backup.',
+  'backup.error.notJson':
+    'This file is not readable as a Habitat backup (not JSON).',
+  'backup.error.wrongVersion':
+    'This backup uses format version {found}, but this app expects ' +
+    'version {expected}.',
+  'backup.error.noHabits': 'This backup is missing its habit list.',
+  'backup.error.badCompletions': 'This backup has a broken completions list.',
+  'backup.error.badSettings': 'This backup has broken settings.',
+  'backup.error.badFieldNotes': 'This backup has a broken field-notes marker.',
+  'backup.error.badStartup': 'This backup has a broken startup marker.',
+  'backup.error.badBackupDate': 'This backup has a broken backup-date marker.',
+  'backup.error.badLanguage':
+    'This backup names a language Habitat does not speak.',
+  'backup.error.badSky': 'This backup names a sky the Abode does not have.',
+  'backup.error.badCheckin': 'This backup has a broken check-in marker.',
+  'backup.error.noSeed': 'This backup is missing its world seed.',
+
+  // The habit form's two refusals: no name, and a weekdays schedule with
+  // no day ticked.
+  'habitForm.errorNoName': 'Habit needs a name.',
+  'habitForm.errorNoWeekday':
+    'A weekdays schedule needs a non-empty list of days (1=Mon … ' + '7=Sun).',
+
+  // The morning check-in's small words: the tile's tick when a habit is
+  // already done, and the fold that shows fewer or more of a long day.
+  'checkin.tickDone': 'done',
+  'checkin.showFewer': 'show fewer',
+  'checkin.showMore': 'show {n} more',
+
+  // The Map's caption and the Market's "how many you own" tag.
+  'map.regionsKnown': '{known} of {total} regions known',
+  'market.owned': '×{n} at home',
+
+  // The two questions at the top of the start-a-new-game popup, before
+  // the two doors.
+  'newGame.askWipe':
+    'do you want to wipe all your habit history and play habitat ' +
+    'from total scratch?',
+  'newGame.askKeep':
+    'or do you want to keep your habit history and restart the ' +
+    'game? (requires you to export a backup)',
+
+  // Plain names for arriving drops (T3.2), used on the arrival shelf and
+  // in the quiet note beside the habit that was tapped. {list} is the names
+  // joined by the word in `arrival.and`.
+  'arrival.flora': 'a flora find',
+  'arrival.magazine': 'a magazine',
+  'arrival.novel': 'a novel',
+  'arrival.dictionary': 'a dictionary',
+  'arrival.fungusOne': '1 fungus',
+  'arrival.fungi': '{n} fungi',
+  'arrival.friend': 'a friend',
+  'arrival.something': 'something',
+  'arrival.and': 'and',
+  'arrival.note': 'you came across {list}',
+
+  // The six charms' names, for screen readers only — never on screen
+  // (spec §4.1: no words on the charm). They describe the DRAWING, not the
+  // habit's meaning. 1 is the first charm in the picker.
+  'charm.1': 'crown',
+  'charm.2': 'cherry',
+  'charm.3': 'shell',
+  'charm.4': 'anchor',
+  'charm.5': 'shield',
+  'charm.6': 'key',
+
   // The temporary door to the design workbench at the foot of the home
   // screen. The workbench BEHIND it is a working tool, not part of the
   // game, and stays in English — but its door is on a page a player
@@ -416,6 +602,133 @@ const fa = {
 
   'design.door': '',
 
+  'nav.backToHabits': '',
+  'nav.earlier': '',
+  'nav.later': '',
+
+  'date.line': '',
+  'weekday.mon.long': '',
+  'weekday.tue.long': '',
+  'weekday.wed.long': '',
+  'weekday.thu.long': '',
+  'weekday.fri.long': '',
+  'weekday.sat.long': '',
+  'weekday.sun.long': '',
+  'month.jan': '',
+  'month.feb': '',
+  'month.mar': '',
+  'month.apr': '',
+  'month.may': '',
+  'month.jun': '',
+  'month.jul': '',
+  'month.aug': '',
+  'month.sep': '',
+  'month.oct': '',
+  'month.nov': '',
+  'month.dec': '',
+
+  'date.cutoffNote': '',
+  'time.hourAm': '',
+  'time.hourPm': '',
+
+  'weekday.mon.short': '',
+  'weekday.tue.short': '',
+  'weekday.wed.short': '',
+  'weekday.thu.short': '',
+  'weekday.fri.short': '',
+  'weekday.sat.short': '',
+  'weekday.sun.short': '',
+
+  'weekday.mon.tiny': '',
+  'weekday.tue.tiny': '',
+  'weekday.wed.tiny': '',
+  'weekday.thu.tiny': '',
+  'weekday.fri.tiny': '',
+  'weekday.sat.tiny': '',
+  'weekday.sun.tiny': '',
+
+  'schedule.daily': '',
+  'schedule.weekdays': '',
+  'schedule.nPerWeek': '',
+  'schedule.nPerDay': '',
+  'schedule.whenever': '',
+  'schedule.oneTime': '',
+
+  'schedule.summary.nPerWeek': '',
+  'schedule.summary.nPerDay': '',
+  'schedule.summary.oneTime': '',
+
+  'difficulty.easy': '',
+  'difficulty.medium': '',
+  'difficulty.difficult': '',
+
+  'fieldNotes.zoom.day': '',
+  'fieldNotes.zoom.week': '',
+  'fieldNotes.zoom.fourWeek': '',
+
+  'habits.addPlaceholder': '',
+  'habits.archivedTag': '',
+  'habits.archivedHeading': '',
+  'habits.doneOn': '',
+
+  'count.day.one': '',
+  'count.day.other': '',
+  'count.week.one': '',
+  'count.week.other': '',
+
+  'habits.scheduleChangeConfirm': '',
+
+  'habits.deleteConfirm': '',
+
+  'backup.importConfirm': '',
+  'backup.importCancelled': '',
+  'backup.imported': '',
+
+  'backup.error.notABackup': '',
+  'backup.error.notJson': '',
+  'backup.error.wrongVersion': '',
+  'backup.error.noHabits': '',
+  'backup.error.badCompletions': '',
+  'backup.error.badSettings': '',
+  'backup.error.badFieldNotes': '',
+  'backup.error.badStartup': '',
+  'backup.error.badBackupDate': '',
+  'backup.error.badLanguage': '',
+  'backup.error.badSky': '',
+  'backup.error.badCheckin': '',
+  'backup.error.noSeed': '',
+
+  'habitForm.errorNoName': '',
+  'habitForm.errorNoWeekday': '',
+
+  'checkin.tickDone': '',
+  'checkin.showFewer': '',
+  'checkin.showMore': '',
+
+  'map.regionsKnown': '',
+  'market.owned': '',
+
+  'newGame.askWipe': '',
+  'newGame.askKeep': '',
+
+  'arrival.flora': '',
+  'arrival.magazine': '',
+  'arrival.novel': '',
+  'arrival.dictionary': '',
+  'arrival.fungusOne': '',
+  'arrival.fungi': '',
+  'arrival.friend': '',
+  'arrival.something': '',
+  'arrival.and': '',
+  'arrival.note': '',
+
+  'charm.1': '',
+  'charm.2': '',
+  'charm.3': '',
+  'charm.4': '',
+  'charm.5': '',
+  'charm.6': '',
+
   // Pre-filled on purpose — see the note above this block.
   'language.switch': '',
   'language.en': 'English',
@@ -436,6 +749,27 @@ export const UI = { en, fa }
 // have a blank in it.
 export const LANGUAGES = ['en', 'fa']
 export const DEFAULT_LANGUAGE = 'en'
+
+// The seven weekdays in ISO order (Monday = 1, matching the numbers a
+// habit's schedule stores) and the twelve months, as the key fragments
+// the weekday.* and month.* slots are named with. ONE list here, read
+// by every page — before T6.14 four files each kept their own copy of
+// Mon–Sun, so changing a weekday name meant finding all four.
+export const WEEKDAY_KEYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+export const MONTH_KEYS = [
+  'jan',
+  'feb',
+  'mar',
+  'apr',
+  'may',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'oct',
+  'nov',
+  'dec',
+]
 
 // Is this a language Habitat actually speaks?
 export function isLanguage(value) {

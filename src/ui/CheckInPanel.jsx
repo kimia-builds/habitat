@@ -22,14 +22,15 @@ import { useState } from 'react'
 import CharmSymbol from './CharmSymbol.jsx'
 import SymbolPicker from './SymbolPicker.jsx'
 import { useText } from './language.jsx'
+import { WEEKDAY_KEYS } from '../content/ui.js'
 
 // Kimia's date convention (2026-08-12): "mon DD-MM-YY" — the weekday
 // lowercase like the rest of the interface, then the same day-first
 // short date the field notes already use (days.js shortDate).
-const WEEKDAY_NAMES = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
-
-const dayLabel = (dayKey) =>
-  `${WEEKDAY_NAMES[isoWeekday(dayKey) - 1]} ${shortDate(dayKey)}`
+// The weekday word comes from the copy deck's short names, lower-cased
+// here (Persian has no letter case, so lower-casing leaves it alone).
+const dayLabel = (dayKey, t) =>
+  `${t(`weekday.${WEEKDAY_KEYS[isoWeekday(dayKey) - 1]}.short`).toLowerCase()} ${shortDate(dayKey)}`
 
 // Which habits a given past day offers, seen through the charm lens.
 // The lens is a view, never a filter on what counts: a hidden habit is
@@ -79,8 +80,12 @@ function DayRows({ listed, completions, dayKey, onMark, onUnmark }) {
                   onChange={() =>
                     count > 0 ? onUnmark(habit, dayKey) : onMark(habit, dayKey)
                   }
-                  title={count > 0 ? 'done' : 'mark done'}
-                  aria-label={count > 0 ? 'done' : 'mark done'}
+                  title={
+                    count > 0 ? t('checkin.tickDone') : t('habits.markDone')
+                  }
+                  aria-label={
+                    count > 0 ? t('checkin.tickDone') : t('habits.markDone')
+                  }
                 />
               </span>
             ) : (
@@ -183,8 +188,16 @@ function CheckInPanel({
         <button
           className="pebble pebble-more"
           onClick={() => setExpanded((open) => !open)}
-          title={expanded ? 'show fewer' : `show ${hidden} more`}
-          aria-label={expanded ? 'show fewer' : `show ${hidden} more`}
+          title={
+            expanded
+              ? t('checkin.showFewer')
+              : t('checkin.showMore', { n: hidden })
+          }
+          aria-label={
+            expanded
+              ? t('checkin.showFewer')
+              : t('checkin.showMore', { n: hidden })
+          }
           aria-expanded={expanded}
         >
           …
@@ -196,7 +209,7 @@ function CheckInPanel({
           <p className="habit-meta">{t('checkin.earlierDays')}</p>
           {older.map((day) => (
             <details key={day}>
-              <summary>{dayLabel(day)}</summary>
+              <summary>{dayLabel(day, t)}</summary>
               <DayRows
                 listed={listedOn(habits, completions, day, cutoffHour, filter)}
                 completions={completions}

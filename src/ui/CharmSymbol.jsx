@@ -5,7 +5,8 @@
 // The charm carries its own colour and a screen-reader name (the shape,
 // not the habit's meaning). Filled dots use fill="currentColor".
 
-import { SYMBOL_COLORS, SYMBOL_NAMES } from './symbols.js'
+import { SYMBOL_COLORS } from './symbols.js'
+import { useText } from './language.jsx'
 
 // Each charm's inner shapes (paths from §11a). currentColor everywhere,
 // so the whole charm takes the one colour set on the <svg>.
@@ -62,6 +63,7 @@ const CHARM_SHAPES = {
 }
 
 function CharmSymbol({ symbol, className }) {
+  const { t } = useText()
   return (
     <svg
       className={className ? `charm ${className}` : 'charm'}
@@ -72,7 +74,7 @@ function CharmSymbol({ symbol, className }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       role="img"
-      aria-label={SYMBOL_NAMES[symbol]}
+      aria-label={t(`charm.${symbol}`)}
       style={{ color: SYMBOL_COLORS[symbol] }}
     >
       {CHARM_SHAPES[symbol]}

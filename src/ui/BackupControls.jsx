@@ -32,7 +32,9 @@ function BackupControls({ onExport, onImport, lastExportedOn, todayKey }) {
       const outcome = await onImport(await file.text())
       setMessage(outcome)
     } catch (problem) {
-      setMessage(problem.message)
+      // A refused file carries its deck key, so the reason reads in the
+      // chosen language; anything else falls back to its own message.
+      setMessage(problem.key ? t(problem.key, problem.vars) : problem.message)
     }
   }
 

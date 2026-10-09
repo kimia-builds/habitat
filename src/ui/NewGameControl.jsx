@@ -35,24 +35,6 @@
 import { useState } from 'react'
 import { useText } from './language.jsx'
 
-// What each door actually does, in plain words. Shown on the "are you
-// sure?" step — the moment where being surprised would be worst.
-const CONSEQUENCE = {
-  refresh:
-    'everything will be wiped: habits, completions, and game progress. ' +
-    'habitat will restart from day one. only a backup file you have ' +
-    'already exported can bring any of it back.',
-  keep:
-    'your gameplay will be wiped: flora, books, friends, fungi and ' +
-    'expedition progress. your historical habit data, streaks and graphs ' +
-    'will remain.',
-}
-
-const DONE_MESSAGE = {
-  refresh: 'a new habitat has begun — everything starts from here',
-  keep: 'a new game has begun — your habits and history are untouched',
-}
-
 function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
   const { t } = useText()
   // Where in the door we are: null (closed), 'choose' (which way?), or
@@ -64,7 +46,7 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
     setStep(null)
     if (choice === 'refresh') onTotalRefresh()
     else onStartNewGame()
-    setMessage(DONE_MESSAGE[choice])
+    setMessage(t(`newGame.${choice}Done`))
   }
 
   return (
@@ -92,15 +74,13 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
               <>
                 <p className="new-game-title">{t('newGame.which')}</p>
                 <p className="new-game-detail">
-                  do you want to wipe all your habit history and play habitat
-                  from total scratch?
+                  {t('newGame.askWipe')}
                   {/* Two breaks, not one (Kimia, 2026-08-12): a blank
                       line between the two choices, so they read as two
                       questions rather than one long one. */}
                   <br />
                   <br />
-                  or do you want to keep your habit history and restart the
-                  game? (requires you to export a backup)
+                  {t('newGame.askKeep')}
                 </p>
                 <div className="new-game-choices">
                   <button className="pebble" onClick={() => setStep('refresh')}>
@@ -129,7 +109,7 @@ function NewGameControl({ backedUp, onStartNewGame, onTotalRefresh }) {
             ) : (
               <>
                 <p className="new-game-title">{t('newGame.sure')}</p>
-                <p className="new-game-detail">{CONSEQUENCE[step]}</p>
+                <p className="new-game-detail">{t(`newGame.${step}Warning`)}</p>
                 <div className="new-game-choices">
                   <button className="pebble" onClick={() => confirmed(step)}>
                     {t('newGame.yes')}

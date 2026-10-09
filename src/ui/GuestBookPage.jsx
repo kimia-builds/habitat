@@ -117,7 +117,7 @@ function GuestBookPage({ friends, worldSeed, onBack }) {
           />
         )}
         <button className="pebble" onClick={onBack}>
-          ← back to the habits
+          ← {t('nav.backToHabits')}
         </button>
       </div>
     </section>

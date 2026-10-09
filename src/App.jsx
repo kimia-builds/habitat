@@ -772,11 +772,15 @@ function AppBody({ data, setData }) {
           data.settings.dayCutoffHour,
         )
         if (streak >= 1) {
-          const plural = streak === 1 ? oldKind : `${oldKind}s`
+          const counted = t(
+            `count.${oldKind}.${streak === 1 ? 'one' : 'other'}`,
+            { n: streak },
+          )
           const sure = window.confirm(
-            `Heads up: this schedule change switches how "${habit.name}"'s ` +
-              `streak is counted, so the current streak (${streak} ${plural}) ` +
-              'starts fresh from today. Save anyway?',
+            t('habits.scheduleChangeConfirm', {
+              habit: habit.name,
+              streak: counted,
+            }),
           )
           if (!sure) return // nothing saved; the form stays open
         }
@@ -1271,8 +1275,7 @@ function AppBody({ data, setData }) {
 
   function handleDelete(habit) {
     const sure = window.confirm(
-      `Delete "${habit.name}" forever? Its whole history goes with it. ` +
-        'Archiving (already done) keeps the history.',
+      t('habits.deleteConfirm', { habit: habit.name }),
     )
     if (!sure) return
     save({
@@ -1357,18 +1360,15 @@ function AppBody({ data, setData }) {
 
   function handleImport(text) {
     if (hasData()) {
-      const sure = window.confirm(
-        'Importing replaces EVERYTHING currently in Habitat with the ' +
-          'backup file. Continue?',
-      )
-      if (!sure) return 'import cancelled — nothing was changed'
+      const sure = window.confirm(t('backup.importConfirm'))
+      if (!sure) return t('backup.importCancelled')
     }
     setData(importData(text))
     closeForm()
     // A whole new world state: announcements from the old one are moot.
     setArrivals([])
     setPendingArrivals([])
-    return 'backup imported'
+    return t('backup.imported')
   }
 
   // The "add a habit or task…" baguette (Kimia's call 2026-08-12, made
@@ -1546,6 +1546,7 @@ function AppBody({ data, setData }) {
               habit={habit}
               arrivalNote={arrivalNote(
                 arrivals.filter((a) => a.habitId === habit.id),
+                t,
               )}
               todayCount={countOn(data.completions, habit.id, today)}
               required={requiredPerDay(habit, today)}
@@ -1582,7 +1583,7 @@ function AppBody({ data, setData }) {
               className="empty-tile"
               onClick={() => startNewHabit(addTileSymbol)}
             >
-              add a habit or task…
+              {t('habits.addPlaceholder')}
             </button>
           </li>
         )}
@@ -1606,7 +1607,9 @@ function AppBody({ data, setData }) {
 
       {archived.length > 0 && (
         <details className="archived">
-          <summary>archived ({archived.length})</summary>
+          <summary>
+            {t('habits.archivedHeading', { n: archived.length })}
+          </summary>
           <ul>
             {archived.map((habit) => {
               // A one-time to-do that landed here BY being checked off:
@@ -1635,11 +1638,11 @@ function AppBody({ data, setData }) {
                       </button>
                     ) : (
                       <span className="habit-meta">
-                        done{' '}
-                        {
-                          data.completions.find((c) => c.habitId === habit.id)
-                            .dayKey
-                        }
+                        {t('habits.doneOn', {
+                          day: data.completions.find(
+                            (c) => c.habitId === habit.id,
+                          ).dayKey,
+                        })}
                       </span>
                     )
                   ) : (

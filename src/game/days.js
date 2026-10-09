@@ -11,6 +11,13 @@
 // user and her data never leaves her browser, so her clock is the
 // only truth we need — no timezone gymnastics.
 
+import {
+  DEFAULT_LANGUAGE,
+  MONTH_KEYS,
+  WEEKDAY_KEYS,
+  translate,
+} from '../content/ui.js'
+
 export function validateCutoffHour(cutoffHour) {
   if (!Number.isInteger(cutoffHour) || cutoffHour < 0 || cutoffHour > 23) {
     throw new Error('Day cutoff must be a whole hour from 0 to 23.')
@@ -128,47 +135,37 @@ export function shortDate(dayKey) {
 // appears only between midnight and the cutoff — the one stretch where
 // the calendar date and the Habitat day underneath it disagree.
 //
-// Fixed English name tables, not toLocaleDateString: the line must read
+// The words — weekday and month names, the order they come in, and
+// a.m./p.m. — live in the copy deck (content/ui.js), not here. They are
+// still fixed tables rather than toLocaleDateString: the line must read
 // the same whatever language the browser speaks, and tests stay
-// locale-proof. Like everything else in this module, the maths runs on
-// the device's local clock — her clock is the only truth we need.
-const WEEKDAY_NAMES = [
-  'SUNDAY', // Date.getDay() starts the week on Sunday: 0 = Sunday
-  'MONDAY',
-  'TUESDAY',
-  'WEDNESDAY',
-  'THURSDAY',
-  'FRIDAY',
-  'SATURDAY',
-]
+// locale-proof. `language` picks the deck's language; it defaults to
+// English so every existing caller is unchanged. Like everything else
+// in this module, the maths runs on the device's local clock — her
+// clock is the only truth we need.
 
-const MONTH_NAMES = [
-  'JAN',
-  'FEB',
-  'MAR',
-  'APR',
-  'MAY',
-  'JUN',
-  'JUL',
-  'AUG',
-  'SEP',
-  'OCT',
-  'NOV',
-  'DEC',
-]
+// Date.getDay() starts the week on Sunday: 0 = Sunday. The deck's
+// weekday keys are in ISO order (Monday first), so Sunday goes on the
+// front.
+const SUNDAY_FIRST_KEYS = ['sun', ...WEEKDAY_KEYS.slice(0, 6)]
 
 // The date line itself, e.g. 'MONDAY 20 JUL 2026': full uppercase
 // weekday, day of month with no zero-padding, uppercase 3-letter month,
-// 4-digit year. The letterspacing is CSS's job — the text itself holds
-// plain single spaces so screen readers read it naturally.
-export function calendarDateLine(timestampMs) {
+// 4-digit year (all as the deck writes them in English). The
+// letterspacing is CSS's job — the text itself holds plain single
+// spaces so screen readers read it naturally. The ORDER of the four
+// parts is the deck's `date.line` slot.
+export function calendarDateLine(timestampMs, language = DEFAULT_LANGUAGE) {
   const moment = new Date(timestampMs)
-  return (
-    `${WEEKDAY_NAMES[moment.getDay()]} ` +
-    `${moment.getDate()} ` +
-    `${MONTH_NAMES[moment.getMonth()]} ` +
-    `${moment.getFullYear()}`
-  )
+  return translate(language, 'date.line', {
+    weekday: translate(
+      language,
+      `weekday.${SUNDAY_FIRST_KEYS[moment.getDay()]}.long`,
+    ),
+    day: moment.getDate(),
+    month: translate(language, `month.${MONTH_KEYS[moment.getMonth()]}`),
+    year: moment.getFullYear(),
+  })
 }
 
 // Is this moment in the small hours before the day cutoff? The same
@@ -184,10 +181,9 @@ export function beforeCutoff(timestampMs, cutoffHour) {
 // An hour as the note says it: 1 → '1 a.m.', 12 → '12 p.m.',
 // 13 → '1 p.m.', 0 → '12 a.m.'. Whole hours 0–23 only — the cutoff is
 // always a whole hour, so this reuses its validation.
-export function formatHourAmPm(hour) {
+export function formatHourAmPm(hour, language = DEFAULT_LANGUAGE) {
   validateCutoffHour(hour)
-  if (hour === 0) return '12 a.m.'
-  if (hour < 12) return `${hour} a.m.`
-  if (hour === 12) return '12 p.m.'
-  return `${hour - 12} p.m.`
+  const half = hour < 12 ? 'time.hourAm' : 'time.hourPm'
+  const onClock = hour % 12 === 0 ? 12 : hour % 12
+  return translate(language, half, { hour: onClock })
 }

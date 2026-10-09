@@ -3427,6 +3427,42 @@ return 0` right after the era is worked out, so a moment before the
   the new-habit form is open. The rail's + stays as a second door.
   Supersedes 2026-08-12's "one tile per chosen charm" — several charms now
   give one neutral baguette, and the form's own default.
+- 2026-10-09 (Kimia, ordering T6.14): **the copy deck is built in four
+  slices, and the MISSED WORDS come first.** Her call over the plan's
+  order (re-shape first): find and add every uncaptured word while the
+  file is still the shape she knows, then re-shape it. The slices:
+  (1) complete the interface words — done, see the build notes below;
+  (2) re-shape `ui.js` key-first, a plain-English `note` on every entry
+  and every language side by side; (3) fold `narration.js`, `names.js`,
+  `mishap.js` and `blocked.js` in as labelled sections, each stating its
+  blank-rule; (4) the test that fails the suite when a component grows a
+  hardcoded word. Each slice is pushed live and safe on its own.
+- 2026-10-09 (T6.14 slice 1, build notes): **106 new slots, 230 in
+  all.** Found with a scan that reads the code the way the app does, not
+  a text search, so it also caught words in conditions and template
+  strings. Added: back/earlier/later words (the arrows `← ‹ ›` stay in
+  the pages, out of the words); weekday names in three forms (long for
+  the date line, short for the form, tile and check-in, two-letter for
+  the field notes) and month names; the date line's ORDER, the cutoff
+  note and the two hour forms; the six schedule kinds, their tile
+  summaries and the three difficulties; graph zoom labels; the empty-tile
+  invitation, archived tag/heading and the finished-to-do line; the
+  schedule-change and delete confirms; the import confirm and outcomes;
+  the 13 reasons a backup is refused; the two habit-form refusals;
+  check-in tick, fold and show-more; the map caption and market tag; the
+  new-game questions; arrival names; the six charm names. Four
+  new-game slots (warnings and afterwords) already existed but nothing
+  read them — the component kept its own copy; it now reads the slots.
+  Mechanics: `days.js` and `arrivalText.js` take a language/translator
+  with English as the default, so older callers are unchanged; a
+  refused backup carries its slot key so the reason reads in the chosen
+  language while its message stays English. Deliberately NOT in the deck:
+  the design workbench (stays English, as its door slot already says);
+  the game code's developer error messages, which never reach the
+  screen; the console line in the error screen. Three habit-form and
+  weekday messages read technical ("1=Mon … 7=Sun") — left word for word
+  for Kimia to reword. Check-in day headings still lower-case the short
+  weekday in the page (harmless for Persian, which has no case).
 - 2026-10-09 (Kimia, sizing the Farsi work): **the Farsi work was sized
   at roughly 8–10 sessions, and five decisions narrowed it.**
   1. **There is no copy deck yet.** T6.14 is still open: copy lives in

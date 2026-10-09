@@ -71,7 +71,7 @@
 // The schemaVersion lets a future Habitat recognise and upgrade old
 // backups — upgradeData below does exactly that for v1.
 
-import { DEFAULT_LANGUAGE, isLanguage } from '../content/ui.js'
+import { DEFAULT_LANGUAGE, isLanguage, translate } from '../content/ui.js'
 import {
   DEFAULT_ABODE_SKY,
   isAbodeSky,
@@ -368,57 +368,69 @@ function withDefaults(data) {
   }
 }
 
+// A refused backup. The message is the deck's English words, so anything
+// that just prints `problem.message` still reads sensibly; `key` and
+// `vars` ride along so the screen can say it in the chosen language
+// instead (BackupControls). The file is parsed before the language is
+// known, which is why the language is not looked up here.
+function backupProblem(key, vars) {
+  const problem = new Error(translate(DEFAULT_LANGUAGE, key, vars))
+  problem.key = key
+  problem.vars = vars
+  return problem
+}
+
 function validateData(data) {
   if (typeof data !== 'object' || data === null) {
-    throw new Error('This file does not look like a Habitat backup.')
+    throw backupProblem('backup.error.notABackup')
   }
   if (data.schemaVersion !== SCHEMA_VERSION) {
-    throw new Error(
-      `This backup uses format version ${data.schemaVersion}, but this ` +
-        `app expects version ${SCHEMA_VERSION}.`,
-    )
+    throw backupProblem('backup.error.wrongVersion', {
+      found: data.schemaVersion,
+      expected: SCHEMA_VERSION,
+    })
   }
   if (!Array.isArray(data.habits)) {
-    throw new Error('This backup is missing its habit list.')
+    throw backupProblem('backup.error.noHabits')
   }
   data.habits.forEach(validateHabit)
   if (!Array.isArray(data.completions)) {
-    throw new Error('This backup has a broken completions list.')
+    throw backupProblem('backup.error.badCompletions')
   }
   data.completions.forEach(validateCompletion)
   if (typeof data.settings !== 'object' || data.settings === null) {
-    throw new Error('This backup has broken settings.')
+    throw backupProblem('backup.error.badSettings')
   }
   validateCutoffHour(data.settings.dayCutoffHour)
   if (
     data.settings.fieldNotesShownOn !== null &&
     !isValidDayKey(data.settings.fieldNotesShownOn)
   ) {
-    throw new Error('This backup has a broken field-notes marker.')
+    throw backupProblem('backup.error.badFieldNotes')
   }
   if (
     data.settings.startupShownOn !== null &&
     !isValidDayKey(data.settings.startupShownOn)
   ) {
-    throw new Error('This backup has a broken startup marker.')
+    throw backupProblem('backup.error.badStartup')
   }
   if (
     data.settings.lastExportedOn !== null &&
     !isValidDayKey(data.settings.lastExportedOn)
   ) {
-    throw new Error('This backup has a broken backup-date marker.')
+    throw backupProblem('backup.error.badBackupDate')
   }
   if (!isLanguage(data.settings.language)) {
-    throw new Error('This backup names a language Habitat does not speak.')
+    throw backupProblem('backup.error.badLanguage')
   }
   if (!isAbodeSky(data.settings.abodeSky)) {
-    throw new Error('This backup names a sky the Abode does not have.')
+    throw backupProblem('backup.error.badSky')
   }
   if (data.checkedInThrough !== null && !isValidDayKey(data.checkedInThrough)) {
-    throw new Error('This backup has a broken check-in marker.')
+    throw backupProblem('backup.error.badCheckin')
   }
   if (typeof data.worldSeed !== 'string' || data.worldSeed === '') {
-    throw new Error('This backup is missing its world seed.')
+    throw backupProblem('backup.error.noSeed')
   }
   validateFloraDecisions(data.floraDecisions)
   validateBookcaseLayout(data.bookcaseLayout)
@@ -519,7 +531,7 @@ export function importData(jsonString) {
   try {
     data = JSON.parse(jsonString)
   } catch {
-    throw new Error('This file is not readable as a Habitat backup (not JSON).')
+    throw backupProblem('backup.error.notJson')
   }
   data = upgradeData(withDefaults(data))
   validateData(data)

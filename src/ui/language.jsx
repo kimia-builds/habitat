@@ -10,7 +10,7 @@
 //   t(key, vars)     — the translator itself: key in, word out.
 //
 // WHY A HAND-WRITTEN ONE and not a translation library: Habitat has
-// about 130 interface words and exactly two languages. A library would
+// about 230 interface words and exactly two languages. A library would
 // add a dependency, a configuration file and a vocabulary of its own to
 // learn, to replace the forty lines below. Boring and readable wins
 // (CLAUDE.md).

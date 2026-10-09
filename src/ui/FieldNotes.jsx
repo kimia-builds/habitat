@@ -23,8 +23,7 @@ import HabitGraphs from './HabitGraphs.jsx'
 import CharmSymbol from './CharmSymbol.jsx'
 import SymbolPicker from './SymbolPicker.jsx'
 import { useText } from './language.jsx'
-
-const DAY_HEADINGS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+import { WEEKDAY_KEYS } from '../content/ui.js'
 
 // What one day cell shows. Quiet on purpose:
 //   ✓ (or the count)  — done that day
@@ -147,7 +146,7 @@ function FieldNotes({
 
   const back = (
     <button className="pebble" onClick={onBack}>
-      ← back to the habits
+      ← {t('nav.backToHabits')}
     </button>
   )
 
@@ -189,7 +188,7 @@ function FieldNotes({
             onClick={() => setWeek(addDays(week, -7))}
             disabled={week <= firstWeek}
           >
-            ‹ earlier
+            ‹ {t('nav.earlier')}
           </button>
           {/* The week range, and — on its own line under it — the note that
             this week is not finished yet (Kimia, 2026-08-11). It used to
@@ -208,7 +207,7 @@ function FieldNotes({
             onClick={() => setWeek(addDays(week, +7))}
             disabled={week >= thisWeek}
           >
-            later ›
+            {t('nav.later')} ›
           </button>
         </div>
 
@@ -217,8 +216,8 @@ function FieldNotes({
             <thead>
               <tr>
                 <th></th>
-                {DAY_HEADINGS.map((d) => (
-                  <th key={d}>{d}</th>
+                {WEEKDAY_KEYS.map((d) => (
+                  <th key={d}>{t(`weekday.${d}.tiny`)}</th>
                 ))}
                 <th></th>
               </tr>
@@ -230,7 +229,10 @@ function FieldNotes({
                     <CharmSymbol symbol={habit.symbol} className="symbol" />{' '}
                     {habit.name}
                     {habit.archived && (
-                      <span className="habit-meta"> (archived)</span>
+                      <span className="habit-meta">
+                        {' '}
+                        {t('habits.archivedTag')}
+                      </span>
                     )}
                   </th>
                   {days.map((day) => (

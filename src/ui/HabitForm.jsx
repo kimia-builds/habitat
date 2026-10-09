@@ -15,17 +15,18 @@ import { useState } from 'react'
 import { DIFFICULTIES } from '../game/constants.js'
 import SymbolPicker from './SymbolPicker.jsx'
 import { useText } from './language.jsx'
+import { WEEKDAY_KEYS } from '../content/ui.js'
 
-const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-
-const SCHEDULE_LABELS = {
-  daily: 'every day',
-  weekdays: 'specific weekdays',
-  nPerWeek: 'n days a week',
-  nPerDay: 'n times a day',
-  whenever: 'whenever',
-  oneTime: 'one-time (a to-do)',
-}
+// The schedule kinds the picker offers, in order; each one's words are
+// the `schedule.<kind>` slot in the copy deck.
+const SCHEDULE_KINDS = [
+  'daily',
+  'weekdays',
+  'nPerWeek',
+  'nPerDay',
+  'whenever',
+  'oneTime',
+]
 
 // Turn the form's raw fields into the schedule object the engine expects.
 function buildSchedule(type, weekdayFlags, n) {
@@ -52,7 +53,7 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
     initial?.schedule.type ?? 'daily',
   )
   const [weekdayFlags, setWeekdayFlags] = useState(() =>
-    WEEKDAY_NAMES.map(
+    WEEKDAY_KEYS.map(
       (_, i) => initial?.schedule.days?.includes(i + 1) ?? false,
     ),
   )
@@ -61,6 +62,17 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
 
   function handleSubmit(event) {
     event.preventDefault()
+    // The two refusals a person can actually reach: no name, and a
+    // weekdays schedule with no day ticked. Said in the deck's words;
+    // the game's own checks below stay as the backstop.
+    if (name.trim() === '') {
+      setError(t('habitForm.errorNoName'))
+      return
+    }
+    if (scheduleType === 'weekdays' && !weekdayFlags.some(Boolean)) {
+      setError(t('habitForm.errorNoWeekday'))
+      return
+    }
     try {
       onSave({
         name,
@@ -103,7 +115,7 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
         >
           {DIFFICULTIES.map((d) => (
             <option key={d} value={d}>
-              {d}
+              {t(`difficulty.${d}`)}
             </option>
           ))}
         </select>
@@ -115,16 +127,16 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
           value={scheduleType}
           onChange={(e) => setScheduleType(e.target.value)}
         >
-          {Object.entries(SCHEDULE_LABELS).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
+          {SCHEDULE_KINDS.map((kind) => (
+            <option key={kind} value={kind}>
+              {t(`schedule.${kind}`)}
             </option>
           ))}
         </select>
       </label>
       {scheduleType === 'weekdays' && (
         <div className="weekday-boxes">
-          {WEEKDAY_NAMES.map((day, i) => (
+          {WEEKDAY_KEYS.map((day, i) => (
             <label key={day}>
               <input
                 type="checkbox"
@@ -137,7 +149,7 @@ function HabitForm({ initial, defaultSymbol = 1, onSave, onCancel }) {
                   )
                 }
               />
-              {day}
+              {t(`weekday.${day}.short`)}
             </label>
           ))}
         </div>

@@ -62,7 +62,9 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
                         {object.price}
                       </span>
                       {owned > 0 && (
-                        <span className="market-owned">×{owned} at home</span>
+                        <span className="market-owned">
+                          {t('market.owned', { n: owned })}
+                        </span>
                       )}
                       <button
                         className="market-buy pebble"
@@ -83,7 +85,7 @@ function MarketPage({ stall, purchases, wallet, worldSeed, onBuy, onBack }) {
         </div>
 
         <button className="pebble" onClick={onBack}>
-          ← back to the habits
+          ← {t('nav.backToHabits')}
         </button>
       </div>
     </section>

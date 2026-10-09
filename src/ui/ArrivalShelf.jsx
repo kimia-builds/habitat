@@ -170,7 +170,7 @@ function ShelfItem({
             to hear (T5.2e): it arrives with the object and stays as
             long as it does. Inside the same pressable group, so the
             two read as one thing. */}
-        <span className="arrival-caption">{arrivalLabel(arrival)}</span>
+        <span className="arrival-caption">{arrivalLabel(arrival, t)}</span>
       </button>
       {deciding && (
         <>

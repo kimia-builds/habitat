@@ -13,14 +13,18 @@
 // this component only renders.
 
 import { beforeCutoff, calendarDateLine, formatHourAmPm } from '../game/days.js'
+import { useText } from './language.jsx'
 
 function DateDisplay({ now, cutoffHour }) {
+  const { t, language } = useText()
   return (
     <div className="date-display-block">
-      <p className="date-display">{calendarDateLine(now)}</p>
+      <p className="date-display">{calendarDateLine(now, language)}</p>
       {beforeCutoff(now, cutoffHour) && (
         <p className="date-cutoff-note">
-          your habits will switch to a new day at {formatHourAmPm(cutoffHour)}
+          {t('date.cutoffNote', {
+            time: formatHourAmPm(cutoffHour, language),
+          })}
         </p>
       )}
     </div>

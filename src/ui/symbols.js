@@ -20,15 +20,3 @@ export const SYMBOL_COLORS = {
   5: '#5AB6F3', // shield — sky
   6: '#4FBFA0', // key — teal
 }
-
-// Hidden (aria) name for each charm — describes the drawing, not the
-// habit's meaning. Kimia's wording, T5.1 (she chose shape names over a
-// generic "symbol N", and singular "cherry").
-export const SYMBOL_NAMES = {
-  1: 'crown',
-  2: 'cherry',
-  3: 'shell',
-  4: 'anchor',
-  5: 'shield',
-  6: 'key',
-}

@@ -8,23 +8,24 @@ import { useState } from 'react'
 import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import CharmSymbol from './CharmSymbol.jsx'
 import { useText } from './language.jsx'
+import { WEEKDAY_KEYS } from '../content/ui.js'
 
-const WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-
-function scheduleSummary(schedule) {
+function scheduleSummary(schedule, t) {
   switch (schedule.type) {
     case 'daily':
-      return 'every day'
+      return t('schedule.daily')
     case 'weekdays':
-      return schedule.days.map((d) => WEEKDAY_NAMES[d - 1]).join('/')
+      return schedule.days
+        .map((d) => t(`weekday.${WEEKDAY_KEYS[d - 1]}.short`))
+        .join('/')
     case 'nPerWeek':
-      return `${schedule.n}×/week`
+      return t('schedule.summary.nPerWeek', { n: schedule.n })
     case 'nPerDay':
-      return `${schedule.n}×/day`
+      return t('schedule.summary.nPerDay', { n: schedule.n })
     case 'oneTime':
-      return 'one-time'
+      return t('schedule.summary.oneTime')
     default:
-      return 'whenever'
+      return t('schedule.whenever')
   }
 }
 
@@ -155,7 +156,8 @@ function HabitRow({
           <span className="habit-description">{habit.description}</span>
         )}
         <span className="habit-meta">
-          {scheduleSummary(habit.schedule)} · {habit.difficulty}
+          {scheduleSummary(habit.schedule, t)} ·{' '}
+          {t(`difficulty.${habit.difficulty}`)}
         </span>
       </span>
       {oneTime ? (

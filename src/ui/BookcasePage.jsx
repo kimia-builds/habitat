@@ -218,7 +218,7 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
             ))}
             {ordered.map((item) => {
               const shape = BOOK_SHAPES[item.type]
-              const label = arrivalLabel({ key: item.type })
+              const label = arrivalLabel({ key: item.type }, t)
               const place = placeOf(item)
               const cx = place.x * WIDTH
               const base = place.y * HEIGHT
@@ -291,7 +291,7 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
           </svg>
         </div>
         <button className="pebble" onClick={onBack}>
-          ← back to the habits
+          ← {t('nav.backToHabits')}
         </button>
       </div>
     </section>

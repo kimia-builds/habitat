@@ -16,7 +16,7 @@ import { useText } from './language.jsx'
 
 function SpreadPopup({ item, onClose }) {
   const { t } = useText()
-  const label = arrivalLabel({ key: item.type })
+  const label = arrivalLabel({ key: item.type }, t)
   const image = spreadFor(item.publicationId)
   const emptyLine = narrationSlot('spreadPopup.emptyState')
   return (

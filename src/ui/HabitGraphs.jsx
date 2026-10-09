@@ -15,12 +15,6 @@ import { roundedPath } from './graphPath.js'
 import { SYMBOL_COLORS } from './symbols.js'
 import { useText } from './language.jsx'
 
-const ZOOM_LABELS = {
-  day: 'day by day',
-  week: 'week by week',
-  fourWeek: '4 weeks at a time',
-}
-
 // The drawing area. Wide and short, like a strip of field notes;
 // padding leaves room for the quiet corner labels.
 const W = 600
@@ -56,7 +50,7 @@ function GraphLine({ series, color, habitName, zoom }) {
       role="img"
       aria-label={t('fieldNotes.graphLabel', {
         habit: habitName,
-        zoom: ZOOM_LABELS[zoom],
+        zoom: t(`fieldNotes.zoom.${zoom}`),
       })}
     >
       {/* the floor of the graph: zero, a fine quiet line */}
@@ -106,7 +100,9 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
     <details className="habit-graph">
       <summary>
         <CharmSymbol symbol={habit.symbol} className="symbol" /> {habit.name}
-        {habit.archived && <span className="habit-meta"> (archived)</span>}
+        {habit.archived && (
+          <span className="habit-meta"> {t('habits.archivedTag')}</span>
+        )}
       </summary>
       {zoom === null ? (
         <p className="habit-graph-young">{t('fieldNotes.habitTooYoung')}</p>
@@ -121,7 +117,7 @@ function HabitGraph({ habit, completions, now, cutoffHour }) {
                   aria-pressed={z === zoom}
                   onClick={() => setZoom(z)}
                 >
-                  {ZOOM_LABELS[z]}
+                  {t(`fieldNotes.zoom.${z}`)}
                 </button>
               ))}
             </div>

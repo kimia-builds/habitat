@@ -547,7 +547,7 @@ function AbodePage({
 
         {pending.length > 0 && (
           <>
-            <h3>waiting to decide</h3>
+            <h3>{t('abode.waitingToDecide')}</h3>
             <ul className="abode-list" aria-label={t('abode.waitingToDecide')}>
               {pending.map((find) => (
                 <li key={find.completionId} className="abode-row arrival-flora">
@@ -563,13 +563,13 @@ function AbodePage({
                     className="pebble arrival-choice"
                     onClick={() => onDecide(find.completionId, 'gathered')}
                   >
-                    gather
+                    {t('arrivals.gather')}
                   </button>
                   <button
                     className="pebble arrival-choice"
                     onClick={() => onDecide(find.completionId, 'left')}
                   >
-                    leave it
+                    {t('arrivals.leave')}
                   </button>
                 </li>
               ))}
@@ -825,7 +825,7 @@ function AbodePage({
         </div>
 
         <button className="pebble" onClick={onBack}>
-          ← back to the habits
+          ← {t('nav.backToHabits')}
         </button>
       </div>
     </section>

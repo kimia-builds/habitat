@@ -7,7 +7,14 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import CharmSymbol from './CharmSymbol.jsx'
-import { SYMBOL_COLORS, SYMBOL_NAMES } from './symbols.js'
+import { translate } from '../content/ui.js'
+import { SYMBOL_COLORS } from './symbols.js'
+
+// The charms' names live in the copy deck (`charm.1` … `charm.6`); the
+// spec pins the English ones, so this test reads them from there.
+const SYMBOL_NAMES = Object.fromEntries(
+  [1, 2, 3, 4, 5, 6].map((n) => [n, translate('en', `charm.${n}`)]),
+)
 
 afterEach(cleanup)
 

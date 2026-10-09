@@ -441,9 +441,13 @@ tracker. Everything after this is delight, informed by real use.
   written and join the Farsi work later. Decisions: history.md,
   2026-10-09.
 - [ ] **T6.14 The copy deck — one home for every word Habitat says.**
-      _(Kimia's call 2026-08-16, after reviewing T6.13.)_ **Still
-      unbuilt as of 2026-10-09 — there is no copy doc yet; this task
-      creates it and is the first step of the Farsi work.** T6.13 built the
+      _(Kimia's call 2026-08-16, after reviewing T6.13.)_ **In progress
+      (2026-10-09): built in four slices, missed words first (Kimia's
+      order). Slice 1 DONE — the missed words are in `ui.js` and every
+      component reads them, including the four-way weekday duplication
+      (one `WEEKDAY_KEYS` list now). STILL TO DO: slice 2 re-shape to
+      key-first with a `note` per entry; slice 3 absorb narration, names,
+      mishap, blocked; slice 4 the completeness test.** T6.13 built the
       mechanism but caught only about 55% of the copy, and framed the
       file as a TRANSLATION file rather than what it should be: the one
       place all copy lives, editable in any language including English,
