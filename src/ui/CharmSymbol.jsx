@@ -10,7 +10,7 @@ import { useText } from './language.jsx'
 
 // Each charm's inner shapes (paths from §11a). currentColor everywhere,
 // so the whole charm takes the one colour set on the <svg>.
-const CHARM_SHAPES = {
+export const CHARM_SHAPES = {
   1: (
     <>
       <path d="M2 19h20l-3.5-9-4.5 5L12 5l-2 10-4.5-5L2 19z" />

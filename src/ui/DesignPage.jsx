@@ -145,6 +145,12 @@ const CURIOSITIES = [
   'stone-1',
   'stone-2',
   'stone-3',
+  'charm-key',
+  'charm-cherry',
+  'charm-shell',
+  'charm-anchor',
+  'charm-shield',
+  'charm-crown',
 ]
 
 // The shelf stands its objects on one ground line, so the tall column and the

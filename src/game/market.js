@@ -146,9 +146,9 @@ export function stallObjects(pool, rotation) {
 // ── The drawn curiosities, and the TEMPORARY playtest stall ─────────
 
 // Which pool slot wears which of Kimia's eight finished drawings
-// (ui/Curiosity.jsx's recipe keys). The first eight slots of the pool
-// — all of regions 0 and 1, and the first two of region 2 — are real
-// drawings now; every other slot is still the seeded placeholder glyph.
+// (ui/Curiosity.jsx's recipe keys). The first fourteen slots of the pool
+// (regions 0 to 3 whole, region 2's last slot, and the first two of
+// region 4) are real drawings now; every other slot is still the seeded placeholder glyph.
 // Within a region the index sets the price tier, so the order here is
 // also the (placeholder) pricing: the cheap, mid and dear of each region.
 export const DRAWN_CURIOSITIES = {
@@ -160,10 +160,18 @@ export const DRAWN_CURIOSITIES = {
   '1:2': 'oval-large',
   '2:0': 'stone-2',
   '2:1': 'stone-3',
+  // The six charm objects (2026-10-10): sized and priced together — the two
+  // small ones are the cheap tier, the medium the middle, the large the dear.
+  '2:2': 'charm-shield',
+  '3:0': 'charm-cherry',
+  '3:1': 'charm-shell',
+  '3:2': 'charm-crown',
+  '4:0': 'charm-key',
+  '4:1': 'charm-anchor',
 }
 
 // TEMPORARY (Kimia, 2026-10-09). Until the Map work lands, the stall
-// shows ALL EIGHT drawn curiosities, always — no pool growth with the
+// shows ALL the drawn curiosities, always — no pool growth with the
 // regions, no rotation — so she can live with them in the game and learn
 // what the market needs next. When the Map work lands, delete this and
 // App.jsx goes back to `stallObjects(marketPool(...), rotation)`; the

@@ -3678,6 +3678,35 @@ Both are the kind of thing only eyes find.
 ask for it; the words themselves are keyboard-reachable. Phone/touch
 turning waits for M8's canvas decision.
 
+## T5.3j build notes — the six charm objects
+
+Kimia asked for "6 new objects in the market that resemble the charms",
+with the rule that picking one up in the Abode must work by pressing
+anywhere inside it, gaps included, not only on the drawn lines.
+
+- **What they are.** The real charm drawings (CharmSymbol.jsx's shapes,
+  now exported as `CHARM_SHAPES`) in the charm's own colour, enlarged and
+  drawn in one pen weight (6 drawing units) across the family. Recipes
+  `charm-crown`, `-cherry`, `-shell`, `-anchor`, `-shield`, `-key` in
+  Curiosity.jsx. A gentle `charm-wobble` filter (noise displacement) keeps
+  the lines from being ruler-straight, standing in for handDrawn.js's
+  outline wobble because a charm is many strokes, not one closed outline.
+  No glow, like every other made thing.
+- **Sizes are MY proposals, square like the charms:** small 80, medium
+  120, large 180 (Abode px) in objectCanon.js, one per price tier so price
+  still follows size. Cherry and key small (6), shell and anchor medium
+  (12), shield and crown large (18). Kimia can change any of them.
+- **Where they sit.** Pool slots 2:2, 3:0, 3:1, 3:2, 4:0, 4:1, added to
+  `DRAWN_CURIOSITIES`, so the temporary playtest stall now offers fourteen.
+- **The grab area.** Each charm carries an invisible painted rectangle
+  over its whole frame (`.curiosity-grab`), and the Abode already put a
+  rectangle of the full figure behind every drawn curiosity. Checked in
+  the real browser by probing a grid of points over each charm in the
+  Market: every point lands on the object.
+- **The Market frame grows.** Fourteen items need a third row, which the
+  fixed 600px frame clipped. `.market-scene` is now 600px at least and
+  grows downward; the page scrolls.
+
 ## T5.3j build notes — the columns (2026-09-01)
 
 The first market objects drawn for real, and the first slice of T5.3j.

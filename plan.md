@@ -270,6 +270,12 @@ tracker. Everything after this is delight, informed by real use.
                   Market stall and the Abode draw the eight real drawings, all
                   eight on offer from the start; TEMPORARY, see below. Build
                   notes in history.md)_
+            - [x] **The six charm objects** _(done — six line drawings of
+                  the six charms (crown, cherry, shell, anchor, shield, key)
+                  join the playtest stall as pool slots 2:2, 3:0, 3:1, 3:2,
+                  4:0, 4:1, so the stall offers fourteen. Each is grabbed by
+                  its whole frame, gaps included. Sizes are proposals, not
+                  Kimia's numbers. Build notes in history.md)_
             - [ ] **Play period, then decide** — Kimia lives with them for a
                   while and decides what to build for the market next. When
                   the Map work lands, delete `playtestStall()` and put the

@@ -595,7 +595,7 @@ body {
 .market-stall {
   list-style: none;
   display: flex;
-  /* Eight real drawings of very different sizes (the playtest stall,
+  /* Fourteen real drawings of very different sizes (the playtest stall,
      2026-10-09): they sit side by side and wrap onto a second row
      rather than squeezing each one to an equal share. */
   flex-wrap: wrap;
@@ -2355,6 +2355,11 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
   padding: var(--space-4);
+  /* The frame is the shared 1000 x 600 at the least, but grows downward
+     rather than clipping when the stall needs a third row (the fourteen-item
+     playtest stall, 2026-10-10); the page's own scroll carries the rest. */
+  height: auto;
+  min-height: var(--world-canvas-height);
 }
 
 /* The faint outline (Kimia's decision 2026-07-19): the planet is

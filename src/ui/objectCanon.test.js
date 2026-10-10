@@ -30,6 +30,9 @@ describe('the object canon', () => {
       'oval-large',
       'smoke',
       'stone',
+      'charm-small',
+      'charm-medium',
+      'charm-large',
     ])
   })
 
@@ -63,6 +66,7 @@ describe('the object canon', () => {
       'oval-large',
       'smoke',
       'stone',
+      'charm-large',
     ])
     // …and the two columns bracket the whole cast: the thin one is smaller
     // than every friend but the plip, the tall one larger than all of them.

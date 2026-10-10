@@ -20,6 +20,15 @@ afterEach(cleanup)
 
 // The objects that have a recipe so far. A new one arriving here is meant to
 // be added: every test below should hold for all of them.
+const CHARMS = [
+  'charm-crown',
+  'charm-cherry',
+  'charm-shell',
+  'charm-anchor',
+  'charm-shield',
+  'charm-key',
+]
+
 const DRAWN = [
   'column-thin',
   'column-tall',
@@ -29,6 +38,7 @@ const DRAWN = [
   'stone-1',
   'stone-2',
   'stone-3',
+  ...CHARMS,
 ]
 
 function drawingFor(key, base = 100) {
@@ -62,7 +72,8 @@ describe('a curiosity', () => {
   })
 
   it('draws its outline in curves only, and never strokes it', () => {
-    for (const key of DRAWN) {
+    // (The charm objects are line drawings of the charms themselves, below.)
+    for (const key of DRAWN.filter((key) => !CHARMS.includes(key))) {
       const path = drawingFor(key).querySelector('path')
       const d = path.getAttribute('d')
       expect(d.startsWith('M')).toBe(true)
@@ -104,6 +115,40 @@ describe('a curiosity', () => {
     expect(new Set(shapes.map((p) => p.getAttribute('d'))).size).toBe(3)
   })
 
+  it('draws each charm object as its charm, in the charm colour, in one pen', () => {
+    for (const [i, key] of CHARMS.entries()) {
+      const pen = drawingFor(key).querySelector('g > g')
+      expect(pen.getAttribute('stroke')).toBe('currentColor')
+      expect(pen.style.color).not.toBe('')
+      expect(pen.querySelectorAll('*').length).toBeGreaterThan(0)
+      // The pen is the same width on screen whatever the charm's size: the
+      // stroke times the scale is always the one line weight.
+      const k = Number(
+        /scale\(([\d.]+)\)/.exec(pen.getAttribute('transform'))[1],
+      )
+      expect(Number(pen.getAttribute('stroke-width')) * k).toBeCloseTo(6, 6)
+      expect(i).toBeLessThan(6)
+    }
+  })
+
+  it('lets a charm object be grabbed anywhere in its frame, gaps included', () => {
+    // A charm is mostly gaps. The invisible rectangle is painted (transparent,
+    // not "none"), so a pointer landing between the lines still hits the object.
+    for (const key of CHARMS) {
+      const svg = drawingFor(key)
+      const [vx, vy, vw, vh] = svg
+        .getAttribute('viewBox')
+        .split(' ')
+        .map(Number)
+      const grab = svg.querySelector('.curiosity-grab')
+      expect(grab).not.toBeNull()
+      expect(grab.getAttribute('fill')).toBe('transparent')
+      expect(Number(grab.getAttribute('width'))).toBe(vw)
+      expect(Number(grab.getAttribute('height'))).toBe(vh)
+      expect(vx + vy).toBe(0)
+    }
+  })
+
   it('draws nothing at all for a key it has no recipe for', () => {
     // Better than substituting some other object: a wrong drawing on the
     // ground would be a bug you could look straight at and not see.
@@ -126,6 +171,7 @@ describe('the defs a page needs', () => {
         'curio-pores-sunken',
         'curio-smoke-pink',
         'curio-stone-cratered',
+        'curio-charm-wobble',
       ].sort(),
     )
   })

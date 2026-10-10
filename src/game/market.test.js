@@ -330,20 +330,20 @@ describe('validatePurchases', () => {
   })
 })
 
-// TEMPORARY (Kimia, 2026-10-09): the stall of all eight drawn curiosities.
+// TEMPORARY (Kimia, 2026-10-09): the stall of all the drawn curiosities.
 // Delete with playtestStall() when the Map work lands.
 describe('the playtest stall', () => {
-  it('offers exactly the eight drawn curiosities, each once, at a real tier', () => {
+  it('offers exactly the fourteen drawn curiosities, each once, at a real tier', () => {
     const stall = playtestStall()
-    expect(stall).toHaveLength(8)
-    expect(new Set(stall.map((object) => object.key)).size).toBe(8)
+    expect(stall).toHaveLength(14)
+    expect(new Set(stall.map((object) => object.key)).size).toBe(14)
     for (const object of stall) {
       expect(DRAWN_CURIOSITIES[object.key]).toBeDefined()
       expect(MARKET_PRICE_TIERS).toContain(object.price)
     }
   })
 
-  it('draws the eight different looks, none twice', () => {
-    expect(new Set(Object.values(DRAWN_CURIOSITIES)).size).toBe(8)
+  it('draws the fourteen different looks, none twice', () => {
+    expect(new Set(Object.values(DRAWN_CURIOSITIES)).size).toBe(14)
   })
 })

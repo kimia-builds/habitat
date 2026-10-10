@@ -87,6 +87,13 @@ const SIZES_IN_ABODE_PX = {
   'oval-large': { w: 400, h: 300 },
   smoke: { w: 250, h: 250 },
   stone: { w: 250, h: 250 },
+  // The three charm objects (2026-10-10). NOT Kimia's numbers: she asked for
+  // six objects that resemble the charms without giving sizes, so these are
+  // proposals, square like the charms themselves, one per price tier so that
+  // "price correlates with size" holds (6 / 12 / 18). She can change them.
+  'charm-small': { w: 80, h: 80 },
+  'charm-medium': { w: 120, h: 120 },
+  'charm-large': { w: 180, h: 180 },
 }
 
 // THE CANON. Unlike the flora (a height each) and the friends (a width each),

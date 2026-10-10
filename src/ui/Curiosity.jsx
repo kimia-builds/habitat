@@ -31,6 +31,8 @@
  * is explicitly not exhaustive.
  */
 
+import { CHARM_SHAPES } from './CharmSymbol.jsx'
+import { SYMBOL_COLORS } from './symbols.js'
 import { objectDrawnBox, objectSize } from './objectCanon.js'
 import { wobblyBlob, wobblyEllipse, wobblyRect } from './handDrawn.js'
 import {
@@ -170,7 +172,34 @@ function stoneOutline(box, seed) {
   })
 }
 
+/*
+ * THE CHARM OBJECTS (2026-10-10, Kimia: "6 new objects in the market that
+ * resemble the charms"). Each one is the real charm drawing from
+ * CharmSymbol.jsx — the same shapes, in the same colour — made big enough to
+ * stand in the Abode. They are LINE drawings, which is the one thing the other
+ * eight are not, and that is why each also carries an invisible rectangle over
+ * its whole frame (see `Curiosity` below): a charm is mostly gaps, and a finger
+ * that lands between the cherries or inside the crown must still pick it up.
+ *
+ * THE LINE IS ONE WEIGHT ACROSS THE FAMILY, as surface detail is everywhere
+ * else (objectCanon.js): 6 drawing units on the small charm and on the large
+ * one, so the large charm is simply the bigger shape in the same pen.
+ */
+const CHARM_LINE = 6
+
+// How far the hand drifts off a perfectly drawn line — the same
+// "organic wobble, not sketchiness" the other outlines get (handDrawn.js),
+// done here as a gentle displacement because a charm is made of many strokes
+// rather than one closed outline.
+const CHARM_WOBBLE = 5
+
 const RECIPES = {
+  'charm-crown': { charm: 1, surface: 'charm-wobble', canon: 'charm-large' },
+  'charm-cherry': { charm: 2, surface: 'charm-wobble', canon: 'charm-small' },
+  'charm-shell': { charm: 3, surface: 'charm-wobble', canon: 'charm-medium' },
+  'charm-anchor': { charm: 4, surface: 'charm-wobble', canon: 'charm-medium' },
+  'charm-shield': { charm: 5, surface: 'charm-wobble', canon: 'charm-large' },
+  'charm-key': { charm: 6, surface: 'charm-wobble', canon: 'charm-small' },
   'column-thin': {
     outline: columnOutline,
     surface: 'bark-vertical',
@@ -266,6 +295,30 @@ const BABY_PINK = '#ffc3d8'
 const STONE_GREY = TEX_COLORS.crateredLight
 
 const SURFACES = {
+  // Not a texture: a slight, even drift that keeps the charm's lines from being
+  // ruler-straight. No glow, like every other made thing.
+  'charm-wobble': {
+    glow: false,
+    colour: null,
+    Filter: ({ id }) => (
+      <filter id={id} x="-15%" y="-15%" width="130%" height="130%">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.02"
+          numOctaves="2"
+          seed="7"
+          result="drift"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="drift"
+          scale={CHARM_WOBBLE}
+          xChannelSelector="R"
+          yChannelSelector="G"
+        />
+      </filter>
+    ),
+  },
   'bark-vertical': {
     glow: false,
     colour: BROWN,
@@ -378,6 +431,46 @@ function Curiosity({
    * `overflow: visible` rather than a padded viewBox, which would have changed
    * the drawing's units and broken the very rule above.
    */
+  if (recipe.charm) {
+    // The charm's own drawing is 24 units across; scale it to fill the frame,
+    // and divide the pen by the same factor so the line stays CHARM_LINE.
+    const k = w / 24
+    return (
+      <svg
+        viewBox={`0 0 ${w} ${h}`}
+        x={x}
+        y={y}
+        width={`${drawn.w}${unit}`}
+        height={`${drawn.h}${unit}`}
+        className={className}
+        style={{ overflow: 'visible' }}
+        aria-hidden="true"
+        {...rest}
+      >
+        {/* The grab area is the WHOLE frame, gaps included — not just the
+            lines. Transparent but painted, so a pointer lands on it. */}
+        <rect
+          className="curiosity-grab"
+          width={w}
+          height={h}
+          fill="transparent"
+        />
+        <g filter={`url(#curio-${recipe.surface})`}>
+          <g
+            transform={`scale(${k})`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={CHARM_LINE / k}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ color: SYMBOL_COLORS[recipe.charm] }}
+          >
+            {CHARM_SHAPES[recipe.charm]}
+          </g>
+        </g>
+      </svg>
+    )
+  }
   return (
     <svg
       viewBox={`0 0 ${w} ${h}`}

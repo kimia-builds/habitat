@@ -2655,16 +2655,16 @@ describe('the Market (T4.3b)', () => {
   })
 
   // TEMPORARY (Kimia, 2026-10-09): until the Map work lands, even a
-  // fresh world's stall carries all eight drawn curiosities. When the
+  // fresh world's stall carries all fourteen drawn curiosities. When the
   // stall goes back to growing with the regions, this test goes back to
   // asserting a bare stall for a world with no lived days.
-  it('a fresh world shows all eight drawn curiosities, none affordable', () => {
+  it('a fresh world shows all fourteen drawn curiosities, none affordable', () => {
     seedWorld('market-seed') // no completions at all: an empty wallet
     render(<App />)
     fireEvent.click(meters().getByRole('button', { name: /wallet balance/ }))
     expect(screen.getByRole('heading', { name: 'local market' })).toBeDefined()
     const buttons = screen.getAllByRole('button', { name: /^buy a curiosity/ })
-    expect(buttons).toHaveLength(8)
+    expect(buttons).toHaveLength(14)
     expect(buttons.every((button) => button.disabled)).toBe(true)
   })
 })
