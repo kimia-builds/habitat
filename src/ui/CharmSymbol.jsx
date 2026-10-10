@@ -16,8 +16,8 @@ export const CHARM_SHAPES = {
       <path d="M2 19h20l-3.5-9-4.5 5L12 5l-2 10-4.5-5L2 19z" />
       <line x1="2" y1="22" x2="22" y2="22" />
       <circle cx="12" cy="5" r="1.2" fill="currentColor" stroke="none" />
-      <circle cx="4.5" cy="11.5" r="1" fill="currentColor" stroke="none" />
-      <circle cx="19.5" cy="11.5" r="1" fill="currentColor" stroke="none" />
+      <circle cx="5.5" cy="10" r="1" fill="currentColor" stroke="none" />
+      <circle cx="18.5" cy="10" r="1" fill="currentColor" stroke="none" />
     </>
   ),
   2: (
@@ -48,7 +48,8 @@ export const CHARM_SHAPES = {
   5: (
     <>
       <path d="M12 2L4 6V12C4 16.8 7.6 21.2 12 22C16.4 21.2 20 16.8 20 12V6L12 2Z" />
-      <path d="M9 12L11 14L15 10" />
+      <line x1="12" y1="2" x2="12" y2="22" />
+      <line x1="4" y1="9" x2="20" y2="9" />
     </>
   ),
   6: (
@@ -58,6 +59,21 @@ export const CHARM_SHAPES = {
       <line x1="20" y1="9.5" x2="20" y2="13" />
       <line x1="17" y1="9.5" x2="17" y2="12" />
       <circle cx="7.5" cy="9.5" r="1.5" fill="currentColor" stroke="none" />
+    </>
+  ),
+}
+
+// The market ANCHOR is drawn a little differently from the habit-view charm
+// (Kimia): its crossbar is one unbroken line through the shaft, and a shorter
+// second bar sits directly below it. Every other charm object uses CHARM_SHAPES.
+export const OBJECT_SHAPE_OVERRIDES = {
+  4: (
+    <>
+      <circle cx="12" cy="5" r="2.5" />
+      <line x1="12" y1="7.5" x2="12" y2="21" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <line x1="8" y1="16" x2="16" y2="16" />
+      <path d="M5 19C5 19 7.5 22 12 22C16.5 22 19 19 19 19" />
     </>
   ),
 }

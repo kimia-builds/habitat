@@ -3703,6 +3703,13 @@ anywhere inside it, gaps included, not only on the drawn lines.
   rectangle of the full figure behind every drawn curiosity. Checked in
   the real browser by probing a grid of points over each charm in the
   Market: every point lands on the object.
+- **Redrawn after Kimia's look.** Crown: the two side dots now sit on the
+  tips of the side spikes (also in the habit-view charm). Shield: the tick
+  became a Latin cross whose arms touch the shield's edges (habit-view charm
+  and market object alike; design-notes §11a updated). Market anchor only:
+  one unbroken crossbar plus a shorter bar directly below it
+  (`OBJECT_SHAPE_OVERRIDES` in CharmSymbol.jsx); the habit-view anchor is
+  unchanged.
 - **The Market frame grows.** Fourteen items need a third row, which the
   fixed 600px frame clipped. `.market-scene` is now 600px at least and
   grows downward; the page scrolls.

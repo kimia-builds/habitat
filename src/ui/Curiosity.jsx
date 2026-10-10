@@ -31,7 +31,7 @@
  * is explicitly not exhaustive.
  */
 
-import { CHARM_SHAPES } from './CharmSymbol.jsx'
+import { CHARM_SHAPES, OBJECT_SHAPE_OVERRIDES } from './CharmSymbol.jsx'
 import { SYMBOL_COLORS } from './symbols.js'
 import { objectDrawnBox, objectSize } from './objectCanon.js'
 import { wobblyBlob, wobblyEllipse, wobblyRect } from './handDrawn.js'
@@ -465,7 +465,7 @@ function Curiosity({
             strokeLinejoin="round"
             style={{ color: SYMBOL_COLORS[recipe.charm] }}
           >
-            {CHARM_SHAPES[recipe.charm]}
+            {OBJECT_SHAPE_OVERRIDES[recipe.charm] ?? CHARM_SHAPES[recipe.charm]}
           </g>
         </g>
       </svg>

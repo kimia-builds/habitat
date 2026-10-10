@@ -806,8 +806,8 @@ The exact paths (drop into the shared SVG attributes above):
 <line x1="2" y1="22" x2="22" y2="22"/>
 
 <circle cx="12" cy="5" r="1.2" fill="currentColor" stroke="none"/>
-<circle cx="4.5" cy="11.5" r="1" fill="currentColor" stroke="none"/>
-<circle cx="19.5" cy="11.5" r="1" fill="currentColor" stroke="none"/>`
+<circle cx="5.5" cy="10" r="1" fill="currentColor" stroke="none"/>
+<circle cx="18.5" cy="10" r="1" fill="currentColor" stroke="none"/>`
 - **cherries** — `<circle cx="7.5" cy="17" r="3.5"/>
 <circle cx="16.5" cy="17" r="3.5"/>
 <path d="M7.5 13.5C7.5 10 10 7.5 12 6.5"/>
@@ -825,7 +825,10 @@ The exact paths (drop into the shared SVG attributes above):
 <path d="M5 19C5 19 7.5 22 12 22C16.5 22 19 19 19 19"/>`
 - **shield** — `<path d="M12 2L4 6V12C4 16.8 7.6 21.2 12 22C16.4 21.2
 20 16.8 20 12V6L12 2Z"/>
-<path d="M9 12L11 14L15 10"/>`
+<line x1="12" y1="2" x2="12" y2="22"/>
+<line x1="4" y1="9" x2="20" y2="9"/>`
+  (The market's anchor OBJECT differs: one unbroken crossbar
+  `x1=5 x2=19 y=12` plus a shorter `x1=8 x2=16 y=16` below it.)
 - **key** — `<circle cx="7.5" cy="9.5" r="4.5"/>
 <line x1="12" y1="9.5" x2="22" y2="9.5"/>
 <line x1="20" y1="9.5" x2="20" y2="13"/>
