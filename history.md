@@ -3707,8 +3707,9 @@ anywhere inside it, gaps included, not only on the drawn lines.
   tips of the side spikes (also in the habit-view charm). Shield: the tick
   became a Latin cross whose arms touch the shield's edges (habit-view charm
   and market object alike; design-notes §11a updated). Market anchor only:
-  one unbroken crossbar plus a shorter bar directly below it
-  (`OBJECT_SHAPE_OVERRIDES` in CharmSymbol.jsx); the habit-view anchor is
+  one unbroken crossbar, then (after a second look) the extra bar dropped,
+  the bar shortened, the curve widened and a small arrowhead put on each
+  end of the curve (`OBJECT_SHAPE_OVERRIDES` in CharmSymbol.jsx); the habit-view anchor is
   unchanged.
 - **The Market frame grows.** Fourteen items need a third row, which the
   fixed 600px frame clipped. `.market-scene` is now 600px at least and

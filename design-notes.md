@@ -827,8 +827,9 @@ The exact paths (drop into the shared SVG attributes above):
 20 16.8 20 12V6L12 2Z"/>
 <line x1="12" y1="2" x2="12" y2="22"/>
 <line x1="4" y1="9" x2="20" y2="9"/>`
-  (The market's anchor OBJECT differs: one unbroken crossbar
-  `x1=5 x2=19 y=12` plus a shorter `x1=8 x2=16 y=16` below it.)
+  (The market's anchor OBJECT differs: one unbroken, shorter crossbar
+  `x1=6.5 x2=17.5 y=12`, a wider curve `M3 19 … 21 19`, and a small filled
+  arrowhead on each end of the curve.)
 - **key** — `<circle cx="7.5" cy="9.5" r="4.5"/>
 <line x1="12" y1="9.5" x2="22" y2="9.5"/>
 <line x1="20" y1="9.5" x2="20" y2="13"/>
