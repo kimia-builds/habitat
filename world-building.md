@@ -161,24 +161,23 @@ In discovery order, which is also the order the flora silhouettes are
 shown in. "Shape" is the silhouette's number in the first contact sheet
 (the order they sit in the code), so the trail back to Kimia's drawings
 never breaks. Everything else about each region and flora is in
-`nzd-regions.xlsx`; the last column only holds the few details that the
-table does not.
+`nzd-regions.xlsx`.
 
-| # | Region | Patron flora | Shape | Not in the table |
-|---|---|---|---|---|
-| 1 | sahara | unif | 14 | the most basic crawling flora on N-Z-D |
-| 2 | ari | gaba | 4 | |
-| 3 | lerato | simeen | 5 | |
-| 4 | sogol | toom | 3 | |
-| 5 | kian | jembesh | 8 | |
-| 6 | ida | siki | 10 | |
-| 7 | sufi | honima | 15 | the peace branch is bendy but robust, like banana leaves |
-| 8 | cyrus | bumyaab | 2 | |
-| 9 | shiva | zecht | 11 | |
-| 10 | oratile | pataya | 7 | |
-| 11 | chaymae | budir | 12 | one of the few flora that can survive the cold |
-| 12 | hamid | hayunti | 9 | attaches with tendrils through its hole; its fruit strands are like ultra-slim bananas |
-| 13 | parnian | duripila | 1 | only sometimes yields its lucky tendril |
-| 14 | marie-simone | gubl | 13 | |
-| 15 | tadiwa | dalat | 6 | |
-| 16 | lily | kiyajong-ha | 16 | its region is the N-Z-D equivalent of a rainforest |
+| # | Region | Patron flora | Shape |
+|---|---|---|---|
+| 1 | sahara | unif | 14 |
+| 2 | ari | gaba | 4 |
+| 3 | lerato | simeen | 5 |
+| 4 | sogol | toom | 3 |
+| 5 | kian | jembesh | 8 |
+| 6 | ida | siki | 10 |
+| 7 | sufi | honima | 15 |
+| 8 | cyrus | bumyaab | 2 |
+| 9 | shiva | zecht | 11 |
+| 10 | oratile | pataya | 7 |
+| 11 | chaymae | budir | 12 |
+| 12 | hamid | hayunti | 9 |
+| 13 | parnian | duripila | 1 |
+| 14 | marie-simone | gubl | 13 |
+| 15 | tadiwa | dalat | 6 |
+| 16 | lily | kiyajong-ha | 16 |
