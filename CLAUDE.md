@@ -61,6 +61,11 @@ Kimia is a non-coder. Therefore:
   marker. No version-history preambles anywhere. Docs that
   disagree with code are a bug — say so and fix them in the same
   session.
+- **No target dates for future work:** never tie upcoming tasks,
+  milestones or the release to a date or deadline in any doc ("by
+  December", "ships mid-month"). Scope stays whole; the release date
+  can move. Dates themselves are fine everywhere else: dated
+  decisions-log entries, dates in history.md, dates in code comments.
 - If stuck on the same bug twice, stop and say so rather than thrashing.
 - **Don't open the browser preview just so Kimia can see it
   (2026-07-25):** every task ends by pushing to the live site
