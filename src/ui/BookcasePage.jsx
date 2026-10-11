@@ -14,14 +14,15 @@
 // Reading itself is tracked NOWHERE (spec 2026-07-19): the popup opens
 // and closes, and not a byte of it is stored.
 //
-// The books are code-drawn placeholders until the T5.3 art pass — slim
-// magazine, middling novel, thick dictionary, in the literacy stream's
-// violet family — and publications stay generic ("a novel") until T6.1
-// names them. No found dates anywhere (Kimia's call, this session).
+// The books wear Kimia's T5.3n look (drawn in bookArt.js):
+// slim magazine, middling novel, thick dictionary — purple, aquamarine
+// and baby pink, five shades each — beaded, with a wavy masthead band.
+// Publications stay generic ("a novel") until T6.1 names them. No found
+// dates anywhere (Kimia's call, 2026-07-19).
 
 import { useRef, useState } from 'react'
 import { arrivalLabel } from './arrivalText.js'
-import DropGlyph from './DropGlyph.jsx'
+import { BOOK_GLOW, bookArt, bookLook } from './bookArt.js'
 import { useText } from './language.jsx'
 import { CANVAS_HEIGHT, CANVAS_VIEWBOX, CANVAS_WIDTH } from './worldCanvas.js'
 
@@ -53,24 +54,15 @@ const PLANKS = [HEIGHT / 3, (HEIGHT * 2) / 3, HEIGHT * 0.99]
 // it is Kimia's call, not one to make quietly here — see history.md.
 const OLD_SCENE_SCALE = 2.4
 
-// Placeholder book shapes, per reading type: width and height differ so
-// the three rarities read at a glance, colours climb the violet family
-// toward the rarest. Real art arrives with T5.3.
+// Book shapes, per reading type: width and height differ so the three
+// rarities read at a glance (Kimia kept these sizes in the T5.3n
+// art pass). Their colours live in bookArt.js.
 const BOOK_SHAPES = {
-  magazine: {
-    spineWidth: 9 * OLD_SCENE_SCALE,
-    height: 42 * OLD_SCENE_SCALE,
-    color: '#9d8cc9',
-  },
-  novel: {
-    spineWidth: 12 * OLD_SCENE_SCALE,
-    height: 48 * OLD_SCENE_SCALE,
-    color: '#c5b8e8',
-  },
+  magazine: { spineWidth: 9 * OLD_SCENE_SCALE, height: 42 * OLD_SCENE_SCALE },
+  novel: { spineWidth: 12 * OLD_SCENE_SCALE, height: 48 * OLD_SCENE_SCALE },
   dictionary: {
     spineWidth: 16 * OLD_SCENE_SCALE,
     height: 52 * OLD_SCENE_SCALE,
-    color: '#e0d7f7',
   },
 }
 
@@ -80,17 +72,17 @@ const COVER_RATIO = 0.68
 
 // The rest of the shelf's hand-written measurements, all scaled with the
 // books above so the picture is the same one, larger: how far the planks
-// stop short of the frame, the drop glyph on a front cover, and the eye
-// that opens a publication.
+// stop short of the frame, and the eye that opens a publication (a touch
+// smaller since the T5.3n art pass, the size Kimia approved).
 const PLANK_INSET = 4 * OLD_SCENE_SCALE
-const BOOK_CORNER = 1.5 * OLD_SCENE_SCALE
-const COVER_GLYPH = 14 * OLD_SCENE_SCALE
-const COVER_GLYPH_TOP = 5 * OLD_SCENE_SCALE
 const EYE_LIFT = 12 * OLD_SCENE_SCALE
-const EYE_RADIUS = 7 * OLD_SCENE_SCALE
-const EYE_HALF_WIDTH = 3.6 * OLD_SCENE_SCALE
-const EYE_CURVE = 3.4 * OLD_SCENE_SCALE
-const PUPIL_RADIUS = 1.2 * OLD_SCENE_SCALE
+const EYE_RADIUS = 6 * OLD_SCENE_SCALE
+const EYE_HALF_WIDTH = 3.1 * OLD_SCENE_SCALE
+const EYE_CURVE = 2.9 * OLD_SCENE_SCALE
+const PUPIL_RADIUS = 1 * OLD_SCENE_SCALE
+
+// A safe element id from a publication id ("c1:0" → "c1-0").
+const clipIdFor = (id) => `book-clip-${String(id).replace(/[^\w-]/g, '-')}`
 
 // A press becomes a drag once the pointer travels this many pixels;
 // anything shorter is a click (the spine ↔ front toggle).
@@ -197,6 +189,44 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
             role="group"
             aria-label={t('bookcase.shelf')}
           >
+            {/* The books' two effects: a faint glow per type, and a slight
+              roughening so no edge is ruler-straight. */}
+            <defs>
+              {Object.entries(BOOK_GLOW).map(([type, glow]) => (
+                <filter
+                  key={type}
+                  id={`book-glow-${type}`}
+                  x="-30%"
+                  y="-30%"
+                  width="160%"
+                  height="160%"
+                >
+                  <feDropShadow
+                    dx="0"
+                    dy="0"
+                    stdDeviation="2"
+                    floodColor={glow}
+                    floodOpacity="0.35"
+                  />
+                </filter>
+              ))}
+              <filter
+                id="book-rough"
+                x="-5%"
+                y="-5%"
+                width="110%"
+                height="110%"
+              >
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.06"
+                  numOctaves="2"
+                  seed="3"
+                  result="noise"
+                />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6" />
+              </filter>
+            </defs>
             {/* The constant bookshelf: one frame, three planks. */}
             <rect
               className="bookshelf-frame"
@@ -226,35 +256,65 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
                 item.facing === 'front'
                   ? shape.height * COVER_RATIO
                   : shape.spineWidth
+              const art = bookArt({
+                type: item.type,
+                facing: item.facing,
+                width,
+                height: shape.height,
+                ...bookLook(item.id),
+              })
+              const clipId = clipIdFor(item.id)
               return (
                 <g
                   key={item.id}
                   className={`book book-${item.type}`}
-                  style={{ color: shape.color }}
+                  style={{ color: art.ink }}
                   role="button"
                   tabIndex={0}
                   aria-label={label}
                   onPointerDown={(event) => handlePointerDown(item, event)}
                   onKeyDown={(event) => handleKeyDown(item, event)}
                 >
-                  <rect
+                  {/* The book itself, drawn around its anchor and moved
+                    into place: solid fill, masthead band, wobbly edge,
+                    beads. */}
+                  <g
                     className="book-body"
-                    x={cx - width / 2}
-                    y={base - shape.height}
-                    width={width}
-                    height={shape.height}
-                    rx={BOOK_CORNER}
-                  />
+                    transform={`translate(${cx} ${base})`}
+                    filter="url(#book-rough)"
+                  >
+                    <clipPath id={clipId}>
+                      <path d={art.outline} />
+                    </clipPath>
+                    <path
+                      d={art.outline}
+                      fill={art.fill}
+                      fillOpacity="0.92"
+                      filter={`url(#book-glow-${item.type})`}
+                    />
+                    <path
+                      d={art.bandPath}
+                      fill={art.band}
+                      clipPath={`url(#${clipId})`}
+                    />
+                    <path
+                      className="book-edge"
+                      d={art.outline}
+                      fill="none"
+                      stroke={art.ink}
+                    />
+                    {art.beads.map((bead, index) => (
+                      <circle
+                        key={index}
+                        cx={bead.cx}
+                        cy={bead.cy}
+                        r={bead.r}
+                        fill={bead.colour}
+                      />
+                    ))}
+                  </g>
                   {item.facing === 'front' && (
                     <>
-                      <DropGlyph
-                        kind={item.type}
-                        className="book-glyph"
-                        x={cx - COVER_GLYPH / 2}
-                        y={base - shape.height + COVER_GLYPH_TOP}
-                        width={COVER_GLYPH}
-                        height={COVER_GLYPH}
-                      />
                       <g
                         className="book-eye"
                         role="button"

@@ -846,19 +846,32 @@ years without ever being complete too early.
 
 **Types.** Magazines · novels · dictionaries.
 
-**Count — 30 covers.** Ten of each type (~10 block colours × 3 types).
-Type governs **drop rarity** (spec §5), not count. The cover count is
-**independent of the reading pool** (Kimia 2026-10-08): the texts inside
-are a separate pool of 126 (spec §5 Stream 2), not one per cover. The
-cover count is open to revisit at the cover-design phase.
+**Count — 15 looks.** Five shades of each type's colour (settled in
+T5.3n, replacing the earlier "ten of each"). Type governs **drop
+rarity** (spec §5), not count. A book wears one shade for ever, picked
+from its own id, so nothing about it is stored. The look count is
+**independent of the reading pool**: the texts inside are a separate
+pool of 126 (spec §5 Stream 2), not one per cover.
 
 **Form.** Familiar Earth-like book forms read through Habitat's graphic
 style — recognisable silhouettes, no overly sharp lines in any view.
+Kimia's T5.3n design, picked by eye off option sheets: an almost-solid
+block of colour (92%); a hand-wobbled, slightly roughened outline in a
+darker shade; a border of small, uneven **beads** just inside the edge
+(a single bead column down a spine); and a darker wavy **masthead
+band** across the top, about a third of a cover and a fifth of a spine.
+Beads that land on the band turn pale. The cover carries **only the
+eye** — no type mark, since a click anywhere on a book turns it. The
+three types keep their sizes: slim magazine, middling novel, thick
+dictionary. Drawn in `src/ui/bookArt.js`.
 
-**Colour.** A single block colour per publication, anywhere on the
-spectrum.
+**Colour.** Soft pastels, one family per type, five shades each:
+**purple** magazines, **aquamarine** novels, **baby-pink**
+dictionaries. (This replaces "a single block colour anywhere on the
+spectrum".)
 
-**Light.** Glows **less** than living things (§7).
+**Light.** Glows **less** than living things (§7): a faint glow in
+each type's own middle shade.
 
 **Two canonical assets per publication:**
 

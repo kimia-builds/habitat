@@ -130,7 +130,10 @@ built on top of a live, in-use app.
   lands at the top of the habit list is the plant you found, and the first
   one you ever find introduces itself full-screen. In the abode, anything
   you hold can be turned: press rotate, then drag anywhere to spin it
-  about its centre like a dial, and save or cancel. Still to come in M5
+  about its centre like a dial, and save or cancel. The library's books
+  have their real look as well — beaded spines and covers with a wavy
+  band across the top, purple magazines, aquamarine novels and baby-pink
+  dictionaries, five soft shades of each. Still to come in M5
   are the friends on the rest of their screens, the giant landmark flora,
   and the object art.
 - **M6 — under way alongside M5.** Content pools, pacing tune-ups and

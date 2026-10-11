@@ -101,6 +101,18 @@ describe('spine ↔ front', () => {
     expect(spies.onFace).toHaveBeenCalledWith('c1:0', 'spine')
   })
 
+  it('a face-out cover carries only the eye — no type mark (T5.3n)', () => {
+    const { container } = render(
+      <BookcasePage
+        items={[item('c1:0', 'magazine', { facing: 'front' })]}
+        {...handlers()}
+      />,
+    )
+    const cover = screen.getByRole('button', { name: 'a magazine' })
+    expect(cover.querySelectorAll('[role="button"]')).toHaveLength(1)
+    expect(container.querySelector('svg svg')).toBeNull()
+  })
+
   it('the eye opens the spread popup — and reading stores nothing (no facing flip)', () => {
     const spies = handlers()
     const front = item('c1:0', 'dictionary', { facing: 'front' })

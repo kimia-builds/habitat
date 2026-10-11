@@ -361,6 +361,11 @@ tracker. Everything after this is delight, informed by real use.
             easy to describe. So this is mainly a listing-and-assigning job
             with a little new drawing, not 40 new drawings. Which objects
             go in which region is decided here (part of T6.1).
+      - [x] **T5.3n The reading material** _(done — beaded spines and
+            covers with a wavy masthead band, almost solid; purple
+            magazines, aquamarine novels, baby-pink dictionaries, five
+            shades each; the cover keeps only the eye. Build notes in
+            history.md)_
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

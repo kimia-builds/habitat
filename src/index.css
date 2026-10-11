@@ -2435,27 +2435,19 @@ body {
   stroke-width: 2.4;
 }
 
-/* A book: soft fill, glowing edge — the everyday pastel register. */
+/* A book (T5.3n): its colours, beads and band are drawn in
+   bookArt.js — only the edge's weight and the focus ring live here. */
 .book {
   cursor: grab;
   outline: none;
 }
 
-.book:focus-visible .book-body {
-  stroke-opacity: 1;
+.book-edge {
+  stroke-width: 2;
 }
 
-.book-body {
-  fill: currentColor;
-  fill-opacity: 0.14;
-  stroke: currentColor;
-  stroke-opacity: 0.75;
-  stroke-width: 2.88;
-  filter: drop-shadow(0 0 var(--glow-faint) currentColor);
-}
-
-.book-glyph {
-  opacity: 0.85;
+.book:focus-visible .book-edge {
+  stroke-width: 3.5;
 }
 
 /* The read button on a face-out cover: a small quiet eye. */

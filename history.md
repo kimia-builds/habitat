@@ -3596,6 +3596,46 @@ return 0` right after the era is worked out, so a moment before the
   matter more than the release date, so nothing is cut from v1 to hit it.
   Folded into spec §5 and design-bible §9a / §12.
 
+- (Kimia, eyeballing three option sheets): **the reading material's
+  look** (T5.3n). Same shapes and sizes; fill made almost solid; a
+  beaded inner border plus a wavy masthead band; lines hand-wobbled
+  rather than clean. Colours by type: the existing purples for
+  magazines, aquamarine for novels, baby pink for dictionaries (peach
+  and pink were the first ask, changed after seeing them) — soft
+  pastels, five shades each, all kept. The type mark on the cover is
+  removed: clicking anywhere on a book already turns it, so only the
+  eye remains. Folded into design-bible §10b.
+
+## T5.3n build notes — the reading material
+
+Built in front of Kimia the design-slice way: four magazine option
+sheets (stitched, double rule, beaded edge, deckled edge + masthead) as
+standalone pages, then the beaded edge + masthead combination, then all
+three types in their colours. Each round was approved by eye before the
+next; nothing reached the game until she said "take them live".
+
+- `src/ui/bookArt.js` draws a book around its anchor (bottom centre at
+  0, 0) and the shelf moves it into place, so the shapes are worked out
+  once per look and cached rather than redrawn on every drag frame.
+  Colours live beside the drawing, like friendPalettes.js (§11d).
+- A book's shade (one of five) and its wobble come from a hash of its
+  publication id: no storage change, and the same shelf always looks
+  the same. Over 200 ids every shade is used.
+- Two SVG filters sit in the shelf's `<defs>`: a faint glow per type
+  (each type's middle shade at 35%) and a slight turbulence
+  displacement so no edge is ruler-straight.
+- The DropGlyph on a face-out cover is gone; DropGlyph itself stays for
+  the reveals. The eye is a touch smaller, the size on the approved
+  sheets. `.book-body` / `.book-glyph` CSS replaced by `.book-edge`
+  (stroke weight, thicker on keyboard focus).
+- Verified in the browser pane on a throwaway harness of 24 books: a
+  real click turned a spine face-out, a real click on an eye opened the
+  reading popup without turning the book, and a scripted pointer drag
+  moved a book. Tests: bookArt.test.js (shades, stable looks, beads)
+  and a Bookcase test that a cover's only inner control is the eye.
+- Still open, untouched: the T5.4 note that a book now reaches about
+  half its plank gap rather than seven tenths.
+
 ## T5.3l build notes — the sixteen keepsakes
 
 Every keepsake was made from its patron flora's own trace, in a throwaway
