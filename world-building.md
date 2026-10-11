@@ -172,13 +172,13 @@ table does not.
 | 4 | sogol | toom | 3 | |
 | 5 | kian | jembesh | 8 | |
 | 6 | ida | siki | 10 | |
-| 7 | sufi | honima | 15 | the peace branch is bendy but robust, like banana leaves |
+| 7 | sufi | honima | 15 | |
 | 8 | cyrus | bumyaab | 2 | |
 | 9 | shiva | zecht | 11 | |
 | 10 | oratile | pataya | 7 | |
 | 11 | chaymae | budir | 12 | one of the few flora that can survive the cold |
 | 12 | hamid | hayunti | 9 | attaches with tendrils through its hole; its fruit strands are like ultra-slim bananas |
-| 13 | parnian | duripila | 1 | only sometimes yields its lucky tendril |
+| 13 | parnian | duripila | 1 | |
 | 14 | marie-simone | gubl | 13 | |
 | 15 | tadiwa | dalat | 6 | |
 | 16 | lily | kiyajong-ha | 16 | its region is the N-Z-D equivalent of a rainforest |
