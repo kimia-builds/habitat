@@ -144,7 +144,10 @@ built on top of a live, in-use app.
   persistent-storage groundwork, and the export button tells you how old
   your last backup is. There are two doors to starting over. The morning
   check-in got quick. Every word the interface says now lives in one
-  keyed file, so Habitat can hold a second language. And the habit list
+  keyed file, and Habitat now speaks Farsi as well as English: a switch
+  at the foot of every page changes the language, and in Farsi the words
+  read right to left in their own typeface, with Persian digits and the
+  Persian calendar, while the layout stays exactly where it is. And the habit list
   is learning new ways to be LOOKED at: every tile carries an eye, and
   closing it dims that habit and drifts it down out of your eyeline
   without switching anything off. Two words beside the six charms narrow
