@@ -253,7 +253,7 @@ hierarchy. Low gravity allows sprawling, unsupported forms. (This holds
 at every size — a "tree-like" landmark is tree-like in **scale**, not
 in body plan.)
 
-**SIXTEEN SPECIES, ONE PER MAP REGION (Kimia — this replaces the
+**SIXTEEN SPECIES, ONE PER MAP REGION (Kimia, 2026-10-09 — this replaces the
 earlier "four species" reading, which itself replaced "64
 species").** N-Z-D grows **sixteen flora silhouettes**: the four chosen
 in T5.3g plus **twelve new ones** (T5.3l — drawn and held in
@@ -268,7 +268,7 @@ different sizes and colours, and the arithmetic is exact.
   colours. Placeable in the Abode, gatherable and compostable.
 - **16 landmark ("mother tree")** — **each species' one super-sized
   tree.** Giant, too big to carry, **one per Map region, enforced**
-  (mechanics in spec §5): its discovery shows a **permanent marker on the
+  (2026-07-24; mechanics in spec §5): its discovery shows a **permanent marker on the
   Map**; gathering one (optional, like all flora) collects a **keepsake**
   that goes to the Abode, while the tree itself stays on the Map
   regardless. **Landmark size: 300px tall on the Abode's ground (a plip is
@@ -288,7 +288,7 @@ different sizes and colours, and the arithmetic is exact.
   flora** (a plain opaque fill with an outline, glowing at the lifted
   level — §9a's recipe). **The four colours are chosen** (2026-10-09, by eye): `#ff0000`,
   `#ff2d95`, `#ff9ecb`, `#ff5e00` — `src/ui/keepsakeColours.js`.
-  **The sixteen shapes are final (Kimia)** — `src/ui/keepsakeShapes.js`,
+  **The sixteen shapes are final (Kimia, 2026-10-11)** — `src/ui/keepsakeShapes.js`,
   one per region, each tagged with its region and flora. Most are a piece
   of the flora's own trace, kept, turned, shrunk or repeated, and **every
   cut line is soft and slightly wobbly, never a clean circle, triangle or
@@ -421,7 +421,7 @@ an axis of variation.
 **Fruit.** Tiny shrubs may bear none; larger flora may. Each species has
 **exactly one** fruit type, in any rounded or blobby form.
 
-**THE SHAPE IS STORED ON THE DROP; SIZE AND COLOUR ARE DEALT (Kimia).** A
+**THE SHAPE IS STORED ON THE DROP; SIZE AND COLOUR ARE DEALT (Kimia, 2026-10-09).** A
 flora drop records its **shape** (one of the 16, chosen from the shapes of
 the regions discovered so far, weighted toward the local one); its size and
 colour are still rolled from the save's own seed and the find's completion
@@ -846,16 +846,16 @@ years without ever being complete too early.
 
 **Types.** Magazines · novels · dictionaries.
 
-**Count — 15 looks.** Five shades of each type's colour (settled in
-T5.3n, replacing the earlier "ten of each"). Type governs **drop
+**Count — 15 looks.** Five shades of each type's colour (settled
+2026-10-11 in T5.3n, replacing the earlier "ten of each"). Type governs **drop
 rarity** (spec §5), not count. A book wears one shade for ever, picked
 from its own id, so nothing about it is stored. The look count is
-**independent of the reading pool**: the texts inside are a separate
+**independent of the reading pool** (Kimia 2026-10-08): the texts inside are a separate
 pool of 126 (spec §5 Stream 2), not one per cover.
 
 **Form.** Familiar Earth-like book forms read through Habitat's graphic
 style — recognisable silhouettes, no overly sharp lines in any view.
-Kimia's T5.3n design, picked by eye off option sheets: an almost-solid
+Kimia's T5.3n design (2026-10-11), picked by eye off option sheets: an almost-solid
 block of colour (92%); a hand-wobbled, slightly roughened outline in a
 darker shade; a border of small, uneven **beads** just inside the edge
 (a single bead column down a spine); and a darker wavy **masthead

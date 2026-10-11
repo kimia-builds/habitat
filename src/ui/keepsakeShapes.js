@@ -1,7 +1,7 @@
 /*
  * keepsakeShapes.js — the sixteen keepsake shapes, one per region (T5.3l)
  * =============================================================================
- * Kimia's final shapes. Her rule: a keepsake is mostly a variation on a
+ * Kimia's final shapes (2026-10-11). Her rule: a keepsake is mostly a variation on a
  * section of its flora's silhouette. So most are cut from the flora's own
  * trace (floraSilhouettes.js / newFloraSilhouettes.js): a piece kept, turned,
  * shrunk or repeated, with every cut line softened so it reads as drawn, not

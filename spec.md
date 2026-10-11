@@ -242,7 +242,8 @@ opening its own growing world:
   money.
 - Gathered flora live in the **Abode**, arrangeable like everything
   else there.
-- **Each region's native flora and its mother tree.** Every Map region
+- **Each region's native flora and its mother tree (2026-10-09,
+  replacing the 2026-07-19 landmark-flora rule).** Every Map region
   has **one distinct native flora** — 16 silhouettes in all (design-bible
   §9a) — and silhouette is what tells species apart. A region's flora
   arrives in five steps, in order: (1) a picture or symbol of it appears
@@ -259,7 +260,7 @@ opening its own growing world:
   keepsake, never the tree itself: the keepsake goes to the Abode and is
   compostable as usual, while the tree stays where it grows, on the Map,
   regardless. Small flora don't appear on the Map. There are **16 mother
-  trees — exactly one per Map region, enforced**: the drop seeding
+  trees — exactly one per Map region, enforced** (2026-07-24): the drop seeding
   guarantees each region receives its own, placed as the expedition passes
   through it.
   Shapes and keepsakes already discovered **keep dropping for the rest of

@@ -2435,7 +2435,7 @@ body {
   stroke-width: 2.4;
 }
 
-/* A book (T5.3n): its colours, beads and band are drawn in
+/* A book (T5.3n, 2026-10-11): its colours, beads and band are drawn in
    bookArt.js — only the edge's weight and the focus ring live here. */
 .book {
   cursor: grab;

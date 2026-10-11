@@ -3581,7 +3581,7 @@ return 0` right after the era is worked out, so a moment before the
      slot; the story and names go last and stay hers. In-book texts
      (T6.24) do not exist yet and join the Farsi work once written.
 
-- (Kimia, sizing the Map work): **the flora get a second
+- 2026-10-09 (Kimia, sizing the Map work): **the flora get a second
   round before any Map work.** The Map is hand-drawn. Each of the 16
   regions has one distinct native flora, and silhouette is the only thing
   that tells species apart now, so there are **16 shapes: the 4 we have
@@ -3596,7 +3596,7 @@ return 0` right after the era is worked out, so a moment before the
   matter more than the release date, so nothing is cut from v1 to hit it.
   Folded into spec §5 and design-bible §9a / §12.
 
-- (Kimia, eyeballing three option sheets): **the reading material's
+- 2026-10-11 (Kimia, eyeballing three option sheets): **the reading material's
   look** (T5.3n). Same shapes and sizes; fill made almost solid; a
   beaded inner border plus a wavy masthead band; lines hand-wobbled
   rather than clean. Colours by type: the existing purples for
@@ -3606,7 +3606,7 @@ return 0` right after the era is worked out, so a moment before the
   removed: clicking anywhere on a book already turns it, so only the
   eye remains. Folded into design-bible §10b.
 
-## T5.3n build notes — the reading material
+## T5.3n build notes — the reading material (2026-10-11)
 
 Built in front of Kimia the design-slice way: four magazine option
 sheets (stitched, double rule, beaded edge, deckled edge + masthead) as
@@ -3636,7 +3636,7 @@ next; nothing reached the game until she said "take them live".
 - Still open, untouched: the T5.4 note that a book now reaches about
   half its plank gap rather than seven tenths.
 
-## T5.3l build notes — the sixteen keepsakes
+## T5.3l build notes — the sixteen keepsakes (2026-10-11)
 
 Every keepsake was made from its patron flora's own trace, in a throwaway
 script (paper.js boolean geometry, run outside the repo) that cut, turned,
@@ -3669,7 +3669,7 @@ way the flora traces are, so the script was not kept.
   `keepsakeShapes.test.js` pins sixteen entries, one per region, flora and
   flora shape.
 
-## T5.3l build notes — the twelve silhouettes
+## T5.3l build notes — the twelve silhouettes (2026-10-09)
 
 Kimia drew the twelve new flora and they were traced into flat single-path
 SVGs. Each is one solid shape (holes kept, e.g. the ring and the ginkgo's
@@ -3751,7 +3751,7 @@ Both are the kind of thing only eyes find.
 ask for it; the words themselves are keyboard-reachable. Phone/touch
 turning waits for M8's canvas decision.
 
-## T5.3j build notes — the six charm objects
+## T5.3j build notes — the six charm objects (2026-10-10)
 
 Kimia asked for "6 new objects in the market that resemble the charms",
 with the rule that picking one up in the Abode must work by pressing
@@ -7650,7 +7650,7 @@ and recorded in spec.md's decisions log._
   workbench shelf (then removed). Held in `src/ui/keepsakeColours.js`;
   nothing reads them until the keepsakes are drawn and dropping.
 
-- (Kimia): **the sixteen keepsake shapes are final** — drafted on a
+- 2026-10-11 (Kimia): **the sixteen keepsake shapes are final** — drafted on a
   workbench shelf, each beside its flora, and judged over three passes
   (then the shelf came down). Rules that came out of it: cut lines are
   always soft and organic; most keepsakes are a section of their flora,

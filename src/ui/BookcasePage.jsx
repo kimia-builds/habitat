@@ -14,7 +14,7 @@
 // Reading itself is tracked NOWHERE (spec 2026-07-19): the popup opens
 // and closes, and not a byte of it is stored.
 //
-// The books wear Kimia's T5.3n look (drawn in bookArt.js):
+// The books wear Kimia's T5.3n look (2026-10-11, drawn in bookArt.js):
 // slim magazine, middling novel, thick dictionary — purple, aquamarine
 // and baby pink, five shades each — beaded, with a wavy masthead band.
 // Publications stay generic ("a novel") until T6.1 names them. No found
@@ -55,7 +55,7 @@ const PLANKS = [HEIGHT / 3, (HEIGHT * 2) / 3, HEIGHT * 0.99]
 const OLD_SCENE_SCALE = 2.4
 
 // Book shapes, per reading type: width and height differ so the three
-// rarities read at a glance (Kimia kept these sizes in the T5.3n
+// rarities read at a glance (Kimia kept these sizes in the 2026-10-11
 // art pass). Their colours live in bookArt.js.
 const BOOK_SHAPES = {
   magazine: { spineWidth: 9 * OLD_SCENE_SCALE, height: 42 * OLD_SCENE_SCALE },
@@ -73,7 +73,7 @@ const COVER_RATIO = 0.68
 // The rest of the shelf's hand-written measurements, all scaled with the
 // books above so the picture is the same one, larger: how far the planks
 // stop short of the frame, and the eye that opens a publication (a touch
-// smaller since the T5.3n art pass, the size Kimia approved).
+// smaller since the 2026-10-11 art pass, the size Kimia approved).
 const PLANK_INSET = 4 * OLD_SCENE_SCALE
 const EYE_LIFT = 12 * OLD_SCENE_SCALE
 const EYE_RADIUS = 6 * OLD_SCENE_SCALE

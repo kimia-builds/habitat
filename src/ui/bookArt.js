@@ -1,7 +1,7 @@
 /*
- * bookArt.js — how a publication is drawn on the Bookcase (T5.3)
+ * bookArt.js — how a publication is drawn on the Bookcase (T5.3n, 2026-10-11)
  * =============================================================================
- * Kimia's pick, by eye off three rounds of option sheets: an
+ * Kimia's pick, 2026-10-11, by eye off three rounds of option sheets: an
  * almost-solid block of colour with a hand-wobbled outline, a border of small
  * uneven BEADS just inside the edge (a single bead column down a spine), and a
  * darker wavy MASTHEAD BAND across the top. Beads that land on the band turn

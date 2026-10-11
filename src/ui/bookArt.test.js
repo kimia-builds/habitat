@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { BOOK_SHADES, bookArt, bookLook } from './bookArt.js'
 
-describe('the book art (T5.3n)', () => {
+describe('the book art (T5.3n, 2026-10-11)', () => {
   it('gives every type five distinct shades', () => {
     for (const shades of Object.values(BOOK_SHADES)) {
       expect(shades).toHaveLength(5)

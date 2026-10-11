@@ -270,7 +270,7 @@ tracker. Everything after this is delight, informed by real use.
                   Market stall and the Abode draw the eight real drawings, all
                   eight on offer from the start; TEMPORARY, see below. Build
                   notes in history.md)_
-            - [x] **The six charm objects** _(done — six line drawings of
+            - [x] **The six charm objects** _(done 2026-10-10 — six line drawings of
                   the six charms (crown, cherry, shell, anchor, shield, key)
                   join the playtest stall as pool slots 2:2, 3:0, 3:1, 3:2,
                   4:0, 4:1, so the stall offers fourteen. Each is grabbed by
@@ -305,7 +305,7 @@ tracker. Everything after this is delight, informed by real use.
             neon colours, a plain opaque fill with an outline, every flora
             (and now every friend) glowing at the lifted level. Colour names
             are still Kimia's to choose. Build notes in history.md)_
-      - [ ] **T5.3l The flora, again: sixteen** _(opened on Kimia's call
+      - [ ] **T5.3l The flora, again: sixteen** _(opened 2026-10-09 on Kimia's call
             while sizing the Map work — NEXT, before any Map work)_ — four
             flora shapes are not enough: **each of the 16 Map regions has
             one distinct native flora**, and with textures gone and the six
@@ -313,7 +313,7 @@ tracker. Everything after this is delight, informed by real use.
             tells one species from another**. So: **12 new silhouettes**
             beside the 4 we have (16 in all). Replaces T5.3g's open
             "landmark class" line and widens it.
-            **How a region's flora arrives, in order (Kimia):**
+            **How a region's flora arrives, in order (Kimia, 2026-10-09):**
             1. a picture or symbol of the local flora appears on the newly
                discovered region of the Map;
             2. a **new-flora reveal** dialogue;
@@ -324,11 +324,11 @@ tracker. Everything after this is delight, informed by real use.
                species at super-size (copy to be written);
             5. the **keepsake** (tendril, fruit, leaf, branch, blossom — ONE
                variety per region) starts dropping. It is an **EXTRA** drop,
-               not one of the region's flora finds (Kimia's preference).
+               not one of the region's flora finds (Kimia's preference, 2026-10-09).
             Already-discovered shapes and keepsakes keep dropping for the
             rest of the game, but the **local flora is always the most
             common** in its own region.
-            **The shape is STORED ON THE DROP** (Kimia's call), replacing
+            **The shape is STORED ON THE DROP** (Kimia's call, 2026-10-09), replacing
             floraDeal.js's shape roll; size and colour stay dealt. Finds
             that already exist have no stored shape and **keep the look
             they have now**; only new drops store one. **Keepsake rate
@@ -351,17 +351,17 @@ tracker. Everything after this is delight, informed by real use.
             - [x] **Keepsake colours** _(done 2026-10-09 — `#ff0000`, `#ff2d95`,
                   `#ff9ecb`, `#ff5e00`, picked by eye from twelve;
                   `src/ui/keepsakeColours.js`; the shelf came down)_
-            - [x] **The 16 keepsake drawings** _(final shapes in
+            - [x] **The 16 keepsake drawings** _(done 2026-10-11 — final shapes in
                   `src/ui/keepsakeShapes.js`; not yet dropped. See history.md)_
             - [ ] The Map pictures, and the five-step arrival logic.
-      - [ ] **T5.3m The 48 curiosities** _(opened on Kimia's call —
+      - [ ] **T5.3m The 48 curiosities** _(opened 2026-10-09 on Kimia's call —
             AFTER T5.3l)_ — the 48-item Market pool (3 per region) mostly
             **recycles things already drawn or about to be**: charms, smoke,
             discs, reading-material graphics — plus simple objects that are
             easy to describe. So this is mainly a listing-and-assigning job
             with a little new drawing, not 40 new drawings. Which objects
             go in which region is decided here (part of T6.1).
-      - [x] **T5.3n The reading material** _(done — beaded spines and
+      - [x] **T5.3n The reading material** _(done 2026-10-11 — beaded spines and
             covers with a wavy masthead band, almost solid; purple
             magazines, aquamarine novels, baby-pink dictionaries, five
             shades each; the cover keeps only the eye. Build notes in

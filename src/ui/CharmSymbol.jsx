@@ -64,7 +64,7 @@ export const CHARM_SHAPES = {
 }
 
 // The market ANCHOR is drawn a little differently from the habit-view charm
-// (Kimia): one unbroken, slightly shorter crossbar, a wider lower curve, and a
+// (Kimia, 2026-10-10): one unbroken, slightly shorter crossbar, a wider lower curve, and a
 // small arrowhead (fluke) on each end of that curve, as real anchors have.
 // Every other charm object uses CHARM_SHAPES.
 export const OBJECT_SHAPE_OVERRIDES = {

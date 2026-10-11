@@ -101,7 +101,7 @@ describe('spine ↔ front', () => {
     expect(spies.onFace).toHaveBeenCalledWith('c1:0', 'spine')
   })
 
-  it('a face-out cover carries only the eye — no type mark (T5.3n)', () => {
+  it('a face-out cover carries only the eye — no type mark (T5.3n, 2026-10-11)', () => {
     const { container } = render(
       <BookcasePage
         items={[item('c1:0', 'magazine', { facing: 'front' })]}
