@@ -225,3 +225,16 @@ describe('the real flora and friends on the shelf (T5.3i)', () => {
     )
   })
 })
+
+describe('an arriving book (2026-10-11)', () => {
+  it('arrives in the shade it will wear on the Bookcase', async () => {
+    const { BOOK_SHADES, bookLook } = await import('./bookArt.js')
+    const { container } = shelf([{ id: 'c9:1', key: 'magazine' }])
+    const art = container.querySelector('.arrival-book-art')
+    expect(art).not.toBeNull()
+    expect(container.querySelector('.drop-glyph')).toBeNull()
+    expect(art.querySelector('path[fill-opacity]').getAttribute('fill')).toBe(
+      BOOK_SHADES.magazine[bookLook('c9:1').shade],
+    )
+  })
+})

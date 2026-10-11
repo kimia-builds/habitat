@@ -1436,6 +1436,13 @@ body {
   display: block;
 }
 
+/* An arriving book (2026-10-11): its size comes from BookFigure, sized in
+   ArrivalShelf.jsx, so this only keeps it from being squeezed by its name. */
+.arrival-book-art {
+  display: block;
+  flex-shrink: 0;
+}
+
 /* T3.3: the arrival is now a small group — the hold button plus, for a
    held undecided flora, its two quiet choices. The group keeps the old
    .arrival look; the hold button dresses down to nothing. */
@@ -2259,6 +2266,11 @@ body {
    reveal's neon POP, and it can keep it honestly now: Flora.jsx puts the
    plant's own colour on the element, so the brightest step of the glow scale
    lands in the plant's own light rather than in a colour chosen for it. */
+.reveal-book-art {
+  display: block;
+  margin: 0 auto;
+}
+
 .reveal-flora-art {
   filter: drop-shadow(0 0 var(--glow-bright) currentColor);
 }

@@ -133,7 +133,8 @@ built on top of a live, in-use app.
   about its centre like a dial, and save or cancel. The library's books
   have their real look as well — beaded spines and covers with a wavy
   band across the top, purple magazines, aquamarine novels and baby-pink
-  dictionaries, five soft shades of each. Still to come in M5
+  dictionaries, five soft shades of each — and a new book arrives
+  already wearing its cover, in the shade it will keep on the shelf. Still to come in M5
   are the friends on the rest of their screens, the giant landmark flora,
   and the object art.
 - **M6 — under way alongside M5.** Content pools, pacing tune-ups and

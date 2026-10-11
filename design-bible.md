@@ -863,7 +863,9 @@ band** across the top, about a third of a cover and a fifth of a spine.
 Beads that land on the band turn pale. The cover carries **only the
 eye** — no type mark, since a click anywhere on a book turns it. The
 three types keep their sizes: slim magazine, middling novel, thick
-dictionary. Drawn in `src/ui/bookArt.js`.
+dictionary. Drawn in `src/ui/bookArt.js`. The same front cover, in the
+same shade, is what arrives in the drop popups (2026-10-11): small on the
+arrival shelf, large on the first-time reveal (`src/ui/BookFigure.jsx`).
 
 **Colour.** Soft pastels, one family per type, five shades each:
 **purple** magazines, **aquamarine** novels, **baby-pink**

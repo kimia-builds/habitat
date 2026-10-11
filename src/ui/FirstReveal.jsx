@@ -10,6 +10,7 @@
 // lives here — presentation, not story.
 
 import { narrationSlot } from '../content/narration.js'
+import BookFigure from './BookFigure.jsx'
 import DropGlyph from './DropGlyph.jsx'
 import Flora from './Flora.jsx'
 import { floraBaseWhereSmallestIs } from './floraCanon.js'
@@ -22,6 +23,11 @@ import { useText } from './language.jsx'
 // so a small flora arrives exactly as big as the drawing it replaces, and a
 // large one arrives 2.75x that, as it must.
 const REVEAL_BASE_REM = floraBaseWhereSmallestIs(4)
+
+// HOW BIG THE FIRST BOOK IS (2026-10-11): the real T5.3n cover, in the
+// shade it will wear on the Bookcase, at the size Kimia approved off the
+// option sheet — a magazine about 4rem tall, the others a little taller.
+const REVEAL_BOOK_REM_PER_UNIT = 0.6 / 16
 
 const STREAMS = {
   flora: 'flora',
@@ -50,6 +56,13 @@ function FirstReveal({ arrival, worldSeed, onDismiss }) {
             unit="rem"
             idPrefix="first-reveal-"
             className="reveal-flora-art"
+          />
+        ) : STREAMS[arrival.key] === 'reading' ? (
+          <BookFigure
+            type={arrival.key}
+            id={arrival.id}
+            remPerUnit={REVEAL_BOOK_REM_PER_UNIT}
+            className="reveal-book-art"
           />
         ) : (
           <DropGlyph kind={arrival.key} className="reveal-glyph" />

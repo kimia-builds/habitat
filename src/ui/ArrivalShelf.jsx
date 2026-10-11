@@ -38,6 +38,7 @@ import { useState } from 'react'
 import { ARRIVAL_LINGER_MS } from '../game/constants.js'
 import { arrivalLabel } from './arrivalText.js'
 import Blob from './blob.jsx'
+import BookFigure from './BookFigure.jsx'
 import DropGlyph from './DropGlyph.jsx'
 import Flora from './Flora.jsx'
 import Friend from './Friend.jsx'
@@ -62,8 +63,15 @@ import { useText } from './language.jsx'
 // small and a hamdi bulo arrives large, a large flora arrives taller than a
 // small one — because they ARE. Everything without a canon (publications,
 // fungi) keeps the old even glyph; those are objects, not living things, and
-// their own sizes arrive with their art.
+// their own sizes arrive with their art. (Publications' did, 2026-10-11 —
+// see SHELF_BOOK_REM_PER_UNIT.)
 const SHELF_BASE_REM = baseWhereSmallestIs(1.5)
+
+// HOW BIG AN ARRIVING BOOK IS (2026-10-11). Reading material arrives as its
+// real T5.3n cover, the shade it will wear on the Bookcase, at the size Kimia
+// picked off the option sheet ("A"): a magazine about the old 1.5rem icon's
+// height, a dictionary a little taller — the three types keep their sizes.
+const SHELF_BOOK_REM_PER_UNIT = 0.22 / 16
 
 // Which stream's colour an arrival wears.
 const STREAM_OF = {
@@ -162,6 +170,13 @@ function ShelfItem({
             unit="rem"
             idPrefix={`arrival-${arrival.id}-`}
             className="arrival-flora-art"
+          />
+        ) : STREAM_OF[arrival.key] === 'reading' ? (
+          <BookFigure
+            type={arrival.key}
+            id={arrival.id}
+            remPerUnit={SHELF_BOOK_REM_PER_UNIT}
+            className="arrival-book-art"
           />
         ) : (
           <DropGlyph kind={arrival.key} />

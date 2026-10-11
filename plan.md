@@ -364,7 +364,8 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **T5.3n The reading material** _(done 2026-10-11 — beaded spines and
             covers with a wavy masthead band, almost solid; purple
             magazines, aquamarine novels, baby-pink dictionaries, five
-            shades each; the cover keeps only the eye. Build notes in
+            shades each; the cover keeps only the eye; drops arrive as the
+            same cover on the shelf and first reveal. Build notes in
             history.md)_
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's

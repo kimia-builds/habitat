@@ -3606,6 +3606,14 @@ return 0` right after the era is worked out, so a moment before the
   removed: clicking anywhere on a book already turns it, so only the
   eye remains. Folded into design-bible §10b.
 
+- 2026-10-11 (Kimia, off an option sheet): **books in the drop popups**.
+  Reading material arrives as its real T5.3n front cover, in the shade it
+  will wear on the Bookcase: on the arrival shelf at about the old icon's
+  size (option "A" of three — a bigger cover and a spine were the others),
+  and on the first-time reveal much larger. The reading ("read now")
+  popup's empty state was not decided and keeps the old icon for now.
+  Folded into design-bible §10b.
+
 ## T5.3n build notes — the reading material (2026-10-11)
 
 Built in front of Kimia the design-slice way: four magazine option
@@ -3635,6 +3643,17 @@ next; nothing reached the game until she said "take them live".
   and a Bookcase test that a cover's only inner control is the eye.
 - Still open, untouched: the T5.4 note that a book now reaches about
   half its plank gap rather than seven tenths.
+- Follow-up the same day — the drop popups. `src/ui/BookFigure.jsx` draws
+  one book face-out in a picture of its own (same bookArt, same glow and
+  roughening filters, ids made unique per picture with React's useId).
+  An arrival's id is the very `completionId:index` its Bookcase entry
+  uses, so `bookLook(arrival.id)` gives the shelf shade with nothing
+  stored. Sizes from the approved sheet: 0.22px per drawing unit on the
+  arrival shelf (a magazine ≈ 1.5rem tall), 0.6px on the first-time
+  reveal (≈ 4.2rem). Tests: an arriving magazine wears its Bookcase shade;
+  a first dictionary reveal draws the book, not the glyph. Checked in the
+  browser pane on a throwaway harness (deleted). DropGlyph still draws
+  fungi, the Market, and the reading popup's empty state.
 
 ## T5.3l build notes — the sixteen keepsakes (2026-10-11)
 

@@ -108,3 +108,17 @@ describe('the first flora is the real drawing (T5.3i)', () => {
     expect(container.querySelector('.reveal-flora-art')).toBeNull()
   })
 })
+
+describe('a first book arrives as its real cover (2026-10-11)', () => {
+  it('draws the T5.3n book, not the old glyph', () => {
+    const { container } = render(
+      <FirstReveal
+        arrival={{ id: 'c1:0', key: 'dictionary', completionId: 'c1' }}
+        worldSeed="seed"
+        onDismiss={() => {}}
+      />,
+    )
+    expect(container.querySelector('.reveal-book-art')).not.toBeNull()
+    expect(container.querySelector('.reveal-glyph')).toBeNull()
+  })
+})
