@@ -189,8 +189,7 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
             role="group"
             aria-label={t('bookcase.shelf')}
           >
-            {/* The books' two effects: a faint glow per type, and a slight
-              roughening so no edge is ruler-straight. */}
+            {/* The books' one effect: a faint glow per type. */}
             <defs>
               {Object.entries(BOOK_GLOW).map(([type, glow]) => (
                 <filter
@@ -210,22 +209,6 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
                   />
                 </filter>
               ))}
-              <filter
-                id="book-rough"
-                x="-5%"
-                y="-5%"
-                width="110%"
-                height="110%"
-              >
-                <feTurbulence
-                  type="fractalNoise"
-                  baseFrequency="0.06"
-                  numOctaves="2"
-                  seed="3"
-                  result="noise"
-                />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6" />
-              </filter>
             </defs>
             {/* The constant bookshelf: one frame, three planks. */}
             <rect
@@ -276,12 +259,11 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
                   onKeyDown={(event) => handleKeyDown(item, event)}
                 >
                   {/* The book itself, drawn around its anchor and moved
-                    into place: solid fill, masthead band, wobbly edge,
+                    into place: solid fill, masthead band, gently wobbly edge,
                     beads. */}
                   <g
                     className="book-body"
                     transform={`translate(${cx} ${base})`}
-                    filter="url(#book-rough)"
                   >
                     <clipPath id={clipId}>
                       <path d={art.outline} />

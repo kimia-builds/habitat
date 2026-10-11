@@ -3614,6 +3614,14 @@ return 0` right after the era is worked out, so a moment before the
   popup's empty state was not decided and keeps the old icon for now.
   Folded into design-bible §10b.
 
+- 2026-10-11 (Kimia, off a four-way option sheet, after both commits
+  above were pushed): **the books were too wobbly**. Option B of four
+  picked: the outline's wobble halved, and the roughening filter laid
+  on top removed. Beads, masthead band, colours and sizes unchanged; the
+  cleaner options (straight sides; straight sides plus tidy beads) were
+  passed over. Applies on the Bookcase and in both drop popups. Folded
+  into design-bible §10b.
+
 ## T5.3n build notes — the reading material (2026-10-11)
 
 Built in front of Kimia the design-slice way: four magazine option

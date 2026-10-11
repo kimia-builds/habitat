@@ -856,8 +856,8 @@ pool of 126 (spec §5 Stream 2), not one per cover.
 **Form.** Familiar Earth-like book forms read through Habitat's graphic
 style — recognisable silhouettes, no overly sharp lines in any view.
 Kimia's T5.3n design (2026-10-11), picked by eye off option sheets: an almost-solid
-block of colour (92%); a hand-wobbled, slightly roughened outline in a
-darker shade; a border of small, uneven **beads** just inside the edge
+block of colour (92%); a gently wobbled outline in a darker shade
+(calmed the same day — Kimia found the first version too wobbly); a border of small, uneven **beads** just inside the edge
 (a single bead column down a spine); and a darker wavy **masthead
 band** across the top, about a third of a cover and a fifth of a spine.
 Beads that land on the band turn pale. The cover carries **only the

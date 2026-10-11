@@ -2,10 +2,13 @@
  * bookArt.js — how a publication is drawn on the Bookcase (T5.3n, 2026-10-11)
  * =============================================================================
  * Kimia's pick, 2026-10-11, by eye off three rounds of option sheets: an
- * almost-solid block of colour with a hand-wobbled outline, a border of small
+ * almost-solid block of colour with a gently wobbled outline, a border of small
  * uneven BEADS just inside the edge (a single bead column down a spine), and a
  * darker wavy MASTHEAD BAND across the top. Beads that land on the band turn
- * pale so they stay visible. The cover carries nothing else but the eye — the
+ * pale so they stay visible. (The outline's wobble was halved and the
+ * roughening filter on top taken off the same day: Kimia found the first
+ * version too wobbly, option B of a four-way sheet.) The cover carries
+ * nothing else but the eye — the
  * magazine / novel / dictionary mark that used to sit on it is gone, because a
  * click anywhere on the book already turns it.
  *
@@ -168,7 +171,7 @@ export function bookArt({ type, facing, width, height, shade, seed }) {
   const rand = seeded(seed)
 
   const outline = wobblyOutline(x, y, width, height, {
-    amp: front ? 0.8 : 0.7,
+    amp: front ? 0.4 : 0.35,
     r: front ? 3.5 : 3,
     rand,
   })

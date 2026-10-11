@@ -8,7 +8,7 @@
 // publication's id (bookLook), and an arrival carries the very id its
 // Bookcase entry has, so a drop arrives already wearing the shade it will
 // keep on the shelf. Same shapes, same three-type size difference, same
-// faint glow and hand-roughened edge as BookcasePage draws.
+// faint glow and gently wobbled edge as BookcasePage draws.
 
 import { useId } from 'react'
 import { BOOK_GLOW, bookArt, bookLook } from './bookArt.js'
@@ -58,21 +58,11 @@ function BookFigure({ type, id, remPerUnit, className }) {
             floodOpacity="0.35"
           />
         </filter>
-        <filter id={`${uid}-rough`} x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.06"
-            numOctaves="2"
-            seed="3"
-            result="noise"
-          />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6" />
-        </filter>
         <clipPath id={`${uid}-clip`}>
           <path d={art.outline} />
         </clipPath>
       </defs>
-      <g filter={`url(#${uid}-rough)`}>
+      <g>
         <path
           d={art.outline}
           fill={art.fill}
