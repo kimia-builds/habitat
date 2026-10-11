@@ -3651,9 +3651,51 @@ describe('the language switch (T6.13)', () => {
     expect(pressed[0].lang).toBe('en')
   })
 
+  // Every page the rail opens, by its title key — read through the copy
+  // deck so no word is pinned here.
+  const railPages = [
+    'page.map',
+    'page.abode',
+    'page.guestbook',
+    'page.bookcase',
+    'page.market',
+  ]
+  const openFromRail = (key) =>
+    fireEvent.click(
+      within(
+        screen.getByRole('navigation', { name: translate('en', 'rail.pages') }),
+      ).getByRole('button', { name: translate('en', key) }),
+    )
+
+  it('stands at the foot of every page, rail pages included (2026-10-11)', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    for (const key of [...railPages, 'rail.fieldNotes']) {
+      openFromRail(key)
+      expect(document.querySelectorAll('.language-switch')).toHaveLength(1)
+      expect(
+        document.querySelectorAll('.language-options button'),
+      ).toHaveLength(LANGUAGES.length)
+    }
+  })
+
+  it('keeps the week-shape pebble to the field notes alone (2026-10-11)', () => {
+    render(<App />)
+    createHabitViaUI('walk')
+    // Home: languages only.
+    expect(document.querySelector('.week-shape-open')).toBeNull()
+    for (const key of railPages) {
+      openFromRail(key)
+      expect(document.querySelector('.week-shape-open')).toBeNull()
+    }
+    openFromRail('rail.fieldNotes')
+    expect(document.querySelectorAll('.week-shape-open')).toHaveLength(1)
+  })
+
   it('puts a week-shape pebble beside the language options (T6.15)', () => {
     render(<App />)
     createHabitViaUI('walk')
+    openFromRail('rail.fieldNotes')
     const line = document.querySelector('.language-switch')
     const open = line.querySelector('.week-shape-open')
     expect(open).not.toBeNull()

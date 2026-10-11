@@ -1406,7 +1406,24 @@ function AppBody({ data, setData }) {
   // the foot of the FIELD NOTES too (2026-08-12): the two pages are a
   // pair, each ending with the door to the other and then the same
   // three actions, so backing up from wherever you are is one trip.
-  const footer = (
+  // The language line (2026-10-11, Kimia's call): it stands at the very
+  // foot of EVERY page — home, the field notes and each page the rail
+  // opens — so you can change language from wherever you are. The
+  // week-shape pebble rides on it only on the field notes (the
+  // historical-data page), the one page whose numbers the shape
+  // re-groups; everywhere else the line is the languages alone.
+  const languageLine = (withWeekShape) => (
+    <LanguageSwitch onChoose={chooseLanguage}>
+      {withWeekShape && (
+        <WeekShapeControl
+          weekShape={data.settings.weekShape}
+          onChoose={chooseWeekShape}
+        />
+      )}
+    </LanguageSwitch>
+  )
+
+  const footer = (withWeekShape) => (
     <>
       <div className="list-footer">
         <BackupControls
@@ -1427,12 +1444,7 @@ function AppBody({ data, setData }) {
           shape (Kimia's call 2026-08-12) and a test pins it at three, so
           the language switch gets its own quiet line underneath rather
           than becoming a fourth. */}
-      <LanguageSwitch onChoose={chooseLanguage}>
-        <WeekShapeControl
-          weekShape={data.settings.weekShape}
-          onChoose={chooseWeekShape}
-        />
-      </LanguageSwitch>
+      {languageLine(withWeekShape)}
     </>
   )
 
@@ -1723,7 +1735,7 @@ function AppBody({ data, setData }) {
         <span>{t('rail.fieldNotes')}</span> →
       </button>
 
-      {footer}
+      {footer(false)}
 
       {/* TEMPORARY (T5 prep): the door to the design-assets workbench
           (2026-07-21) — an empty shelf until the M5 design pass fills
@@ -1911,7 +1923,7 @@ function AppBody({ data, setData }) {
             call 2026-08-12), directly under "back to the habits" — so
             export, import and start-a-new-game are reachable from
             either page without a trip home. */}
-          {footer}
+          {footer(true)}
         </main>
       </>
     )
@@ -1948,6 +1960,7 @@ function AppBody({ data, setData }) {
             onChooseSky={chooseAbodeSky}
             onBack={() => setPage(null)}
           />
+          {languageLine(false)}
         </main>
       </>
     )
@@ -1969,6 +1982,7 @@ function AppBody({ data, setData }) {
             worldSeed={data.worldSeed}
             onBack={() => setPage(null)}
           />
+          {languageLine(false)}
         </main>
       </>
     )
@@ -1991,6 +2005,7 @@ function AppBody({ data, setData }) {
             onRead={setReadingItem}
             onBack={() => setPage(null)}
           />
+          {languageLine(false)}
         </main>
       </>
     )
@@ -2010,6 +2025,7 @@ function AppBody({ data, setData }) {
             worldSeed={data.worldSeed}
             onBack={() => setPage(null)}
           />
+          {languageLine(false)}
         </main>
       </>
     )
@@ -2038,6 +2054,7 @@ function AppBody({ data, setData }) {
             onBuy={handleBuy}
             onBack={() => setPage(null)}
           />
+          {languageLine(false)}
         </main>
       </>
     )
@@ -2054,6 +2071,7 @@ function AppBody({ data, setData }) {
         <main className="app">
           {overlays}
           <DesignPage onBack={() => setPage(null)} />
+          {languageLine(false)}
         </main>
       </>
     )

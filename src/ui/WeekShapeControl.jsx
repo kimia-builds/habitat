@@ -1,6 +1,7 @@
 // The week shape (T6.15) — a pebble beside the language switch that
 // opens a small popup listing the three shapes a week can take:
-// Mon–Sun, Sun–Sat, Sat–Fri. Kimia's call 2026-10-09.
+// Mon–Sun, Sun–Sat, Sat–Fri. Kimia's call 2026-10-09. Since 2026-10-11
+// it appears on the field notes (the historical-data page) only.
 //
 // Choosing one saves it at once and closes the popup. It moves only the
 // boundary between weeks: no mark is changed, so switching back and forth

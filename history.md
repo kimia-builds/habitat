@@ -3642,6 +3642,14 @@ return 0` right after the era is worked out, so a moment before the
   rules. Rules about glow COLOUR and which things glow at all were left
   as they are.
 
+- 2026-10-11 (Kimia): **the language line stands at the foot of every
+  page** — home, the field notes, and each page the rail opens (map,
+  abode, guest book, library, market, and the design workbench) — so the
+  language can be changed from anywhere. **The week-shape pebble moves
+  to the field notes only** (the historical-data page, the one whose
+  numbers the shape re-groups); home and the rail pages show the
+  languages alone. Folded into spec.md (the week's-shape paragraph).
+
 ## T5.3n build notes — the reading material (2026-10-11)
 
 Built in front of Kimia the design-slice way: four magazine option

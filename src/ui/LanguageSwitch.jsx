@@ -15,12 +15,10 @@
 //   the storage envelope, so it survives a reload and travels in a
 //   backup. Habitat opens in the language you left it in.
 //
-// PLACEMENT IS PROVISIONAL. It sits at the foot of the page beside the
-// backup pebbles because that is the only settings-ish corner Habitat
-// has. Kimia has not yet seen it there, and the foot of the list is a
-// line she deliberately set at three controls (2026-08-12) — so this is
-// a first placement to react to, not a decided one. Moving it is a
-// matter of rendering it somewhere else; nothing else here changes.
+// PLACEMENT (Kimia's call 2026-10-11): it stands on its own quiet line
+// at the very foot of EVERY page — home, the field notes, and each page
+// the rail opens — so the language can be changed from anywhere. On home
+// and the field notes that line sits under the three backup pebbles.
 
 import { LANGUAGES } from '../content/ui.js'
 import { useText } from './language.jsx'
@@ -52,7 +50,8 @@ function LanguageSwitch({ onChoose, children }) {
           </button>
         ))}
       </div>
-      {/* The week-shape pebble rides on the same line (2026-10-09). */}
+      {/* The week-shape pebble rides on the same line — on the field
+          notes only (2026-10-09; narrowed to that page 2026-10-11). */}
       {children}
     </div>
   )

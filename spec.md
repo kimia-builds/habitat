@@ -167,8 +167,10 @@ dailies/habits/to-dos distinction. Each habit has:
   the record does not. A Sunday spike lands in a different bar because
   the bars are drawn differently, not because anything was edited. It is
   chosen from a **"week shape" pebble** beside the language options at the
-  foot of the home screen, which opens a small popup of the three shapes
-  (Kimia's call 2026-10-09). The one thing the shape does
+  foot of the **field notes** (the historical-data page) — and nowhere
+  else — which opens a small popup of the three shapes (Kimia's calls
+  2026-10-09 and 2026-10-11). The language options themselves stand at
+  the foot of every page. The one thing the shape does
   not drive is the **habit form's weekday boxes and the habit list's
   schedule line** (`tue/thu/sun`): they follow the
   language (Farsi starts on Shanbeh, English on Monday; Kimia 2026-10-09).
