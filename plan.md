@@ -149,41 +149,10 @@ tracker. Everything after this is delight, informed by real use.
       - [x] **T5.3f Animations** _(was T5.3e; retired unbuilt 2026-10-09,
             Kimia's call — all ten categories share the plip's drift-and-bob
             instead of nine more signature animations; design-notes §8)_
-      - [ ] **T5.3g The flora** _(was "the 8 new flora silhouettes";
-            parked 2026-07-25, Kimia's call to start characters first;
-            restarted 2026-08-19 and re-scoped by her calls that day —
-            there are **four** flora silhouettes, not 64, and the 64 flora
-            are those four in two sizes wearing six fills. design-bible
-            §9a. **The ORDINARY flora closed 2026-08-19** — shapes,
-            colours, fills, sizes and the drawing recipe all settled and
-            approved, and the flora, flora-fill and hair shelves left the
-            workbench together. What remains under this task is the
-            landmark class.)_
-            - [x] **The four colours** — emerald, leaf, sky and azure,
-                  picked by eye off the workbench from twelve candidates
-                  (`src/ui/floraColours.js`).
-            - [x] **The six fills** — hair textures only, all four modes
-                  with curly coat and dense underfur doubled, each worn in
-                  one of the four colours (`src/ui/floraFills.js`); the
-                  hair generator learned to take a tint to do it, and
-                  `denseHairField()` cookie-cuts each shape from the middle
-                  of a big dense field so none wears a thin underside.
-                  **Approved 2026-08-19** on all four shapes.
-            - [x] **The four silhouettes** — flora 1, 2, 3 and 6 of the
-                  eight she drew in July, her traces kept verbatim in
-                  `src/ui/floraSilhouettes.js` under her own numbering.
-                  Unnamed until T6.1.
-            - [x] **The two sizes** _(no sizing sheet was needed in the
-                  end)_ — **small 0.28, large 0.77** in the one shared
-                  scale (`src/ui/floraCanon.js`), so flora and friends are
-                  true to each other by construction. Arrived at through
-                  two friends and then cut loose from them on her call: a
-                  flora holds a PLACE in the whole sizing table, not one
-                  friend's height. **Locked 2026-08-19**, and the
-                  comparison shelf came down with them.
-            - [x] **The landmark class** _(size set 2026-10-09 under T5.3l:
-                  300px, same look as its ordinary flora; the Map picture,
-                  keepsakes and arrival logic continue there)_
+      - [x] **T5.3g The flora** _(done 2026-10-11, ticked once every part
+            was finished — four silhouettes, two sizes, colours and the
+            landmark size; the fills and colours were later replaced by
+            T5.3k's neon. Full task text in history.md)_
       - [x] **T5.3h The friends reach the game** _(done 2026-08-29 — the
             ten drawings, their canon sizes and their dealt colours replaced
             the T4.4 placeholder on every screen that shows a friend: the
@@ -196,39 +165,10 @@ tracker. Everything after this is delight, informed by real use.
             any more; retiring it is Kimia's call, not an art slice's.
             Build notes in history.md, in three parts)_
 
-      - [ ] **T5.3i The flora reach the game** _(opened 2026-08-21 on Kimia's
-            call, "take the flora live into production")_ — the four
-            silhouettes, their six fills and their two canon sizes replace the
-            T3.2 placeholder sprig on every screen that shows a flora. One
-            screen at a time, each pushed and judged live before the next is
-            started (the design-slice rule), exactly as T5.3h ran.
-            **WHICH of the 48 a find is, dealt not stored (Kimia, 2026-08-21):**
-            a flora drop records only `{ kind: 'flora' }` and always did, so the
-            shape, size and fill are dealt from the save's seed and the find's
-            own completion id (`src/ui/floraDeal.js`) — no storage version, and
-            flora gathered weeks ago get their looks too. **Large and small half
-            and half** (her call, same day). Two finds that deal the same shape
-            and fill ARE the same one of the 48 and look identical, which is what
-            the catalogue means.
-            **The landmark class stays out**, and must: it is kept outside the
-            dealt sizes (`LANDMARK_SCALE`) and `LANDMARK_FLORA` is still empty,
-            so every find is dealt an ordinary collectible. A test pins that, so a landmark class joining
-            the canon fails the suite rather than quietly handing out giants.
-            - [x] **The Abode** _(done 2026-08-21 — the ground and the doorstep
-                  list, plus T5.3h's held party friends, which share this
-                  screen's one base. `src/ui/Flora.jsx` is now the one component
-                  every screen goes through. Build notes in history.md)_
-            - [x] **The arrival, and the first-flora reveal** _(done
-                  2026-08-21 — the shelf at the top of the habit list, and
-                  the neon POP the first time. T5.3h's held arrival row
-                  went in here too, so the shelf's friends became the real
-                  drawings in the same push. Build notes in history.md)_
-            - [x] **One fur, worn at one size** _(done 2026-08-21 — Kimia's
-                  call: a small flora wears the large one's fur at the large
-                  one's size, and fewer hairs, which cut a small flora from
-                  ~1,700 drawn strands to ~430. Large flora untouched. Build
-                  notes in history.md)_
-            - [x] **The landmark class** — sized under T5.3l (2026-10-09).
+      - [x] **T5.3i The flora reach the game** _(done 2026-10-11, ticked
+            once every part was finished — every screen that shows a flora
+            draws the real art through `src/ui/Flora.jsx`, dealt from the
+            save's seed. Full task text in history.md)_
       - [ ] **T5.3j The market objects** _(opened 2026-09-01 on Kimia's
             call, "build or at least document some items for the market,
             to show me on the design assets shelf")_ — the curiosities
@@ -534,39 +474,19 @@ tracker. Everything after this is delight, informed by real use.
       exactly where they are; the "←", "‹", "›" and "→" beside translated
       words keep their sides.
 - [x] **T6.17 Farsi gets its own lettering — plain, and the same size.**
-      _(done 2026-10-09; build notes in history.md. Kimia still tunes the
-      12% enlargement by eye once real Farsi words are on screen in
-      T6.19; the number is `size-adjust` in index.css.)_ Vazirmatn,
+      _(done 2026-10-09; build notes in history.md. Kimia confirmed the
+      12% enlargement by eye on 2026-10-11; the number is `size-adjust`
+      in index.css.)_ Vazirmatn,
       bundled, loaded only for Farsi; letterspacing and casing off for
       Farsi; digits show as ۰–۹ in Farsi mode.
 - [x] **T6.18 The Jalali calendar.** _(done 2026-10-09; build notes in
       history.md.)_ With Farsi on, the date line, the field notes' week
       range and the check-in panel's day labels show Jalali dates, worked
       out by the browser (no table, no fetching); day keys stay Gregorian.
-- [ ] **T6.19 The translation pass.** Last, on purpose: by here Habitat
-      already WORKS in Farsi shape — right to left, right lettering,
-      right calendar — so the words land in a finished frame and layout
-      surprises have already been found.
-      **AI drafts, Kimia reviews, slot by slot** (her call 2026-08-16).
-      This is the one place the "Claude Code never writes the copy" rule
-      bends, and it bends in a specific way: a machine draft is a
-      SUGGESTION in a review queue, never a slot filled in her name. An
-      unreviewed slot stays blank, and a blank interface slot shows
-      English — so the app is only ever partly translated, never wrongly
-      translated. The section blank-rules from T6.14 do the enforcing.
-      Story and names go last and get the most human attention: they
-      carry the voice, and `narration.js` is the file where a machine
-      would do the most damage.
-      **Working method (2026-10-09):** drafts wait in `fa-drafts.md`
-      (key, English, where it shows, Farsi draft, and a Notes line for
-      Kimia, who has no Farsi keyboard — Finglish is fine). No note means
-      accepted; accepted slots are copied into `ui.js`, changed ones come
-      back in script to confirm. Batches 1–6 (232 slots) are accepted and live: every interface word
-      except the six charm names (screen-reader only, left for last), the
-      Gregorian month names (never shown in Farsi mode) and the design
-      workbench door (stays English). **Story and names are done too** (batches 7–8, 2026-10-09): all
-      that is left blank is the Gregorian months and the design door,
-      on purpose.
+- [x] **T6.19 The translation pass.** _(done 2026-10-11 — every
+      Farsi slot reviewed by Kimia and live; the Gregorian month names
+      and the design workbench door stay blank on purpose. Full task
+      text in history.md)_
 - [x] **T6.20 The cameo tells the truth, and can be asked** _(done
       2026-08-20)_
 - [x] **T6.21 A past week's streak stops at that week** _(done
