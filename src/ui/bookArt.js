@@ -29,13 +29,16 @@ export const BOOK_SHADES = {
   dictionary: ['#dc84a8', '#ec9ebe', '#f5b6cf', '#f9cadd', '#fcdde9'],
 }
 
-// The faint light each type throws: its middle shade (publications glow
-// less than living things, design-bible §7).
+// The light each type throws: its middle shade. Strong since Kimia's
+// pick on 2026-10-11 (option D of four; it was 2 and 0.35, faint), and
+// always drawn behind every book, never over one.
 export const BOOK_GLOW = {
   magazine: BOOK_SHADES.magazine[3],
   novel: BOOK_SHADES.novel[2],
   dictionary: BOOK_SHADES.dictionary[2],
 }
+export const BOOK_GLOW_BLUR = 7
+export const BOOK_GLOW_STRENGTH = 1
 
 // How far the masthead band reaches down, as a share of the book's height.
 const SPINE_BAND = 0.2

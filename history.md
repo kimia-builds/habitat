@@ -3622,6 +3622,26 @@ return 0` right after the era is worked out, so a moment before the
   passed over. Applies on the Bookcase and in both drop popups. Folded
   into design-bible §10b.
 
+- 2026-10-11 (Kimia, off a four-way option sheet): **books glow
+  strongly, and the glow always sits behind the books**. Option D, the
+  strongest of four, replaces the faint glow (blur 2 → 7, strength
+  0.35 → 1). Before, each book carried its own glow, so a book drawn
+  later hazed over its neighbour's outline; now all the glows are one
+  layer under all the books. Drop popups get the same glow (it spills
+  past the picture rather than growing it). Folded into design-bible
+  §10b.
+
+- 2026-10-11 (Kimia, asked whether D breaking the "living things glow
+  most" ladder was OK): **no rules about glow strength at all**. "Glow
+  will always be an eyeball test anyway." The glow intensity ladder
+  (flora = fungi = friends at the top, publications less, curiosities
+  optional) and its "which top step is full" note are removed from
+  design-bible §7, plan.md and design-notes; the six named steps stay as
+  a palette to pick from by eye, and the picks already made (flora and
+  friends at `--glow-lifted`, books strong) are recorded as picks, not
+  rules. Rules about glow COLOUR and which things glow at all were left
+  as they are.
+
 ## T5.3n build notes — the reading material (2026-10-11)
 
 Built in front of Kimia the design-slice way: four magazine option

@@ -1032,19 +1032,14 @@ nothing a non-coder can't follow.
   pulls the halo back off the edges and belongs to that shape, not to how
   far light travels.
 
-  **What the scale does NOT decide is who glows how much.** That ladder
-  is already written, in design-bible §7: organic things — flora, fungi,
-  friends — glow equally and fully at the top of the scale; publications
-  glow less; curiosities may or may not. Today's placeholder art does not
-  honour it yet (flora sits at `--glow-faint`, a friend at
-  `--glow-resting`) and deliberately won't until T5.3 replaces the
-  placeholders with the real drawings — Kimia's call 2026-08-16, restating
-  §7. **A real friend spends none of the scale (T5.3h, 2026-08-21):** its
-  aura is drawn INTO the artwork — the silhouette, blurred and filled in
-  its body colour — so the Guest Book's friends carry no CSS halo at all,
-  and the halo rule went with the placeholder it dressed. The scale still
-  waits on the flora and on the screens still wearing placeholders. §7 now carries the step names so that spending is a lookup, not a
-  fresh argument.
+  **Who glows how much is never a rule (Kimia, 2026-10-11).** It is an
+  eyeball call per thing, made on the real art (design-bible §7); the
+  scale only gives each pick a name. **A real friend spends none of the
+  scale (T5.3h, 2026-08-21):** its aura is drawn INTO the artwork — the
+  silhouette, blurred and filled in its body colour — so the Guest
+  Book's friends carry no CSS halo at all, and the halo rule went with
+  the placeholder it dressed. §7 carries the step names, so a pick is a
+  lookup, not a fresh argument.
 - **The charm colours are canonical here (Kimia's call 2026-07-21).**
   The six colours in §11a currently live in `src/ui/symbols.js` because
   the glow drop-shadows are built in JavaScript. The tokens file becomes

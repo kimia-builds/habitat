@@ -115,14 +115,11 @@ tracker. Everything after this is delight, informed by real use.
       and its workbench shelf came down with it. **Still to come here:** the
       actual friend / flora / fungi / object / region art that composes
       from these._
-      **Glow, when the art lands (design-bible §7, restated by Kimia
-      2026-08-16):** the organic things — flora, fungi, friends — take the
-      TOP of the glow scale, equally; publications glow less, curiosities
-      may or may not, and the map does not. Today's placeholders do not
-      honour that yet, deliberately: T5.2e named the six steps
-      (`--glow-faint` … `--glow-max` in tokens.css) but spent none of them
-      on art about to be replaced. Which top step "full" means is an
-      eyeball call once the real drawings exist — see §7.
+      **Glow (design-bible §7, Kimia 2026-10-11):** how strongly anything
+      glows is an eyeball call on the real art, never a rule — there is
+      no ranking of who glows more. The six named steps
+      (`--glow-faint` … `--glow-max` in tokens.css) are a palette to
+      pick from by eye.
       **Character sub-plan (2026-07-25, Kimia's calls: characters
       before the 8 new flora silhouettes land; one canonical eye;
       hand-drawn archetypes with code-derived individuals; pilot one

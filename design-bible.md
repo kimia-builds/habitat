@@ -125,46 +125,24 @@ Mushroom · rock · leaf · moss · gravel · hair.
 - No shadows.
 - Artificial objects may glow, but don't have to.
 
-**Glow intensity ladder** (the one place living-thing light differs):
-flora = fungi = friends (equal, full). Publications glow **less** than
-living things. Curiosities **may** glow or not.
+**How strongly anything glows is an eyeball call, never a rule (Kimia,
+2026-10-11).** There is no ranking of who glows more than whom — no
+"living things glow most", no "publications glow less". Each thing's
+glow is set by looking at it, and changed by looking at it again.
 
-**The ladder's rungs are named as of T5.2e (2026-08-16).** "How far the
-light spreads" is now a six-step scale in `src/tokens.css` —
+The six named steps in `src/tokens.css` (since T5.2e, 2026-08-16) —
 `--glow-faint · --glow-resting · --glow-lifted · --glow-bright ·
---glow-pop · --glow-max` — so this ladder can be spent in names rather
-than in numbers somebody has to re-guess per drawing:
+--glow-pop · --glow-max` — are a palette to pick from by eye, so a pick
+can be named rather than re-guessed in pixels. They imply no order of
+importance between things.
 
-- **Organic things — flora, fungi, friends — take the TOP of the scale**
-  (Kimia restated it 2026-08-16). They are the ladder's "full", together
-  and equally, and nothing else in Habitat reaches it.
-- **Publications and curiosities do not**, nor does the map. They sit
-  lower on the scale — a publication below the organics, a curiosity
-  wherever its object wants, or nowhere.
-- **FLORA GLOW AT THE SELECTED LEVEL, ALWAYS (Kimia, 2026-10-08).** She
-  watched a flora brighten when clicked in the Abode and decided that
-  brightness is simply how a flora looks: **`--glow-lifted` at all times,
-  in every place a flora is drawn**, not only when selected. Selecting
-  still magnifies it; it no longer changes the glow. This is the flora's
-  settled rung, so the "which top step" eyeball call below is closed for
-  flora. She considered `--glow-max` and chose the selected level.
-  **Friends rest at the same level** (her call, the same day): the body
-  layer takes `--glow-lifted` in its own glow colour, on top of the aura
-  in the drawing. Fungi are not covered by it.
-- **Today's glows do NOT yet honour this, and that is expected.** Every
-  organic thing on screen is a placeholder shape, not its finished
-  drawing, so flora currently glows at `--glow-faint` and a friend at
-  `--glow-resting` — the numbers each placeholder happened to be built
-  with. The ladder gets spent when the real art lands in T5.3, not
-  before: raising a placeholder's light only tunes something that is
-  about to be replaced.
-- **Which top step "full" means — `--glow-pop` or `--glow-max` — is an
-  eyeball call on the finished art**, not a decision to make on paper.
-  It depends on how big the drawings end up and how densely they sit:
-  the charms wear `--glow-pop` at rest with room around them, whereas
-  flora and publications sit in packed grids, where a wide glow on every
-  tile can smear into one haze instead of reading as separate glowing
-  things.
+Picks so far, each made by eye:
+
+- **Flora** wear `--glow-lifted` at all times, in every place a flora
+  is drawn (Kimia 2026-10-08, after watching one brighten when clicked;
+  selecting still magnifies it). **Friends** rest at the same level, in
+  their own glow colour.
+- **Books** glow strongly, always behind every book (§10b, 2026-10-11).
 
 ---
 
@@ -241,7 +219,7 @@ plain fill on 2026-10-08 (§9a).
 ### 9. Living assets
 
 Shared across all three living families (stated once, not repeated
-below): equal intrinsic glow, rich organic texture, soft blob-leaning
+below): intrinsic glow, rich organic texture, soft blob-leaning
 silhouette, no shadow. Each family adds only what makes it itself.
 
 #### 9a. Flora
@@ -457,7 +435,7 @@ and never a light applied on top (§3).
 
 - **Exactly one species.**
 - Small, mushroom-like silhouette.
-- Full organic texture; glow at living-thing intensity.
+- Full organic texture; glows.
 - (Functions as the Market currency, but visually it is this single
   form.)
 
@@ -872,8 +850,10 @@ arrival shelf, large on the first-time reveal (`src/ui/BookFigure.jsx`).
 dictionaries. (This replaces "a single block colour anywhere on the
 spectrum".)
 
-**Light.** Glows **less** than living things (§7): a faint glow in
-each type's own middle shade.
+**Light.** A **strong** glow in each type's own middle shade (Kimia
+2026-10-11, option D of four; it was faint before). The glow always
+sits **behind every book**: a neighbour's glow never covers a book's
+outline. Same glow in the drop popups.
 
 **Two canonical assets per publication:**
 

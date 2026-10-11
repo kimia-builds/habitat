@@ -22,7 +22,13 @@
 
 import { useRef, useState } from 'react'
 import { arrivalLabel } from './arrivalText.js'
-import { BOOK_GLOW, bookArt, bookLook } from './bookArt.js'
+import {
+  BOOK_GLOW,
+  BOOK_GLOW_BLUR,
+  BOOK_GLOW_STRENGTH,
+  bookArt,
+  bookLook,
+} from './bookArt.js'
 import { useText } from './language.jsx'
 import { CANVAS_HEIGHT, CANVAS_VIEWBOX, CANVAS_WIDTH } from './worldCanvas.js'
 
@@ -98,6 +104,26 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
   // The book currently being dragged, at its live position — plain
   // component state; the place is committed to storage on pointer-up.
   const [drag, setDrag] = useState(null)
+
+  // Where a book stands and how it looks — shared by its glow and its
+  // body so the two always line up, mid-drag included.
+  function drawing(item) {
+    const shape = BOOK_SHAPES[item.type]
+    const place = placeOf(item)
+    const width =
+      item.facing === 'front' ? shape.height * COVER_RATIO : shape.spineWidth
+    return {
+      cx: place.x * WIDTH,
+      base: place.y * HEIGHT,
+      art: bookArt({
+        type: item.type,
+        facing: item.facing,
+        width,
+        height: shape.height,
+        ...bookLook(item.id),
+      }),
+    }
+  }
 
   // Where the pointer sits in shelf-interior fractions, or null when
   // the frame can't be measured (jsdom in tests) — clicks must still
@@ -189,23 +215,24 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
             role="group"
             aria-label={t('bookcase.shelf')}
           >
-            {/* The books' one effect: a faint glow per type. */}
+            {/* The books' one effect: a strong glow per type (Kimia, option
+              D of four, 2026-10-11). */}
             <defs>
               {Object.entries(BOOK_GLOW).map(([type, glow]) => (
                 <filter
                   key={type}
                   id={`book-glow-${type}`}
-                  x="-30%"
-                  y="-30%"
-                  width="160%"
-                  height="160%"
+                  x="-80%"
+                  y="-80%"
+                  width="260%"
+                  height="260%"
                 >
                   <feDropShadow
                     dx="0"
                     dy="0"
-                    stdDeviation="2"
+                    stdDeviation={BOOK_GLOW_BLUR}
                     floodColor={glow}
-                    floodOpacity="0.35"
+                    floodOpacity={BOOK_GLOW_STRENGTH}
                   />
                 </filter>
               ))}
@@ -229,23 +256,26 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
                 y2={y}
               />
             ))}
+            {/* Every book's glow in one layer, behind every book: a
+              neighbour's glow never covers a book's outline (Kimia
+              2026-10-11). */}
+            <g className="book-glows" aria-hidden="true">
+              {ordered.map((item) => {
+                const { cx, base, art } = drawing(item)
+                return (
+                  <path
+                    key={item.id}
+                    d={art.outline}
+                    transform={`translate(${cx} ${base})`}
+                    fill={art.fill}
+                    filter={`url(#book-glow-${item.type})`}
+                  />
+                )
+              })}
+            </g>
             {ordered.map((item) => {
-              const shape = BOOK_SHAPES[item.type]
               const label = arrivalLabel({ key: item.type }, t)
-              const place = placeOf(item)
-              const cx = place.x * WIDTH
-              const base = place.y * HEIGHT
-              const width =
-                item.facing === 'front'
-                  ? shape.height * COVER_RATIO
-                  : shape.spineWidth
-              const art = bookArt({
-                type: item.type,
-                facing: item.facing,
-                width,
-                height: shape.height,
-                ...bookLook(item.id),
-              })
+              const { cx, base, art } = drawing(item)
               const clipId = clipIdFor(item.id)
               return (
                 <g
@@ -268,12 +298,7 @@ function BookcasePage({ items, onMove, onFace, onRead, onBack }) {
                     <clipPath id={clipId}>
                       <path d={art.outline} />
                     </clipPath>
-                    <path
-                      d={art.outline}
-                      fill={art.fill}
-                      fillOpacity="0.92"
-                      filter={`url(#book-glow-${item.type})`}
-                    />
+                    <path d={art.outline} fill={art.fill} fillOpacity="0.92" />
                     <path
                       d={art.bandPath}
                       fill={art.band}

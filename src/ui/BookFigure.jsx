@@ -8,10 +8,18 @@
 // publication's id (bookLook), and an arrival carries the very id its
 // Bookcase entry has, so a drop arrives already wearing the shade it will
 // keep on the shelf. Same shapes, same three-type size difference, same
-// faint glow and gently wobbled edge as BookcasePage draws.
+// glow and gently wobbled edge as BookcasePage draws. The glow spills
+// past the picture's box (overflow visible) rather than growing the box,
+// so the book takes up the same room in the popup as before.
 
 import { useId } from 'react'
-import { BOOK_GLOW, bookArt, bookLook } from './bookArt.js'
+import {
+  BOOK_GLOW,
+  BOOK_GLOW_BLUR,
+  BOOK_GLOW_STRENGTH,
+  bookArt,
+  bookLook,
+} from './bookArt.js'
 
 // The Bookcase's book sizes, in its drawing units (BOOK_SHAPES there:
 // height x 2.4, front cover 0.68 as wide as tall).
@@ -45,17 +53,18 @@ function BookFigure({ type, id, remPerUnit, className }) {
       style={{
         width: `${boxWidth * remPerUnit}rem`,
         height: `${boxHeight * remPerUnit}rem`,
+        overflow: 'visible',
       }}
       aria-hidden="true"
     >
       <defs>
-        <filter id={`${uid}-glow`} x="-30%" y="-30%" width="160%" height="160%">
+        <filter id={`${uid}-glow`} x="-80%" y="-80%" width="260%" height="260%">
           <feDropShadow
             dx="0"
             dy="0"
-            stdDeviation="2"
+            stdDeviation={BOOK_GLOW_BLUR}
             floodColor={BOOK_GLOW[type]}
-            floodOpacity="0.35"
+            floodOpacity={BOOK_GLOW_STRENGTH}
           />
         </filter>
         <clipPath id={`${uid}-clip`}>

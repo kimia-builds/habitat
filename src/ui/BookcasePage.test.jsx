@@ -64,6 +64,25 @@ describe('the constant bookshelf', () => {
     // Nothing face-out yet: no read buttons anywhere.
     expect(screen.queryByRole('button', { name: /read/ })).toBeNull()
   })
+
+  it('draws every glow behind every book, never over one (2026-10-11)', () => {
+    const { container } = render(
+      <BookcasePage
+        items={[item('c1:0', 'magazine'), item('c2:0', 'novel')]}
+        {...handlers()}
+      />,
+    )
+    const glows = container.querySelectorAll('.book-glows > path')
+    expect(glows).toHaveLength(2)
+    const firstBook = container.querySelector('.book')
+    const glowLayer = container.querySelector('.book-glows')
+    expect(
+      glowLayer.compareDocumentPosition(firstBook) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+    // The books themselves carry no glow of their own.
+    expect(container.querySelector('.book [filter]')).toBeNull()
+  })
 })
 
 describe('spine ↔ front', () => {
