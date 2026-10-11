@@ -351,8 +351,9 @@ tracker. Everything after this is delight, informed by real use.
             - [x] **Keepsake colours** _(done 2026-10-09 — `#ff0000`, `#ff2d95`,
                   `#ff9ecb`, `#ff5e00`, picked by eye from twelve;
                   `src/ui/keepsakeColours.js`; the shelf came down)_
-            - [ ] The 16 keepsake drawings,
-                  the Map pictures, and the five-step arrival logic.
+            - [x] **The 16 keepsake drawings** _(final shapes in
+                  `src/ui/keepsakeShapes.js`; not yet dropped. See history.md)_
+            - [ ] The Map pictures, and the five-step arrival logic.
       - [ ] **T5.3m The 48 curiosities** _(opened on Kimia's call —
             AFTER T5.3l)_ — the 48-item Market pool (3 per region) mostly
             **recycles things already drawn or about to be**: charms, smoke,

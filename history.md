@@ -3596,6 +3596,39 @@ return 0` right after the era is worked out, so a moment before the
   matter more than the release date, so nothing is cut from v1 to hit it.
   Folded into spec §5 and design-bible §9a / §12.
 
+## T5.3l build notes — the sixteen keepsakes
+
+Every keepsake was made from its patron flora's own trace, in a throwaway
+script (paper.js boolean geometry, run outside the repo) that cut, turned,
+scaled and joined pieces and wrote each result as one flat path. The shapes
+are now finished artwork, kept verbatim in `src/ui/keepsakeShapes.js` the
+way the flora traces are, so the script was not kept.
+
+- **The cuts.** A clip outline (circle, wedge, strip) is resampled, rounded
+  and given a gentle low wobble before cutting, so the cut edge reads as
+  drawn. Only the largest connected piece of a cut is kept, so no slivers of
+  neighbouring arms come along.
+- **Kimia's passes.** First draft: all sixteen. Second: siki's and
+  duripila's slices moved (duripila's to the curly top-left tendril), zecht
+  became flecks and dots, dalat a filled blob, every listed cut softened,
+  gaba rounded underneath, hayunti given a border. Third: siki back to its
+  first strip (softened), pataya's stalks joined to the heads by a small
+  base, and toom recut as its longest tendril from half-way up the flora.
+  Unif and gubl were approved on first sight.
+- **What each one is** (region · flora → keepsake): sahara · unif → three
+  tiny unifs; ari · gaba → two lobe heads, rounded; lerato · simeen → its
+  middle petal as two teardrop leaves; sogol · toom → its longest tendril;
+  kian · jembesh → three soft-cut hearts; ida · siki → a pad-edge strip with
+  thorns; sufi · honima → two leaves on the stem; cyrus · bumyaab → two
+  khormaloos with bumyaab caps; shiva · zecht → curl flecks and dots;
+  oratile · pataya → two three-petal blossoms on stalks; chaymae · budir →
+  a bundle of rays; hamid · hayunti → a fan slice in a border; parnian ·
+  duripila → the curly tendril; marie-simone · gubl → three bubbles; tadiwa
+  · dalat → its outer edge, filled; lily · kiyajong-ha → three berries.
+- **Not yet:** a keepsake size, and the drop logic. Nothing reads the file;
+  `keepsakeShapes.test.js` pins sixteen entries, one per region, flora and
+  flora shape.
+
 ## T5.3l build notes — the twelve silhouettes
 
 Kimia drew the twelve new flora and they were traced into flat single-path
@@ -7576,6 +7609,13 @@ and recorded in spec.md's decisions log._
   `#ff2d95`, `#ff9ecb` and `#ff5e00`**, picked off a twelve-candidate
   workbench shelf (then removed). Held in `src/ui/keepsakeColours.js`;
   nothing reads them until the keepsakes are drawn and dropping.
+
+- (Kimia): **the sixteen keepsake shapes are final** — drafted on a
+  workbench shelf, each beside its flora, and judged over three passes
+  (then the shelf came down). Rules that came out of it: cut lines are
+  always soft and organic; most keepsakes are a section of their flora,
+  but a drawn part may join where the lore needs it. Held in
+  `src/ui/keepsakeShapes.js`; folded into design-bible §9a.
 
 ## T5.3j build notes — the curiosities reach the game (2026-10-09)
 

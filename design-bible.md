@@ -288,6 +288,17 @@ different sizes and colours, and the arithmetic is exact.
   flora** (a plain opaque fill with an outline, glowing at the lifted
   level — §9a's recipe). **The four colours are chosen** (2026-10-09, by eye): `#ff0000`,
   `#ff2d95`, `#ff9ecb`, `#ff5e00` — `src/ui/keepsakeColours.js`.
+  **The sixteen shapes are final (Kimia)** — `src/ui/keepsakeShapes.js`,
+  one per region, each tagged with its region and flora. Most are a piece
+  of the flora's own trace, kept, turned, shrunk or repeated, and **every
+  cut line is soft and slightly wobbly, never a clean circle, triangle or
+  straight edge**. Where the lore asked for more, a simple drawn part joins
+  the cut: gaba's lobes rounded off underneath, hayunti's fan slice in a
+  soft border, bumyaab's fringe as the cap of a round khormaloo, siki's
+  pad-edge strip with soft thorns, pataya's three ray-petals on a stalk,
+  kiyajong-ha's berries with a skin, dalat's outer edge with the hole
+  filled. Unif's spawn is three tiny unifs; zecht's biomes are flecks of
+  its curls and dots. Size is still undecided.
   **Its copy (written by Kimia).** The first time one is found, the line
   is "[flora species name] has yielded …", then thereafter "you found a
   tendril" / "you found a peace branch". Her sixteen, complete as of
