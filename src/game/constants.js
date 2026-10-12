@@ -191,6 +191,14 @@ export const LITERACY_MILESTONES = [
 // tune in the drop simulation, here and nowhere else.
 export const READING_STAGE_THRESHOLDS = [0, 30, 115, 260, 465, 590]
 
+// How likely each stage is to be the one a new book's text comes from,
+// among the stages the reader has reached (Kimia 2026-10-12: newer
+// stages are LIKELIER). Entry 0 is stage 1. Only the stages reached
+// count, so at stage 3 the odds are 1 : 2 : 3 (the newest is half of
+// all drops), and at stage 6 they are 1 : 2 : 3 : 4 : 5 : 6 (the newest
+// is 6 in 21). Earlier stages keep recurring for ever. Tune here.
+export const READING_STAGE_WEIGHTS = [1, 2, 3, 4, 5, 6]
+
 // How many different texts each stage holds per type — 16 : 4 : 1,
 // the same ratio as the drops themselves. 6 x (16 + 4 + 1) = 126 texts.
 export const READING_POOL_PER_STAGE = {

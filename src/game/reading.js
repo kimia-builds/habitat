@@ -10,7 +10,8 @@
 //     have reached (1 = pictures only … 6 = fully comprehensible).
 //   - pickPublication(...): when a reading drop lands, which text of
 //     the pool does the new book hold? Any text of the current stage or
-//     a stage already passed — NEVER a higher one. Early material can
+//     a stage already passed — NEVER a higher one — with newer stages
+//     likelier. Early material can
 //     recur for ever; stage 1 is always open, so we can always begin.
 //
 // The answer is SEEDED like every other roll (drops.js): the same tap
@@ -25,6 +26,7 @@
 import {
   READING_POOL_PER_STAGE,
   READING_STAGE_THRESHOLDS,
+  READING_STAGE_WEIGHTS,
   READING_TYPES,
 } from './constants.js'
 import { randomUnit } from './drops.js'
@@ -80,8 +82,10 @@ export function parsePublicationId(id) {
 }
 
 // Which text a new book of this type holds. `maxStage` is the reader's
-// current stage; the pick is uniform over every text of that type in
-// stages 1..maxStage. `seedString` carries the tap's stable facts.
+// current stage. Newer stages are likelier (READING_STAGE_WEIGHTS): one
+// seeded roll picks the stage by those weights among stages 1..maxStage,
+// a second picks which of that stage's texts of this type. `seedString`
+// carries the tap's stable facts.
 export function pickPublication(type, maxStage, seedString) {
   if (!READING_TYPES.includes(type)) {
     throw new Error(`Unknown reading type "${type}".`)
@@ -93,10 +97,23 @@ export function pickPublication(type, maxStage, seedString) {
   ) {
     throw new Error(`A reading stage must be 1–${READING_STAGE_COUNT}.`)
   }
-  const perStage = READING_POOL_PER_STAGE[type]
-  const slot = Math.floor(randomUnit(seedString) * perStage * maxStage)
-  const stage = Math.floor(slot / perStage) + 1
-  return publicationId(stage, type, (slot % perStage) + 1)
+  const weights = READING_STAGE_WEIGHTS.slice(0, maxStage)
+  const total = weights.reduce((sum, w) => sum + w, 0)
+  const stageRoll = randomUnit(`${seedString}|stage`) * total
+  let stage = maxStage
+  let cumulative = 0
+  for (let i = 0; i < weights.length; i++) {
+    cumulative += weights[i]
+    if (stageRoll < cumulative) {
+      stage = i + 1
+      break
+    }
+  }
+  const number =
+    Math.floor(
+      randomUnit(`${seedString}|text`) * READING_POOL_PER_STAGE[type],
+    ) + 1
+  return publicationId(stage, type, number)
 }
 
 // Books received BEFORE this system existed carry no text. They get a

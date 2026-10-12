@@ -75,6 +75,35 @@ describe('pickPublication', () => {
     }
   })
 
+  it('newer stages are likelier, and the odds follow the weights', () => {
+    const counts = {}
+    const draws = 21000
+    for (let i = 0; i < draws; i++) {
+      const { stage } = parsePublicationId(
+        pickPublication('magazine', 6, `w${i}`),
+      )
+      counts[stage] = (counts[stage] ?? 0) + 1
+    }
+    // 1 : 2 : 3 : 4 : 5 : 6 of 21 — each within a few percent of its share.
+    for (let stage = 1; stage <= 6; stage++) {
+      const expected = (stage / 21) * draws
+      expect(Math.abs(counts[stage] - expected)).toBeLessThan(expected * 0.08)
+    }
+    expect(counts[6]).toBeGreaterThan(counts[1] * 4)
+  })
+
+  it('every text within a stage is equally likely', () => {
+    const counts = Array(17).fill(0)
+    for (let i = 0; i < 16000; i++) {
+      const picked = parsePublicationId(pickPublication('magazine', 1, `t${i}`))
+      counts[picked.number]++
+    }
+    for (let n = 1; n <= 16; n++) {
+      expect(counts[n]).toBeGreaterThan(800)
+      expect(counts[n]).toBeLessThan(1200)
+    }
+  })
+
   it('at a high stage, earlier stages keep recurring AND the newest appears', () => {
     const stages = new Set()
     for (let i = 0; i < 600; i++) {

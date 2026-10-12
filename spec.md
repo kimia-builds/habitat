@@ -338,8 +338,10 @@ opening its own growing world:
   stories; **dictionaries** carry definitions, encyclopedia entries and
   data. Free-floating words pair with a picture in the early stages,
   except stage-2 magazines, which are words only (Kimia 2026-10-12).
-  **Which text a book holds is picked evenly from every stage up to the
-  current one** — the newest stage is not favoured. A book received
+  **Which text a book holds comes from any stage up to the current
+  one, with newer stages likelier** (Kimia 2026-10-12; default weights
+  1 : 2 : 3 : 4 : 5 : 6 by stage, so at stage 6 the newest is 6 in 21 and
+  stage 1 is 1 in 21). A book received
   before the pool existed holds a stage-1 text chosen from its own id.
 - **Early-stage pictures** look like **children's drawings**:
   deliberately simpler versions of in-game objects (curiosities, flora,

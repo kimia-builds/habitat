@@ -3680,8 +3680,10 @@ return 0` right after the era is worked out, so a moment before the
   pebble sits **below the book, outside its card**; Escape or a press on
   the veil closes it too. Stage-2 magazines are **words only** (the
   spec's "words always pair with a picture" bends there). A book picks
-  its text from any stage up to the current one, **every stage equally
-  likely** — the newest is not favoured. A book received before the pool
+  its text from any stage up to the current one, **newer stages
+  likelier** (corrected the same day: first answered "equally likely" to
+  an unclear question). The default weights are 1 : 2 : 3 : 4 : 5 : 6 by
+  stage, tunable in constants.js. A book received before the pool
   existed holds a stage-1 text chosen from its own id. A blank slot shows
   the existing "something will be here soon" line. This supersedes the
   2026-07-19 one-image-per-publication `spreads.js`.
@@ -7892,7 +7894,8 @@ the game.
   `READING_STAGE_THRESHOLDS` (0 / 30 / 115 / 260 / 465 / 590,
   provisional, in constants.js) and `READING_POOL_PER_STAGE` (16 / 4 /
   1); publication ids `s<stage>-<type>-<nn>`; `pickPublication` is a
-  seeded uniform pick over every text of that type in stages 1..current;
+  seeded pick: a stage by `READING_STAGE_WEIGHTS` (1 : 2 : 3 : 4 : 5 : 6,
+  among the stages reached), then a text of that type in it, uniformly;
   `legacyPublicationId` gives pre-pool books a stable stage-1 text.
 - `deliverDrops` stores `publicationId` on every reading drop (stage
   taken from the history BEFORE the tap, so it is as settled as the roll
