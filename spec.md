@@ -363,7 +363,12 @@ opening its own growing world:
 - Each publication can be **read** (2026-07-19, plan T3.5): a popup
   opens a spread of it — **its text, with its pictures** (Kimia
   2026-10-08, replacing the single provided image per publication;
-  images remain Kimia-provided, never AI-generated). **How it looks
+  images remain Kimia-provided, never AI-generated). **The pictures
+  (2026-10-12):** line drawings in the market charms' style: one pen
+  weight, a slight wobble, no fill, no glow, in the six charm colours,
+  each at a fixed 130px. They cover the six charms, the eight rail
+  symbols and eleven new drawings; a description with no drawing yet
+  shows its bracket. **How it looks
   (2026-10-12):** one fixed size per kind, from the books' own
   proportions — dictionary 500px wide, novel 462px, magazine 404px —
   all set in Gaegu handwriting. It is one landscape page; the middle

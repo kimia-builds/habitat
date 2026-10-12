@@ -3687,6 +3687,24 @@ return 0` right after the era is worked out, so a moment before the
   existed holds a stage-1 text chosen from its own id. A blank slot shows
   the existing "something will be here soon" line. This supersedes the
   2026-07-19 one-image-per-publication `spreads.js`.
+- 2026-10-12 (Kimia, T5.3o): **the reading pictures are line drawings in
+  the market charms' style, in the six charm colours.** One pen weight
+  (6px), the market's gentle wobble, no fill and no glow, each drawn in a
+  130px frame and shown at exactly that size. 25 drawings cover every
+  picture the stage 1 and 2 texts ask for: the six charms (borrowed from
+  the market, anchor included), the eight rail symbols (each in the colour
+  it glows on the rail; "rail symbol 1..8" run in the rail's own order:
+  add, pencil, graph, map, abode, community, library, market), and eleven
+  new ones. Her calls on the new ones: the star has **nine points**; the
+  luminous crystal is a **cluster** (tall one in the middle, a smaller one
+  each side, a rock) after a reference picture, dropping the glow line;
+  the cliffs are **three skinny jagged pillars with two gusts of wind
+  coiling across them**, after a reference picture; the mud-pool has
+  **bubbles inside and above it and tiny dots for small ones**, no
+  wrinkle. Unif, toom, gubl, the pataya's blossoms and the gubl's bauble
+  are her traced shapes, outlined; plip and baluhm are outlines of their
+  traced bodies with the eyes as solid dots. Folded into spec §5 and
+  design-bible §10b.
 
 ## Closed by tick — T5.3g, T5.3i and T6.19 (2026-10-11)
 
@@ -3789,6 +3807,42 @@ rides in backups — was confirmed by the test suite (1160 passing).
       workbench door (stays English). **Story and names are done too** (batches 7–8, 2026-10-09): all
       that is left blank is the Gregorian months and the design door,
       on purpose.
+
+## T5.3o build notes — the reading pictures (2026-10-12)
+
+Built the design-slice way: a contact sheet of all 25 pictures was shown
+first (charms, rail symbols, new drawings, at their real page size), and
+Kimia changed five of them over three rounds before anything reached the
+game. The sheet's generator lived in the scratchpad and is not kept; the
+drawings are the code.
+
+- **Where it lives.** `src/ui/readingPictures.jsx` draws them;
+  `src/ui/readingPictureIds.js` is the plain table from a written
+  description ('[a plip]') to a drawing id, kept as data in a `.js` file
+  so no sentence-like string sits in a screen file (the copy-deck test
+  scans every `.jsx`). `SpreadPopup.jsx` shows a drawing when its
+  description has one and keeps the square-bracket stand-in when not.
+- **The style, in numbers.** Pen 6 (the market's `CHARM_LINE`), wobble
+  recipe copied from `charm-wobble` (noise 0.02, two octaves, seed 7,
+  scale 5). 24-unit drawings (charms, rail glyphs, the hand-drawn four)
+  scale to the 130px frame with the pen divided by the same factor;
+  traced outlines use non-scaling-stroke so their pen is 6px too. The
+  svg is a fixed 130px, never squeezed, so the pen is the same on every
+  page.
+- **The charms are the market's own** (`CHARM_SHAPES` plus the anchor
+  override), so a change to a market charm shows in the books too.
+- **Flora numbers** (world-building.md's table): shapes 1, 2, 3, 6 are
+  the original four, the rest run n01..n12 in order, so unif (14) is
+  n10, gubl (13) is n09 and toom (3) is the original 3. Kimia confirmed
+  by looking at the sheet.
+- **Tests.** `readingPictures.test.jsx` reads the real texts file, so a
+  new picture description with no drawing fails the suite; it also holds
+  the colours to the six charm colours and the drawings to no fill.
+  `SpreadPopup.test.jsx` asserts a named image, and the bracket fallback.
+- **Checked in the real browser** by mounting the component for all 26
+  descriptions (25 drawings; 'a unif' and 'one unif' share one): all draw,
+  and match the approved sheet. The popup itself was not opened in the
+  browser, as that needs a book in the Bookcase.
 
 ## T5.3n build notes — the reading material (2026-10-11)
 

@@ -845,6 +845,14 @@ dictionary. Drawn in `src/ui/bookArt.js`. The same front cover, in the
 same shade, is what arrives in the drop popups (2026-10-11): small on the
 arrival shelf, large on the first-time reveal (`src/ui/BookFigure.jsx`).
 
+**Pictures inside (Kimia, 2026-10-12, T5.3o).** What an open book shows
+is drawn in the market charms' own style: line only, one pen weight
+(6px), the market's gentle wobble, no fill, no glow, and only the six
+charm colours, each picture at a fixed 130px. Charms and rail symbols
+keep their own colours; the rest are spread across the six by eye.
+Traced shapes (flora, keepsakes, the plip and baluhm bodies) are
+outlined, never filled. `src/ui/readingPictures.jsx`.
+
 **Colour.** Soft pastels, one family per type, five shades each:
 **purple** magazines, **aquamarine** novels, **baby-pink**
 dictionaries. (This replaces "a single block colour anywhere on the

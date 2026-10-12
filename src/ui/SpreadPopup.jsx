@@ -4,8 +4,8 @@
 // What is on the pages comes from src/content/readingTexts.js (Kimia's
 // file): each book remembers which text of the 126-text pool it holds
 // (item.publicationId), so re-reading always shows the same pages.
-// Pictures are square-bracket descriptions for now — the real drawings
-// replace them one by one. A slot she has not written yet gets the quiet
+// Pictures are square-bracket descriptions that readingPictures.jsx turns
+// into line drawings; a description with no drawing yet stays a bracket. A slot she has not written yet gets the quiet
 // empty state: the publication itself and her "something will be here
 // soon" line from the narration slots. Nothing is ever invented.
 //
@@ -28,6 +28,7 @@ import { readingTextFor } from '../content/readingTexts.js'
 import { arrivalLabel } from './arrivalText.js'
 import DropGlyph from './DropGlyph.jsx'
 import { useText } from './language.jsx'
+import ReadingPicture, { readingPictureFor } from './readingPictures.jsx'
 import { spreadLayout } from './spreadLayout.js'
 
 function SpreadPopup({ item, onClose }) {
@@ -45,9 +46,18 @@ function SpreadPopup({ item, onClose }) {
     return () => document.removeEventListener('keydown', onKey)
   }, [onClose])
 
-  const picture = pages?.picture && (
-    <p className="spread-picture">{pages.picture}</p>
-  )
+  // A description with a drawing shows the drawing; one without yet keeps
+  // its square-bracket stand-in.
+  const drawing = pages?.picture ? readingPictureFor(pages.picture) : null
+  const picture =
+    pages?.picture &&
+    (drawing ? (
+      <div className="spread-picture-drawing">
+        <ReadingPicture description={pages.picture} drawing={drawing} />
+      </div>
+    ) : (
+      <p className="spread-picture">{pages.picture}</p>
+    ))
   const words = pages?.text && (
     <p className={`spread-text spread-text-${layout.size}`}>{pages.text}</p>
   )

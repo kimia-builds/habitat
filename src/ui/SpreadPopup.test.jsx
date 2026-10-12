@@ -34,8 +34,23 @@ describe('SpreadPopup', () => {
       />,
     )
     const popup = screen.getByRole('dialog', { name: 'a novel' })
-    expect(popup.textContent).toContain('[a plip]')
+    // a described picture with a drawing is shown as a drawing
+    expect(screen.getByRole('img', { name: 'a plip' })).toBeDefined()
     expect(popup.textContent).toContain('friendship')
+  })
+
+  it('a picture with no drawing yet keeps its bracket stand-in', () => {
+    mockTexts = { 'pub-3': { picture: '[a thing not drawn]', text: 'hello' } }
+    render(
+      <SpreadPopup
+        item={{ type: 'novel', publicationId: 'pub-3' }}
+        onClose={() => {}}
+      />,
+    )
+    expect(screen.queryByRole('img')).toBeNull()
+    expect(screen.getByRole('dialog').textContent).toContain(
+      '[a thing not drawn]',
+    )
   })
 
   it('a half-written slot shows just the half it has', () => {

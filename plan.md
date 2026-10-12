@@ -304,6 +304,11 @@ tracker. Everything after this is delight, informed by real use.
             shades each; the cover keeps only the eye; drops arrive as the
             same cover on the shelf and first reveal. Build notes in
             history.md)_
+      - [x] **T5.3o The reading pictures** _(done 2026-10-12 — 25 line
+            drawings in the market charms' pen and the six charm colours
+            fill every picture slot of stages 1 and 2: the six charms,
+            the eight rail symbols and eleven new ones. Build notes in
+            history.md)_
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

@@ -2420,6 +2420,19 @@ body {
   line-height: 1.2;
 }
 
+.spread-picture-drawing {
+  display: grid;
+  place-items: center;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+}
+
+/* A fixed 130px, never squeezed: the pen is the same on every page. */
+.spread-drawing {
+  flex: none;
+}
+
 .spread-text {
   line-height: 1.2;
   text-wrap: pretty;
