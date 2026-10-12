@@ -135,8 +135,7 @@ built on top of a live, in-use app.
   band across the top, purple magazines, aquamarine novels and baby-pink
   dictionaries, five soft shades of each — and a new book arrives
   already wearing its cover, in the shade it will keep on the shelf. Still to come in M5
-  are the friends on the rest of their screens, the giant landmark flora,
-  and the object art.
+  are the giant landmark flora and the rest of the market's objects.
 - **M6 — under way alongside M5.** Content pools, pacing tune-ups and
   portfolio polish are still ahead, but a good deal of it has shipped
   out of order, as things came up in daily use. The error-boundary
