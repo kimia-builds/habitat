@@ -58,17 +58,13 @@ edibles, simeen, fruit, wind, sky.
 7. "missing dictionaries?"
 8. "high edible yield"
 9. "extra pleasant wind pattern"
-10. "new seeds from kian"
-11. "hamid travel guide"
-12. "pop star academy"
-13. "trendy alien symbols"
-14. "fragrant spawn from sahara"
-15. "new river rides in sogol"
-16. "new novel published"
-17. "take a flora quiz"
-
-> **OPEN:** stage 3 has 17 magazine lines against a quota of 16. One needs
-> to be cut (or the quota changed) — Kimia to decide.
+10. "hamid travel guide"
+11. "pop star academy"
+12. "trendy alien symbols"
+13. "fragrant spawn from sahara"
+14. "new river rides in sogol"
+15. "new novel published"
+16. "take a flora quiz"
 
 ## Stages 4–6
 
