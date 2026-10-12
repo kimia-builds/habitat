@@ -295,9 +295,9 @@ opening its own growing world:
      "baluhm"). The scatter is the point.
   3. **Somewhat verbal** — words cobbled together, grammar still wonky;
      still abstract, so the reader needs outside context (e.g. "baluhm
-     finds new stranger", "too many plips today").
+     finds new stranger", "too many plips").
   4. **Grammar sorted** — basic, coherent, literal sentences (e.g. "a
-     plip school got hit by a meteor today. luckily the plips are not
+     plip school got hit by a meteor. luckily the plips are not
      injured."; "market goods are selling fast! purchase your objects
      before the seller moves back to their hometown").
   5. **Higher education** — more sophisticated expression of ideas
@@ -353,7 +353,8 @@ opening its own growing world:
   work in the game.
 - **AI never writes the texts** — human-written by Kimia only (the
   standing content rule); Claude Code builds the empty, keyed slots. The texts
-  written so far live in `reading-texts.md`.
+  written so far live in `reading-texts.md`. **No day words** (today,
+  tomorrow, yesterday) appear in any text — N-Z-D has no days.
 - Each publication can be **read** (2026-07-19, plan T3.5): a popup
   opens a double-page spread of it — **the text for its stage, with its
   pictures** (Kimia 2026-10-08, replacing the single provided image per

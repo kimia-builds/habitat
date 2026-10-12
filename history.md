@@ -3661,7 +3661,11 @@ return 0` right after the era is worked out, so a moment before the
   `reading-texts.md`. Stage 3 came with 17 magazine lines against a quota
   of 16; Kimia cut "new seeds from kian", leaving 16.
   The stage 4 dictionary entry followed the same day (sky canopies);
-  stage 4 novels and magazines are still to write.
+  the 16 stage 4
+  magazines were added, so only the 4 stage 4 novels remain. **No day
+  words in any reading text** (today, tomorrow, yesterday): N-Z-D has no
+  days. "today" came out of "too many plips" and out of the spec's
+  meteor example; spec §5 and `reading-texts.md` now say so.
 
 ## Closed by tick — T5.3g, T5.3i and T6.19 (2026-10-11)
 

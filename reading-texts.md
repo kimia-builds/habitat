@@ -3,7 +3,8 @@
 _Kimia's own words, recorded as she wrote them (the standing content rule:
 AI never writes these). Spec §5 Stream 2 holds the rules; this file holds
 the texts. Stage names are internal and never shown in the app. Each stage
-has 1 dictionary, 4 novels and 16 magazines._
+has 1 dictionary, 4 novels and 16 magazines. **No day words** (today, tomorrow,
+yesterday): N-Z-D has no days._
 
 ## Stage 1 — Illiterate (pictures only)
 
@@ -50,7 +51,7 @@ edibles, simeen, fruit, wind, sky.
 
 **Magazines**
 1. "baluhm finds new stranger"
-2. "too many plips today"
+2. "too many plips"
 3. "sandstorm in sahara"
 4. "sad school closures"
 5. "comet sighting"
@@ -73,7 +74,23 @@ edibles, simeen, fruit, wind, sky.
 
 **Novels:** not written yet.
 
-**Magazines:** not written yet.
+**Magazines**
+1. "a liwi bi-jiji school got hit by a meteor. luckily no one got injured."
+2. "market goods selling fast! purchase quickly before seller travels on to sufi"
+3. "auditions for next season's storytellings showcase by the mud pots soon!"
+4. "forensic scientists of the krupengk population found the dictionary thief"
+5. "slower wind rivers are causing major delays among the floating population"
+6. "geologists warn of extra hot volcanoes in kian this tectonic cycle"
+7. "don't miss the woigolps' famous special storytelling extravaganza!"
+8. "communal grief and celebration of hamdi bulo passing to the universe"
+9. "fungus forest discovery leads to crazy inflation; chitus intervene"
+10. "tourism in ari is at an all time high - tourists say they adore the scent!"
+11. "studies show long-term baluhm companionship improves spiritual health"
+12. "a zecht was found in sahara - how did it survive there?"
+13. "recent contact made with alien planet 5-A-M. low hostility; low trust."
+14. "friendship tips and tricks for first timers: don't rush!"
+15. "amazing new seed yields available in kian"
+16. "a novel writer has been accused of plagiarism but denies claims."
 
 ## Stages 5–6
 
