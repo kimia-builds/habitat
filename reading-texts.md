@@ -66,6 +66,15 @@ edibles, simeen, fruit, wind, sky.
 15. "new novel published"
 16. "take a flora quiz"
 
-## Stages 4–6
+## Stage 4 — Grammar sorted
+
+**Dictionary**
+1. "sky canopies contain seasonal warmth and focus our view on the glowing life of the planet. when the old flora disintegrate into space, many of the younger flora die with it, opening the sky to our colder, more contemplative seasons with a clear view of the skies."
+
+**Novels:** not written yet.
+
+**Magazines:** not written yet.
+
+## Stages 5–6
 
 Not written yet.

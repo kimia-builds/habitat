@@ -3660,6 +3660,8 @@ return 0` right after the era is worked out, so a moment before the
   stage 3 is headline-style phrases. Recorded verbatim in
   `reading-texts.md`. Stage 3 came with 17 magazine lines against a quota
   of 16; Kimia cut "new seeds from kian", leaving 16.
+  The stage 4 dictionary entry followed the same day (sky canopies);
+  stage 4 novels and magazines are still to write.
 
 ## Closed by tick — T5.3g, T5.3i and T6.19 (2026-10-11)
 
