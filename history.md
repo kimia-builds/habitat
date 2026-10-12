@@ -3654,6 +3654,13 @@ return 0` right after the era is worked out, so a moment before the
   numbers the shape re-groups); home and the rail pages show the
   languages alone. Folded into spec.md (the week's-shape paragraph).
 
+- 2026-10-12 (Kimia): **reading texts for stages 1–3 written** (T6.24
+  content). Stage 1 is all pictures; stage 2 pairs one-word captions with
+  pictures (dictionary and novels) or stands alone as words (magazines);
+  stage 3 is headline-style phrases. Recorded verbatim in
+  `reading-texts.md`. Stage 3 came with 17 magazine lines against a quota
+  of 16 — left open for Kimia to cut one.
+
 ## Closed by tick — T5.3g, T5.3i and T6.19 (2026-10-11)
 
 No new build: every part of these three tasks was already finished, so

@@ -352,7 +352,8 @@ opening its own growing world:
   version like everything else, as the **lowest-priority** translation
   work in the game.
 - **AI never writes the texts** — human-written by Kimia only (the
-  standing content rule); Claude Code builds the empty, keyed slots.
+  standing content rule); Claude Code builds the empty, keyed slots. The texts
+  written so far live in `reading-texts.md`.
 - Each publication can be **read** (2026-07-19, plan T3.5): a popup
   opens a double-page spread of it — **the text for its stage, with its
   pictures** (Kimia 2026-10-08, replacing the single provided image per
