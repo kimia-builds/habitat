@@ -134,7 +134,10 @@ built on top of a live, in-use app.
   have their real look as well — beaded spines and covers with a wavy
   band across the top, purple magazines, aquamarine novels and baby-pink
   dictionaries, five soft shades of each — and a new book arrives
-  already wearing its cover, in the shade it will keep on the shelf. Still to come in M5
+  already wearing its cover, in the shade it will keep on the shelf.
+  Opening one shows its pages in a childlike handwriting: what you can
+  read inside grows through six reading stages as your literacy does,
+  from pictures only towards full sentences. Still to come in M5
   are the giant landmark flora and the rest of the market's objects.
 - **M6 — under way alongside M5.** Content pools, pacing tune-ups and
   portfolio polish are still ahead, but a good deal of it has shipped

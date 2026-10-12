@@ -356,16 +356,12 @@ tracker. Everything after this is delight, informed by real use.
 
 ## M6 — Hardening & content (ongoing)
 
-- [ ] **T6.24 Reading stages and the reading pool** — build what spec §5
-      Stream 2 now describes (Kimia 2026-10-08): the second measure
-      "reading stage" (6 stages, thresholds on the literacy points, 0 /
-      30 / 115 / 260 / 465 / 590, provisional), drops capped at the
-      current stage, the 126-text pool (6 dictionaries, 24 novels, 96
-      magazines) as keyed empty slots Kimia fills, each received book
-      remembering which text it holds, and the spread popup showing text
-      plus pictures. Replaces the one-image-per-publication `spreads.js`
-      shape. The in-book texts are the lowest-priority Farsi translation.
-      Stage thresholds to be tuned in the drop simulation.
+- [x] **T6.24 Reading stages and the reading pool** _(done 2026-10-12 —
+      six reading stages on the literacy points, the 126-text pool as
+      keyed slots in `src/content/readingTexts.js`, each book remembering
+      its text, and the open-book spread popup in Gaegu handwriting. The
+      stage thresholds stay provisional for the drop simulation. Build
+      notes in history.md)_
 
 - [ ] **T6.1 Content pools** — write/name the actual flora, market
       objects (with prices), reading material, and friends; assign objects
@@ -452,8 +448,8 @@ tracker. Everything after this is delight, informed by real use.
   T6.18 Persian date (about 1) → T6.19 translation drafts (1–2 for the
   drafting; Kimia's slot-by-slot review is the long part) → a final
   check that the English–Farsi switch holds (it already saves, survives
-  reloads and rides in backups). In-book texts (T6.24) are not yet
-  written and join the Farsi work later. Decisions: history.md,
+  reloads and rides in backups). In-book texts (T6.24, built) are only
+  partly written and join the Farsi work later. Decisions: history.md,
   2026-10-09.
 - [x] **T6.14 The copy deck — one home for every word Habitat says.**
       _(Kimia's call 2026-08-16; built in four slices 2026-10-09, build

@@ -2298,9 +2298,32 @@ body {
   cursor: pointer;
 }
 
-/* T3.5: the reading popup — a publication's double-page spread. Quiet
-   pastel, not neon: re-reading is an everyday pleasure, not a POP
-   moment. Reuses the reveal overlay's dimmed backdrop. */
+/* T6.24: the reading popup — an open book on a dimmed backdrop (the
+   reveal overlay) with its close pebble BELOW the card, so nothing is
+   added to the pages. One size per kind of book, taken from the
+   Bookcase's own proportions (a cover is 0.68 as wide as tall, a spread
+   is two covers side by side); the dictionary spread is 500px wide and
+   the others follow by their book heights (52 : 48 : 42). Quiet pastel,
+   not neon: re-reading is an everyday pleasure, not a POP moment. */
+
+/* Gaegu: the handwriting every written text is set in (Kimia 2026-10-12).
+   Bundled with the site, Latin letters only (~17KB), and fetched only
+   when a book is opened — nobody who never reads downloads it. */
+@font-face {
+  font-family: 'Gaegu';
+  src: url('./fonts/Gaegu-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.spread-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 100%;
+}
 
 .spread-popup {
   display: flex;
@@ -2308,8 +2331,7 @@ body {
   align-items: center;
   gap: var(--space-4);
   text-align: center;
-  width: 100%;
-  max-width: 30rem;
+  max-width: 100%;
   padding: var(--space-6);
   background: var(--bg);
   border: 1px solid var(--border);
@@ -2317,10 +2339,102 @@ body {
   animation: reveal-pop 0.45s ease;
 }
 
-.spread-image {
-  display: block;
-  width: 100%;
+@media (prefers-reduced-motion: reduce) {
+  .spread-popup {
+    animation: none;
+  }
+}
+
+.spread-book {
+  --spread-width: 500px;
+  position: relative;
+  display: grid;
+  width: var(--spread-width);
+  max-width: 100%;
+  aspect-ratio: 1.36 / 1;
+  overflow: hidden;
+  background: var(--surface-lifted);
+  border: 1px solid var(--border);
   border-radius: 0.4rem;
+  font-family: 'Gaegu', 'Comic Sans MS', cursive;
+  color: var(--text);
+}
+
+.spread-novel {
+  --spread-width: 462px;
+}
+
+.spread-magazine {
+  --spread-width: 404px;
+}
+
+.spread-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  min-height: 0;
+  padding: 20px 26px;
+  text-align: center;
+}
+
+/* The fold: only when two pages have work to do. Picture + words splits
+   the spread in the middle; long words pour into two columns. */
+.spread-fold-pages {
+  grid-template-columns: 1fr 1fr;
+}
+
+.spread-fold-pages::after,
+.spread-fold-columns::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 10px);
+  width: 20px;
+  background: linear-gradient(90deg, transparent, var(--book-fold), transparent);
+  pointer-events: none;
+}
+
+.spread-fold-columns .spread-page {
+  display: block;
+  column-count: 2;
+  column-gap: 40px;
+  column-rule: 1px solid var(--border);
+  text-align: start; /* the book is dir=ltr, so start is its left */
+}
+
+.spread-picture {
+  display: grid;
+  place-items: center;
+  flex: 1 1 auto;
+  width: 100%;
+  max-height: 100%;
+  padding: var(--space-2);
+  border: 1px dashed var(--literacy);
+  border-radius: 0.4rem;
+  color: var(--literacy);
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.spread-text {
+  line-height: 1.2;
+  text-wrap: pretty;
+}
+
+.spread-text-big {
+  font-size: 48px;
+}
+
+.spread-text-mid {
+  font-size: 32px;
+}
+
+.spread-text-small {
+  font-size: 21px;
 }
 
 .spread-empty-line {

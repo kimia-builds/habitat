@@ -18,6 +18,12 @@
 import { countOn } from './completions.js'
 import { EXPEDITION_STEPS_PER_COMPLETION } from './constants.js'
 import { rollDrops } from './drops.js'
+import { literacyPoints } from './meters.js'
+import {
+  legacyPublicationId,
+  pickPublication,
+  readingStageFor,
+} from './reading.js'
 
 // The five reveal families a drop can belong to. Reading splits into
 // its three types (spec §5: "first flora, first magazine, first
@@ -34,35 +40,61 @@ export function dropKey(drop) {
 // length gives this tap's expedition step (one step per completion —
 // the same 1:1 counting as the expedition meter), and its marks on the
 // same habit + day give the tapIndex the seeded rolls key on.
+//
+// Since T6.24 each reading drop also stores WHICH TEXT its book holds
+// (publicationId), picked from the reading stage this tap finds the
+// reader at — computed from the history before it, so it is as settled
+// as the rest of the roll.
 export function deliverDrops(completion, habit, existing, worldSeed) {
+  const tapIndex = countOn(existing, completion.habitId, completion.dayKey)
   const drops = rollDrops({
     worldSeed,
     habitId: completion.habitId,
     dayKey: completion.dayKey,
-    tapIndex: countOn(existing, completion.habitId, completion.dayKey),
+    tapIndex,
     stepIndex: existing.length * EXPEDITION_STEPS_PER_COMPLETION,
     difficulty: habit.difficulty,
   })
-  return { ...completion, drops }
+  if (!drops.some((drop) => drop.kind === 'reading')) {
+    return { ...completion, drops }
+  }
+  const stage = readingStageFor(literacyPoints(readingItemsFrom(existing)))
+  return {
+    ...completion,
+    drops: drops.map((drop, index) =>
+      drop.kind === 'reading'
+        ? {
+            ...drop,
+            publicationId: pickPublication(
+              drop.readingType,
+              stage,
+              `${worldSeed}|publication|${completion.habitId}|${completion.dayKey}|${tapIndex}|${index}`,
+            ),
+          }
+        : drop,
+    ),
+  }
 }
 
 // All reading material ever received, in arrival order — the literacy
 // meter's feed AND the Bookcase's contents (reading is never
 // discarded, spec §5 Stream 2). Since T3.5 each item also knows the
-// day it arrived and which publication it is; publicationId stays
-// null until the T6.1 content pools name the publications, so until
-// then no spread image can match it and the popup shows its empty
-// state.
+// day it arrived, and since T6.24 which text of the reading pool it
+// holds (publicationId). A book received before the pool existed has
+// none stored, so it is given a stage-1 text from its own id — always
+// the same one.
 export function readingItemsFrom(completions) {
   const items = []
   for (const completion of completions) {
     completion.drops.forEach((drop, index) => {
       if (drop.kind !== 'reading') return
+      const id = `${completion.id}:${index}`
       items.push({
-        id: `${completion.id}:${index}`,
+        id,
         type: drop.readingType,
         dayKey: completion.dayKey,
-        publicationId: drop.publicationId ?? null,
+        publicationId:
+          drop.publicationId ?? legacyPublicationId(id, drop.readingType),
       })
     })
   }

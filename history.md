@@ -3666,6 +3666,25 @@ return 0` right after the era is worked out, so a moment before the
   words in any reading text** (today, tomorrow, yesterday): N-Z-D has no
   days. "today" came out of "too many plips" and out of the spec's
   meteor example; spec §5 and `reading-texts.md` now say so.
+- 2026-10-12 (Kimia, T6.24 build): **the reading spread's look and the
+  pool's rules are settled.** Each kind of publication has ONE fixed
+  spread size, from the Bookcase's own proportions (a cover is 0.68 as
+  wide as tall; a spread is two covers side by side): dictionary 500px
+  wide, novel 462px, magazine 404px. A spread is one landscape page; the
+  middle fold exists only for picture + words (picture left, words right)
+  or for words over 100 characters, which pour into two columns. Contents
+  are spread evenly and centred; everything is set in **Gaegu**
+  handwriting (bundled, Latin only, ~17KB, lazily fetched — chosen over
+  the free system fonts so every device shows the same hand). The
+  popup opens with the reveal overlay's veil and pop, and its close
+  pebble sits **below the book, outside its card**; Escape or a press on
+  the veil closes it too. Stage-2 magazines are **words only** (the
+  spec's "words always pair with a picture" bends there). A book picks
+  its text from any stage up to the current one, **every stage equally
+  likely** — the newest is not favoured. A book received before the pool
+  existed holds a stage-1 text chosen from its own id. A blank slot shows
+  the existing "something will be here soon" line. This supersedes the
+  2026-07-19 one-image-per-publication `spreads.js`.
 
 ## Closed by tick — T5.3g, T5.3i and T6.19 (2026-10-11)
 
@@ -7862,3 +7881,37 @@ instead of ObjectGlyph.jsx's line forms. What was built:
   tests take the first of several same-priced buttons; new tests cover the
   playtest stall, the slot-to-recipe map, and a drawn curiosity's canon size
   in the Abode. Whole suite 1141 passing.
+
+## T6.24 build notes — reading stages and the reading pool (2026-10-12)
+
+Built the logic first, then the look in front of Kimia over four trial
+pages (fonts and layouts, stage by stage, with her real texts), then
+the game.
+
+- `src/game/reading.js` (pure): `readingStageFor(points)` over
+  `READING_STAGE_THRESHOLDS` (0 / 30 / 115 / 260 / 465 / 590,
+  provisional, in constants.js) and `READING_POOL_PER_STAGE` (16 / 4 /
+  1); publication ids `s<stage>-<type>-<nn>`; `pickPublication` is a
+  seeded uniform pick over every text of that type in stages 1..current;
+  `legacyPublicationId` gives pre-pool books a stable stage-1 text.
+- `deliverDrops` stores `publicationId` on every reading drop (stage
+  taken from the history BEFORE the tap, so it is as settled as the roll
+  itself); `validateDrop` checks it names a text of the drop's own type.
+  No storage version bump — the field is additive and old drops carry
+  none. `readingItemsFrom` hands the text through, so the Bookcase and
+  the held arrival open the same pages.
+- `src/content/readingTexts.js`: 126 keyed `{ picture, text }` slots,
+  Kimia's. Stages 1–4 copied verbatim from `reading-texts.md` (stage-4
+  novels and stages 5–6 blank); pictures are square-bracket stand-ins
+  (`[charm 1]` … `[rail symbol 8]` are the only words not hers, and they
+  are placeholders). `readingTextFor` returns null for a blank slot.
+- `SpreadPopup.jsx` + `spreadLayout.js` (fold and size rules, tested) +
+  the `.spread-*` rules in index.css; `--book-fold` joined tokens.css.
+  Gaegu is `src/fonts/Gaegu-Regular.woff2` with its licence beside it.
+- Removed `spreads.js` (+ test): the image-per-publication shape.
+- Verified in a real browser with a seeded world: a two-column
+  dictionary, the blank-slot state, the close pebble and Escape.
+- Known: a 100-word dictionary entry will not fit its 500px page in two
+  columns at the current type size — the trial page's overflow check
+  flagged it with a ~70-word stress text. Revisit when stage 5–6 texts
+  are written.

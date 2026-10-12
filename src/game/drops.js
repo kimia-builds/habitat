@@ -35,6 +35,7 @@ import {
   READING_TYPES,
 } from './constants.js'
 import { validateDayKey } from './days.js'
+import { parsePublicationId } from './reading.js'
 
 // ── Seeded randomness ───────────────────────────────────────────────
 
@@ -177,7 +178,9 @@ export function rollFungi(tapFacts) {
 
 // One drop record, as stored on a completion (T3.2). Shapes:
 //   { kind: 'flora' }
-//   { kind: 'reading', readingType: 'magazine' | 'novel' | 'dictionary' }
+//   { kind: 'reading', readingType: 'magazine' | 'novel' | 'dictionary',
+//     publicationId: 's3-magazine-07' }   (T6.24 — which text the book
+//   holds; absent on books received before then)
 //   { kind: 'fungi', amount: 1.. }
 //   { kind: 'friend', category: 0..9, individual: 1.. }  (T4.4 — the
 //   category's index in FRIEND_CATEGORIES; which friend of that
@@ -192,6 +195,15 @@ export function validateDrop(drop) {
       throw new Error(
         `Unknown reading type "${drop.readingType}" — expected one of: ` +
           READING_TYPES.join(', '),
+      )
+    }
+    if (
+      drop.publicationId !== undefined &&
+      (parsePublicationId(drop.publicationId) === null ||
+        parsePublicationId(drop.publicationId).type !== drop.readingType)
+    ) {
+      throw new Error(
+        `A reading drop's publicationId must name a text of its own type — got "${drop.publicationId}".`,
       )
     }
     return

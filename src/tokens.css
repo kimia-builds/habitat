@@ -263,6 +263,10 @@
      the sky rather than as a second, competing surface. */
   --surface-solid: #080910;
 
+  /* The fold between the two pages of an open reading spread: a soft dark
+     band down the middle (T6.24, 2026-10-12). */
+  --book-fold: rgba(0, 0, 0, 0.4);
+
   /* Veils: full-screen washes that dim what is behind them. */
   --veil-reveal: rgba(4, 6, 10, 0.88); /* behind a first-occurrence reveal */
   --veil-checkin: rgba(4, 6, 10, 0.72); /* behind the morning check-in */

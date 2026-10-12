@@ -336,8 +336,11 @@ opening its own growing world:
 - **Magazines** carry headlines, callouts, advertisements and
   information; **novels** carry scenes and moments from fictional
   stories; **dictionaries** carry definitions, encyclopedia entries and
-  data. Text-only entries are long-form only — in the early stages
-  free-floating words always pair with a picture.
+  data. Free-floating words pair with a picture in the early stages,
+  except stage-2 magazines, which are words only (Kimia 2026-10-12).
+  **Which text a book holds is picked evenly from every stage up to the
+  current one** — the newest stage is not favoured. A book received
+  before the pool existed holds a stage-1 text chosen from its own id.
 - **Early-stage pictures** look like **children's drawings**:
   deliberately simpler versions of in-game objects (curiosities, flora,
   friends, charms) — things we have met, are meeting, or are about to
@@ -356,9 +359,17 @@ opening its own growing world:
   written so far live in `reading-texts.md`. **No day words** (today,
   tomorrow, yesterday) appear in any text — N-Z-D has no days.
 - Each publication can be **read** (2026-07-19, plan T3.5): a popup
-  opens a double-page spread of it — **the text for its stage, with its
-  pictures** (Kimia 2026-10-08, replacing the single provided image per
-  publication; images remain Kimia-provided, never AI-generated). A
+  opens a spread of it — **its text, with its pictures** (Kimia
+  2026-10-08, replacing the single provided image per publication;
+  images remain Kimia-provided, never AI-generated). **How it looks
+  (2026-10-12):** one fixed size per kind, from the books' own
+  proportions — dictionary 500px wide, novel 462px, magazine 404px —
+  all set in Gaegu handwriting. It is one landscape page; the middle
+  fold exists only for a picture plus words, or for words long enough
+  (over 100 characters) to pour into two columns. The close pebble sits
+  below the book, outside its card; Escape or a press on the dimmed
+  backdrop closes it too. A slot Kimia has not written shows "something
+  will be here soon". A
   held arrival offers **read now / read later**; either way the piece
   is in the Bookcase, and any publication is re-readable from there
   anytime. No read/unread tracking exists anywhere.

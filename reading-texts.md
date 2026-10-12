@@ -34,7 +34,7 @@ yesterday): N-Z-D has no days._
 3. Picture: a bubbling mud-pool. Word: "bliss".
 4. Picture: a toom. Word: "home".
 
-**Magazines** (words only, no pictures)
+**Magazines** (words only, no pictures — confirmed 2026-10-12)
 hello, N-Z-D, sale, baluhm, school, plip, ti, chok, nor, sahara, abode,
 edibles, simeen, fruit, wind, sky.
 

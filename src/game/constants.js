@@ -182,6 +182,23 @@ export const LITERACY_MILESTONES = [
   730, // hamdi bulos
 ]
 
+// READING STAGES (spec §5 Stream 2, Kimia 2026-10-08) — the SECOND
+// measure fed by the same literacy points. The literacy level decides
+// which friends can arrive; the reading stage decides what we can SEE
+// inside our reading material. Six stages, from total bafflement
+// (pictures only) to fully comprehensible text. PROVISIONAL: a stage
+// starts at its threshold in literacy points, stage 1 from the start;
+// tune in the drop simulation, here and nowhere else.
+export const READING_STAGE_THRESHOLDS = [0, 30, 115, 260, 465, 590]
+
+// How many different texts each stage holds per type — 16 : 4 : 1,
+// the same ratio as the drops themselves. 6 x (16 + 4 + 1) = 126 texts.
+export const READING_POOL_PER_STAGE = {
+  magazine: 16,
+  novel: 4,
+  dictionary: 1,
+}
+
 // The literacy meter's hover reveals a plain 0–100 scale (T4.5,
 // Kimia's call 2026-07-21): the 10 friendship levels × 10 each, so 10
 // means the first door (plips) has just opened and 100 is hamdi bulos.

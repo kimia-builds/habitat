@@ -62,6 +62,7 @@ import {
   walletTrueBalance,
 } from './game/market.js'
 import { meterReading } from './game/meters.js'
+import { legacyPublicationId } from './game/reading.js'
 import { gameCompletions, startNewGame } from './game/newgame.js'
 import {
   activeHabits,
@@ -591,6 +592,7 @@ function AppBody({ data, setData }) {
         habitId: completion.habitId,
         key: dropKey(drop),
         amount: drop.kind === 'fungi' ? drop.amount : null,
+        publicationId: drop.kind === 'reading' ? drop.publicationId : null,
         first: !seen.has(dropKey(drop)),
       }
     })
@@ -723,11 +725,14 @@ function AppBody({ data, setData }) {
   // arrival is let go — the overlay covers the shelf, so by the time
   // the popup closes the arrival is quietly gone (Kimia's call
   // 2026-07-19). The piece is in the Bookcase regardless.
-  // (publicationId stays null until T6.1 names the publications, so
-  // the popup shows its empty state for now.)
+  // The popup opens on the very text the new book holds (T6.24).
   function handleReadNow(arrival) {
     setArrivals((list) => list.filter((a) => a.id !== arrival.id))
-    setReadingItem({ type: arrival.key, publicationId: null })
+    setReadingItem({
+      type: arrival.key,
+      publicationId:
+        arrival.publicationId ?? legacyPublicationId(arrival.id, arrival.key),
+    })
   }
 
   // Open a fresh draft (2026-08-12). Two doors lead here — the rail's +

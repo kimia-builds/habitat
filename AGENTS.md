@@ -110,6 +110,10 @@ src/game/             ALL game logic — pure functions, no React, no
                         seeded days after the previous arrival; one
                         friend per tap, stored on the completion like
                         every drop
+  reading.js            reading stages (thresholds on the literacy
+                        points) and the reading pool — which text a
+                        new book holds, seeded, never above the
+                        current stage
   graphs.js             per-habit line graphs (zoom unlocks by habit age)
   fieldnotes.js         the weekly view ("field notes")
   startup.js            the daily startup's once-per-Habitat-day rule
@@ -127,8 +131,9 @@ src/content/          KIMIA'S FILES — she edits these directly on
                         reveals, friend intros + re-readable friend
                         card texts, map regions, literacy eras);
                         blank slots render nothing at all
-  spreads.js            maps each publication to its double-page spread
-                        image in public/spreads/
+  readingTexts.js       the 126 reading-pool slots (picture + text per
+                        publication id); blank slots show the quiet
+                        empty state
 src/storage/storage.js  the ONE module that touches localStorage.
                       Everything lives under the single key
                       'habitat-data' in a versioned envelope
@@ -322,7 +327,8 @@ Other copy rules:
   introductions and captions are human-written. Scaffold empty, keyed
   content slots and ship them blank (`TODO: written by Kimia`) — never
   auto-generate prose. This covers images too: the reading-material
-  spreads are pictures Kimia provides, never AI-generated.
+  pictures are Kimia's, never AI-generated (until they are drawn, a
+  square-bracket description stands in).
 - **Narration is momentary** — it plays once and is never stored or
   re-readable. The single exception is the friend **card text** on the
   Guest Book popup card (2026-07-20), which is a separate slot from the

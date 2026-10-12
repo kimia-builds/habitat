@@ -943,6 +943,11 @@ follows is not an aspiration, it is a description of the app.
   inherited everywhere. Nothing is downloaded, which was the one thing
   the two-typeface plan and this have in common: Habitat looks the same
   offline and no outside server learns when it is opened.
+- **One exception: the reading texts are set in Gaegu** (Kimia
+  2026-10-12) — a childlike handwriting, bundled (Latin letters only,
+  ~17KB, fetched only when a book is opened), used for everything
+  written inside a publication and nothing else. The spread's sizes, fold
+  rule and close pebble are in spec §5 Stream 2.
 - **Lowercase throughout.** Not a rule that needed enforcing — the
   words are simply written lowercase, and no stylesheet rule uppercases
   anything. The one uppercase thing on screen is the **HABITAT**

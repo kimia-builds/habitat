@@ -62,7 +62,12 @@ describe('deliverDrops', () => {
       existing,
       SEED,
     )
-    expect(delivered.drops).toEqual(
+    // Same roll as the engine's — a reading drop only gains the text
+    // its book holds (T6.24), which has its own tests in reading.test.js.
+    const withoutText = delivered.drops.map(
+      ({ publicationId, ...drop }) => drop,
+    )
+    expect(withoutText).toEqual(
       rollDrops({
         worldSeed: SEED,
         habitId: habit.id,
@@ -94,16 +99,17 @@ describe('derived meters and firsts', () => {
   ]
 
   it('collects all reading material, dated, for the meter and the Bookcase', () => {
-    // Since T3.5 each item carries the day it arrived and its (not yet
-    // named — T6.1) publication, so the Bookcase can list and open it.
-    expect(readingItemsFrom(history)).toEqual([
-      {
-        id: 'c:0',
-        type: 'magazine',
-        dayKey: '2026-07-03',
-        publicationId: null,
-      },
-    ])
+    // Since T3.5 each item carries the day it arrived and the text its
+    // book holds, so the Bookcase can list and open it. This drop
+    // predates the reading pool, so it is handed a stage-1 magazine.
+    const [item] = readingItemsFrom(history)
+    expect(item).toMatchObject({
+      id: 'c:0',
+      type: 'magazine',
+      dayKey: '2026-07-03',
+    })
+    expect(item.publicationId).toMatch(/^s1-magazine-\d\d$/)
+    expect(readingItemsFrom(history)).toHaveLength(1)
   })
 
   it('sums all fungi into the wallet', () => {
