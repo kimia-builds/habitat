@@ -12,6 +12,8 @@ import {
 } from 'react'
 import {
   abodeItems,
+  bringToFront,
+  placeAtCentre,
   placeFlora,
   placeObject,
   pruneAbodeLayout,
@@ -603,9 +605,16 @@ function AppBody({ data, setData }) {
 
   // One decision about one flora find (T3.3): gather, leave, or (from
   // the Abode) compost. The game module enforces what may follow what.
+  // A flora gathered lands in the middle of the Abode, in front (Kimia's
+  // call 2026-11-01); Kimia moves it from there.
   function handleFloraDecision(completionId, decision) {
+    const abodeLayout =
+      decision === 'gathered'
+        ? placeAtCentre(data.abodeLayout, completionId)
+        : data.abodeLayout
     save({
       ...data,
+      abodeLayout,
       floraDecisions: decideFlora(
         data.floraDecisions,
         data.completions,
@@ -613,6 +622,18 @@ function AppBody({ data, setData }) {
         decision,
       ),
     })
+  }
+
+  // Selecting something on the ground brings it to the front.
+  function handleItemRaise(itemId) {
+    const abodeLayout = bringToFront(
+      data.abodeLayout,
+      played,
+      data.floraDecisions,
+      data.purchases,
+      itemId,
+    )
+    if (abodeLayout !== data.abodeLayout) save({ ...data, abodeLayout })
   }
 
   // The Abode arrangement (T4.3): something on the ground dragged to
@@ -659,12 +680,17 @@ function AppBody({ data, setData }) {
   // game module refuses to overdraw (the buy button is already dimmed
   // then, so this is the backstop, never the message).
   function handleBuy(object) {
+    const id = crypto.randomUUID()
     save({
       ...data,
+      // It arrives in the middle of the Abode, in front.
+      abodeLayout: placeAtCentre(data.abodeLayout, id),
       purchases: buyObject(
         data.purchases,
         object,
         walletBalance(played, data.purchases),
+        Date.now(),
+        id,
       ),
     })
   }
@@ -1960,6 +1986,7 @@ function AppBody({ data, setData }) {
             sky={data.settings.abodeSky}
             onDecide={handleFloraDecision}
             onMove={handleItemMove}
+            onRaise={handleItemRaise}
             onTurn={handleItemTurn}
             onSell={handleSell}
             onChooseSky={chooseAbodeSky}

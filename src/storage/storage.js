@@ -38,7 +38,7 @@
 //                              // bookshelf and which way it faces
 //                              // (no entry = default slot, spine)
 //                              // — see game/bookcase.js, added in T4.2
-//     abodeLayout: {},         // floraId | purchaseId → { x, y, angle? }
+//     abodeLayout: {},         // floraId | purchaseId → { x, y, angle?, z? }
 //                              // — where each gathered flora (and, since
 //                              // T4.3b, each owned market object) stands
 //                              // on the Abode's open ground (no entry =

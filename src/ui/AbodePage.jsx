@@ -50,6 +50,7 @@ import {
   DEFAULT_ABODE_SKY,
   dialAngle,
   normalizeAngle,
+  stackOrder,
 } from '../game/abode.js'
 import { DRAWN_CURIOSITIES } from '../game/market.js'
 import Curiosity, { CuriosityDefs, curiosityCanonKey } from './Curiosity.jsx'
@@ -185,6 +186,7 @@ function AbodePage({
   sky = DEFAULT_ABODE_SKY,
   onDecide,
   onMove,
+  onRaise,
   onTurn,
   onSell,
   onChooseSky,
@@ -198,6 +200,10 @@ function AbodePage({
   // The item currently held (clicked): its name and its quiet way back
   // (compost / sell) show while this is set. Screen state only.
   const [heldId, setHeldId] = useState(null)
+  // The latest held id, for the press handler whose window listeners
+  // outlive the render that made them.
+  const heldRef = useRef(null)
+  heldRef.current = heldId
   // Rotate mode (T5.5): which held item is being turned and the angle it
   // shows right now. Nothing is stored until save — leaving the mode any
   // other way simply forgets the turn. The ref carries what the window's
@@ -261,6 +267,7 @@ function AbodePage({
       if (press.dragging) {
         onMove(press.id, { x: clampUnit(press.x), y: clampUnit(press.y) })
       } else {
+        if (heldRef.current !== press.id) onRaise?.(press.id)
         setHeldId((held) => (held === press.id ? null : press.id))
       }
     }
@@ -272,6 +279,7 @@ function AbodePage({
     if (turning) return
     if (event.key !== 'Enter' && event.key !== ' ') return
     event.preventDefault()
+    if (heldId !== item.id) onRaise?.(item.id)
     setHeldId((held) => (held === item.id ? null : item.id))
   }
 
@@ -317,6 +325,8 @@ function AbodePage({
   function handleTurnSave(item) {
     const angle = turnRef.current.angle
     setTurning(null)
+    setHeldId(null) // saving ends the selection too
+
     if (normalizeAngle(angle) !== normalizeAngle(item.angle ?? 0)) {
       onTurn(item.id, angle)
     }
@@ -324,6 +334,7 @@ function AbodePage({
 
   function handleTurnCancel() {
     setTurning(null)
+    setHeldId(null)
   }
 
   // THE DIAL. While a turn is under way the window listens: a press
@@ -404,9 +415,10 @@ function AbodePage({
     return drag && drag.id === item.id ? drag : item
   }
 
-  // Render order is the only z-index: the held item above the rest,
-  // the dragged one on top of everything. Nothing about order stored.
-  const idle = items.filter(
+  // Render order is the only z-index: the stored front-to-back order
+  // (game/abode.js's stackOrder), then the held item above the rest and
+  // the dragged one on top of everything.
+  const idle = stackOrder(items).filter(
     (item) => (!drag || item.id !== drag.id) && item.id !== heldId,
   )
   const held = items.find(

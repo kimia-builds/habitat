@@ -20,6 +20,15 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   counts, day fulfilled at N; extras kept).
 - 2026-07-12: habit list manually re-orderable (persists) and
   filterable by symbols (temporary, resets each visit).
+- 2026-11-01: Abode tweaks (Kimia). (1) A flora gathered or an object
+  bought arrives in the **middle** of the Abode, in front, then moved by
+  hand. (2) **Save** and **cancel** in rotate mode both also let the item
+  go, so one click returns to neutral. (3) Front-to-back order follows
+  **selection**: tapping or dragging an item brings it to the front; the
+  last one selected is furthest forward. Stored as an optional `z` on the
+  item's `abodeLayout` entry (no storage bump). Applies from now on only —
+  items already on the ground keep their places and arrival order until
+  Kimia first selects them.
 - 2026-07-12: backup import replaces all data (no merge); app warns
   first if existing data would be overwritten.
 - 2026-07-12: habits can be archived (history kept) or permanently

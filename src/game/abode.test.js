@@ -1,14 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import {
   abodeItems,
+  bringToFront,
+  CENTRE_SPOT,
   defaultSpot,
   dialAngle,
   GROUND_LINES,
   normalizeAngle,
+  placeAtCentre,
   placeFlora,
   placeObject,
   pruneAbodeLayout,
   SPOTS_PER_ROW,
+  stackOrder,
   turnItem,
   validateAbodeLayout,
 } from './abode.js'
@@ -107,7 +111,7 @@ describe('placeFlora', () => {
       x: 1.4,
       y: -0.2,
     })
-    expect(placed).toEqual({ c1: { x: 1, y: 0 } })
+    expect(placed).toEqual({ c1: { x: 1, y: 0, z: 1 } })
     expect(layout).toEqual({})
   })
 
@@ -230,7 +234,7 @@ describe('placeObject', () => {
       x: 1.4,
       y: -0.2,
     })
-    expect(placed).toEqual({ p1: { x: 1, y: 0 } })
+    expect(placed).toEqual({ p1: { x: 1, y: 0, z: 1 } })
     expect(layout).toEqual({})
   })
 
@@ -354,7 +358,7 @@ describe('turning things (T5.5)', () => {
       x: 0.6,
       y: 0.7,
     })
-    expect(moved.c1).toEqual({ x: 0.6, y: 0.7, angle: 120 })
+    expect(moved.c1).toMatchObject({ x: 0.6, y: 0.7, angle: 120 })
     const bought = { p1: { x: 0.1, y: 0.1, angle: 15 } }
     expect(
       placeObject(bought, purchases, 'p1', { x: 0.9, y: 0.9 }).p1.angle,
@@ -383,5 +387,79 @@ describe('turning things (T5.5)', () => {
         validateAbodeLayout({ c1: { x: 0.2, y: 0.3, angle } }),
       ).toThrow(/angle/)
     }
+  })
+})
+
+describe('arriving in the centre and front-to-back order (2026-11-01)', () => {
+  const completions = [floraDrop('c1'), floraDrop('c2'), floraDrop('c3')]
+  const decisions = { c1: 'gathered', c2: 'gathered', c3: 'gathered' }
+  const purchases = [{ id: 'p1', objectKey: '0:1', price: 12, boughtAt: 5 }]
+  const order = (layout) =>
+    stackOrder(abodeItems(completions, decisions, layout, purchases)).map(
+      (item) => item.id,
+    )
+
+  it('a new arrival stands in the centre, in front of everything', () => {
+    const layout = placeAtCentre({ c1: { x: 0.2, y: 0.3, z: 4 } }, 'p1')
+    expect(layout.p1).toMatchObject(CENTRE_SPOT)
+    expect(layout.p1.z).toBe(5)
+    expect(layout.c1).toEqual({ x: 0.2, y: 0.3, z: 4 })
+  })
+
+  it('items that were never ranked keep arrival order, behind ranked ones', () => {
+    expect(order({})).toEqual(['c1', 'c2', 'c3', 'p1'])
+    expect(order({ c1: { x: 0.1, y: 0.1, z: 1 } })).toEqual([
+      'c2',
+      'c3',
+      'p1',
+      'c1',
+    ])
+  })
+
+  it('selecting brings an item to the front; the last selected is furthest forward', () => {
+    let layout = bringToFront({}, completions, decisions, purchases, 'c2')
+    layout = bringToFront(layout, completions, decisions, purchases, 'c1')
+    expect(order(layout).slice(-2)).toEqual(['c2', 'c1'])
+    layout = bringToFront(layout, completions, decisions, purchases, 'c2')
+    expect(order(layout).slice(-2)).toEqual(['c1', 'c2'])
+  })
+
+  it('an unmoved item keeps its spot when selected, and an already-front one changes nothing', () => {
+    const layout = bringToFront({}, completions, decisions, purchases, 'c3')
+    expect(layout.c3).toMatchObject(defaultSpot(2))
+    expect(bringToFront(layout, completions, decisions, purchases, 'c3')).toBe(
+      layout,
+    )
+  })
+
+  it('dragging an item also brings it to the front, and keeps its turn', () => {
+    const start = {
+      c1: { x: 0.2, y: 0.3, angle: 45, z: 1 },
+      c2: { x: 0.4, y: 0.4, z: 2 },
+    }
+    const moved = placeFlora(start, completions, decisions, 'c1', {
+      x: 0.6,
+      y: 0.6,
+    })
+    expect(moved.c1).toEqual({ x: 0.6, y: 0.6, angle: 45, z: 3 })
+  })
+
+  it('turning keeps the rank', () => {
+    const turned = turnItem(
+      { c1: { x: 0.2, y: 0.3, z: 7 } },
+      completions,
+      decisions,
+      purchases,
+      'c1',
+      90,
+    )
+    expect(turned.c1.z).toBe(7)
+  })
+
+  it('storage accepts a rank and refuses a bad one', () => {
+    expect(() =>
+      validateAbodeLayout({ c1: { x: 0, y: 0, z: 3 } }),
+    ).not.toThrow()
+    expect(() => validateAbodeLayout({ c1: { x: 0, y: 0, z: -1 } })).toThrow()
   })
 })

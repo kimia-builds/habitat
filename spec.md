@@ -593,7 +593,11 @@ region discovery expands what the Market can offer.
   pressing it keeps the item at its held size and glow, dims everything
   else, and lets her press-and-drag anywhere to turn it like a dial
   about its own centre; **save** keeps the angle, **cancel** drops it.
-  Each item's angle is remembered with its place. Flora waiting to be decided
+  Each item's angle is remembered with its place; saving or cancelling a
+  turn also lets the item go. A gathered flora or bought object arrives
+  in the middle of the scene, in front; selecting any item (tap or drag)
+  brings it to the front, so the last one selected is furthest forward
+  (2026-11-01). Flora waiting to be decided
   (gather / leave it) sit in a plain list above the ground. Bare ground
   when empty — no prose, no dates. Titled **your abode**. Carries the
   **quiet / party mode toggle** (below).

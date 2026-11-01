@@ -670,7 +670,7 @@ describe('rotating things (T5.5)', () => {
   const CENTRE = { x: 72, y: 76.032 }
 
   function holdObject(over = {}) {
-    const spies = { ...defaults(), onTurn: vi.fn() }
+    const spies = { ...defaults(), onTurn: vi.fn(), onRaise: vi.fn() }
     render(<AbodePage finds={[]} items={[objectItem('p1', over)]} {...spies} />)
     const thing = screen.getByRole('button', { name: 'a curiosity' })
     fireEvent.pointerDown(thing, { clientX: 72, clientY: 90 })
@@ -786,8 +786,27 @@ describe('rotating things (T5.5)', () => {
     expect(spies.onTurn).not.toHaveBeenCalled()
     expect(turnedBy()).toMatch(/^rotate\(30 /)
     expect(document.querySelector('.abode-scene.turning')).toBeNull()
-    // Back to the held item's ordinary words.
-    expect(screen.getByRole('button', { name: 'sell' })).toBeDefined()
+    // One click is enough to be back to neutral: nothing is held.
+    expect(screen.queryByRole('button', { name: 'sell' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'rotate' })).toBeNull()
+  })
+
+  it('save keeps the turn AND lets the item go in the same click', () => {
+    const spies = holdObject()
+    fireEvent.click(screen.getByRole('button', { name: 'rotate' }))
+    fireEvent.pointerDown(window, { clientX: CENTRE.x + 40, clientY: CENTRE.y })
+    fireEvent.pointerMove(window, { clientX: CENTRE.x, clientY: CENTRE.y + 40 })
+    fireEvent.pointerUp(window)
+    fireEvent.click(screen.getByRole('button', { name: 'save' }))
+    expect(spies.onTurn).toHaveBeenCalledTimes(1)
+    expect(document.querySelector('.abode-scene.turning')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'sell' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'rotate' })).toBeNull()
+  })
+
+  it('selecting an item (not letting it go) asks for it to come to the front', () => {
+    const spies = holdObject()
+    expect(spies.onRaise).toHaveBeenCalledTimes(1)
   })
 
   it('saving without turning stores nothing', () => {

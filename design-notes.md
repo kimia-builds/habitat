@@ -2029,7 +2029,8 @@ the rest of the screen becomes the control — she presses and drags
 anywhere and the item turns about its own centre, following the pointer's
 angle around it like a dial (it starts from where it already is, so it
 never jumps). The held item's words become **save** and a quiet
-**cancel**. Nothing about the turn is stored until save. Flat rotation in
+**cancel**; either one also lets the item go (2026-11-01), so a single
+click returns to neutral. Nothing about the turn is stored until save. Flat rotation in
 the plane of the screen only — no tilting. Friends are not turnable.
 
 The words stack name, then compost / sell, then rotate — a held item's

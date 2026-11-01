@@ -2515,7 +2515,10 @@ describe('the Abode ground (T4.3)', () => {
       render(<App />)
       gatherOneFlora()
 
-      expect(stored().abodeLayout).toEqual({})
+      // Gathering stands it in the middle of the Abode.
+      expect(Object.values(stored().abodeLayout)).toMatchObject([
+        { x: 0.5, y: 0.55 },
+      ])
       const flora = abode().getByRole('button', { name: 'a flora find' })
       fireEvent.pointerDown(flora, { clientX: 20, clientY: 20 })
       fireEvent.pointerMove(window, { clientX: 60, clientY: 120 })
@@ -2524,7 +2527,7 @@ describe('the Abode ground (T4.3)', () => {
       // A quarter across, three quarters down — stored as fractions,
       // keyed by the completion whose tap dropped the find.
       const places = Object.values(stored().abodeLayout)
-      expect(places).toEqual([{ x: 0.25, y: 0.75 }])
+      expect(places).toMatchObject([{ x: 0.25, y: 0.75 }])
 
       // Undo the tap: the find goes, and its stored place with it.
       fireEvent.click(screen.getByRole('button', { name: 'HABITAT' }))

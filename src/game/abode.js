@@ -7,7 +7,7 @@
 // them anywhere and arranges them freely. Where each one sits lives in
 // ONE map, stored in the envelope (storage v6):
 //
-//   abodeLayout: { [itemId]: { x, y, angle? } }
+//   abodeLayout: { [itemId]: { x, y, angle?, z? } }
 //
 //   - For a flora, itemId is the id of the completion whose tap dropped
 //     the find (at most one flora per completion — the same key
@@ -27,6 +27,14 @@
 //     angle, means upright — so every older save loads unchanged and the
 //     storage version did not move. An item turned back to upright
 //     simply loses the field. Moving an item keeps its angle.
+//
+//   - z (2026-11-01) is the item's place in the front-to-back order: the
+//     bigger the number, the further forward it stands. It is OPTIONAL
+//     like angle, so older saves load unchanged. Every time Kimia
+//     selects an item (taps it or drags it) it takes the next number up,
+//     so the last one selected is always furthest forward; a newly
+//     gathered or bought item starts at the front. Items with no z keep
+//     the old order (arrival order) behind every item that has one.
 //
 // An item with NO entry sits in its default spot (defaultSpot below) —
 // an entry is written only once Kimia moves it, so the map stays tiny.
@@ -55,6 +63,12 @@ import { floraFinds } from './flora.js'
 export const HORIZON = 0.42
 export const GROUND_LINES = [0.58, 0.76, 0.94]
 export const SPOTS_PER_ROW = 6
+
+// Where something lands the moment it is gathered or bought (Kimia's
+// call 2026-11-01): the middle of the scene, ready to be moved by hand.
+// y is the item's FOOT, so a hair below the middle puts a typical figure's
+// body around the centre.
+export const CENTRE_SPOT = { x: 0.5, y: 0.55 }
 
 // ── The four skies (T5.4, 2026-08-21) ───────────────────────────────
 // Kimia picks which nebula sky her abode wears, and the choice is
@@ -137,8 +151,65 @@ export function abodeItems(completions, decisions, layout, purchases = []) {
       x: stored?.x ?? spot.x,
       y: stored?.y ?? spot.y,
       angle: stored?.angle ?? 0,
+      z: stored?.z,
     }
   })
+}
+
+// The items back to front, ready to draw: those that have never been
+// given a rank keep their arrival order at the back, then the ranked
+// ones by z, so the last one selected is drawn last (in front).
+export function stackOrder(items) {
+  const unranked = items.filter((item) => item.z === undefined)
+  const ranked = items
+    .filter((item) => item.z !== undefined)
+    .sort((a, b) => a.z - b.z)
+  return [...unranked, ...ranked]
+}
+
+function topRank(layout) {
+  return Math.max(0, ...Object.values(layout).map((place) => place.z ?? 0))
+}
+
+// The rank an item should hold after being selected: the one it has if
+// it is already furthest forward, otherwise one step in front of all.
+function frontRank(layout, itemId) {
+  const own = layout[itemId]?.z
+  const top = topRank(layout)
+  return own !== undefined && own === top ? own : top + 1
+}
+
+// A gathered or bought item arrives in the middle of the scene, in front
+// of everything. Returns a NEW map.
+export function placeAtCentre(layout, itemId) {
+  return {
+    ...layout,
+    [itemId]: { ...CENTRE_SPOT, z: frontRank(layout, itemId) },
+  }
+}
+
+// Selecting an item brings it to the front. An item that has never been
+// moved is written down where it is standing. Returns a NEW map (the
+// same one when nothing changes).
+export function bringToFront(
+  layout,
+  completions,
+  decisions,
+  purchases,
+  itemId,
+) {
+  const item = abodeItems(completions, decisions, layout, purchases).find(
+    (candidate) => candidate.id === itemId,
+  )
+  if (!item) {
+    throw new Error('No item on the ground has this id.')
+  }
+  const z = frontRank(layout, itemId)
+  if (layout[itemId]?.z === z) return layout
+  return {
+    ...layout,
+    [itemId]: { x: item.x, y: item.y, ...layout[itemId], z },
+  }
 }
 
 // Record where one flora was dragged to. Fractions are clamped into
@@ -175,13 +246,15 @@ function placeItem(layout, itemId, point) {
   ) {
     throw new Error('A place needs finite x and y fractions.')
   }
-  // Spread the old entry first so a move never forgets the turn.
+  // Spread the old entry first so a move never forgets the turn. Moving
+  // is selecting, so the item also comes to the front.
   return {
     ...layout,
     [itemId]: {
       ...layout[itemId],
       x: clampUnit(point.x),
       y: clampUnit(point.y),
+      z: frontRank(layout, itemId),
     },
   }
 }
@@ -285,6 +358,9 @@ export function validateAbodeLayout(layout) {
           `An abode place needs an ${axis} fraction between 0 and 1.`,
         )
       }
+    }
+    if (place.z !== undefined && (!Number.isFinite(place.z) || place.z < 0)) {
+      throw new Error('An abode rank needs a number from 0 upward.')
     }
     if (
       place.angle !== undefined &&
