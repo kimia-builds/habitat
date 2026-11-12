@@ -20,6 +20,11 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   counts, day fulfilled at N; extras kept).
 - 2026-07-12: habit list manually re-orderable (persists) and
   filterable by symbols (temporary, resets each visit).
+- 2026-11-12: Party mode (Kimia). (1) Friends in the Abode glow **black**;
+  everywhere else they keep their own colour (`Friend`'s optional `glow`
+  prop). (2) The random formation never lets two friends overlap — each is
+  placed clear of those already down, biggest first; a crowd too big to
+  fit takes the least-crowded spot rather than hanging.
 - 2026-11-01: Abode tweaks (Kimia). (1) A flora gathered or an object
   bought arrives in the **middle** of the Abode, in front, then moved by
   hand. (2) **Save** and **cancel** in rotate mode both also let the item

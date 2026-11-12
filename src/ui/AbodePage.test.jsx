@@ -409,6 +409,68 @@ describe('party mode (T4.4)', () => {
     expect(screen.queryByRole('button', { name: 'compost' })).toBeNull()
   })
 
+  it('friends never overlap one another, however many come', () => {
+    // A crowd of the biggest friends, rolled many times over (the scatter
+    // is random, so one lucky roll proves nothing).
+    const crowd = [8, 8, 8, 5, 5, 9, 9, 0, 0, 0].map((category, i) =>
+      friend(category, i + 1, `f${i}`),
+    )
+    for (let roll = 0; roll < 25; roll++) {
+      const { container, unmount } = render(
+        <AbodePage
+          finds={[]}
+          items={[]}
+          friends={crowd}
+          worldSeed="seed"
+          {...defaults()}
+        />,
+      )
+      fireEvent.click(screen.getByRole('switch', { name: 'party mode' }))
+      const boxes = [...container.querySelectorAll('.abode-party-friend')].map(
+        (node) => {
+          const art = node.querySelector('.friend-art')
+          const width = parseFloat(art.style.width)
+          const [aw, ah] = art.style.aspectRatio.split('/').map(Number)
+          return {
+            x: (parseFloat(node.style.left) / 100) * CANVAS_WIDTH,
+            y: (parseFloat(node.style.top) / 100) * CANVAS_HEIGHT,
+            width,
+            height: (width * ah) / aw,
+          }
+        },
+      )
+      expect(boxes).toHaveLength(crowd.length)
+      for (let a = 0; a < boxes.length; a++) {
+        for (let b = a + 1; b < boxes.length; b++) {
+          const A = boxes[a]
+          const B = boxes[b]
+          const across =
+            Math.min(A.x + A.width / 2, B.x + B.width / 2) -
+            Math.max(A.x - A.width / 2, B.x - B.width / 2)
+          const down =
+            Math.min(A.y, B.y) - Math.max(A.y - A.height, B.y - B.height)
+          expect(across > 0 && down > 0).toBe(false)
+        }
+      }
+      unmount()
+    }
+  })
+
+  it('friends at the party glow black', () => {
+    const { container } = render(
+      <AbodePage
+        finds={[]}
+        items={[]}
+        friends={[friend(0, 1, 'f1')]}
+        worldSeed="seed"
+        {...defaults()}
+      />,
+    )
+    fireEvent.click(screen.getByRole('switch', { name: 'party mode' }))
+    const body = container.querySelector('.abode-party-friend .friend-art-body')
+    expect(body.style.color).toMatch(/black|rgb\(0, 0, 0\)|#000/)
+  })
+
   it('stores nothing: the ground underneath is left byte-identical', () => {
     const spies = defaults()
     render(

@@ -58,7 +58,9 @@ import Flora, { floraBox } from './Flora.jsx'
 import Friend from './Friend.jsx'
 import ObjectGlyph from './ObjectGlyph.jsx'
 import { floraBaseWhereSmallestIs } from './floraCanon.js'
-import { baseWhereSmallestIs } from './friendCanon.js'
+import { FRIEND_CATEGORIES } from '../game/constants.js'
+import { baseWhereSmallestIs, friendSize } from './friendCanon.js'
+import { friendArt } from './tracedFriends.js'
 import { useText } from './language.jsx'
 import { objectSize } from './objectCanon.js'
 import { AbodeSky } from './sky.jsx'
@@ -159,12 +161,61 @@ const LABEL_LINE_GAP = 9 * OLD_SCENE_SCALE
 // The randomised formation (spec §5b): friends scattered across the
 // ground half of the scene. Deliberately UNseeded — a refresh (or a
 // re-toggle) re-rolls it, and nothing about a party is stored.
+//
+// NO TWO FRIENDS MAY OVERLAP (Kimia, 2026-11-12). Each friend is a box as big as
+// its drawing (the canon says how big), standing ON its point — centred
+// sideways, its feet at the point. Each one is placed by trying random spots
+// until its box clears every friend already placed; the biggest are placed
+// first because they are the hardest to fit. If a crowd is so large that no
+// clear spot exists, the friend takes the least-overlapping spot found, so a
+// party always happens rather than hanging.
+const PLACEMENT_TRIES = 300
+
+function friendBox(friend) {
+  const key = FRIEND_CATEGORIES[friend.category]?.key
+  const art = friendArt(key)
+  const width = friendSize(key, SCENE_BASE)
+  const height = art ? (width * art.viewBox.h) / art.viewBox.w : width
+  return { width, height }
+}
+
+// How much two friends' boxes overlap, in square pixels (0 = clear).
+function overlapArea(a, b) {
+  const across =
+    Math.min(a.x + a.width / 2, b.x + b.width / 2) -
+    Math.max(a.x - a.width / 2, b.x - b.width / 2)
+  const down = Math.min(a.y, b.y) - Math.max(a.y - a.height, b.y - b.height)
+  return across > 0 && down > 0 ? across * down : 0
+}
+
 function rollFormation(friends) {
-  return friends.map((friend) => ({
-    friend,
-    x: 0.06 + Math.random() * 0.88,
-    y: 0.5 + Math.random() * 0.44,
-  }))
+  const sized = friends.map((friend) => ({ friend, ...friendBox(friend) }))
+  const biggestFirst = [...sized].sort(
+    (a, b) => b.width * b.height - a.width * a.height,
+  )
+  const placed = []
+  for (const entry of biggestFirst) {
+    let best = null
+    for (let i = 0; i < PLACEMENT_TRIES; i++) {
+      const spot = {
+        ...entry,
+        x: (0.06 + Math.random() * 0.88) * WIDTH,
+        y: (0.5 + Math.random() * 0.44) * HEIGHT,
+      }
+      const crowding = placed.reduce(
+        (sum, other) => sum + overlapArea(spot, other),
+        0,
+      )
+      if (!best || crowding < best.crowding) best = { spot, crowding }
+      if (crowding === 0) break
+    }
+    placed.push(best.spot)
+  }
+  // Hand them back in the order the friends came in.
+  return friends.map((friend) => {
+    const spot = placed.find((p) => p.friend === friend)
+    return { friend, x: spot.x / WIDTH, y: spot.y / HEIGHT }
+  })
 }
 
 // Enter / Space activates a word that is a button in all but element.
@@ -856,6 +907,7 @@ function AbodePage({
                       base={SCENE_BASE}
                       unit="px"
                       idPrefix={`party-${friend.completionId}-`}
+                      glow="black"
                     />
                   </span>
                 ))}

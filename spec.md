@@ -830,7 +830,9 @@ quiet mode and party mode.
   objects is untouched and stays draggable — party mode only ever adds.
   Friends themselves are **not** draggable and their positions are not
   remembered: a **refresh** re-rolls the formation. Nothing about a
-  party is stored.
+  party is stored. **No two friends ever overlap** in the formation, and
+  in the Abode every friend **glows black** instead of its own colour
+  (the glow is unchanged on every other screen).
 - Party mode is **greyed out and inactive until at least one friend has
   been found**. (Decided as "ship visible-but-dead in T4.5, alive in
   T4.4" — but T4.4 landed first, so the toggle shipped whole in T4.4:

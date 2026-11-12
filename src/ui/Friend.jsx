@@ -53,6 +53,9 @@ import { friendArt } from './tracedFriends.js'
  *              on one page sharing an id would have one silently borrow the
  *              other's glow filter, so every caller passes something that says
  *              where on the page this one is.
+ * `glow`       a colour to glow in INSTEAD of the friend's own. Left out,
+ *              a friend glows its own body colour everywhere; only the
+ *              Abode passes one (black, Kimia 2026-11-12).
  * `className`  extra classes for the wrapper — the signature category
  *              animation arrives this way in the moments allowed to play it.
  */
@@ -63,6 +66,7 @@ function Friend({
   base,
   unit = 'rem',
   idPrefix = '',
+  glow,
   className = '',
 }) {
   const key = FRIEND_CATEGORIES[category]?.key
@@ -77,7 +81,10 @@ function Friend({
   // The trace's own greys re-painted in this individual's colour. `greys.base`
   // is the reconstructed darkest shade the banded traces carry and the stacked
   // ones do not — passing undefined for those is exactly right.
-  const palette = paletteForTone(greys.ramp, colour, greys.base)
+  const ownPalette = paletteForTone(greys.ramp, colour, greys.base)
+  // The aura is painted inside the drawing from `palette.glow`, and the CSS
+  // drop-shadow reads the same colour, so one override recolours both.
+  const palette = glow ? { ...ownPalette, glow } : ownPalette
   const prefix = `${idPrefix}${key}-${individual}-`
   const box = `0 0 ${viewBox.w} ${viewBox.h}`
 
