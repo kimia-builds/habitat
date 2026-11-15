@@ -322,8 +322,11 @@ tracker. Everything after this is delight, informed by real use.
             like map contours. Second slice, same shelf: the flora's
             interior PAINTED by code and sliced into tones the way the
             friends' drawings were (`paintedFlora.js`, `PaintedFlora.jsx`),
-            calm and veined. Still to decide: contour or painted (or an
-            AI-painted interior inside her outline); whether all friends
+            calm and veined. Third slice: the same slicing applied to an
+            interior an image generator painted inside her outline, from
+            her silhouette plus her character sheet as the style (the
+            `ai` rows of `paintedFlora.js`). Still to decide: contour,
+            code-painted or AI-painted; whether all friends
             are cleaned; the flora's pastel colours; friends' glow back
             to their own colour on the Abode.
 

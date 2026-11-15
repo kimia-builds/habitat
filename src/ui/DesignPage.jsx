@@ -327,12 +327,14 @@ function NowFlora({ silhouette, hex, height, idPrefix }) {
 
 // Option B (a thin pale rim) left on 2026-11-15: Kimia chose no rim. She also
 // found the contour row too much like a map, which is what the two painted
-// rows answer (paintedFlora.js).
+// rows answer (paintedFlora.js). The last row is the same slicing applied to
+// an interior an image generator painted inside her outline.
 const PAIR_ROWS = [
   { id: 'now', label: 'as the game draws them now' },
   { id: 'a', label: 'contour bands — what you saw before' },
   { id: 'calm', label: 'painted by code — calm' },
   { id: 'veined', label: 'painted by code — with veins' },
+  { id: 'ai', label: 'painted by AI inside your outline, sliced by code' },
 ]
 
 function OneRecipeShelf() {
