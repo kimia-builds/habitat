@@ -202,17 +202,15 @@ function CuriosityShelf() {
  *   - the krupengk and the zala CLEANED (cleanedFriends.js) — no specks, no
  *     holes under the eyes, glowing their own colour;
  *   - two flora given a shaded pastel body by the friends' own colour rule,
- *     with an interior that was first PAINTED in grey and then sliced into
- *     tones the way the friends' drawings were (PaintedFlora.jsx) — painted
- *     once by code, once by an image generator inside her outline.
+ *     with an interior painted in grey inside her outline and then sliced
+ *     into tones the way the friends' drawings were (PaintedFlora.jsx).
  *
- * AS OF THE FOURTH SLICE (Kimia, 2026-11-15): the friends' glow is LOWERED to
- * the flora's (the aura inside the drawing only, without the extra halo the
- * stylesheet adds in the game); the flora stand at the SMALL size, because she
- * is weighing whether to keep only that one; and the chitu — the largest
- * friend, in its original uncleaned trace — stands beside them for scale.
- * The rows that had been judged (today's look, contour bands, the calm
- * painting) have left, as shelves do.
+ * WHERE IT STANDS (Kimia, 2026-11-15, design-bible §9d): she chose the
+ * AI-painted flora ("the top family on the workbench looks great") and the
+ * SMALL flora size only. The friends' glow here is the flora's (the aura
+ * inside the drawing, without the stylesheet's extra halo). The chitu stands
+ * beside them for scale, with its loose tendrils joined back on. What is
+ * still waiting to be judged on this shelf is the cleaned chitu.
  *
  * Everything stands at its canonical size on one base (design-bible §9c: the
  * canon holds on the workbench too). Nothing here is in the game yet.
@@ -220,12 +218,11 @@ function CuriosityShelf() {
 const PAIR_BASE = 300 // px — how much room the largest friend would get here
 
 // Colours 4 and 7 of the ten friend colours: baby pink and violet.
-// The chitu wears colour 1, gold, and is the game's own trace: only the first
-// two have been cleaned.
+// The chitu wears colour 1, gold.
 const PAIR_FRIENDS = [
   { key: 'krupengk', colour: FRIEND_COLOURS[3], cleaned: true },
   { key: 'zala', colour: FRIEND_COLOURS[6], cleaned: true },
-  { key: 'chitu', colour: FRIEND_COLOURS[0], cleaned: false },
+  { key: 'chitu', colour: FRIEND_COLOURS[0], cleaned: true },
 ]
 
 // Two flora shapes — one fat-bodied, one mostly tendrils — and the pastel
@@ -297,10 +294,7 @@ function PairFriend({ speciesKey, colour, cleaned, idPrefix }) {
   )
 }
 
-const PAIR_ROWS = [
-  { id: 'ai', label: 'painted by AI inside your outline, sliced by code' },
-  { id: 'veined', label: 'painted by code — with veins' },
-]
+const PAIR_ROWS = [{ id: 'chosen', label: 'cleaned friends, painted flora' }]
 
 function OneRecipeShelf() {
   const height = floraHeight('small', PAIR_BASE)
@@ -337,7 +331,7 @@ function OneRecipeShelf() {
                 <PaintedFlora
                   key={key}
                   silhouette={silhouette}
-                  layers={PAINTED_FLORA[row.id][key]}
+                  layers={PAINTED_FLORA[key]}
                   tone={tone}
                   height={height}
                   idPrefix={`${row.id}-${key}`}

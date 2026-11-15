@@ -310,32 +310,55 @@ tracker. Everything after this is delight, informed by real use.
             the eight rail symbols and eleven new ones. Build notes in
             history.md)_
       - [ ] **T5.3p One recipe for friends and flora** _(opened 2026-11-15 on
-            Kimia's call)_ — the families are each consistent inside
-            themselves and not with each other. First slice, ON THE
-            WORKBENCH ONLY: the krupengk and zala cleaned of specks and
-            of the holes under their eyes (`cleanedFriends.js`), beside
-            flora given a shaded pastel body worked out from their own
-            outlines (`LayeredFlora.jsx`), with and without a pale rim.
-            Nothing in the game changes until Kimia has judged the shelf.
-            Judged 2026-11-15: the cleaned friends "look a lot better";
-            no rim on the flora; but bands cut from the outline read
-            like map contours. Second slice, same shelf: the flora's
-            interior PAINTED by code and sliced into tones the way the
-            friends' drawings were (`paintedFlora.js`, `PaintedFlora.jsx`),
-            calm and veined. Third slice: the same slicing applied to an
-            interior an image generator painted inside her outline, from
-            her silhouette plus her character sheet as the style (the
-            `ai` rows of `paintedFlora.js`). Fourth slice (her asks):
-            the shelf friends' glow lowered to the flora's; flora shown
-            at the SMALL size (she is weighing dropping the large one);
-            the chitu added for scale; judged rows removed, contour
-            bands (`LayeredFlora.jsx`) deleted. Her note: the flora's
-            edges are cleaner than the friends', and she prefers the
-            friends' messier look. Still to decide:
-            code-painted or AI-painted; one flora size or two; whether all friends
-            are cleaned; the flora's pastel colours; friends' glow back
-            to their own colour on the Abode.
-
+            Kimia's call; the decisions are in design-bible §9d — read it
+            first, and tools/art-pipeline/README.md for the how-to)_ —
+            friends and flora were each consistent alone and not together.
+            Decided on the workbench over five slices: flora are painted
+            the friends' way, with an interior an image generator paints
+            inside her silhouette; friend traces are cleaned; one flora
+            size, small. On the shelf now: krupengk, zala and chitu
+            cleaned, two flora painted (keys `6` and `1`). NOTHING IS IN
+            THE GAME YET. As ever, one visible slice at a time, each
+            judged by Kimia on the workbench before the next.
+        - [ ] **p1 The chitu, judged** — its tendrils are reattached
+              (2026-11-15) and she has not seen it yet. Adjust or accept.
+        - [ ] **p2 Clean the other seven friends** — plip, baluhm, liwi
+              bi-jiji, meuhy, rassatt, woigolp, hamdi bulo. One at a
+              time on the shelf. For each, look first and say which of
+              the three repairs it needs (specks, holes, loose limbs);
+              reattach, never remove. She cannot see the larger friends
+              in her own game yet, so the shelf is where she meets them.
+        - [ ] **p3 Paint the other fourteen flora** — the silhouette
+              pictures are ready in `tools/art-pipeline/silhouettes/`.
+              Kimia runs each through ChatGPT with the fixed prompt and
+              saves it to `paintings/`; `export_flora.py` does the rest.
+              Show them in batches on the shelf. Redo any whose overlap
+              score is poor or whose painting looks unlike the others.
+        - [ ] **p4 The six flora pastels** — chosen by eye on the shelf,
+              greens to blues, by the friends' hue / saturation / lift.
+              The shelf's two (hue 150 and 205, saturation 55, lift 40)
+              are placeholders.
+        - [ ] **p5 Rougher flora edges?** — she prefers the friends'
+              messier edge. Try nicks, bumps and a few wisps on one
+              flora and let her judge; drop it if she says no.
+        - [ ] **p6 Into the game** — only after p1–p4. `Flora.jsx` paints
+              the painted layers in a pastel; `Friend.jsx` draws the
+              cleaned traces; both families take the same glow; the
+              Abode's friends glow their own colour again (undo the
+              black of 2026-11-12). Fold §9d into §9a and §9c so the
+              bible describes one present, and retire the workbench
+              shelf.
+        - [ ] **p7 One flora size** — retire the large class in
+              `floraCanon.js` and `floraDeal.js` (a find no longer rolls
+              a size), fix the tests that guard two classes, and update
+              spec §5 and the bible's counts to 96. Gathered large flora
+              become small. Mother trees and `LANDMARK_SCALE` untouched.
+        - [ ] **p8 Keepsakes** — decide with Kimia whether the sixteen
+              take the same recipe, and their size.
+        - [ ] **p9 Weight** — the layered artwork is heavy: three
+              friends are 300 KB and two flora 110 KB of source. Before
+              all 26 ship, simplify the shapes or load them lazily, and
+              check the built app's size.
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four
       places you go to LOOK at what you have, and they are now one fixed

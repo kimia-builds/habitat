@@ -1,0 +1,6 @@
+shapely
+svgpathtools
+numpy
+pillow
+scipy
+scikit-image

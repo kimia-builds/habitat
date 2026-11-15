@@ -224,6 +224,12 @@ silhouette, no shadow. Each family adds only what makes it itself.
 
 #### 9a. Flora
 
+**SUPERSEDED IN PART (2026-11-15) — read §9d with this section.** The
+flora's look (a neon outline over a faint fill), its six neon colours and
+its two sizes are all replaced by decisions in §9d that are not built
+yet. Everything below still describes what the game draws today, and the
+shapes, species, regions, landmarks and keepsakes are unchanged.
+
 **Form.** No stems or trunks. Reads like a floating lily pad, sunflower
 head, or seaweed, not an Earth plant. Growth radiates from a central
 floating body; branches emerge from the centre, never a trunk-or-root
@@ -440,6 +446,10 @@ and never a light applied on top (§3).
   form.)
 
 #### 9c. Friends
+
+**See §9d (2026-11-15):** the traces are being cleaned of specks, holes
+and detached limbs, and the flora now follow the friends' way of
+painting. Everything below still stands.
 
 **Shared traits.** Every friend has **eyes** (number varies). Mostly
 blobbish silhouettes. **No human faces, no obvious anthropomorphism.**
@@ -716,6 +726,107 @@ design-notes §8).
 a still centre; friends have eyes and move. If a form is ambiguous, the
 eyes and the bob resolve it.
 
+#### 9d. One recipe for friends and flora
+
+**Decided by Kimia on 2026-11-15, on the workbench. NOT YET IN THE GAME** —
+the game still draws §9a's neon outline flora and the uncleaned traces
+until plan.md **T5.3p** builds this. Where this section and §9a or §9c
+disagree, this section is the newer decision.
+
+**Why.** Each family was consistent inside itself and not with the
+others, because the bible fixed what things ARE and never how paint goes
+on. Friends were soft, shaded and pastel; flora were flat neon outlines.
+Her verdict on the first combined shelf: the friends are "a lot closer
+to what I want the world to be", and she likes the flora's silhouettes
+more and the friends' layered shades more. So the flora move to the
+friends' way of painting, and keep their own shapes.
+
+**The recipe, for every friend and every flora:**
+
+1. **A silhouette** — one solid shape with no holes and no loose parts.
+2. **A soft grey painting inside it**, sliced into the same seven tones
+   (`#494949` … `#d0d0d0`) over the silhouette in `#333333`.
+3. **A pastel**, made from those greys by the friends' one formula
+   (`friendPalettes.paletteForTone`: a hue, a saturation and a lift).
+   Flora are pastels now too; the six neons of §9a are retired with the
+   outline. The six flora pastels are not chosen yet. Hue still keeps
+   the families apart: greens and blues stay the flora's.
+4. **A glow** in the thing's own colour: the silhouette, blurred, inside
+   the drawing. On the workbench both families wear exactly this and no
+   more — the friends there drop the extra halo the stylesheet adds in
+   the game. The friends' Abode glow returns from black (2026-11-12) to
+   their own colour once the flora stop being neon.
+
+No outline and no rim on either family (she chose "no rim").
+
+**Where the grey painting comes from.** This is the part that took four
+tries, and the order matters for anyone tempted to shortcut it:
+
+- *Bands cut from the outline* (each one the shape shrunk inward) read
+  "like map contours". Rejected.
+- *A painting made by code* (thickness disturbed by lumps, blotches and
+  veins) was organic but cloudy, without the friends' membranes and
+  folds. Passed over.
+- **An image generator paints the inside of her silhouette** — chosen.
+  She gives it the silhouette as a white shape on black, plus her
+  character sheet as the style to copy, with one fixed prompt
+  (`tools/art-pipeline/prompt.txt`). A script then stretches the
+  painting to her exact outline, slices it into the seven tones with the
+  SAME share of each tone on every species, and removes specks.
+
+So the edge is always hers, the tones, colours and glow are always the
+code's, and only the interior is the generator's. That is what lets the
+world be built across many sessions without the style drifting: a
+session can only vary the one thing that is then forced into the same
+seven tones in the same proportions. **An AI session is never asked for
+colour, edge or glow.**
+
+**Cleaning the friends' traces.** The speckle and the holes came from
+tracing, not from her drawings. Three repairs, chosen per friend by eye:
+
+- **Specks and pinholes are removed** from every band.
+- **Holes in the body are filled** with a soft patch of the friend's
+  overall shape, lightly shaded so it is not flat. The krupengk reads as
+  a round dome and the zala as a triangle (her words: "approximately
+  circle and triangle shaped").
+- **Loose limbs are reattached, never removed.** The chitu's tendrils,
+  including the two that carry its eyes, had come away from the body;
+  each is joined back by a thin curved bridge, all bending the same way
+  so it reads as a whirl ("like a fidget spinner"). Her rule: "instead
+  of removing the dismembered parts, reattach them to the whole."
+
+Three of the ten are done and on the workbench (`cleanedFriends.js`):
+krupengk, zala, chitu. She has approved the first two; the chitu is
+still to be judged. The originals in `friendNN.jsx` are untouched.
+
+**ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
+class is retired: a flora in the Abode is always the small size (0.28 in
+the shared scale, §9a). Seen at that size the painted shading reads as
+finer and closer to the friends' detail. Consequences, to be built in
+T5.3p and not before:
+
+- The collectibles become **16 silhouettes × 6 colours = 96**, not 192.
+- A find no longer rolls a size. Flora already gathered as large become
+  small.
+- **Mother trees are untouched**: they stay super-sized on the Map and
+  never stood in the Abode. Keepsake size is still undecided.
+
+**Still open** (none of these is decided; do not assume):
+
+- The flora's **edges are cleaner than the friends'**, and she prefers
+  the friends' "messier, muddier" look. Roughening the flora edges was
+  offered and not yet tried.
+- The six flora pastels; whether keepsakes take the same recipe and a
+  pastel of their own reds and pinks.
+- Whether curiosities and books are later pulled toward this recipe.
+  She has said only that books feel furthest from the world.
+
+**Where it lives.** Scripts, prompt, silhouette pictures and the
+paintings: `tools/art-pipeline/` (its README is the how-to). Candidate
+artwork: `src/ui/cleanedFriends.js`, `src/ui/paintedFlora.js`,
+`src/ui/PaintedFlora.jsx`. The shelf: "friends & flora — one recipe" on
+the design workbench.
+
 ### 10. Object assets
 
 Objects are less blobbish than living things — the line between made
@@ -924,13 +1035,15 @@ than flora is what makes the family buildable at all — see §9a.
 
 | Family              | Count | Assets per unit                                        |
 | ------------------- | ----- | ------------------------------------------------------ |
-| Flora — silhouettes | 16    | 4 drawn, 12 new; one drawing each; 192 collectibles = 16 × 2 sizes × 6 colours |
-| Flora — colours     | 6     | green to blue, no fixed split; a plain fill, no drawing or texture of their own |
+| Flora — silhouettes | 16    | 4 drawn, 12 new; one drawing each; 192 collectibles = 16 × 2 sizes × 6 colours (becomes 96 = 16 × 6 when §9d's one size is built) |
+| Flora — colours     | 6     | green to blue, no fixed split; a plain fill, no drawing or texture of their own (becomes six pastels over a painted interior, §9d) |
+| Flora — paintings   | 16    | one grey interior per silhouette (§9d); 2 made, 14 to go |
 | Flora — landmark    | 16    | each species' one mother tree, super-sized; body + Map marker |
 | Flora — keepsake    | 16    | one variety per region; its own drop, extra to the flora finds |
 | Fungi               | 1     | single form                                            |
 | Friend categories   | 10    | one shared drift-and-bob, no per-category animation    |
 | Friend individuals  | 55    | body each (10 → 1 down the ladder)                     |
+| Friend cleaning     | 10    | one cleaned trace per category (§9d); 3 made, 7 to go  |
 | Curiosities         | 48    | body (3 per region × 16)                               |
 | Publications        | 30    | spine + cover (10 per type); reading pages are a separate pool of 126 texts |
 | Sky                 | 1     | Abode sky × 4 palettes (shared night sky is CSS, §11a) |

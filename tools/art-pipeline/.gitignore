@@ -1,0 +1,10 @@
+venv/
+*.pkl
+__pycache__/
+preview*
+*.tmp.png
+p1.png
+p6.png
+ai1.png
+ai6.png
+chitu_fixed.png

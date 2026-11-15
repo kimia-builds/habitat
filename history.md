@@ -20,6 +20,22 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   counts, day fulfilled at N; extras kept).
 - 2026-07-12: habit list manually re-orderable (persists) and
   filterable by symbols (temporary, resets each visit).
+- 2026-11-15: One recipe for friends and flora (Kimia; design-bible §9d,
+  plan T5.3p; decided on the workbench, not yet built into the game).
+  (1) Flora take the friends' way of painting: a silhouette, a grey
+  interior sliced into seven tones, a pastel from the friends' formula,
+  an own-colour glow, no outline and no rim. The neon outline and the six
+  neons go. (2) The grey interior is painted by an image generator INSIDE
+  her silhouette, from the silhouette plus her character sheet, then
+  fitted, sliced and cleaned by script; bands cut from the outline ("like
+  map contours") and a code-made painting were tried first and passed
+  over. An AI session is never asked for colour, edge or glow. (3) Friend
+  traces are cleaned: specks removed, body holes filled, loose limbs
+  reattached and never removed (krupengk, zala, chitu done). (4) **One
+  flora size, small**: the large collectible class is retired, 96
+  collectibles not 192; mother trees unchanged. (5) Friends' Abode glow
+  is to return from black to their own colour when the flora stop being
+  neon. Open: rougher flora edges, the six flora pastels, keepsakes.
 - 2026-11-12: Party mode (Kimia). (1) Friends in the Abode glow **black**;
   everywhere else they keep their own colour (`Friend`'s optional `glow`
   prop). (2) The random formation never lets two friends overlap — each is

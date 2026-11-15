@@ -1,0 +1,25 @@
+Attach TWO images to ChatGPT with this prompt:
+  1. flora-6-silhouette.png   (from this folder — the shape to paint)
+  2. character sheet final.png (from "habitat mood/characters" — the style to copy)
+
+Then paste everything below the line.
+
+------------------------------------------------------------
+
+The first image is a white silhouette on black. The second image is a style reference showing glowing organisms painted in greyscale on black.
+
+Paint the INSIDE of the white silhouette in the style of the organisms in the second image.
+
+Rules:
+- Keep the silhouette's outline exactly as it is. Same shape, same size, same position, same image dimensions. Do not add, remove, move or reshape any part of it.
+- Paint only inside the shape. Everything outside stays pure black: no glow, no halo, no background, no extra objects.
+- Greyscale only. No colour at all.
+- It is the body of a strange plant-like organism: soft, translucent, organic. Give it folds, ridges, membranes and uneven soft patches of light and dark, the way the organisms in the second image have.
+- Darker towards the edges and in the thin parts, lighter in the thick parts of the body.
+- No eyes, no face, no text, no outline stroke, no cast shadow.
+- Soft smooth tones, like a painting. No noise, grain, speckle or stippling.
+
+When it is done, save the result into this folder as:
+  flora-6-painted.png
+
+(If it goes well, repeat with flora-1-silhouette.png and save as flora-1-painted.png.)

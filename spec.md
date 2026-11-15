@@ -251,7 +251,9 @@ opening its own growing world:
   arrives in five steps, in order: (1) a picture or symbol of it appears
   on the newly discovered region of the Map; (2) a **new-flora reveal**
   dialogue; (3) its **shape starts dropping**, in the same two sizes and
-  six colours as every flora; (4) about **midway through the region**, a
+  six colours as every flora (**decided 2026-11-15, not yet built: one
+  size only, the small one, and six pastels — design-bible §9d, plan
+  T5.3p**); (4) about **midway through the region**, a
   **discovery dialogue** for the region's **mother tree** — the same
   species at super-size, too big to carry — whose **marker is revealed on
   the Map and is permanent** (undoing the very completion that dropped it
