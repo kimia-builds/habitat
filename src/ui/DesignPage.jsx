@@ -62,6 +62,8 @@ import { FRIEND_COLOURS } from './friendColours.js'
 import { paletteForTone } from './friendPalettes.js'
 import { friendArt } from './tracedFriends.js'
 import LayeredFlora from './LayeredFlora.jsx'
+import PaintedFlora from './PaintedFlora.jsx'
+import { PAINTED_FLORA } from './paintedFlora.js'
 
 // The §8 texture families still waiting to be judged, in the order the
 // design bible lists them, so the workbench reads like the catalogue.
@@ -200,8 +202,10 @@ function CuriosityShelf() {
  *
  *   - the krupengk and the zala CLEANED (cleanedFriends.js) — no specks, no
  *     holes under the eyes, glowing their own colour;
- *   - two flora given a shaded pastel body by the friends' own colour rule
- *     (LayeredFlora.jsx), without and with a thin pale rim.
+ *   - two flora given a shaded pastel body by the friends' own colour rule:
+ *     first as contour bands cut from the outline (LayeredFlora.jsx), then
+ *     with an interior painted by code and sliced into tones the way the
+ *     friends' drawings were (PaintedFlora.jsx).
  *
  * Everything stands at its canonical size on one base (design-bible §9c: the
  * canon holds on the workbench too). Nothing here is in the game yet.
@@ -321,10 +325,14 @@ function NowFlora({ silhouette, hex, height, idPrefix }) {
   )
 }
 
+// Option B (a thin pale rim) left on 2026-11-15: Kimia chose no rim. She also
+// found the contour row too much like a map, which is what the two painted
+// rows answer (paintedFlora.js).
 const PAIR_ROWS = [
   { id: 'now', label: 'as the game draws them now' },
-  { id: 'a', label: 'option A — cleaned friends, shaded pastel flora' },
-  { id: 'b', label: 'option B — the same, flora with a thin pale rim' },
+  { id: 'a', label: 'contour bands — what you saw before' },
+  { id: 'calm', label: 'painted by code — calm' },
+  { id: 'veined', label: 'painted by code — with veins' },
 ]
 
 function OneRecipeShelf() {
@@ -358,21 +366,33 @@ function OneRecipeShelf() {
             ))}
             {PAIR_FLORA.map(({ key, tone }) => {
               const silhouette = FLORA_SILHOUETTES.find((s) => s.key === key)
-              return row.id === 'now' ? (
-                <NowFlora
+              if (row.id === 'now')
+                return (
+                  <NowFlora
+                    key={key}
+                    silhouette={silhouette}
+                    hex={NOW_FLORA_HEX[key]}
+                    height={height}
+                    idPrefix={key}
+                  />
+                )
+              if (row.id === 'a')
+                return (
+                  <LayeredFlora
+                    key={key}
+                    silhouette={silhouette}
+                    tone={tone}
+                    height={height}
+                    idPrefix={`a-${key}`}
+                  />
+                )
+              return (
+                <PaintedFlora
                   key={key}
                   silhouette={silhouette}
-                  hex={NOW_FLORA_HEX[key]}
-                  height={height}
-                  idPrefix={key}
-                />
-              ) : (
-                <LayeredFlora
-                  key={key}
-                  silhouette={silhouette}
+                  layers={PAINTED_FLORA[row.id][key]}
                   tone={tone}
                   height={height}
-                  rim={row.id === 'b'}
                   idPrefix={`${row.id}-${key}`}
                 />
               )

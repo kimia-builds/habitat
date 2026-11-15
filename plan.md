@@ -317,9 +317,15 @@ tracker. Everything after this is delight, informed by real use.
             flora given a shaded pastel body worked out from their own
             outlines (`LayeredFlora.jsx`), with and without a pale rim.
             Nothing in the game changes until Kimia has judged the shelf.
-            Still to decide: which option; whether all friends are
-            cleaned; the flora's pastel colours; friends' glow back to
-            their own colour on the Abode.
+            Judged 2026-11-15: the cleaned friends "look a lot better";
+            no rim on the flora; but bands cut from the outline read
+            like map contours. Second slice, same shelf: the flora's
+            interior PAINTED by code and sliced into tones the way the
+            friends' drawings were (`paintedFlora.js`, `PaintedFlora.jsx`),
+            calm and veined. Still to decide: contour or painted (or an
+            AI-painted interior inside her outline); whether all friends
+            are cleaned; the flora's pastel colours; friends' glow back
+            to their own colour on the Abode.
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

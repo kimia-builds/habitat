@@ -30,7 +30,6 @@ import { paletteForTone } from './friendPalettes.js'
 // its middle tones, and a paler flora looked washed out beside one.
 const BAND_GREYS = ['#333333', '#494949', '#606060', '#6b6b6b', '#767676']
 const CORE_GREY = '#8c8c8c'
-const RIM_GREY = '#d0d0d0'
 
 // How far in from the edge each band reaches, as a fraction of the drawing's
 // height — the same on every species, so a band is one width across the family.
@@ -44,14 +43,13 @@ const GLOW_FRACTION = 0.017
  * `silhouette` one entry of floraSilhouettes.js / newFloraSilhouettes.js
  * `tone`       `{ hue, saturation, lift }` — the friends' way of naming a colour
  * `height`     how tall to draw it, in px
- * `rim`        true adds a thin pale line round the edge
  * `idPrefix`   what makes this drawing's internal svg ids its own
  */
-function LayeredFlora({ silhouette, tone, height, rim = false, idPrefix }) {
+function LayeredFlora({ silhouette, tone, height, idPrefix }) {
   const { viewBox, d, transform } = silhouette
   const width = (height * viewBox.w) / viewBox.h
   const bands = paletteForTone(BAND_GREYS, tone)
-  const [core, rimColour] = paletteForTone([CORE_GREY, RIM_GREY], tone).ramp
+  const [core] = paletteForTone([CORE_GREY], tone).ramp
   const id = `layered-${idPrefix}`
   return (
     <svg
@@ -96,17 +94,6 @@ function LayeredFlora({ silhouette, tone, height, rim = false, idPrefix }) {
           )
         })}
       </g>
-      {rim && (
-        <path
-          d={d}
-          transform={transform ?? undefined}
-          fill="none"
-          stroke={rimColour}
-          strokeOpacity="0.8"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
-      )}
     </svg>
   )
 }
