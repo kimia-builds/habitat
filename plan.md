@@ -325,8 +325,14 @@ tracker. Everything after this is delight, informed by real use.
             calm and veined. Third slice: the same slicing applied to an
             interior an image generator painted inside her outline, from
             her silhouette plus her character sheet as the style (the
-            `ai` rows of `paintedFlora.js`). Still to decide: contour,
-            code-painted or AI-painted; whether all friends
+            `ai` rows of `paintedFlora.js`). Fourth slice (her asks):
+            the shelf friends' glow lowered to the flora's; flora shown
+            at the SMALL size (she is weighing dropping the large one);
+            the chitu added for scale; judged rows removed, contour
+            bands (`LayeredFlora.jsx`) deleted. Her note: the flora's
+            edges are cleaner than the friends', and she prefers the
+            friends' messier look. Still to decide:
+            code-painted or AI-painted; one flora size or two; whether all friends
             are cleaned; the flora's pastel colours; friends' glow back
             to their own colour on the Abode.
 
