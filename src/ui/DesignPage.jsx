@@ -54,6 +54,14 @@ import Curiosity, { CuriosityDefs, curiosityCanonKey } from './Curiosity.jsx'
 import { OBJECT_CANON, objectSize } from './objectCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
+import { CLEANED_FRIENDS } from './cleanedFriends.js'
+import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
+import { floraHeight } from './floraCanon.js'
+import { friendSize } from './friendCanon.js'
+import { FRIEND_COLOURS } from './friendColours.js'
+import { paletteForTone } from './friendPalettes.js'
+import { friendArt } from './tracedFriends.js'
+import LayeredFlora from './LayeredFlora.jsx'
 
 // The §8 texture families still waiting to be judged, in the order the
 // design bible lists them, so the workbench reads like the catalogue.
@@ -184,10 +192,204 @@ function CuriosityShelf() {
   )
 }
 
+/*
+ * ONE RECIPE FOR FRIENDS AND FLORA (opened 2026-11-15). Kimia's question: the
+ * two families she likes best are each consistent inside themselves and not
+ * with each other. This shelf shows the proposed answer beside what the game
+ * draws today, so the two can be judged as a pair:
+ *
+ *   - the krupengk and the zala CLEANED (cleanedFriends.js) — no specks, no
+ *     holes under the eyes, glowing their own colour;
+ *   - two flora given a shaded pastel body by the friends' own colour rule
+ *     (LayeredFlora.jsx), without and with a thin pale rim.
+ *
+ * Everything stands at its canonical size on one base (design-bible §9c: the
+ * canon holds on the workbench too). Nothing here is in the game yet.
+ */
+const PAIR_BASE = 300 // px — how much room the largest friend would get here
+
+// Colours 4 and 7 of the ten friend colours: baby pink and violet.
+const PAIR_FRIENDS = [
+  { key: 'krupengk', colour: FRIEND_COLOURS[3] },
+  { key: 'zala', colour: FRIEND_COLOURS[6] },
+]
+
+// Two flora shapes — one fat-bodied, one mostly tendrils — and the pastel
+// each wears. The hues are the flora's own green and blue; saturation and
+// lift are the friends' numbers, which is what makes them pastels.
+const PAIR_FLORA = [
+  { key: '6', tone: { hue: 150, saturation: 55, lift: 40 } },
+  { key: '1', tone: { hue: 205, saturation: 55, lift: 40 } },
+]
+// What those two wear in the game today (floraColours.js).
+const NOW_FLORA_HEX = { 6: '#00ff00', 1: '#73c0f7' }
+
+// A friend on this shelf: the game's own drawing, or the cleaned candidate.
+// Built like Friend.jsx (body svg + eyes svg) but takes its colour directly,
+// so both versions can be shown in the same pastel.
+function PairFriend({ speciesKey, colour, cleaned, idPrefix }) {
+  const art = friendArt(speciesKey)
+  const { Body, BodyDefs, Eyes, EyeDefs, viewBox, greys } = art
+  const palette = paletteForTone(greys.ramp, colour, greys.base)
+  const prefix = `${idPrefix}${speciesKey}-`
+  const box = `0 0 ${viewBox.w} ${viewBox.h}`
+  const clean = CLEANED_FRIENDS[speciesKey]
+  const shades = paletteForTone(['#494949', '#606060'], colour).ramp
+  return (
+    <span
+      className="friend-art"
+      style={{
+        width: `${friendSize(speciesKey, PAIR_BASE)}px`,
+        aspectRatio: `${viewBox.w} / ${viewBox.h}`,
+      }}
+      aria-hidden="true"
+    >
+      <svg
+        className="friend-art-layer friend-art-body"
+        viewBox={box}
+        style={{ color: palette.glow }}
+      >
+        <defs>
+          <BodyDefs prefix={prefix} />
+        </defs>
+        {cleaned ? (
+          <g>
+            <path
+              d={clean.silhouette}
+              fill={palette.glow}
+              opacity="0.8"
+              filter={`url(#${prefix}friend${art.num}-glow)`}
+            />
+            <path d={clean.silhouette} fill={palette.base} />
+            {clean.shades.map((d, i) => (
+              <path key={`s${i}`} d={d} fill={shades[i]} />
+            ))}
+            {clean.layers.map((d, i) => (
+              <path key={i} d={d} fillRule="evenodd" fill={palette.ramp[i]} />
+            ))}
+          </g>
+        ) : (
+          <Body palette={palette} prefix={prefix} />
+        )}
+      </svg>
+      <svg className="friend-art-layer" viewBox={box}>
+        <defs>
+          <EyeDefs prefix={prefix} />
+        </defs>
+        <Eyes prefix={prefix} />
+      </svg>
+    </span>
+  )
+}
+
+// A flora exactly as Flora.jsx paints it today, for the "now" row.
+function NowFlora({ silhouette, hex, height, idPrefix }) {
+  const { viewBox, d, transform } = silhouette
+  const id = `now-flora-${idPrefix}`
+  return (
+    <svg
+      viewBox={`0 0 ${viewBox.w} ${viewBox.h}`}
+      width={(height * viewBox.w) / viewBox.h}
+      height={height}
+      style={{ overflow: 'visible' }}
+      aria-hidden="true"
+    >
+      <defs>
+        <filter id={id} x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation={viewBox.w * 0.017} />
+        </filter>
+      </defs>
+      <path
+        d={d}
+        transform={transform}
+        fill={hex}
+        opacity="0.8"
+        filter={`url(#${id})`}
+      />
+      <path d={d} transform={transform} fill="#0b0f14" />
+      <path
+        d={d}
+        transform={transform}
+        fill={hex}
+        fillOpacity="0.16"
+        stroke={hex}
+        strokeOpacity="0.85"
+        strokeWidth="1.2"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  )
+}
+
+const PAIR_ROWS = [
+  { id: 'now', label: 'as the game draws them now' },
+  { id: 'a', label: 'option A — cleaned friends, shaded pastel flora' },
+  { id: 'b', label: 'option B — the same, flora with a thin pale rim' },
+]
+
+function OneRecipeShelf() {
+  const height = floraHeight('large', PAIR_BASE)
+  return (
+    <section
+      className="design-family"
+      aria-label="friends and flora, one recipe"
+    >
+      <h3>friends &amp; flora — one recipe</h3>
+      {PAIR_ROWS.map((row) => (
+        <div key={row.id} style={{ marginBottom: '3rem' }}>
+          <p className="curio-name">{row.label}</p>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'flex-end',
+              gap: '3rem',
+              padding: '1.5rem 1rem',
+            }}
+          >
+            {PAIR_FRIENDS.map(({ key, colour }) => (
+              <PairFriend
+                key={key}
+                speciesKey={key}
+                colour={colour}
+                cleaned={row.id !== 'now'}
+                idPrefix={`pair-${row.id}-`}
+              />
+            ))}
+            {PAIR_FLORA.map(({ key, tone }) => {
+              const silhouette = FLORA_SILHOUETTES.find((s) => s.key === key)
+              return row.id === 'now' ? (
+                <NowFlora
+                  key={key}
+                  silhouette={silhouette}
+                  hex={NOW_FLORA_HEX[key]}
+                  height={height}
+                  idPrefix={key}
+                />
+              ) : (
+                <LayeredFlora
+                  key={key}
+                  silhouette={silhouette}
+                  tone={tone}
+                  height={height}
+                  rim={row.id === 'b'}
+                  idPrefix={`${row.id}-${key}`}
+                />
+              )
+            })}
+          </div>
+        </div>
+      ))}
+    </section>
+  )
+}
+
 function DesignPage({ onBack }) {
   return (
     <section className="stub-page design-page">
       <h2>design assets</h2>
+
+      <OneRecipeShelf />
 
       {/* The shared texture library (T5.3, design-bible §8). One <defs>
           for the whole page, then a shelf of live swatches per family. */}

@@ -309,6 +309,17 @@ tracker. Everything after this is delight, informed by real use.
             fill every picture slot of stages 1 and 2: the six charms,
             the eight rail symbols and eleven new ones. Build notes in
             history.md)_
+      - [ ] **T5.3p One recipe for friends and flora** _(opened 2026-11-15 on
+            Kimia's call)_ — the families are each consistent inside
+            themselves and not with each other. First slice, ON THE
+            WORKBENCH ONLY: the krupengk and zala cleaned of specks and
+            of the holes under their eyes (`cleanedFriends.js`), beside
+            flora given a shaded pastel body worked out from their own
+            outlines (`LayeredFlora.jsx`), with and without a pale rim.
+            Nothing in the game changes until Kimia has judged the shelf.
+            Still to decide: which option; whether all friends are
+            cleaned; the flora's pastel colours; friends' glow back to
+            their own colour on the Abode.
 
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four

@@ -61,7 +61,12 @@ describe('DesignPage workbench', () => {
     // by becoming the real Abode's four background choices.
     const waiting = ['plant-like', 'fungal', 'rock']
     expect(shelves.slice().sort()).toEqual(
-      [...waiting.map((f) => `textures — ${f}`), 'curiosities'].sort(),
+      [
+        ...waiting.map((f) => `textures — ${f}`),
+        'curiosities',
+        // opened 2026-11-15: cleaned friends beside shaded pastel flora
+        'friends and flora, one recipe',
+      ].sort(),
     )
   })
 
