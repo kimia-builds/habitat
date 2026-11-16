@@ -41,6 +41,8 @@ head='''/*
  * underbelly the sheet shows there, and every tendril is redrawn as one
  * smooth tapering curve along the path it takes on the sheet, each ending in
  * a bulb. The two eye bulbs sit exactly on its eyes. Nothing is removed.
+ * Its tones darken toward the outline, like the other two, and it carries
+ * no light stripe where a tendril crosses the body: only a faint vein.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */

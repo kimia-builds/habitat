@@ -27,7 +27,11 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   smooth tapering curve along its path on the sheet, **every tendril
   ends in a bulb**, and the craters (bites in the trace) are filled by
   the underbelly the sheet shows. Where a trace and the sheet disagree
-  about an outline, the sheet wins. One small spur of the trace beside
+  about an outline, the sheet wins. Same day, its shading: "match the
+  krupengk and zala: darker nearer the edges"; and a tendril running
+  light into the body "looks unnatural", so it is now a faint vein
+  there. Tendrils and bulbs are kept dark so only the eyes glow (Claude's
+  reading of the other two friends, for her to judge). One small spur of the trace beside
   the top-left tendril is gone: the sheet shows only glow there.
 - 2026-11-15: Party mode goes dark (Kimia; judged by eye on a standalone
   comparison picture, not yet built — plan T5.3p p10). Her problem: the

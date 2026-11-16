@@ -799,7 +799,13 @@ tracing, not from her drawings. Three repairs, chosen per friend by eye:
   the path it takes on the sheet, **every tendril ends in a bulb**, and
   the round bites in the underside are filled by the underbelly the
   sheet shows there. When a trace and the sheet disagree about an
-  outline, the sheet wins.
+  outline, the sheet wins. Its **shading follows the krupengk and the
+  zala: darker nearer the edge.** A tone may only be as light as its
+  distance from the outline allows, so her traced highlights survive
+  in the middle and step down toward the rim. Tendrils and bulbs stay
+  dark and quiet (the only lights on a friend are its eyes), and a
+  tendril that crosses the body shows there only as a faint vein,
+  never as a light stripe.
 
 Three of the ten are done and on the workbench (`cleanedFriends.js`):
 krupengk, zala, chitu. She has approved the first two; the chitu is
