@@ -118,9 +118,10 @@ Mushroom · rock · leaf · moss · gravel · hair.
 ### 7. Light language
 
 - Living things emit light — in their own body colour (friends; §3, §9c).
-- Friend **eyes are the exception**: a fixed yellow, set in a **dark
-  socket** rather than a bright bloom, so the yellow reads against the
-  body (the dark halo is the eye's own socket, not a cast shadow).
+- Friend **eyes are the exception**: a fixed yellow (pale blue on a
+  gold friend, §9c), set in a **dark socket** rather than a bright
+  bloom, so the eye reads against the body (the dark halo is the eye's
+  own socket, not a cast shadow).
 - Darkness is the default.
 - No shadows.
 - Artificial objects may glow, but don't have to.
@@ -474,6 +475,21 @@ colour, §3). Only size and number vary; the colour and the dark socket
 never do. Lives as the reusable `<Eye cx cy r/>` in `src/ui/eye.jsx`
 (its two gradients in `<EyeDefs/>`). The four rejected candidates (slit,
 ring, crescent, compound) were exploration only.
+
+**One exception: gold friends have pale blue eyes (Kimia, 2026-11-16).**
+A yellow eye gets lost on a gold body, which breaks the point of the
+rule above (the eye always differs from the body). So a friend wearing
+**gold** has the same eye in **pale blue**: same orb, same dark socket,
+only the colour changes. Every other friend colour keeps yellow. The
+choice is made from the friend's colour (`eyeToneFor` in `eye.jsx`),
+so it holds for any species that turns up gold, in the game as well as
+on the workbench.
+
+**The chitu has nine eyes (Kimia, 2026-11-16; on the workbench's
+cleaned chitu, not yet the game's).** One sits on the bulb at the end
+of every tendril, and one on the point at the top right of its body.
+The right-hand eye is where her trace had it; the left-hand one moved
+from the base of its tendril to the tip.
 
 **Production workflow (2026-07-25).** The 10 **category archetypes are
 hand-drawn by Kimia** (raster drawing → Inkscape trace → SVG), keeping

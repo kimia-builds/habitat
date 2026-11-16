@@ -12,6 +12,9 @@
  * for being the simplest and most "just light". The four rejected forms were
  * exploration only and are not kept.
  *
+ * ONE EXCEPTION SINCE (Kimia, 2026-11-16): a GOLD friend wears the eye in
+ * pale blue, because yellow gets lost on gold. See EYE_TOKENS_BLUE below.
+ *
  * THE COLOUR RULE (Kimia's call, 2026-07-25, T5.3b — REVERSES the earlier
  * "eyes glow the one green" rule): the eye is ALWAYS YELLOW, on every friend,
  * set in a DARK ("blackish") halo — not a bright bloom but a dark socket that
@@ -60,6 +63,22 @@ export const EYE_TOKENS = {
   rim: '#d9b44e', // deeper amber at the very rim, so the orb has a little depth
 }
 
+// THE ONE EXCEPTION TO "ALWAYS YELLOW" (Kimia, 2026-11-16): on a GOLD friend
+// the yellow eye gets lost against the gold body, so gold friends wear the
+// same eye in PALE BLUE. Same design, same dark socket; only these three
+// colours change. Every other colour of friend keeps the yellow eye.
+export const EYE_TOKENS_BLUE = {
+  coreBright: '#f4fbff', // near-white centre (and catch-light)
+  coreMid: '#bfe4ff', // the pale blue body of the eye
+  rim: '#6fa9d8', // deeper blue at the very rim, for the same depth
+}
+
+// Which eye a friend of this colour wears: 'blue' for gold, else 'yellow'.
+// `colour` is one of FRIEND_COLOURS (friendColours.js).
+export function eyeToneFor(colour) {
+  return colour?.name === 'gold' ? 'blue' : 'yellow'
+}
+
 // The dark halo is drawn at this multiple of the eye's radius, so the socket
 // grows with the eye instead of a fixed size that would swamp small eyes.
 const HALO_SCALE = 2
@@ -74,8 +93,8 @@ const coreId = (prefix) => `${prefix}eye-core`
  * reference it. objectBoundingBox gradients remap to whatever circle points at
  * them, so ONE pair of gradients serves every eye size in that SVG.
  * =========================================================================== */
-export function EyeDefs({ prefix = '' }) {
-  const t = EYE_TOKENS
+export function EyeDefs({ prefix = '', tone = 'yellow' }) {
+  const t = tone === 'blue' ? { ...EYE_TOKENS, ...EYE_TOKENS_BLUE } : EYE_TOKENS
   return (
     <>
       {/* the dark socket: near-black at the centre, fading to nothing at the rim,
@@ -85,7 +104,7 @@ export function EyeDefs({ prefix = '' }) {
         <stop offset="55%" stopColor={t.haloDark} stopOpacity="0.3" />
         <stop offset="100%" stopColor={t.haloDark} stopOpacity="0" />
       </radialGradient>
-      {/* the lit body of the eye: pale-warm core → yellow → amber rim */}
+      {/* the lit body of the eye: pale core → yellow (or pale blue) → deeper rim */}
       <radialGradient id={coreId(prefix)}>
         <stop offset="0%" stopColor={t.coreBright} />
         <stop offset="55%" stopColor={t.coreMid} />

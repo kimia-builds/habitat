@@ -55,6 +55,7 @@ import { OBJECT_CANON, objectSize } from './objectCanon.js'
 import { baseWhereSmallestIs } from './friendCanon.js'
 import { TEXTURES, TextureDefs, pumicePits } from './textures.jsx'
 import { CLEANED_FRIENDS } from './cleanedFriends.js'
+import { Eye, eyeToneFor } from './eye.jsx'
 import { FLORA_SILHOUETTES } from './floraSilhouettes.js'
 import { floraHeight } from './floraCanon.js'
 import { friendSize } from './friendCanon.js'
@@ -286,9 +287,21 @@ function PairFriend({ speciesKey, colour, cleaned, idPrefix }) {
       </svg>
       <svg className="friend-art-layer" viewBox={box}>
         <defs>
-          <EyeDefs prefix={prefix} />
+          <EyeDefs prefix={prefix} tone={eyeToneFor(colour)} />
         </defs>
-        <Eyes prefix={prefix} />
+        {/* a cleaned drawing may carry its own eyes (the chitu: one on
+            every tendril tip); otherwise the game's own eyes are used */}
+        {cleaned && clean.eyes ? (
+          <g>
+            {clean.eyes.map((eye, i) => (
+              <g key={i} className="friend-eye-blink">
+                <Eye cx={eye.cx} cy={eye.cy} r={eye.r} prefix={prefix} />
+              </g>
+            ))}
+          </g>
+        ) : (
+          <Eyes prefix={prefix} />
+        )}
       </svg>
     </span>
   )

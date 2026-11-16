@@ -20,6 +20,13 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   counts, day fulfilled at N; extras kept).
 - 2026-07-12: habit list manually re-orderable (persists) and
   filterable by symbols (temporary, resets each visit).
+- 2026-11-16: Gold friends have pale blue eyes (Kimia; design-bible §9c,
+  built in the game and on the workbench). "So that the eyes do not get
+  lost on the gold background." The one exception to "eyes are always
+  yellow"; same eye design and dark socket, every other colour keeps
+  yellow. Same day the cleaned chitu went from two eyes to nine: one on
+  every tendril tip and one on the top-right point, the left eye moved
+  from the base of its tendril to its end (workbench only so far).
 - 2026-11-16: The chitu's outline comes from the character sheet (Kimia;
   design-bible §9d, on the workbench, still hers to judge). The bridged
   version read as weird in silhouette: "it looks like it has craters, and

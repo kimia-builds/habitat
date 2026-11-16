@@ -20,8 +20,11 @@ from clean import largest, nohole, H
 from PIL import Image, ImageDraw
 
 OX, OY = 67.557, 991.255                 # FRIEND09_OFFSET: the trace's shifted space
-EYES = [(502.4, 440.2), (703.5, 389.6)]  # FRIEND09_EYES, in viewBox space
-P = dict(strip=5.5, smooth=3.0, speck=30, bulb=8.5, eye_bulb=10.5)
+RIGHT_EYE = (703.5, 389.6)               # the one eye Kimia kept where her trace had it (viewBox space)
+# Every tendril ends in a bulb, and every bulb carries an eye (Kimia, 2026-11-16).
+# tip kind -> (bulb radius, eye radius); the two short drips take a smaller pair.
+TIPS = {'eye': (10.5, 7.7), 'small': (8.5, 5.8)}
+P = dict(strip=5.5, smooth=3.0, speck=30)
 
 
 def sheet(x, y):
@@ -33,21 +36,21 @@ def sheet(x, y):
 # what sits on the tip, whether its stem shows in front of the body as it does on the sheet).
 # The root starts a little inside the body so the join is never a pinch.
 TENDRILS = dict(
-    top_left=([(190, 196), (181, 172), (169, 149), (153, 135), (144, 117), (144, 101), (154.3, 88.7)], [(0, 8), (1, 5)], 'bulb', False),
+    top_left=([(190, 196), (181, 172), (169, 149), (153, 135), (144, 117), (144, 101), (154.3, 88.7)], [(0, 8), (1, 5)], 'eye', False),
     top_left_branch=([(169, 149), (186, 153), (206, 160)], [(0, 4.5), (1, 5)], None, False),
-    top_right=([(408, 160), (422, 157), (435, 153), (443, 140), (445.4, 122.7)], [(0, 9), (1, 6)], 'bulb', False),
+    top_right=([(408, 160), (422, 157), (435, 153), (443, 140), (445.4, 122.7)], [(0, 9), (1, 6)], 'eye', False),
     right=([(484, 246), (500, 248), (520, 257), (536, 277), (543, 300), (547, 322), (554, 347), (570, 360), (589, 367)], [(0, 9), (0.3, 6), (1, 5)], 'eye', False),
-    lower_right=([(462, 338), (480, 354), (500, 371), (521, 371), (534, 387), (543, 403), (554, 409), (565, 405), (573, 404)], [(0, 18), (0.45, 9), (1, 5.5)], 'bulb', False),
-    ring=([(385, 386), (403, 393), (421, 401), (439, 405), (460, 417), (479, 433), (490, 453), (495, 473)], [(0, 3), (0.4, 6.5), (1, 5)], 'bulb', True),
+    lower_right=([(462, 338), (480, 354), (500, 371), (521, 371), (534, 387), (543, 403), (554, 409), (565, 405), (573, 404)], [(0, 18), (0.45, 9), (1, 5.5)], 'eye', False),
+    ring=([(385, 386), (403, 393), (421, 401), (439, 405), (460, 417), (479, 433), (490, 453), (495, 473)], [(0, 3), (0.4, 6.5), (1, 5)], 'eye', True),
     centre=([(350, 331), (358, 351), (351, 372), (336, 386), (326, 400), (320, 415), (311, 430), (294, 437), (275, 444),
-             (253, 455), (227, 463), (200, 464), (173, 460), (150, 452), (133, 448), (117, 452), (104, 461), (98, 472), (98, 482)],
-            [(0, 9), (0.12, 14), (0.2, 20), (0.3, 18), (0.38, 10), (0.6, 7), (1, 5)], 'bulb', True),
-    left=([(205, 362), (190, 378), (172, 392), (147, 394), (121, 387), (104, 372), (93, 350), (83, 331), (70, 325)], [(0, 18), (0.35, 12), (1, 6)], 'bulb', False),
-    drip=([(268, 380), (270, 396), (268, 411)], [(0, 6), (1, 4.5)], 'bulb', False),
-    left_drip=([(163, 322), (165, 336), (165, 349)], [(0, 6), (1, 4.5)], 'bulb', False),
+             (253, 455), (227, 463), (200, 464), (173, 460), (150, 452), (133, 448), (117, 452), (104, 461), (98, 471), (98, 480.4)],
+            [(0, 9), (0.12, 14), (0.2, 20), (0.3, 18), (0.38, 10), (0.6, 7), (1, 5)], 'eye', True),
+    left=([(205, 362), (190, 378), (172, 392), (147, 394), (121, 387), (104, 372), (93, 350), (84, 331), (71.6, 325)], [(0, 18), (0.35, 12), (1, 6)], 'eye', False),
+    drip=([(268, 380), (270, 396), (268, 411)], [(0, 6), (1, 4.5)], 'small', False),
+    left_drip=([(163, 322), (165, 336), (165, 349)], [(0, 6), (1, 4.5)], 'small', False),
 )
 # swellings partway along a tendril, as on the sheet (sheet x, y, radius)
-NODES = [(169, 149, 6.5), (275, 444, 8.5), (522, 372, 6)]
+NODES = [(169, 149, 6.5), (275, 444, 8.5), (522, 372, 6), (439, 405.5, 7)]   # the last is where the left eye used to sit
 # the underbelly the sheet shows where the trace had craters: a soft closed
 # curve through these points (viewBox space), gently lobed like the ruffles
 BELLY = [(200, 340), (222, 398), (243, 407), (276, 415), (311, 407), (345, 419), (376, 426), (410, 421),
@@ -84,15 +87,23 @@ def tendril(pts, profile):
     return unary_union([Point(q).buffer(width_at(profile, i / n) / 2, 12) for i, q in enumerate(c)])
 
 
+def eyes():
+    """Where each eye sits: the centre of every tendril's tip bulb -> [(x, y, eye radius, bulb radius)]."""
+    out = []
+    for name, (pts, profile, tip, over) in TENDRILS.items():
+        if tip is None: continue
+        x, y = RIGHT_EYE if name == 'right' else sheet(*pts[-1])
+        out.append((x, y, TIPS[tip][1], TIPS[tip][0]))
+    return out
+
+
 def limbs(p=P):
     """-> (every limb with its bulbs, the bulbs alone, the limbs whose stems show in front of the body)."""
-    lines, bulbs, front = [], [], []
+    lines, front = [], []
     for name, (pts, profile, tip, over) in TENDRILS.items():
         t = tendril(pts, profile); lines.append(t)
         if over: front.append(t)
-        if tip == 'bulb':
-            bulbs.append(Point(sheet(*pts[-1])).buffer(p['bulb'], 24))
-    bulbs += [Point(e).buffer(p['eye_bulb'], 24) for e in EYES]          # the two eye bulbs, exactly on the eyes
+    bulbs = [Point(x, y).buffer(rb, 24) for x, y, _, rb in eyes()]
     bulbs += [Point(sheet(x, y)).buffer(r, 24) for x, y, r in NODES]
     bulbs = unary_union(bulbs)
     # a soft neck where each bulb meets its stem, instead of a hard corner
@@ -176,7 +187,8 @@ def clean_chitu(p=P):
         out.append(unary_union(keep).simplify(0.2) if keep else Polygon())
     # shaved-off limbs the new ones do not cover would be a removal: report any
     lost = body.difference(s.buffer(4))
-    return dict(sil=s, bands=out, lost=round(lost.area), order=order)
+    return dict(sil=s, bands=out, lost=round(lost.area), order=order,
+                eyes=[dict(cx=round(x, 1), cy=round(y, 1), r=r) for x, y, r, _ in eyes()])
 
 
 def order_of(num):

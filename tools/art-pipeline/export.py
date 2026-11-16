@@ -13,7 +13,7 @@ for num,key in (('03','krupengk'),('04','zala')):
 import chitu
 r=chitu.clean_chitu()
 bands,_=chitu.toned(r)
-out['chitu']=dict(silhouette=path(r['sil']), shades=[path(g) for g,_ in chitu.shades(r)], layers=[path(b) for b in bands])
+out['chitu']=dict(silhouette=path(r['sil']), shades=[path(g) for g,_ in chitu.shades(r)], layers=[path(b) for b in bands], eyes=r['eyes'])
 print('chitu bounds', [round(v,1) for v in r['sil'].bounds])
 head='''/*
  * cleanedFriends.js — the krupengk, the zala and the chitu, cleaned (2026-11-15)
@@ -43,6 +43,7 @@ head='''/*
  * a bulb. The two eye bulbs sit exactly on its eyes. Nothing is removed.
  * Its tones darken toward the outline, like the other two, and it carries
  * no light stripe where a tendril crosses the body: only a faint vein.
+ * It also carries its own `eyes`: one on every tendril tip (nine in all).
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */

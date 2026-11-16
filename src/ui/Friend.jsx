@@ -33,6 +33,7 @@
 // "full" means for the real art is still an eyeball call (§7).
 
 import { FRIEND_CATEGORIES } from '../game/constants.js'
+import { eyeToneFor } from './eye.jsx'
 import { friendSize } from './friendCanon.js'
 import { individualColour } from './friendColours.js'
 import { paletteForTone } from './friendPalettes.js'
@@ -109,7 +110,7 @@ function Friend({
       </svg>
       <svg className="friend-art-layer" viewBox={box}>
         <defs>
-          <EyeDefs prefix={prefix} />
+          <EyeDefs prefix={prefix} tone={eyeToneFor(colour)} />
         </defs>
         <Eyes prefix={prefix} />
       </svg>
