@@ -188,12 +188,37 @@ function overlapArea(a, b) {
   return across > 0 && down > 0 ? across * down : 0
 }
 
+// If the friends placed so far leave no clear spot for the next one, the
+// whole scatter starts over (2026-11-16: one unlucky early placement could
+// box the last friend in and let a small overlap through, in about 1 roll
+// in 200 for a crowd of ten big friends). Only a crowd that cannot fit at
+// all, in any of these fresh scatters, falls back to the least-overlapping.
+const FORMATION_ATTEMPTS = 60
+
 function rollFormation(friends) {
   const sized = friends.map((friend) => ({ friend, ...friendBox(friend) }))
   const biggestFirst = [...sized].sort(
     (a, b) => b.width * b.height - a.width * a.height,
   )
+  let bestTry = null
+  for (let attempt = 0; attempt < FORMATION_ATTEMPTS; attempt++) {
+    const tried = scatterOnce(biggestFirst)
+    if (!bestTry || tried.crowding < bestTry.crowding) bestTry = tried
+    if (tried.crowding === 0) break
+  }
+  const placed = bestTry.placed
+  // Hand them back in the order the friends came in.
+  return friends.map((friend) => {
+    const spot = placed.find((p) => p.friend === friend)
+    return { friend, x: spot.x / WIDTH, y: spot.y / HEIGHT }
+  })
+}
+
+// One scatter: each friend, biggest first, takes the first clear random spot
+// (or the least-crowded one tried). Reports the total overlap it ended with.
+function scatterOnce(biggestFirst) {
   const placed = []
+  let totalCrowding = 0
   for (const entry of biggestFirst) {
     let best = null
     for (let i = 0; i < PLACEMENT_TRIES; i++) {
@@ -209,13 +234,10 @@ function rollFormation(friends) {
       if (!best || crowding < best.crowding) best = { spot, crowding }
       if (crowding === 0) break
     }
+    totalCrowding += best.crowding
     placed.push(best.spot)
   }
-  // Hand them back in the order the friends came in.
-  return friends.map((friend) => {
-    const spot = placed.find((p) => p.friend === friend)
-    return { friend, x: spot.x / WIDTH, y: spot.y / HEIGHT }
-  })
+  return { placed, crowding: totalCrowding }
 }
 
 // Enter / Space activates a word that is a button in all but element.

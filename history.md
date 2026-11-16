@@ -71,6 +71,7 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   collectibles not 192; mother trees unchanged. (5) Friends' Abode glow
   is to return from black to their own colour when the flora stop being
   neon. Open: rougher flora edges, the six flora pastels, keepsakes.
+- 2026-11-16: Party-mode overlap bug fixed — a lone unlucky placement could box the last friend in (about 1 roll in 200 with ten big friends) and let a small overlap through; the whole scatter now restarts (up to 60 times) before any overlap is accepted. Real bug, not a test fault. A second, separate cause: the 25-roll test took ~3s against vitest's 5s limit and sometimes timed out (6s) on a busy machine, so it now has a 30s limit.
 - 2026-11-12: Party mode (Kimia). (1) Friends in the Abode glow **black**;
   everywhere else they keep their own colour (`Friend`'s optional `glow`
   prop). (2) The random formation never lets two friends overlap — each is

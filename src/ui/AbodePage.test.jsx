@@ -454,7 +454,10 @@ describe('party mode (T4.4)', () => {
       }
       unmount()
     }
-  })
+    // 25 full renders of ten drawn friends take ~3s, so the default 5s limit
+    // is too tight when the machine is busy (a full `npm test` timed out at
+    // 6s on 2026-11-16). The rolls and the assertion are unchanged.
+  }, 30000)
 
   it('friends at the party glow black', () => {
     const { container } = render(
