@@ -52,6 +52,13 @@ from shapely.geometry import box as _box
 RIGHT_FLECKS = _box(600, 150, 690, 420)   # loose flecks here are left out
 LEGS = _box(205, 560, 690, 832)           # the broken legs, bottom right
 LEG_CLOSE = (22, 8)                       # fill gaps this far (up, across)
+# Two crevices that rose too high between the bottom legs (Kimia, 2026-11-16).
+# Everything open inside each box is filled, down to the box's bottom edge
+# (about where the gaps between the other legs end), its corners rounded by
+# CREVICE_ROUND. It is left in the DARKEST shade: the outline's own, with no
+# body tone painted over it.
+CREVICES = [_box(305, 585, 378, 706), _box(448, 625, 522, 706)]
+CREVICE_ROUND = 7
 SEAL = 0.6                   # closes the hairline gaps between adjacent bands
 # Darkest first: the paint order of the stacked layers.
 GREYS = ['#494949', '#606060', '#767676', '#8c8c8c', '#a3a3a3', '#b9b9b9', '#d0d0d0']
@@ -110,9 +117,17 @@ def one_piece(body):
     print('holes filled among the legs:', [round(Polygon(r).area) for r in main.interiors if Polygon(r).area >= 200])
     assert not big, 'joining the pieces closed a loop: lower CLOSE'
     sil = Polygon(main.exterior)
+    deep = []
+    for b in CREVICES:
+        near = unary_union([sil, b]).intersection(b.buffer(4 * CREVICE_ROUND))
+        near = near.buffer(-CREVICE_ROUND).buffer(2 * CREVICE_ROUND).buffer(-CREVICE_ROUND)
+        deep.append(near.difference(sil).intersection(b.buffer(CREVICE_ROUND)))
+    deep = unary_union(deep)
+    sil = unary_union([sil, deep]).buffer(0.3).buffer(-0.3)
+    sil = Polygon(max(polys(sil), key=lambda p: p.area).exterior)
     sil = sil.buffer(-SMOOTH / 2).buffer(SMOOTH).buffer(-SMOOTH / 2)
     sil = Polygon(max(polys(sil), key=lambda p: p.area).exterior).simplify(0.15)
-    return sil, sil.difference(body.buffer(0.3))
+    return sil, sil.difference(body.buffer(0.3)).difference(deep.buffer(3))
 
 
 def shades(filled, sil):

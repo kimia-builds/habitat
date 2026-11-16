@@ -839,8 +839,11 @@ filled with the body's darkest tone. Thin necks joining the far flecks
 were tried and she had them removed, "leaving the RHS silhouette as
 the rounded inward curves": those few flecks are left out. The three
 bottom tendrils on its left "look correct", so the broken legs at the
-bottom right are closed along their length to match them. The open
-loops of its tendrils stay open.
+bottom right are closed along their length to match them. Two
+crevices between those legs still "rise too high", so each is filled
+down to where the other leg gaps end, in the darkest shade (the
+outline's own tone, nothing painted over it). The open loops of its
+tendrils stay open.
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in

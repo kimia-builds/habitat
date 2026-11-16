@@ -66,8 +66,9 @@ What "cleaning" means, and Kimia's rules for it:
   cleaned of specks like the others. Its loose pieces are then joined
   into one silhouette: gaps beside a loose piece are filled (`CLOSE`),
   the broken legs at the bottom right are closed along their length
-  (`LEGS`, `LEG_CLOSE`), and the flecks off its right side are left
-  out (`RIGHT_FLECKS`). The dials are at the top of the script; `python hamdi.py` writes
+  (`LEGS`, `LEG_CLOSE`), two crevices between them are filled in the
+  darkest shade (`CREVICES`), and the flecks off its right side are
+  left out (`RIGHT_FLECKS`). The dials are at the top of the script; `python hamdi.py` writes
   `hamdi_before.png` and `hamdi_after.png` to compare.
 
 Each friend needs its own look and its own dials: which of the three
