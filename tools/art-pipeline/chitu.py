@@ -10,7 +10,17 @@ of the underside, and tendrils that had come apart and did not flow. So:
     'friend-09.png', her crop of the sheet), and each ends in a BULB.
 
 Nothing is removed: every loose piece of the trace lies along one of these
-tendrils. The two eye bulbs sit exactly on the eye centres in friend09.jsx.
+tendrils.
+
+SHORTER, MORE EVEN TENDRILS (Kimia, 2026-11-16: "keep the tendril shapes but
+make them shorter ... there is currently too much length variance"). Each
+tendril keeps its curve, but the part that shows outside the body is scaled
+toward the point where it leaves the body (SHRINK, EVEN below), so the whole
+silhouette pulls into a tighter radius and the long ones lose the most.
+
+EYES ON THE BODY (same day): the nine eyes no longer ride the tendril tips.
+They are scattered over the light tones in the bottom-right quadrant of the
+body (EYE_* below). Every tendril still ends in a bulb.
 """
 import pickle, re, colorsys
 from shapely.geometry import Polygon, Point
@@ -20,10 +30,18 @@ from clean import largest, nohole, H
 from PIL import Image, ImageDraw
 
 OX, OY = 67.557, 991.255                 # FRIEND09_OFFSET: the trace's shifted space
-RIGHT_EYE = (703.5, 389.6)               # the one eye Kimia kept where her trace had it (viewBox space)
-# Every tendril ends in a bulb, and every bulb carries an eye (Kimia, 2026-11-16).
+# Every tendril ends in a bulb (Kimia, 2026-11-16).
 # tip kind -> (bulb radius, eye radius); the two short drips take a smaller pair.
 TIPS = {'eye': (10.5, 7.7), 'small': (8.5, 5.8)}
+# TENDRIL LENGTH. Only the part outside the body counts. A tendril's new length
+# is SHRINK x the average, plus EVEN x how far it was from the average: SHRINK
+# pulls them all in, EVEN (0 = all the same, 1 = as different as before) evens
+# them out. None is ever made longer. The two short drips are left alone.
+SHRINK, EVEN = 0.55, 0.3
+# THE EYES: scattered in the bottom-right quadrant of the body, on tones at
+# least as light as EYE_TONE (7 = lightest; 3 is the lightest tone that quadrant has), no closer than EYE_GAP to each
+# other and EYE_MARGIN inside that light area. EYE_SEED picks the scattering.
+EYE_TONE, EYE_GAP, EYE_MARGIN, EYE_SEED = 3, 26, 9, 4
 P = dict(strip=5.5, smooth=3.0, speck=30)
 
 
@@ -49,7 +67,8 @@ TENDRILS = dict(
     drip=([(268, 380), (270, 396), (268, 411)], [(0, 6), (1, 4.5)], 'small', False),
     left_drip=([(163, 322), (165, 336), (165, 349)], [(0, 6), (1, 4.5)], 'small', False),
 )
-# swellings partway along a tendril, as on the sheet (sheet x, y, radius)
+# swellings partway along a tendril, as on the sheet (sheet x, y, radius); NODE_ON says which tendril each rides
+NODE_ON = ['top_left', 'centre', 'lower_right', 'ring']
 NODES = [(169, 149, 6.5), (275, 444, 8.5), (522, 372, 6), (439, 405.5, 7)]   # the last is where the left eye used to sit
 # the underbelly the sheet shows where the trace had craters: a soft closed
 # curve through these points (viewBox space), gently lobed like the ruffles
@@ -80,36 +99,79 @@ def width_at(profile, t):
     return profile[-1][1]
 
 
-def tendril(pts, profile):
+def length(c):
+    return sum(((x1 - x0) ** 2 + (y1 - y0) ** 2) ** 0.5 for (x0, y0), (x1, y1) in zip(c, c[1:]))
+
+
+def curves(core):
+    """Every tendril's path, shortened: {name: points}, plus the swellings moved with them."""
+    raw = {n: spline([sheet(*q) for q in t[0]]) for n, t in TENDRILS.items()}
+    # where each one leaves the body: the last sample still inside it
+    leave = {}
+    for n, c in raw.items():
+        inside = [i for i, q in enumerate(c) if core.contains(Point(q))]
+        leave[n] = inside[-1] if inside else 0
+    main = [n for n, t in TENDRILS.items() if t[2] == 'eye']
+    shown = {n: length(raw[n][leave[n]:]) for n in main}
+    shown = {n: L for n, L in shown.items() if L > 1}     # one whose tip already rests on the body has nothing to shorten
+    mean = sum(shown.values()) / len(shown)
+    scale = {n: min(1, (SHRINK * mean + EVEN * (L - mean)) / L) for n, L in shown.items()}
+
+    def pull(n, q):
+        """Move a point of tendril n toward where the tendril leaves the body."""
+        if n not in scale or core.contains(Point(q)): return q
+        ex, ey = raw[n][leave[n]]
+        return (ex + scale[n] * (q[0] - ex), ey + scale[n] * (q[1] - ey))
+    out = {}
+    for n, c in raw.items():
+        parent = 'top_left' if n == 'top_left_branch' else n      # the branch rides its parent
+        out[n] = c[:leave[n]] + [pull(parent, q) for q in c[leave[n]:]] if parent == n else [pull(parent, q) for q in c]
+    nodes = [(*pull(n, sheet(x, y)), r) for (x, y, r), n in zip(NODES, NODE_ON)]
+    print('tendril lengths outside the body:', {n: (round(L), round(L * scale[n])) for n, L in shown.items()})
+    return out, nodes
+
+
+def tendril(c, profile):
     """One flowing limb: a smooth curve whose width swells and tapers gently."""
-    c = spline([sheet(*q) for q in pts])
     n = len(c) - 1
     return unary_union([Point(q).buffer(width_at(profile, i / n) / 2, 12) for i, q in enumerate(c)])
 
 
-def eyes():
-    """Where each eye sits: the centre of every tendril's tip bulb -> [(x, y, eye radius, bulb radius)]."""
-    out = []
-    for name, (pts, profile, tip, over) in TENDRILS.items():
-        if tip is None: continue
-        x, y = RIGHT_EYE if name == 'right' else sheet(*pts[-1])
-        out.append((x, y, TIPS[tip][1], TIPS[tip][0]))
-    return out
-
-
-def limbs(p=P):
-    """-> (every limb with its bulbs, the bulbs alone, the limbs whose stems show in front of the body)."""
-    lines, front = [], []
-    for name, (pts, profile, tip, over) in TENDRILS.items():
-        t = tendril(pts, profile); lines.append(t)
-        if over: front.append(t)
-    bulbs = [Point(x, y).buffer(rb, 24) for x, y, _, rb in eyes()]
-    bulbs += [Point(sheet(x, y)).buffer(r, 24) for x, y, r in NODES]
+def limbs(core, p=P):
+    """-> (every limb with its bulbs, the bulbs alone)."""
+    paths, nodes = curves(core)
+    lines = [tendril(paths[name], profile) for name, (pts, profile, tip, over) in TENDRILS.items()]
+    bulbs = [Point(paths[name][-1]).buffer(TIPS[tip][0], 24) for name, (pts, profile, tip, over) in TENDRILS.items() if tip]
+    bulbs += [Point(x, y).buffer(r, 24) for x, y, r in nodes]
     bulbs = unary_union(bulbs)
     # a soft neck where each bulb meets its stem, instead of a hard corner
     both = unary_union(lines + [bulbs])
     both = both.buffer(2).buffer(-4).buffer(2).union(both)
-    return both, bulbs, unary_union(front)
+    return both, bulbs
+
+
+def body_eyes(light, core):
+    """Nine eyes scattered over the light tones of the body's bottom-right quadrant."""
+    import random
+    from shapely.geometry import box
+    x0, y0, x1, y1 = core.bounds
+    quad = box((x0 + x1) / 2, (y0 + y1) / 2, x1, y1)
+    area = light.intersection(quad).buffer(-EYE_MARGIN)
+    rnd = random.Random(EYE_SEED)
+    ax0, ay0, ax1, ay1 = area.bounds
+    sizes = [TIPS[t[2]][1] for t in TENDRILS.values() if t[2]]
+    placed = []
+    for r in sorted(sizes, reverse=True):
+        best, far = None, -1
+        for _ in range(400):                      # of many random spots, keep the one furthest from the others
+            q = Point(rnd.uniform(ax0, ax1), rnd.uniform(ay0, ay1))
+            if not area.contains(q): continue
+            d = min([q.distance(Point(e[0], e[1])) for e in placed] + [2 * EYE_GAP])
+            d += rnd.uniform(0, EYE_GAP)          # a little chance, so it is a scattering, not a grid
+            if d > far: best, far = q, d
+        if best is None: raise SystemExit('no room for the eyes: lower EYE_TONE, EYE_MARGIN or EYE_GAP')
+        placed.append((best.x, best.y, r))
+    return [dict(cx=round(x, 1), cy=round(y, 1), r=r) for x, y, r in placed]
 
 
 def move(g):
@@ -142,7 +204,7 @@ def clean_chitu(p=P):
     core = nohole(largest(unary_union([core, belly])))
     core = core.buffer(p['smooth']).buffer(-2 * p['smooth']).buffer(p['smooth'])   # round off nicks and whiskers
     core = nohole(largest(core))
-    lim, bulbs, front = limbs(p)
+    lim, bulbs = limbs(core, p)
     s = unary_union([core, lim])
     s = s.buffer(2).buffer(-2)                                           # soften the crotch where a limb leaves the body
     s = nohole(largest(s)).simplify(0.15)
@@ -187,8 +249,12 @@ def clean_chitu(p=P):
         out.append(unary_union(keep).simplify(0.2) if keep else Polygon())
     # shaved-off limbs the new ones do not cover would be a removal: report any
     lost = body.difference(s.buffer(4))
-    return dict(sil=s, bands=out, lost=round(lost.area), order=order,
-                eyes=[dict(cx=round(x, 1), cy=round(y, 1), r=r) for x, y, r, _ in eyes()])
+    from shapely.geometry import box
+    x0, y0, x1, y1 = core.bounds
+    quad = box((x0 + x1) / 2, (y0 + y1) / 2, x1, y1)
+    print('bottom-right quadrant, area of each tone (1 dark .. 7 light):', {L: round(new[L].intersection(quad).area) for L in new})
+    light = unary_union([new[L] for L in range(EYE_TONE, 8)]).intersection(core)
+    return dict(sil=s, bands=out, lost=round(lost.area), order=order, eyes=body_eyes(light, core))
 
 
 def order_of(num):
@@ -225,6 +291,8 @@ def preview(r, fn, S=2.0, pad=12):
     for g, c in shades(r): fill(g, tint(c))
     bands, order = toned(r)
     for b, g in zip(bands, order): fill(b, tint(g))
+    for e in r['eyes']:                          # the eyes, roughly as the app draws them
+        fill(Point(e['cx'], e['cy']).buffer(e['r'] * 0.55), (250, 250, 235))
     img.save(fn)
 
 

@@ -486,10 +486,9 @@ so it holds for any species that turns up gold, in the game as well as
 on the workbench.
 
 **The chitu has nine eyes (Kimia, 2026-11-16; on the workbench's
-cleaned chitu, not yet the game's).** One sits on the bulb at the end
-of every tendril, and one on the point at the top right of its body.
-The right-hand eye is where her trace had it; the left-hand one moved
-from the base of its tendril to the tip.
+cleaned chitu, not yet the game's).** They sit on its body, scattered
+over the light tone in its bottom-right quadrant. (Earlier the same
+day they rode the bulbs at the tendril tips; she moved them.)
 
 **Production workflow (2026-07-25).** The 10 **category archetypes are
 hand-drawn by Kimia** (raster drawing → Inkscape trace → SVG), keeping
@@ -852,7 +851,20 @@ mound, where its three eyes floated, filled in the darkest shade (the
 krupengk's and zala's repair); the long tendril that had come away
 joined back on by a strand as thin as itself. About twenty small
 dashes too far from the body to join without twig-like forks are left
-out. None of this is approved yet.
+out. She called it "close" and asked for the change below.
+
+**Tendrils: shorter, and more alike in length** (Kimia, 2026-11-16, for
+the liwi bi-jiji and the chitu): "keep the tendril shapes but make them
+shorter, so we pull the whole silhouette into a smaller and tighter
+radius. there is currently too much length variance on the tendrils."
+So a friend's tendrils keep their curves but are pulled in toward the
+body, the long ones most, until they end at a similar reach. Done on
+both, not yet judged.
+
+**The chitu's eyes sit on its body** (same day), no longer on its
+tendril tips: all nine "arranged in a scattering against the light
+shade layer on the bottom right quadrant of the body". Every tendril
+still ends in a bulb. This replaces "one eye on every tendril tip".
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in

@@ -253,14 +253,19 @@ function PairFriend({ speciesKey, colour, cleaned, idPrefix }) {
   const ramp = (cleaned && clean.greys) || greys.ramp
   const palette = paletteForTone(ramp, colour, greys.base)
   const prefix = `${idPrefix}${speciesKey}-${cleaned ? 'clean' : 'raw'}-`
-  const box = `0 0 ${viewBox.w} ${viewBox.h}`
+  // A cleaned drawing whose tendrils were shortened says which part of its
+  // canvas it still fills. Cropping to that at the SAME scale keeps the body
+  // its canonical size and leaves no empty margin round it.
+  const crop = (cleaned && clean.box) || [0, 0, viewBox.w, viewBox.h]
+  const box = crop.join(' ')
+  const scale = friendSize(speciesKey, PAIR_BASE) / viewBox.w
   const shades = paletteForTone(['#494949', '#606060'], colour).ramp
   return (
     <span
       className="friend-art"
       style={{
-        width: `${friendSize(speciesKey, PAIR_BASE)}px`,
-        aspectRatio: `${viewBox.w} / ${viewBox.h}`,
+        width: `${crop[2] * scale}px`,
+        aspectRatio: `${crop[2]} / ${crop[3]}`,
       }}
       aria-hidden="true"
     >
@@ -299,8 +304,8 @@ function PairFriend({ speciesKey, colour, cleaned, idPrefix }) {
         <defs>
           <EyeDefs prefix={prefix} tone={eyeToneFor(colour)} />
         </defs>
-        {/* a cleaned drawing may carry its own eyes (the chitu: one on
-            every tendril tip); otherwise the game's own eyes are used */}
+        {/* a cleaned drawing may carry its own eyes (the chitu: nine,
+            scattered on its body); otherwise the game's own eyes are used */}
         {cleaned && clean.eyes ? (
           <g>
             {clean.eyes.map((eye, i) => (

@@ -16,6 +16,12 @@ seven tone bands lie side by side, so they are STACKED before cleaning
      within NEAR, i.e. a plain break in a tendril. Joining far dashes made
      twig-like forks, so those are left out (the script prints which).
 
+  4. SHORTER, MORE EVEN TENDRILS (Kimia, 2026-11-16: "keep the tendril
+     shapes but make them shorter ... too much length variance"). The whole
+     drawing is pulled in toward the mound (tighten, below): the mound
+     itself does not move, and the further out a point lies the more it is
+     pulled, so long tendrils lose the most and all end at a similar reach.
+
     python liwi.py          # writes liwi_before.png and liwi_after.png
 """
 from shapely.geometry import Polygon, LineString
@@ -40,6 +46,14 @@ CAVITY = Polygon([(262, 62), (292, 40), (322, 48), (350, 90), (368, 135),
                   (366, 186), (345, 200), (318, 192), (292, 203), (270, 194),
                   (256, 184), (255, 130)])
 CAVITY_ROUND = 6
+# TENDRIL REACH. The mound is roughly an oval about MOUND_AT, MOUND_SIZE wide
+# and tall (as half-widths). "1" below means the edge of that oval. Everything
+# inside HOLD stays put. Beyond it, how far a point reaches is scaled by
+# PULL and bent by EVEN (1 = all tendrils shortened alike; lower = the long
+# ones shortened more, so they end up more alike). A saturating squeeze was
+# tried first and flattened the tips sideways; this keeps their curves.
+MOUND_AT, MOUND_SIZE = (300, 108), (200, 105)
+HOLD, PULL, EVEN = 0.9, 0.56, 0.72
 
 
 def raw():
@@ -83,6 +97,22 @@ def one_piece(body):
     return sil, cavity
 
 
+def tighten(g):
+    """Pull the tendrils in toward the mound, the far ends most of all."""
+    import math
+    from shapely.ops import transform
+    (cx, cy), (a, b) = MOUND_AT, MOUND_SIZE
+
+    def pull(x, y, z=None):
+        dx, dy = (x - cx) / a, (y - cy) / b
+        rho = math.hypot(dx, dy)
+        if rho <= HOLD: return (x, y)
+        new = HOLD + PULL * (rho - HOLD) ** EVEN
+        return (cx + dx / rho * new * a, cy + dy / rho * new * b)
+    if g.is_empty: return g
+    return transform(pull, g.segmentize(1.5)).buffer(0).simplify(0.12)
+
+
 def clean_liwi(speck=SPECK, smooth=SMOOTH):
     base, bands = raw()
     body = unary_union([base] + bands).buffer(SEAL).buffer(-SEAL)
@@ -91,7 +121,7 @@ def clean_liwi(speck=SPECK, smooth=SMOOTH):
     for k in range(len(bands)):
         stacked = unary_union(bands[k:]).buffer(SEAL).buffer(-SEAL)   # tone k or lighter
         layers.append(despeckle(stacked.intersection(sil), speck, smooth))
-    return dict(sil=sil, layers=layers, shades=[], base=base, bands=bands)
+    return dict(sil=tighten(sil), layers=[tighten(g) for g in layers], shades=[], base=base, bands=bands)
 
 
 def preview(sil, layers, name, k=2.2, shade=()):

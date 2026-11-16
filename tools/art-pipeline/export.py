@@ -13,7 +13,12 @@ for num,key in (('03','krupengk'),('04','zala')):
 import chitu
 r=chitu.clean_chitu()
 bands,_=chitu.toned(r)
-out['chitu']=dict(silhouette=path(r['sil']), shades=[path(g) for g,_ in chitu.shades(r)], layers=[path(b) for b in bands], eyes=r['eyes'])
+# Its tendrils are shorter now, so it also carries the `box` it fills: the
+# shelf crops to that, at the same scale, so no empty margin is left round it.
+def box_of(sil, pad=16):
+    x0,y0,x1,y1=sil.bounds
+    return [round(x0-pad,1), round(y0-pad,1), round(x1-x0+2*pad,1), round(y1-y0+2*pad,1)]
+out['chitu']=dict(silhouette=path(r['sil']), shades=[path(g) for g,_ in chitu.shades(r)], layers=[path(b) for b in bands], eyes=r['eyes'], box=box_of(r['sil']))
 print('chitu bounds', [round(v,1) for v in r['sil'].bounds])
 # THE HAMDI BULO (2026-11-16, hamdi.py): specks removed and its loose legs
 # joined on, so it is ONE silhouette. Its bands sat side by side, so they are
@@ -26,7 +31,7 @@ print('hamdi-bulo', [len(path(b)) for b in r['layers']])
 # eyes filled, its loose tendril joined on. Stacked like the hamdi bulo.
 import liwi
 r=liwi.clean_liwi()
-out['liwi-bi-jiji']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=liwi.GREYS)
+out['liwi-bi-jiji']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=liwi.GREYS, box=box_of(r['sil']))
 print('liwi-bi-jiji', [len(path(b)) for b in r['layers']])
 head='''/*
  * cleanedFriends.js — the krupengk, zala, chitu, hamdi bulo and liwi bi-jiji, cleaned
@@ -53,10 +58,15 @@ head='''/*
  * is rebuilt from Kimia's character sheet: the craters are filled by the
  * underbelly the sheet shows there, and every tendril is redrawn as one
  * smooth tapering curve along the path it takes on the sheet, each ending in
- * a bulb. The two eye bulbs sit exactly on its eyes. Nothing is removed.
+ * a bulb. Nothing is removed.
  * Its tones darken toward the outline, like the other two, and it carries
  * no light stripe where a tendril crosses the body: only a faint vein.
- * It also carries its own `eyes`: one on every tendril tip (nine in all).
+ * It also carries its own `eyes`: nine, scattered over the light tones in
+ * the bottom-right quadrant of its body (2026-11-16; they used to ride the
+ * tendril tips). Its tendrils are shortened and evened out the same day.
+ *
+ * A drawing whose tendrils were shortened carries a `box` [x, y, w, h]: the
+ * part of the original canvas it still fills, for the shelf to crop to.
  *
  * THE HAMDI BULO is the fourth (2026-11-16). Its trace was the grainiest of
  * the ten. Its seven bands lay side by side, so they are stacked here (each
@@ -71,7 +81,8 @@ head='''/*
  * THE LIWI BI-JIJI is the fifth (2026-11-16), stacked the same way and
  * carrying its own `greys`. Its specks are gone; the tall dark cavity in
  * the middle of its mound, where its three eyes floated, is filled in the
- * darkest shade; the long tendril that had come away is joined back on.
+ * darkest shade; the long tendril that had come away is joined back on;
+ * its tendrils are pulled in shorter and more even.
  * A few small dashes too far from the body to join are left out.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.

@@ -59,6 +59,10 @@ What "cleaning" means, and Kimia's rules for it:
   sheet, ending in a bulb; the round bites in its underside are filled
   by the underbelly the sheet shows. To move a tendril, edit its points
   in `TENDRILS`, run `python chitu.py` and look at `chitu_fixed.png`.
+  The part of each tendril outside the body is then shortened and
+  evened out (`SHRINK`, `EVEN`), and the nine eyes are scattered on
+  the body (`EYE_TONE`, `EYE_GAP`, `EYE_MARGIN`; change `EYE_SEED` for
+  a different scattering).
 
 - **Side-by-side bands are stacked first** (`hamdi.py`). The hamdi
   bulo's seven bands do not overlap, so deleting a fleck would leave a
@@ -70,6 +74,13 @@ What "cleaning" means, and Kimia's rules for it:
   darkest shade (`CREVICES`), and the flecks off its right side are
   left out (`RIGHT_FLECKS`). The dials are at the top of the script; `python hamdi.py` writes
   `hamdi_before.png` and `hamdi_after.png` to compare.
+
+- **The liwi bi-jiji** (`liwi.py`) is stacked the same way. Its
+  cavity is filled inside the `CAVITY` arch, and a loose piece is
+  joined by a thin strand only if it is a real tendril within `REACH`
+  or a small dash within `NEAR`. Its tendrils are then pulled in
+  toward the mound (`HOLD`, `PULL`, `EVEN`). `python liwi.py` writes
+  `liwi_before.png` and `liwi_after.png`.
 
 Each friend needs its own look and its own dials: which of the three
 problems it has is decided by eye, on the workbench, with Kimia. Five
