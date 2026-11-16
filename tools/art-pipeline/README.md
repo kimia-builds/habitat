@@ -63,8 +63,10 @@ What "cleaning" means, and Kimia's rules for it:
 - **Side-by-side bands are stacked first** (`hamdi.py`). The hamdi
   bulo's seven bands do not overlap, so deleting a fleck would leave a
   dark hole. Each layer is rebuilt as "this tone or lighter", then
-  cleaned of specks like the others. Its dials are `SPECK` and `SMOOTH`
-  at the top of the script; `python hamdi.py` writes
+  cleaned of specks like the others. Its loose pieces are then joined
+  into one silhouette: gaps beside a loose piece are filled (`CLOSE`),
+  and a piece still loose gets a thin neck. Its dials are `SPECK`,
+  `SMOOTH` and `CLOSE` at the top of the script; `python hamdi.py` writes
   `hamdi_before.png` and `hamdi_after.png` to compare.
 
 Each friend needs its own look and its own dials: which of the three

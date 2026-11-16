@@ -829,11 +829,15 @@ called good enough for now (2026-11-16), after its outline, shading
 and eyes were redone. The originals in `friendNN.jsx` are untouched.
 
 **The hamdi bulo is the fourth, waiting to be judged** (2026-11-16). It
-was the grainiest trace of the ten, so it was chosen next. Only its
-specks and pinholes are removed so far; it stands on the shelf beside
-its original. Its outline is untouched, and the small pieces floating
-loose under its body are all still there: whether they are reattached
-is hers to say.
+was the grainiest trace of the ten, so it was chosen next; it stands on
+the shelf beside its original. After the first speck pass she asked for
+more ("Remove more specks") and for one outline: "remove the gaps. i
+don't want loose pieces. i want one coherent silhouette." So its specks
+are removed more strongly, and every piece that floated loose (mostly
+the little legs under its body) is joined on: the gap beside it is
+filled with the body's darkest tone, or it gets a thin neck like the
+hamdi bulo's own fine tendrils. Nothing is removed, and the open loops
+of its tendrils stay open.
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in

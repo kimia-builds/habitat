@@ -12,9 +12,18 @@ base). Instead:
      than SPECK, and smooth the edge very slightly. A dropped fleck now
      shows the tone under it; a filled pinhole takes the tone around it.
 
-The outline is her trace's own: the sealed base from friend10.jsx. Only
-dust smaller than SPECK is dropped from it. Loose LIMBS are all kept, and
-nothing is reattached yet (that is a separate repair, to be judged by eye).
+ONE SILHOUETTE (Kimia, 2026-11-16: "remove the gaps. i don't want loose
+pieces. i want one coherent silhouette"). The trace had about forty pieces
+floating loose, most of them the little legs under the body. Nothing is
+removed; every piece is joined on:
+
+  3. The gaps AROUND THE LOOSE PIECES are filled: wherever a loose piece
+     sits within 2 x CLOSE of the body (or of another piece), the space
+     between them becomes body. Gaps elsewhere are left alone, so the open
+     loops of the tendrils stay open.
+  4. A piece still loose after that gets a thin NECK to the nearest point
+     of the body, like the fine tendrils the hamdi bulo already has.
+  5. The filled gaps take the body's own darkest tone, not the outline's.
 
     python hamdi.py          # writes hamdi_before.png and hamdi_after.png
 """
@@ -30,8 +39,11 @@ OFFSET = (-63.71, -95.608)   # FRIEND10_OFFSET: trace space -> viewBox space
 VB = (687.651, 832.012)
 # The dials. SPECK is an area in the drawing's own units (the whole drawing
 # is about 688 x 832): anything smaller is grain. SMOOTH rounds the edges.
-SPECK = 60
-SMOOTH = 1.0
+SPECK = 160
+SMOOTH = 1.6
+DUST = 4                     # a loose crumb smaller than this is trace dust
+CLOSE = 10                   # gaps up to twice this, beside a loose piece, are filled
+BIGHOLE = 3000               # a hole larger than this would be a filled-in loop
 SEAL = 0.6                   # closes the hairline gaps between adjacent bands
 # Darkest first: the paint order of the stacked layers.
 GREYS = ['#494949', '#606060', '#767676', '#8c8c8c', '#a3a3a3', '#b9b9b9', '#d0d0d0']
@@ -57,17 +69,48 @@ def despeckle(g, speck=SPECK, smooth=SMOOTH):
     return unary_union(keep).simplify(0.15) if keep else Polygon()
 
 
+def one_piece(body):
+    """Join every loose piece to the body. Returns (silhouette, filled gaps)."""
+    from shapely.geometry import LineString
+    from shapely.ops import nearest_points
+    parts = sorted([p for p in polys(body) if p.area >= DUST], key=lambda p: -p.area)
+    body = unary_union(parts)
+    loose = unary_union(parts[1:]).buffer(0.5)
+    gaps = body.buffer(CLOSE).buffer(-CLOSE).difference(body)
+    fill = [g for g in polys(gaps) if g.intersects(loose)]
+    sil = unary_union([body] + fill).buffer(0.3).buffer(-0.3)
+    ps = sorted(polys(sil), key=lambda p: -p.area)
+    main, necks = ps[0], []
+    for p in ps[1:]:
+        a, b = nearest_points(main, p)
+        neck = LineString([a, b]).buffer(max(1.6, min(3.5, p.area ** 0.5 / 4)))
+        necks.append(neck)
+        main = unary_union([main, p, neck])
+    main = max(polys(main), key=lambda p: p.area)
+    big = [r for r in main.interiors if Polygon(r).area >= BIGHOLE]
+    assert not big, 'joining the pieces closed a loop: lower CLOSE'
+    sil = Polygon(main.exterior)
+    sil = sil.buffer(-SMOOTH / 2).buffer(SMOOTH).buffer(-SMOOTH / 2)
+    sil = Polygon(max(polys(sil), key=lambda p: p.area).exterior).simplify(0.15)
+    return sil, sil.difference(body.buffer(0.3))
+
+
+def shades(filled, sil):
+    """One soft band over the filled gaps: the body's own darkest tone, tucked
+    a little way under the traced layers so no dark seam shows around it."""
+    g = filled.buffer(2.5).intersection(sil.buffer(-1.5))
+    return [unary_union([q for q in polys(g) if q.area >= 30]).simplify(0.15)]
+
+
 def clean_hamdi(speck=SPECK, smooth=SMOOTH):
     base, bands = raw()
-    body = unary_union([base] + bands)
-    sil = body.buffer(SEAL).buffer(-SEAL)
-    sil = unary_union([Polygon(q.exterior, [r for r in q.interiors if Polygon(r).area >= speck])
-                       for q in polys(sil) if q.area >= speck]).simplify(0.15)
+    body = unary_union([base] + bands).buffer(SEAL).buffer(-SEAL)
+    sil, filled = one_piece(body)
     layers = []
     for k in range(len(bands)):
         stacked = unary_union(bands[k:]).buffer(SEAL).buffer(-SEAL)   # tone k or lighter
         layers.append(despeckle(stacked.intersection(sil), speck, smooth))
-    return dict(sil=sil, layers=layers, base=base, bands=bands)
+    return dict(sil=sil, layers=layers, shades=shades(filled, sil), base=base, bands=bands)
 
 
 def _paint(im, g, col, k):
@@ -81,10 +124,12 @@ def _paint(im, g, col, k):
         im.paste(col, (0, 0), m)
 
 
-def preview(sil, layers, name, k=1.6):
+def preview(sil, layers, name, k=1.6, shade=()):
     from PIL import Image
     im = Image.new('RGB', (int(VB[0] * k), int(VB[1] * k)), '#080910')
     _paint(im, sil, '#333333', k)
+    for g, c in zip(shade, ('#494949', '#606060')):
+        _paint(im, g, c, k)
     for g, c in zip(layers, GREYS):
         _paint(im, g, c, k)
     im.save(name)
@@ -97,6 +142,6 @@ def count(layers):
 if __name__ == '__main__':
     r = clean_hamdi()
     preview(r['base'], r['bands'], 'hamdi_before.png')
-    preview(r['sil'], r['layers'], 'hamdi_after.png')
+    preview(r['sil'], r['layers'], 'hamdi_after.png', shade=r['shades'])
     print('pieces and holes: before', count(r['bands']), 'after', count(r['layers']))
     print('outline parts: before', len(polys(r['base'])), 'after', len(polys(r['sil'])))

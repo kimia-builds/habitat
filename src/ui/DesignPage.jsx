@@ -212,7 +212,8 @@ function CuriosityShelf() {
  * inside the drawing, without the stylesheet's extra halo). The chitu stands
  * beside them for scale, with its loose tendrils joined back on. What is
  * still waiting to be judged on this shelf is the hamdi bulo, which stands
- * there twice: as the game draws it, then with its specks removed.
+ * there twice: as the game draws it, then with its specks removed and its
+ * loose pieces joined into one silhouette.
  *
  * Everything stands at its canonical size on one base (design-bible §9c: the
  * canon holds on the workbench too). Nothing here is in the game yet.
