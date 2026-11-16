@@ -1639,6 +1639,18 @@ place you could summon them at will, which is exactly why it must not
 spend them. Idle presence only; any life they show here should be far
 below the signature register.
 
+**Party mode goes dark (decided 2026-11-15, not yet built — plan T5.3p
+p10).** The friends were struggling to show up against colourful flora,
+so in party mode the stage dims and the guests are lit: every flora
+keeps its shape, shading and place but is drawn in dark charcoal greys
+(its seven tones squeezed into 6%–22% lightness, `#0f0f0f` to `#383838`,
+no glow), the nebula sky is drained of colour and darkened to about 30%
+brightness, and the friends glow their own colour rather than the black
+of 2026-11-12. Quiet mode is unchanged. Kimia chose this by eye over a
+step-lighter version (10%–34%, sky 45%). **Open:** the curiosities —
+bought on purpose with hard-earned fungi, so less "background" than the
+flora; her first thought is neon shades in party mode.
+
 Greyed out until a friend exists. A dead control is honest here: it
 says _this place will have people in it one day_, which is exactly the
 promise the literacy stream is making. It should read as **not yet**,

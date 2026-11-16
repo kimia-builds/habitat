@@ -359,6 +359,13 @@ tracker. Everything after this is delight, informed by real use.
               friends are 300 KB and two flora 110 KB of source. Before
               all 26 ship, simplify the shapes or load them lazily, and
               check the built app's size.
+        - [ ] **p10 Party mode goes dark** _(decided 2026-11-15,
+              design-notes §12e)_ — after p6, since it is the painted
+              flora that turn charcoal. In party mode only: flora tones
+              squeezed into 6%–22% lightness with no glow, the sky in
+              greyscale at about 30% brightness, friends glowing their
+              own colour. Show her the real Abode before calling it
+              done. Then ask about the curiosities (neon in party mode?).
 - [ ] **T5.4 The gameplay-page canvas** _(opened 2026-08-21, Kimia's
       call)_ — the Abode, the Map, the Library and the Market are the four
       places you go to LOOK at what you have, and they are now one fixed

@@ -835,6 +835,13 @@ quiet mode and party mode.
   party is stored. **No two friends ever overlap** in the formation, and
   in the Abode every friend **glows black** instead of its own colour
   (the glow is unchanged on every other screen).
+- **Decided 2026-11-15, not yet built (plan T5.3p p10): party mode goes
+  dark.** While party mode is on, every flora is drawn in dark charcoal
+  greys — same shape, shading and place — the sky is drained to
+  near-black, and the friends glow their own colour instead of black, so
+  the friends are what the eye finds. Quiet mode looks as it always did;
+  nothing is moved and nothing is stored. What the curiosities do in
+  party mode is still open.
 - Party mode is **greyed out and inactive until at least one friend has
   been found**. (Decided as "ship visible-but-dead in T4.5, alive in
   T4.4" — but T4.4 landed first, so the toggle shipped whole in T4.4:

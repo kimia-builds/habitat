@@ -20,6 +20,17 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   counts, day fulfilled at N; extras kept).
 - 2026-07-12: habit list manually re-orderable (persists) and
   filterable by symbols (temporary, resets each visit).
+- 2026-11-15: Party mode goes dark (Kimia; judged by eye on a standalone
+  comparison picture, not yet built — plan T5.3p p10). Her problem: the
+  friends struggle to show up against colourful flora. Her answer: in
+  party mode only, (1) every flora turns **dark charcoal greyscale** —
+  same shape, same shading, same place — its seven tones squeezed into
+  6%–22% lightness (`#0f0f0f` to `#383838`) with no glow; (2) the Abode's
+  nebula sky is drained of colour and darkened to about 30% brightness;
+  (3) the friends glow their **own colour**, since a black glow cannot
+  show on a black sky. Quiet mode is untouched. A step lighter (10%–34%,
+  sky 45%) was shown beside it and passed over. Open: what the
+  curiosities do in party mode (her first thought: neon shades).
 - 2026-11-15: One recipe for friends and flora (Kimia; design-bible §9d,
   plan T5.3p; decided on the workbench, not yet built into the game).
   (1) Flora take the friends' way of painting: a silhouette, a grey
