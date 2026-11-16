@@ -833,11 +833,14 @@ was the grainiest trace of the ten, so it was chosen next; it stands on
 the shelf beside its original. After the first speck pass she asked for
 more ("Remove more specks") and for one outline: "remove the gaps. i
 don't want loose pieces. i want one coherent silhouette." So its specks
-are removed more strongly, and every piece that floated loose (mostly
-the little legs under its body) is joined on: the gap beside it is
-filled with the body's darkest tone, or it gets a thin neck like the
-hamdi bulo's own fine tendrils. Nothing is removed, and the open loops
-of its tendrils stay open.
+are removed more strongly, and the pieces that floated loose (mostly
+the little legs under its body) are joined on: the gap beside each is
+filled with the body's darkest tone. Thin necks joining the far flecks
+were tried and she had them removed, "leaving the RHS silhouette as
+the rounded inward curves": those few flecks are left out. The three
+bottom tendrils on its left "look correct", so the broken legs at the
+bottom right are closed along their length to match them. The open
+loops of its tendrils stay open.
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in

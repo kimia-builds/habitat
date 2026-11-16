@@ -14,15 +14,18 @@ base). Instead:
 
 ONE SILHOUETTE (Kimia, 2026-11-16: "remove the gaps. i don't want loose
 pieces. i want one coherent silhouette"). The trace had about forty pieces
-floating loose, most of them the little legs under the body. Nothing is
-removed; every piece is joined on:
+floating loose, most of them the little legs under the body. They are
+joined on:
 
   3. The gaps AROUND THE LOOSE PIECES are filled: wherever a loose piece
      sits within 2 x CLOSE of the body (or of another piece), the space
      between them becomes body. Gaps elsewhere are left alone, so the open
      loops of the tendrils stay open.
-  4. A piece still loose after that gets a thin NECK to the nearest point
-     of the body, like the fine tendrils the hamdi bulo already has.
+  4. The broken LEGS at the bottom right are closed along their length
+     (LEGS, LEG_CLOSE), so they are solid like the three on the left that
+     she called correct. Thin necks were tried for the far flecks and she
+     had them removed: the flecks off the right-hand side (RIGHT_FLECKS)
+     and the few crumbs still loose after joining are left out.
   5. The filled gaps take the body's own darkest tone, not the outline's.
 
     python hamdi.py          # writes hamdi_before.png and hamdi_after.png
@@ -44,6 +47,11 @@ SMOOTH = 1.6
 DUST = 4                     # a loose crumb smaller than this is trace dust
 CLOSE = 10                   # gaps up to twice this, beside a loose piece, are filled
 BIGHOLE = 3000               # a hole larger than this would be a filled-in loop
+# Areas of the drawing, in its own units (x0, y0, x1, y1).
+from shapely.geometry import box as _box
+RIGHT_FLECKS = _box(600, 150, 690, 420)   # loose flecks here are left out
+LEGS = _box(205, 560, 690, 832)           # the broken legs, bottom right
+LEG_CLOSE = (22, 8)                       # fill gaps this far (up, across)
 SEAL = 0.6                   # closes the hairline gaps between adjacent bands
 # Darkest first: the paint order of the stacked layers.
 GREYS = ['#494949', '#606060', '#767676', '#8c8c8c', '#a3a3a3', '#b9b9b9', '#d0d0d0']
@@ -69,25 +77,37 @@ def despeckle(g, speck=SPECK, smooth=SMOOTH):
     return unary_union(keep).simplify(0.15) if keep else Polygon()
 
 
+def tall_close(g, up, across):
+    """Fill gaps up to 2 x `up` tall but only 2 x `across` wide: joins a broken
+    leg along its length without webbing it to the leg beside it."""
+    f = up / across
+    g = affinity.scale(g, xfact=f, yfact=1, origin=(0, 0))
+    g = g.buffer(up).buffer(-up)
+    return affinity.scale(g, xfact=1 / f, yfact=1, origin=(0, 0))
+
+
 def one_piece(body):
-    """Join every loose piece to the body. Returns (silhouette, filled gaps)."""
-    from shapely.geometry import LineString
-    from shapely.ops import nearest_points
+    """Join the loose pieces to the body. Returns (silhouette, filled gaps)."""
+    from shapely.geometry import box
     parts = sorted([p for p in polys(body) if p.area >= DUST], key=lambda p: -p.area)
+    # the flecks off the right-hand side go (Kimia, 2026-11-16), so that side
+    # keeps its own rounded inward curves
+    parts = [parts[0]] + [p for p in parts[1:] if not RIGHT_FLECKS.contains(p.centroid)]
     body = unary_union(parts)
     loose = unary_union(parts[1:]).buffer(0.5)
     gaps = body.buffer(CLOSE).buffer(-CLOSE).difference(body)
     fill = [g for g in polys(gaps) if g.intersects(loose)]
-    sil = unary_union([body] + fill).buffer(0.3).buffer(-0.3)
+    # the broken legs at the bottom right are closed along their length,
+    # so they read as solid legs like the three on the left
+    legs = tall_close(body.intersection(LEGS.buffer(30)), *LEG_CLOSE).intersection(LEGS)
+    sil = unary_union([body, legs] + fill).buffer(0.3).buffer(-0.3)
     ps = sorted(polys(sil), key=lambda p: -p.area)
-    main, necks = ps[0], []
-    for p in ps[1:]:
-        a, b = nearest_points(main, p)
-        neck = LineString([a, b]).buffer(max(1.6, min(3.5, p.area ** 0.5 / 4)))
-        necks.append(neck)
-        main = unary_union([main, p, neck])
-    main = max(polys(main), key=lambda p: p.area)
-    big = [r for r in main.interiors if Polygon(r).area >= BIGHOLE]
+    main = ps[0]
+    print('still loose, so left out:', [(round(p.area), [round(v) for v in p.centroid.coords[0]]) for p in ps[1:]])
+    # a hole closed in among the legs is simply filled; one anywhere else
+    # would be a tendril loop filled in by mistake
+    big = [r for r in main.interiors if Polygon(r).area >= BIGHOLE and not LEGS.contains(Polygon(r))]
+    print('holes filled among the legs:', [round(Polygon(r).area) for r in main.interiors if Polygon(r).area >= 200])
     assert not big, 'joining the pieces closed a loop: lower CLOSE'
     sil = Polygon(main.exterior)
     sil = sil.buffer(-SMOOTH / 2).buffer(SMOOTH).buffer(-SMOOTH / 2)

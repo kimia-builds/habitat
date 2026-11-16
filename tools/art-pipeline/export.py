@@ -15,7 +15,7 @@ r=chitu.clean_chitu()
 bands,_=chitu.toned(r)
 out['chitu']=dict(silhouette=path(r['sil']), shades=[path(g) for g,_ in chitu.shades(r)], layers=[path(b) for b in bands], eyes=r['eyes'])
 print('chitu bounds', [round(v,1) for v in r['sil'].bounds])
-# THE HAMDI BULO (2026-11-16, hamdi.py): specks removed and every loose piece
+# THE HAMDI BULO (2026-11-16, hamdi.py): specks removed and its loose legs
 # joined on, so it is ONE silhouette. Its bands sat side by side, so they are
 # STACKED here, darkest first, and it carries the greys its layers are painted in.
 import hamdi
@@ -57,9 +57,10 @@ head='''/*
  * layer is "this tone or lighter", darkest first) and every fleck and
  * pinhole below a small area is gone. It carries its own `greys`: the tone
  * each of its layers is painted in. Its outline is ONE piece: the little
- * legs and flecks that floated loose are joined on (the gaps beside them
- * filled, or a thin neck), nothing removed, and its open tendril loops stay
- * open. Its one `shades` band gives the filled gaps the body's darkest tone.
+ * legs that floated loose are joined on (the gaps beside them filled, and
+ * the broken legs at the bottom right closed along their length), a few
+ * flecks off its right-hand side are left out, and its open tendril loops
+ * stay open. Its one `shades` band gives the filled gaps the body's darkest tone.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */
