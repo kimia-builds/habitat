@@ -823,14 +823,14 @@ tracing, not from her drawings. Three repairs, chosen per friend by eye:
   tendril that crosses the body shows there only as a faint vein,
   never as a light stripe.
 
-Three of the ten are done and on the workbench (`cleanedFriends.js`):
-krupengk, zala, chitu. She has approved the first two; the chitu she
+Four of the ten are done and on the workbench (`cleanedFriends.js`):
+krupengk, zala, chitu, hamdi bulo. She has approved the first two and
+the hamdi bulo ("Good, next friend", 2026-11-16); the chitu she
 called good enough for now (2026-11-16), after its outline, shading
 and eyes were redone. The originals in `friendNN.jsx` are untouched.
 
-**The hamdi bulo is the fourth, waiting to be judged** (2026-11-16). It
-was the grainiest trace of the ten, so it was chosen next; it stands on
-the shelf beside its original. After the first speck pass she asked for
+**What the hamdi bulo settled** (2026-11-16). It
+was the grainiest trace of the ten, so it was chosen next. After the first speck pass she asked for
 more ("Remove more specks") and for one outline: "remove the gaps. i
 don't want loose pieces. i want one coherent silhouette." So its specks
 are removed more strongly, and the pieces that floated loose (mostly
@@ -844,6 +844,15 @@ crevices between those legs still "rise too high", so each is filled
 down to where the other leg gaps end, in the darkest shade (the
 outline's own tone, nothing painted over it). The open loops of its
 tendrils stay open.
+
+**The liwi bi-jiji is the fifth, waiting to be judged** (2026-11-16),
+on the shelf beside its original. It was cleaned by what the hamdi bulo
+settled: specks removed; the tall dark cavity in the middle of its
+mound, where its three eyes floated, filled in the darkest shade (the
+krupengk's and zala's repair); the long tendril that had come away
+joined back on by a strand as thin as itself. About twenty small
+dashes too far from the body to join without twig-like forks are left
+out. None of this is approved yet.
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in

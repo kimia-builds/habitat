@@ -72,7 +72,7 @@ What "cleaning" means, and Kimia's rules for it:
   `hamdi_before.png` and `hamdi_after.png` to compare.
 
 Each friend needs its own look and its own dials: which of the three
-problems it has is decided by eye, on the workbench, with Kimia. Seven
+problems it has is decided by eye, on the workbench, with Kimia. Five
 friends are still to do (plan.md T5.3p).
 
 ## Checking nothing moved

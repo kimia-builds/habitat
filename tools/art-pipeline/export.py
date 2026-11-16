@@ -22,8 +22,14 @@ import hamdi
 r=hamdi.clean_hamdi()
 out['hamdi-bulo']=dict(silhouette=path(r['sil']), shades=[path(g) for g in r['shades']], layers=[path(b) for b in r['layers']], greys=hamdi.GREYS)
 print('hamdi-bulo', [len(path(b)) for b in r['layers']])
+# THE LIWI BI-JIJI (2026-11-16, liwi.py): specks removed, the cavity round its
+# eyes filled, its loose tendril joined on. Stacked like the hamdi bulo.
+import liwi
+r=liwi.clean_liwi()
+out['liwi-bi-jiji']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=liwi.GREYS)
+print('liwi-bi-jiji', [len(path(b)) for b in r['layers']])
 head='''/*
- * cleanedFriends.js — the krupengk, zala, chitu and hamdi bulo, cleaned
+ * cleanedFriends.js — the krupengk, zala, chitu, hamdi bulo and liwi bi-jiji, cleaned
  * =============================================================================
  * CANDIDATES ON THE WORKBENCH, not yet in the game. Kimia found these two
  * traces too grainy, with "gaping holes under the eyes, filled with weird
@@ -61,6 +67,12 @@ head='''/*
  * the broken legs at the bottom right closed along their length), a few
  * flecks off its right-hand side are left out, and its open tendril loops
  * stay open. Its one `shades` band gives the filled gaps the body's darkest tone.
+ *
+ * THE LIWI BI-JIJI is the fifth (2026-11-16), stacked the same way and
+ * carrying its own `greys`. Its specks are gone; the tall dark cavity in
+ * the middle of its mound, where its three eyes floated, is filled in the
+ * darkest shade; the long tendril that had come away is joined back on.
+ * A few small dashes too far from the body to join are left out.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */
