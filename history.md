@@ -20,6 +20,10 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   counts, day fulfilled at N; extras kept).
 - 2026-07-12: habit list manually re-orderable (persists) and
   filterable by symbols (temporary, resets each visit).
+- 2026-11-16: The cleaned chitu is good enough for now (Kimia). After
+  the outline, shading and eye passes she stopped iterating: accepted as
+  it stands on the workbench, not declared finished. It can be reopened
+  later; nothing about it is waiting on her.
 - 2026-11-16: Gold friends have pale blue eyes (Kimia; design-bible §9c,
   built in the game and on the workbench). "So that the eyes do not get
   lost on the gold background." The one exception to "eyes are always

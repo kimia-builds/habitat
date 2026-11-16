@@ -824,8 +824,9 @@ tracing, not from her drawings. Three repairs, chosen per friend by eye:
   never as a light stripe.
 
 Three of the ten are done and on the workbench (`cleanedFriends.js`):
-krupengk, zala, chitu. She has approved the first two; the chitu is
-still to be judged. The originals in `friendNN.jsx` are untouched.
+krupengk, zala, chitu. She has approved the first two; the chitu she
+called good enough for now (2026-11-16), after its outline, shading
+and eyes were redone. The originals in `friendNN.jsx` are untouched.
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in
