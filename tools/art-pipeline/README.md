@@ -81,8 +81,13 @@ What "cleaning" means, and Kimia's rules for it:
   toward the mound (`HOLD`, `PULL`, `EVEN`). `python liwi.py` writes
   `liwi_before.png` and `liwi_after.png`.
 
+- **The woigolp** (`woigolp.py`) is stacked the same way. The bays
+  under its belly are filled inside the `UNDERSIDE` shape, which joins
+  its loose feet. `python woigolp.py` writes `woigolp_before.png` and
+  `woigolp_after.png`.
+
 Each friend needs its own look and its own dials: which of the three
-problems it has is decided by eye, on the workbench, with Kimia. Five
+problems it has is decided by eye, on the workbench, with Kimia. Four
 friends are still to do (plan.md T5.3p).
 
 ## Checking nothing moved

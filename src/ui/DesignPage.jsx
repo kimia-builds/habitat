@@ -211,9 +211,9 @@ function CuriosityShelf() {
  * SMALL flora size only. The friends' glow here is the flora's (the aura
  * inside the drawing, without the stylesheet's extra halo). The chitu stands
  * beside them for scale, with its loose tendrils joined back on. What is
- * still waiting to be judged on this shelf is the liwi bi-jiji, which stands
- * there twice: as the game draws it, then cleaned (specks removed, the
- * cavity round its eyes filled, one silhouette).
+ * still waiting to be judged on this shelf is the woigolp, which stands
+ * there twice: as the game draws it, then cleaned (specks removed, the bays
+ * under its belly filled, one silhouette).
  *
  * Everything stands at its canonical size on one base (design-bible §9c: the
  * canon holds on the workbench too). Nothing here is in the game yet.
@@ -227,10 +227,11 @@ const PAIR_FRIENDS = [
   { key: 'zala', colour: FRIEND_COLOURS[6], cleaned: true },
   { key: 'chitu', colour: FRIEND_COLOURS[0], cleaned: true },
   { key: 'hamdi-bulo', colour: FRIEND_COLOURS[6], cleaned: true },
-  // The liwi bi-jiji twice (2026-11-16): the game's own drawing, then the
-  // cleaned candidate, so the two can be judged side by side.
-  { key: 'liwi-bi-jiji', colour: FRIEND_COLOURS[4], cleaned: false },
   { key: 'liwi-bi-jiji', colour: FRIEND_COLOURS[4], cleaned: true },
+  // The woigolp twice (2026-11-16): the game's own drawing, then the
+  // cleaned candidate, so the two can be judged side by side.
+  { key: 'woigolp', colour: FRIEND_COLOURS[2], cleaned: false },
+  { key: 'woigolp', colour: FRIEND_COLOURS[2], cleaned: true },
 ]
 
 // Two flora shapes — one fat-bodied, one mostly tendrils — and the pastel

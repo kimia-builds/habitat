@@ -870,6 +870,16 @@ on the bottom right quadrant of the body"; seeing them, she kept only
 two, "in the same position they have now". Every tendril still ends in
 a bulb. This replaces "one eye on every tendril tip".
 
+**The chitu is parked, not approved** (2026-11-16): after the shorter
+tendrils and the two eyes she said it is "still not good enough" and
+moved on. It needs another look with her before it goes anywhere.
+
+**The woigolp is the sixth, waiting to be judged** (2026-11-16), on
+the shelf beside its original. Its specks are removed, and the deep
+bays bitten up into its belly are filled in the darkest shade, so the
+feet that floated loose below it stand on the body and it is one
+silhouette. Four small flecks off its edges are left out.
+
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in
 the shared scale, §9a). Seen at that size the painted shading reads as

@@ -33,8 +33,14 @@ import liwi
 r=liwi.clean_liwi()
 out['liwi-bi-jiji']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=liwi.GREYS, box=box_of(r['sil']))
 print('liwi-bi-jiji', [len(path(b)) for b in r['layers']])
+# THE WOIGOLP (2026-11-16, woigolp.py): specks removed, the bays under its
+# belly filled so its feet stand on the body. Stacked like the hamdi bulo.
+import woigolp
+r=woigolp.clean_woigolp()
+out['woigolp']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=woigolp.GREYS)
+print('woigolp', [len(path(b)) for b in r['layers']])
 head='''/*
- * cleanedFriends.js — the krupengk, zala, chitu, hamdi bulo and liwi bi-jiji, cleaned
+ * cleanedFriends.js — six friends cleaned: krupengk, zala, chitu, hamdi bulo, liwi bi-jiji, woigolp
  * =============================================================================
  * CANDIDATES ON THE WORKBENCH, not yet in the game. Kimia found these two
  * traces too grainy, with "gaping holes under the eyes, filled with weird
@@ -84,6 +90,11 @@ head='''/*
  * darkest shade; the long tendril that had come away is joined back on;
  * its tendrils are pulled in shorter and more even.
  * A few small dashes too far from the body to join are left out.
+ *
+ * THE WOIGOLP is the sixth (2026-11-16), stacked the same way and carrying
+ * its own `greys`. Its specks are gone, and the deep bays under its belly
+ * are filled in the darkest shade, so the feet that floated loose below
+ * stand on the body and it is one silhouette. Four small flecks are left out.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */
