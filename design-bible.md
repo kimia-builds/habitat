@@ -828,6 +828,13 @@ krupengk, zala, chitu. She has approved the first two; the chitu she
 called good enough for now (2026-11-16), after its outline, shading
 and eyes were redone. The originals in `friendNN.jsx` are untouched.
 
+**The hamdi bulo is the fourth, waiting to be judged** (2026-11-16). It
+was the grainiest trace of the ten, so it was chosen next. Only its
+specks and pinholes are removed so far; it stands on the shelf beside
+its original. Its outline is untouched, and the small pieces floating
+loose under its body are all still there: whether they are reattached
+is hers to say.
+
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in
 the shared scale, §9a). Seen at that size the painted shading reads as

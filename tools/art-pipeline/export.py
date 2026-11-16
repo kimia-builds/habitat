@@ -15,8 +15,15 @@ r=chitu.clean_chitu()
 bands,_=chitu.toned(r)
 out['chitu']=dict(silhouette=path(r['sil']), shades=[path(g) for g,_ in chitu.shades(r)], layers=[path(b) for b in bands], eyes=r['eyes'])
 print('chitu bounds', [round(v,1) for v in r['sil'].bounds])
+# THE HAMDI BULO (2026-11-16): specks only (hamdi.py). Its bands sat side by
+# side, so they are STACKED here, darkest first, and it carries the greys its
+# layers are painted in. Outline and loose limbs are her trace's own.
+import hamdi
+r=hamdi.clean_hamdi()
+out['hamdi-bulo']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=hamdi.GREYS)
+print('hamdi-bulo', [len(path(b)) for b in r['layers']])
 head='''/*
- * cleanedFriends.js — the krupengk, the zala and the chitu, cleaned (2026-11-15)
+ * cleanedFriends.js — the krupengk, zala, chitu and hamdi bulo, cleaned
  * =============================================================================
  * CANDIDATES ON THE WORKBENCH, not yet in the game. Kimia found these two
  * traces too grainy, with "gaping holes under the eyes, filled with weird
@@ -44,6 +51,13 @@ head='''/*
  * Its tones darken toward the outline, like the other two, and it carries
  * no light stripe where a tendril crosses the body: only a faint vein.
  * It also carries its own `eyes`: one on every tendril tip (nine in all).
+ *
+ * THE HAMDI BULO is the fourth (2026-11-16), cleaned of SPECKS ONLY. Its
+ * trace was the grainiest of the ten. Its seven bands lay side by side, so
+ * they are stacked here (each layer is "this tone or lighter", darkest
+ * first) and every fleck and pinhole below a small area is gone. It carries
+ * its own `greys`: the tone each of its layers is painted in. Its outline
+ * and its loose limbs are the trace's own, untouched.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */

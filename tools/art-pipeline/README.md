@@ -60,6 +60,13 @@ What "cleaning" means, and Kimia's rules for it:
   by the underbelly the sheet shows. To move a tendril, edit its points
   in `TENDRILS`, run `python chitu.py` and look at `chitu_fixed.png`.
 
+- **Side-by-side bands are stacked first** (`hamdi.py`). The hamdi
+  bulo's seven bands do not overlap, so deleting a fleck would leave a
+  dark hole. Each layer is rebuilt as "this tone or lighter", then
+  cleaned of specks like the others. Its dials are `SPECK` and `SMOOTH`
+  at the top of the script; `python hamdi.py` writes
+  `hamdi_before.png` and `hamdi_after.png` to compare.
+
 Each friend needs its own look and its own dials: which of the three
 problems it has is decided by eye, on the workbench, with Kimia. Seven
 friends are still to do (plan.md T5.3p).

@@ -211,7 +211,8 @@ function CuriosityShelf() {
  * SMALL flora size only. The friends' glow here is the flora's (the aura
  * inside the drawing, without the stylesheet's extra halo). The chitu stands
  * beside them for scale, with its loose tendrils joined back on. What is
- * still waiting to be judged on this shelf is the cleaned chitu.
+ * still waiting to be judged on this shelf is the hamdi bulo, which stands
+ * there twice: as the game draws it, then with its specks removed.
  *
  * Everything stands at its canonical size on one base (design-bible §9c: the
  * canon holds on the workbench too). Nothing here is in the game yet.
@@ -224,6 +225,10 @@ const PAIR_FRIENDS = [
   { key: 'krupengk', colour: FRIEND_COLOURS[3], cleaned: true },
   { key: 'zala', colour: FRIEND_COLOURS[6], cleaned: true },
   { key: 'chitu', colour: FRIEND_COLOURS[0], cleaned: true },
+  // The hamdi bulo twice (2026-11-16): the game's own drawing, then the same
+  // drawing with its specks removed, so the two can be judged side by side.
+  { key: 'hamdi-bulo', colour: FRIEND_COLOURS[6], cleaned: false },
+  { key: 'hamdi-bulo', colour: FRIEND_COLOURS[6], cleaned: true },
 ]
 
 // Two flora shapes — one fat-bodied, one mostly tendrils — and the pastel
@@ -240,10 +245,13 @@ const PAIR_FLORA = [
 function PairFriend({ speciesKey, colour, cleaned, idPrefix }) {
   const art = friendArt(speciesKey)
   const { Body, BodyDefs, Eyes, EyeDefs, viewBox, greys } = art
-  const palette = paletteForTone(greys.ramp, colour, greys.base)
-  const prefix = `${idPrefix}${speciesKey}-`
-  const box = `0 0 ${viewBox.w} ${viewBox.h}`
   const clean = CLEANED_FRIENDS[speciesKey]
+  // A cleaned drawing may bring its own greys, one per layer (the hamdi
+  // bulo's layers are restacked, so they are not in the game's paint order).
+  const ramp = (cleaned && clean.greys) || greys.ramp
+  const palette = paletteForTone(ramp, colour, greys.base)
+  const prefix = `${idPrefix}${speciesKey}-${cleaned ? 'clean' : 'raw'}-`
+  const box = `0 0 ${viewBox.w} ${viewBox.h}`
   const shades = paletteForTone(['#494949', '#606060'], colour).ramp
   return (
     <span
@@ -331,7 +339,7 @@ function OneRecipeShelf() {
           >
             {PAIR_FRIENDS.map(({ key, colour, cleaned }) => (
               <PairFriend
-                key={key}
+                key={`${key}-${cleaned}`}
                 speciesKey={key}
                 colour={colour}
                 cleaned={cleaned}
