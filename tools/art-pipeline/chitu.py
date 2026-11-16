@@ -18,9 +18,10 @@ tendril keeps its curve, but the part that shows outside the body is scaled
 toward the point where it leaves the body (SHRINK, EVEN below), so the whole
 silhouette pulls into a tighter radius and the long ones lose the most.
 
-EYES ON THE BODY (same day): the nine eyes no longer ride the tendril tips.
-They are scattered over the light tones in the bottom-right quadrant of the
-body (EYE_* below). Every tendril still ends in a bulb.
+TWO EYES ON THE BODY (same day): the eyes no longer ride the tendril tips.
+Nine were first scattered over the light tone in the bottom-right quadrant
+of the body; Kimia kept two of them, where they sat (EYES below). Every
+tendril still ends in a bulb.
 """
 import pickle, re, colorsys
 from shapely.geometry import Polygon, Point
@@ -38,10 +39,11 @@ TIPS = {'eye': (10.5, 7.7), 'small': (8.5, 5.8)}
 # pulls them all in, EVEN (0 = all the same, 1 = as different as before) evens
 # them out. None is ever made longer. The two short drips are left alone.
 SHRINK, EVEN = 0.55, 0.3
-# THE EYES: scattered in the bottom-right quadrant of the body, on tones at
-# least as light as EYE_TONE (7 = lightest; 3 is the lightest tone that quadrant has), no closer than EYE_GAP to each
-# other and EYE_MARGIN inside that light area. EYE_SEED picks the scattering.
-EYE_TONE, EYE_GAP, EYE_MARGIN, EYE_SEED = 3, 26, 9, 4
+# THE EYES: two, on the light underbelly in the bottom-right quadrant of the
+# body (viewBox space). They are two of the nine first scattered there: the
+# far-left one of the top row and the right-hand one of the middle row.
+# Kimia chose them and asked that they stay exactly where they were.
+EYES = [dict(cx=371.4, cy=297.5, r=7.7), dict(cx=497.3, cy=309.7, r=7.7)]
 P = dict(strip=5.5, smooth=3.0, speck=30)
 
 
@@ -150,30 +152,6 @@ def limbs(core, p=P):
     return both, bulbs
 
 
-def body_eyes(light, core):
-    """Nine eyes scattered over the light tones of the body's bottom-right quadrant."""
-    import random
-    from shapely.geometry import box
-    x0, y0, x1, y1 = core.bounds
-    quad = box((x0 + x1) / 2, (y0 + y1) / 2, x1, y1)
-    area = light.intersection(quad).buffer(-EYE_MARGIN)
-    rnd = random.Random(EYE_SEED)
-    ax0, ay0, ax1, ay1 = area.bounds
-    sizes = [TIPS[t[2]][1] for t in TENDRILS.values() if t[2]]
-    placed = []
-    for r in sorted(sizes, reverse=True):
-        best, far = None, -1
-        for _ in range(400):                      # of many random spots, keep the one furthest from the others
-            q = Point(rnd.uniform(ax0, ax1), rnd.uniform(ay0, ay1))
-            if not area.contains(q): continue
-            d = min([q.distance(Point(e[0], e[1])) for e in placed] + [2 * EYE_GAP])
-            d += rnd.uniform(0, EYE_GAP)          # a little chance, so it is a scattering, not a grid
-            if d > far: best, far = q, d
-        if best is None: raise SystemExit('no room for the eyes: lower EYE_TONE, EYE_MARGIN or EYE_GAP')
-        placed.append((best.x, best.y, r))
-    return [dict(cx=round(x, 1), cy=round(y, 1), r=r) for x, y, r in placed]
-
-
 def move(g):
     from shapely import affinity
     return affinity.translate(g, -OX, -OY)
@@ -249,12 +227,7 @@ def clean_chitu(p=P):
         out.append(unary_union(keep).simplify(0.2) if keep else Polygon())
     # shaved-off limbs the new ones do not cover would be a removal: report any
     lost = body.difference(s.buffer(4))
-    from shapely.geometry import box
-    x0, y0, x1, y1 = core.bounds
-    quad = box((x0 + x1) / 2, (y0 + y1) / 2, x1, y1)
-    print('bottom-right quadrant, area of each tone (1 dark .. 7 light):', {L: round(new[L].intersection(quad).area) for L in new})
-    light = unary_union([new[L] for L in range(EYE_TONE, 8)]).intersection(core)
-    return dict(sil=s, bands=out, lost=round(lost.area), order=order, eyes=body_eyes(light, core))
+    return dict(sil=s, bands=out, lost=round(lost.area), order=order, eyes=EYES)
 
 
 def order_of(num):

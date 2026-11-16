@@ -61,8 +61,8 @@ head='''/*
  * a bulb. Nothing is removed.
  * Its tones darken toward the outline, like the other two, and it carries
  * no light stripe where a tendril crosses the body: only a faint vein.
- * It also carries its own `eyes`: nine, scattered over the light tones in
- * the bottom-right quadrant of its body (2026-11-16; they used to ride the
+ * It also carries its own `eyes`: two, on the light underbelly in the
+ * bottom-right quadrant of its body (2026-11-16; nine used to ride the
  * tendril tips). Its tendrils are shortened and evened out the same day.
  *
  * A drawing whose tendrils were shortened carries a `box` [x, y, w, h]: the

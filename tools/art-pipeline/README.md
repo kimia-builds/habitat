@@ -60,9 +60,8 @@ What "cleaning" means, and Kimia's rules for it:
   by the underbelly the sheet shows. To move a tendril, edit its points
   in `TENDRILS`, run `python chitu.py` and look at `chitu_fixed.png`.
   The part of each tendril outside the body is then shortened and
-  evened out (`SHRINK`, `EVEN`), and the nine eyes are scattered on
-  the body (`EYE_TONE`, `EYE_GAP`, `EYE_MARGIN`; change `EYE_SEED` for
-  a different scattering).
+  evened out (`SHRINK`, `EVEN`). Its two eyes sit on the body at the
+  fixed spots in `EYES`.
 
 - **Side-by-side bands are stacked first** (`hamdi.py`). The hamdi
   bulo's seven bands do not overlap, so deleting a fleck would leave a

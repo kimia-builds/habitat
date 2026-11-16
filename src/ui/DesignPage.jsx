@@ -304,8 +304,8 @@ function PairFriend({ speciesKey, colour, cleaned, idPrefix }) {
         <defs>
           <EyeDefs prefix={prefix} tone={eyeToneFor(colour)} />
         </defs>
-        {/* a cleaned drawing may carry its own eyes (the chitu: nine,
-            scattered on its body); otherwise the game's own eyes are used */}
+        {/* a cleaned drawing may carry its own eyes (the chitu: two, on
+            its body); otherwise the game's own eyes are used */}
         {cleaned && clean.eyes ? (
           <g>
             {clean.eyes.map((eye, i) => (

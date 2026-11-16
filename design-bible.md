@@ -485,10 +485,13 @@ choice is made from the friend's colour (`eyeToneFor` in `eye.jsx`),
 so it holds for any species that turns up gold, in the game as well as
 on the workbench.
 
-**The chitu has nine eyes (Kimia, 2026-11-16; on the workbench's
-cleaned chitu, not yet the game's).** They sit on its body, scattered
-over the light tone in its bottom-right quadrant. (Earlier the same
-day they rode the bulbs at the tendril tips; she moved them.)
+**The chitu has two eyes (Kimia, 2026-11-16; on the workbench's
+cleaned chitu, not yet the game's).** They sit on its body, on the
+light underbelly in its bottom-right quadrant. (Earlier the same day
+it had nine, first on the bulbs at the tendril tips and then scattered
+on the body; she kept two of the scattered ones, where they were:
+the far-left one of the top row and the right-hand one of the middle
+row.)
 
 **Production workflow (2026-07-25).** The 10 **category archetypes are
 hand-drawn by Kimia** (raster drawing → Inkscape trace → SVG), keeping
@@ -862,9 +865,10 @@ body, the long ones most, until they end at a similar reach. Done on
 both, not yet judged.
 
 **The chitu's eyes sit on its body** (same day), no longer on its
-tendril tips: all nine "arranged in a scattering against the light
-shade layer on the bottom right quadrant of the body". Every tendril
-still ends in a bulb. This replaces "one eye on every tendril tip".
+tendril tips. Nine were first scattered "against the light shade layer
+on the bottom right quadrant of the body"; seeing them, she kept only
+two, "in the same position they have now". Every tendril still ends in
+a bulb. This replaces "one eye on every tendril tip".
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in

@@ -26,8 +26,8 @@
  * a bulb. Nothing is removed.
  * Its tones darken toward the outline, like the other two, and it carries
  * no light stripe where a tendril crosses the body: only a faint vein.
- * It also carries its own `eyes`: nine, scattered over the light tones in
- * the bottom-right quadrant of its body (2026-11-16; they used to ride the
+ * It also carries its own `eyes`: two, on the light underbelly in the
+ * bottom-right quadrant of its body (2026-11-16; nine used to ride the
  * tendril tips). Its tendrils are shortened and evened out the same day.
  *
  * A drawing whose tendrils were shortened carries a `box` [x, y, w, h]: the
@@ -103,49 +103,14 @@ export const CLEANED_FRIENDS = {
   ],
   'eyes': [
    {
-    'cx': 438.1,
-    'cy': 287.6,
-    'r': 7.7
-   },
-   {
-    'cx': 463.7,
-    'cy': 352.6,
-    'r': 7.7
-   },
-   {
     'cx': 371.4,
     'cy': 297.5,
-    'r': 7.7
-   },
-   {
-    'cx': 409.3,
-    'cy': 359.2,
     'r': 7.7
    },
    {
     'cx': 497.3,
     'cy': 309.7,
     'r': 7.7
-   },
-   {
-    'cx': 444.1,
-    'cy': 323.4,
-    'r': 7.7
-   },
-   {
-    'cx': 409.9,
-    'cy': 324.9,
-    'r': 7.7
-   },
-   {
-    'cx': 494.5,
-    'cy': 346.6,
-    'r': 5.8
-   },
-   {
-    'cx': 467.0,
-    'cy': 288.2,
-    'r': 5.8
    }
   ],
   'box': [
