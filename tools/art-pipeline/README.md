@@ -53,9 +53,12 @@ What "cleaning" means, and Kimia's rules for it:
   overall shape: an oval for the krupengk, a wobbled rounded triangle
   for the zala (`PATCH` in `clean2.py`, `clean3.py`). The filled area
   gets two generated shade bands so it is not flat.
-- **Loose limbs are reattached, never removed** (`chitu.py`). Each
-  detached piece is joined to the nearest part of the body by a thin
-  curved bridge, all bending the same way round.
+- **Broken limbs are redrawn from the character sheet, never removed**
+  (`chitu.py`). The chitu's tendrils had come apart in tracing, so each
+  is redrawn as one smooth tapering curve through points read off the
+  sheet, ending in a bulb; the round bites in its underside are filled
+  by the underbelly the sheet shows. To move a tendril, edit its points
+  in `TENDRILS`, run `python chitu.py` and look at `chitu_fixed.png`.
 
 Each friend needs its own look and its own dials: which of the three
 problems it has is decided by eye, on the workbench, with Kimia. Seven

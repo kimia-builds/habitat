@@ -20,6 +20,15 @@ How to append (the end-of-session rule, also in CLAUDE.md):
   counts, day fulfilled at N; extras kept).
 - 2026-07-12: habit list manually re-orderable (persists) and
   filterable by symbols (temporary, resets each visit).
+- 2026-11-16: The chitu's outline comes from the character sheet (Kimia;
+  design-bible §9d, on the workbench, still hers to judge). The bridged
+  version read as weird in silhouette: "it looks like it has craters, and
+  the curved tendrils don't flow smoothly". Now each tendril is one
+  smooth tapering curve along its path on the sheet, **every tendril
+  ends in a bulb**, and the craters (bites in the trace) are filled by
+  the underbelly the sheet shows. Where a trace and the sheet disagree
+  about an outline, the sheet wins. One small spur of the trace beside
+  the top-left tendril is gone: the sheet shows only glow there.
 - 2026-11-15: Party mode goes dark (Kimia; judged by eye on a standalone
   comparison picture, not yet built — plan T5.3p p10). Her problem: the
   friends struggle to show up against colourful flora. Her answer: in

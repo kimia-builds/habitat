@@ -790,10 +790,16 @@ tracing, not from her drawings. Three repairs, chosen per friend by eye:
   a round dome and the zala as a triangle (her words: "approximately
   circle and triangle shaped").
 - **Loose limbs are reattached, never removed.** The chitu's tendrils,
-  including the two that carry its eyes, had come away from the body;
-  each is joined back by a thin curved bridge, all bending the same way
-  so it reads as a whirl ("like a fidget spinner"). Her rule: "instead
-  of removing the dismembered parts, reattach them to the whole."
+  including the two that carry its eyes, had come away from the body.
+  Her rule: "instead of removing the dismembered parts, reattach them
+  to the whole." Joining the pieces with short bridges left a
+  silhouette she found weird (2026-11-16: "craters", tendrils that
+  "don't flow smoothly"), so the outline is now rebuilt **from the
+  character sheet**: each tendril is one smooth tapering curve along
+  the path it takes on the sheet, **every tendril ends in a bulb**, and
+  the round bites in the underside are filled by the underbelly the
+  sheet shows there. When a trace and the sheet disagree about an
+  outline, the sheet wins.
 
 Three of the ten are done and on the workbench (`cleanedFriends.js`):
 krupengk, zala, chitu. She has approved the first two; the chitu is

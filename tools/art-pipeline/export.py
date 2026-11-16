@@ -7,19 +7,14 @@ for num,key in (('03','krupengk'),('04','zala')):
     r=clean2.clean(num)
     out[key]=dict(silhouette=path(r['sil']), shades=[path(g) for g,_ in shade(r,[(9,0),(20,0)])], layers=[path(b) for b in r['bands']])
     print(key, {k:(len(v) if isinstance(v,str) else [len(x) for x in v]) for k,v in out[key].items()})
-# THE CHITU (2026-11-15): nothing is filled in; its loose tendrils are joined
-# back on with thin curved bridges (chitu.py). Its trace sits in a shifted
-# space (FRIEND09_OFFSET), which is folded in here so all three entries are in
-# their drawing's own viewBox space.
+# THE CHITU (2026-11-16): its outline is rebuilt from the character sheet
+# (chitu.py): craters filled by the underbelly, every tendril redrawn as one
+# smooth curve ending in a bulb. Already in its drawing's own viewBox space.
 import chitu
-from shapely import affinity
 r=chitu.clean_chitu()
-mv=lambda g: affinity.translate(g,-chitu.OX,-chitu.OY)
-order=chitu.order_of('09'); bands=list(r['bands'])
-k=order.index('#8c8c8c')            # the bridges take a middle tone, like the tendrils they join
-bands[k]=unary_union([bands[k], r['bridges'].buffer(-1.2)])
-out['chitu']=dict(silhouette=path(mv(r['sil'])), shades=[path(mv(g)) for g,_ in chitu.shades(r)], layers=[path(mv(b)) for b in bands])
-print('chitu', r['log'])
+bands,_=chitu.toned(r)
+out['chitu']=dict(silhouette=path(r['sil']), shades=[path(g) for g,_ in chitu.shades(r)], layers=[path(b) for b in bands])
+print('chitu bounds', [round(v,1) for v in r['sil'].bounds])
 head='''/*
  * cleanedFriends.js — the krupengk, the zala and the chitu, cleaned (2026-11-15)
  * =============================================================================
@@ -40,13 +35,12 @@ head='''/*
  *     sit UNDER her bands so the filled-in areas are shaded rather than flat.
  *     They take the two darkest ramp greys, #494949 then #606060.
  *
- * THE CHITU is the third (same day). Its trouble was different: its tendrils,
- * including the two that carry its eyes, had come away from the body in
- * tracing. Nothing is filled in on it. Each loose piece is joined back to the
- * nearest part of the body by a thin curved bridge, every bridge bending the
- * same way round so the whole reads as a whirl; then specks are removed as
- * for the other two. Kimia's instruction: reattach the dismembered parts,
- * never remove them.
+ * THE CHITU is the third (redone 2026-11-16). Its trace had round "craters"
+ * bitten out of the underside and tendrils that had come apart. Its outline
+ * is rebuilt from Kimia's character sheet: the craters are filled by the
+ * underbelly the sheet shows there, and every tendril is redrawn as one
+ * smooth tapering curve along the path it takes on the sheet, each ending in
+ * a bulb. The two eye bulbs sit exactly on its eyes. Nothing is removed.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */
