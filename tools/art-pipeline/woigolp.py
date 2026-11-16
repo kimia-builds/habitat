@@ -4,18 +4,20 @@ are STACKED before cleaning (see hamdi.py for why). Cleaned by what the hamdi
 bulo and the liwi bi-jiji settled with Kimia:
 
   1. SPECKS: flecks and pinholes smaller than SPECK go from every layer.
-  2. THE UNDERSIDE: the trace has deep bays bitten up into the belly, and
-     its feet float loose below them. Everything open inside UNDERSIDE is
-     filled, in the DARKEST shade (the outline's own), so the feet stand on
-     the body and the silhouette is ONE piece.
-  3. A loose piece of at least BIG that the fill does not reach is joined by
-     a thin strand if it is within REACH. Smaller flecks are left out (the
-     script prints which), as on the other two.
+  2. NO LEGS (Kimia, 2026-11-16: it "resembles the look and feel of a
+     four-legged animal ... remove the legs portion of the creature, create
+     an un-legged bottom half by removing the feet"). A first pass had
+     filled the bays under its belly and stood its loose feet on the body;
+     seeing that, she had the legs and feet taken off altogether. So the
+     bottom of the body is now one smooth rounded line (BOTTOM): everything
+     below it is cut away, and everything above it, down to the line, is
+     body, filled in the DARKEST shade (the outline's own).
+  3. THREE EYES: her two, and a third to their right (EYES).
 
     python woigolp.py       # writes woigolp_before.png and woigolp_after.png
 """
-from shapely.geometry import Polygon, LineString
-from shapely.ops import unary_union, nearest_points
+from shapely.geometry import Polygon
+from shapely.ops import unary_union
 from load import strings, evenodd, polys
 from clean import H
 from hamdi import despeckle, _paint, GREYS, count
@@ -26,15 +28,14 @@ VB = (577.03, 505.85)
 SPECK = 80
 SMOOTH = 1.2
 SEAL = 0.5
-BIG = 150         # a loose piece at least this large is a real foot
-REACH = 16        # ...and is joined by a strand if it is within this distance
-STRAND = 2.2      # half the width of a joining strand
-# The bays under the belly, as a rough shape around them, feet at its bottom.
-UNDERSIDE = Polygon([(205, 392), (222, 356), (262, 350), (300, 372), (350, 372),
-                     (400, 378), (440, 392), (470, 410), (478, 440), (468, 468),
-                     (445, 462), (415, 450), (385, 458), (350, 448), (310, 452),
-                     (268, 460), (232, 450), (210, 432)])
-UNDERSIDE_ROUND = 6
+# The new bottom edge of the body, left to right: a smooth curve through
+# these points. Raise or lower the middle ones to make the belly flatter or
+# rounder; the end points sit where the body's sides were before the legs.
+BOTTOM = [(84, 338), (90, 380), (116, 418), (165, 444), (235, 457), (315, 461),
+          (395, 456), (460, 438), (506, 408), (530, 372), (538, 338)]
+# The eyes: her two, then the third she asked for, to their right (same size,
+# same spacing, on the same line).
+EYES = [dict(cx=153.2, cy=249.6, r=4.8), dict(cx=198.1, cy=250.8, r=4.8), dict(cx=243.0, cy=252.0, r=4.8)]
 
 
 def raw():
@@ -46,23 +47,16 @@ def raw():
 
 
 def one_piece(body):
-    """Fill the underside and join the feet. Returns the silhouette."""
-    parts = sorted(polys(body), key=lambda p: -p.area)
-    r = UNDERSIDE_ROUND
-    near = unary_union([body, UNDERSIDE]).intersection(UNDERSIDE.buffer(4 * r))
-    near = near.buffer(-r).buffer(2 * r).buffer(-r)
-    fill = near.difference(body).intersection(UNDERSIDE.buffer(r))
-    whole = unary_union([body, fill]).buffer(0.3).buffer(-0.3)
-    ps = sorted(polys(whole), key=lambda p: -p.area)
-    main, out = ps[0], []
-    for p in sorted(ps[1:], key=lambda p: p.distance(ps[0])):
-        if p.area < BIG or p.distance(main) > REACH:
-            out.append(p)
-            continue
-        a, b = nearest_points(main, p)
-        main = unary_union([main, p, LineString([a, b]).buffer(STRAND)])
-        main = max(polys(main), key=lambda q: q.area)
-    print('left out:', [(round(p.area), [round(v) for v in p.centroid.coords[0]]) for p in out])
+    """The body with a smooth un-legged bottom. Returns the silhouette."""
+    from chitu import spline
+    curve = spline(BOTTOM, step=2)
+    (x0, y0), (x1, y1) = curve[0], curve[-1]
+    # everything under the curve (and out to the sides, below where it starts) goes
+    below = Polygon([(-50, y0)] + curve + [(VB[0] + 50, y1), (VB[0] + 50, VB[1] + 50), (-50, VB[1] + 50)])
+    # everything from the curve up into the middle of the body is body
+    belly = Polygon(curve + [(x1 - 14, y1 - 12), ((x0 + x1) / 2, y0 - 30), (x0 + 12, y0 - 12)])
+    whole = unary_union([body, belly]).difference(below)
+    main = max(polys(whole), key=lambda p: p.area)
     sil = Polygon(main.exterior)
     sil = sil.buffer(-SMOOTH / 2).buffer(SMOOTH).buffer(-SMOOTH / 2)
     return Polygon(max(polys(sil), key=lambda p: p.area).exterior).simplify(0.15)
@@ -76,21 +70,24 @@ def clean_woigolp(speck=SPECK, smooth=SMOOTH):
     for k in range(len(bands)):
         stacked = unary_union(bands[k:]).buffer(SEAL).buffer(-SEAL)   # tone k or lighter
         layers.append(despeckle(stacked.intersection(sil), speck, smooth))
-    return dict(sil=sil, layers=layers, base=base, bands=bands)
+    return dict(sil=sil, layers=layers, base=base, bands=bands, eyes=EYES)
 
 
-def preview(sil, layers, name, k=2.0):
+def preview(sil, layers, name, k=2.0, eyes=()):
     from PIL import Image
     im = Image.new('RGB', (int(VB[0] * k), int(VB[1] * k)), '#080910')
     _paint(im, sil, '#333333', k)
     for g, c in zip(layers, GREYS):
         _paint(im, g, c, k)
+    from shapely.geometry import Point
+    for e in eyes:                               # the eyes, roughly as the app draws them
+        _paint(im, Point(e['cx'], e['cy']).buffer(e['r'] * 0.7), '#f4f0d8', k)
     im.save(name)
 
 
 if __name__ == '__main__':
     r = clean_woigolp()
     preview(r['base'], r['bands'], 'woigolp_before.png')
-    preview(r['sil'], r['layers'], 'woigolp_after.png')
+    preview(r['sil'], r['layers'], 'woigolp_after.png', eyes=r['eyes'])
     print('pieces and holes: before', count(r['bands']), 'after', count(r['layers']))
     print('outline parts: before', len(polys(r['base'])), 'after', len(polys(r['sil'])))

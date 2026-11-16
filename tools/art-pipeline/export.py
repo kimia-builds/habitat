@@ -33,11 +33,11 @@ import liwi
 r=liwi.clean_liwi()
 out['liwi-bi-jiji']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=liwi.GREYS, box=box_of(r['sil']))
 print('liwi-bi-jiji', [len(path(b)) for b in r['layers']])
-# THE WOIGOLP (2026-11-16, woigolp.py): specks removed, the bays under its
-# belly filled so its feet stand on the body. Stacked like the hamdi bulo.
+# THE WOIGOLP (2026-11-16, woigolp.py): specks removed, its legs and feet
+# taken off for one smooth rounded bottom, a third eye. Stacked like the hamdi bulo.
 import woigolp
 r=woigolp.clean_woigolp()
-out['woigolp']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=woigolp.GREYS)
+out['woigolp']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=woigolp.GREYS, eyes=r['eyes'], box=box_of(r['sil']))
 print('woigolp', [len(path(b)) for b in r['layers']])
 head='''/*
  * cleanedFriends.js — six friends cleaned: krupengk, zala, chitu, hamdi bulo, liwi bi-jiji, woigolp
@@ -92,9 +92,10 @@ head='''/*
  * A few small dashes too far from the body to join are left out.
  *
  * THE WOIGOLP is the sixth (2026-11-16), stacked the same way and carrying
- * its own `greys`. Its specks are gone, and the deep bays under its belly
- * are filled in the darkest shade, so the feet that floated loose below
- * stand on the body and it is one silhouette. Four small flecks are left out.
+ * its own `greys`. Its specks are gone. It has NO LEGS: Kimia found it read
+ * as a four-legged animal, so its legs and feet are cut away and its bottom
+ * is one smooth rounded line, the belly above it filled in the darkest
+ * shade. It carries three `eyes`: her two and a third to their right.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */

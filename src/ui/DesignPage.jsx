@@ -212,8 +212,8 @@ function CuriosityShelf() {
  * inside the drawing, without the stylesheet's extra halo). The chitu stands
  * beside them for scale, with its loose tendrils joined back on. What is
  * still waiting to be judged on this shelf is the woigolp, which stands
- * there twice: as the game draws it, then cleaned (specks removed, the bays
- * under its belly filled, one silhouette).
+ * there twice: as the game draws it, then cleaned (specks removed, its legs
+ * taken off for a smooth rounded bottom, a third eye).
  *
  * Everything stands at its canonical size on one base (design-bible §9c: the
  * canon holds on the workbench too). Nothing here is in the game yet.
