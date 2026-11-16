@@ -88,7 +88,8 @@ What "cleaning" means, and Kimia's rules for it:
 
 - **The rassatt** (`rassatt.py`) is stacked the same way (its bands
   are not listed light-to-dark in the file, so the script matches each
-  to its grey). Its lower fan is closed by the `FAN` outline.
+  to its grey). Its lower fan is closed by the `FAN` outline, whose
+  right underside is `LEFT_EDGE` mirrored about `POINT`.
   `python rassatt.py` writes `rassatt_before.png` and
   `rassatt_after.png`.
 

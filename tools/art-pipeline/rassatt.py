@@ -15,7 +15,11 @@ coherent silhouette):
      two outer blades down to the point) is filled, in the DARKEST shade, the
      outline's own. The loose strands inside it become part of the body and
      all five eyes sit on it.
-  3. Anything still loose outside the fan is left out (the script prints it).
+  3. BOTH UNDERSIDES MATCH (Kimia, 2026-11-16: the first pass read as "a
+     cinched left-hand underside but a bloated right-hand underside"). The
+     right edge of the fan is now the left edge mirrored about the point, and
+     whatever of the trace hung below that line on the right is trimmed off.
+  4. Anything still loose outside the fan is left out (the script prints it).
 
     python rassatt.py       # writes rassatt_before.png and rassatt_after.png
 """
@@ -32,13 +36,17 @@ VB = (578.84, 368.0)
 SPECK = 60
 SMOOTH = 1.0
 SEAL = 0.5
-# The lower fan: a smooth closed curve through these points. It starts at the
-# point at the bottom, runs up the left edge to the left blade, crosses well
-# inside the body, and comes back down the right edge. Only the two edges and
-# the point shape the outline; the crossing just has to stay inside the body.
-FAN = [(257, 366), (236, 344), (204, 312), (160, 286), (112, 266), (70, 240), (38, 212),
-       (90, 140), (270, 95), (450, 135),
-       (538, 196), (502, 236), (474, 270), (452, 296), (404, 318), (344, 344), (290, 360)]
+# The lower fan. LEFT_EDGE runs from the point at the bottom up the left
+# underside to the left blade. The right underside is the same line mirrored
+# about the point, so both sides are equally cinched. INSIDE just closes the
+# shape through the middle of the body; it does not shape the outline.
+POINT = (257, 366)
+LEFT_EDGE = [(236, 344), (204, 312), (160, 286), (112, 266), (70, 240), (38, 212)]
+INSIDE = [(90, 140), (270, 95), (450, 135), (500, 180)]
+RIGHT_EDGE = [(2 * POINT[0] - x, y) for x, y in LEFT_EDGE]          # the mirror, point upward
+FAN = [POINT] + LEFT_EDGE + INSIDE + RIGHT_EDGE[::-1]
+# Past the end of the mirrored edge the right blade keeps its own underside.
+TRIM_TO = (508, 244)
 
 
 def raw():
@@ -54,10 +62,15 @@ def one_piece(body):
     """Close the fan. Returns the silhouette."""
     from chitu import spline
     fan = Polygon(spline(FAN + FAN[:1], step=2)).buffer(0)
-    whole = unary_union([body, fan]).buffer(0.3).buffer(-0.3)
+    # what hangs below the mirrored right edge is trimmed away
+    edge = spline([POINT] + RIGHT_EDGE, step=2)
+    trim = Polygon(edge + [TRIM_TO, (TRIM_TO[0], VB[1] + 20), (POINT[0], VB[1] + 20)]).buffer(0)
+    whole = unary_union([body, fan]).difference(trim).buffer(0.3).buffer(-0.3)
     ps = sorted(polys(whole), key=lambda p: -p.area)
     print('left out:', [(round(p.area), [round(v) for v in p.centroid.coords[0]]) for p in ps[1:]])
     sil = Polygon(ps[0].exterior)
+    # shave off thin slivers the trim leaves (the rassatt has no fine tendrils to lose)
+    sil = max(polys(sil.buffer(-3).buffer(3)), key=lambda p: p.area)
     sil = sil.buffer(-SMOOTH / 2).buffer(SMOOTH).buffer(-SMOOTH / 2)
     return Polygon(max(polys(sil), key=lambda p: p.area).exterior).simplify(0.15)
 

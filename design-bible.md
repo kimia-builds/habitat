@@ -891,7 +891,10 @@ wide gaps ran up between the blades, the strands meeting at the point
 were loose crumbs, and two of its five eyes floated among them. Its
 specks are removed and the lower fan is closed in the darkest shade,
 from the two outer blades down to the point, so it is one silhouette
-with all five eyes on the body.
+with all five eyes on the body. She called it "all good" with one fix:
+it read as "a cinched left-hand underside but a bloated right-hand
+underside", so the right underside is now the left one mirrored about
+the point, and what hung below that line is trimmed off.
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in
@@ -904,6 +907,63 @@ T5.3p and not before:
   small.
 - **Mother trees are untouched**: they stay super-sized on the Map and
   never stood in the Abode. Keepsake size is still undecided.
+
+**What refining six friends taught about her eye** (session of
+2026-11-16: hamdi bulo, liwi bi-jiji, chitu, woigolp, rassatt). These
+are Claude's summary of her feedback in design terms, for any later
+asset work. Where a line is inference rather than her words it says so.
+
+*What bothers her:*
+
+- **A broken silhouette.** Every creature is one closed, contiguous
+  shape. No floaters (detached fragments), no stray flecks orbiting it.
+- **Deep negative space biting into the mass.** Bays and crevices that
+  rise too far into the body get filled. The test is relative: a gap
+  should be no deeper than its neighbours.
+- **Surface noise.** Despeckle hard. The first pass was never enough.
+- **Inconsistent repeats.** Like parts should match: the right legs
+  closed "to match the left", tendrils brought to a similar length,
+  the fan's two undersides "roughly equally cinched". When she calls
+  one part correct, that part is the reference for the rest.
+- **Sprawl.** She wants a compact envelope: appendages shortened and
+  their lengths evened out (low variance), pulling the silhouette into
+  a tighter radius.
+- **Bridging connectors.** Thin necks added to hold a far fragment on
+  read as artefacts. She had them removed, fragment and all.
+- **An earthly-animal read.** The woigolp with a filled belly and feet
+  "resembles the look and feel of a four-legged animal", so its legs
+  went. Anything that makes a friend read as a known creature's body
+  plan is a fault (weird > cute).
+- **Eyes on appendage tips, and many eyes.** The chitu's nine went
+  from the tendril tips to the body, then down to two.
+
+*How she wants things fixed:*
+
+- **Infill in the darkest value**, the silhouette's own base tone, so a
+  filled gap reads as recessed shadow, not as new surface.
+- **Keep the gesture when resizing.** Shorten a tendril by scaling it
+  along its own curve; never crop it or flatten its tip.
+- **Eyes sit on the body mass, on a lighter-value patch**, where they
+  have contrast. Count and position are free to change per friend.
+- **Choose from candidates in place.** She picked the chitu's eyes by
+  pointing at positions in a rendered scatter. Laying out options on
+  the drawing and letting her keep some works better than asking.
+
+*What she does not mind* (inferred from what she approved without
+comment):
+
+- Losing small detail: stray flecks, dust, and the very lightest
+  highlight patches all went unremarked.
+- Departing from the trace. Coherence of the whole shape outranks
+  fidelity to the original drawing: she had legs removed, eyes moved
+  and added, and a half-missing fan rebuilt. "Reattach, never remove"
+  now holds for real limbs, not for stray fragments or for parts that
+  cause a wrong read.
+- Clean generated edges where a contour is rebuilt (the woigolp's
+  smooth bottom), despite preferring messier edges in general.
+- Open loops inside a silhouette (the hamdi bulo's curled tendrils).
+- Asymmetry in general. She asks for balance ("roughly equally"), not
+  mirror symmetry.
 
 **Still open** (none of these is decided; do not assume):
 
