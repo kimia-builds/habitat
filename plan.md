@@ -324,11 +324,12 @@ tracker. Everything after this is delight, informed by real use.
               (2026-11-15) and she has not seen it yet. Adjust or accept.
         - [ ] **p2 Clean the other seven friends** — plip, baluhm, liwi
               bi-jiji, meuhy, rassatt, woigolp, hamdi bulo. _(Hamdi bulo
-              done and approved 2026-11-16. Liwi bi-jiji and woigolp cleaned
-              the same day; woigolp is on the shelf beside its original,
-              not yet judged. The chitu is parked: "still not good
-              enough". By speck count the next is rassatt;
-              meuhy, plip and baluhm have almost none.)_ One at a
+              done and approved 2026-11-16. Woigolp done and approved the
+              same day. Liwi bi-jiji cleaned, not explicitly approved.
+              Rassatt cleaned, on the shelf beside its original, not yet
+              judged. The chitu is parked: "still not good enough".
+              That leaves meuhy, plip and baluhm, which have almost no
+              specks.)_ One at a
               time on the shelf. For each, look first and say which of
               the three repairs it needs (specks, holes, loose limbs);
               reattach, never remove. She cannot see the larger friends

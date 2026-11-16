@@ -39,8 +39,14 @@ import woigolp
 r=woigolp.clean_woigolp()
 out['woigolp']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=woigolp.GREYS, eyes=r['eyes'], box=box_of(r['sil']))
 print('woigolp', [len(path(b)) for b in r['layers']])
+# THE RASSATT (2026-11-16, rassatt.py): specks removed and its lower fan
+# closed, so it is one fan with all five eyes on it. Stacked like the hamdi bulo.
+import rassatt
+r=rassatt.clean_rassatt()
+out['rassatt']=dict(silhouette=path(r['sil']), shades=[], layers=[path(b) for b in r['layers']], greys=rassatt.GREYS)
+print('rassatt', [len(path(b)) for b in r['layers']])
 head='''/*
- * cleanedFriends.js — six friends cleaned: krupengk, zala, chitu, hamdi bulo, liwi bi-jiji, woigolp
+ * cleanedFriends.js — seven friends cleaned: krupengk, zala, chitu, hamdi bulo, liwi bi-jiji, woigolp, rassatt
  * =============================================================================
  * CANDIDATES ON THE WORKBENCH, not yet in the game. Kimia found these two
  * traces too grainy, with "gaping holes under the eyes, filled with weird
@@ -96,6 +102,12 @@ head='''/*
  * as a four-legged animal, so its legs and feet are cut away and its bottom
  * is one smooth rounded line, the belly above it filled in the darkest
  * shade. It carries three `eyes`: her two and a third to their right.
+ *
+ * THE RASSATT is the seventh (2026-11-16), stacked the same way and
+ * carrying its own `greys`. Its specks are gone. It is a fan, and the trace
+ * had lost most of the lower fan: the gaps between its blades and the loose
+ * strands below them are filled in the darkest shade, down to the point at
+ * the bottom, so it is one silhouette and all five eyes sit on the body.
  *
  * MADE BY tools/art-pipeline (raw.py, then export.py). Do not edit by hand.
  * =========================================================================== */

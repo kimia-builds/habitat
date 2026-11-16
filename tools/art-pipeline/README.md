@@ -86,8 +86,14 @@ What "cleaning" means, and Kimia's rules for it:
   eyes are the fixed spots in `EYES`. `python woigolp.py` writes `woigolp_before.png` and
   `woigolp_after.png`.
 
+- **The rassatt** (`rassatt.py`) is stacked the same way (its bands
+  are not listed light-to-dark in the file, so the script matches each
+  to its grey). Its lower fan is closed by the `FAN` outline.
+  `python rassatt.py` writes `rassatt_before.png` and
+  `rassatt_after.png`.
+
 Each friend needs its own look and its own dials: which of the three
-problems it has is decided by eye, on the workbench, with Kimia. Four
+problems it has is decided by eye, on the workbench, with Kimia. Three
 friends are still to do (plan.md T5.3p).
 
 ## Checking nothing moved

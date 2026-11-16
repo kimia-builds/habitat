@@ -874,8 +874,8 @@ a bulb. This replaces "one eye on every tendril tip".
 tendrils and the two eyes she said it is "still not good enough" and
 moved on. It needs another look with her before it goes anywhere.
 
-**The woigolp is the sixth, waiting to be judged** (2026-11-16), on
-the shelf beside its original. Its specks are removed. **It has no
+**The woigolp is the sixth, approved** ("Good, next friend",
+2026-11-16). Its specks are removed. **It has no
 legs**: with its belly filled and its feet joined on, she found it
 "resembles the look and feel of a four-legged animal", and asked to
 "remove the legs portion of the creature, create an un-legged bottom
@@ -883,6 +883,15 @@ half by removing the feet, and add a third eye to the right". So its
 bottom is one smooth rounded line with the belly above it in the
 darkest shade, and it has **three eyes**: her two and a third beside
 them on the right.
+
+**The rassatt is the seventh, waiting to be judged** (2026-11-16), on
+the shelf beside its original. It is a fan, blades spreading up from a
+point at the bottom, and the trace had lost most of the lower fan:
+wide gaps ran up between the blades, the strands meeting at the point
+were loose crumbs, and two of its five eyes floated among them. Its
+specks are removed and the lower fan is closed in the darkest shade,
+from the two outer blades down to the point, so it is one silhouette
+with all five eyes on the body.
 
 **ONE FLORA SIZE: SMALL** (Kimia, 2026-11-15). The large collectible
 class is retired: a flora in the Abode is always the small size (0.28 in
